@@ -1,0 +1,171 @@
+﻿if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListEntriesByPortalByDay') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_ListEntriesByPortalByDay
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListEntriesByPortalByMonth') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_ListEntriesByPortalByMonth
+GO
+
+set ANSI_NULLS ON
+set QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListEntriesByPortalByDay
+@PortalID int,
+@BlogDate datetime = null,
+@ShowNonPublic bit = 0,
+@ShowNonPublished bit=0,
+@MaxEntries int = 10
+
+AS
+
+If @BlogDate IS NULL SET @BlogDate = GetUTCDate()
+SET rowcount @MaxEntries
+	SELECT
+		U.[UserID],
+		U.[Username],
+		U.[DisplayName] AS UserFullName,
+		E.[EntryID],
+		E.[BlogID], 
+		E.[Title],
+		E.[Description],
+		E.[Entry],
+		E.[AddedDate],
+		E.[Published],
+		E.[Copyright],
+		E.[PermaLink],
+		IsNull(E.[AllowComments],B.[AllowComments]) As AllowComments,
+		B.[ParentBlogID],
+		B.[AllowAnonymous],
+		B.[Syndicated] AS BlogSyndicated,
+		B.[Public] AS BlogPublic,
+		(Select Count(*) FROM {databaseOwner}{objectQualifier}Blog_Comments WHERE EntryID = E.EntryID AND (Approved = 1 OR Approved <> @ShowNonPublic)) As CommentCount
+	FROM  {databaseOwner}{objectQualifier}Blog_Blogs B INNER JOIN
+		{databaseOwner}{objectQualifier}Blog_Entries E ON B.[BlogID] = E.[BlogID] INNER JOIN
+		{databaseOwner}{objectQualifier}Users U ON B.[UserID] = U.[UserID]
+	WHERE 
+	B.PortalID = @PortalID AND
+	/*E.AddedDate <= @BlogDate*/
+	E.AddedDate BETWEEN @BlogDate AND DateAdd( dd, 1, @BlogDate ) 
+
+AND (E.[Published] = 1 OR E.[Published] <> @ShowNonPublished)
+	AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+	ORDER BY E.AddedDate DESC
+
+
+set ANSI_NULLS ON
+set QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListEntriesByPortalByMonth
+@PortalID int,
+@BlogDate datetime = null,
+@ShowNonPublic bit = 0,
+@ShowNonPublished bit=0,
+@MaxEntries int = 10
+
+AS
+
+If @BlogDate IS NULL SET @BlogDate = GetUTCDate()
+SET rowcount @MaxEntries
+	SELECT
+		U.[UserID],
+		U.[Username],
+		U.[DisplayName] AS UserFullName,
+		E.[EntryID],
+		E.[BlogID], 
+		E.[Title],
+		E.[Description],
+		E.[Entry],
+		E.[AddedDate],
+		E.[Published],
+		E.[Copyright],
+		E.[PermaLink],
+		IsNull(E.[AllowComments],B.[AllowComments]) As AllowComments,
+		B.[ParentBlogID],
+		B.[AllowAnonymous],
+		B.[Syndicated] AS BlogSyndicated,
+		B.[Public] AS BlogPublic,
+		(Select Count(*) FROM {databaseOwner}{objectQualifier}Blog_Comments WHERE EntryID = E.EntryID AND (Approved = 1 OR Approved <> @ShowNonPublic)) As CommentCount
+	FROM  {databaseOwner}{objectQualifier}Blog_Blogs B INNER JOIN
+		{databaseOwner}{objectQualifier}Blog_Entries E ON B.[BlogID] = E.[BlogID] INNER JOIN
+		{databaseOwner}{objectQualifier}Users U ON B.[UserID] = U.[UserID]
+	WHERE 
+	B.PortalID = @PortalID AND
+	/*E.AddedDate <= @BlogDate
+	E.AddedDate BETWEEN @BlogDate AND DateAdd( dd, 1, @BlogDate )*/ 
+	E.AddedDate BETWEEN DATEADD(month, DATEDIFF(month, 0, @BlogDate), 0)  AND @BlogDate AND E.AddedDate <=  GetUTCDate()
+AND (E.[Published] = 1 OR E.[Published] <> @ShowNonPublished)
+	AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+	ORDER BY E.AddedDate DESC
+	
+GO
+	
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_UpdateEntry') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_UpdateEntry
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdateEntry
+	@BlogID int,
+	@EntryID int, 
+	@Title nvarchar(255),
+	@Description nvarchar(1024),
+	@Entry ntext,
+	@Published bit,
+	@AllowComments bit,
+	@AddedDate datetime,
+	@DisplayCopyright bit,
+	@Copyright nvarchar(256),
+	@PermaLink nvarchar(1024)
+AS
+
+UPDATE {databaseOwner}{objectQualifier}Blog_Entries SET
+	[BlogID] = @BlogID,
+	[Title] = @Title,
+	[Description] = @Description,
+	[Entry] = @Entry,
+	[Published] = @Published,
+	[AllowComments] = @AllowComments,
+	[DisplayCopyright] = @DisplayCopyright,
+	[Copyright] = @Copyright,
+	[PermaLink] = @PermaLink
+
+WHERE
+	[EntryID] = @EntryID
+
+If @Published = 1
+	UPDATE  {databaseOwner}{objectQualifier}Blog_Blogs
+		SET [LastEntry] = GetUTCDate()
+	WHERE [BlogID] = @BlogID
+	
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_GetEntry') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_GetEntry
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetEntry
+	@EntryID int,
+	@PortalId int
+AS
+
+SELECT
+	E.[BlogID],
+	E.[EntryID],
+	E.[Title],
+	E.[Description],
+	E.[Entry],
+	E.[AddedDate],
+	E.[Published],
+	E.[DisplayCopyright],
+	E.[Copyright],
+	E.[PermaLink],
+	B.[ParentBlogID],
+	IsNull(E.[AllowComments], B.[AllowComments]) As AllowComments,
+	B.[UserID]
+FROM
+	{databaseOwner}{objectQualifier}Blog_Entries E JOIN {databaseOwner}{objectQualifier}Blog_Blogs B ON B.BlogID = E.BlogID 
+WHERE
+	E.[EntryID] = @EntryID and
+	B.PortalId = @PortalId

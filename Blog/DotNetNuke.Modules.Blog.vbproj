@@ -1,0 +1,482 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4E2BCA3B-927C-4AF2-9999-B1C074FD0539}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>DotNetNuke.Modules.Blog</RootNamespace>
+    <AssemblyName>DotNetNuke.Modules.Blog</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <MyType>Custom</MyType>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionStrict>On</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>..\..\bin\</OutputPath>
+    <DocumentationFile>DotNetNuke.Modules.Blog.xml</DocumentationFile>
+    <NoWarn>
+    </NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>DotNetNuke.Modules.Blog.xml</DocumentationFile>
+    <NoWarn>
+    </NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CookComputing.XmlRpcV2, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\CookComputing.XmlRpcV2.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DotNetNuke, Version=4.5.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\DotNetNuke.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotNetNuke.WebControls, Version=1.5.3.20116, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\DotNetNuke.WebControls.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotNetNuke.WebUtility, Version=3.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\DotNetNuke.WebUtility.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_Dependencies\Microsoft.ApplicationBlocks.Data.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Mobile" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Collections.Specialized" />
+    <Import Include="System.Configuration" />
+    <Import Include="System.Text" />
+    <Import Include="System.Text.RegularExpressions" />
+    <Import Include="System.Web" />
+    <Import Include="System.Web.Caching" />
+    <Import Include="System.Web.SessionState" />
+    <Import Include="System.Web.Security" />
+    <Import Include="System.Web.Profile" />
+    <Import Include="System.Web.UI" />
+    <Import Include="System.Web.UI.WebControls" />
+    <Import Include="System.Web.UI.WebControls.WebParts" />
+    <Import Include="System.Web.UI.HtmlControls" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Archive.ascx" />
+    <Content Include="Blog.ascx" />
+    <Content Include="BlogFeed.ascx" />
+    <Content Include="BlogImport.ascx" />
+    <Content Include="BlogList.ascx" />
+    <Content Include="blogpostredirect.aspx" />
+    <Content Include="EditBlog.ascx" />
+    <Content Include="EditEntry.ascx" />
+    <Content Include="MainView.ascx" />
+    <Content Include="module.css" />
+    <Content Include="ModuleOptions.ascx" />
+    <Content Include="Search.ascx" />
+    <Content Include="Trackback.aspx" />
+    <Content Include="ViewBlog.ascx" />
+    <Content Include="ViewEntry.ascx" />
+    <Content Include="wlwblog.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Archive.ascx.designer.vb">
+      <DependentUpon>Archive.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Archive.ascx.vb">
+      <DependentUpon>Archive.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Blog.ascx.designer.vb">
+      <DependentUpon>Blog.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Blog.ascx.vb">
+      <DependentUpon>Blog.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BlogFeed.ascx.designer.vb">
+      <DependentUpon>BlogFeed.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="BlogFeed.ascx.vb">
+      <DependentUpon>BlogFeed.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BlogImport.ascx.designer.vb">
+      <DependentUpon>BlogImport.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="BlogImport.ascx.vb">
+      <DependentUpon>BlogImport.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BlogList.ascx.designer.vb">
+      <DependentUpon>BlogList.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="BlogList.ascx.vb">
+      <DependentUpon>BlogList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="blogpost.ashx.vb">
+      <DependentUpon>blogpost.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="blogpostredirect.aspx.designer.vb">
+      <DependentUpon>blogpostredirect.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="blogpostredirect.aspx.vb">
+      <DependentUpon>blogpostredirect.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Components\Blogger\IBlogger.vb" />
+    <Compile Include="Components\BlogSettings.vb" />
+    <Compile Include="Components\Data\SqlDataProvider.vb" />
+    <Compile Include="Components\Globals.vb" />
+    <Compile Include="Components\MetaWeblog\IMetaWeblog.vb" />
+    <Compile Include="Components\MoveableType\IMoveableType.vb" />
+    <Compile Include="Components\Rss\StringWriterWithEncoding.vb" />
+    <Compile Include="Components\WordPress\IWordPress.vb" />
+    <Compile Include="EditCategories.ascx.designer.vb">
+      <DependentUpon>EditCategories.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="EditCategories.ascx.vb">
+      <DependentUpon>EditCategories.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Components\Business\ArchiveController.vb" />
+    <Compile Include="Components\Business\ArchiveDays.vb" />
+    <Compile Include="Components\Business\ArchiveMonths.vb" />
+    <Compile Include="Components\Business\BlogController.vb" />
+    <Compile Include="Components\Business\BlogInfo.vb" />
+    <Compile Include="Components\BlogModuleBase.vb">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Components\Business\CategoryController.vb" />
+    <Compile Include="Components\Business\CategoryInfo.vb" />
+    <Compile Include="Components\Business\CommentController.vb" />
+    <Compile Include="Components\Business\CommentInfo.vb" />
+    <Compile Include="Components\Data\DataProvider.vb" />
+    <Compile Include="Components\Business\EntryController.vb" />
+    <Compile Include="Components\Business\EntryInfo.vb" />
+    <Compile Include="Components\File\FileController.vb" />
+    <Compile Include="Components\Business\InterfaceController.vb" />
+    <Compile Include="Components\MetaWeblog\BlogModuleProvider.vb" />
+    <Compile Include="Components\MetaWeblog\ProviderEnums.vb" />
+    <Compile Include="Components\MetaWeblog\ProviderExceptions.vb" />
+    <Compile Include="Components\MetaWeblog\ProviderInterfaces.vb" />
+    <Compile Include="Components\MetaWeblog\ProviderServices.vb" />
+    <Compile Include="Components\MetaWeblog\ProviderStructs.vb" />
+    <Compile Include="Components\Business\PingBackService.vb" />
+    <Compile Include="Components\Business\SearchController.vb" />
+    <Compile Include="Components\Business\SearchResult.vb" />
+    <Compile Include="Components\Business\TagController.vb" />
+    <Compile Include="Components\Business\TagInfo.vb" />
+    <Compile Include="Components\Business\Utility.vb" />
+    <Compile Include="EditBlog.ascx.designer.vb">
+      <DependentUpon>EditBlog.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="EditBlog.ascx.vb">
+      <DependentUpon>EditBlog.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EditEntry.ascx.designer.vb">
+      <DependentUpon>EditEntry.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="EditEntry.ascx.vb">
+      <DependentUpon>EditEntry.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MassEdit.ascx.designer.vb">
+      <DependentUpon>MassEdit.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MassEdit.ascx.vb">
+      <DependentUpon>MassEdit.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MainView.ascx.designer.vb">
+      <DependentUpon>MainView.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MainView.ascx.vb">
+      <DependentUpon>MainView.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ModuleOptions.ascx.designer.vb">
+      <DependentUpon>ModuleOptions.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ModuleOptions.ascx.vb">
+      <DependentUpon>ModuleOptions.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\MyExtensions\MyWebExtension.vb">
+      <VBMyExtensionTemplateID>Microsoft.VisualBasic.Web.MyExtension</VBMyExtensionTemplateID>
+      <VBMyExtensionTemplateVersion>1.0.0.0</VBMyExtensionTemplateVersion>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Components\Rss\BlogRssFeed.vb" />
+    <Compile Include="Search.ascx.designer.vb">
+      <DependentUpon>Search.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Search.ascx.vb">
+      <DependentUpon>Search.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Trackback.aspx.designer.vb">
+      <DependentUpon>Trackback.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Trackback.aspx.vb">
+      <DependentUpon>Trackback.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Upgrade\CustomUpgrade.vb" />
+    <Compile Include="Upgrade\ForumBlogUpgrade.vb" />
+    <Compile Include="Upgrade\UpgradeController.vb" />
+    <Compile Include="Upgrade\Utils.vb" />
+    <Compile Include="ViewBlog.ascx.designer.vb">
+      <DependentUpon>ViewBlog.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewBlog.ascx.vb">
+      <DependentUpon>ViewBlog.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ViewCategories.ascx.designer.vb">
+      <DependentUpon>ViewCategories.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewCategories.ascx.vb">
+      <DependentUpon>ViewCategories.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ViewEntry.ascx.designer.vb">
+      <DependentUpon>ViewEntry.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewEntry.ascx.vb">
+      <DependentUpon>ViewEntry.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ViewTags.ascx.designer.vb">
+      <DependentUpon>ViewTags.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewTags.ascx.vb">
+      <DependentUpon>ViewTags.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ViewTagsSettings.ascx.designer.vb">
+      <DependentUpon>ViewTagsSettings.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewTagsSettings.ascx.vb">
+      <DependentUpon>ViewTagsSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\Archive.ascx.resx" />
+    <Content Include="App_LocalResources\Blog.ascx.resx" />
+    <Content Include="App_LocalResources\BlogImport.ascx.resx" />
+    <Content Include="App_LocalResources\BlogList.ascx.resx" />
+    <Content Include="App_LocalResources\blogpost.ascx.resx" />
+    <Content Include="App_LocalResources\EditBlog.ascx.resx" />
+    <Content Include="App_LocalResources\EditCategories.ascx.resx" />
+    <Content Include="App_LocalResources\EditEntry.ascx.resx" />
+    <Content Include="App_LocalResources\MainView.ascx.resx" />
+    <Content Include="App_LocalResources\ModuleOptions.ascx.resx" />
+    <Content Include="App_LocalResources\Search.ascx.resx" />
+    <Content Include="App_LocalResources\Trackback.aspx.resx" />
+    <Content Include="App_LocalResources\ViewBlog.ascx.resx" />
+    <Content Include="App_LocalResources\ViewCategories.ascx.resx" />
+    <Content Include="App_LocalResources\ViewEntry.ascx.resx" />
+    <Content Include="App_LocalResources\SharedResources.ascx.resx" />
+    <EmbeddedResource Include="Archive.ascx.resx">
+      <DependentUpon>Archive.ascx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Blog.ascx.resx">
+      <DependentUpon>Blog.ascx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BlogList.ascx.resx">
+      <DependentUpon>BlogList.ascx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="blogpostredirect.aspx.resx">
+      <DependentUpon>blogpostredirect.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditBlog.ascx.resx">
+      <DependentUpon>EditBlog.ascx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditEntry.ascx.resx">
+      <DependentUpon>EditEntry.ascx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainView.ascx.resx">
+      <DependentUpon>MainView.ascx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModuleOptions.ascx.resx">
+      <DependentUpon>ModuleOptions.ascx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Search.ascx.resx">
+      <DependentUpon>Search.ascx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Trackback.aspx.resx">
+      <DependentUpon>Trackback.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewBlog.ascx.resx">
+      <DependentUpon>ViewBlog.ascx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewEntry.ascx.resx">
+      <DependentUpon>ViewEntry.ascx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="blogpost.ashx" />
+    <Content Include="EditCategories.ascx" />
+    <Content Include="MassEdit.ascx" />
+    <Content Include="js\bookmarks.js" />
+    <Content Include="js\bookmarks.xml" />
+    <Content Include="js\Gravatar.js" />
+    <Content Include="js\jquery.min.js" />
+    <Content Include="js\md5.js" />
+    <Content Include="js\tag.js" />
+    <Content Include="ShareBadge\css\ShareBadge.css" />
+    <Content Include="ShareBadge\js\ShareBadgeChicklets.js" />
+    <Content Include="ShareBadge\js\ShareBadgePro.js" />
+    <Content Include="ShareBadge\ShareBadgePro.html" />
+    <Content Include="Styles\Blog-FullEnry.xsl" />
+    <Content Include="Styles\Blog-Full_Blue.xsl" />
+    <Content Include="Styles\Blog-Full_Grey.xsl" />
+    <Content Include="Styles\Blog-Headlines.xsl" />
+    <Content Include="Styles\Blog-Head_Grey.xsl" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Upgrade\03.05.02_category_conversion.sql" />
+    <None Include="_Installation\DNN_Blog.dnn" />
+    <None Include="_Installation\SQL\01.00.00.SqlDataProvider" />
+    <None Include="_Installation\SQL\01.00.01.SqlDataProvider" />
+    <None Include="_Installation\SQL\01.00.02.SqlDataProvider" />
+    <None Include="_Installation\SQL\01.00.03.SqlDataProvider" />
+    <None Include="_Installation\SQL\03.00.00.SqlDataProvider" />
+    <None Include="_Installation\SQL\03.00.01.SqlDataProvider" />
+    <None Include="_Installation\SQL\03.01.04.SqlDataProvider" />
+    <None Include="_Installation\SQL\03.01.07.SqlDataProvider" />
+    <None Include="_Installation\SQL\03.01.12.SqlDataProvider" />
+    <None Include="_Installation\SQL\03.01.15.SqlDataProvider" />
+    <None Include="_Installation\SQL\03.01.20.SqlDataProvider" />
+    <None Include="_Installation\SQL\03.01.21.SqlDataProvider" />
+    <None Include="_Installation\SQL\03.03.00.SqlDataProvider" />
+    <None Include="_Installation\SQL\03.03.01.SqlDataProvider" />
+    <None Include="_Installation\SQL\03.04.00.SqlDataProvider" />
+    <None Include="_Installation\SQL\03.04.01.SqlDataProvider" />
+    <None Include="_Installation\SQL\03.05.00.SqlDataProvider" />
+    <None Include="_Installation\SQL\03.05.01.SqlDataProvider" />
+    <None Include="_Installation\SQL\04.00.00.SqlDataProvider" />
+    <None Include="_Installation\SQL\Install.04.00.00.SqlDataProvider" />
+    <None Include="_Installation\SQL\Uninstall.SqlDataProvider" />
+    <Content Include="ViewCategories.ascx" />
+    <Content Include="ViewTags.ascx" />
+    <Content Include="ViewTagsSettings.ascx" />
+    <Content Include="_Installation\03.03.00.txt" />
+    <Content Include="_Installation\03.03.01.txt" />
+    <Content Include="_Installation\03.04.00.txt" />
+    <Content Include="_Installation\03.04.01.txt" />
+    <Content Include="_Installation\03.05.00.txt" />
+    <Content Include="_Installation\03.05.01.txt" />
+    <Content Include="_Installation\03.05.02.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>2866</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

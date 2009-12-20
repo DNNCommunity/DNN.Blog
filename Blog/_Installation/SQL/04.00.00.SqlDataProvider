@@ -1,0 +1,949 @@
+﻿/*************** BEGIN 03.05.02.SqlDataProvider ************************/
+
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs ADD 
+	[EnableTwitterIntegration] [bit] NULL
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs ADD 
+	[TwitterUsername] [nvarchar](256) NULL
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs ADD 
+	[TwitterPassword] [nvarchar](128) NULL
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs ADD 
+	[TweetTemplate] [nvarchar](256) NULL
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs
+	ADD  CONSTRAINT [DF_{objectQualifier}Blog_Blogs_EnableTwitterIntegration]  DEFAULT ((0)) FOR [EnableTwitterIntegration]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_UpdateBlog') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_UpdateBlog
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdateBlog
+	@PortalID int,
+	@BlogID int, 
+	@ParentBlogID int = -1,
+	@UserID int, 
+	@Title nvarchar(512), 
+	@Description nvarchar(1024), 
+	@Public bit, 
+	@AllowComments bit, 
+	@AllowAnonymous bit,
+	@ShowFullName bit,
+	@Culture nvarchar(10),
+	@DateFormat nvarchar(50),
+	@TimeZone int,
+	@Syndicated bit,
+	@SyndicateIndependant bit,
+	@SyndicationURL nvarchar(1024),
+	@SyndicationEmail nvarchar(255),
+	@EmailNotification bit,
+	@AllowTrackbacks bit,
+	@AutoTrackback bit,
+	@MustApproveComments bit,
+	@MustApproveAnonymous bit,
+	@MustApproveTrackbacks bit,
+	@UseCaptcha bit,
+	@EnableTwitterIntegration bit,
+	@TwitterUsername nvarchar(256),
+	@TwitterPassword nvarchar(128),
+	@TweetTemplate nvarchar(256)
+AS
+
+UPDATE {databaseOwner}{objectQualifier}Blog_Blogs SET
+	[PortalID] = @PortalID,
+	[ParentBlogID] = @ParentBlogID,
+	[UserID] = @UserID,
+	[Title] = @Title,
+	[Description] = @Description,
+	[Public] = @Public,
+	[AllowComments] = @AllowComments,
+	[AllowAnonymous] = @AllowAnonymous,
+	[ShowFullName] = @ShowFullName,
+	[Culture] = @Culture,
+	[DateFormat] = @DateFormat,
+	[TimeZone] = @TimeZone,
+	[Syndicated] = @Syndicated,
+	[SyndicateIndependant] = @SyndicateIndependant,
+	[SyndicationURL] = @SyndicationURL,
+	[SyndicationEmail] = @SyndicationEmail,
+	[EmailNotification] = @EmailNotification,
+	[AllowTrackbacks] = @AllowTrackbacks,
+	[AutoTrackback] = @AutoTrackback,
+	[MustApproveComments] = @MustApproveComments,
+	[MustApproveAnonymous] = @MustApproveAnonymous,
+	[MustApproveTrackbacks] = @MustApproveTrackbacks,
+	[UseCaptcha] = @UseCaptcha,
+	[EnableTwitterIntegration] = @EnableTwitterIntegration,
+	[TwitterUsername] = @TwitterUsername,
+	[TwitterPassword] = @TwitterPassword,
+	[TweetTemplate] = @TweetTemplate
+WHERE
+	[BlogID] = @BlogID
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_AddBlog') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_AddBlog
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_AddBlog
+	@PortalID int,
+	@ParentBlogID int = -1,
+	@UserID int,
+	@Title nvarchar(512),
+	@Description nvarchar(1024),
+	@Public bit,
+	@AllowComments bit,
+	@AllowAnonymous bit,
+	@ShowFullName bit,
+	@Culture nvarchar(10),
+	@DateFormat nvarchar(50),
+	@TimeZone int,
+	@Syndicated bit,
+	@SyndicateIndependant bit,
+	@SyndicationURL nvarchar(1024),
+	@SyndicationEmail nvarchar(255),
+	@EmailNotification bit,
+	@AllowTrackbacks bit,
+	@AutoTrackback bit,
+	@MustApproveComments bit,
+	@MustApproveAnonymous bit,
+	@MustApproveTrackbacks bit,
+	@UseCaptcha bit,
+	@EnableTwitterIntegration bit,
+	@TwitterUsername nvarchar(256),
+	@TwitterPassword nvarchar(128),
+	@TweetTemplate nvarchar(256)
+AS
+
+INSERT INTO {databaseOwner}{objectQualifier}Blog_Blogs (
+	[PortalID],
+	[ParentBlogID],
+	[UserID],
+	[Title],
+	[Description],
+	[Public],
+	[AllowComments],
+	[AllowAnonymous],
+	[ShowFullName],
+	[Culture],
+	[DateFormat],
+	[TimeZone],
+	[Created],
+	[Syndicated],
+	[SyndicateIndependant],
+	[SyndicationURL],
+	[SyndicationEmail],
+	[EmailNotification],
+	[AllowTrackbacks],
+	[AutoTrackback],
+	[MustApproveComments],
+	[MustApproveAnonymous],
+	[MustApproveTrackbacks],
+	[UseCaptcha],
+	[EnableTwitterIntegration],
+	[TwitterUsername],
+	[TwitterPassword],
+	[TweetTemplate]
+) VALUES (
+	@PortalID,
+	@ParentBlogID,
+	@UserID,
+	@Title,
+	@Description,
+	@Public,
+	@AllowComments,
+	@AllowAnonymous,
+	@ShowFullName,
+	@Culture,
+	@DateFormat,
+	@TimeZone,
+	GetUTCDate(),
+	@Syndicated,
+	@SyndicateIndependant,
+	@SyndicationURL,
+	@SyndicationEmail,
+	@EmailNotification,
+	@AllowTrackbacks,
+	@AutoTrackback,
+	@MustApproveComments,
+	@MustApproveAnonymous,
+	@MustApproveTrackbacks,
+	@UseCaptcha,
+	@EnableTwitterIntegration,
+	@TwitterUsername,
+	@TwitterPassword,
+	@TweetTemplate
+)
+
+select SCOPE_IDENTITY()
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_GetBlog') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_GetBlog
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlog
+	@BlogID int
+	
+AS
+
+SELECT
+	B.[ParentBlogID],
+	B.[PortalID],
+	B.[BlogID],
+	B.[UserID],
+	U.[UserName],
+	U.[DisplayName] AS UserFullName,
+	B.[Title],
+	B.[Description],
+	B.[Public],
+	B.[AllowComments],
+	B.[AllowAnonymous],
+	B.[LastEntry],
+	B.[Created],
+	B.[Culture],
+	B.[ShowFullname],
+	B.[DateFormat],
+	IsNull(B.[TimeZone],0) AS TimeZone,
+	B.[Syndicated],
+	IsNull(B.[SyndicateIndependant], 0) As SyndicateIndependant,
+	B.[SyndicationURL],
+	B.[SyndicationEmail],
+	B.[EmailNotification],
+	B.[AllowTrackbacks],
+	B.[AutoTrackback],
+	B.[MustApproveComments],
+	B.[MustApproveAnonymous],
+	B.[MustApproveTrackbacks],	
+	B.[UseCaptcha],
+	B.[EnableTwitterIntegration],
+	B.[TwitterUsername],
+	B.[TwitterPassword],
+	B.[TweetTemplate],
+	(SELECT Count(BlogID) FROM {databaseOwner}{objectQualifier}Blog_Blogs WHERE ParentBlogID=B.[BlogID]) AS ChildBlogCount
+FROM
+	{databaseOwner}{objectQualifier}Blog_Blogs B
+	INNER JOIN 
+	{databaseOwner}{objectQualifier}Users U ON B.[UserID] = U.[UserID]
+WHERE
+	[BlogID] = @BlogID
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_GetBlogMonths') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_GetBlogMonths
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlogMonths
+(
+	@PortalID int,
+	@BlogID int
+)
+AS
+
+If @BlogID > -1
+BEGIN
+	SELECT
+	     DATEPART(mm, E.AddedDate) as AddedMonth,
+	     DATEPART(yy, E.AddedDate) as AddedYear,
+	     COUNT(EntryId) AS PostCount
+	
+	FROM {databaseOwner}{objectQualifier}Blog_Entries E INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs B ON
+		B.[BlogID] = E.[BlogID]
+	
+	WHERE B.[PortalID] = @PortalID 
+	AND  (B.BlogID = @BlogID OR B.[ParentBlogID] = @BlogID)
+	
+	group by DATEPART(m, E.AddedDate), DATEPART(yy, E.AddedDate)
+	order by AddedYear DESC, AddedMonth DESC
+END
+ELSE
+BEGIN
+	SELECT
+	     DATEPART(mm, E.AddedDate) as AddedMonth,
+	     DATEPART(yy, E.AddedDate) as AddedYear,
+	     COUNT(EntryId) AS PostCount
+	
+	FROM {databaseOwner}{objectQualifier}Blog_Entries E INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs B ON
+		B.[BlogID] = E.[BlogID]
+	
+	WHERE B.[PortalID] = @PortalID 
+	
+	group by DATEPART(m, E.AddedDate), DATEPART(yy, E.AddedDate)
+	order by AddedYear DESC, AddedMonth DESC
+END
+
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListBlogs') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_ListBlogs
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListBlogs
+@PortalID int,
+@ParentBlogID int,
+@ShowNonPublic bit
+AS
+
+SELECT
+	B.[PortalID],
+	B.[BlogID],
+	B.[ParentBlogID],
+	B.[UserID],
+	U.[UserName],
+	U.[DisplayName] AS UserFullName,
+	B.[Title],
+	B.[Description],
+	B.[Public],
+	B.[AllowComments],
+	B.[AllowAnonymous],
+	B.[LastEntry],
+	B.[Created],
+	B.[Culture],
+	B.[ShowFullname],
+	B.[DateFormat],
+	IsNull(B.[TimeZone],0) AS TimeZone,
+	B.[Syndicated],
+	IsNull(B.[SyndicateIndependant], 0) As SyndicateIndependant,
+	B.[SyndicationURL],
+	B.[SyndicationEmail],
+	B.[EmailNotification],
+	B.[AllowTrackbacks],
+	B.[AutoTrackback],
+	B.[MustApproveComments],
+	B.[MustApproveAnonymous],
+	B.[MustApproveTrackbacks],
+	B.[UseCaptcha],
+	(SELECT Count(BlogID) FROM {databaseOwner}{objectQualifier}Blog_Blogs WHERE ParentBlogID=B.[BlogID]) AS ChildBlogCount,
+	(SELECT Count(EntryID) FROM {databaseOwner}{objectQualifier}Blog_Entries WHERE BlogID=B.[BlogID]) AS BlogPostCount
+FROM
+	{databaseOwner}{objectQualifier}Blog_Blogs B
+	INNER JOIN 
+	{databaseOwner}{objectQualifier}Users U ON B.[UserID] = U.[UserID]
+WHERE B.[PortalID] = @PortalID AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic) AND (B.[ParentBlogID] = @ParentBlogID)
+ORDER BY B.Title
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListCommentsByBlog') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_ListCommentsByBlog
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListCommentsByBlog
+	@BlogId INT,
+	@ShowNonApproved BIT = 0,
+	@MaxComments int = 10
+AS
+
+SET rowcount @MaxComments
+
+SELECT
+	C.[CommentID],
+	C.[EntryID],
+	C.[UserID],
+	C.[Title],
+	C.[Comment],
+	C.[AddedDate],
+	U.[UserName],
+	U.[DisplayName] AS UserFullName,
+	C.[Author],
+	C.[Approved],
+	C.[Website],
+	C.[Email]
+
+FROM
+	{databaseOwner}{objectQualifier}Blog_Comments C
+	LEFT OUTER JOIN 
+	{databaseOwner}{objectQualifier}Users U ON C.[UserID] = U.[UserID]
+	INNER JOIN
+	{databaseOwner}{objectQualifier}Blog_Entries E ON C.EntryID = E.EntryID
+	WHERE (C.[Approved] = 1 OR C.[Approved] <> @ShowNonApproved) AND
+	E.BlogID = @BlogId
+ORDER BY
+	C.AddedDate desc
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListCommentsByPortal') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_ListCommentsByPortal
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListCommentsByPortal
+	@PortalId INT,
+	@ShowNonApproved BIT = 0,
+	@MaxComments int = 10
+AS
+
+SET rowcount @MaxComments
+
+SELECT
+	C.[CommentID],
+	C.[EntryID],
+	C.[UserID],
+	C.[Title],
+	C.[Comment],
+	C.[AddedDate],
+	U.[UserName],
+	U.[DisplayName] AS UserFullName,
+	C.[Author],
+	C.[Approved],
+	C.[Website],
+	C.[Email]
+
+FROM
+	{databaseOwner}{objectQualifier}Blog_Comments C
+	LEFT OUTER JOIN 
+	{databaseOwner}{objectQualifier}Users U ON C.[UserID] = U.[UserID]
+	INNER JOIN
+	{databaseOwner}{objectQualifier}Blog_Entries E ON C.EntryID = E.EntryID
+	INNER JOIN
+	{databaseOwner}{objectQualifier}Blog_Blogs B ON E.BlogID = B.BlogID
+	WHERE (C.[Approved] = 1 OR C.[Approved] <> @ShowNonApproved) AND
+	B.PortalID = @PortalId
+ORDER BY
+	C.AddedDate desc
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_DelUnAppCommByEntry') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_DelUnAppCommByEntry
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_DelUnAppCommByEntry
+	@EntryID int
+
+AS
+
+DELETE FROM
+	{databaseOwner}{objectQualifier}Blog_Comments
+WHERE
+	[EntryID] = @EntryID
+	AND [Approved] = 0
+
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_UpdateEntry') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_UpdateEntry
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdateEntry
+	@BlogID int,
+	@EntryID int, 
+	@Title nvarchar(255),
+	@Description ntext,
+	@Entry ntext,
+	@Published bit,
+	@AllowComments bit,
+	@AddedDate datetime,
+	@DisplayCopyright bit,
+	@Copyright nvarchar(256),
+	@PermaLink nvarchar(1024)
+AS
+
+UPDATE {databaseOwner}{objectQualifier}Blog_Entries SET
+	[BlogID] = @BlogID,
+	[Title] = @Title,
+	[Description] = @Description,
+	[Entry] = @Entry,
+	[Published] = @Published,
+	[AllowComments] = @AllowComments,
+	[AddedDate] = @AddedDate,
+	[DisplayCopyright] = @DisplayCopyright,
+	[Copyright] = @Copyright,
+	[PermaLink] = @PermaLink
+
+WHERE
+	[EntryID] = @EntryID
+
+If @Published = 1
+	UPDATE  {databaseOwner}{objectQualifier}Blog_Blogs
+		SET [LastEntry] = GetUTCDate()
+	WHERE [BlogID] = @BlogID
+	
+GO
+
+if not exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_Categories') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+BEGIN
+
+	CREATE TABLE {databaseOwner}{objectQualifier}Blog_Categories(
+		CatID int IDENTITY(1,1) NOT NULL,
+		Category nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+		Slug nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+		ParentID int NULL,
+		PortalID int NULL,
+	 CONSTRAINT PK_Blog_Categories PRIMARY KEY CLUSTERED 
+	(
+		CatID ASC
+	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+	) ON [PRIMARY]
+END
+
+GO
+
+BEGIN	
+CREATE NONCLUSTERED INDEX IX_Blog_Categories_PortalID ON {databaseOwner}{objectQualifier}Blog_Categories 
+	(
+		PortalID ASC
+	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, 
+		ALLOW_ROW_LOCKS  = ON, 	ALLOW_PAGE_LOCKS  = OFF) ON [PRIMARY]
+END
+
+GO
+
+if not exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_Tags') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+BEGIN
+
+	CREATE TABLE {databaseOwner}{objectQualifier}Blog_Tags(
+		TagID int IDENTITY(1,1) NOT NULL,
+		Tag nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+		Slug nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+		Active bit NOT NULL,
+		PortalID int NULL,
+	 CONSTRAINT PK_Blog_Tags PRIMARY KEY CLUSTERED 
+	(
+		TagID ASC
+	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+	) ON [PRIMARY]
+	
+	CREATE NONCLUSTERED INDEX IX_Blog_Tags_PortalID ON {databaseOwner}{objectQualifier}Blog_Tags 
+	(
+		PortalID ASC
+	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, 
+	ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = OFF) ON [PRIMARY]
+
+END
+
+GO
+
+if not exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_Entry_Categories') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+BEGIN
+	CREATE TABLE {databaseOwner}{objectQualifier}Blog_Entry_Categories(
+		EntryCatID int IDENTITY(1,1) NOT NULL,
+		EntryID int NULL,
+		CatID int NULL,
+	 CONSTRAINT PK_Blog_Entry_Categories PRIMARY KEY CLUSTERED 
+	(
+		EntryCatID ASC
+	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+	) ON [PRIMARY]
+	
+	CREATE NONCLUSTERED INDEX IX_Blog_Entry_Categories_EntryID ON {databaseOwner}{objectQualifier}Blog_Entry_Categories 
+	(
+		EntryID ASC
+	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, 
+	ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = OFF) ON [PRIMARY]
+	
+	
+	CREATE NONCLUSTERED INDEX IX_Blog_Entry_Categories_CatID ON {databaseOwner}{objectQualifier}Blog_Entry_Categories 
+	(
+		CatID ASC
+	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, 
+	ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = OFF) ON [PRIMARY]
+
+END
+
+GO
+
+if not exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_Entry_Tags') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+BEGIN
+
+	CREATE TABLE {databaseOwner}{objectQualifier}Blog_Entry_Tags(
+		EntryTagID int IDENTITY(1,1) NOT NULL,
+		EntryID int NOT NULL,
+		TagID int NOT NULL,
+	 CONSTRAINT PK_Blog_Entry_Tags PRIMARY KEY CLUSTERED 
+	(
+		EntryTagID ASC
+	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+	) ON [PRIMARY]
+	
+	CREATE NONCLUSTERED INDEX IX_Blog_Entry_Tags_EntryID ON {databaseOwner}{objectQualifier}Blog_Entry_Tags 
+	(
+		EntryID ASC
+	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, 
+	ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = OFF) ON [PRIMARY]
+	
+	CREATE NONCLUSTERED INDEX IX_Blog_Entry_Tags_TagID ON {databaseOwner}{objectQualifier}Blog_Entry_Tags 
+	(
+		TagID ASC
+	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, 
+	ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = OFF) ON [PRIMARY]
+
+END
+
+GO
+
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_AddCategory') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_AddCategory
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_AddCategory 
+
+		@Category nvarchar(255),
+		@ParentID int,
+		@PortalID int
+	AS
+	BEGIN
+		SET NOCOUNT ON;
+		INSERT INTO {databaseOwner}{objectQualifier}Blog_Categories (Category, ParentID, PortalID) VALUES (@Category, @ParentID, @PortalID)
+		RETURN @@IDENTITY
+	
+	END
+
+GO
+
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_AddEntryCategories') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_AddEntryCategories
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_AddEntryCategories 
+	@EntryID int, 
+	@CatID int
+AS
+BEGIN
+	SET NOCOUNT ON;
+	INSERT INTO {databaseOwner}{objectQualifier}Blog_Entry_Categories (EntryID, CatID) VALUES (@EntryID, @CatID)
+
+END
+
+GO
+
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_AddEntryTag') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_AddEntryTag
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_AddEntryTag 
+	@entryid int,
+	@tag nvarchar(255),
+	@slug nvarchar(255)
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	DECLARE @tagid int,
+			@PortalID int
+
+	SET @PortalID = (SELECT PortalID FROM {databaseOwner}{objectQualifier}Blog_Entries be INNER JOIN  {databaseOwner}{objectQualifier}Blog_Blogs bb
+					on be.BlogID = bb.BlogID WHERE EntryID = @EntryID)
+
+	SET @tagid = (SELECT TagID FROM {databaseOwner}{objectQualifier}Blog_Tags WHERE Tag = @tag and PortalID = @PortalID)
+	
+	IF @tagid IS NULL
+		BEGIN
+			INSERT INTO {databaseOwner}{objectQualifier}Blog_Tags (Tag, Slug, Active, PortalID) VALUES (@tag, @slug, 1, @PortalID)
+			SET @tagid = @@IDENTITY
+		END
+
+	INSERT INTO {databaseOwner}{objectQualifier}Blog_Entry_Tags (EntryID, TagID) VALUES (@entryid, @tagid)
+
+	RETURN @@IDENTITY
+		
+END
+
+GO
+
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_DeleteCategory') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_DeleteCategory
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_DeleteCategory 
+	@CatID int = 0
+AS
+BEGIN
+	SET NOCOUNT ON;
+	DELETE FROM {databaseOwner}{objectQualifier}Blog_Entry_Categories WHERE CatID = @CatID
+	DELETE FROM {databaseOwner}{objectQualifier}Blog_Categories WHERE CatID = @CatID
+
+END
+
+GO
+
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_DeleteEntryCategories') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_DeleteEntryCategories
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_DeleteEntryCategories 
+	@EntryID int, 
+	@CatID int
+AS
+BEGIN
+	SET NOCOUNT ON;
+	DELETE FROM {databaseOwner}{objectQualifier}Blog_Entry_Categories WHERE EntryID = @EntryID and CatID = @CatID
+
+END
+
+GO
+
+
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_DeleteEntryTag') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_DeleteEntryTag
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_DeleteEntryTag 
+	@entryid int,
+	@tag nvarchar(255)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	DECLARE @tagid int
+	SET @tagid = (SELECT TagID FROM {databaseOwner}{objectQualifier}Blog_Tags WHERE Tag = @tag)
+
+    	DELETE FROM {databaseOwner}{objectQualifier}Blog_Entry_Tags WHERE EntryID = @entryid and TagID = @tagid
+
+END
+
+GO
+
+
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_GetCategory') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_GetCategory
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetCategory 
+	@CatID int
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	SELECT CatID, Category, ParentID
+	FROM {databaseOwner}{objectQualifier}Blog_Categories
+	WHERE CatID = @CatID
+END
+
+GO
+
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListAllEntriesByCategory') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_ListAllEntriesByCategory
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListAllEntriesByCategory
+		@PortalID int,
+		@CatID int,
+		@ShowNonPublic bit = 0,
+		@ShowNonPublished bit=0
+
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT
+		U.UserID,
+		U.Username,
+		U.FirstName + ' ' + U.LastName AS UserFullName,
+		E.EntryID,
+		E.BlogID, 
+		E.Title,
+		E.Description,
+		E.Entry,
+		E.AddedDate,
+		E.Published,
+		E.Copyright,
+		E.PermaLink,
+		IsNull(E.AllowComments,B.AllowComments) As AllowComments,
+		B.ParentBlogID,
+		B.AllowAnonymous,
+		B.Syndicated AS BlogSyndicated,
+		B.[Public] AS BlogPublic,
+		(Select Count(*) FROM {databaseOwner}{objectQualifier}Blog_Comments WHERE EntryID = E.EntryID AND Approved = 1) As CommentCount
+	FROM   {databaseOwner}{objectQualifier}Blog_Blogs B INNER JOIN
+		{databaseOwner}{objectQualifier}Blog_Entries E ON B.BlogID = E.BlogID INNER JOIN
+		{databaseOwner}{objectQualifier}Users U ON B.UserID = U.UserID
+		INNER JOIN {databaseOwner}{objectQualifier}Blog_Entry_Categories EC on E.EntryID = EC.EntryID 
+	WHERE B.PortalID = @PortalID
+	AND EC.CatID = @CatID
+	AND (E.Published = 1 OR E.Published <> @ShowNonPublished)
+	AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+	ORDER BY E.AddedDate DESC
+END
+
+GO
+
+
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListAllEntriesByTag') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_ListAllEntriesByTag
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListAllEntriesByTag
+	@PortalID int,
+	@TagID int,
+	@ShowNonPublic bit = 0,
+	@ShowNonPublished bit=0
+
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT
+		U.UserID,
+		U.Username,
+		U.FirstName + ' ' + U.LastName AS UserFullName,
+		E.EntryID,
+		E.BlogID, 
+		E.Title,
+		E.Description,
+		E.Entry,
+		E.AddedDate,
+		E.Published,
+		E.Copyright,
+		E.PermaLink,
+		IsNull(E.AllowComments,B.AllowComments) As AllowComments,
+		B.ParentBlogID,
+		B.AllowAnonymous,
+		B.Syndicated AS BlogSyndicated,
+		B.[Public] AS BlogPublic,
+		(Select Count(*) FROM {databaseOwner}{objectQualifier}Blog_Comments WHERE EntryID = E.EntryID AND Approved = 1) As CommentCount
+	FROM   {databaseOwner}{objectQualifier}Blog_Blogs B INNER JOIN
+		{databaseOwner}{objectQualifier}Blog_Entries E ON B.BlogID = E.BlogID INNER JOIN
+		{databaseOwner}{objectQualifier}Users U ON B.UserID = U.UserID
+		INNER JOIN {databaseOwner}{objectQualifier}Blog_Entry_Tags ET on E.EntryID = ET.EntryID 
+	WHERE B.PortalID = @PortalID
+	AND ET.TagID = @TagID
+	AND (E.Published = 1 OR E.Published <> @ShowNonPublished)
+	AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+	ORDER BY E.AddedDate DESC
+
+END
+
+GO
+
+
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListCategories') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_ListCategories
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListCategories 
+	@PortalID int
+AS
+BEGIN
+	SET NOCOUNT ON;
+    	SELECT BC.CatID, BC.Category, BC.ParentID, CASE WHEN CC.Cnt IS NULL THEN 0 ELSE CC.Cnt END AS Cnt
+	FROM {databaseOwner}{objectQualifier}Blog_Categories BC
+	LEFT OUTER JOIN
+		(SELECT {databaseOwner}{objectQualifier}Blog_Entry_Categories.CatID AS CatID, COUNT(0) AS Cnt
+		FROM {databaseOwner}{objectQualifier}Blog_Entry_Categories
+		GROUP BY {databaseOwner}{objectQualifier}Blog_Entry_Categories.CatID) CC ON BC.CatID = CC.CatID
+	WHERE BC.PortalID = @PortalID
+
+END
+
+
+
+GO
+
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListEntryCategories') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_ListEntryCategories
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListEntryCategories 
+	@entryid int
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	SELECT ec.CatID, Category, ParentID FROM {databaseOwner}{objectQualifier}Blog_Entry_Categories ec
+	INNER JOIN {databaseOwner}{objectQualifier}Blog_Categories c on ec.CatID = c.CatID
+	WHERE EntryID = @entryid
+	
+END
+
+GO
+
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListTagsAlpha') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_ListTagsAlpha
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListTagsAlpha 
+	@PortalID int
+
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+	select t.TagID, t.tag, CASE WHEN tc.cnt is null THEN 0 ELSE tc.cnt END as cnt
+	from {databaseOwner}{objectQualifier}Blog_tags t
+	inner join
+	(select TagID, Count(0) as cnt
+	from {databaseOwner}{objectQualifier}Blog_Entry_Tags
+	group by tagid) tc on t.tagID = tc.TagID
+	where PortalID = @PortalID
+	order by Tag
+END
+
+GO
+
+
+
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListTagsByEntry') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_ListTagsByEntry
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListTagsByEntry 
+
+	@entryid int
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT	t.TagID, Tag, Slug, Active		
+	FROM	Blog_Tags t
+	INNER JOIN {databaseOwner}{objectQualifier}Blog_Entry_Tags e ON t.TagID = e.TagID
+	WHERE	EntryID = @entryid
+
+END
+
+GO
+
+
+
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListTagsCnt') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_ListTagsCnt
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListTagsCnt
+	@PortalID int
+
+AS
+BEGIN
+	SET NOCOUNT ON
+	select t.TagID, t.tag, CASE WHEN tc.cnt is null THEN 0 ELSE tc.cnt END as cnt
+	from {databaseOwner}{objectQualifier}Blog_tags t
+	inner join
+	(select TagID, Count(0) as cnt
+	from {databaseOwner}{objectQualifier}Blog_Entry_Tags
+	group by tagid) tc on t.tagID = tc.TagID
+	where portalID = @PortalID
+	order by cnt desc, tag
+END
+
+GO
+
+
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_UpdateCategory') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_UpdateCategory
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdateCategory 
+	@CatID int, 
+	@Category nvarchar(255),
+	@ParentID int
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	UPDATE {databaseOwner}{objectQualifier}Blog_Categories SET 
+	Category = @Category,
+	ParentID = @ParentID
+	WHERE CatID = @CatID
+
+END
+
+GO
+
+
+/*************** END 03.05.02.SqlDataProvider ************************/

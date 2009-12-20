@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="valComment.ErrorMessage" xml:space="preserve">
+    <value>Comment is required</value>
+  </data>
+  <data name="lblPostedBy.Text" xml:space="preserve">
+    <value>Written by:</value>
+  </data>
+  <data name="msgUpdateComment.Text" xml:space="preserve">
+    <value>Update Comment</value>
+  </data>
+  <data name="msgAddComment.Text" xml:space="preserve">
+    <value>Add Comment</value>
+  </data>
+  <data name="cmdAddComment.Text" xml:space="preserve">
+    <value>Add Comment</value>
+  </data>
+  <data name="ModuleHelp.Text" xml:space="preserve">
+    <value>&lt;h1&gt;Blog&lt;/h1&gt;
+&lt;p&gt;...&lt;/p&gt;
+        </value>
+  </data>
+  <data name="lblComment.Text" xml:space="preserve">
+    <value>Comment:</value>
+  </data>
+  <data name="msgMailSubject.Text" xml:space="preserve">
+    <value>Blog comment notification</value>
+  </data>
+  <data name="lblCommentCount.Text" xml:space="preserve">
+    <value>Comments (0)</value>
+  </data>
+  <data name="lblLocation.Text" xml:space="preserve">
+    <value>Location: </value>
+  </data>
+  <data name="valCommentTitle.ErrorMessage" xml:space="preserve">
+    <value>Title is required</value>
+  </data>
+  <data name="lblFormatUserName.Text" xml:space="preserve">
+    <value>By {0} on </value>
+  </data>
+  <data name="msgMailBody.Text" xml:space="preserve">
+    <value>&lt;p&gt;The following comment has been added in the blog [BLOG]:&lt;/p&gt;&lt;p&gt;[TITLE]&lt;/p&gt;&lt;p&gt;[COMMENT]&lt;/p&gt;&lt;p&gt;By [USER], on [DATE].&lt;/p&gt;&lt;p&gt;&lt;a href="[URL]"&gt;Click to visit&lt;/a&gt;.&lt;/p&gt;</value>
+  </data>
+  <data name="lblCommentTitle.Text" xml:space="preserve">
+    <value>Title:</value>
+  </data>
+  <data name="msgEditEntry.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="msgRe.Text" xml:space="preserve">
+    <value>Re: </value>
+  </data>
+  <data name="lnkPermaLink.Text" xml:space="preserve">
+    <value>Permalink</value>
+  </data>
+  <data name="lnkTrackBack.Text" xml:space="preserve">
+    <value>Trackback</value>
+  </data>
+  <data name="cmdAddCommentMessage.Text" xml:space="preserve">
+    <value>Your comment MUST be approved by the blog owner BEFORE it is displayed on the web site. Do you wish to save your comment now ?</value>
+  </data>
+  <data name="lblAuthor.Text" xml:space="preserve">
+    <value>Your name:</value>
+  </data>
+  <data name="valCommentAuthor.ErrorMessage" xml:space="preserve">
+    <value>Author is required</value>
+  </data>
+  <data name="lblCaptcha.Text" xml:space="preserve">
+    <value>Security Code</value>
+  </data>
+  <data name="lblCaptcha.Help" xml:space="preserve">
+    <value>Enter the security code.</value>
+  </data>
+  <data name="InvalidCaptcha.Text" xml:space="preserve">
+    <value>Incorrect Security Code</value>
+  </data>
+  <data name="CaptchaText.Text" xml:space="preserve">
+    <value>Enter the code shown above in the box below</value>
+  </data>
+  <data name="Approve.Text" xml:space="preserve">
+    <value>Approve</value>
+  </data>
+  <data name="cmdPrint.Text" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="lblComments.Text" xml:space="preserve">
+    <value>{0} comment(s) so far...</value>
+  </data>
+  <data name="lnkRss.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="valCommentEmail.ErrorMessage" xml:space="preserve">
+    <value>Email is required</value>
+  </data>
+  <data name="lblEmail.Text" xml:space="preserve">
+    <value>Your email:</value>
+  </data>
+  <data name="lblWebsite.Text" xml:space="preserve">
+    <value>Your website:</value>
+  </data>
+  <data name="lblFormatUserNameUrl.Text" xml:space="preserve">
+    <value>&lt;a href="{0}" rel="nofollow"&gt;{1}&lt;/a&gt;</value>
+  </data>
+  <data name="lblEmailExplanation.Text" xml:space="preserve">
+    <value>(Optional) Email used only to show &lt;a href="http://www.gravatar.com" target="_new"&gt;Gravatar&lt;/a&gt;.</value>
+  </data>
+  <data name="lnkCheckGravatar" xml:space="preserve">
+    <value>Show avatar for my email</value>
+  </data>
+  <data name="cmdLogin.Text" xml:space="preserve">
+    <value>Login to Add Your Comment</value>
+  </data>
+  <data name="Delete.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="DeleteAllUnapproved.Text" xml:space="preserve">
+    <value>Delete all unapproved comments</value>
+  </data>
+  <data name="msgDeleteAllUnapproved.Text" xml:space="preserve">
+    <value>Are you sure you want to delete all unapproved comments?</value>
+  </data>
+  <data name="lblTags.Text" xml:space="preserve">
+    <value>Tags:</value>
+  </data>
+</root>

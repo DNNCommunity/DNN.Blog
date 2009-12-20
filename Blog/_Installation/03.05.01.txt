@@ -1,0 +1,5 @@
+Install\Module\Blog_03.02.00_Install.resources
+Install\Module\Blog_03.03.00_Install.resources
+Install\Module\Blog_03.03.01_Install.resources
+Install\Module\Blog_03.04.00_Install.resources
+Install\Module\Blog_03.05.00_Install.resources

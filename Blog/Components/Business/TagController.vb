@@ -1,0 +1,148 @@
+﻿
+Imports System
+Imports System.Math
+Imports DotNetNuke.Modules.Blog.Data
+Imports DotNetNuke.Common.Utilities
+
+
+Namespace Business
+
+ Public Class TagController
+
+  Public Function GetTagsByEntry(ByVal EntryID As Integer) As String
+   Dim TagList As ArrayList
+   Dim TagString As String = ""
+   TagList = CBO.FillCollection(DataProvider.Instance().ListTagsByEntry(EntryID), GetType(TagInfo))
+   For Each tag As TagInfo In TagList
+    If TagString.Length > 0 Then
+     TagString = TagString + ","
+    End If
+    TagString = TagString + tag.Tag
+   Next
+
+   Return TagString
+
+  End Function
+
+
+  Public Function ListTagsByEntry(ByVal EntryID As Integer) As ArrayList
+
+   Return CBO.FillCollection(DataProvider.Instance().ListTagsByEntry(EntryID), GetType(TagInfo))
+
+  End Function
+
+
+  Public Sub UpdateTagsByEntry(ByVal EntryID As Integer, ByVal TagList As String)
+
+   Dim TagArray() As String
+   Dim TagInfos As ArrayList = CBO.FillCollection(DataProvider.Instance().ListTagsByEntry(EntryID), GetType(TagInfo))
+   Dim found As Boolean
+   Dim Slug As String
+
+   TagList = Trim(TagList)
+   TagArray = Split(TagList, ",")
+
+   If Not TagList = "" Then
+    For i As Integer = 0 To TagArray.Length - 1
+     TagArray(i) = Trim(TagArray(i))
+    Next i
+
+    ' Find all the new tags & add them
+    For Each t As String In TagArray
+     found = False
+     For Each o As TagInfo In TagInfos
+      If o.Tag = t Then
+       found = True
+       Exit For
+      End If
+     Next
+     If Not found And Not t = "" Then
+      t = Replace(t, "_", " ")
+      Slug = Replace(t, " ", "-").ToLower
+      DataProvider.Instance().AddEntryTag(EntryID, t, Slug)
+     End If
+    Next
+
+   End If
+
+
+   ' Find existing tags that need to be dropped & delete them
+   For Each t As TagInfo In TagInfos
+    found = False
+    For Each o As String In TagArray
+     If o = t.Tag Then
+      found = True
+      Exit For
+     End If
+    Next
+    If Not found Then
+     DataProvider.Instance().DeleteEntryTag(EntryID, t.Tag)
+    End If
+   Next
+
+  End Sub
+
+  Public Function ListTags(ByVal PortalID As Integer) As ArrayList
+
+   Return CBO.FillCollection(DataProvider.Instance().ListTagsCnt(PortalID), GetType(TagInfo))
+
+  End Function
+
+
+  Public Function ListWeightedTags(ByVal PortalID As Integer) As ArrayList
+
+   Dim TagList As ArrayList
+   Dim tag As TagInfo
+   Dim count, total As Integer
+   Dim stddev, mean, sumsqrs, factor As Double
+
+   TagList = CBO.FillCollection(DataProvider.Instance().ListTagsAlpha(PortalID), GetType(TagInfo))
+
+   count = TagList.Count
+
+   For Each tag In TagList
+    total = total + tag.Cnt
+   Next
+
+   mean = total / count
+
+   For Each tag In TagList
+    sumsqrs = sumsqrs + ((tag.Cnt - mean) ^ 2)
+   Next
+
+   stddev = Sqrt(sumsqrs / count)
+
+   For Each tag In TagList
+
+    factor = (tag.Cnt - mean) / (stddev)
+    If factor <= (-2 * stddev) Then
+     tag.Weight = 1
+    End If
+    If (-2 * stddev) < factor And factor <= (-1 * stddev) Then
+     tag.Weight = 2
+    End If
+    If (-1 * stddev < factor) And factor <= (-0.5 * stddev) Then
+     tag.Weight = 3
+    End If
+    If (-0.5 * stddev) < factor And factor < (0.5 * stddev) Then
+     tag.Weight = 4
+    End If
+    If (0.5 * stddev <= factor) And factor < stddev Then
+     tag.Weight = 5
+    End If
+    If stddev <= factor And factor < (2 * stddev) Then
+     tag.Weight = 6
+    End If
+    If factor >= (2 * stddev) Then
+     tag.Weight = 7
+    End If
+
+   Next
+
+   Return TagList
+
+  End Function
+
+ End Class
+
+End Namespace

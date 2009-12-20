@@ -1,0 +1,1046 @@
+﻿if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_MetaWeblog_Get_DesktopModule_FriendlyName') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_MetaWeblog_Get_DesktopModule_FriendlyName
+GO
+
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Blog_MetaWeblog_Get_DesktopModule_FriendlyName]
+	@ModuleDefinition nvarchar(50)
+AS
+BEGIN
+
+	SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+	SET NOCOUNT ON
+
+	SELECT DM.FriendlyName 
+	FROM {databaseOwner}[{objectQualifier}ModuleDefinitions] MD
+		JOIN {databaseOwner}[{objectQualifier}DesktopModules] DM ON MD.DesktopModuleID = DM.DesktopModuleID
+	WHERE MD.FriendlyName = @ModuleDefinition
+		
+END
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListComments') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_ListComments
+GO
+
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListComments
+	@EntryID as Int,
+	@ShowNonApproved bit=0
+AS
+
+SELECT
+	C.[CommentID],
+	C.[EntryID],
+	C.[UserID],
+	C.[Title],
+	C.[Comment],
+	C.[AddedDate],
+	U.[UserName],
+	U.[FirstName] + ' ' + U.[LastName] AS UserFullName,
+	C.[Author],
+	C.[Approved]
+FROM
+	{databaseOwner}{objectQualifier}Blog_Comments C
+	LEFT JOIN {databaseOwner}{objectQualifier}Users U ON C.[UserID] = U.[UserID]
+WHERE [EntryID] = @EntryID 
+		AND (C.[Approved]=1 OR C.[Approved] <> @ShowNonApproved)
+ORDER BY
+    C.[AddedDate]
+
+GO
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_MetaWeblogData') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+ BEGIN
+CREATE TABLE {databaseOwner}{objectQualifier}Blog_MetaWeblogData (
+	[TempInstallUrl] nvarchar(500) NULL
+) ON [PRIMARY]
+END
+
+GO
+
+INSERT INTO {databaseOwner}{objectQualifier}Blog_MetaWeblogData (TempInstallUrl) VALUES (NULL)
+
+GO
+
+
+/**************************************************************
+* Change the Description column in Blog_Entries to ntext
+**************************************************************/
+
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Entries ALTER COLUMN Description ntext NULL
+
+GO
+
+/**************************************************************
+* Update Blog_UpdateEntry to reflect the change in the 
+* Description column in Blog_Entries to ntext
+**************************************************************/
+
+ALTER PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdateEntry
+	@BlogID int,
+	@EntryID int, 
+	@Title nvarchar(255),
+	@Description ntext,
+	@Entry ntext,
+	@Published bit,
+	@AllowComments bit,
+	@AddedDate datetime,
+	@DisplayCopyright bit,
+	@Copyright nvarchar(256),
+	@PermaLink nvarchar(1024)
+AS
+
+UPDATE {databaseOwner}{objectQualifier}Blog_Entries SET
+	[BlogID] = @BlogID,
+	[Title] = @Title,
+	[Description] = @Description,
+	[Entry] = @Entry,
+	[Published] = @Published,
+	[AllowComments] = @AllowComments,
+	[DisplayCopyright] = @DisplayCopyright,
+	[Copyright] = @Copyright,
+	[PermaLink] = @PermaLink
+
+WHERE
+	[EntryID] = @EntryID
+
+If @Published = 1
+	UPDATE  {databaseOwner}{objectQualifier}Blog_Blogs
+		SET [LastEntry] = GetUTCDate()
+	WHERE [BlogID] = @BlogID
+	
+GO
+
+/**************************************************************
+* Update Blog_AddEntry to reflect the change in the 
+* Description column in Blog_Entries to ntext
+**************************************************************/
+
+ALTER PROCEDURE {databaseOwner}{objectQualifier}Blog_AddEntry
+	@BlogID int,
+	@Title nvarchar(255),
+	@Description ntext,
+	@Entry ntext,
+	@Published bit,
+	@AllowComments bit,
+	@AddedDate datetime,
+	@DisplayCopyright bit,
+	@Copyright nvarchar(256),
+	@PermaLink nvarchar(1024)
+AS
+
+DECLARE @EntryID int
+
+UPDATE  {databaseOwner}{objectQualifier}Blog_Blogs
+	SET LastEntry = GetUTCDate()
+WHERE [BlogID] = @BlogID
+
+INSERT INTO {databaseOwner}{objectQualifier}Blog_Entries (
+	[BlogID],
+	[Title],
+	[Description],
+	[Entry],
+	[AddedDate],
+	[Published],
+	[AllowComments],
+	[DisplayCopyright],
+	[Copyright],
+	[PermaLink]
+) VALUES (
+	@BlogID,
+	@Title,
+	@Description,
+	@Entry,
+	@AddedDate,
+	@Published,
+	@AllowComments,
+	@DisplayCopyright,
+	@Copyright,
+	null
+
+)
+
+SET @EntryID = SCOPE_IDENTITY()
+
+If NOT @PermaLink IS NULL
+	UPDATE {databaseOwner}{objectQualifier}Blog_Entries SET PermaLink=@PermaLink + convert(nvarchar(10),EntryID) WHERE BlogID=@BlogID AND PermaLink IS NULL
+
+SELECT @EntryID
+
+GO
+
+/**************************************************************
+* Update Blog_GetBlogByUserID to alleviate an issue that arrises 
+* When there is more than one blog associated with a user account.
+* Instead of failing, we'll just return the Min BlogId
+**************************************************************/
+
+ALTER PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlogByUserID 
+@PortalID int,
+@UserID int
+
+AS
+
+DECLARE @BlogID int
+
+SELECT @BlogID = (SELECT Min(BlogID) FROM {databaseOwner}{objectQualifier}Blog_Blogs WHERE UserID=@UserID AND PortalID=@PortalID AND (ParentBlogID IS NULL OR ParentBlogID=-1))
+EXEC {databaseOwner}{objectQualifier}Blog_GetBlog @BlogID
+
+GO
+
+
+/**************************************************************
+* Modify Comments table
+**************************************************************/
+IF NOT EXISTS (SELECT * FROM dbo.syscolumns c JOIN dbo.sysobjects o ON c.id = o.id WHERE c.name = 'Website' AND o.name like '%Blog_Comments')
+	ALTER TABLE {databaseOwner}{objectQualifier}Blog_Comments ADD Website nvarchar(255) NULL, Email nvarchar(255) NULL
+
+GO
+
+
+/**************************************************************
+* Modify Comments table sprocs
+**************************************************************/
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_AddComment') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_AddComment
+GO
+
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_AddComment
+	@EntryID int,
+	@UserID int,
+	@Title nvarchar(255),
+	@Comment ntext,
+	@Author nvarchar(50),
+	@Approved bit,
+	@Website nvarchar(255),
+	@Email nvarchar(255)
+
+AS
+
+INSERT INTO {databaseOwner}{objectQualifier}Blog_Comments (
+	[EntryID],
+	[UserID],
+	[Title],
+	[Comment],
+	[Author],
+	[Approved],
+	[AddedDate],
+	[Website],
+	[Email]
+
+) VALUES (
+	@EntryID,
+	@UserID,
+	@Title,
+	@Comment,
+	@Author,
+	@Approved,
+	GetUTCDate(),
+	@Website,
+	@Email
+)
+
+select SCOPE_IDENTITY()
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_UpdateComment') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_UpdateComment
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdateComment
+	@CommentID int, 
+	@EntryID int, 
+	@UserID int, 
+	@Title nvarchar(255),
+	@Comment ntext,
+	@Author nvarchar(50),
+	@Approved bit,
+	@Website nvarchar(255),
+	@Email nvarchar(255)
+AS
+
+UPDATE {databaseOwner}{objectQualifier}Blog_Comments SET
+	[EntryID] = @EntryID,
+	[UserID] = @UserID,
+	[Title] = @Title,
+	[Comment] = @Comment,
+	[Author] = @Author,
+	[Approved] = @Approved,
+	[AddedDate] = GetUTCDate(),
+	[Website] = @Website,
+	[Email] = @Email
+WHERE
+	[CommentID] = @CommentID
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_GetComment') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_GetComment
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetComment
+	@CommentID int
+	
+AS
+
+SELECT
+	C.[CommentID],
+	C.[EntryID],
+	C.[UserID],
+	C.[Title],
+	C.[Comment],
+	C.[AddedDate],
+	U.[UserName],
+	U.[FirstName] + ' ' + U.[LastName] AS UserFullName,
+	C.[Author],
+	C.[Approved],
+	C.[Website],
+	C.[Email]
+
+FROM
+	{databaseOwner}{objectQualifier}Blog_Comments C
+	LEFT JOIN 
+	{databaseOwner}{objectQualifier}Users U ON C.[UserID] = U.[UserID]
+
+WHERE
+	C.[CommentID] = @CommentID
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListComments') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_ListComments
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListComments
+@EntryID as Int,
+@ShowNonApproved bit=0
+AS
+
+SELECT
+	C.[CommentID],
+	C.[EntryID],
+	C.[UserID],
+	C.[Title],
+	C.[Comment],
+	C.[AddedDate],
+	U.[UserName],
+	U.[FirstName] + ' ' + U.[LastName] AS UserFullName,
+	C.[Author],
+	C.[Approved],
+	C.[Website],
+	C.[Email]
+
+FROM
+	{databaseOwner}{objectQualifier}Blog_Comments C
+	LEFT JOIN 
+	{databaseOwner}{objectQualifier}Users U ON C.[UserID] = U.[UserID]
+	WHERE [EntryID] = @EntryID AND (C.[Approved]=1 OR C.[Approved] <> @ShowNonApproved)
+
+GO
+
+
+/**************************************************************
+* Modify Search sprocs to account for the fact that we changed 
+* the Description column to be ntext
+**************************************************************/
+
+/****** Objekt:  Gespeicherte Prozedur dbo.Blog_SearchBlogByKeyWord    Skriptdatum: 01.03.2005 17:45:17 ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_SearchBlogByKeyWord') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_SearchBlogByKeyWord
+GO
+
+/****** Objekt:  Gespeicherte Prozedur dbo.Blog_SearchBlogByPhrase    Skriptdatum: 01.03.2005 17:45:17 ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_SearchBlogByPhrase') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_SearchBlogByPhrase
+GO
+
+/****** Objekt:  Gespeicherte Prozedur dbo.Blog_SearchByKeyWordByBlog    Skriptdatum: 01.03.2005 17:45:17 ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_SearchByKeyWordByBlog') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_SearchByKeyWordByBlog
+GO
+
+/****** Objekt:  Gespeicherte Prozedur dbo.Blog_SearchByKeyWordByPortal    Skriptdatum: 01.03.2005 17:45:17 ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_SearchByKeyWordByPortal') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_SearchByKeyWordByPortal
+GO
+
+/****** Objekt:  Gespeicherte Prozedur dbo.Blog_SearchByPhraseByBlog    Skriptdatum: 01.03.2005 17:45:17 ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_SearchByPhraseByBlog') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_SearchByPhraseByBlog
+GO
+
+/****** Objekt:  Gespeicherte Prozedur dbo.Blog_SearchByPhraseByPortal    Skriptdatum: 01.03.2005 17:45:17 ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_SearchByPhraseByPortal') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_SearchByPhraseByPortal
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+/****** Objekt:  Gespeicherte Prozedur dbo.Blog_SearchBlogByKeyWord    Skriptdatum: 01.03.2005 17:45:17 ******/
+
+CREATE  PROCEDURE {databaseOwner}{objectQualifier}Blog_SearchBlogByKeyWord
+	@PortalID int,
+	@BlogID int,
+	@SearchString nvarchar(255),
+	@ShowNonPublic bit,
+	@ShowNonPublished bit
+AS
+
+
+DECLARE @separator char(1)
+SET @separator = ' '
+
+set nocount on
+-- @SearchString is the array we wish to parse
+-- @Separator is the separator charactor such as a comma
+declare @separator_position int -- This is used to locate each separator character
+declare @search_value varchar(255) -- this holds each array value as it is returned
+declare @like_text varchar (257)
+
+-- Build my Temp Table to hold results
+CREATE TABLE #SearchResults (EntryID int)
+
+-- For my loop to work I need an extra separator at the end.  I always look to the
+-- left of the separator character for each array value
+set @SearchString = @SearchString + @separator
+
+-- Loop through the string searching for separtor characters
+WHILE patindex('%' + @separator + '%' , @SearchString) <> 0 
+BEGIN
+
+	-- patindex matches the a pattern against a string
+	select @separator_position =  patindex('%' + @separator + '%' , @SearchString)
+	select @search_value = left(@SearchString, @separator_position - 1)
+	
+	select @like_text = '%' + @Search_value + '%'
+
+	IF @BlogID > -1
+	BEGIN
+		INSERT #SearchResults
+		SELECT E.[EntryID]
+		FROM {databaseOwner}{objectQualifier}Blog_Entries E 
+			INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs B ON B.[BlogID] = E.[BlogID]
+		WHERE B.[PortalID] = @PortalID 
+		AND (B.[BlogID] = @BlogID OR B.[ParentBlogID] = @BlogID)
+		AND (E.[Published] = 1 OR E.[Published] <> @ShowNonPublished)
+		AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+		AND  E.[Title] like @like_text
+	
+		INSERT #SearchResults
+		SELECT E.[EntryID]
+		FROM {databaseOwner}{objectQualifier}Blog_Entries E 
+			INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs B ON B.[BlogID] = E.[BlogID]
+		WHERE B.[PortalID] = @PortalID 
+		AND (B.[BlogID] = @BlogID OR B.[ParentBlogID] = @BlogID)
+		AND (E.[Published] = 1 OR E.[Published] <> @ShowNonPublished)
+		AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+		AND  E.[Description] like @like_text
+
+		INSERT #SearchResults
+		SELECT E.[EntryID]
+		FROM {databaseOwner}{objectQualifier}Blog_Entries E 
+			INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs B ON B.[BlogID] = E.[BlogID]
+		WHERE B.[PortalID] = @PortalID 
+		AND (B.[BlogID] = @BlogID OR B.[ParentBlogID] = @BlogID)
+		AND (E.[Published] = 1 OR E.[Published] <> @ShowNonPublished)
+		AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+		AND  E.[Entry] like @like_text
+	END
+	ELSE
+	BEGIN
+		INSERT #SearchResults
+		SELECT E.[EntryID]
+		FROM {databaseOwner}{objectQualifier}Blog_Entries E 
+			INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs B ON B.[BlogID] = E.[BlogID]
+		WHERE B.[PortalID] = @PortalID 
+		AND (E.[Published] = 1 OR E.[Published] <> @ShowNonPublished)
+		AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+		AND  E.[Title] like @like_text
+	
+		INSERT #SearchResults
+		SELECT E.[EntryID]
+		FROM {databaseOwner}{objectQualifier}Blog_Entries E 
+			INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs B ON B.[BlogID] = E.[BlogID]
+		WHERE B.[PortalID] = @PortalID 
+		AND (E.[Published] = 1 OR E.[Published] <> @ShowNonPublished)
+		AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+		AND  E.[Description] like @like_text
+
+		INSERT #SearchResults
+		SELECT E.[EntryID]
+		FROM {databaseOwner}{objectQualifier}Blog_Entries E 
+			INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs B ON B.[BlogID] = E.[BlogID]
+		WHERE B.[PortalID] = @PortalID 
+		AND (E.[Published] = 1 OR E.[Published] <> @ShowNonPublished)
+		AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+		AND  E.[Entry] like @like_text
+	END
+	
+	  
+
+	-- This replaces what we just processed with and empty string
+	select @SearchString = stuff(@SearchString, 1, @separator_position, '')
+END
+
+SELECT S.EntryID, Rank = Count(*)
+INTO #SearchResultsGrouped
+FROM #SearchResults S
+GROUP BY S.EntryID
+	
+SELECT  S.EntryID, 
+	E.[BlogID], 
+	B.[Title] as BlogTitle,
+	E.[Title] As EntryTitle,
+	IsNull(E.[Description], SubString(E.[Entry], 1, 2500)) As Summary,
+	E.[AddedDate],
+	E.[PermaLink],
+	B.[UserID],
+	U.[Username],
+	U.[FirstName] + ' ' + U.[LastName] AS UserFullName,
+	E.Published,
+	S.Rank
+
+	FROM   	#SearchResultsGrouped S 
+		INNER JOIN dbo.Blog_Entries E ON S.EntryID = E.EntryID
+		INNER JOIN dbo.Blog_Blogs B ON B.[BlogID] = E.[BlogID]  
+		INNER JOIN dbo.Users U ON B.[UserID] = U.[UserID]
+
+Order by S.Rank DESC, E.AddedDate DESC, E.PermaLink DESC
+
+set nocount off
+
+
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+/****** Objekt:  Gespeicherte Prozedur dbo.Blog_SearchBlogByPhrase    Skriptdatum: 01.03.2005 17:45:17 ******/
+
+CREATE  PROCEDURE {databaseOwner}{objectQualifier}Blog_SearchBlogByPhrase
+	@PortalID int,
+	@BlogID int,
+	@SearchString nvarchar(255),
+	@ShowNonPublic bit,
+	@ShowNonPublished bit
+AS
+
+
+set nocount on
+
+-- Build Temp Table to hold results
+CREATE TABLE #SearchResults (EntryID int)
+
+declare @like_text nvarchar(257)
+select @like_text = '%' + @SearchString + '%'
+
+IF @BlogID > -1
+BEGIN
+	INSERT #SearchResults
+	SELECT E.[EntryID]
+	FROM {databaseOwner}{objectQualifier}Blog_Entries E 
+		INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs B ON B.[BlogID] = E.[BlogID]
+	WHERE B.[PortalID] = @PortalID 
+	AND B.[BlogID] = @BlogID
+	AND (E.[Published] = 1 OR E.[Published] <> @ShowNonPublished)
+	AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+	AND  E.[Title] like @like_text
+
+	INSERT #SearchResults
+	SELECT E.[EntryID]
+	FROM {databaseOwner}{objectQualifier}Blog_Entries E 
+		INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs B ON B.[BlogID] = E.[BlogID]
+	WHERE B.[PortalID] = @PortalID 
+	AND B.[BlogID] = @BlogID
+	AND (E.[Published] = 1 OR E.[Published] <> @ShowNonPublished)
+	AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+	AND  E.[Description] like @like_text
+
+	INSERT #SearchResults
+	SELECT E.[EntryID]
+	FROM {databaseOwner}{objectQualifier}Blog_Entries E 
+		INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs B ON B.[BlogID] = E.[BlogID]
+	WHERE B.[PortalID] = @PortalID 
+	AND B.[BlogID] = @BlogID
+	AND (E.[Published] = 1 OR E.[Published] <> @ShowNonPublished)
+	AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+	AND  E.[Entry] like @like_text
+END
+ELSE
+BEGIN
+	INSERT #SearchResults
+	SELECT E.[EntryID]
+	FROM {databaseOwner}{objectQualifier}Blog_Entries E 
+		INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs B ON B.[BlogID] = E.[BlogID]
+	WHERE B.[PortalID] = @PortalID 
+	AND (E.[Published] = 1 OR E.[Published] <> @ShowNonPublished)
+	AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+	AND  E.[Title] like @like_text
+
+	INSERT #SearchResults
+	SELECT E.[EntryID]
+	FROM {databaseOwner}{objectQualifier}Blog_Entries E 
+		INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs B ON B.[BlogID] = E.[BlogID]
+	WHERE B.[PortalID] = @PortalID 
+	AND (E.[Published] = 1 OR E.[Published] <> @ShowNonPublished)
+	AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+	AND  E.[Description] like @like_text
+
+	INSERT #SearchResults
+	SELECT E.[EntryID]
+	FROM {databaseOwner}{objectQualifier}Blog_Entries E 
+		INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs B ON B.[BlogID] = E.[BlogID]
+	WHERE B.[PortalID] = @PortalID 
+	AND (E.[Published] = 1 OR E.[Published] <> @ShowNonPublished)
+	AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+	AND  E.[Entry] like @like_text
+END
+	
+SELECT S.EntryID, Rank = Count(*)
+INTO #SearchResultsGrouped
+FROM #SearchResults S
+GROUP BY S.EntryID
+	
+SELECT  S.EntryID, 
+	E.[BlogID], 
+	B.[Title] as BlogTitle,
+	E.[Title] As EntryTitle,
+	IsNull(E.[Description], SubString(E.[Entry], 1, 2500)) As Summary,
+	E.[AddedDate],
+	E.[PermaLink],
+	B.[UserID],
+	U.[Username],
+	U.[FirstName] + ' ' + U.[LastName] AS UserFullName,
+	E.Published,
+	S.Rank
+
+	FROM   	#SearchResultsGrouped S 
+		INNER JOIN dbo.Blog_Entries E ON S.EntryID = E.EntryID
+		INNER JOIN dbo.Blog_Blogs B ON B.[BlogID] = E.[BlogID]  
+		INNER JOIN dbo.Users U ON B.[UserID] = U.[UserID]
+
+Order by S.Rank DESC, E.AddedDate DESC, E.PermaLink DESC
+
+set nocount off
+
+
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+/****** Objekt:  Gespeicherte Prozedur dbo.Blog_SearchByKeyWordByBlog    Skriptdatum: 01.03.2005 17:45:18 ******/
+
+CREATE  PROCEDURE {databaseOwner}{objectQualifier}Blog_SearchByKeyWordByBlog
+	@BlogID int,
+	@SearchString nvarchar(255),
+	@ShowNonPublic bit,
+	@ShowNonPublished bit
+AS
+
+
+DECLARE @separator char(1)
+SET @separator = ' '
+
+set nocount on
+-- @SearchString is the array we wish to parse
+-- @Separator is the separator charactor such as a comma
+declare @separator_position int -- This is used to locate each separator character
+declare @search_value varchar(255) -- this holds each array value as it is returned
+declare @like_text varchar (257)
+
+-- Build my Temp Table to hold results
+CREATE TABLE #SearchResults (EntryID int)
+
+-- For my loop to work I need an extra separator at the end.  I always look to the
+-- left of the separator character for each array value
+set @SearchString = @SearchString + @separator
+
+-- Loop through the string searching for separtor characters
+WHILE patindex('%' + @separator + '%' , @SearchString) <> 0 
+BEGIN
+
+	-- patindex matches the a pattern against a string
+	select @separator_position =  patindex('%' + @separator + '%' , @SearchString)
+	select @search_value = left(@SearchString, @separator_position - 1)
+	
+	select @like_text = '%' + @Search_value + '%'
+
+	
+	INSERT #SearchResults
+	SELECT E.[EntryID]
+	FROM {databaseOwner}{objectQualifier}Blog_Entries E 
+		INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs B ON B.[BlogID] = E.[BlogID]
+	WHERE (B.[BlogID] = @BlogID OR B.[ParentBlogID] = @BlogID)
+	AND (E.[Published] = 1 OR E.[Published] <> @ShowNonPublished)
+	AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+	AND  E.[Title] like @like_text
+
+	INSERT #SearchResults
+	SELECT E.[EntryID]
+	FROM {databaseOwner}{objectQualifier}Blog_Entries E 
+		INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs B ON B.[BlogID] = E.[BlogID]
+	WHERE (B.[BlogID] = @BlogID OR B.[ParentBlogID] = @BlogID)
+	AND (E.[Published] = 1 OR E.[Published] <> @ShowNonPublished)
+	AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+	AND  E.[Description] like @like_text
+
+	INSERT #SearchResults
+	SELECT E.[EntryID]
+	FROM {databaseOwner}{objectQualifier}Blog_Entries E 
+		INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs B ON B.[BlogID] = E.[BlogID]
+	WHERE  (B.[BlogID] = @BlogID OR B.[ParentBlogID] = @BlogID)
+	AND (E.[Published] = 1 OR E.[Published] <> @ShowNonPublished)
+	AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+	AND  E.[Entry] like @like_text
+	  
+
+	-- This replaces what we just processed with and empty string
+	select @SearchString = stuff(@SearchString, 1, @separator_position, '')
+END
+
+
+SELECT S.EntryID, Rank = Count(*)
+INTO #SearchResultsGrouped
+FROM #SearchResults S
+GROUP BY S.EntryID
+	
+SELECT  S.EntryID, 
+	E.[BlogID], 
+	B.[Title] as BlogTitle,
+	E.[Title] As EntryTitle,
+	IsNull(E.[Description], SubString(E.[Entry], 1, 2500)) As Summary,
+	E.[AddedDate],
+	E.[PermaLink],
+	B.[UserID],
+	U.[Username],
+	U.[FirstName] + ' ' + U.[LastName] AS UserFullName,
+	E.Published,
+	S.Rank
+
+	FROM   	#SearchResultsGrouped S 
+		INNER JOIN dbo.Blog_Entries E ON S.EntryID = E.EntryID
+		INNER JOIN dbo.Blog_Blogs B ON B.[BlogID] = E.[BlogID]  
+		INNER JOIN dbo.Users U ON B.[UserID] = U.[UserID]
+
+Order by S.Rank DESC, E.AddedDate DESC, E.PermaLink DESC
+
+set nocount off
+
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+/****** Objekt:  Gespeicherte Prozedur dbo.Blog_SearchByKeyWordByPortal    Skriptdatum: 01.03.2005 17:45:18 ******/
+
+CREATE  PROCEDURE {databaseOwner}{objectQualifier}Blog_SearchByKeyWordByPortal
+	@PortalID int,
+	@SearchString nvarchar(255),
+	@ShowNonPublic bit,
+	@ShowNonPublished bit
+AS
+
+
+DECLARE @separator char(1)
+SET @separator = ' '
+
+set nocount on
+-- @SearchString is the array we wish to parse
+-- @Separator is the separator charactor such as a comma
+declare @separator_position int -- This is used to locate each separator character
+declare @search_value varchar(255) -- this holds each array value as it is returned
+declare @like_text varchar (257)
+
+-- Build my Temp Table to hold results
+CREATE TABLE #SearchResults (EntryID int)
+
+-- For my loop to work I need an extra separator at the end.  I always look to the
+-- left of the separator character for each array value
+set @SearchString = @SearchString + @separator
+
+-- Loop through the string searching for separtor characters
+WHILE patindex('%' + @separator + '%' , @SearchString) <> 0 
+BEGIN
+
+	-- patindex matches the a pattern against a string
+	select @separator_position =  patindex('%' + @separator + '%' , @SearchString)
+	select @search_value = left(@SearchString, @separator_position - 1)
+	
+	select @like_text = '%' + @Search_value + '%'
+
+	INSERT #SearchResults
+	SELECT E.[EntryID]
+	FROM {databaseOwner}{objectQualifier}Blog_Entries E 
+		INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs B ON B.[BlogID] = E.[BlogID]
+	WHERE B.[PortalID] = @PortalID 
+	AND (E.[Published] = 1 OR E.[Published] <> @ShowNonPublished)
+	AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+	AND  E.[Title] like @like_text
+
+	INSERT #SearchResults
+	SELECT E.[EntryID]
+	FROM {databaseOwner}{objectQualifier}Blog_Entries E 
+		INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs B ON B.[BlogID] = E.[BlogID]
+	WHERE B.[PortalID] = @PortalID 
+	AND (E.[Published] = 1 OR E.[Published] <> @ShowNonPublished)
+	AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+	AND  E.[Description] like @like_text
+
+	INSERT #SearchResults
+	SELECT E.[EntryID]
+	FROM {databaseOwner}{objectQualifier}Blog_Entries E 
+		INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs B ON B.[BlogID] = E.[BlogID]
+	WHERE B.[PortalID] = @PortalID 
+	AND (E.[Published] = 1 OR E.[Published] <> @ShowNonPublished)
+	AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+	AND  E.[Entry] like @like_text
+	  
+
+	-- This replaces what we just processed with and empty string
+	select @SearchString = stuff(@SearchString, 1, @separator_position, '')
+END
+
+
+SELECT S.EntryID, Rank = Count(*)
+INTO #SearchResultsGrouped
+FROM #SearchResults S
+GROUP BY S.EntryID
+	
+SELECT  S.EntryID, 
+	E.[BlogID], 
+	B.[Title] as BlogTitle,
+	E.[Title] As EntryTitle,
+	IsNull(E.[Description], SubString(E.[Entry], 1, 2500)) As Summary,
+	E.[AddedDate],
+	E.[PermaLink],
+	B.[UserID],
+	U.[Username],
+	U.[FirstName] + ' ' + U.[LastName] AS UserFullName,
+	E.Published,
+	S.Rank
+
+	FROM   	#SearchResultsGrouped S 
+		INNER JOIN dbo.Blog_Entries E ON S.EntryID = E.EntryID
+		INNER JOIN dbo.Blog_Blogs B ON B.[BlogID] = E.[BlogID]  
+		INNER JOIN dbo.Users U ON B.[UserID] = U.[UserID]
+
+Order by S.Rank DESC, E.AddedDate DESC, E.PermaLink DESC
+
+set nocount off
+
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+/****** Objekt:  Gespeicherte Prozedur dbo.Blog_SearchByPhraseByBlog    Skriptdatum: 01.03.2005 17:45:18 ******/
+
+
+CREATE  PROCEDURE {databaseOwner}{objectQualifier}Blog_SearchByPhraseByBlog
+	@BlogID int,
+	@SearchString nvarchar(255),
+	@ShowNonPublic bit,
+	@ShowNonPublished bit
+AS
+
+
+set nocount on
+
+-- Build Temp Table to hold results
+CREATE TABLE #SearchResults (EntryID int)
+
+declare @like_text nvarchar(257)
+select @like_text = '%' + @SearchString + '%'
+
+
+INSERT #SearchResults
+SELECT E.[EntryID]
+FROM {databaseOwner}{objectQualifier}Blog_Entries E 
+	INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs B ON B.[BlogID] = E.[BlogID]
+WHERE  (B.[BlogID] = @BlogID OR B.[ParentBlogID] = @BlogID)
+AND (E.[Published] = 1 OR E.[Published] <> @ShowNonPublished)
+AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+AND  E.[Title] like @like_text
+
+INSERT #SearchResults
+SELECT E.[EntryID]
+FROM {databaseOwner}{objectQualifier}Blog_Entries E 
+	INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs B ON B.[BlogID] = E.[BlogID]
+WHERE  (B.[BlogID] = @BlogID OR B.[ParentBlogID] = @BlogID)
+AND (E.[Published] = 1 OR E.[Published] <> @ShowNonPublished)
+AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+AND  E.[Description] like @like_text
+
+INSERT #SearchResults
+SELECT E.[EntryID]
+FROM {databaseOwner}{objectQualifier}Blog_Entries E 
+	INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs B ON B.[BlogID] = E.[BlogID]
+WHERE  (B.[BlogID] = @BlogID OR B.[ParentBlogID] = @BlogID)
+AND (E.[Published] = 1 OR E.[Published] <> @ShowNonPublished)
+AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+AND  E.[Entry] like @like_text
+	
+SELECT S.EntryID, Rank = Count(*)
+INTO #SearchResultsGrouped
+FROM #SearchResults S
+GROUP BY S.EntryID
+	
+SELECT  S.EntryID, 
+	E.[BlogID], 
+	B.[Title] as BlogTitle,
+	E.[Title] As EntryTitle,
+	IsNull(E.[Description], SubString(E.[Entry], 1, 2500)) As Summary,
+	E.[AddedDate],
+	E.[PermaLink],
+	B.[UserID],
+	U.[Username],
+	U.[FirstName] + ' ' + U.[LastName] AS UserFullName,
+	E.Published,
+	S.Rank
+
+	FROM   	#SearchResultsGrouped S 
+		INNER JOIN dbo.Blog_Entries E ON S.EntryID = E.EntryID
+		INNER JOIN dbo.Blog_Blogs B ON B.[BlogID] = E.[BlogID]  
+		INNER JOIN dbo.Users U ON B.[UserID] = U.[UserID]
+
+Order by S.Rank DESC, E.AddedDate DESC, E.PermaLink DESC
+
+set nocount off
+
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+/****** Objekt:  Gespeicherte Prozedur dbo.Blog_SearchByPhraseByPortal    Skriptdatum: 01.03.2005 17:45:18 ******/
+
+
+CREATE  PROCEDURE {databaseOwner}{objectQualifier}Blog_SearchByPhraseByPortal
+	@PortalID int,
+	@SearchString nvarchar(255),
+	@ShowNonPublic bit,
+	@ShowNonPublished bit
+AS
+
+
+set nocount on
+
+-- Build Temp Table to hold results
+CREATE TABLE #SearchResults (EntryID int)
+
+declare @like_text nvarchar(257)
+select @like_text = '%' + @SearchString + '%'
+
+
+INSERT #SearchResults
+SELECT E.[EntryID]
+FROM {databaseOwner}{objectQualifier}Blog_Entries E 
+	INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs B ON B.[BlogID] = E.[BlogID]
+WHERE B.[PortalID] = @PortalID 
+AND (E.[Published] = 1 OR E.[Published] <> @ShowNonPublished)
+AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+AND  E.[Title] like @like_text
+
+INSERT #SearchResults
+SELECT E.[EntryID]
+FROM {databaseOwner}{objectQualifier}Blog_Entries E 
+	INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs B ON B.[BlogID] = E.[BlogID]
+WHERE B.[PortalID] = @PortalID 
+AND (E.[Published] = 1 OR E.[Published] <> @ShowNonPublished)
+AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+AND  E.[Description] like @like_text
+
+INSERT #SearchResults
+SELECT E.[EntryID]
+FROM {databaseOwner}{objectQualifier}Blog_Entries E 
+	INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs B ON B.[BlogID] = E.[BlogID]
+WHERE B.[PortalID] = @PortalID 
+AND (E.[Published] = 1 OR E.[Published] <> @ShowNonPublished)
+AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+AND  E.[Entry] like @like_text
+
+	
+SELECT S.EntryID, Rank = Count(*)
+INTO #SearchResultsGrouped
+FROM #SearchResults S
+GROUP BY S.EntryID
+	
+SELECT  S.EntryID, 
+	E.[BlogID], 
+	B.[Title] as BlogTitle,
+	E.[Title] As EntryTitle,
+	IsNull(E.[Description], SubString(E.[Entry], 1, 2500)) As Summary,
+	E.[AddedDate],
+	E.[PermaLink],
+	B.[UserID],
+	U.[Username],
+	U.[FirstName] + ' ' + U.[LastName] AS UserFullName,
+	E.Published,
+	S.Rank
+
+	FROM   	#SearchResultsGrouped S 
+		INNER JOIN dbo.Blog_Entries E ON S.EntryID = E.EntryID
+		INNER JOIN dbo.Blog_Blogs B ON B.[BlogID] = E.[BlogID]  
+		INNER JOIN dbo.Users U ON B.[UserID] = U.[UserID]
+
+Order by S.Rank DESC, E.AddedDate DESC, E.PermaLink DESC
+
+set nocount off
+
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
