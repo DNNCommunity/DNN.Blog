@@ -1,3 +1,23 @@
+'
+' DotNetNuke -  http://www.dotnetnuke.com
+' Copyright (c) 2002-2010
+' by Perpetual Motion Interactive Systems Inc. ( http://www.perpetualmotion.ca )
+'
+' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
+' documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
+' the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+' to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+'
+' The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+' of the Software.
+'
+' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+' TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+' THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+' DEALINGS IN THE SOFTWARE.
+'-------------------------------------------------------------------------
+
 Imports System
 Imports System.Text
 Imports DotNetNuke.Entities.Portals
@@ -56,14 +76,14 @@ Namespace MetaWeblog
   ''' <param name="portalSettings"></param>
   ''' <returns></returns>
   ''' <param name="providerKey"></param>
-  Function GetModulesForUser(ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal providerKey As String) As ModuleInfoStruct()
+  Function GetModulesForUser(ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal providerKey As String) As ModuleInfoStruct()
 
   ' Note in the blog module, moduleLevelId and ItemId corresponded to BlogId and EntryId
-  Function GetRecentItems(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal numberOfItems As Integer, ByVal requestType As RecentItemsRequestType, ByVal providerKey As String) As Item()
+  Function GetRecentItems(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal numberOfItems As Integer, ByVal requestType As RecentItemsRequestType, ByVal providerKey As String) As Item()
 
-  Function GetItem(ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal itemType As ItemType) As Item
+  Function GetItem(ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal itemType As ItemType) As Item
 
-  Function EditItem(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal item As Item) As Boolean
+  Function EditItem(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal item As Item) As Boolean
 
 
 
@@ -81,13 +101,13 @@ Namespace MetaWeblog
   ''' <param name="portalSettings">DotNetNuke PortaSettings object for the portal to which the entry is being posted.</param>
   ''' <param name="item">Custom Struct - The item struct contains a list of fields related to an entry.</param>
   ''' <returns></returns>
-  Function NewItem(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal item As Item) As String
+  Function NewItem(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal item As Item) As String
 
-  Function DeleteItem(ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal itemType As ItemType) As Boolean
+  Function DeleteItem(ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal itemType As ItemType) As Boolean
 
-  Function GetCategories(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings) As ItemCategoryInfo()
+  Function GetCategories(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings) As ItemCategoryInfo()
 
-  Function NewCategory(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings) As Integer
+  Function NewCategory(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings) As Integer
 
 #End Region
 

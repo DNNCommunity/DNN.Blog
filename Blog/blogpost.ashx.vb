@@ -26,6 +26,9 @@ Imports BlogInfo = DotNetNuke.Modules.Blog.Business.BlogInfo
 ''' <summary>
 ''' Implements the MetaBlog API.
 ''' </summary>
+''' <history>
+'''		[pdonker]	12/21/2009	added passing in of blog settings to all methods that go to the provider. Added _TabId variable.
+''' </history>
 Public Class BlogPost
  Inherits XmlRpcService
  Implements IMetaWeblog
@@ -34,11 +37,12 @@ Public Class BlogPost
  Implements MoveableType.IMoveableType
 
  Private _portalSettings As PortalSettings = Nothing
+ Private _blogSettings As BlogSettings = Nothing
  Private _moduleName As String = String.Empty
  Private _expanderScript As String = String.Empty
  Private _userInfo As UserInfo = Nothing
  Private _provider As IPublishable = Nothing
-
+ Private _tabId As Integer = -1
 
  Public Function getUsersBlogs(ByVal appKey As String, ByVal username As String, ByVal password As String) As Blogger.BlogInfoStruct() Implements Blogger.IBlogger.getUsersBlogs
   InitializeMethodCall(username, password)
@@ -53,7 +57,7 @@ Public Class BlogPost
    Else
     providerKey = "Blog"
    End If
-   Dim misArray As ModuleInfoStruct() = _provider.GetModulesForUser(_userInfo, _portalSettings, providerKey)
+   Dim misArray As ModuleInfoStruct() = _provider.GetModulesForUser(_userInfo, _portalSettings, _blogSettings, providerKey)
 
    ' Translate this to a BlogInfoStruct
    infoArray = New Blogger.BlogInfoStruct(misArray.Length - 1) {}
@@ -80,7 +84,7 @@ Public Class BlogPost
   Dim post As Post
   InitializeMethodCall(username, password)
   Try
-   post = getPostFromItem(_provider.GetItem(postid.ToString(), _userInfo, _portalSettings, ItemType.Post))
+   post = getPostFromItem(_provider.GetItem(postid.ToString(), _userInfo, _portalSettings, _blogSettings, ItemType.Post))
 
    Dim regexPattern As String = String.Empty
    Dim options As RegexOptions = RegexOptions.Singleline Or RegexOptions.IgnoreCase
@@ -168,7 +172,7 @@ Public Class BlogPost
   Dim posts As Post()
   InitializeMethodCall(username, password)
   Try
-   posts = getPostsFromItems(_provider.GetRecentItems(blogid.ToString(), _userInfo, _portalSettings, numberOfPosts, RecentItemsRequestType.RecentPosts, _provider.ProviderKey))
+   posts = getPostsFromItems(_provider.GetRecentItems(blogid.ToString(), _userInfo, _portalSettings, _blogSettings, numberOfPosts, RecentItemsRequestType.RecentPosts, _provider.ProviderKey))
   Catch ex As BlogPostException
    LogException(ex)
    Throw New XmlRpcFaultException(0, GetString(ex.ResourceKey, ex.Message))
@@ -209,8 +213,8 @@ Public Class BlogPost
    ' Check to see if a styleId is passed through the QueryString
    ' however, we'll only do this if we are creating a post for style detection.
    If styleDetectionPost Then
-    If Not Context.Request("tabid") Is Nothing AndAlso Not BlogPostServices.IsNullOrEmpty(Context.Request("tabid")) Then
-     styleId = Context.Request("tabid")
+    If _tabId > -1 Then
+     styleId = _tabId.ToString
     End If
    Else
     MakeImagesRelative(post)
@@ -223,7 +227,7 @@ Public Class BlogPost
    item.StyleId = styleId
    item.ItemType = ItemType.Post
 
-   pageId = _provider.NewItem(blogId.ToString(), _userInfo, _portalSettings, item)
+   pageId = _provider.NewItem(blogId.ToString(), _userInfo, _portalSettings, _blogSettings, item)
 
    Dim pingableProvider As ILinkable = CType(_provider, ILinkable)
    Dim taps As TrackbackAndPingSettings = pingableProvider.GetPingbackSettings(blogId, _userInfo, _portalSettings)
@@ -260,7 +264,7 @@ Public Class BlogPost
    item.Publish = publish
    item.ItemType = ItemType.Post
 
-   success = CType(_provider.EditItem(Nothing, _userInfo, _portalSettings, item), Boolean)
+   success = CType(_provider.EditItem(Nothing, _userInfo, _portalSettings, _blogSettings, item), Boolean)
 
   Catch ex As BlogPostException
    LogException(ex)
@@ -280,7 +284,7 @@ ByVal publish As Boolean) As Boolean Implements Blogger.IBlogger.deletePost
   Dim success As Boolean = False
   InitializeMethodCall(username, password)
   Try
-   success = CType(_provider.DeleteItem(postid.ToString(), _userInfo, _portalSettings, ItemType.Post), Boolean)
+   success = CType(_provider.DeleteItem(postid.ToString(), _userInfo, _portalSettings, _blogSettings, ItemType.Post), Boolean)
   Catch ex As BlogPostException
    LogException(ex)
    Throw New XmlRpcFaultException(0, GetString(ex.ResourceKey, ex.Message))
@@ -299,7 +303,7 @@ ByVal publish As Boolean) As Boolean Implements Blogger.IBlogger.deletePost
   Dim categories As MetaWeblog.CategoryInfo()
   InitializeMethodCall(username, password)
   Try
-   categories = getCategoryInfosFromItemCategoryInfos(_provider.GetCategories(blog_id.ToString(), _userInfo, _portalSettings))
+   categories = getCategoryInfosFromItemCategoryInfos(_provider.GetCategories(blog_id.ToString(), _userInfo, _portalSettings, _blogSettings))
   Catch ex As BlogPostException
    LogException(ex)
    Throw New XmlRpcFaultException(0, GetString(ex.ResourceKey, ex.Message))
@@ -425,9 +429,8 @@ ByVal publish As Boolean) As Boolean Implements Blogger.IBlogger.deletePost
   Try
    Dim Request As HttpRequest = Me.Context.Request
 
-   Dim TabId As Integer = Convert.ToInt32(Request.QueryString("tabid"))
    Dim oTabController As TabController = New TabController
-   Dim oTabInfo As TabInfo = oTabController.GetTab(TabId, portalID, False)
+   Dim oTabInfo As TabInfo = oTabController.GetTab(_tabId, portalID, False)
 
    portalID = oTabInfo.PortalID
 
@@ -444,7 +447,7 @@ ByVal publish As Boolean) As Boolean Implements Blogger.IBlogger.deletePost
    Dim portalController As New PortalController
    Dim pi As PortalInfo = portalController.GetPortal(portalID)
 
-   _portalSettings = New PortalSettings(TabId, pai)
+   _portalSettings = New PortalSettings(_tabId, pai)
 
   Catch ex As XmlRpcFaultException
    Throw
@@ -534,6 +537,7 @@ ByVal publish As Boolean) As Boolean Implements Blogger.IBlogger.deletePost
   item.AuthorId = content.wp_author_id
   item.Summary = content.mt_excerpt
   item.PingUrls = content.mt_tb_ping_urls
+  item.Publish = content.publish
 
   Return item
  End Function
@@ -562,6 +566,7 @@ ByVal publish As Boolean) As Boolean Implements Blogger.IBlogger.deletePost
   post.wp_author_id = item.AuthorId
   post.mt_excerpt = item.Summary
   post.mt_tb_ping_urls = item.PingUrls
+  post.publish = item.Publish
 
   Return post
  End Function
@@ -645,8 +650,10 @@ ByVal publish As Boolean) As Boolean Implements Blogger.IBlogger.deletePost
 
  Private Sub InitializeMethodCall(ByVal username As String, ByVal password As String)
   Try
+   Globals.ReadValue(Context.Request.Params, "tabid", _tabId)
    GetPortalSettings()
    getProvider()
+   _blogSettings = BlogSettings.GetBlogSettings(_portalSettings.PortalId, _tabId)
    _userInfo = ValidateUser(username, password, Me.Context.Request.UserHostAddress)
   Catch ex As Exception
    LogException(ex)

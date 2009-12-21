@@ -1,6 +1,33 @@
-﻿Imports CookComputing.XmlRpc
+﻿'
+' DotNetNuke -  http://www.dotnetnuke.com
+' Copyright (c) 2002-2010
+' by Perpetual Motion Interactive Systems Inc. ( http://www.perpetualmotion.ca )
+'
+' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
+' documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
+' the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+' to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+'
+' The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+' of the Software.
+'
+' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+' TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+' THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+' DEALINGS IN THE SOFTWARE.
+'-------------------------------------------------------------------------
+
+Imports CookComputing.XmlRpc
 
 Namespace MetaWeblog
+ ''' <summary>
+ ''' Interface for MetaWeblog methods that WLW uses
+ ''' </summary>
+ ''' <remarks></remarks>
+ ''' <history>
+ '''		[pdonker]	12/14/2009	created
+ ''' </history>
  Public Interface IMetaWeblog
 
   <XmlRpcMethod("metaWeblog.editPost", Description:="Updates and existing post to a designated blog " + "using the metaWeblog API. Returns true if completed.")> _
@@ -36,6 +63,13 @@ Namespace MetaWeblog
   Public url As String
  End Structure
 
+ ''' <summary>
+ ''' Central structure to pass a post between WLW and the module
+ ''' </summary>
+ ''' <remarks></remarks>
+ ''' <history>
+ '''		[pdonker]	12/20/2009	added 'publish'
+ ''' </history>
  <XmlRpcMissingMapping(MappingAction.Ignore)> _
  Public Structure Post
 
@@ -63,7 +97,8 @@ Namespace MetaWeblog
   Public permalink As String
   <XmlRpcMember(description:="Not required when posting. Depending on server may " + "be either string or integer. " + "Use Convert.ToInt32(postid) to treat as integer or " + "Convert.ToString(postid) to treat as string")> _
   Public postid As Object
-
+  <XmlRpcMember("publish", description:="Determines if post will be published ")> _
+  Public publish As Boolean
 
 
   ''' <summary>
@@ -92,6 +127,7 @@ Namespace MetaWeblog
   ''' <summary>
   ''' Only utilized if the supportsExcerpt entity is set to yes in the manifest file.
   ''' </summary>
+  <XmlRpcMember("mt_excerpt", description:="Summary of the post.")> _
   Public mt_excerpt As String
   ''' <summary>
   ''' Only utilized if the supportsExtendedEntries entity is set to yes in the manifest file.
@@ -128,6 +164,10 @@ Namespace MetaWeblog
   Public rssUrl As String
  End Structure
 
+ ''' <summary>
+ ''' Metaweblog specific category structure
+ ''' </summary>
+ ''' <remarks></remarks>
  Public Structure MetaWebLogCategoryInfo
   Public description As String
   Public htmlUrl As String

@@ -72,6 +72,7 @@
   <td colspan="4">
    <dnn:texteditor id="txtDescription" runat="server" width="100%" height="200">
    </dnn:texteditor>
+   <asp:TextBox runat="server" ID="txtDescriptionText" width="100%" height="200" TextMode="MultiLine" Visible="false" />
   </td>
  </tr>
  <tr>

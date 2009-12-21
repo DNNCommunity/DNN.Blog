@@ -1,3 +1,23 @@
+'
+' DotNetNuke -  http://www.dotnetnuke.com
+' Copyright (c) 2002-2010
+' by Perpetual Motion Interactive Systems Inc. ( http://www.perpetualmotion.ca )
+'
+' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
+' documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
+' the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+' to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+'
+' The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+' of the Software.
+'
+' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+' TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+' THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+' DEALINGS IN THE SOFTWARE.
+'-------------------------------------------------------------------------
+
 Imports System
 Imports System.Collections
 Imports System.Data
@@ -84,7 +104,7 @@ Namespace MetaWeblog
 
 #Region "IPublishable Members"
 
-  Public Function GetModulesForUser(ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal providerKey As String) As ModuleInfoStruct() Implements IPublishable.GetModulesForUser
+  Public Function GetModulesForUser(ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal providerKey As String) As ModuleInfoStruct() Implements IPublishable.GetModulesForUser
 
    Dim infoArrayList As ArrayList = New ArrayList
 
@@ -119,8 +139,8 @@ Namespace MetaWeblog
 
 #Region "Item Related Procedures"
 
-  Public Function GetItem(ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal itemType As ItemType) As Item Implements IPublishable.GetItem
-   Dim entryController As New entryController
+  Public Function GetItem(ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal itemType As ItemType) As Item Implements IPublishable.GetItem
+   Dim entryController As New EntryController
    Dim item As New Item
 
    ' Need to use reflection to get the right procedure since 
@@ -129,29 +149,30 @@ Namespace MetaWeblog
    Dim BlogType As Type = entryController.[GetType]()
    Dim miGetEntry As MethodInfo = BlogType.GetMethod("GetEntry")
    Dim piParameters As ParameterInfo() = miGetEntry.GetParameters()
-   Dim entryInfo As entryInfo
+   Dim entryInfo As EntryInfo
    If piParameters.Length = 1 Then
     Dim methodParams As Object() = New Object(0) {}
     methodParams.SetValue(Convert.ToInt32(itemId), 0)
-    entryInfo = DirectCast(miGetEntry.Invoke(entryController, methodParams), entryInfo)
+    entryInfo = DirectCast(miGetEntry.Invoke(entryController, methodParams), EntryInfo)
    Else
     Dim methodParams As Object() = New Object(1) {}
     methodParams.SetValue(Convert.ToInt32(itemId), 0)
     methodParams.SetValue(portalSettings.PortalId, 1)
-    entryInfo = DirectCast(miGetEntry.Invoke(entryController, methodParams), entryInfo)
+    entryInfo = DirectCast(miGetEntry.Invoke(entryController, methodParams), EntryInfo)
    End If
    If entryInfo Is Nothing Then
     Throw New BlogPostException("NoPostAvailable", "There was en error retrieving the blog entry.  Try closing and restarting the software you're using to edit your blog post.")
    End If
    item.Link = entryInfo.PermaLink
    item.Content = HttpUtility.HtmlDecode(entryInfo.Entry)
-   item.Summary = entryInfo.Description
+   item.Summary = HttpUtility.HtmlDecode(entryInfo.Description)
    item.DateCreated = entryInfo.AddedDate.AddMinutes(GetTimeZoneOffset(entryInfo.BlogID))
    item.StartDate = entryInfo.AddedDate
    item.ItemId = entryInfo.EntryID.ToString()
    item.Title = entryInfo.Title
    item.Permalink = entryInfo.PermaLink
    item.AllowComments = DirectCast(IIf((entryInfo.AllowComments), 1, 0), Integer)
+   item.Publish = entryInfo.Published
 
    Dim TagController As New TagController
    item.Keywords = TagController.GetTagsByEntry(entryInfo.EntryID)
@@ -159,15 +180,15 @@ Namespace MetaWeblog
    Dim CatController As New CategoryController
    item.Categories = CatController.StringListCatsByEntry(entryInfo.EntryID)
 
-   If itemType = itemType.Post Then
+   If itemType = itemType.Post And Not blogSettings.ExcerptEnabled Then
     FindAndPlaceSummary(item)
    End If
 
    Return item
   End Function
 
-  Public Function GetRecentItems(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal numberOfItems As Integer, ByVal requestType As RecentItemsRequestType, ByVal providerKey As String) As Item() Implements IPublishable.GetRecentItems
-   Dim itemArray As item() = Nothing
+  Public Function GetRecentItems(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal numberOfItems As Integer, ByVal requestType As RecentItemsRequestType, ByVal providerKey As String) As Item() Implements IPublishable.GetRecentItems
+   Dim itemArray As Item() = Nothing
    Dim objBlogController As New BlogController
    Dim intBlogID As Integer = objBlogController.GetBlogByUserID(portalSettings.PortalId, userInfo.UserID).BlogID
    Dim arEntries As ArrayList = New EntryController().ListEntriesByBlog(intBlogID, DateTime.Now.ToUniversalTime(), True, True, 20)
@@ -175,17 +196,18 @@ Namespace MetaWeblog
    ' Find which is the least, numberOfPosts or arEntries.Count
    Dim loopCutOff As Integer = DirectCast(IIf((numberOfItems >= arEntries.Count), arEntries.Count, numberOfItems), Integer)
 
-   itemArray = New item(loopCutOff - 1) {}
+   itemArray = New Item(loopCutOff - 1) {}
 
    Dim i As Integer = 0
    For Each entry As EntryInfo In arEntries
-    Dim item As New item
+    Dim item As New Item
     item.Link = entry.PermaLink
     item.Content = HttpUtility.HtmlDecode(entry.Entry)
-    item.Summary = entry.Description
+    item.Summary = HttpUtility.HtmlDecode(entry.Description)
     item.DateCreated = entry.AddedDate.AddMinutes(GetTimeZoneOffset(Convert.ToInt32(moduleLevelId)))
     item.ItemId = entry.EntryID.ToString()
     item.Title = entry.Title
+    item.Publish = entry.Published
     item.Permalink = entry.PermaLink
     itemArray(i) = item
     i = i + 1
@@ -197,12 +219,12 @@ Namespace MetaWeblog
    Return itemArray
   End Function
 
-  Public Function NewItem(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal item As Item) As String Implements IPublishable.NewItem
+  Public Function NewItem(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal item As Item) As String Implements IPublishable.NewItem
 
    ExtractSummaryFromExtendedContent(item)
 
    Dim entryId As Integer = 0
-   Dim blogController As New blogController
+   Dim blogController As New BlogController
    Dim objEntryController As New EntryController
    Dim objEntry As New EntryInfo
    Dim blogTabID As Integer = 0
@@ -235,7 +257,11 @@ Namespace MetaWeblog
    objEntry.AllowComments = DirectCast(IIf((item.AllowComments = -1 OrElse item.AllowComments = 1), True, False), Boolean)
 
    objEntry.Published = item.Publish
+   If blogSettings.AllowSummaryHtml Then
    objEntry.Description = item.Summary
+   Else
+    objEntry.Description = Globals.RemoveMarkup(item.Summary)
+   End If
    objEntry.DisplayCopyright = False
    objEntry.Copyright = ""
    objEntry.BlogID = tempBlogID
@@ -267,7 +293,7 @@ Namespace MetaWeblog
    Return entryId.ToString()
   End Function
 
-  Public Function EditItem(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal item As Item) As Boolean Implements IPublishable.EditItem
+  Public Function EditItem(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal item As Item) As Boolean Implements IPublishable.EditItem
 
    ExtractSummaryFromExtendedContent(item)
 
@@ -290,11 +316,19 @@ Namespace MetaWeblog
    End If
    objEntry.Title = item.Title
    objEntry.Entry = item.Content
+   If blogSettings.AllowSummaryHtml Then
+    objEntry.Description = item.Summary
+   Else
+    objEntry.Description = Globals.RemoveMarkup(item.Summary)
+   End If
    objEntry.AllowComments = DirectCast(IIf((item.AllowComments = -1 OrElse item.AllowComments = 1), True, False), Boolean)
+   If item.DateCreated.Year > 1 Then
+    ' WLW manages the TZ offset automatically
+    objEntry.AddedDate = item.DateCreated
+   End If
 
    ' HtmlEncode the entry
    objEntry.Entry = HttpUtility.HtmlEncode(objEntry.Entry)
-   objEntry.Description = item.Summary
 
    If item.DateCreated.Year > 1 Then
     ' WLW handles TZ offset automatically.
@@ -322,7 +356,7 @@ Namespace MetaWeblog
    Return True
   End Function
 
-  Public Function DeleteItem(ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal itemType As ItemType) As Boolean Implements IPublishable.DeleteItem
+  Public Function DeleteItem(ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal itemType As ItemType) As Boolean Implements IPublishable.DeleteItem
    'Create new BlogController to delete the blog entry.
    Dim objEntryController As New EntryController
    objEntryController.DeleteEntry(Convert.ToInt32(itemId))
@@ -333,7 +367,7 @@ Namespace MetaWeblog
 
 #Region "Category Related Procedures"
 
-  Public Function GetCategories(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings) As ItemCategoryInfo() Implements IPublishable.GetCategories
+  Public Function GetCategories(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings) As ItemCategoryInfo() Implements IPublishable.GetCategories
 
    Dim CatController As New CategoryController
    Dim BlogController As New BlogController
@@ -371,7 +405,7 @@ Namespace MetaWeblog
 
   End Function
 
-  Public Function NewCategory(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings) As Integer Implements IPublishable.NewCategory
+  Public Function NewCategory(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings) As Integer Implements IPublishable.NewCategory
    Throw New BlogPostException("FeatureNotImplemented", "This feature is currently not implemented.")
   End Function
 

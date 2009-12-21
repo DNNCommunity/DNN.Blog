@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -375,5 +375,11 @@ About custom images: provide the complete URL to the image (including "http://")
   </data>
   <data name="secRSSSettings.Text" xml:space="preserve">
     <value>RSS Settings</value>
+  </data>
+  <data name="lblAllowSummaryHtml.Help" xml:space="preserve">
+    <value>If checked allows user to enter post summary with markup</value>
+  </data>
+  <data name="lblAllowSummaryHtml.Text" xml:space="preserve">
+    <value>Allow Summary HTML</value>
   </data>
 </root>

@@ -52,6 +52,24 @@ Partial Public Class ModuleOptions
  Protected WithEvents chkForceDescription As Global.System.Web.UI.WebControls.CheckBox
 
  '''<summary>
+ '''lblAllowSummaryHtml control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lblAllowSummaryHtml As Global.System.Web.UI.UserControl
+
+ '''<summary>
+ '''chkAllowSummaryHtml control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents chkAllowSummaryHtml As Global.System.Web.UI.WebControls.CheckBox
+
+ '''<summary>
  '''trSummary control.
  '''</summary>
  '''<remarks>

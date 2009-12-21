@@ -100,7 +100,13 @@ Partial Class EditEntry
      'Load data
      txtEntryDate.Text = Utility.FormatDate(m_oEntry.AddedDate, m_oBlog.Culture, m_oBlog.DateFormat, m_oBlog.TimeZone)
      txtTitle.Text = m_oEntry.Title
+     If BlogSettings.AllowSummaryHtml Then
      txtDescription.Text = m_oEntry.Description
+     Else
+      txtDescription.Visible = False
+      txtDescriptionText.Visible = True
+      txtDescriptionText.Text = m_oEntry.Description
+     End If
      teBlogEntry.Text = Server.HtmlDecode(m_oEntry.Entry)
      'DR-04/16/2009-BLG-9657
      lblPublished.Visible = Not m_oEntry.Published
@@ -390,10 +396,16 @@ Partial Class EditEntry
      .BlogID = m_oBlog.BlogID
      .Title = txtTitle.Text
      'DR-04/16/2009-BLG-9658
-     If (Trim(txtDescription.Text).Length = 0) OrElse (Trim(txtDescription.Text) = "&lt;p&gt;&amp;#160;&lt;/p&gt;") Then
+     Dim descriptionText As String = ""
+     If BlogSettings.AllowSummaryHtml Then
+      descriptionText = Trim(txtDescription.Text)
+     Else
+      descriptionText = (New DotNetNuke.Security.PortalSecurity).InputFilter(Trim(txtDescriptionText.Text), Security.PortalSecurity.FilterFlag.NoMarkup)
+     End If
+     If (descriptionText.Length = 0) OrElse (descriptionText = "&lt;p&gt;&amp;#160;&lt;/p&gt;") Then
       .Description = Nothing
      Else
-      .Description = txtDescription.Text
+      .Description = descriptionText
      End If
 
      .Entry = teBlogEntry.Text

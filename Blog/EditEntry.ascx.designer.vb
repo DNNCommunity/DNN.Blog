@@ -151,6 +151,15 @@ Partial Public Class EditEntry
  Protected WithEvents txtDescriptionOptional As Global.System.Web.UI.WebControls.Label
 
  '''<summary>
+ '''txtDescriptionText control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents txtDescriptionText As Global.System.Web.UI.WebControls.TextBox
+
+ '''<summary>
  '''lblDescription control.
  '''</summary>
  '''<remarks>

@@ -78,6 +78,7 @@ Partial Class ModuleOptions
     chkAllowCommentAnchors.Checked = BlogSettings.AllowCommentAnchors
     chkAllowCommentImages.Checked = BlogSettings.AllowCommentImages
     chkAllowCommentFormatting.Checked = BlogSettings.AllowCommentFormatting
+    chkAllowSummaryHtml.Checked = BlogSettings.AllowSummaryHtml
 
     chkIncludeBody.Checked = BlogSettings.IncludeBody
     chkIncludeCategoriesInDescription.Checked = BlogSettings.IncludeCategoriesInDescription
@@ -187,6 +188,7 @@ Partial Class ModuleOptions
     .IncludeBody = chkIncludeBody.Checked
     .IncludeCategoriesInDescription = chkIncludeCategoriesInDescription.Checked
     .IncludeTagsInDescription = chkIncludeTagsInDescription.Checked
+    .AllowSummaryHtml = chkAllowSummaryHtml.Checked
 
     .UpdateSettings()
    End With

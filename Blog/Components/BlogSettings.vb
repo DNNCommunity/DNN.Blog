@@ -1,4 +1,32 @@
-﻿Public Class BlogSettings
+﻿'
+' DotNetNuke -  http://www.dotnetnuke.com
+' Copyright (c) 2002-2010
+' by Perpetual Motion Interactive Systems Inc. ( http://www.perpetualmotion.ca )
+'
+' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
+' documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
+' the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+' to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+'
+' The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+' of the Software.
+'
+' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+' TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+' THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+' DEALINGS IN THE SOFTWARE.
+'-------------------------------------------------------------------------
+
+''' <summary>
+''' This class abstracts all settings for the module and makes sure they're (a) defaulted and (b) hard typed 
+''' throughout the application.
+''' </summary>
+''' <remarks></remarks>
+''' <history>
+'''		[pdonker]	12/14/2009	created
+''' </history>
+Public Class BlogSettings
 
 #Region " Private Members "
  Private _allSettings As Hashtable
@@ -33,6 +61,8 @@
  Private _GravatarDefaultImageUrl As String = ""
  Private _GravatarCustomUrl As String = ""
  Private _ShowSocialBookmarks As Boolean = True
+ Private _allowSummaryHtml As Boolean = True
+ Private _excerptEnabled As Boolean = False
 
  Private _portalId As Integer = -1
  Private _tabId As Integer = -1
@@ -53,43 +83,56 @@
   End While
   dr.Close()
 
-  ReadValue(_allSettings, "PageBlogs", PageBlogs)
-  ReadValue(_allSettings, "EnableDNNSearch", EnableDNNSearch)
-  ReadValue(_allSettings, "EntryDescriptionRequired", EntryDescriptionRequired)
-  ReadValue(_allSettings, "SummaryMaxLength", SummaryMaxLength)
-  ReadValue(_allSettings, "SearchSummaryMaxLength", SearchSummaryMaxLength)
-  ReadValue(_allSettings, "MaxImageWidth", MaxImageWidth)
-  ReadValue(_allSettings, "RecentEntriesMax", RecentEntriesMax)
-  ReadValue(_allSettings, "RecentRssEntriesMax", RecentRssEntriesMax)
-  ReadValue(_allSettings, "SearchBlogContent", SearchBlogContent)
-  ReadValue(_allSettings, "SearchBlogComment", SearchBlogComment)
-  ReadValue(_allSettings, "EnableUploadOption", EnableUploadOption)
-  ReadValue(_allSettings, "ShowSummary", ShowSummary)
-  ReadValue(_allSettings, "ShowUniqueTitle", ShowUniqueTitle)
-  ReadValue(_allSettings, "ShowCommentTitle", ShowCommentTitle)
-  ReadValue(_allSettings, "AllowCommentAnchors", AllowCommentAnchors)
-  ReadValue(_allSettings, "AllowCommentImages", AllowCommentImages)
-  ReadValue(_allSettings, "AllowCommentFormatting", AllowCommentFormatting)
-  ReadValue(_allSettings, "ForumBlogInstalled", ForumBlogInstalled)
-  ReadValue(_allSettings, "ShowGravatars", ShowGravatars)
-  ReadValue(_allSettings, "GravatarImageWidth", GravatarImageWidth)
-  ReadValue(_allSettings, "GravatarRating", GravatarRating)
-  ReadValue(_allSettings, "ShowWebsite", ShowWebsite)
-  ReadValue(_allSettings, "ShowSeoFriendlyUrl", ShowSeoFriendlyUrl)
-  ReadValue(_allSettings, "EnforceSummaryTruncation", EnforceSummaryTruncation)
-  ReadValue(_allSettings, "DataVersion", DataVersion)
-  ReadValue(_allSettings, "IncludeBody", IncludeBody)
-  ReadValue(_allSettings, "IncludeCategoriesInDescription", IncludeCategoriesInDescription)
-  ReadValue(_allSettings, "IncludeTagsInDescription", IncludeTagsInDescription)
-  ReadValue(_allSettings, "GravatarDefaultImageUrl", GravatarDefaultImageUrl)
-  ReadValue(_allSettings, "GravatarCustomUrl", GravatarCustomUrl)
-  ReadValue(_allSettings, "ShowSocialBookmarks", ShowSocialBookmarks)
+  Globals.ReadValue(_allSettings, "PageBlogs", PageBlogs)
+  Globals.ReadValue(_allSettings, "EnableDNNSearch", EnableDNNSearch)
+  Globals.ReadValue(_allSettings, "EntryDescriptionRequired", EntryDescriptionRequired)
+  Globals.ReadValue(_allSettings, "SummaryMaxLength", SummaryMaxLength)
+  Globals.ReadValue(_allSettings, "SearchSummaryMaxLength", SearchSummaryMaxLength)
+  Globals.ReadValue(_allSettings, "MaxImageWidth", MaxImageWidth)
+  Globals.ReadValue(_allSettings, "RecentEntriesMax", RecentEntriesMax)
+  Globals.ReadValue(_allSettings, "RecentRssEntriesMax", RecentRssEntriesMax)
+  Globals.ReadValue(_allSettings, "SearchBlogContent", SearchBlogContent)
+  Globals.ReadValue(_allSettings, "SearchBlogComment", SearchBlogComment)
+  Globals.ReadValue(_allSettings, "EnableUploadOption", EnableUploadOption)
+  Globals.ReadValue(_allSettings, "ShowSummary", ShowSummary)
+  Globals.ReadValue(_allSettings, "ShowUniqueTitle", ShowUniqueTitle)
+  Globals.ReadValue(_allSettings, "ShowCommentTitle", ShowCommentTitle)
+  Globals.ReadValue(_allSettings, "AllowCommentAnchors", AllowCommentAnchors)
+  Globals.ReadValue(_allSettings, "AllowCommentImages", AllowCommentImages)
+  Globals.ReadValue(_allSettings, "AllowCommentFormatting", AllowCommentFormatting)
+  Globals.ReadValue(_allSettings, "ForumBlogInstalled", ForumBlogInstalled)
+  Globals.ReadValue(_allSettings, "ShowGravatars", ShowGravatars)
+  Globals.ReadValue(_allSettings, "GravatarImageWidth", GravatarImageWidth)
+  Globals.ReadValue(_allSettings, "GravatarRating", GravatarRating)
+  Globals.ReadValue(_allSettings, "ShowWebsite", ShowWebsite)
+  Globals.ReadValue(_allSettings, "ShowSeoFriendlyUrl", ShowSeoFriendlyUrl)
+  Globals.ReadValue(_allSettings, "EnforceSummaryTruncation", EnforceSummaryTruncation)
+  Globals.ReadValue(_allSettings, "DataVersion", DataVersion)
+  Globals.ReadValue(_allSettings, "IncludeBody", IncludeBody)
+  Globals.ReadValue(_allSettings, "IncludeCategoriesInDescription", IncludeCategoriesInDescription)
+  Globals.ReadValue(_allSettings, "IncludeTagsInDescription", IncludeTagsInDescription)
+  Globals.ReadValue(_allSettings, "GravatarDefaultImageUrl", GravatarDefaultImageUrl)
+  Globals.ReadValue(_allSettings, "GravatarCustomUrl", GravatarCustomUrl)
+  Globals.ReadValue(_allSettings, "ShowSocialBookmarks", ShowSocialBookmarks)
+  Globals.ReadValue(_allSettings, "AllowSummaryHtml", AllowSummaryHtml)
 
   If DataVersion < version Then
    DataVersion = version
    Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "DataVersion", version)
    Business.Utility.UpgradeApplication(PortalID, version)
   End If
+
+  Try
+   Dim wlwSettings As New System.Xml.XmlDocument
+   wlwSettings.Load(DotNetNuke.Common.ApplicationMapPath & "\DesktopModules\Blog\wlwblog.xml")
+   Dim nsm As New System.Xml.XmlNamespaceManager(wlwSettings.NameTable)
+   nsm.AddNamespace("wlw", "http://schemas.microsoft.com/wlw/manifest/weblog")
+   Dim n As System.Xml.XmlNode = wlwSettings.DocumentElement.SelectSingleNode("wlw:options/wlw:supportsExcerpt", nsm)
+   If n IsNot Nothing Then
+    _excerptEnabled = CBool(n.InnerText.ToLower = "yes")
+   End If
+  Catch
+  End Try
 
  End Sub
 
@@ -138,6 +181,7 @@
   Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "GravatarDefaultImageUrl", Me.GravatarDefaultImageUrl)
   Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "GravatarCustomUrl", Me.GravatarCustomUrl)
   Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "ShowSocialBookmarks", Me.ShowSocialBookmarks.ToString)
+  Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "AllowSummaryHtml", Me.AllowSummaryHtml.ToString)
 
  End Sub
 
@@ -424,62 +468,20 @@
   End Set
  End Property
 
-#End Region
+ Public Property AllowSummaryHtml() As Boolean
+  Get
+   Return _allowSummaryHtml
+  End Get
+  Set(ByVal value As Boolean)
+   _allowSummaryHtml = value
+  End Set
+ End Property
 
-#Region " Support Methods "
- Public Shared Sub ReadValue(ByRef ValueTable As Hashtable, ByVal ValueName As String, ByRef Variable As Integer)
-  If Not ValueTable.Item(ValueName) Is Nothing Then
-   Try
-    Variable = CType(ValueTable.Item(ValueName), Integer)
-   Catch ex As Exception
-   End Try
-  End If
- End Sub
-
- Public Shared Sub ReadValue(ByRef ValueTable As Hashtable, ByVal ValueName As String, ByRef Variable As Long)
-  If Not ValueTable.Item(ValueName) Is Nothing Then
-   Try
-    Variable = CType(ValueTable.Item(ValueName), Long)
-   Catch ex As Exception
-   End Try
-  End If
- End Sub
-
- Public Shared Sub ReadValue(ByRef ValueTable As Hashtable, ByVal ValueName As String, ByRef Variable As String)
-  If Not ValueTable.Item(ValueName) Is Nothing Then
-   Try
-    Variable = CType(ValueTable.Item(ValueName), String)
-   Catch ex As Exception
-   End Try
-  End If
- End Sub
-
- Public Shared Sub ReadValue(ByRef ValueTable As Hashtable, ByVal ValueName As String, ByRef Variable As Boolean)
-  If Not ValueTable.Item(ValueName) Is Nothing Then
-   Try
-    Variable = CType(ValueTable.Item(ValueName), Boolean)
-   Catch ex As Exception
-   End Try
-  End If
- End Sub
-
- Public Shared Sub ReadValue(ByRef ValueTable As Hashtable, ByVal ValueName As String, ByRef Variable As Date)
-  If Not ValueTable.Item(ValueName) Is Nothing Then
-   Try
-    Variable = CType(ValueTable.Item(ValueName), Date)
-   Catch ex As Exception
-   End Try
-  End If
- End Sub
-
- Public Shared Sub ReadValue(ByRef ValueTable As Hashtable, ByVal ValueName As String, ByRef Variable As TimeSpan)
-  If Not ValueTable.Item(ValueName) Is Nothing Then
-   Try
-    Variable = TimeSpan.Parse(CType(ValueTable.Item(ValueName), String))
-   Catch ex As Exception
-   End Try
-  End If
- End Sub
+ Public ReadOnly Property ExcerptEnabled() As Boolean
+  Get
+   Return _excerptEnabled
+  End Get
+ End Property
 #End Region
 
 End Class

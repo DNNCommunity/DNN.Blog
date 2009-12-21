@@ -14,8 +14,12 @@
 			<table id="tblGeneralSetting" cellSpacing="2" cellPadding="2" width="100%" summary="Edit ViewBlog Basic Settings"
 				border="0" runat="server">
 				<tr>
-					<td class="SubHead" vAlign="top" width="300"><dnn:label id="lblMandatory" runat="server" controlname="lblMandatory" suffix=""></dnn:label></td>
+					<td class="SubHead" vAlign="top" width="300"><dnn:label id="lblMandatory" runat="server" controlname="chkForceDescription" suffix=""></dnn:label></td>
 					<td><asp:checkbox id="chkForceDescription" runat="server" TextAlign="Left" AutoPostBack="True"></asp:checkbox></td>
+				</tr>
+				<tr>
+					<td class="SubHead" vAlign="top" width="300"><dnn:label id="lblAllowSummaryHtml" runat="server" controlname="chkAllowSummaryHtml" suffix="" /></td>
+					<td><asp:checkbox id="chkAllowSummaryHtml" runat="server" TextAlign="Left" AutoPostBack="True" /></td>
 				</tr>
 				<tr id="trSummary" runat="server">
 					<td class="SubHead" vAlign="top" width="300"><dnn:label id="lblSummary" runat="server" controlname="txtSummaryLimit" suffix=""></dnn:label></td>
