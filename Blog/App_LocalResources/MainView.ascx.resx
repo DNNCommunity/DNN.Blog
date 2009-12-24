@@ -117,7 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="lblAddModuleDef.Help" xml:space="preserve">
+    <value>Select and click add to add this part of the blog module to the page. Use this only if one of the module parts is missing from the page and you wish to add it.</value>
+  </data>
+  <data name="lblAddModuleDef.Text" xml:space="preserve">
+    <value>Add Blog Module Part</value>
+  </data>
   <data name="ModuleHelp.Text" xml:space="preserve">
     <value>&lt;h1&gt;Blog - Main View&lt;/h1&gt;&lt;p&gt;Here blog entries and search results are displayed.&lt;p&gt;&lt;b&gt;Recent entries&lt;/b&gt;&lt;br /&gt;When browsing all recent entries, all published entries in the portal are shown.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Single blog&lt;/b&gt;&lt;br /&gt;When browsing a single blog, the blog description is shown, and only entries belonging to the blog will be listed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Entry view&lt;/b&gt;&lt;br /&gt;When browsing a specific blog entry, the entry content is shown along with the relative comments.&lt;/p&gt;</value>
+  </data>
+  <data name="Select.Text" xml:space="preserve">
+    <value>Select ...</value>
+  </data>
+  <data name="cmdAdd.Text" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="Title.Text" xml:space="preserve">
+    <value>Title</value>
   </data>
 </root>

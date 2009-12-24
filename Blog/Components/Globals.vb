@@ -1,4 +1,6 @@
-﻿'
+﻿Imports DotNetNuke.Entities.Modules
+
+'
 ' DotNetNuke -  http://www.dotnetnuke.com
 ' Copyright (c) 2002-2010
 ' by Perpetual Motion Interactive Systems Inc. ( http://www.perpetualmotion.ca )
@@ -148,5 +150,33 @@ Public Class Globals
   End If
  End Sub
 #End Region
+
+ Public Shared Sub AddModDef(ByVal PortalSettings As Entities.Portals.PortalSettings, ByVal ModuleDefID As Integer, ByVal TabID As Integer, ByVal paneName As String, ByVal position As Integer, ByVal title As String)
+
+  Dim objModuleDefinition As Definitions.ModuleDefinitionInfo = (New Definitions.ModuleDefinitionController).GetModuleDefinition(ModuleDefID)
+  Dim objTabPermissions As Security.Permissions.TabPermissionCollection = (New Security.Permissions.TabPermissionController).GetTabPermissionsCollectionByTabID(TabID, PortalSettings.PortalId)
+  Dim objModule As New ModuleInfo
+  objModule.Initialize(PortalSettings.PortalId)
+  objModule.PortalID = PortalSettings.PortalId
+  objModule.TabID = PortalSettings.ActiveTab.TabID
+  objModule.ModuleOrder = -1
+  If title = "" Then
+   objModule.ModuleTitle = objModuleDefinition.FriendlyName
+  Else
+   objModule.ModuleTitle = title
+  End If
+  objModule.PaneName = paneName
+  objModule.ModuleDefID = objModuleDefinition.ModuleDefID
+  objModule.InheritViewPermissions = True
+
+  ' get the default module view permissions
+  Dim arrSystemModuleViewPermissions As ArrayList = (New DotNetNuke.Security.Permissions.PermissionController).GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", "VIEW")
+
+  objModule.AllTabs = False
+  objModule.Alignment = ""
+  Dim objModules As New ModuleController
+  objModules.AddModule(objModule)
+
+ End Sub
 
 End Class

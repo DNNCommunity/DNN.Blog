@@ -292,4 +292,7 @@
   <data name="txtTweetTemplate.Text" xml:space="preserve">
     <value>Blogged: {title} - {url}</value>
   </data>
+  <data name="lblAvailableTokens.Text" xml:space="preserve">
+    <value>Available Tokens:</value>
+  </data>
 </root>

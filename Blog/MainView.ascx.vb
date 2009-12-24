@@ -1,4 +1,4 @@
-'
+﻿'
 ' DotNetNuke -  http://www.dotnetnuke.com
 ' Copyright (c) 2002-2005
 ' by Perpetual Motion Interactive Systems Inc. ( http://www.perpetualmotion.ca )
@@ -22,10 +22,9 @@ Imports System
 Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Entities.Modules.Actions
 Imports DotNetNuke.Services.Exceptions.Exceptions
+Imports DotNetNuke.Services.Localization.Localization
 
-
-
-Partial Class MainView
+Partial Public Class MainView
  Inherits BlogModuleBase
  Implements Entities.Modules.IActionable
 
@@ -62,30 +61,7 @@ Partial Class MainView
 #End Region
 
 #Region "Event Handlers"
- Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-  Try
-
-  Catch exc As Exception
-   ProcessModuleLoadException(Me, exc)
-  End Try
- End Sub
-#End Region
-
-#Region " Web Form Designer Generated Code "
-
- 'This call is required by the Web Form Designer.
- <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-
- End Sub
-
- 'NOTE: The following placeholder declaration is required by the Web Form Designer.
- 'Do not delete or move it.
- Private designerPlaceholderDeclaration As System.Object
-
  Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
-  'CODEGEN: This method call is required by the Web Form Designer
-  'Do not modify it using the code editor.
-  InitializeComponent()
   Dim moduleControl As String
   moduleControl = resolveParams(Request.Params)
   Select Case moduleControl
@@ -135,10 +111,33 @@ Partial Class MainView
 
   End Select
 
+  If Not Me.IsPostBack Then
+   If DotNetNuke.Security.Permissions.TabPermissionController.HasTabPermission("EDIT") Then
+    pnlAddModuleDefs.Visible = True
+    ddModuleDef.DataSource = (New DotNetNuke.Entities.Modules.Definitions.ModuleDefinitionController).GetModuleDefinitions(Me.ModuleConfiguration.DesktopModuleID)
+    ddModuleDef.DataBind()
+    ddModuleDef.Items.Insert(0, New ListItem(GetString("Select", LocalResourceFile), "-1"))
+    Dim intItem As Integer
+    For intItem = 0 To PortalSettings.ActiveTab.Panes.Count - 1
+     ddPane.Items.Add(Convert.ToString(PortalSettings.ActiveTab.Panes(intItem)))
+    Next intItem
+    If Not ddPane.Items.FindByValue(DotNetNuke.Common.Globals.glbDefaultPane) Is Nothing Then
+     ddPane.Items.FindByValue(DotNetNuke.Common.Globals.glbDefaultPane).Selected = True
+    End If
+    ddPosition.Items.Clear()
+    ddPosition.Items.Add(New ListItem(GetString("Top", "admin/controlpanel/App_LocalResources/iconbar"), "0"))
+    ddPosition.Items.Add(New ListItem(GetString("Bottom", "admin/controlpanel/App_LocalResources/iconbar"), "-1"))
+    txtTitle.Text = GetString("Title", LocalResourceFile)
+   End If
+  End If
+
  End Sub
 
+ Private Sub cmdAdd_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdAdd.Click
+  If CInt(ddModuleDef.SelectedValue) = -1 Then Exit Sub
+  Globals.AddModDef(PortalSettings, CInt(ddModuleDef.SelectedValue), TabId, ddPane.SelectedValue, CInt(ddPosition.SelectedValue), txtTitle.Text.Trim)
+  Me.Response.Redirect(DotNetNuke.Common.NavigateURL(), False)
+ End Sub
 #End Region
 
 End Class
-
-

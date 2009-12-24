@@ -109,7 +109,6 @@
     <Content Include="blogpostredirect.aspx" />
     <Content Include="EditBlog.ascx" />
     <Content Include="EditEntry.ascx" />
-    <Content Include="MainView.ascx" />
     <Content Include="module.css" />
     <Content Include="ModuleOptions.ascx" />
     <Content Include="Search.ascx" />
@@ -222,18 +221,18 @@
       <DependentUpon>EditEntry.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="MassEdit.ascx.designer.vb">
-      <DependentUpon>MassEdit.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="MassEdit.ascx.vb">
-      <DependentUpon>MassEdit.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="MainView.ascx.designer.vb">
       <DependentUpon>MainView.ascx</DependentUpon>
     </Compile>
     <Compile Include="MainView.ascx.vb">
       <DependentUpon>MainView.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MassEdit.ascx.designer.vb">
+      <DependentUpon>MassEdit.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MassEdit.ascx.vb">
+      <DependentUpon>MassEdit.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="ModuleOptions.ascx.designer.vb">
@@ -334,64 +333,17 @@
     <Content Include="App_LocalResources\ViewCategories.ascx.resx" />
     <Content Include="App_LocalResources\ViewEntry.ascx.resx" />
     <Content Include="App_LocalResources\SharedResources.ascx.resx" />
-    <EmbeddedResource Include="Archive.ascx.resx">
-      <DependentUpon>Archive.ascx.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Blog.ascx.resx">
-      <DependentUpon>Blog.ascx.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BlogList.ascx.resx">
-      <DependentUpon>BlogList.ascx.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="blogpostredirect.aspx.resx">
-      <DependentUpon>blogpostredirect.aspx.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EditBlog.ascx.resx">
-      <DependentUpon>EditBlog.ascx.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EditEntry.ascx.resx">
-      <DependentUpon>EditEntry.ascx.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MainView.ascx.resx">
-      <DependentUpon>MainView.ascx.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ModuleOptions.ascx.resx">
-      <DependentUpon>ModuleOptions.ascx.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Search.ascx.resx">
-      <DependentUpon>Search.ascx.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Trackback.aspx.resx">
-      <DependentUpon>Trackback.aspx.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ViewBlog.ascx.resx">
-      <DependentUpon>ViewBlog.ascx.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ViewEntry.ascx.resx">
-      <DependentUpon>ViewEntry.ascx.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="blogpost.ashx" />
     <Content Include="EditCategories.ascx" />
+    <Content Include="MainView.ascx" />
     <Content Include="MassEdit.ascx" />
     <Content Include="js\bookmarks.js" />
     <Content Include="js\bookmarks.xml" />
@@ -449,7 +401,7 @@
     <Content Include="_Installation\03.04.01.txt" />
     <Content Include="_Installation\03.05.00.txt" />
     <Content Include="_Installation\03.05.01.txt" />
-    <Content Include="_Installation\03.05.02.txt" />
+    <Content Include="_Installation\04.00.00.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" />
