@@ -239,4 +239,7 @@
   <data name="lblTags.Text" xml:space="preserve">
     <value>Tags:</value>
   </data>
+  <data name="lblCategories.Text" xml:space="preserve">
+    <value>Categories:</value>
+  </data>
 </root>
