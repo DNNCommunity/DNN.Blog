@@ -44,7 +44,8 @@ Partial Class MassEdit
   Try
 
    Dim objEntries As New EntryController
-   Dim list As ArrayList
+            Dim list As ArrayList
+            Dim currentpage As Integer
 
    If Not Page.IsPostBack Then
     If m_oBlog Is Nothing Then
@@ -54,33 +55,31 @@ Partial Class MassEdit
      list = objEntries.ListEntriesByBlog(m_oBlog.BlogID, m_dBlogDate, Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId), Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId), 10000)
     End If
 
-    'Dim PageSize = 20 'Display 20 items per page
+                Dim PageSize = 20 'Display 20 items per page
 
-    ''Get the currentpage index from the url parameter  
-    'If Request.QueryString("currentpage") IsNot Nothing Then
-    '    CurrentPage = Request.QueryString("currentpage").ToString
-    'Else
-    '    CurrentPage = 1
-    'End If
+                'Get the currentpage index from the url parameter  
+                If Request.QueryString("currentpage") IsNot Nothing Then
+                    currentpage = CInt(Request.QueryString("currentpage"))
+                Else
+                    currentpage = 1
+                End If
 
-    ''Fill the PagedDataSource object's datasource property with your collection  
-    'Dim objPagedDataSource As New PagedDataSource
-    'objPagedDataSource.DataSource = list
-    'objPagedDataSource.PageSize = PageSize
-    'objPagedDataSource.CurrentPageIndex = currentpage - 1
-    'objPagedDataSource.AllowPaging = True
-    'With Pagecontrol
-    '    .TotalRecords = list.Count
-    '    .PageSize = PageSize
-    '    .CurrentPage = currentpage
-    '    .TabID = TabId
-    'End With
+                Dim objPagedDataSource As New PagedDataSource
+                objPagedDataSource.DataSource = list
+                objPagedDataSource.PageSize = PageSize
+                objPagedDataSource.CurrentPageIndex = currentpage - 1
+                objPagedDataSource.AllowPaging = True
 
-    'rptEdit.DataSource = objPagedDataSource
-    'rptEdit.DataBind()
+                With Pagecontrol
+                    .TotalRecords = list.Count
+                    .PageSize = PageSize
+                    .CurrentPage = currentpage
+                    .TabID = TabId
+                    .QuerystringParams = "ctl/Mass_Edit/mid/" + Me.ModuleId.ToString + "/"
+                End With
 
-    rptEdit.DataSource = list
-    rptEdit.DataBind()
+                rptEdit.DataSource = objPagedDataSource
+                rptEdit.DataBind()
 
    End If
 
