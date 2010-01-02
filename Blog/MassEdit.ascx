@@ -42,9 +42,9 @@
     <asp:CheckBox ID="cbComments" runat="server" Checked='<%# Eval("AllowComments") %>' />
    </td>
    <td>
-    <asp:LinkButton ID="btnEditCmd" Visible="true" CommandName="Edit" runat="server" />
-    <asp:LinkButton ID="btnSaveCmd" Visible="false" CommandName="Save" runat="server" CommandArgument='<%# Eval("EntryID") %>'>Save</asp:LinkButton>
-    <asp:LinkButton ID="btnCancelCmd" Visible="false" CommandName="Cancel" runat="server" />
+    <asp:LinkButton ID="btnEditCmd" Visible="true" CommandName="Edit" runat="server" Text="Edit" />
+    <asp:LinkButton ID="btnSaveCmd" Visible="false" CommandName="Save" runat="server" CommandArgument='<%# Eval("EntryID") %>' Text="Save" />
+    <asp:LinkButton ID="btnCancelCmd" Visible="false" CommandName="Cancel" runat="server" text="Cancel"/>
    </td>
   </tr>
  </ItemTemplate>
