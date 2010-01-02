@@ -14,7 +14,7 @@
     <MyType>Custom</MyType>
     <OptionExplicit>On</OptionExplicit>
     <OptionCompare>Binary</OptionCompare>
-    <OptionStrict>On</OptionStrict>
+    <OptionStrict>Off</OptionStrict>
     <OptionInfer>On</OptionInfer>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -28,9 +28,9 @@
     <DefineTrace>true</DefineTrace>
     <OutputPath>..\..\bin\</OutputPath>
     <DocumentationFile>DotNetNuke.Modules.Blog.xml</DocumentationFile>
-    <NoWarn>
-    </NoWarn>
-    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</NoWarn>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -39,9 +39,9 @@
     <Optimize>true</Optimize>
     <OutputPath>bin\</OutputPath>
     <DocumentationFile>DotNetNuke.Modules.Blog.xml</DocumentationFile>
-    <NoWarn>
-    </NoWarn>
-    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</NoWarn>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CookComputing.XmlRpcV2, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
