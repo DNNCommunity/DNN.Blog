@@ -508,13 +508,13 @@ BEGIN
 		Slug nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 		Active bit NOT NULL,
 		PortalID int NULL,
-	 CONSTRAINT PK_Blog_Tags PRIMARY KEY CLUSTERED 
+	 CONSTRAINT {databaseOwner}{objectQualifier}PK_Blog_Tags PRIMARY KEY CLUSTERED 
 	(
 		TagID ASC
 	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 	) ON [PRIMARY]
 	
-	CREATE NONCLUSTERED INDEX IX_Blog_Tags_PortalID ON {databaseOwner}{objectQualifier}Blog_Tags 
+	CREATE NONCLUSTERED INDEX {databaseOwner}{objectQualifier}IX_Blog_Tags_PortalID ON {databaseOwner}{objectQualifier}Blog_Tags 
 	(
 		PortalID ASC
 	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, 
@@ -891,7 +891,7 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 	SELECT	t.TagID, Tag, Slug, Active		
-	FROM	Blog_Tags t
+	FROM	{databaseOwner}{objectQualifier}Blog_Tags t
 	INNER JOIN {databaseOwner}{objectQualifier}Blog_Entry_Tags e ON t.TagID = e.TagID
 	WHERE	EntryID = @entryid
 
