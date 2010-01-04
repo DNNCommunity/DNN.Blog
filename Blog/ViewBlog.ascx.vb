@@ -1,6 +1,6 @@
 '
 ' DotNetNuke -  http://www.dotnetnuke.com
-' Copyright (c) 2002-2005
+' Copyright (c) 2002-2010
 ' by Perpetual Motion Interactive Systems Inc. ( http://www.perpetualmotion.ca )
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -24,14 +24,10 @@ Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Services.Localization
 
-
-
-
 Partial Class ViewBlog
  Inherits BlogModuleBase
 
-
-#Region "Private member"
+#Region " Private Members "
  Private m_sSearchString As String
  Private m_sSearchType As String = "Keyword"
  Private m_oBlogController As New BlogController
@@ -43,7 +39,45 @@ Partial Class ViewBlog
  Private m_SeoFriendlyUrl As Boolean
 #End Region
 
-#Region "Event Handlers"
+#Region " Event Handlers "
+ Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+
+  m_oBlog = m_oBlogController.GetBlogFromContext()
+  m_PersonalBlogID = BlogSettings.PageBlogs
+
+  If m_PersonalBlogID <> -1 And m_oBlog Is Nothing Then
+   Dim objBlog As New BlogController
+   m_oBlog = objBlog.GetBlog(m_PersonalBlogID)
+   'ModuleConfiguration.ModuleTitle = m_oBlog.Title
+  End If
+  If Not Request.Params("Search") Is Nothing Then
+   m_sSearchString = Request.Params("Search")
+   m_bSearchDisplay = True
+   If m_oBlog Is Nothing Then
+    ModuleConfiguration.ModuleTitle = Localization.GetString("msgSearchResults", LocalResourceFile)
+   Else
+    ModuleConfiguration.ModuleTitle = Localization.GetString("msgSearchResultsFor", LocalResourceFile) & " " & m_oBlog.Title
+   End If
+
+  Else
+   If m_oBlog Is Nothing Then
+    'Antonio Chagoury 9/1/2007
+    'BLG-6126
+    'ModuleConfiguration.ModuleTitle = Localization.GetString("msgMostRecentEntries", LocalResourceFile)
+   Else
+    'BLG-6126
+    'ModuleConfiguration.ModuleTitle = m_oBlog.Title
+    If Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
+     MyActions.Add(GetNextActionID, Localization.GetString("msgEditBlogSettings", LocalResourceFile), "", Url:=EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Blog"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Edit, Visible:=True)
+     MyActions.Add(GetNextActionID, Localization.GetString("msgAddBlogEntry", LocalResourceFile), "", Url:=EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Entry"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Edit, Visible:=True)
+     MyActions.Add(GetNextActionID, Localization.GetString("msgMassEdit", LocalResourceFile), "", Url:=EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Mass_Edit"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Edit, Visible:=True)
+    End If
+   End If
+  End If
+  MyActions.Add(GetNextActionID, Localization.GetString("msgModuleOptions", LocalResourceFile), "", Url:=EditUrl("", "", "Module_Options"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Admin, Visible:=True)
+  Me.ModuleConfiguration.SupportedFeatures = 0
+ End Sub
+
  Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
   Try
    m_SeoFriendlyUrl = BlogSettings.ShowSeoFriendlyUrl
@@ -200,16 +234,16 @@ Partial Class ViewBlog
  End Sub
 #End Region
 
-#Region "Public Methods"
+#Region " Public Methods "
  Public Function getLnkComment() As String
   getLnkComment = Localization.GetString("lnkComments", LocalResourceFile)
  End Function
 #End Region
 
-#Region "Private Methods"
+#Region " Private Methods "
  Private Sub lstBlogView_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataListItemEventArgs) Handles lstBlogView.ItemDataBound
   Dim lblUserName As System.Web.UI.WebControls.Label = CType(e.Item.FindControl("lblUserName"), System.Web.UI.WebControls.Label)
-  Dim lblDescription As System.Web.UI.WebControls.Label = CType(e.Item.FindControl("lblDescription"), System.Web.UI.WebControls.Label)
+  Dim lblDescription As System.Web.UI.WebControls.Literal = CType(e.Item.FindControl("lblDescription"), System.Web.UI.WebControls.Literal)
 
   Dim lnkComments As System.Web.UI.WebControls.LinkButton = CType(e.Item.FindControl("lnkComments"), System.Web.UI.WebControls.LinkButton)
   Dim lblPublished As System.Web.UI.WebControls.Label = CType(e.Item.FindControl("lblPublished"), System.Web.UI.WebControls.Label)
@@ -252,7 +286,7 @@ Partial Class ViewBlog
 
   ' 10/28/08 RR Replace all instances of BlogNavigateURL with Permalink
   'lnkEntry.NavigateUrl = Utility.BlogNavigateURL(Me.TabId, CType(e.Item.DataItem, EntryInfo), m_SeoFriendlyUrl)
-  lnkEntry.NavigateUrl = m_oEntry.Permalink
+  lnkEntry.NavigateUrl = m_oEntry.PermaLink
 
   'DR-04/24/2009-BLG-9712
   lnkEntry.Attributes.Add("rel", "bookmark")
@@ -262,7 +296,7 @@ Partial Class ViewBlog
   If Not lnkReadMore Is Nothing Then
    ' 10/28/08 RR Replace all instances of BlogNavigateURL with Permalink
    'lnkReadMore.NavigateUrl = Utility.BlogNavigateURL(Me.TabId, CType(e.Item.DataItem, EntryInfo), m_SeoFriendlyUrl)
-   lnkReadMore.NavigateUrl = m_oEntry.Permalink
+   lnkReadMore.NavigateUrl = m_oEntry.PermaLink
   End If
 
   ' Display the proper UserName
@@ -500,59 +534,6 @@ Partial Class ViewBlog
 
 #End Region
 
-#Region " Web Form Designer Generated Code "
-
- 'This call is required by the Web Form Designer.
- <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-
- End Sub
-
- 'NOTE: The following placeholder declaration is required by the Web Form Designer.
- 'Do not delete or move it.
- Private designerPlaceholderDeclaration As System.Object
-
- Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
-  'CODEGEN: This method call is required by the Web Form Designer
-  'Do not modify it using the code editor.
-  InitializeComponent()
-
-  m_oBlog = m_oBlogController.GetBlogFromContext()
-  m_PersonalBlogID = BlogSettings.PageBlogs
-
-  If m_PersonalBlogID <> -1 And m_oBlog Is Nothing Then
-   Dim objBlog As New BlogController
-   m_oBlog = objBlog.GetBlog(m_PersonalBlogID)
-   'ModuleConfiguration.ModuleTitle = m_oBlog.Title
-  End If
-  If Not Request.Params("Search") Is Nothing Then
-   m_sSearchString = Request.Params("Search")
-   m_bSearchDisplay = True
-   If m_oBlog Is Nothing Then
-    ModuleConfiguration.ModuleTitle = Localization.GetString("msgSearchResults", LocalResourceFile)
-   Else
-    ModuleConfiguration.ModuleTitle = Localization.GetString("msgSearchResultsFor", LocalResourceFile) & " " & m_oBlog.Title
-   End If
-
-  Else
-   If m_oBlog Is Nothing Then
-    'Antonio Chagoury 9/1/2007
-    'BLG-6126
-    'ModuleConfiguration.ModuleTitle = Localization.GetString("msgMostRecentEntries", LocalResourceFile)
-   Else
-    'BLG-6126
-    'ModuleConfiguration.ModuleTitle = m_oBlog.Title
-    If Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
-     MyActions.Add(GetNextActionID, Localization.GetString("msgEditBlogSettings", LocalResourceFile), "", Url:=EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Blog"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Edit, Visible:=True)
-     MyActions.Add(GetNextActionID, Localization.GetString("msgAddBlogEntry", LocalResourceFile), "", Url:=EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Entry"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Edit, Visible:=True)
-     MyActions.Add(GetNextActionID, Localization.GetString("msgMassEdit", LocalResourceFile), "", Url:=EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Mass_Edit"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Edit, Visible:=True)
-    End If
-   End If
-  End If
-  MyActions.Add(GetNextActionID, Localization.GetString("msgModuleOptions", LocalResourceFile), "", URL:=EditUrl("", "", "Module_Options"), secure:=DotNetNuke.Security.SecurityAccessLevel.Admin, Visible:=True)
-  Me.ModuleConfiguration.SupportedFeatures = 0
- End Sub
-
-#End Region
 
 End Class
 

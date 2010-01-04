@@ -13,7 +13,6 @@ Option Explicit On
 
 
 
-
 Partial Public Class EditCategories
 
  '''<summary>
@@ -60,6 +59,15 @@ Partial Public Class EditCategories
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
  Protected WithEvents tbCategory As Global.System.Web.UI.WebControls.TextBox
+
+ '''<summary>
+ '''reqCategory control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents reqCategory As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
  '''<summary>
  '''lblParentCategory control.
@@ -132,5 +140,13 @@ Partial Public Class EditCategories
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
  Protected WithEvents tvCategories As Global.System.Web.UI.WebControls.TreeView
-End Class
 
+ '''<summary>
+ '''btnBack control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents btnBack As Global.DotNetNuke.UI.WebControls.CommandButton
+End Class

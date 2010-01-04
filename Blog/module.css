@@ -80,6 +80,8 @@
 	margin-right: 10px;
 	cursor: pointer;
 	font-weight: bold;
+	display:inline-block;
+	height:1.5em;
 }
 
 .blog_comments_normal {
@@ -95,6 +97,8 @@
 {
 	background-image: url(images/blog_topic.png);
 	font-size: 11px;
+	display:inline-block;
+	height:1.5em;
 }
 .blog_more_link
 {
@@ -128,6 +132,7 @@
 {
 	white-space:nowrap;
 	vertical-align:top;
+	padding-right:1em;
 }
 
 .blog_tags
@@ -135,6 +140,10 @@
 	background-image: url(images/blog_tag_blue.png);
 	font-size: 11px;
 }
+.blog_tag{
+    line-height:2em;
+}
+
 .blog_trackback {
 	background-image: url(images/blog_trackback.png);
 	background-repeat: no-repeat;
@@ -155,6 +164,8 @@
 	padding-left: 20px;
 	margin-left: 8px;
 	font-size: 11px;
+	display:inline-block;
+	height:2em;
 }
 .blog_edit_link
 {

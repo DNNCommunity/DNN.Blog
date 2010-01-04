@@ -1,6 +1,6 @@
 '
 ' DotNetNuke -  http://www.dotnetnuke.com
-' Copyright (c) 2002-2005
+' Copyright (c) 2002-2010
 ' by Perpetual Motion Interactive Systems Inc. ( http://www.perpetualmotion.ca )
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -24,12 +24,19 @@ Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Services.Exceptions.Exceptions
 Imports DotNetNuke.Services.Localization
 
-
-
 Partial Class BlogList
  Inherits BlogModuleBase
+ Implements Entities.Modules.IActionable
 
-#Region "Private member"
+#Region " IActionable "
+ Public ReadOnly Property ModuleActions() As DotNetNuke.Entities.Modules.Actions.ModuleActionCollection Implements DotNetNuke.Entities.Modules.IActionable.ModuleActions
+  Get
+   Return MyActions
+  End Get
+ End Property
+#End Region
+
+#Region " Private Members "
  Private m_iSelectedBlogID As Integer = -1
  Private m_iParentBlogID As Integer = -1
  Private m_oBlog As BlogInfo
@@ -42,10 +49,25 @@ Partial Class BlogList
  Private lblFooter As System.Web.UI.WebControls.Label
 #End Region
 
-#Region "Controls"
-#End Region
+#Region " Event Handlers "
+ Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
 
-#Region "Event Handlers"
+  ' 11/19/2008 Rip Rowan replaced deprecated code
+  If DotNetNuke.Security.PortalSecurity.HasNecessaryPermission(Security.SecurityAccessLevel.Edit, PortalSettings, ModuleConfiguration) Then
+   m_oBlog = m_oBlogController.GetBlogByUserID(Me.PortalId, Me.UserId)
+   If m_oBlog Is Nothing Then
+    MyActions.Add(GetNextActionID, Localization.GetString("msgCreateBlog", LocalResourceFile), "", Url:=EditUrl("", "", "Edit_Blog"), Secure:=DotNetNuke.Security.SecurityAccessLevel.View, Visible:=True)
+   Else
+    MyActions.Add(GetNextActionID, Localization.GetString("msgEditBlogSettings", LocalResourceFile), "", Url:=EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Blog"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Edit, Visible:=True)
+    MyActions.Add(GetNextActionID, Localization.GetString("msgAddBlogEntry", LocalResourceFile), "", Url:=EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Entry"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Edit, Visible:=True)
+   End If
+   If ForumBlog.Utils.isForumBlogInstalled(PortalId, TabId, False) Then
+    MyActions.Add(GetNextActionID, Localization.GetString("msgImportBlog", LocalResourceFile), "", Url:=EditUrl("Blog_Import"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Admin, Visible:=True)
+   End If
+  End If
+
+ End Sub
+
  Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
   Try
    Dim list As ArrayList
@@ -89,17 +111,16 @@ Partial Class BlogList
  End Sub
 #End Region
 
-#Region "Private Methods"
-
+#Region " Private Methods "
  Private Sub lstBlogs_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataListItemEventArgs) Handles lstBlogs.ItemDataBound
 
-  lnkBlogIcon = CType(e.Item.FindControl("lnkBlogIcon"), System.Web.UI.WebControls.HyperLink)
-  lnkBlog = CType(e.Item.FindControl("lnkBlog"), System.Web.UI.WebControls.HyperLink)
-
-  Dim lnkBlogRSS As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkBlogRSS"), System.Web.UI.WebControls.HyperLink)
+  Dim lnkBlogLink As HyperLink = CType(e.Item.FindControl("lnkBlogLink"), HyperLink)
+  Dim lnkBlogLinkIcon As Image = CType(e.Item.FindControl("lnkBlogLinkIcon"), Image)
+  Dim lnkBlog As HyperLink = CType(e.Item.FindControl("lnkBlog"), HyperLink)
+  Dim lnkBlogRSS As HyperLink = CType(e.Item.FindControl("lnkBlogRSS"), HyperLink)
 
   If Not e.Item.DataItem Is Nothing Then
-   lnkBlogIcon.NavigateUrl = NavigateURL(Me.TabId, "", "&BlogID=" & CType(e.Item.DataItem, BlogInfo).BlogID.ToString())
+   lnkBlogLink.NavigateUrl = NavigateURL(Me.TabId, "", "&BlogID=" & CType(e.Item.DataItem, BlogInfo).BlogID.ToString())
    lnkBlog.NavigateUrl = NavigateURL(Me.TabId, "", "&BlogID=" & CType(e.Item.DataItem, BlogInfo).BlogID.ToString())
    'DR-04/17/2009-BLG-9754
    lnkBlog.Text = String.Format(m_BlogTitleStringTemplate, CType(e.Item.DataItem, BlogInfo).Title, CType(e.Item.DataItem, BlogInfo).BlogPostCount)
@@ -125,17 +146,18 @@ Partial Class BlogList
     If lstBlogChildren.Items.Count > 0 Then
      trBlogChildren.Visible = True
      tdBlogChildren.Controls.Add(lstBlogChildren)
-     lnkBlogIcon.ImageUrl = "~/desktopmodules/Blog/Images/folder_opened.gif"
+     lnkBlogLinkIcon.ImageUrl = "~/desktopmodules/Blog/Images/folder_opened.gif"
      lstBlogChildren.Visible = True
     End If
    Else
     If CType(e.Item.DataItem, BlogInfo).ChildBlogCount > 0 Then
-     lnkBlogIcon.ImageUrl = "~/desktopmodules/Blog/Images/folder_closed.gif"
+     lnkBlogLinkIcon.ImageUrl = "~/desktopmodules/Blog/Images/folder_closed.gif"
     End If
    End If
   ElseIf Not lnkBlog Is Nothing Then
    lnkBlog.NavigateUrl = NavigateURL()
   End If
+
  End Sub
 
 
@@ -156,51 +178,8 @@ Partial Class BlogList
   lnkChildBlog.Text = String.Format(m_BlogTitleStringTemplate, CType(e.Item.DataItem, BlogInfo).Title, CType(e.Item.DataItem, BlogInfo).BlogPostCount)
 
  End Sub
-
- '#If DEBUG Then
- '        Private Sub testCustomUpgrade()
- '            Dim _CustomUpgrade As New CustomUpgrade
- '            Dim message As String = _CustomUpgrade.UpgradeNewBlog()
-
- '        End Sub
- '#End If
-
 #End Region
 
-#Region " Web Form Designer Generated Code "
-
- 'This call is required by the Web Form Designer.
- <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-
- End Sub
-
-
- 'NOTE: The following placeholder declaration is required by the Web Form Designer.
- 'Do not delete or move it.
- Private designerPlaceholderDeclaration As System.Object
-
- Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
-  'CODEGEN: This method call is required by the Web Form Designer
-  'Do not modify it using the code editor.
-  InitializeComponent()
-
-  ' 11/19/2008 Rip Rowan replaced deprecated code
-  'If DotNetNuke.Security.PortalSecurity.HasEditPermissions(Me.ModuleId) Then
-
-  If DotNetNuke.Security.PortalSecurity.HasNecessaryPermission(Security.SecurityAccessLevel.Edit, PortalSettings, ModuleConfiguration) Then
-   m_oBlog = m_oBlogController.GetBlogByUserID(Me.PortalId, Me.UserId)
-   If m_oBlog Is Nothing Then
-    MyBase.Actions.Add(GetNextActionID, Localization.GetString("msgCreateBlog", LocalResourceFile), "", Url:=EditUrl("", "", "Edit_Blog"), Secure:=DotNetNuke.Security.SecurityAccessLevel.View, Visible:=True)
-   Else
-    MyBase.Actions.Add(GetNextActionID, Localization.GetString("msgEditBlogSettings", LocalResourceFile), "", Url:=EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Blog"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Edit, Visible:=True)
-    MyBase.Actions.Add(GetNextActionID, Localization.GetString("msgAddBlogEntry", LocalResourceFile), "", Url:=EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Entry"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Edit, Visible:=True)
-   End If
-   If ForumBlog.Utils.isForumBlogInstalled(PortalId, TabId, False) Then
-    MyBase.Actions.Add(GetNextActionID, "Import Blog", "", Url:=EditUrl("Blog_Import"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Admin, Visible:=True)
-   End If
-  End If
- End Sub
-#End Region
 End Class
 
 

@@ -1,6 +1,6 @@
 '
 ' DotNetNuke -  http://www.dotnetnuke.com
-' Copyright (c) 2002-2005
+' Copyright (c) 2002-2010
 '' by Perpetual Motion Interactive Systems Inc. ( http://www.perpetualmotion.ca )
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 

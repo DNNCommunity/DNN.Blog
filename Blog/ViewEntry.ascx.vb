@@ -1,6 +1,6 @@
 '
 ' DotNetNuke -  http://www.dotnetnuke.com
-' Copyright (c) 2002-2005
+' Copyright (c) 2002-2010
 ' by Perpetual Motion Interactive Systems Inc. ( http://www.perpetualmotion.ca )
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -661,8 +661,9 @@ Partial Class ViewEntry
 
   'Initialize the CSS for ShareBadge
   If Not Page.ClientScript.IsClientScriptBlockRegistered("SB_PRO_CSS") Then
-   Dim SbProCss As String = "<link rel=""stylesheet"" href=""" & ModulePath & "ShareBadge/css/ShareBadge.css"" type=""text/css"" />"
-   Page.ClientScript.RegisterClientScriptBlock(Me.GetType(), "SB_PRO_CSS", SbProCss)
+   CType(Me.Page, DotNetNuke.Framework.CDefault).AddStyleSheet("SB_PRO_CSS", ModulePath & "ShareBadge/css/ShareBadge.css", False)
+   'Dim SbProCss As String = "<link rel=""stylesheet"" href=""" & ModulePath & "ShareBadge/css/ShareBadge.css"" type=""text/css"" />"
+   'Page.ClientScript.RegisterClientScriptBlock(Me.GetType(), "SB_PRO_CSS", SbProCss)
   End If
 
   'Display the Bookmarks Toolbar

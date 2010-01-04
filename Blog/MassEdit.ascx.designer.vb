@@ -13,7 +13,6 @@ Option Explicit On
 
 
 
-
 Partial Public Class MassEdit
 
  '''<summary>
@@ -33,5 +32,13 @@ Partial Public Class MassEdit
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
  Protected WithEvents Pagecontrol As Global.DotNetNuke.UI.WebControls.PagingControl
-End Class
 
+ '''<summary>
+ '''btnBack control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents btnBack As Global.DotNetNuke.UI.WebControls.CommandButton
+End Class

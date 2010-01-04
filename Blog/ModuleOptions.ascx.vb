@@ -1,6 +1,6 @@
 '
 ' DotNetNuke -  http://www.dotnetnuke.com
-' Copyright (c) 2002-2005
+' Copyright (c) 2002-2010
 ' by Perpetual Motion Interactive Systems Inc. ( http://www.perpetualmotion.ca )
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -91,16 +91,11 @@ Partial Class ModuleOptions
 
     Dim li As ListItem
     For Each li In rblDefaultImage.Items
-     If li.Value = "" Then li.Text = "<img src=""" + ModulePath + "images/grayman.png"" align=""middle""/> " + _
-         Localization.GetString("liGrayMan.Text", LocalResourceFile)
-     If li.Value = "identicon" Then li.Text = "<img src=""" + ModulePath + "images/identicon.png"" align=""middle""/> " + _
-         Localization.GetString("liIdenticon.Text", LocalResourceFile)
-     If li.Value = "wavatar" Then li.Text = "<img src=""" + ModulePath + "images/wavatar.png"" align=""middle""/> " + _
-         Localization.GetString("liWavatar.Text", LocalResourceFile)
-     If li.Value = "monsterid" Then li.Text = "<img src=""" + ModulePath + "images/monsterid.png"" align=""middle""/> " + _
-         Localization.GetString("liMonsterID.Text", LocalResourceFile)
-     If li.Value = "custom" Then li.Text = "<img src=""" + ModulePath + "images/yourimagehere.png"" align=""middle""/> " + _
-         Localization.GetString("liCustom.Text", LocalResourceFile)
+     If li.Value = "" Then li.Text = "<img src=""" + ModulePath + "images/grayman.png"" alt=""" & Localization.GetString("liGrayMan.Text", LocalResourceFile) & """ align=""middle""/> " & Localization.GetString("liGrayMan.Text", LocalResourceFile)
+     If li.Value = "identicon" Then li.Text = "<img src=""" + ModulePath + "images/identicon.png"" alt=""" & Localization.GetString("liIdenticon.Text", LocalResourceFile) & """ align=""middle""/> " & Localization.GetString("liIdenticon.Text", LocalResourceFile)
+     If li.Value = "wavatar" Then li.Text = "<img src=""" + ModulePath + "images/wavatar.png"" alt=""" & Localization.GetString("liWavatar.Text", LocalResourceFile) & """ align=""middle""/> " & Localization.GetString("liWavatar.Text", LocalResourceFile)
+     If li.Value = "monsterid" Then li.Text = "<img src=""" + ModulePath + "images/monsterid.png"" alt=""" & Localization.GetString("liMonsterID.Text", LocalResourceFile) & """ align=""middle""/> " & Localization.GetString("liMonsterID.Text", LocalResourceFile)
+     If li.Value = "custom" Then li.Text = "<img src=""" + ModulePath + "images/yourimagehere.png"" alt=""" & Localization.GetString("liCustom.Text", LocalResourceFile) & """ align=""middle""/> " & Localization.GetString("liCustom.Text", LocalResourceFile)
     Next
 
 

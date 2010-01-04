@@ -14,7 +14,7 @@
     <MyType>Custom</MyType>
     <OptionExplicit>On</OptionExplicit>
     <OptionCompare>Binary</OptionCompare>
-    <OptionStrict>Off</OptionStrict>
+    <OptionStrict>On</OptionStrict>
     <OptionInfer>On</OptionInfer>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -165,6 +165,7 @@
     </Compile>
     <Compile Include="Components\Blogger\IBlogger.vb" />
     <Compile Include="Components\BlogSettings.vb" />
+    <Compile Include="Components\TagViewSettings.vb" />
     <Compile Include="Components\Data\SqlDataProvider.vb" />
     <Compile Include="Components\Globals.vb" />
     <Compile Include="Components\MetaWeblog\IMetaWeblog.vb" />
@@ -333,6 +334,8 @@
     <Content Include="App_LocalResources\ViewCategories.ascx.resx" />
     <Content Include="App_LocalResources\ViewEntry.ascx.resx" />
     <Content Include="App_LocalResources\SharedResources.ascx.resx" />
+    <Content Include="App_LocalResources\ViewTagsSettings.ascx.resx" />
+    <Content Include="App_LocalResources\MassEdit.ascx.resx" />
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>

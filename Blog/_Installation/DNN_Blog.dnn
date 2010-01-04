@@ -6,7 +6,7 @@
       <friendlyname>Blog</friendlyname>
       <foldername>Blog</foldername>
       <modulename>Blog</modulename>
-      <description>Blog Module for DNN 3.X and 4.x</description>
+      <description>Blog Module for DotNetNuke</description>
       <version>04.00.00</version>
       <businesscontrollerclass>DotNetNuke.Modules.Blog.Business.InterfaceController, DotNetNuke.Modules.Blog</businesscontrollerclass>
       <resourcefile>Resources.zip</resourcefile>
@@ -44,6 +44,12 @@
               <src>DesktopModules/Blog/EditBlog.ascx</src>
               <type>Edit</type>
             </control>
+            <control>
+              <key>Mass_Edit</key>
+              <title>Mass Edit</title>
+              <src>DesktopModules/Blog/MassEdit.ascx</src>
+              <type>Edit</type>
+            </control>
           </controls>
         </module>
         <module>
@@ -65,6 +71,12 @@
               <key>Edit_Blog</key>
               <title>Edit Blog</title>
               <src>DesktopModules/Blog/EditBlog.ascx</src>
+              <type>Edit</type>
+            </control>
+            <control>
+              <key>Blog_Import</key>
+              <title>Import Blog</title>
+              <src>DesktopModules/Blog/BlogImport.ascx</src>
               <type>Edit</type>
             </control>
           </controls>
@@ -127,6 +139,23 @@
               <key>Edit</key>
               <title>Edit Categories</title>
               <src>DesktopModules/Blog/EditCategories.ascx</src>
+              <type>Edit</type>
+            </control>
+          </controls>
+        </module>
+        <module>
+          <friendlyname>Blog_Tags</friendlyname>
+          <cachetime>-1</cachetime>
+          <controls>
+            <control>
+              <title>View Tags</title>
+              <src>DesktopModules/Blog/ViewTags.ascx</src>
+              <type>View</type>
+            </control>
+            <control>
+              <key>Settings</key>
+              <title>Tags Settings</title>
+              <src>DesktopModules/Blog/ViewTagsSettings.ascx</src>
               <type>Edit</type>
             </control>
           </controls>

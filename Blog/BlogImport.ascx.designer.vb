@@ -11,10 +11,7 @@
 Option Strict On
 Option Explicit On
 
-
-
-
-Partial Public Class Test
+Partial Public Class BlogImport
 
  '''<summary>
  '''lstBlogs control.

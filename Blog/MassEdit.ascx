@@ -5,19 +5,19 @@
   <table>
    <tr>
     <th width="35%">
-     Title
+     <asp:Label runat="server" ID="lblTitle" resourcekey="lblTitle" />
     </th>
     <th width="25%">
-     Category
+     <asp:Label runat="server" ID="lblCategory" resourcekey="lblCategory" />
     </th>
     <th width="25%">
-     Tags
+     <asp:Label runat="server" ID="lblTags" resourcekey="lblTags" />
     </th>
     <th>
-     Pub
+     <asp:Label runat="server" ID="lblPub" resourcekey="lblPub" />
     </th>
     <th>
-     Cmts
+     <asp:Label runat="server" ID="lblCmts" resourcekey="lblCmts" />
     </th>
    </tr>
  </HeaderTemplate>
@@ -42,9 +42,9 @@
     <asp:CheckBox ID="cbComments" runat="server" Checked='<%# Eval("AllowComments") %>' />
    </td>
    <td>
-    <asp:LinkButton ID="btnEditCmd" Visible="true" CommandName="Edit" runat="server" Text="Edit" />
-    <asp:LinkButton ID="btnSaveCmd" Visible="false" CommandName="Save" runat="server" CommandArgument='<%# Eval("EntryID") %>' Text="Save" />
-    <asp:LinkButton ID="btnCancelCmd" Visible="false" CommandName="Cancel" runat="server" text="Cancel"/>
+    <asp:LinkButton ID="btnEditCmd" Visible="true" CommandName="Edit" runat="server" Text="Edit" resourcekey="btnEditCmd" />
+    <asp:LinkButton ID="btnSaveCmd" Visible="false" CommandName="Save" runat="server" CommandArgument='<%# Eval("EntryID") %>' Text="Save" resourcekey="btnSaveCmd" />
+    <asp:LinkButton ID="btnCancelCmd" Visible="false" CommandName="Cancel" runat="server" text="Cancel" resourcekey="btnCancelCmd" />
    </td>
   </tr>
  </ItemTemplate>
@@ -53,3 +53,6 @@
  </FooterTemplate>
 </asp:Repeater>
 <dnn:PagingControl id="Pagecontrol" runat="server" />
+<p style="margin-top: 30px;">
+	<dnn:commandbutton class="CommandButton" id="btnBack" resourcekey="btnBack" runat="server" ImageUrl="~/images/lt.gif" causesvalidation="False" />
+</p>

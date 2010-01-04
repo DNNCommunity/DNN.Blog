@@ -1,6 +1,6 @@
 ﻿'
 ' DotNetNuke -  http://www.dotnetnuke.com
-' Copyright (c) 2002-2005
+' Copyright (c) 2002-2010
 ' by Perpetual Motion Interactive Systems Inc. ( http://www.perpetualmotion.ca )
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -24,14 +24,10 @@ Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Services.Localization
 
-
-
-
 Partial Class MassEdit
  Inherits BlogModuleBase
 
-
-#Region "Private member"
+#Region " Private Members "
  Private m_oBlogController As New BlogController
  Private m_oBlog As BlogInfo
  Private m_dBlogDate As Date = Date.UtcNow
@@ -39,13 +35,36 @@ Partial Class MassEdit
  Private m_PersonalBlogID As Integer
 #End Region
 
-#Region "Event Handlers"
+#Region " Event Handlers "
+ Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+
+  m_oBlog = m_oBlogController.GetBlogFromContext()
+  m_PersonalBlogID = BlogSettings.PageBlogs
+
+  If m_PersonalBlogID <> -1 And m_oBlog Is Nothing Then
+   Dim objBlog As New BlogController
+   m_oBlog = objBlog.GetBlog(m_PersonalBlogID)
+   'ModuleConfiguration.ModuleTitle = m_oBlog.Title
+  End If
+  If Not m_oBlog Is Nothing Then
+
+   If Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
+    MyActions.Add(GetNextActionID, Localization.GetString("msgEditBlogSettings", LocalResourceFile), "", Url:=EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Blog"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Edit, Visible:=True)
+    MyActions.Add(GetNextActionID, Localization.GetString("msgAddBlogEntry", LocalResourceFile), "", Url:=EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Entry"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Edit, Visible:=True)
+    MyActions.Add(GetNextActionID, Localization.GetString("msgMassEdit", LocalResourceFile), "", Url:=EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Mass_Edit"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Edit, Visible:=True)
+   End If
+  End If
+  MyActions.Add(GetNextActionID, Localization.GetString("msgModuleOptions", LocalResourceFile), "", Url:=EditUrl("", "", "Module_Options"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Admin, Visible:=True)
+  Me.ModuleConfiguration.SupportedFeatures = 0
+
+ End Sub
+
  Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
   Try
 
    Dim objEntries As New EntryController
-            Dim list As ArrayList
-            Dim currentpage As Integer
+   Dim list As ArrayList
+   Dim currentpage As Integer
 
    If Not Page.IsPostBack Then
     If m_oBlog Is Nothing Then
@@ -55,31 +74,31 @@ Partial Class MassEdit
      list = objEntries.ListEntriesByBlog(m_oBlog.BlogID, m_dBlogDate, Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId), Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId), 10000)
     End If
 
-                Dim PageSize = 20 'Display 20 items per page
+    Dim PageSize As Integer = 20 'Display 20 items per page
 
-                'Get the currentpage index from the url parameter  
-                If Request.QueryString("currentpage") IsNot Nothing Then
-                    currentpage = CInt(Request.QueryString("currentpage"))
-                Else
-                    currentpage = 1
-                End If
+    'Get the currentpage index from the url parameter  
+    If Request.QueryString("currentpage") IsNot Nothing Then
+     currentpage = CInt(Request.QueryString("currentpage"))
+    Else
+     currentpage = 1
+    End If
 
-                Dim objPagedDataSource As New PagedDataSource
-                objPagedDataSource.DataSource = list
-                objPagedDataSource.PageSize = PageSize
-                objPagedDataSource.CurrentPageIndex = currentpage - 1
-                objPagedDataSource.AllowPaging = True
+    Dim objPagedDataSource As New PagedDataSource
+    objPagedDataSource.DataSource = list
+    objPagedDataSource.PageSize = PageSize
+    objPagedDataSource.CurrentPageIndex = currentpage - 1
+    objPagedDataSource.AllowPaging = True
 
-                With Pagecontrol
-                    .TotalRecords = list.Count
-                    .PageSize = PageSize
-                    .CurrentPage = currentpage
-                    .TabID = TabId
-                    .QuerystringParams = "ctl/Mass_Edit/mid/" + Me.ModuleId.ToString + "/"
-                End With
+    With Pagecontrol
+     .TotalRecords = list.Count
+     .PageSize = PageSize
+     .CurrentPage = currentpage
+     .TabID = TabId
+     .QuerystringParams = "ctl/Mass_Edit/mid/" + Me.ModuleId.ToString + "/"
+    End With
 
-                rptEdit.DataSource = objPagedDataSource
-                rptEdit.DataBind()
+    rptEdit.DataSource = objPagedDataSource
+    rptEdit.DataBind()
 
    End If
 
@@ -87,13 +106,33 @@ Partial Class MassEdit
    ProcessModuleLoadException(Me, exc)
   End Try
  End Sub
+
+ Protected Sub rptEdit_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.RepeaterCommandEventArgs) Handles rptEdit.ItemCommand
+  If (e.Item.ItemType = ListItemType.Item Or e.Item.ItemType = ListItemType.AlternatingItem) Then
+
+   If e.CommandName = "Edit" Then
+    SetEdit(e)
+   End If
+
+   If e.CommandName = "Save" Then
+    SaveItem(e)
+   End If
+
+   If e.CommandName = "Cancel" Then
+    RptEditDisable()
+   End If
+  End If
+
+ End Sub
+
+ Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
+
+  Response.Redirect(NavigateURL(), False)
+
+ End Sub
 #End Region
 
-#Region "Public Methods"
-
-#End Region
-
-#Region "Private Methods"
+#Region " Private Methods "
  Private Sub rptEdit_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.RepeaterItemEventArgs) Handles rptEdit.ItemDataBound
 
   If (e.Item.ItemType = ListItemType.Item Or e.Item.ItemType = ListItemType.AlternatingItem) Then
@@ -142,65 +181,7 @@ Partial Class MassEdit
 
  End Sub
 
-#End Region
-
-#Region " Web Form Designer Generated Code "
-
- 'This call is required by the Web Form Designer.
- <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-
- End Sub
-
- 'NOTE: The following placeholder declaration is required by the Web Form Designer.
- 'Do not delete or move it.
- Private designerPlaceholderDeclaration As System.Object
-
- Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
-  'CODEGEN: This method call is required by the Web Form Designer
-  'Do not modify it using the code editor.
-  InitializeComponent()
-
-  m_oBlog = m_oBlogController.GetBlogFromContext()
-  m_PersonalBlogID = BlogSettings.PageBlogs
-
-  If m_PersonalBlogID <> -1 And m_oBlog Is Nothing Then
-   Dim objBlog As New BlogController
-   m_oBlog = objBlog.GetBlog(m_PersonalBlogID)
-   'ModuleConfiguration.ModuleTitle = m_oBlog.Title
-  End If
-  If Not m_oBlog Is Nothing Then
-
-   If Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
-    MyActions.Add(GetNextActionID, Localization.GetString("msgEditBlogSettings", LocalResourceFile), "", Url:=EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Blog"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Edit, Visible:=True)
-    MyActions.Add(GetNextActionID, Localization.GetString("msgAddBlogEntry", LocalResourceFile), "", Url:=EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Entry"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Edit, Visible:=True)
-    MyActions.Add(GetNextActionID, Localization.GetString("msgMassEdit", LocalResourceFile), "", Url:=EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Mass_Edit"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Edit, Visible:=True)
-   End If
-  End If
-  MyActions.Add(GetNextActionID, Localization.GetString("msgModuleOptions", LocalResourceFile), "", Url:=EditUrl("", "", "Module_Options"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Admin, Visible:=True)
-  Me.ModuleConfiguration.SupportedFeatures = 0
- End Sub
-
-#End Region
-
- Protected Sub rptEdit_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.RepeaterCommandEventArgs) Handles rptEdit.ItemCommand
-  If (e.Item.ItemType = ListItemType.Item Or e.Item.ItemType = ListItemType.AlternatingItem) Then
-
-   If e.CommandName = "Edit" Then
-    SetEdit(e)
-   End If
-
-   If e.CommandName = "Save" Then
-    SaveItem(e)
-   End If
-
-   If e.CommandName = "Cancel" Then
-    RptEditDisable()
-   End If
-  End If
-
- End Sub
-
- Sub SaveItem(ByVal e As System.Web.UI.WebControls.RepeaterCommandEventArgs)
+ Private Sub SaveItem(ByVal e As System.Web.UI.WebControls.RepeaterCommandEventArgs)
 
   Dim item As RepeaterItem = e.Item
   Dim tbTitle As TextBox = CType(item.FindControl("tbTitle"), TextBox)
@@ -236,8 +217,7 @@ Partial Class MassEdit
 
  End Sub
 
-
- Sub SetEdit(ByVal e As System.Web.UI.WebControls.RepeaterCommandEventArgs)
+ Private Sub SetEdit(ByVal e As System.Web.UI.WebControls.RepeaterCommandEventArgs)
 
   Dim item As RepeaterItem = e.Item
 
@@ -269,7 +249,7 @@ Partial Class MassEdit
 
  End Sub
 
- Sub RptEditDisable()
+ Private Sub RptEditDisable()
 
   Dim litTags As Literal
   Dim tbTags As TextBox
@@ -309,6 +289,7 @@ Partial Class MassEdit
    cbComments.Enabled = False
   Next
  End Sub
+#End Region
 
 End Class
 

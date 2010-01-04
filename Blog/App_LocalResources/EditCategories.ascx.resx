@@ -150,4 +150,10 @@
   <data name="lblPortalCategories.Text" xml:space="preserve">
     <value>Portal Categories</value>
   </data>
+  <data name="btnBack.Text" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="reqCategory.Error" xml:space="preserve">
+    <value>A category name is required</value>
+  </data>
 </root>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -177,12 +177,12 @@
     <value>Edit Entry</value>
   </data>
   <data name="lnkReadMore.Text" xml:space="preserve">
-    <value>&lt;p&gt;Read More &amp;raquo;&lt;/p&gt;</value>
+    <value>Read More &amp;raquo;</value>
   </data>
   <data name="lnkMoreSearch.Text" xml:space="preserve">
     <value>Read More &amp;raquo;</value>
   </data>
   <data name="msgMassEdit.Text" xml:space="preserve">
-    <value>Mass Edit</value>
+    <value>Mass Edit Blog Posts</value>
   </data>
 </root>

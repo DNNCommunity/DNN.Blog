@@ -1,6 +1,4 @@
-﻿Imports DotNetNuke.Entities.Modules
-
-'
+﻿'
 ' DotNetNuke -  http://www.dotnetnuke.com
 ' Copyright (c) 2002-2010
 ' by Perpetual Motion Interactive Systems Inc. ( http://www.perpetualmotion.ca )
@@ -19,6 +17,8 @@
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 ' DEALINGS IN THE SOFTWARE.
 '-------------------------------------------------------------------------
+
+Imports DotNetNuke.Entities.Modules
 
 Public Enum RssViews
  None = 0

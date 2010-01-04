@@ -29,7 +29,7 @@ set @portalid = 1
 
 --------------------------------
 
-delete from {databaseOwner}{objectQualifier}blog_categories
+delete from {databaseOwner}{objectQualifier}blog_categories where portalid=@portalid
 
 delete from {databaseOwner}{objectQualifier}blog_entry_categories
 
@@ -54,3 +54,4 @@ update {databaseOwner}{objectQualifier}blog_entries set blogid = parentblogid
 delete from {databaseOwner}{objectQualifier}blog_blogs
 	where portalid = @portalid
 	and parentblogid > 0
+	

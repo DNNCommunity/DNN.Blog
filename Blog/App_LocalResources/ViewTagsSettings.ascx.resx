@@ -117,36 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="msgAddBlogEntry.Text" xml:space="preserve">
-    <value>Add Blog Entry</value>
+  <data name="ControlTitle_settings.Text" xml:space="preserve">
+    <value>Blog Tag Settings</value>
   </data>
-  <data name="msgEditBlogSettings.Text" xml:space="preserve">
-    <value>Edit Blog Settings</value>
+  <data name="optTagCloud.Text" xml:space="preserve">
+    <value>Tag Cloud</value>
   </data>
-  <data name="msgRSSFeedNotFound.Text" xml:space="preserve">
-    <value>RSS Feed not found.</value>
-  </data>
-  <data name="ModuleHelp.Text" xml:space="preserve">
-    <value>&lt;h1&gt;Blog - Blog List&lt;/h1&gt;
-&lt;p&gt;Here a list of the public blogs is displayed. Entries can be filtered by a specific blog clicking on the blog's name. Child blogs are listed nested under the respective parent blog.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Parent blogs&lt;/b&gt;&lt;br /&gt;Parent blogs are listed it the root position of the display tree preceded by a small square. Click on a parent blog to display only entries belonging to that blog.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Child blogs&lt;/b&gt;&lt;br /&gt;Child blogs are displayed nesetd under the respective parent blog and are preceded by a small triangle. Click on a child blog to display only entries belonging to that blog.&lt;/p&gt;
-        </value>
-  </data>
-  <data name="lnkBlog.Text" xml:space="preserve">
-    <value>View All Recent Entries</value>
-  </data>
-  <data name="msgCreateBlog.Text" xml:space="preserve">
-    <value>Create Blog</value>
-  </data>
-  <data name="msgNoBlogsInPortal.Text" xml:space="preserve">
-    <value>There are no blogs in this portal.</value>
-  </data>
-  <data name="msgNoCategriesInBlog.Text" xml:space="preserve">
-    <value>There are no categories in this blog.</value>
-  </data>
-  <data name="BlogTitleStringTemplate.Text" xml:space="preserve">
-    <value>{0} ({1})</value>
-  </data>
-  <data name="msgImportBlog.Text" xml:space="preserve">
-    <value>Import Blog</value>
+  <data name="optTagList.Text" xml:space="preserve">
+    <value>Tag List</value>
   </data>
 </root>

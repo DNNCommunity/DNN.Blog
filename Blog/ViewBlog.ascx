@@ -3,16 +3,16 @@
  <asp:Panel ID="pnlBlogInfo" Visible="False" runat="server">
   <table class="BlogInfo" cellspacing="1" cellpadding="1" width="100%" border="0">
    <tr>
-    <td class="blog_Description_Heavy" nowrap align="right" width="20">
+    <td class="blog_Description_Heavy" align="right" width="20" style="white-space: nowrap;">
      <asp:Label ID="lblAuthorHeader" runat="server" ResourceKey="lblAuthorHeader" />
     </td>
-    <td nowrap>
+    <td style="white-space: nowrap;">
      <asp:Label ID="lblAuthor" runat="server" CssClass="blog_Description" />
     </td>
-    <td class="blog_Description_Heavy" nowrap align="right" width="20">
+    <td class="blog_Description_Heavy" align="right" width="20" style="white-space: nowrap;">
      <asp:Label ID="lblCreatedHeader" runat="server" ResourceKey="lblCreatedHeader" />
     </td>
-    <td nowrap>
+    <td style="white-space: nowrap;">
      <asp:Label ID="lblCreated" runat="server" CssClass="blog_Description" />
     </td>
     <td align="right">
@@ -53,7 +53,7 @@
      <asp:Label ID="lblPublished" runat="server" Visible="False" CssClass="NormalRed" ResourceKey="lblPublished">
 						<p>This entry has not been published.</p>
      </asp:Label>
-     <asp:Label runat="server" ID="lblDescription" />
+     <asp:Literal runat="server" ID="lblDescription" />
      <asp:HyperLink ID="lnkReadMore" runat="server" ResourceKey="lnkReadMore" CssClass="blog_more_link" />
     </p>
     <div class="blog_footer">
@@ -77,7 +77,7 @@
   <ItemTemplate>
    <table border="0" cellpadding="1" cellspacing="0" width="100%">
     <tr>
-     <td class="SubHead" nowrap="nowrap">
+     <td class="SubHead" style="white-space: nowrap;">
       <asp:HyperLink CssClass="SubHead" ID="lnkEntryTitle" runat="server">
 							<%# Server.HtmlDecode(DataBinder.Eval(Container.DataItem, "EntryTitle")) %>
       </asp:HyperLink>

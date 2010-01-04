@@ -1,6 +1,6 @@
 '
 ' DotNetNuke -  http://www.dotnetnuke.com
-' Copyright (c) 2002-2005
+' Copyright (c) 2002-2010
 ' by Perpetual Motion Interactive Systems Inc. ( http://www.perpetualmotion.ca )
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -101,7 +101,7 @@ Partial Class EditEntry
      txtEntryDate.Text = Utility.FormatDate(m_oEntry.AddedDate, m_oBlog.Culture, m_oBlog.DateFormat, m_oBlog.TimeZone)
      txtTitle.Text = m_oEntry.Title
      If BlogSettings.AllowSummaryHtml Then
-     txtDescription.Text = m_oEntry.Description
+      txtDescription.Text = m_oEntry.Description
      Else
       txtDescription.Visible = False
       txtDescriptionText.Visible = True
