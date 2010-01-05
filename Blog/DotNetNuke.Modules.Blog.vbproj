@@ -263,6 +263,20 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Components\Rss\BlogRssFeed.vb" />
+    <Compile Include="RecentComments.ascx.designer.vb">
+      <DependentUpon>RecentComments.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="RecentComments.ascx.vb">
+      <DependentUpon>RecentComments.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="RecentCommentsSettings.ascx.designer.vb">
+      <DependentUpon>RecentCommentsSettings.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="RecentCommentsSettings.ascx.vb">
+      <DependentUpon>RecentCommentsSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Search.ascx.designer.vb">
       <DependentUpon>Search.ascx</DependentUpon>
     </Compile>
@@ -336,6 +350,8 @@
     <Content Include="App_LocalResources\SharedResources.ascx.resx" />
     <Content Include="App_LocalResources\ViewTagsSettings.ascx.resx" />
     <Content Include="App_LocalResources\MassEdit.ascx.resx" />
+    <Content Include="App_LocalResources\RecentComments.ascx.resx" />
+    <Content Include="App_LocalResources\RecentCommentsSettings.ascx.resx" />
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
@@ -354,6 +370,8 @@
     <Content Include="js\jquery.min.js" />
     <Content Include="js\md5.js" />
     <Content Include="js\tag.js" />
+    <Content Include="RecentComments.ascx" />
+    <Content Include="RecentCommentsSettings.ascx" />
     <Content Include="ShareBadge\css\ShareBadge.css" />
     <Content Include="ShareBadge\js\ShareBadgeChicklets.js" />
     <Content Include="ShareBadge\js\ShareBadgePro.js" />
