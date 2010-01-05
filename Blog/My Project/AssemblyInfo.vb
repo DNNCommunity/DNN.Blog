@@ -28,10 +28,10 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("DotNetNuke.Modules.Blog")> 
-<Assembly: AssemblyDescription("ASP.NET Open Source Portal Application")> 
-<Assembly: AssemblyCompany("Perpetual Motion Interactive Systems Inc.")> 
+<Assembly: AssemblyDescription("Blog Module for DotNetNuke(R)")> 
+<Assembly: AssemblyCompany("DotNetNuke Inc.")> 
 <Assembly: AssemblyProduct("http://www.dotnetnuke.com")> 
-<Assembly: AssemblyCopyright("Portal engine source code is copyright 2002-2005 by DotNetNuke. All Rights Reserved")> 
+<Assembly: AssemblyCopyright("Copyright 2002-2010 by DotNetNuke. All Rights Reserved")> 
 <Assembly: AssemblyTrademark("DotNetNuke")> 
 <Assembly: CLSCompliant(True)> 
 
