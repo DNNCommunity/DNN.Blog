@@ -38,6 +38,18 @@ Namespace Business
 
   End Function
 
+  Public Function ListCommentsByBlog(ByVal BlogID As Integer, ByVal Approved As Boolean, ByVal MaximumComments As Integer) As List(Of CommentInfo)
+
+   Return CBO.FillCollection(Of CommentInfo)(DataProvider.Instance().ListCommentsByBlog(BlogID, Approved, MaximumComments))
+
+  End Function
+
+  Public Function ListCommentsByPortal(ByVal PortalID As Integer, ByVal Approved As Boolean, ByVal MaximumComments As Integer) As List(Of CommentInfo)
+
+   Return CBO.FillCollection(Of CommentInfo)(DataProvider.Instance().ListCommentsByPortal(PortalID, Approved, MaximumComments))
+
+  End Function
+
   Public Function AddComment(ByVal objComment As CommentInfo) As Integer
 
    Return CType(DataProvider.Instance().AddComment(objComment.EntryID, objComment.UserID, objComment.Title, objComment.Comment, objComment.Author, objComment.Approved, objComment.Website, objComment.Email), Integer)

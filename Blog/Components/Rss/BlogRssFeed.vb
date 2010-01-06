@@ -53,7 +53,7 @@ Namespace Rss
   Private _locale As String = Threading.Thread.CurrentThread.CurrentCulture.Name
   Private _portalSettings As DotNetNuke.Entities.Portals.PortalSettings
   Private _useFriendlyUrls As Boolean = False
-  Private _blogSettings As BlogSettings = Nothing
+  Private _blogSettings As Settings.BlogSettings = Nothing
   Private _userId As Integer = -1
   Private _moduleId As Integer = -1
   Private _tabId As Integer = -1
@@ -78,7 +78,7 @@ Namespace Rss
   Public Sub New(ByVal ModuleConfiguration As DotNetNuke.Entities.Modules.ModuleInfo, ByVal Request As HttpRequest, ByVal RssView As RssViews)
 
    ' Set variables
-   _blogSettings = BlogSettings.GetBlogSettings(ModuleConfiguration.PortalID, ModuleConfiguration.TabID)
+   _blogSettings = Settings.BlogSettings.GetBlogSettings(ModuleConfiguration.PortalID, ModuleConfiguration.TabID)
    _moduleId = ModuleConfiguration.ModuleID
    _tabId = ModuleConfiguration.TabID
    _rssView = RssView

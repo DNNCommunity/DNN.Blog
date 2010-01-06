@@ -19,24 +19,27 @@
 '-------------------------------------------------------------------------
 
 Imports System
+Imports DotNetNuke.Services.Tokens
+Imports DotNetNuke.Common.Utilities
 
 Namespace Business
 
  Public Class CommentInfo
+  Implements IPropertyAccess
 
 #Region "local property declarations"
-  Dim _commentID As Integer
-  Dim _EntryID As Integer
-  Dim _email As String
-  Dim _Title As String
-  Dim _comment As String
-  Dim _addedDate As DateTime
-  Dim _userID As Integer
-  Dim _userName As String
-  Dim _userFullName As String
-  Dim _Author As String
-  Dim _Approved As Boolean
-  Dim _Website As String
+  Private _commentID As Integer
+  Private _EntryID As Integer
+  Private _email As String
+  Private _Title As String
+  Private _comment As String
+  Private _addedDate As DateTime
+  Private _userID As Integer
+  Private _userName As String
+  Private _userFullName As String
+  Private _Author As String
+  Private _Approved As Boolean
+  Private _Website As String
 #End Region
 
 #Region "Constructors"
@@ -167,6 +170,54 @@ Namespace Business
    End Set
   End Property
 #End Region
+
+  Public ReadOnly Property Cacheability() As Services.Tokens.CacheLevel Implements Services.Tokens.IPropertyAccess.Cacheability
+   Get
+    Return CacheLevel.fullyCacheable
+   End Get
+  End Property
+
+  Public Function GetProperty(ByVal strPropertyName As String, ByVal strFormat As String, ByVal formatProvider As System.Globalization.CultureInfo, ByVal AccessingUser As Entities.Users.UserInfo, ByVal AccessLevel As Services.Tokens.Scope, ByRef PropertyNotFound As Boolean) As String Implements Services.Tokens.IPropertyAccess.GetProperty
+
+   Dim OutputFormat As String = String.Empty
+   If strFormat = String.Empty Then
+    OutputFormat = "D"
+   Else
+    OutputFormat = strFormat
+   End If
+
+
+
+   Select Case strPropertyName.ToLower
+    Case "commentid"
+     Return (Me.CommentID.ToString(OutputFormat, formatProvider))
+    Case "email"
+     Return PropertyAccess.FormatString(Me.UserName, strFormat)
+    Case "entryid"
+     Return (Me.EntryID.ToString(OutputFormat, formatProvider))
+    Case "title"
+     Return PropertyAccess.FormatString(Me.Title, strFormat)
+    Case "comment"
+     Return PropertyAccess.FormatString(Me.Comment, strFormat)
+    Case "addeddate"
+     Return (Me.AddedDate.ToString(OutputFormat, formatProvider))
+    Case "userid"
+     Return (Me.UserID.ToString(OutputFormat, formatProvider))
+    Case "username"
+     Return PropertyAccess.FormatString(Me.UserName, strFormat)
+    Case "userfullname"
+     Return PropertyAccess.FormatString(Me.UserFullName, strFormat)
+    Case "author"
+     Return PropertyAccess.FormatString(Me.Author, strFormat)
+    Case "approved"
+     Return PropertyAccess.Boolean2LocalizedYesNo(Me.Approved, formatProvider)
+    Case "website"
+     Return PropertyAccess.FormatString(Me.Website, strFormat)
+    Case Else
+     PropertyNotFound = True
+   End Select
+   Return Null.NullString
+  End Function
 
  End Class
 

@@ -76,14 +76,14 @@ Namespace MetaWeblog
   ''' <param name="portalSettings"></param>
   ''' <returns></returns>
   ''' <param name="providerKey"></param>
-  Function GetModulesForUser(ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal providerKey As String) As ModuleInfoStruct()
+  Function GetModulesForUser(ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal providerKey As String) As ModuleInfoStruct()
 
   ' Note in the blog module, moduleLevelId and ItemId corresponded to BlogId and EntryId
-  Function GetRecentItems(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal numberOfItems As Integer, ByVal requestType As RecentItemsRequestType, ByVal providerKey As String) As Item()
+  Function GetRecentItems(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal numberOfItems As Integer, ByVal requestType As RecentItemsRequestType, ByVal providerKey As String) As Item()
 
-  Function GetItem(ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal itemType As ItemType) As Item
+  Function GetItem(ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal itemType As ItemType) As Item
 
-  Function EditItem(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal item As Item) As Boolean
+  Function EditItem(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal item As Item) As Boolean
 
 
 
@@ -101,13 +101,13 @@ Namespace MetaWeblog
   ''' <param name="portalSettings">DotNetNuke PortaSettings object for the portal to which the entry is being posted.</param>
   ''' <param name="item">Custom Struct - The item struct contains a list of fields related to an entry.</param>
   ''' <returns></returns>
-  Function NewItem(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal item As Item) As String
+  Function NewItem(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal item As Item) As String
 
-  Function DeleteItem(ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal itemType As ItemType) As Boolean
+  Function DeleteItem(ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal itemType As ItemType) As Boolean
 
-  Function GetCategories(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings) As ItemCategoryInfo()
+  Function GetCategories(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings) As ItemCategoryInfo()
 
-  Function NewCategory(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings) As Integer
+  Function NewCategory(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings) As Integer
 
 #End Region
 

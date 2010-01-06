@@ -164,8 +164,13 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Components\Blogger\IBlogger.vb" />
-    <Compile Include="Components\BlogSettings.vb" />
-    <Compile Include="Components\TagViewSettings.vb" />
+    <Compile Include="Components\Settings\BlogSettings.vb" />
+    <Compile Include="Components\Business\TemplateManager.vb" />
+    <Compile Include="Components\Settings\RecentCommentsSettings.vb">
+    </Compile>
+    <Compile Include="Components\Settings\RecentEntriesSettings.vb">
+    </Compile>
+    <Compile Include="Components\Settings\TagViewSettings.vb" />
     <Compile Include="Components\Data\SqlDataProvider.vb" />
     <Compile Include="Components\Globals.vb" />
     <Compile Include="Components\MetaWeblog\IMetaWeblog.vb" />
@@ -277,6 +282,20 @@
       <DependentUpon>RecentCommentsSettings.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="RecentEntries.ascx.designer.vb">
+      <DependentUpon>RecentEntries.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="RecentEntries.ascx.vb">
+      <DependentUpon>RecentEntries.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="RecentEntriesSettings.ascx.designer.vb">
+      <DependentUpon>RecentEntriesSettings.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="RecentEntriesSettings.ascx.vb">
+      <DependentUpon>RecentEntriesSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Search.ascx.designer.vb">
       <DependentUpon>Search.ascx</DependentUpon>
     </Compile>
@@ -352,6 +371,9 @@
     <Content Include="App_LocalResources\MassEdit.ascx.resx" />
     <Content Include="App_LocalResources\RecentComments.ascx.resx" />
     <Content Include="App_LocalResources\RecentCommentsSettings.ascx.resx" />
+    <Content Include="App_LocalResources\RecentEntries.ascx.resx" />
+    <Content Include="App_LocalResources\RecentEntriesSettings.ascx.resx" />
+    <Content Include="App_LocalResources\BlogTemplates.ascx.resx" />
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
@@ -372,6 +394,8 @@
     <Content Include="js\tag.js" />
     <Content Include="RecentComments.ascx" />
     <Content Include="RecentCommentsSettings.ascx" />
+    <Content Include="RecentEntries.ascx" />
+    <Content Include="RecentEntriesSettings.ascx" />
     <Content Include="ShareBadge\css\ShareBadge.css" />
     <Content Include="ShareBadge\js\ShareBadgeChicklets.js" />
     <Content Include="ShareBadge\js\ShareBadgePro.js" />

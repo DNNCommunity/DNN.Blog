@@ -118,29 +118,31 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ControlTitle_settings.Text" xml:space="preserve">
-    <value>Recent Blog Comments Settings</value>
+    <value>Recent Blog Entries Settings</value>
   </data>
   <data name="lblMaxCount.Help" xml:space="preserve">
-    <value>Specify the maximum number of comments you wish to display</value>
+    <value>Specify the maximum number of entries you wish to display</value>
   </data>
   <data name="lblMaxCount.Text" xml:space="preserve">
-    <value>Maximum Comments</value>
+    <value>Maximum Entries</value>
   </data>
   <data name="lblTemplate.Help" xml:space="preserve">
-    <value>Specify the template for the recent blog comments view.&lt;p&gt;Available Tokens: &lt;br/&gt;
-        [COMMENTID]&lt;BR/&gt;
-        [ENTRYID]&lt;BR/&gt;
-        [EMAIL]&lt;BR/&gt;
-        [TITLE]&lt;BR/&gt;
-        [COMMENT]&lt;BR/&gt;
-        [ADDEDDATE]&lt;BR/&gt;
-        [USERID]&lt;BR/&gt;
-        [USERNAME]&lt;BR/&gt;
-        [USERFULLNAME]&lt;BR/&gt;
-        [AUTHOR]&lt;BR/&gt;
-        [APPROVED]&lt;BR/&gt;
-        [WEBSITE]&lt;BR/&gt;
-&lt;/p&gt;</value>
+    <value>Specify the template for the recent blog entries view.&lt;p&gt;Available Tokens:&lt;br/&gt;[USERID]&lt;br/&gt;
+[USERNAME]&lt;br/&gt;
+[USERFULLNAME]&lt;br/&gt;
+[ENTRYID]&lt;br/&gt;
+[BLOGID]&lt;br/&gt;
+[TITLE]&lt;br/&gt;
+[DESCRIPTION]&lt;br/&gt;
+[ENTRY]&lt;br/&gt;
+[ADDEDDATE]&lt;br/&gt;
+[PUBLISHED]&lt;br/&gt;
+[ALLOWCOMMENTS]&lt;br/&gt;
+[DISPLAYCOPYRIGHT]&lt;br/&gt;
+[COPYRIGHT]&lt;br/&gt;
+[PERMALINK]&lt;br/&gt;
+[COMMENTCOUNT]&lt;br/&gt;
+[SYNDICATIONEMAIL]&lt;p&gt;</value>
   </data>
   <data name="lblTemplate.Text" xml:space="preserve">
     <value>Display Template</value>

@@ -22,13 +22,13 @@ Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Services.Localization
 
-Partial Class RecentCommentsSettings
+Partial Class RecentEntriesSettings
  Inherits Entities.Modules.ModuleSettingsBase
 
- Private _settings As Settings.RecentCommentsSettings
+ Private _settings As Settings.RecentEntriesSettings
 
  Private Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Init
-  _settings = DotNetNuke.Modules.Blog.Settings.RecentCommentsSettings.GetRecentCommentsSettings(TabModuleId)
+  _settings = DotNetNuke.Modules.Blog.Settings.RecentEntriesSettings.GetRecentEntriesSettings(TabModuleId)
  End Sub
 
 #Region "Base Method Implementations"
@@ -37,8 +37,8 @@ Partial Class RecentCommentsSettings
   Try
    If (Page.IsPostBack = False) Then
 
-    txtTemplate.Text = _settings.RecentCommentsTemplate
-    txtMaxCount.Text = _settings.RecentCommentsMax.ToString
+    txtTemplate.Text = _settings.RecentEntriesTemplate
+    txtMaxCount.Text = _settings.RecentEntriesMax.ToString
 
    End If
   Catch exc As Exception           'Module failed to load
@@ -49,8 +49,8 @@ Partial Class RecentCommentsSettings
  Public Overrides Sub UpdateSettings()
   Try
 
-   _settings.RecentCommentsTemplate = txtTemplate.Text
-   _settings.RecentCommentsMax = CInt(txtMaxCount.Text)
+   _settings.RecentEntriesTemplate = txtTemplate.Text
+   _settings.RecentEntriesMax = CInt(txtMaxCount.Text)
    _settings.UpdateSettings()
 
   Catch exc As Exception           'Module failed to load
@@ -61,5 +61,4 @@ Partial Class RecentCommentsSettings
 #End Region
 
 End Class
-
 

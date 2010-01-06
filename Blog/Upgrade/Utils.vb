@@ -29,7 +29,7 @@ Namespace ForumBlog
 #Region "public shared methods"
   Public Shared Function isForumBlogInstalled(ByVal PortalID As Integer, ByVal TabID As Integer, ByVal checkNew As Boolean) As Boolean
 
-   Dim m_BlogSettings As BlogSettings = BlogSettings.GetBlogSettings(PortalID, TabID)
+   Dim m_BlogSettings As Settings.BlogSettings = DotNetNuke.Modules.Blog.Settings.BlogSettings.GetBlogSettings(PortalID, TabID)
    If Not checkNew Then
     If m_BlogSettings.ForumBlogInstalled = "Installed" Then
      Return True

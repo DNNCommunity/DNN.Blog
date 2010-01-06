@@ -319,7 +319,7 @@ Namespace Business
 
 #Region "ISearchable"
   Public Function GetSearchItems(ByVal ModInfo As Entities.Modules.ModuleInfo) As Services.Search.SearchItemInfoCollection Implements Entities.Modules.ISearchable.GetSearchItems
-   Dim BlogSettings As BlogSettings = BlogSettings.GetBlogSettings(ModInfo.PortalID, ModInfo.TabID)
+   Dim BlogSettings As Settings.BlogSettings = DotNetNuke.Modules.Blog.Settings.BlogSettings.GetBlogSettings(ModInfo.PortalID, ModInfo.TabID)
    Dim IncludeInSearch As Boolean
    Dim SearchItemCollection As New SearchItemInfoCollection
 

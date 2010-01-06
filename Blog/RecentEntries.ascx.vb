@@ -25,66 +25,66 @@ Imports DotNetNuke.Services.Localization
 Imports System.Reflection
 Imports DotNetNuke.Security
 
-Partial Public Class RecentComments
+Partial Public Class RecentEntries
  Inherits BlogModuleBase
 
- Private _settings As Settings.RecentCommentsSettings
+ Private _settings As Settings.RecentEntriesSettings
 
  Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-  _settings = DotNetNuke.Modules.Blog.Settings.RecentCommentsSettings.GetRecentCommentsSettings(TabModuleId)
-  LoadRecentComments()
+  _settings = DotNetNuke.Modules.Blog.Settings.RecentEntriesSettings.GetRecentEntriesSettings(TabModuleId)
+  LoadRecentEntries()
  End Sub
 
- Private Sub LoadRecentComments()
-  Dim RecentComments As List(Of CommentInfo) = Nothing
-  Dim oController As CommentController = Nothing
+ Private Sub LoadRecentEntries()
+  Dim RecentEntries As ArrayList = Nothing
+  Dim oController As EntryController = Nothing
   Dim strTemplate As String
   Dim strBuilder As StringBuilder = Nothing
   Dim strRecentEntries As String = Nothing
   Try
-   oController = New CommentController
+   oController = New EntryController
 
    If Request.QueryString("BlogID") IsNot Nothing Then
-    RecentComments = oController.ListCommentsByBlog(CInt(Request.QueryString("BlogID")), True, _settings.RecentCommentsMax)
+    RecentEntries = oController.ListEntriesByBlog(CInt(Request.QueryString("BlogID")), Nothing, PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), _settings.RecentEntriesMax)
    Else
-    RecentComments = oController.ListCommentsByPortal(PortalId, True, _settings.RecentCommentsMax)
+    RecentEntries = oController.ListEntriesByPortal(PortalId, Nothing, Nothing, PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), _settings.RecentEntriesMax)
    End If
 
-   If RecentComments IsNot Nothing AndAlso RecentComments.Count > 0 Then
+   If RecentEntries IsNot Nothing AndAlso RecentEntries.Count > 0 Then
     strBuilder = New StringBuilder
-    For Each Comment As CommentInfo In RecentComments
+    For Each Entry As EntryInfo In RecentEntries
 
-     strTemplate = _settings.RecentCommentsTemplate
-     strTemplate = strTemplate.Replace("[PERMALINK]", Utility.GenerateEntryLink(PortalId, Comment.EntryID, TabId, Nothing) & "#Comments")
-     strTemplate = ProcessTemplate(Comment, strTemplate)
-
+     strTemplate = _settings.RecentEntriesTemplate
+     strTemplate = ProcessTemplate(Entry, strTemplate)
      strBuilder.Append(strTemplate)
+
     Next
+
    Else
-    UI.Skins.Skin.AddModuleMessage(Me, Localization.GetString("MsgNoRecentComments", LocalResourceFile), UI.Skins.Controls.ModuleMessage.ModuleMessageType.YellowWarning)
+    UI.Skins.Skin.AddModuleMessage(Me, Localization.GetString("MsgNoRecentEntries", LocalResourceFile), UI.Skins.Controls.ModuleMessage.ModuleMessageType.YellowWarning)
    End If
 
    ' assign the content
    If strBuilder IsNot Nothing Then
     Dim lblContent As New Label
     lblContent.Text = strBuilder.ToString
-    Me.RecentComments.Controls.Add(lblContent)
+    Me.RecentEntries.Controls.Add(lblContent)
    End If
 
   Catch ex As Exception
    ProcessModuleLoadException(Me, ex)
   Finally
-   If RecentComments IsNot Nothing Then RecentComments = Nothing
+   If RecentEntries IsNot Nothing Then RecentEntries = Nothing
    If oController IsNot Nothing Then oController = Nothing
    If strBuilder IsNot Nothing Then strBuilder = Nothing
   End Try
  End Sub
 
- Private Function ProcessTemplate(ByVal objComment As CommentInfo, ByVal strTemplate As String) _
-     As String
+ Private Function ProcessTemplate(ByVal objEntry As EntryInfo, ByVal strTemplate As String) _
+As String
   Dim TemplateManager As TemplateManager = Nothing
   Try
-   TemplateManager = New TemplateManager(objComment)
+   TemplateManager = New TemplateManager(objEntry)
    Return TemplateManager.ProcessTemplate(strTemplate)
   Catch ex As Exception
    ProcessModuleLoadException(Me, ex)

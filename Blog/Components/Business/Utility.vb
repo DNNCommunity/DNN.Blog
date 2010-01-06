@@ -28,6 +28,8 @@ Imports DotNetNuke.Data
 Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Common.Utilities
+Imports DotNetNuke.Services.Log.EventLog
+Imports DotNetNuke.Entities.Portals
 
 Namespace Business
 
@@ -52,6 +54,16 @@ Namespace Business
    Dim mController As New DotNetNuke.Entities.Modules.ModuleController
    Dim ModuleConfiguration As DotNetNuke.Entities.Modules.ModuleInfo = mController.GetModule(ModuleID, DotNetNuke.Common.Utilities.Null.NullInteger)
    Return ((UserID = BlogUserID And DotNetNuke.Security.PortalSecurity.HasNecessaryPermission(SecurityAccessLevel.Edit, PortalSettings, ModuleConfiguration)) Or DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName))
+  End Function
+
+  Public Shared Function IsInteger(ByVal strValue As String) As Boolean
+   If IsNumeric(strValue) Then
+    If Int(Val(strValue)) = Val(strValue) Then
+     If Val(strValue) > -32769 And Val(strValue) < 32768 Then
+      IsInteger = True
+     End If
+    End If
+   End If
   End Function
 
 #Region "HTML"
@@ -445,7 +457,7 @@ Namespace Business
    End If
 
    ' Get Blog Module Settings
-   Dim BlogModuleSettings As BlogSettings = BlogSettings.GetBlogSettings(PortalID, TabID)
+   Dim BlogModuleSettings As Settings.BlogSettings = DotNetNuke.Modules.Blog.Settings.BlogSettings.GetBlogSettings(PortalID, TabID)
    Dim SeoFriendlyUrl As Boolean = BlogModuleSettings.ShowSeoFriendlyUrl
 
    'Set the title to Default if there is no Title
@@ -654,6 +666,45 @@ Namespace Business
 
 #Region "Private Procedures"
 
+  Public Shared Function ShrinkURL(ByVal Url As String, ByVal Provider As String) As String
+   Try
+    'TinyUrl's minimum url lenght is 25
+    'We should shrink our url only is legth is more that 25 charachters
+    If Url.Length <= 25 Then
+     Return Url
+    End If
+
+    Dim strServiceUrl As String = String.Empty
+    Select Case Provider.ToLower
+     Case "tinyurl"
+      strServiceUrl = "http://tinyurl.com/api-create.php?url="
+     Case "isgd"
+      strServiceUrl = "http://is.gd/api.php?longurl="
+     Case "zima"
+      strServiceUrl = "http://zi.ma/?module=ShortURL&file=Add&mode=API&url="
+     Case Else
+      strServiceUrl = "http://tinyurl.com/api-create.php?url="
+    End Select
+
+    If Not Url.ToLower().StartsWith("http") AndAlso Not Url.ToLower().StartsWith("ftp") Then
+     Url = "http://" + Url
+    End If
+
+    Dim UrlShrinkRequest As WebRequest = WebRequest.Create(strServiceUrl + Url)
+    Dim UrlShrinkResponse As WebResponse = UrlShrinkRequest.GetResponse()
+
+    Using reader As StreamReader = New StreamReader(UrlShrinkResponse.GetResponseStream())
+     Return reader.ReadToEnd()
+    End Using
+
+   Catch ex As Exception
+    'If there was an exception, 
+    'then just return the original url
+    Return Url
+   End Try
+
+  End Function
+
   Private Shared Sub EscapeInput(ByRef input As String, ByVal allowScripts As Boolean, ByVal allowFormatTags As Boolean, _
       ByVal allowAnchors As Boolean, ByVal allowImages As Boolean)
 
@@ -818,6 +869,20 @@ Namespace Business
    Return sURL
 
   End Function
+
+  Private Shared Sub LogIssue(ByVal Issue As String, ByVal Description As String, ByVal UserId As Integer)
+   Dim oEventLog As EventLogController = Nothing
+   Dim PortalSettings As DotNetNuke.Entities.Portals.PortalSettings
+   Try
+    oEventLog = New EventLogController
+    PortalSettings = PortalController.GetCurrentPortalSettings
+
+    oEventLog.AddLog(Issue, Description, PortalSettings, UserId, DotNetNuke.Services.Log.EventLog.EventLogController.EventLogType.ADMIN_ALERT)
+   Catch ex As Exception
+   Finally
+    If oEventLog IsNot Nothing Then oEventLog = Nothing
+   End Try
+  End Sub
 
 #End Region
 

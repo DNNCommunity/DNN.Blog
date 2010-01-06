@@ -19,12 +19,16 @@
 '-------------------------------------------------------------------------
 
 Imports System
+Imports DotNetNuke.Services.Tokens
+Imports DotNetNuke.Common.Utilities
 
 Namespace Business
 
  Public Class EntryInfo
+  Implements IPropertyAccess
 
-#Region "local property declarations"
+#Region " Local Variables "
+
   Private _UserID As Integer
   Private _Username As String
   Private _UserFullName As String
@@ -214,6 +218,64 @@ Namespace Business
     _SyndicationEmail = Value
    End Set
   End Property
+
+#End Region
+
+#Region " IPropertyAccess Methods "
+
+  Public ReadOnly Property Cacheability() As Services.Tokens.CacheLevel Implements Services.Tokens.IPropertyAccess.Cacheability
+   Get
+    Return CacheLevel.fullyCacheable
+   End Get
+  End Property
+
+  Public Function GetProperty(ByVal strPropertyName As String, ByVal strFormat As String, ByVal formatProvider As System.Globalization.CultureInfo, ByVal AccessingUser As Entities.Users.UserInfo, ByVal AccessLevel As Services.Tokens.Scope, ByRef PropertyNotFound As Boolean) As String Implements Services.Tokens.IPropertyAccess.GetProperty
+   Dim OutputFormat As String = String.Empty
+   If strFormat = String.Empty Then
+    OutputFormat = "D"
+   Else
+    OutputFormat = strFormat
+   End If
+   Select Case strPropertyName.ToLower
+    Case "userid"
+     Return (Me.UserID.ToString(OutputFormat, formatProvider))
+    Case "username"
+     Return PropertyAccess.FormatString(Me.UserName, strFormat)
+    Case "userfullname"
+     Return PropertyAccess.FormatString(Me.UserFullName, strFormat)
+    Case "entryid"
+     Return (Me.EntryID.ToString(OutputFormat, formatProvider))
+    Case "blogid"
+     Return (Me.BlogID.ToString(OutputFormat, formatProvider))
+    Case "title"
+     Return PropertyAccess.FormatString(Me.Title, strFormat)
+    Case "description"
+     Return PropertyAccess.FormatString(Me.Description, strFormat)
+    Case "entry"
+     Return PropertyAccess.FormatString(Me.Entry, strFormat)
+    Case "addeddate"
+     Return (Me.AddedDate.ToString(OutputFormat, formatProvider))
+     'Return PropertyAccess.FormatString(Me.AddedDate.ToString, strFormat)
+    Case "published"
+     Return PropertyAccess.Boolean2LocalizedYesNo(Me.Published, formatProvider)
+    Case "allowcomments"
+     Return PropertyAccess.Boolean2LocalizedYesNo(Me.AllowComments, formatProvider)
+    Case "displaycopyright"
+     Return PropertyAccess.Boolean2LocalizedYesNo(Me.DisplayCopyright, formatProvider)
+    Case "copyright"
+     Return PropertyAccess.FormatString(Me.Copyright, strFormat)
+    Case "permalink"
+     Return PropertyAccess.FormatString(Me.PermaLink, strFormat)
+    Case "commentcount"
+     Return (Me.CommentCount.ToString(OutputFormat, formatProvider))
+    Case "syndicationemail"
+     Return PropertyAccess.FormatString(Me.SyndicationEmail, strFormat)
+    Case Else
+     PropertyNotFound = True
+   End Select
+   Return Null.NullString
+
+  End Function
 
 #End Region
 

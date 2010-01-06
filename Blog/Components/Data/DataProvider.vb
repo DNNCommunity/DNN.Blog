@@ -78,6 +78,8 @@ Namespace Data
 #Region "Blog_Comments Methods"
   Public MustOverride Function GetComment(ByVal commentID As Integer) As IDataReader
   Public MustOverride Function ListComments(ByVal EntryID As Integer, ByVal Approved As Boolean) As IDataReader
+        Public MustOverride Function ListCommentsByBlog(ByVal BlogID As Integer, ByVal Approved As Boolean, ByVal MaximumComments As Integer) As IDataReader
+        Public MustOverride Function ListCommentsByPortal(ByVal PortalID As Integer, ByVal Approved As Boolean, ByVal MaximumComments As Integer) As IDataReader
   Public MustOverride Function AddComment(ByVal EntryID As Integer, ByVal UserID As Integer, ByVal Title As String, ByVal comment As String, ByVal Author As String, ByVal Approved As Boolean, ByVal Website As String, ByVal Email As String) As Integer
   Public MustOverride Sub UpdateComment(ByVal commentID As Integer, ByVal EntryID As Integer, ByVal userID As Integer, ByVal Title As String, ByVal comment As String, ByVal Author As String, ByVal Approved As Boolean, ByVal Website As String, ByVal Email As String)
   Public MustOverride Sub DeleteComment(ByVal commentID As Integer)

@@ -18,48 +18,32 @@
 ' DEALINGS IN THE SOFTWARE.
 '-------------------------------------------------------------------------
 
-Imports DotNetNuke.Modules.Blog.Business
-Imports DotNetNuke.Services.Exceptions
-Imports DotNetNuke.Services.Localization
+Imports DotNetNuke.Services.Tokens
 
-Partial Class RecentCommentsSettings
- Inherits Entities.Modules.ModuleSettingsBase
+Namespace Business
+ Public Class TemplateManager
+  Inherits TokenReplace
 
- Private _settings As Settings.RecentCommentsSettings
+  Public Sub New(ByVal objComment As CommentInfo)
+   MyBase.new(Scope.DefaultSettings)
+   Me.UseObjectLessExpression = True
+   Me.PropertySource(ObjectLessToken) = objComment
+  End Sub
 
- Private Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Init
-  _settings = DotNetNuke.Modules.Blog.Settings.RecentCommentsSettings.GetRecentCommentsSettings(TabModuleId)
- End Sub
+  Public Sub New(ByVal objEntry As EntryInfo)
+   MyBase.new(Scope.DefaultSettings)
+   Me.UseObjectLessExpression = True
+   Me.PropertySource(ObjectLessToken) = objEntry
+  End Sub
 
-#Region "Base Method Implementations"
+  Protected Overrides Function replacedTokenValue(ByVal strObjectName As String, ByVal strPropertyName As String, ByVal strFormat As String) As String
+   Return MyBase.replacedTokenValue(strObjectName, strPropertyName, strFormat)
+  End Function
 
- Public Overrides Sub LoadSettings()
-  Try
-   If (Page.IsPostBack = False) Then
+  Public Function ProcessTemplate(ByVal strSourceText As String) As String
+   Return MyBase.ReplaceTokens(strSourceText)
+  End Function
 
-    txtTemplate.Text = _settings.RecentCommentsTemplate
-    txtMaxCount.Text = _settings.RecentCommentsMax.ToString
+ End Class
 
-   End If
-  Catch exc As Exception           'Module failed to load
-   ProcessModuleLoadException(Me, exc)
-  End Try
- End Sub
-
- Public Overrides Sub UpdateSettings()
-  Try
-
-   _settings.RecentCommentsTemplate = txtTemplate.Text
-   _settings.RecentCommentsMax = CInt(txtMaxCount.Text)
-   _settings.UpdateSettings()
-
-  Catch exc As Exception           'Module failed to load
-   ProcessModuleLoadException(Me, exc)
-  End Try
- End Sub
-
-#End Region
-
-End Class
-
-
+End Namespace

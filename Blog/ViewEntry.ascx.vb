@@ -419,8 +419,8 @@ Partial Class ViewEntry
  End Sub
 
  Private Sub lstComments_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataListCommandEventArgs) Handles lstComments.ItemCommand
-  Select Case e.CommandName
-   Case "EditComment"
+  Select Case e.CommandName.ToLower
+   Case "editcomment"
     valCommentAuthor.Enabled = False
     valCommentTitle.Enabled = False
     valComment.Enabled = False
@@ -438,13 +438,13 @@ Partial Class ViewEntry
      cmdAddComment.Text = Localization.GetString("msgUpdateComment", LocalResourceFile)
      cmdDeleteComment.Visible = True
     End If
-   Case "ApproveComment"
+   Case "approvecomment"
     Dim oComment As CommentInfo = New CommentController().GetComment(Int32.Parse(CType(e.CommandArgument, String)))
     oComment.Approved = True
     Dim objCtlComment As New CommentController
     objCtlComment.UpdateComment(oComment)
     BindCommentsList()
-   Case "DeleteComment"
+   Case "deletecomment"
     ' DR 01/21/2008 - Fix BLG-8849
     ' Added fast comment deletion.
     Dim oCommentController As New CommentController
@@ -779,11 +779,11 @@ Partial Class ViewEntry
   Dim prefix As String = GravatarURLPrefix()
   Dim defaultImagePath As String
 
-  If BlogSettings.gravatarDefaultImageUrl <> String.Empty Then
-   If BlogSettings.gravatarDefaultImageUrl = "custom" Then
+  If BlogSettings.GravatarDefaultImageUrl <> String.Empty Then
+   If BlogSettings.GravatarDefaultImageUrl = "custom" Then
     defaultImagePath = BlogSettings.GravatarCustomUrl
    Else
-    defaultImagePath = BlogSettings.gravatarDefaultImageUrl
+    defaultImagePath = BlogSettings.GravatarDefaultImageUrl
    End If
   Else
    ' First attempt.  Left for reference.  Decided to store default image at Gravatar.com

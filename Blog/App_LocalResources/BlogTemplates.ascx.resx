@@ -117,32 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ControlTitle_settings.Text" xml:space="preserve">
-    <value>Recent Blog Comments Settings</value>
+  <data name="DefaultRecentCommentsTemplate.Text" xml:space="preserve">
+    <value>&lt;div class="Blog_RecentComments"&gt;&lt;a href="[PERMALINK]" class="Blog_RencentComments_Title"&gt;[TITLE]&lt;/a&gt;&lt;div class="Normal"&gt;[COMMENT]&lt;/div&gt;&lt;div class="Blog_RencentComments_Dateline"&gt;By [AUTHOR] on: [ADDEDDATE]&lt;/div&gt;&lt;/div&gt;</value>
   </data>
-  <data name="lblMaxCount.Help" xml:space="preserve">
-    <value>Specify the maximum number of comments you wish to display</value>
+  <data name="DefaultRecentEntriesTemplate.Text" xml:space="preserve">
+    <value>&lt;div class="Blog_RecentEntries"&gt;&lt;a href="[PERMALINK]" class="Blog_RencentEntries_Title"&gt;[TITLE]&lt;/a&gt;&lt;div class="Blog_RencentEntries_Dateline"&gt;Posted on: [ADDEDDATE]&lt;/div&gt;&lt;/div&gt;</value>
   </data>
-  <data name="lblMaxCount.Text" xml:space="preserve">
-    <value>Maximum Comments</value>
+  <data name="PersonifyActivityBlogCommentTemplate.Text" xml:space="preserve">
+    <value>Commented on Blog: {permalink}. </value>
   </data>
-  <data name="lblTemplate.Help" xml:space="preserve">
-    <value>Specify the template for the recent blog comments view.&lt;p&gt;Available Tokens: &lt;br/&gt;
-        [COMMENTID]&lt;BR/&gt;
-        [ENTRYID]&lt;BR/&gt;
-        [EMAIL]&lt;BR/&gt;
-        [TITLE]&lt;BR/&gt;
-        [COMMENT]&lt;BR/&gt;
-        [ADDEDDATE]&lt;BR/&gt;
-        [USERID]&lt;BR/&gt;
-        [USERNAME]&lt;BR/&gt;
-        [USERFULLNAME]&lt;BR/&gt;
-        [AUTHOR]&lt;BR/&gt;
-        [APPROVED]&lt;BR/&gt;
-        [WEBSITE]&lt;BR/&gt;
-&lt;/p&gt;</value>
-  </data>
-  <data name="lblTemplate.Text" xml:space="preserve">
-    <value>Display Template</value>
+  <data name="PersonifyActivityBlogPostTemplate.Text" xml:space="preserve">
+    <value>Blogged: {title} - {permalink}</value>
   </data>
 </root>

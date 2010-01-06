@@ -104,7 +104,7 @@ Namespace MetaWeblog
 
 #Region "IPublishable Members"
 
-  Public Function GetModulesForUser(ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal providerKey As String) As ModuleInfoStruct() Implements IPublishable.GetModulesForUser
+  Public Function GetModulesForUser(ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal providerKey As String) As ModuleInfoStruct() Implements IPublishable.GetModulesForUser
 
    Dim infoArrayList As ArrayList = New ArrayList
 
@@ -139,7 +139,7 @@ Namespace MetaWeblog
 
 #Region "Item Related Procedures"
 
-  Public Function GetItem(ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal itemType As ItemType) As Item Implements IPublishable.GetItem
+  Public Function GetItem(ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal itemType As ItemType) As Item Implements IPublishable.GetItem
    Dim entryController As New EntryController
    Dim item As New Item
 
@@ -187,7 +187,7 @@ Namespace MetaWeblog
    Return item
   End Function
 
-  Public Function GetRecentItems(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal numberOfItems As Integer, ByVal requestType As RecentItemsRequestType, ByVal providerKey As String) As Item() Implements IPublishable.GetRecentItems
+  Public Function GetRecentItems(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal numberOfItems As Integer, ByVal requestType As RecentItemsRequestType, ByVal providerKey As String) As Item() Implements IPublishable.GetRecentItems
    Dim itemArray As Item() = Nothing
    Dim objBlogController As New BlogController
    Dim intBlogID As Integer = objBlogController.GetBlogByUserID(portalSettings.PortalId, userInfo.UserID).BlogID
@@ -219,7 +219,7 @@ Namespace MetaWeblog
    Return itemArray
   End Function
 
-  Public Function NewItem(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal item As Item) As String Implements IPublishable.NewItem
+  Public Function NewItem(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal item As Item) As String Implements IPublishable.NewItem
 
    ExtractSummaryFromExtendedContent(item)
 
@@ -258,7 +258,7 @@ Namespace MetaWeblog
 
    objEntry.Published = item.Publish
    If blogSettings.AllowSummaryHtml Then
-   objEntry.Description = item.Summary
+    objEntry.Description = item.Summary
    Else
     objEntry.Description = Globals.RemoveMarkup(item.Summary)
    End If
@@ -293,7 +293,7 @@ Namespace MetaWeblog
    Return entryId.ToString()
   End Function
 
-  Public Function EditItem(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal item As Item) As Boolean Implements IPublishable.EditItem
+  Public Function EditItem(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal item As Item) As Boolean Implements IPublishable.EditItem
 
    ExtractSummaryFromExtendedContent(item)
 
@@ -356,7 +356,7 @@ Namespace MetaWeblog
    Return True
   End Function
 
-  Public Function DeleteItem(ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal itemType As ItemType) As Boolean Implements IPublishable.DeleteItem
+  Public Function DeleteItem(ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal itemType As ItemType) As Boolean Implements IPublishable.DeleteItem
    'Create new BlogController to delete the blog entry.
    Dim objEntryController As New EntryController
    objEntryController.DeleteEntry(Convert.ToInt32(itemId))
@@ -367,7 +367,7 @@ Namespace MetaWeblog
 
 #Region "Category Related Procedures"
 
-  Public Function GetCategories(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings) As ItemCategoryInfo() Implements IPublishable.GetCategories
+  Public Function GetCategories(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings) As ItemCategoryInfo() Implements IPublishable.GetCategories
 
    Dim CatController As New CategoryController
    Dim BlogController As New BlogController
@@ -405,7 +405,7 @@ Namespace MetaWeblog
 
   End Function
 
-  Public Function NewCategory(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings) As Integer Implements IPublishable.NewCategory
+  Public Function NewCategory(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings) As Integer Implements IPublishable.NewCategory
    Throw New BlogPostException("FeatureNotImplemented", "This feature is currently not implemented.")
   End Function
 
@@ -508,7 +508,7 @@ Namespace MetaWeblog
     ' We have HTML, so put the HTML in the content above a <!--more--> tag
     item.Content = item.Summary + "<!--more-->" + item.Content
    End If
-
+   
   End Sub
 
 #End Region

@@ -159,7 +159,7 @@ Public Class Globals
   objModule.Initialize(PortalSettings.PortalId)
   objModule.PortalID = PortalSettings.PortalId
   objModule.TabID = PortalSettings.ActiveTab.TabID
-  objModule.ModuleOrder = -1
+  objModule.ModuleOrder = position
   If title = "" Then
    objModule.ModuleTitle = objModuleDefinition.FriendlyName
   Else

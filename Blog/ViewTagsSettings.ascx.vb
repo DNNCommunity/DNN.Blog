@@ -25,10 +25,10 @@ Imports DotNetNuke.Services.Localization
 Partial Public Class ViewTagsSettings
  Inherits Entities.Modules.ModuleSettingsBase
 
- Private _settings As TagViewSettings
+ Private _settings As Settings.TagViewSettings
 
  Private Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Init
-  _settings = TagViewSettings.GetTagViewSettings(TabModuleId)
+  _settings = DotNetNuke.Modules.Blog.Settings.TagViewSettings.GetTagViewSettings(TabModuleId)
  End Sub
 
  Public Overrides Sub LoadSettings()

@@ -213,6 +213,14 @@ Namespace Data
    Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_ListComments", EntryID, Approved), IDataReader)
   End Function
 
+        Public Overrides Function ListCommentsByBlog(ByVal BlogID As Integer, ByVal Approved As Boolean, ByVal MaximumComments As Integer) As IDataReader
+            Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_ListCommentsByBlog", BlogID, Approved, MaximumComments), IDataReader)
+        End Function
+
+        Public Overrides Function ListCommentsByPortal(ByVal PortalID As Integer, ByVal Approved As Boolean, ByVal MaximumComments As Integer) As IDataReader
+            Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_ListCommentsByPortal", PortalID, Approved, MaximumComments), IDataReader)
+        End Function
+
   Public Overrides Function AddComment(ByVal EntryID As Integer, ByVal userID As Integer, ByVal Title As String, ByVal comment As String, ByVal Author As String, ByVal Approved As Boolean, ByVal Website As String, ByVal Email As String) As Integer
    Return CType(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_AddComment", EntryID, Null.GetNull(userID, DBNull.Value), Title, comment, Null.GetNull(Author, DBNull.Value), Approved, Null.GetNull(Website, DBNull.Value), Null.GetNull(Email, DBNull.Value)), Integer)
   End Function

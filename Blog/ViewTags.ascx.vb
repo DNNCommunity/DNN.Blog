@@ -28,11 +28,11 @@ Partial Public Class ViewTags
  'Inherits BlogModuleBase
  Inherits DotNetNuke.Entities.Modules.PortalModuleBase
 
- Private _settings As TagViewSettings
+ Private _settings As Settings.TagViewSettings
 
  Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
   Me.ModuleConfiguration.SupportedFeatures = 0
-  _settings = TagViewSettings.GetTagViewSettings(TabModuleId)
+  _settings = DotNetNuke.Modules.Blog.Settings.TagViewSettings.GetTagViewSettings(TabModuleId)
  End Sub
 
  Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -41,7 +41,7 @@ Partial Public Class ViewTags
   Dim tag As TagInfo
   Dim TagDisplayMode As String
   TagDisplayMode = _settings.TagDisplayMode
-  
+
   If TagDisplayMode = "List" Then
    TagList = TagController.ListTags(PortalId)
    For Each tag In TagList

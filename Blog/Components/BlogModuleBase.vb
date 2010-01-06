@@ -37,6 +37,8 @@ Public Class BlogModuleBase
  Public Const CONTROL_VIEW_VIEWENTRY As String = "ViewEntry.ascx"
  Public Const CONTROL_VIEW_BLOGFEED As String = "BlogFeed.ascx"
  Public Const ONLINE_HELP_URL As String = ""
+ Public Const BLOG_TEMPLATES_RESOURCE As String = "/DesktopModules/Blog/App_LocalResources/BlogTemplates.ascx.resx"
+
 #End Region
 
 #Region "Public Enums"
@@ -65,20 +67,20 @@ Public Class BlogModuleBase
   End Get
  End Property
 
- Public Property BlogSettings() As BlogSettings
+ Public Property BlogSettings() As Settings.BlogSettings
   Get
    If _blogSettings Is Nothing Then
-    _blogSettings = BlogSettings.GetBlogSettings(PortalId, TabId)
+    _blogSettings = DotNetNuke.Modules.Blog.Settings.BlogSettings.GetBlogSettings(PortalId, TabId)
    End If
    Return _blogSettings
   End Get
-  Set(ByVal value As BlogSettings)
+  Set(ByVal value As Settings.BlogSettings)
    _blogSettings = value
   End Set
  End Property
 #End Region
 
 #Region " Private Members "
- Private _blogSettings As BlogSettings
+ Private _blogSettings As Settings.BlogSettings
 #End Region
 End Class
