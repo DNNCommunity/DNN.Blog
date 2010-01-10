@@ -26,142 +26,141 @@ Imports DotNetNuke.Common.Utilities
 
 Namespace Business
 
- Public Class TagController
+    Public Class TagController
 
-  Public Function GetTagsByEntry(ByVal EntryID As Integer) As String
-   Dim TagList As ArrayList
-   Dim TagString As String = ""
-   TagList = CBO.FillCollection(DataProvider.Instance().ListTagsByEntry(EntryID), GetType(TagInfo))
-   For Each tag As TagInfo In TagList
-    If TagString.Length > 0 Then
-     TagString = TagString + ","
-    End If
-    TagString = TagString + tag.Tag
-   Next
+        Public Function GetTagsByEntry(ByVal EntryID As Integer) As String
+            Dim TagList As ArrayList
+            Dim TagString As String = ""
+            TagList = CBO.FillCollection(DataProvider.Instance().ListTagsByEntry(EntryID), GetType(TagInfo))
+            For Each tag As TagInfo In TagList
+                If TagString.Length > 0 Then
+                    TagString = TagString + ","
+                End If
+                TagString = TagString + tag.Tag
+            Next
 
-   Return TagString
+            Return TagString
 
-  End Function
-
-
-  Public Function ListTagsByEntry(ByVal EntryID As Integer) As ArrayList
-
-   Return CBO.FillCollection(DataProvider.Instance().ListTagsByEntry(EntryID), GetType(TagInfo))
-
-  End Function
+        End Function
 
 
-  Public Sub UpdateTagsByEntry(ByVal EntryID As Integer, ByVal TagList As String)
+        Public Function ListTagsByEntry(ByVal EntryID As Integer) As ArrayList
 
-   Dim TagArray() As String
-   Dim TagInfos As ArrayList = CBO.FillCollection(DataProvider.Instance().ListTagsByEntry(EntryID), GetType(TagInfo))
-   Dim found As Boolean
-   Dim Slug As String
+            Return CBO.FillCollection(DataProvider.Instance().ListTagsByEntry(EntryID), GetType(TagInfo))
 
-   TagList = Trim(TagList)
-   TagArray = Split(TagList, ",")
-
-   If Not TagList = "" Then
-    For i As Integer = 0 To TagArray.Length - 1
-     TagArray(i) = Trim(TagArray(i))
-    Next i
-
-    ' Find all the new tags & add them
-    For Each t As String In TagArray
-     found = False
-     For Each o As TagInfo In TagInfos
-      If o.Tag = t Then
-       found = True
-       Exit For
-      End If
-     Next
-     If Not found And Not t = "" Then
-      t = Replace(t, "_", " ")
-      Slug = Replace(t, " ", "-").ToLower
-      DataProvider.Instance().AddEntryTag(EntryID, t, Slug)
-     End If
-    Next
-
-   End If
+        End Function
 
 
-   ' Find existing tags that need to be dropped & delete them
-   For Each t As TagInfo In TagInfos
-    found = False
-    For Each o As String In TagArray
-     If o = t.Tag Then
-      found = True
-      Exit For
-     End If
-    Next
-    If Not found Then
-     DataProvider.Instance().DeleteEntryTag(EntryID, t.Tag)
-    End If
-   Next
+        Public Sub UpdateTagsByEntry(ByVal EntryID As Integer, ByVal TagList As String)
 
-  End Sub
+            Dim TagArray() As String
+            Dim TagInfos As ArrayList = CBO.FillCollection(DataProvider.Instance().ListTagsByEntry(EntryID), GetType(TagInfo))
+            Dim found As Boolean
+            Dim Slug As String
 
-  Public Function ListTags(ByVal PortalID As Integer) As ArrayList
+            TagList = Trim(TagList)
+            TagArray = Split(TagList, ",")
 
-   Return CBO.FillCollection(DataProvider.Instance().ListTagsCnt(PortalID), GetType(TagInfo))
+            If Not TagList = "" Then
+                For i As Integer = 0 To TagArray.Length - 1
+                    TagArray(i) = Trim(TagArray(i))
+                Next i
 
-  End Function
+                ' Find all the new tags & add them
+                For Each t As String In TagArray
+                    found = False
+                    For Each o As TagInfo In TagInfos
+                        If o.Tag = t Then
+                            found = True
+                            Exit For
+                        End If
+                    Next
+                    If Not found And Not t = "" Then
+                        Slug = Utility.CreateFriendlySlug(t)
+                        DataProvider.Instance().AddEntryTag(EntryID, t, Slug)
+                    End If
+                Next
+
+            End If
 
 
-  Public Function ListWeightedTags(ByVal PortalID As Integer) As ArrayList
+            ' Find existing tags that need to be dropped & delete them
+            For Each t As TagInfo In TagInfos
+                found = False
+                For Each o As String In TagArray
+                    If o = t.Tag Then
+                        found = True
+                        Exit For
+                    End If
+                Next
+                If Not found Then
+                    DataProvider.Instance().DeleteEntryTag(EntryID, t.Tag)
+                End If
+            Next
 
-   Dim TagList As ArrayList
-   Dim tag As TagInfo
-   Dim count, total As Integer
-   Dim stddev, mean, sumsqrs, factor As Double
+        End Sub
 
-   TagList = CBO.FillCollection(DataProvider.Instance().ListTagsAlpha(PortalID), GetType(TagInfo))
+        Public Function ListTags(ByVal PortalID As Integer) As ArrayList
 
-   count = TagList.Count
+            Return CBO.FillCollection(DataProvider.Instance().ListTagsCnt(PortalID), GetType(TagInfo))
 
-   For Each tag In TagList
-    total = total + tag.Cnt
-   Next
+        End Function
 
-   mean = total / count
 
-   For Each tag In TagList
-    sumsqrs = sumsqrs + ((tag.Cnt - mean) ^ 2)
-   Next
+        Public Function ListWeightedTags(ByVal PortalID As Integer) As ArrayList
 
-   stddev = Sqrt(sumsqrs / count)
+            Dim TagList As ArrayList
+            Dim tag As TagInfo
+            Dim count, total As Integer
+            Dim stddev, mean, sumsqrs, factor As Double
 
-   For Each tag In TagList
+            TagList = CBO.FillCollection(DataProvider.Instance().ListTagsAlpha(PortalID), GetType(TagInfo))
 
-    factor = (tag.Cnt - mean) / (stddev)
-    If factor <= (-2 * stddev) Then
-     tag.Weight = 1
-    End If
-    If (-2 * stddev) < factor And factor <= (-1 * stddev) Then
-     tag.Weight = 2
-    End If
-    If (-1 * stddev < factor) And factor <= (-0.5 * stddev) Then
-     tag.Weight = 3
-    End If
-    If (-0.5 * stddev) < factor And factor < (0.5 * stddev) Then
-     tag.Weight = 4
-    End If
-    If (0.5 * stddev <= factor) And factor < stddev Then
-     tag.Weight = 5
-    End If
-    If stddev <= factor And factor < (2 * stddev) Then
-     tag.Weight = 6
-    End If
-    If factor >= (2 * stddev) Then
-     tag.Weight = 7
-    End If
+            count = TagList.Count
 
-   Next
+            For Each tag In TagList
+                total = total + tag.Cnt
+            Next
 
-   Return TagList
+            mean = total / count
 
-  End Function
+            For Each tag In TagList
+                sumsqrs = sumsqrs + ((tag.Cnt - mean) ^ 2)
+            Next
 
- End Class
+            stddev = Sqrt(sumsqrs / count)
+
+            For Each tag In TagList
+
+                factor = (tag.Cnt - mean) / (stddev)
+                If factor <= (-2 * stddev) Then
+                    tag.Weight = 1
+                End If
+                If (-2 * stddev) < factor And factor <= (-1 * stddev) Then
+                    tag.Weight = 2
+                End If
+                If (-1 * stddev < factor) And factor <= (-0.5 * stddev) Then
+                    tag.Weight = 3
+                End If
+                If (-0.5 * stddev) < factor And factor < (0.5 * stddev) Then
+                    tag.Weight = 4
+                End If
+                If (0.5 * stddev <= factor) And factor < stddev Then
+                    tag.Weight = 5
+                End If
+                If stddev <= factor And factor < (2 * stddev) Then
+                    tag.Weight = 6
+                End If
+                If factor >= (2 * stddev) Then
+                    tag.Weight = 7
+                End If
+
+            Next
+
+            Return TagList
+
+        End Function
+
+    End Class
 
 End Namespace

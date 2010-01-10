@@ -587,14 +587,14 @@ drop procedure {databaseOwner}{objectQualifier}Blog_AddCategory
 GO
 
 CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_AddCategory 
-
 		@Category nvarchar(255),
+		@Slug nvarchar(255),
 		@ParentID int,
 		@PortalID int
 	AS
 	BEGIN
 		SET NOCOUNT ON;
-		INSERT INTO {databaseOwner}{objectQualifier}Blog_Categories (Category, ParentID, PortalID) VALUES (@Category, @ParentID, @PortalID)
+		INSERT INTO {databaseOwner}{objectQualifier}Blog_Categories (Category, Slug, ParentID, PortalID) VALUES (@Category, @Slug, @ParentID, @PortalID)
 		RETURN @@IDENTITY
 	
 	END
@@ -822,14 +822,17 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListCategories
 	@PortalID int
 AS
 BEGIN
+
 	SET NOCOUNT ON;
-    	SELECT BC.CatID, BC.Category, BC.ParentID, CASE WHEN CC.Cnt IS NULL THEN 0 ELSE CC.Cnt END AS Cnt
+
+    	SELECT BC.CatID, BC.Category, BC.Slug, BC.ParentID, CASE WHEN CC.Cnt IS NULL THEN 0 ELSE CC.Cnt END AS Cnt
 	FROM {databaseOwner}{objectQualifier}Blog_Categories BC
 	LEFT OUTER JOIN
 		(SELECT {databaseOwner}{objectQualifier}Blog_Entry_Categories.CatID AS CatID, COUNT(0) AS Cnt
 		FROM {databaseOwner}{objectQualifier}Blog_Entry_Categories
 		GROUP BY {databaseOwner}{objectQualifier}Blog_Entry_Categories.CatID) CC ON BC.CatID = CC.CatID
 	WHERE BC.PortalID = @PortalID
+
 
 END
 
@@ -847,7 +850,7 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	SELECT ec.CatID, Category, ParentID FROM {databaseOwner}{objectQualifier}Blog_Entry_Categories ec
+	SELECT ec.CatID, Category, Slug, ParentID FROM {databaseOwner}{objectQualifier}Blog_Entry_Categories ec
 	INNER JOIN {databaseOwner}{objectQualifier}Blog_Categories c on ec.CatID = c.CatID
 	WHERE EntryID = @entryid
 	
@@ -866,7 +869,7 @@ AS
 BEGIN
 
 	SET NOCOUNT ON;
-	select t.TagID, t.tag, CASE WHEN tc.cnt is null THEN 0 ELSE tc.cnt END as cnt
+	select t.TagID, t.tag, t.slug, CASE WHEN tc.cnt is null THEN 0 ELSE tc.cnt END as cnt
 	from {databaseOwner}{objectQualifier}Blog_tags t
 	inner join
 	(select TagID, Count(0) as cnt
@@ -911,7 +914,7 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListTagsCnt
 AS
 BEGIN
 	SET NOCOUNT ON
-	select t.TagID, t.tag, CASE WHEN tc.cnt is null THEN 0 ELSE tc.cnt END as cnt
+	select t.TagID, t.tag, t.slug, CASE WHEN tc.cnt is null THEN 0 ELSE tc.cnt END as cnt
 	from {databaseOwner}{objectQualifier}Blog_tags t
 	inner join
 	(select TagID, Count(0) as cnt
@@ -931,6 +934,7 @@ GO
 CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdateCategory 
 	@CatID int, 
 	@Category nvarchar(255),
+	@Slug nvarchar(255),
 	@ParentID int
 AS
 BEGIN
@@ -938,6 +942,7 @@ BEGIN
 
 	UPDATE {databaseOwner}{objectQualifier}Blog_Categories SET 
 	Category = @Category,
+	Slug = @Slug,
 	ParentID = @ParentID
 	WHERE CatID = @CatID
 
