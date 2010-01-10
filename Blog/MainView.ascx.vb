@@ -117,6 +117,7 @@ Partial Public Class MainView
     ddModuleDef.DataSource = (New DotNetNuke.Entities.Modules.Definitions.ModuleDefinitionController).GetModuleDefinitions(Me.ModuleConfiguration.DesktopModuleID)
     ddModuleDef.DataBind()
     ddModuleDef.Items.Insert(0, New ListItem(GetString("Select", LocalResourceFile), "-1"))
+    ddModuleDef.Items.Remove(ddModuleDef.Items.FindByText("View_Blog"))
     Dim intItem As Integer
     For intItem = 0 To PortalSettings.ActiveTab.Panes.Count - 1
      ddPane.Items.Add(Convert.ToString(PortalSettings.ActiveTab.Panes(intItem)))

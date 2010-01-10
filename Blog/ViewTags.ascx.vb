@@ -35,78 +35,36 @@ Partial Public Class ViewTags
   _settings = DotNetNuke.Modules.Blog.Settings.TagViewSettings.GetTagViewSettings(TabModuleId)
  End Sub
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+ Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+  Dim TagController As New TagController
+  Dim TagList As ArrayList
+  Dim tag As TagInfo
+  Dim TagDisplayMode As String
+  TagDisplayMode = _settings.TagDisplayMode
 
-        Dim TagController As New TagController
-        Dim TagList As ArrayList
-        Dim tag As TagInfo
-        Dim TagDisplayMode As String
-        TagDisplayMode = _settings.TagDisplayMode
-
-        Dim TabInfo As DotNetNuke.Entities.Tabs.TabInfo
-        Dim TabController As New DotNetNuke.Entities.Tabs.TabController
-        TabInfo = TabController.GetTab(Me.TabId, Me.PortalId, False)
-
-        Dim path As String
-        Dim sURL As String = ""
-
-        If TagDisplayMode = "List" Then
-            TagList = TagController.ListTags(PortalId)
-            For Each tag In TagList
-                path = "~/default.aspx?tabid=" & Me.TabId & "&TagID=" + tag.TagID.ToString
-                sURL = DotNetNuke.Common.Globals.FriendlyUrl(TabInfo, path, tag.Slug)
-                Dim a As New HtmlAnchor()
-                a.HRef = sURL
-                a.InnerText = tag.Tag + " (" + tag.Cnt.ToString + ")"
-                a.Title = tag.Tag
-                phTags.Controls.Add(a)
-                phTags.Controls.Add(New LiteralControl("<br />"))
-            Next
-        Else
-            TagList = TagController.ListWeightedTags(PortalId)
-            For Each tag In TagList
-                path = "~/default.aspx?tabid=" & Me.TabId & "&TagID=" + tag.TagID.ToString
-                sURL = DotNetNuke.Common.Globals.FriendlyUrl(TabInfo, path, tag.Slug)
-                Dim a As New HtmlAnchor()
-                a.HRef = sURL
-                a.InnerText = tag.Tag
-                a.Title = tag.Tag
-                a.Attributes("class") = "TagCloud" + tag.Weight.ToString
-                phTags.Controls.Add(a)
-                phTags.Controls.Add(New LiteralControl(" "))
-            Next
-        End If
-
-        'Dim TagController As New TagController
-        'Dim TagList As ArrayList
-        'Dim tag As TagInfo
-        'Dim TagDisplayMode As String
-        'TagDisplayMode = _settings.TagDisplayMode
-
-        'If TagDisplayMode = "List" Then
-        ' TagList = TagController.ListTags(PortalId)
-        ' For Each tag In TagList
-        '  Dim a As New HtmlAnchor()
-        '  a.HRef = NavigateURL(Me.TabId, "", "tagid=" + tag.TagID.ToString)
-        '  a.InnerText = tag.Tag + " (" + tag.Cnt.ToString + ")"
-        '  a.Title = tag.Tag
-        '  phTags.Controls.Add(a)
-        '  phTags.Controls.Add(New LiteralControl("<br />"))
-        ' Next
-        'Else
-        ' TagList = TagController.ListWeightedTags(PortalId)
-        ' For Each tag In TagList
-        '  Dim a As New HtmlAnchor()
-        '  a.HRef = NavigateURL(Me.TabId, "", "tagid=" + tag.TagID.ToString)
-        '  a.InnerText = tag.Tag
-        '  a.Title = tag.Tag
-        '  a.Attributes("class") = "TagCloud" + tag.Weight.ToString
-        '  phTags.Controls.Add(a)
-        '  phTags.Controls.Add(New LiteralControl(" "))
-        ' Next
-        'End If
-
-    End Sub
+  If TagDisplayMode = "List" Then
+   TagList = TagController.ListTags(PortalId)
+   For Each tag In TagList
+    Dim a As New HtmlAnchor()
+    a.HRef = Utility.GetSEOLink(PortalId, TabId, "", tag.Slug, "tagid=" + tag.TagId.ToString)
+    a.InnerText = tag.Tag + " (" + tag.Cnt.ToString + ")"
+    a.Title = tag.Tag
+    phTags.Controls.Add(a)
+    phTags.Controls.Add(New LiteralControl("<br />"))
+   Next
+  Else
+   TagList = TagController.ListWeightedTags(PortalId)
+   For Each tag In TagList
+    Dim a As New HtmlAnchor()
+    a.HRef = Utility.GetSEOLink(PortalId, TabId, "", tag.Slug, "tagid=" + tag.TagId.ToString)
+    a.InnerText = tag.Tag
+    a.Title = tag.Tag
+    a.Attributes("class") = "TagCloud" + tag.Weight.ToString
+    phTags.Controls.Add(a)
+    phTags.Controls.Add(New LiteralControl(" "))
+   Next
+  End If
+ End Sub
 
 
 End Class

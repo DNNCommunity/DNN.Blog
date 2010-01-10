@@ -275,22 +275,22 @@ Namespace Rss
     Description = Utility.RewriteRefs(HttpUtility.HtmlDecode(CStr(ir.Item("Description"))))
    End If
    If _includeTagsInDescription Then
-    Dim TagString As String = (New TagController).GetTagsByEntry(EntryId)
+    Dim TagString As String = TagController.GetTagsByEntry(EntryId)
     If Not TagString = "" Then
      Description &= "<br /><br />" & Localization.GetString("Tags", Globals.glbSharedResourceFile) & ": " & TagString
     End If
    End If
    If _includeCategoriesInDescription Then
-    For Each c As CategoryInfo In (New CategoryController).ListCatsByEntry(EntryId)
-     Description &= "<br />" & Localization.GetString("Category", Globals.glbSharedResourceFile) & ": <a href=" & NavigateURL(_tabId, "", "CatID=" & c.CatID.ToString) & ">" & c.Category & "</a>"
+    For Each c As CategoryInfo In CategoryController.ListCatsByEntry(EntryId)
+     Description &= "<br />" & Localization.GetString("Category", Globals.glbSharedResourceFile) & ": <a href=" & NavigateURL(_tabId, "", "CatID=" & c.CatId.ToString) & ">" & c.Category & "</a>"
     Next
    End If
    writer.WriteElementString("description", Description)
    WriteElement(writer, "author", ir, "SyndicationEmail", False)
    ' categories
-   For Each c As CategoryInfo In (New CategoryController).ListCatsByEntry(EntryId)
+   For Each c As CategoryInfo In CategoryController.ListCatsByEntry(EntryId)
     writer.WriteStartElement("category")
-    writer.WriteAttributeString("domain", NavigateURL(_tabId, "", "CatID=" & CType(c.CatID, String)))
+    writer.WriteAttributeString("domain", NavigateURL(_tabId, "", "CatID=" & CType(c.CatId, String)))
     writer.WriteString(c.Category)
     writer.WriteEndElement()
    Next
@@ -311,9 +311,9 @@ Namespace Rss
 
    ' Write Blog specific data
    ' Write tags
-   For Each t As TagInfo In (New TagController).ListTagsByEntry(EntryId)
+   For Each t As TagInfo In TagController.ListTagsByEntry(EntryId)
     writer.WriteStartElement(nsBlogPre, "tag", nsBlogFull)
-    writer.WriteAttributeString(nsBlogPre, "url", Nothing, NavigateURL(_tabId, "", "TagID=" & t.TagID.ToString))
+    writer.WriteAttributeString(nsBlogPre, "url", Nothing, NavigateURL(_tabId, "", "TagID=" & t.TagId.ToString))
     writer.WriteString(t.Tag)
     writer.WriteEndElement()
    Next

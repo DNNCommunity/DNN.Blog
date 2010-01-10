@@ -137,19 +137,17 @@ Partial Class MassEdit
 
   If (e.Item.ItemType = ListItemType.Item Or e.Item.ItemType = ListItemType.AlternatingItem) Then
 
-   Dim tc As New TagController
    Dim ti As String
    Dim eid As Integer = CType(CType(e.Item.DataItem, EntryInfo).EntryID, Integer)
-   ti = tc.GetTagsByEntry(eid)
+   ti = TagController.GetTagsByEntry(eid)
    Dim litTags As Literal = CType(e.Item.FindControl("litTags"), Literal)
    Dim tbTags As TextBox = CType(e.Item.FindControl("tbTags"), TextBox)
    litTags.Text = ti
    tbTags.Text = ti
    tbTags.Visible = False
 
-   Dim cc As New CategoryController
-   Dim ci As List(Of Business.CategoryInfo) = cc.ListCatsByEntry(eid)
-   Dim cl As List(Of Business.CategoryInfo) = cc.ListCategoriesSorted(PortalId)
+   Dim ci As List(Of Business.CategoryInfo) = CategoryController.ListCatsByEntry(eid)
+   Dim cl As List(Of Business.CategoryInfo) = CategoryController.ListCategoriesSorted(PortalId)
 
    Dim dlCat As DropDownList = CType(e.Item.FindControl("ddlCat"), DropDownList)
 
@@ -190,14 +188,12 @@ Partial Class MassEdit
   Dim cbPub As CheckBox = CType(item.FindControl("cbPublished"), CheckBox)
   Dim cbComments As CheckBox = CType(item.FindControl("cbComments"), CheckBox)
 
-  Dim tc As New TagController
-  tc.UpdateTagsByEntry(CInt(e.CommandArgument), tbTags.Text)
+  TagController.UpdateTagsByEntry(CInt(e.CommandArgument), tbTags.Text)
 
   Dim litTags As Literal = CType(item.FindControl("litTags"), Literal)
   litTags.Text = tbTags.Text
 
-  Dim cc As New CategoryController
-  cc.UpdateCategoriesByEntry(CInt(e.CommandArgument), CInt(dlCat.SelectedValue))
+  CategoryController.UpdateCategoriesByEntry(CInt(e.CommandArgument), CInt(dlCat.SelectedValue))
 
   Dim litCat As Literal = CType(item.FindControl("litCat"), Literal)
   litCat.Text = dlCat.SelectedItem.Text

@@ -1,4 +1,6 @@
-﻿/*************** BEGIN 03.05.02.SqlDataProvider ************************/
+﻿/*************** BEGIN 04.00.00.SqlDataProvider ************************/
+
+/*************** TABLES ************************/
 
 ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs ADD 
 	[EnableTwitterIntegration] [bit] NULL
@@ -19,6 +21,203 @@ GO
 ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs
 	ADD  CONSTRAINT [DF_{objectQualifier}Blog_Blogs_EnableTwitterIntegration]  DEFAULT ((0)) FOR [EnableTwitterIntegration]
 GO
+
+if not exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_Categories') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+BEGIN
+
+	CREATE TABLE {databaseOwner}{objectQualifier}Blog_Categories(
+		CatID int IDENTITY(1,1) NOT NULL,
+		Category nvarchar(255) NOT NULL,
+		Slug nvarchar(255) NOT NULL,
+		ParentID int NULL,
+		PortalID int NOT NULL,
+	 CONSTRAINT {objectQualifier}PK_Blog_Categories PRIMARY KEY CLUSTERED 
+	(
+		CatID ASC
+	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+	) ON [PRIMARY]
+END
+
+GO
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Blog_Categories_Portals') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Categories ADD CONSTRAINT
+	FK_{objectQualifier}Blog_Categories_Portals FOREIGN KEY
+	(
+    PortalID
+	) REFERENCES {databaseOwner}{objectQualifier}Portals
+	(
+    PortalID
+	) ON DELETE CASCADE
+	 NOT FOR REPLICATION
+
+GO
+
+
+
+BEGIN	
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}Blog_Categories_PortalID ON {databaseOwner}{objectQualifier}Blog_Categories 
+	(
+		PortalID ASC
+	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, 
+		ALLOW_ROW_LOCKS  = ON, 	ALLOW_PAGE_LOCKS  = OFF) ON [PRIMARY]
+END
+
+GO
+
+if not exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_Tags') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+BEGIN
+
+	CREATE TABLE {databaseOwner}{objectQualifier}Blog_Tags(
+		TagID int IDENTITY(1,1) NOT NULL,
+		Tag nvarchar(255) NOT NULL,
+		Slug nvarchar(255) NOT NULL,
+		Active bit NOT NULL,
+		PortalID int NOT NULL,
+	 CONSTRAINT PK_{objectQualifier}Blog_Tags PRIMARY KEY CLUSTERED 
+	(
+		TagID ASC
+	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+	) ON [PRIMARY]
+	
+	CREATE NONCLUSTERED INDEX IX_{objectQualifier}Blog_Tags_PortalID ON {databaseOwner}{objectQualifier}Blog_Tags 
+	(
+		PortalID ASC
+	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, 
+	ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = OFF) ON [PRIMARY]
+
+END
+
+GO
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Blog_Tags_Portals') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Tags ADD CONSTRAINT
+	FK_{objectQualifier}Blog_Tags_Portals FOREIGN KEY
+	(
+    PortalID
+	) REFERENCES {databaseOwner}{objectQualifier}Portals
+	(
+    PortalID
+	) ON DELETE CASCADE
+	 NOT FOR REPLICATION
+
+GO
+
+
+if not exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_Entry_Categories') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+BEGIN
+	CREATE TABLE {databaseOwner}{objectQualifier}Blog_Entry_Categories(
+		EntryCatID int IDENTITY(1,1) NOT NULL,
+		EntryID int NULL,
+		CatID int NULL,
+	 CONSTRAINT PK_{objectQualifier}Blog_Entry_Categories PRIMARY KEY CLUSTERED 
+	(
+		EntryCatID ASC
+	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+	) ON [PRIMARY]
+	
+	CREATE NONCLUSTERED INDEX IX_{objectQualifier}Blog_Entry_Categories_EntryID ON {databaseOwner}{objectQualifier}Blog_Entry_Categories 
+	(
+		EntryID ASC
+	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, 
+	ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = OFF) ON [PRIMARY]
+	
+	
+	CREATE NONCLUSTERED INDEX IX_{objectQualifier}Blog_Entry_Categories_CatID ON {databaseOwner}{objectQualifier}Blog_Entry_Categories 
+	(
+		CatID ASC
+	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, 
+	ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = OFF) ON [PRIMARY]
+
+END
+
+GO
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Blog_Entry_Categories_Entries') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Entry_Categories ADD CONSTRAINT
+	FK_{objectQualifier}Blog_Entry_Categories_Entries FOREIGN KEY
+	(
+    EntryID
+	) REFERENCES {databaseOwner}{objectQualifier}Blog_Entries
+	(
+    EntryID
+	) ON DELETE CASCADE
+	 NOT FOR REPLICATION
+
+GO
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Blog_Entry_Categories_Categories') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Entry_Categories ADD CONSTRAINT
+	FK_{objectQualifier}Blog_Entry_Categories_Categories FOREIGN KEY
+	(
+    CatID
+	) REFERENCES {databaseOwner}{objectQualifier}Blog_Categories
+	(
+    CatID
+	) ON DELETE CASCADE
+	 NOT FOR REPLICATION
+
+GO
+
+
+if not exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_Entry_Tags') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+BEGIN
+
+	CREATE TABLE {databaseOwner}{objectQualifier}Blog_Entry_Tags(
+		EntryTagID int IDENTITY(1,1) NOT NULL,
+		EntryID int NOT NULL,
+		TagID int NOT NULL,
+	 CONSTRAINT PK_{objectQualifier}Blog_Entry_Tags PRIMARY KEY CLUSTERED 
+	(
+		EntryTagID ASC
+	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+	) ON [PRIMARY]
+	
+	CREATE NONCLUSTERED INDEX IX_{objectQualifier}Blog_Entry_Tags_EntryID ON {databaseOwner}{objectQualifier}Blog_Entry_Tags 
+	(
+		EntryID ASC
+	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, 
+	ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = OFF) ON [PRIMARY]
+	
+	CREATE NONCLUSTERED INDEX IX_{objectQualifier}Blog_Entry_Tags_TagID ON {databaseOwner}{objectQualifier}Blog_Entry_Tags 
+	(
+		TagID ASC
+	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, 
+	ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = OFF) ON [PRIMARY]
+
+END
+
+GO
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Blog_Entry_Tags_Entries') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Entry_Tags ADD CONSTRAINT
+	FK_{objectQualifier}Blog_Entry_Tags_Entries FOREIGN KEY
+	(
+    EntryID
+	) REFERENCES {databaseOwner}{objectQualifier}Blog_Entries
+	(
+    EntryID
+	) ON DELETE CASCADE
+	 NOT FOR REPLICATION
+
+GO
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Blog_Entry_Tags_Tags') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Entry_Tags ADD CONSTRAINT
+	FK_{objectQualifier}Blog_Entry_Tags_Tags FOREIGN KEY
+	(
+    TagID
+	) REFERENCES {databaseOwner}{objectQualifier}Blog_Tags
+	(
+    TagID
+	) ON DELETE CASCADE
+	 NOT FOR REPLICATION
+
+GO
+
+
+
+/*************** PROCEDURES ************************/
 
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_UpdateBlog') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}{objectQualifier}Blog_UpdateBlog
@@ -260,7 +459,7 @@ BEGIN
 		B.[BlogID] = E.[BlogID]
 	
 	WHERE B.[PortalID] = @PortalID 
-	AND  (B.BlogID = @BlogID OR B.[ParentBlogID] = @BlogID)
+	AND  (B.BlogID = @BlogID OR B.[ParentBlogID] = @BlogID) AND E.Published=1
 	
 	group by DATEPART(m, E.AddedDate), DATEPART(yy, E.AddedDate)
 	order by AddedYear DESC, AddedMonth DESC
@@ -275,7 +474,7 @@ BEGIN
 	FROM {databaseOwner}{objectQualifier}Blog_Entries E INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs B ON
 		B.[BlogID] = E.[BlogID]
 	
-	WHERE B.[PortalID] = @PortalID 
+	WHERE B.[PortalID] = @PortalID AND E.Published=1
 	
 	group by DATEPART(m, E.AddedDate), DATEPART(yy, E.AddedDate)
 	order by AddedYear DESC, AddedMonth DESC
@@ -471,135 +670,51 @@ If @Published = 1
 	
 GO
 
-if not exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_Categories') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
-BEGIN
-
-	CREATE TABLE {databaseOwner}{objectQualifier}Blog_Categories(
-		CatID int IDENTITY(1,1) NOT NULL,
-		Category nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-		Slug nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-		ParentID int NULL,
-		PortalID int NULL,
-	 CONSTRAINT PK_Blog_Categories PRIMARY KEY CLUSTERED 
-	(
-		CatID ASC
-	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-	) ON [PRIMARY]
-END
-
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_AddCategory') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_AddCategory
 GO
 
-BEGIN	
-CREATE NONCLUSTERED INDEX IX_Blog_Categories_PortalID ON {databaseOwner}{objectQualifier}Blog_Categories 
-	(
-		PortalID ASC
-	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, 
-		ALLOW_ROW_LOCKS  = ON, 	ALLOW_PAGE_LOCKS  = OFF) ON [PRIMARY]
-END
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_AddCategory
+	@Category NVARCHAR (255),
+	@ParentId INT,
+	@PortalId INT,
+	@Slug NVARCHAR (255)
+AS
 
+INSERT INTO {databaseOwner}{objectQualifier}Blog_Categories (
+	[Category],
+	[ParentId],
+	[PortalId],
+	[Slug]
+) VALUES (
+	@Category,
+	@ParentId,
+	@PortalId,
+	@Slug
+)
+
+select SCOPE_IDENTITY()
 GO
 
-if not exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_Tags') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
-BEGIN
-
-	CREATE TABLE {databaseOwner}{objectQualifier}Blog_Tags(
-		TagID int IDENTITY(1,1) NOT NULL,
-		Tag nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-		Slug nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-		Active bit NOT NULL,
-		PortalID int NULL,
-	 CONSTRAINT {databaseOwner}{objectQualifier}PK_Blog_Tags PRIMARY KEY CLUSTERED 
-	(
-		TagID ASC
-	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-	) ON [PRIMARY]
-	
-	CREATE NONCLUSTERED INDEX {databaseOwner}{objectQualifier}IX_Blog_Tags_PortalID ON {databaseOwner}{objectQualifier}Blog_Tags 
-	(
-		PortalID ASC
-	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, 
-	ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = OFF) ON [PRIMARY]
-
-END
-
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_UpdateCategory') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdateCategory
 GO
 
-if not exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_Entry_Categories') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
-BEGIN
-	CREATE TABLE {databaseOwner}{objectQualifier}Blog_Entry_Categories(
-		EntryCatID int IDENTITY(1,1) NOT NULL,
-		EntryID int NULL,
-		CatID int NULL,
-	 CONSTRAINT PK_Blog_Entry_Categories PRIMARY KEY CLUSTERED 
-	(
-		EntryCatID ASC
-	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-	) ON [PRIMARY]
-	
-	CREATE NONCLUSTERED INDEX IX_Blog_Entry_Categories_EntryID ON {databaseOwner}{objectQualifier}Blog_Entry_Categories 
-	(
-		EntryID ASC
-	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, 
-	ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = OFF) ON [PRIMARY]
-	
-	
-	CREATE NONCLUSTERED INDEX IX_Blog_Entry_Categories_CatID ON {databaseOwner}{objectQualifier}Blog_Entry_Categories 
-	(
-		CatID ASC
-	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, 
-	ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = OFF) ON [PRIMARY]
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdateCategory
+	@CatId INT,
+	@Category NVARCHAR (255),
+	@ParentId INT,
+	@Slug NVARCHAR (255)
+AS
 
-END
-
+UPDATE {databaseOwner}{objectQualifier}Blog_Categories SET
+	[Category] = @Category,
+	[ParentId] = @ParentId,
+	[Slug] = @Slug
+WHERE
+	[CatId] = @CatId
 GO
 
-if not exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_Entry_Tags') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
-BEGIN
-
-	CREATE TABLE {databaseOwner}{objectQualifier}Blog_Entry_Tags(
-		EntryTagID int IDENTITY(1,1) NOT NULL,
-		EntryID int NOT NULL,
-		TagID int NOT NULL,
-	 CONSTRAINT PK_Blog_Entry_Tags PRIMARY KEY CLUSTERED 
-	(
-		EntryTagID ASC
-	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-	) ON [PRIMARY]
-	
-	CREATE NONCLUSTERED INDEX IX_Blog_Entry_Tags_EntryID ON {databaseOwner}{objectQualifier}Blog_Entry_Tags 
-	(
-		EntryID ASC
-	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, 
-	ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = OFF) ON [PRIMARY]
-	
-	CREATE NONCLUSTERED INDEX IX_Blog_Entry_Tags_TagID ON {databaseOwner}{objectQualifier}Blog_Entry_Tags 
-	(
-		TagID ASC
-	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, 
-	ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = OFF) ON [PRIMARY]
-
-END
-
-GO
-
-if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_AddCategory') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}{objectQualifier}Blog_AddCategory
-GO
-
-CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_AddCategory 
-		@Category nvarchar(255),
-		@Slug nvarchar(255),
-		@ParentID int,
-		@PortalID int
-	AS
-	BEGIN
-		SET NOCOUNT ON;
-		INSERT INTO {databaseOwner}{objectQualifier}Blog_Categories (Category, Slug, ParentID, PortalID) VALUES (@Category, @Slug, @ParentID, @PortalID)
-		RETURN @@IDENTITY
-	
-	END
-
-GO
 
 if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_AddEntryCategories') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}{objectQualifier}Blog_AddEntryCategories
@@ -714,7 +829,7 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	SELECT CatID, Category, ParentID
+	SELECT *
 	FROM {databaseOwner}{objectQualifier}Blog_Categories
 	WHERE CatID = @CatID
 END
@@ -822,21 +937,17 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListCategories
 	@PortalID int
 AS
 BEGIN
-
 	SET NOCOUNT ON;
-
-    	SELECT BC.CatID, BC.Category, BC.Slug, BC.ParentID, CASE WHEN CC.Cnt IS NULL THEN 0 ELSE CC.Cnt END AS Cnt
+    	SELECT BC.*, CASE WHEN CC.Cnt IS NULL THEN 0 ELSE CC.Cnt END AS Cnt
 	FROM {databaseOwner}{objectQualifier}Blog_Categories BC
 	LEFT OUTER JOIN
-		(SELECT {databaseOwner}{objectQualifier}Blog_Entry_Categories.CatID AS CatID, COUNT(0) AS Cnt
-		FROM {databaseOwner}{objectQualifier}Blog_Entry_Categories
-		GROUP BY {databaseOwner}{objectQualifier}Blog_Entry_Categories.CatID) CC ON BC.CatID = CC.CatID
+ 	(select ec.CatID, Count(0) as Cnt
+ 	from {databaseOwner}{objectQualifier}Blog_Entry_Categories ec
+ 	INNER JOIN {databaseOwner}{objectQualifier}Blog_Entries e ON e.EntryId=ec.EntryId
+ 	group by ec.CatID, e.Published having e.Published=1) CC ON BC.CatID = CC.CatID
 	WHERE BC.PortalID = @PortalID
 
-
 END
-
-
 
 GO
 
@@ -850,9 +961,10 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	SELECT ec.CatID, Category, Slug, ParentID FROM {databaseOwner}{objectQualifier}Blog_Entry_Categories ec
+	SELECT c.* 
+	FROM {databaseOwner}{objectQualifier}Blog_Entry_Categories ec
 	INNER JOIN {databaseOwner}{objectQualifier}Blog_Categories c on ec.CatID = c.CatID
-	WHERE EntryID = @entryid
+	WHERE ec.EntryID = @entryid
 	
 END
 
@@ -869,12 +981,13 @@ AS
 BEGIN
 
 	SET NOCOUNT ON;
-	select t.TagID, t.tag, t.slug, CASE WHEN tc.cnt is null THEN 0 ELSE tc.cnt END as cnt
+	select t.*, CASE WHEN tc.cnt is null THEN 0 ELSE tc.cnt END as cnt
 	from {databaseOwner}{objectQualifier}Blog_tags t
 	inner join
-	(select TagID, Count(0) as cnt
-	from {databaseOwner}{objectQualifier}Blog_Entry_Tags
-	group by tagid) tc on t.tagID = tc.TagID
+	(select et.TagID, Count(0) as cnt
+	from {databaseOwner}{objectQualifier}Blog_Entry_Tags et 
+	INNER JOIN {databaseOwner}{objectQualifier}Blog_Entries e ON e.EntryId=et.EntryId
+	group by et.tagid, e.Published having e.Published=1) tc on t.tagID = tc.TagID
 	where PortalID = @PortalID
 	order by Tag
 END
@@ -893,7 +1006,7 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListTagsByEntry
 AS
 BEGIN
 	SET NOCOUNT ON;
-	SELECT	t.TagID, Tag, Slug, Active		
+	SELECT	t.*
 	FROM	{databaseOwner}{objectQualifier}Blog_Tags t
 	INNER JOIN {databaseOwner}{objectQualifier}Blog_Entry_Tags e ON t.TagID = e.TagID
 	WHERE	EntryID = @entryid
@@ -914,12 +1027,13 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListTagsCnt
 AS
 BEGIN
 	SET NOCOUNT ON
-	select t.TagID, t.tag, t.slug, CASE WHEN tc.cnt is null THEN 0 ELSE tc.cnt END as cnt
+	select t.*, CASE WHEN tc.cnt is null THEN 0 ELSE tc.cnt END as cnt
 	from {databaseOwner}{objectQualifier}Blog_tags t
 	inner join
-	(select TagID, Count(0) as cnt
-	from {databaseOwner}{objectQualifier}Blog_Entry_Tags
-	group by tagid) tc on t.tagID = tc.TagID
+	(select et.TagID, Count(0) as cnt
+	from {databaseOwner}{objectQualifier}Blog_Entry_Tags et 
+	INNER JOIN {databaseOwner}{objectQualifier}Blog_Entries e ON e.EntryId=et.EntryId
+	group by et.tagid, e.Published having e.Published=1) tc on t.tagID = tc.TagID
 	where portalID = @PortalID
 	order by cnt desc, tag
 END
@@ -927,28 +1041,3 @@ END
 GO
 
 
-if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_UpdateCategory') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}{objectQualifier}Blog_UpdateCategory
-GO
-
-CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdateCategory 
-	@CatID int, 
-	@Category nvarchar(255),
-	@Slug nvarchar(255),
-	@ParentID int
-AS
-BEGIN
-	SET NOCOUNT ON;
-
-	UPDATE {databaseOwner}{objectQualifier}Blog_Categories SET 
-	Category = @Category,
-	Slug = @Slug,
-	ParentID = @ParentID
-	WHERE CatID = @CatID
-
-END
-
-GO
-
-
-/*************** END 03.05.02.SqlDataProvider ************************/

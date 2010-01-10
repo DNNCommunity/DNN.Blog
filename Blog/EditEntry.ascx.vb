@@ -48,12 +48,10 @@ Partial Class EditEntry
  Private m_oBlogController As New BlogController
  Private m_oParentBlog As BlogInfo
  Private m_oBlog As BlogInfo
- 'Private m_oBlogSettings As Hashtable
- Private m_oTagController As New TagController
  Private m_oTags As ArrayList
- Private m_oCategoryController As New CategoryController
  Private m_oCats As List(Of Business.CategoryInfo)
  Private m_oEntryCats As List(Of Business.CategoryInfo)
+ Private m_oEntryId As Integer = -1
 #End Region
 
 #Region "Controls"
@@ -63,6 +61,39 @@ Partial Class EditEntry
 #End Region
 
 #Region "Event Handlers"
+ Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+
+  Try
+   Globals.ReadValue(Me.Request.Params, "EntryID", m_oEntryId)
+   If m_oEntryId > -1 Then
+    m_oEntry = m_oEntryController.GetEntry(m_oEntryId, PortalId)
+    m_oBlog = m_oBlogController.GetBlog(m_oEntry.BlogID)
+   ElseIf Not (Request.Params("BlogID") Is Nothing) Then
+    m_oBlog = m_oBlogController.GetBlog(Int32.Parse(Request.Params("BlogID")))
+   Else
+    m_oBlog = m_oBlogController.GetBlogByUserID(Me.PortalId, Me.UserId)
+   End If
+  Catch
+  End Try
+
+  If m_oBlog Is Nothing Then
+   Response.Redirect(Request.UrlReferrer.ToString, True)
+  ElseIf Not m_oEntry Is Nothing Then
+   Me.ModuleConfiguration.ModuleTitle = Localization.GetString("msgEditBlogEntry", LocalResourceFile)
+  Else
+   Me.ModuleConfiguration.ModuleTitle = Localization.GetString("msgAddBlogEntry", LocalResourceFile)
+  End If
+  If Not Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
+   Response.Redirect(NavigateURL())
+  End If
+
+  If m_oBlog.ParentBlogID > -1 Then
+   m_oParentBlog = m_oBlogController.GetBlog(m_oBlog.ParentBlogID)
+  Else
+   m_oParentBlog = m_oBlog
+  End If
+
+ End Sub
 
  Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
   Try
@@ -93,8 +124,15 @@ Partial Class EditEntry
      chkDoNotTweet.Visible = False
     End If
 
-    Dim cc As New CategoryController
-    cc.PopulateTree(treeCategories, PortalId, 0)
+    CategoryController.PopulateTree(treeCategories, PortalId, 0)
+
+    If BlogSettings.AllowSummaryHtml Then
+     txtDescription.Visible = True
+     txtDescriptionText.Visible = False
+    Else
+     txtDescription.Visible = False
+     txtDescriptionText.Visible = True
+    End If
 
     If Not m_oEntry Is Nothing Then
      'Load data
@@ -103,8 +141,6 @@ Partial Class EditEntry
      If BlogSettings.AllowSummaryHtml Then
       txtDescription.Text = m_oEntry.Description
      Else
-      txtDescription.Visible = False
-      txtDescriptionText.Visible = True
       txtDescriptionText.Text = m_oEntry.Description
      End If
      teBlogEntry.Text = Server.HtmlDecode(m_oEntry.Entry)
@@ -125,10 +161,10 @@ Partial Class EditEntry
      chkDoNotTweet.Checked = True
 
      'RR-09/01/2009-BLG-XXXX
-     tbTags.Text = m_oTagController.GetTagsByEntry(m_oEntry.EntryID)
+     tbTags.Text = Business.TagController.GetTagsByEntry(m_oEntry.EntryID)
 
      'm_oCats = m_oCategoryController.ListCategoriesSorted(m_oBlog.PortalID)
-     m_oEntryCats = m_oCategoryController.ListCatsByEntry(m_oEntry.EntryID)
+     m_oEntryCats = CategoryController.ListCatsByEntry(m_oEntry.EntryID)
 
      'ddlCategory.DataSource = m_oCats
      'ddlCategory.DataBind()
@@ -203,6 +239,11 @@ Partial Class EditEntry
  Private Sub cmdDraft_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdDraft.Click
   'DR-04/16/2009-BLG-9657
   updateEntry(False, False)
+
+  If m_oEntryId = -1 Then
+   Me.Response.Redirect(EditUrl("EntryID", m_oEntry.EntryID.ToString(), "Edit_Entry"), False)
+  End If
+
  End Sub
 
  Private Sub cmdCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdCancel.Click
@@ -383,7 +424,6 @@ Partial Class EditEntry
 #End Region
 
 #Region "Private Methods"
-
  Private Sub updateEntry(ByVal publish As Boolean, ByVal redirect As Boolean)
   Try
    If Page.IsValid = True Then
@@ -433,13 +473,12 @@ Partial Class EditEntry
       m_oEntryController.UpdateEntry(m_oEntry)
      End If
 
-     m_oTagController.UpdateTagsByEntry(m_oEntry.EntryID, tbTags.Text)
-     'm_oCategoryController.UpdateCategoriesByEntry(m_oEntry.EntryID, CInt(ddlCategory.SelectedValue))
+     Business.TagController.UpdateTagsByEntry(m_oEntry.EntryID, tbTags.Text)
      Dim selectedCategories As New List(Of Integer)
      For Each n As UI.WebControls.TreeNode In treeCategories.SelectedTreeNodes
       selectedCategories.Add(CInt(n.Key))
      Next
-     m_oCategoryController.UpdateCategoriesByEntry(m_oEntry.EntryID, selectedCategories)
+     CategoryController.UpdateCategoriesByEntry(m_oEntry.EntryID, selectedCategories)
 
      If txtTrackBackUrl.Text <> "" Then
       PingBackService.SendTrackBack(txtTrackBackUrl.Text, m_oEntry, m_oBlog.Title)
@@ -467,55 +506,6 @@ Partial Class EditEntry
  Private Function CreateCopyRight() As String
   Return Localization.GetString("msgCopyright", LocalResourceFile) & Date.UtcNow.Year & " " & m_oBlog.UserFullName
  End Function
-
-#End Region
-
-#Region " Web Form Designer Generated Code "
-
- 'This call is required by the Web Form Designer.
- <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-
- End Sub
-
- 'NOTE: The following placeholder declaration is required by the Web Form Designer.
- 'Do not delete or move it.
- Private designerPlaceholderDeclaration As System.Object
-
- Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
-  'CODEGEN: This method call is required by the Web Form Designer
-  'Do not modify it using the code editor.
-  InitializeComponent()
-
-  Try
-   If Not (Request.Params("EntryID") Is Nothing) Then
-    m_oEntry = m_oEntryController.GetEntry(Int32.Parse(Request.Params("EntryID")), PortalId)
-    m_oBlog = m_oBlogController.GetBlog(m_oEntry.BlogID)
-   ElseIf Not (Request.Params("BlogID") Is Nothing) Then
-    m_oBlog = m_oBlogController.GetBlog(Int32.Parse(Request.Params("BlogID")))
-   Else
-    m_oBlog = m_oBlogController.GetBlogByUserID(Me.PortalId, Me.UserId)
-   End If
-  Catch
-  End Try
-
-  If m_oBlog Is Nothing Then
-   Response.Redirect(Request.UrlReferrer.ToString, True)
-  ElseIf Not m_oEntry Is Nothing Then
-   Me.ModuleConfiguration.ModuleTitle = Localization.GetString("msgEditBlogEntry", LocalResourceFile)
-  Else
-   Me.ModuleConfiguration.ModuleTitle = Localization.GetString("msgAddBlogEntry", LocalResourceFile)
-  End If
-  If Not Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
-   Response.Redirect(NavigateURL())
-  End If
-
-  If m_oBlog.ParentBlogID > -1 Then
-   m_oParentBlog = m_oBlogController.GetBlog(m_oBlog.ParentBlogID)
-  Else
-   m_oParentBlog = m_oBlog
-  End If
-
- End Sub
 
 #End Region
 

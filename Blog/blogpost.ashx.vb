@@ -138,7 +138,7 @@ Public Class BlogPost
  Public Function getCategories_WordPress(ByVal blogid As String, ByVal username As String, ByVal password As String) As WordPress.CategoryInfo() Implements WordPress.IWordPress.getCategories
   InitializeMethodCall(username, password)
 
-  Dim list As List(Of Business.CategoryInfo) = (New CategoryController).ListCategoriesSorted(_portalSettings.PortalId)
+  Dim list As List(Of Business.CategoryInfo) = CategoryController.ListCategoriesSorted(_portalSettings.PortalId)
   Dim res(list.Count - 1) As WordPress.CategoryInfo
   Dim i As Integer = 0
   For Each c As DotNetNuke.Modules.Blog.Business.CategoryInfo In list
@@ -159,7 +159,7 @@ Public Class BlogPost
  Public Function getPostCategories(ByVal postid As String, ByVal username As String, ByVal password As String) As MoveableType.Category() Implements MoveableType.IMoveableType.getPostCategories
   InitializeMethodCall(username, password)
 
-  Dim list As List(Of Business.CategoryInfo) = (New CategoryController).ListCatsByEntry(CInt(postid))
+  Dim list As List(Of Business.CategoryInfo) = CategoryController.ListCatsByEntry(CInt(postid))
   Dim res(list.Count - 1) As MoveableType.Category
   Dim i As Integer = 0
   For Each c As DotNetNuke.Modules.Blog.Business.CategoryInfo In list
@@ -182,8 +182,7 @@ Public Class BlogPost
    catIds.Add(CInt(c.categoryId))
    i += 1
   Next
-  Dim cc As New CategoryController
-  cc.UpdateCategoriesByEntry(Integer.Parse(postid), catIds)
+  CategoryController.UpdateCategoriesByEntry(Integer.Parse(postid), catIds)
   Return True
 
  End Function

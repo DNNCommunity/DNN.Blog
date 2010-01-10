@@ -42,8 +42,7 @@ Partial Class EditCategories
 
   tvCategories.Nodes.Clear()
 
-  Dim CatController As New CategoryController
-  Dim CatList As List(Of Business.CategoryInfo) = CatController.ListCategoriesSorted(PortalId)
+  Dim CatList As List(Of Business.CategoryInfo) = CategoryController.ListCategoriesSorted(PortalId)
   For Each Cat As Business.CategoryInfo In CatList
    AddCategory(Cat, Cat.ParentID)
   Next
@@ -95,11 +94,9 @@ Partial Class EditCategories
 
  Protected Sub tvCategories_SelectedNodeChanged(ByVal sender As Object, ByVal e As EventArgs) Handles tvCategories.SelectedNodeChanged
 
-
-  Dim CatController As New CategoryController
   Dim cat As New CategoryInfo
 
-  cat = CatController.GetCategory(CInt(tvCategories.SelectedNode.Value))
+  cat = CategoryController.GetCategory(CInt(tvCategories.SelectedNode.Value))
   tbCategory.Text = cat.Category
   ddlCategory.SelectedValue = cat.ParentID.ToString
 
@@ -122,12 +119,10 @@ Partial Class EditCategories
 
  Protected Sub btnAddEdit_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnAddEdit.Click
 
-  Dim CatController As New CategoryController
-
   If tvCategories.SelectedNode Is Nothing Then
-   CatController.AddCategory(tbCategory.Text, CInt(ddlCategory.SelectedValue), PortalId)
+   CategoryController.AddCategory(tbCategory.Text, CInt(ddlCategory.SelectedValue), PortalId)
   Else
-   CatController.UpdateCategory(CInt(tvCategories.SelectedValue), tbCategory.Text, CInt(ddlCategory.SelectedValue))
+   CategoryController.UpdateCategory(CInt(tvCategories.SelectedValue), tbCategory.Text, CInt(ddlCategory.SelectedValue))
   End If
 
   FillTree()
@@ -155,14 +150,13 @@ Partial Class EditCategories
 
  Protected Sub btnDelete_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnDelete.Click
 
-  Dim CatController As New CategoryController
   If tvCategories.SelectedNode.ChildNodes.Count > 0 Then
    Dim message As String = "Category has children and cannot be deleted.  Delete the child categories first."
    System.Web.HttpContext.Current.Response.Write("<SCRIPT LANGUAGE=""JavaScript"">" & vbCrLf)
    System.Web.HttpContext.Current.Response.Write("alert(""" & message & """)" & vbCrLf)
    System.Web.HttpContext.Current.Response.Write("</SCRIPT>")
   Else
-   CatController.DeleteCategory(CInt(tvCategories.SelectedValue))
+   CategoryController.DeleteCategory(CInt(tvCategories.SelectedValue))
    FillTree()
    SetAddMode()
   End If

@@ -80,6 +80,8 @@
 	margin-right: 10px;
 	cursor: pointer;
 	font-weight: bold;
+	display:inline-block;
+	height:1.5em;
 }
 
 .blog_comments_normal {
@@ -93,8 +95,10 @@
 	
 .blog_topics
 {
-	/*background-image: url(images/blog_topic.png);*/
+	background-image: url(images/blog_topic.png);
 	font-size: 11px;
+	display:inline-block;
+	height:1.5em;
 }
 .blog_more_link
 {
@@ -128,6 +132,7 @@
 {
 	white-space:nowrap;
 	vertical-align:top;
+	padding-right:1em;
 }
 
 .blog_tags
@@ -135,6 +140,10 @@
 	background-image: url(images/blog_tag_blue.png);
 	font-size: 11px;
 }
+.blog_tag{
+    line-height:2em;
+}
+
 .blog_trackback {
 	background-image: url(images/blog_trackback.png);
 	background-repeat: no-repeat;
@@ -155,6 +164,8 @@
 	padding-left: 20px;
 	margin-left: 8px;
 	font-size: 11px;
+	display:inline-block;
+	height:2em;
 }
 .blog_edit_link
 {
@@ -167,7 +178,7 @@
 /*.blog_tags,*/ .blog_topics, .blog_permalink{
 	background-position: left;
 	background-repeat: no-repeat;
-	/*padding-left: 20px;*/
+	padding-left: 20px;
 	display: block;
 	clear: both;
 	float: none;
@@ -218,18 +229,22 @@ h1, .horizontalline
 	right: 0pt;
 }
 .blog_footer_right {
-	float:right;
-	width: 40%;
-	text-align: right;
-}
 
+	float:right;
+	display: inline;
+	position: relative;
+}
+.blog_footer_left {
+	float:left;
+	display: inline;
+}
 .blog_footer {
 	width: 100%;
 	display: block;
 	border-bottom-width: 1px;
 	border-bottom-style: dotted;
 	border-bottom-color: #aaaaaa;
-	padding-bottom: 20px;
+	padding-bottom: 45px;
 }
 .clear { 
 	clear: both;

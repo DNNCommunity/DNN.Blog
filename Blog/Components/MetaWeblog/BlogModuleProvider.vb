@@ -177,8 +177,7 @@ Namespace MetaWeblog
    Dim TagController As New TagController
    item.Keywords = TagController.GetTagsByEntry(entryInfo.EntryID)
 
-   Dim CatController As New CategoryController
-   item.Categories = CatController.StringListCatsByEntry(entryInfo.EntryID)
+   item.Categories = CategoryController.StringListCatsByEntry(entryInfo.EntryID)
 
    If itemType = itemType.Post And Not blogSettings.ExcerptEnabled Then
     FindAndPlaceSummary(item)
@@ -276,11 +275,9 @@ Namespace MetaWeblog
 
    objEntryController.UpdateEntry(objEntry)
 
-   Dim TagController As New TagController
    TagController.UpdateTagsByEntry(entryId, item.Keywords)
 
-   Dim CatController As New CategoryController
-   CatController.UpdateCategoriesByEntry(entryId, item.Categories)
+   CategoryController.UpdateCategoriesByEntry(entryId, item.Categories)
 
    ' If this is a style detection post, then we write to the Blog_MetaWeblogData table to note
    ' that this post is a new post.  We're just using the DAL+ here to manage this feature.
@@ -347,11 +344,8 @@ Namespace MetaWeblog
 
    objEntryController.UpdateEntry(objEntry)
 
-   Dim TagController As New TagController
    TagController.UpdateTagsByEntry(objEntry.EntryID, item.Keywords)
-
-   Dim CatController As New CategoryController
-   CatController.UpdateCategoriesByEntry(objEntry.EntryID, item.Categories)
+   CategoryController.UpdateCategoriesByEntry(objEntry.EntryID, item.Categories)
 
    Return True
   End Function
@@ -369,26 +363,15 @@ Namespace MetaWeblog
 
   Public Function GetCategories(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings) As ItemCategoryInfo() Implements IPublishable.GetCategories
 
-   Dim CatController As New CategoryController
    Dim BlogController As New BlogController
 
-
-   Dim CatList As IDictionary(Of Integer, Business.CategoryInfo) = CatController.ListCategories(portalSettings.PortalId)
+   Dim CatList As IDictionary(Of Integer, Business.CategoryInfo) = CategoryController.ListCategories(portalSettings.PortalId)
 
    Dim categories As ItemCategoryInfo() = Nothing
    categories = New ItemCategoryInfo(CatList.Count - 1) {}
 
    Dim category As New ItemCategoryInfo
 
-   'For i = 0 To CatList.Count - 1
-   ' category.CategoryId = CatList(i).CatId
-   ' category.CategoryName = CatList(i).FullCat
-   ' category.Description = CatList(i).FullCat
-   ' category.HtmlUrl = "http://google.com"
-   ' category.RssUrl = "http://google.com"
-   ' ' category.ParentId = CatList(i).ParentId
-   ' categories(i) = category
-   'Next i
    Dim i As Integer = 0
    For Each c As Business.CategoryInfo In CatList.Values
     category.CategoryId = c.CatID
