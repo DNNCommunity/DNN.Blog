@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DefaultRecentCommentsTemplate.Text" xml:space="preserve">
-    <value>&lt;div class="Blog_RecentComments"&gt;&lt;a href="[PERMALINK]" class="Blog_RencentComments_Title"&gt;[TITLE]&lt;/a&gt;&lt;div class="Normal"&gt;[COMMENT]&lt;/div&gt;&lt;div class="Blog_RencentComments_Dateline"&gt;By [AUTHOR] on: [ADDEDDATE]&lt;/div&gt;&lt;/div&gt;</value>
+    <value>&lt;div class="Blog_RecentComments"&gt;&lt;a href="[PERMALINK]" class="Blog_RecentComments_Title"&gt;[TITLE]&lt;/a&gt;&lt;div class="Normal"&gt;[COMMENT]&lt;/div&gt;&lt;div class="Blog_RecentComments_Dateline"&gt;By [AUTHOR] on: [ADDEDDATE]&lt;/div&gt;&lt;/div&gt;</value>
   </data>
   <data name="DefaultRecentEntriesTemplate.Text" xml:space="preserve">
-    <value>&lt;div class="Blog_RecentEntries"&gt;&lt;a href="[PERMALINK]" class="Blog_RencentEntries_Title"&gt;[TITLE]&lt;/a&gt;&lt;div class="Blog_RencentEntries_Dateline"&gt;Posted on: [ADDEDDATE]&lt;/div&gt;&lt;/div&gt;</value>
+    <value>&lt;div class="Blog_RecentEntries"&gt;&lt;a href="[PERMALINK]" class="Blog_RecentEntries_Title"&gt;[TITLE]&lt;/a&gt;&lt;div class="Blog_RecentEntries_Dateline"&gt;Posted on: [ADDEDDATE]&lt;/div&gt;&lt;/div&gt;</value>
   </data>
   <data name="PersonifyActivityBlogCommentTemplate.Text" xml:space="preserve">
     <value>Commented on Blog: {permalink}. </value>

@@ -88,6 +88,15 @@ Partial Public Class ViewEntry
  Protected WithEvents lnkRss As Global.System.Web.UI.WebControls.HyperLink
 
  '''<summary>
+ '''lnkRssIcon control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lnkRssIcon As Global.System.Web.UI.WebControls.Image
+
+ '''<summary>
  '''lblSummary control.
  '''</summary>
  '''<remarks>
@@ -97,13 +106,13 @@ Partial Public Class ViewEntry
  Protected WithEvents lblSummary As Global.System.Web.UI.WebControls.Label
 
  '''<summary>
- '''lblEntry control.
+ '''litEntry control.
  '''</summary>
  '''<remarks>
  '''Auto-generated field.
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
- Protected WithEvents lblEntry As Global.System.Web.UI.WebControls.Label
+ Protected WithEvents litEntry As Global.System.Web.UI.WebControls.Literal
 
  '''<summary>
  '''lblCopyright control.

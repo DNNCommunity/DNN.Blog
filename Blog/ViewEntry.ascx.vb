@@ -172,14 +172,14 @@ Partial Class ViewEntry
      'Put description on page, show / hide based on setting
      lblSummary.Text = Server.HtmlDecode(m_oEntry.Description)
 
-     'lblSummary.CssClass = "blog_entry_description"
+     'lblSummary.CssClass = "BlogEntryDescription"
      If BlogSettings.ShowSummary Then
       lblSummary.Visible = True
      Else
       lblSummary.Visible = False
      End If
 
-     lblEntry.Text = Server.HtmlDecode(m_oEntry.Entry)
+     litEntry.Text = Server.HtmlDecode(m_oEntry.Entry)
 
      pnlComments.Visible = (m_oBlog.AllowComments Or m_oEntry.AllowComments)
 
@@ -303,7 +303,7 @@ Partial Class ViewEntry
   'DW - 06/06/2008
   'Set a unique CSS class for the blog bubbles of the blog owner
   If m_oBlog.UserID = commentInfo.UserID Then
-   divBlogBubble.CssClass = "blog_bubble_owner"
+   divBlogBubble.CssClass = "BlogBubbleOwner"
   End If
 
 

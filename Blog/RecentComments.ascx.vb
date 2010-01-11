@@ -66,9 +66,7 @@ Partial Public Class RecentComments
 
    ' assign the content
    If strBuilder IsNot Nothing Then
-    Dim lblContent As New Label
-    lblContent.Text = strBuilder.ToString
-    Me.RecentComments.Controls.Add(lblContent)
+    Me.RecentComments.Controls.Add(New LiteralControl(strBuilder.ToString))
    End If
 
   Catch ex As Exception

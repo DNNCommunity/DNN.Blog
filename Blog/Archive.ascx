@@ -1,15 +1,15 @@
 <%@ Control Language="vb" AutoEventWireup="false" CodeBehind="Archive.ascx.vb" Inherits="DotNetNuke.Modules.Blog.Archive" %>
 <asp:Label ID="lblArchive" runat="server" CssClass="SubHead" ResourceKey="lblArchive" />
-<asp:Calendar ID="calMonth" runat="server" CssClass="Normal" DayHeaderStyle-CssClass="Blog_Archive_DayHeader" DayStyle-CssClass="Blog_Archive_Day" NextPrevStyle-CssClass="Blog_Archive_NextPrev" OtherMonthDayStyle-CssClass="Blog_Archive_OtherMonth" SelectedDayStyle-CssClass="Blog_Archive_SelectedDay" SelectorStyle-CssClass="Blog_Archive_Selector" TitleStyle-CssClass="Blog_Archive_Title" TodayDayStyle-CssClass="Blog_Archive_TodayDay" WeekendDayStyle-CssClass="Blog_Archive_WeekendDay">
- <TodayDayStyle CssClass="Blog_Archive_TodayDay" />
- <SelectorStyle CssClass="Blog_Archive_Selector" />
- <DayStyle CssClass="Blog_Archive_Day" />
- <NextPrevStyle CssClass="Blog_Archive_NextPrev" />
- <DayHeaderStyle CssClass="Blog_Archive_DayHeader" />
- <SelectedDayStyle CssClass="Blog_Archive_SelectedDay" />
- <TitleStyle CssClass="Blog_Archive_Title" />
- <WeekendDayStyle CssClass="Blog_Archive_WeekendDay" />
- <OtherMonthDayStyle CssClass="Blog_Archive_OtherMonth" />
+<asp:Calendar ID="calMonth" runat="server" CssClass="Normal" DayHeaderStyle-CssClass="BlogArchiveDayHeader" DayStyle-CssClass="BlogArchiveDay" NextPrevStyle-CssClass="BlogArchiveNextPrev" OtherMonthDayStyle-CssClass="BlogArchiveOtherMonth" SelectedDayStyle-CssClass="BlogArchiveSelectedDay" SelectorStyle-CssClass="BlogArchiveSelector" TitleStyle-CssClass="BlogArchiveTitle" TodayDayStyle-CssClass="BlogArchiveTodayDay" WeekendDayStyle-CssClass="BlogArchiveWeekendDay">
+ <TodayDayStyle CssClass="BlogArchiveTodayDay" />
+ <SelectorStyle CssClass="BlogArchiveSelector" />
+ <DayStyle CssClass="BlogArchiveDay" />
+ <NextPrevStyle CssClass="BlogArchiveNextPrev" />
+ <DayHeaderStyle CssClass="BlogArchiveDayHeader" />
+ <SelectedDayStyle CssClass="BlogArchiveSelectedDay" />
+ <TitleStyle CssClass="BlogArchiveTitle" />
+ <WeekendDayStyle CssClass="BlogArchiveWeekendDay" />
+ <OtherMonthDayStyle CssClass="BlogArchiveOtherMonth" />
 </asp:Calendar>
 <asp:Label ID="lblMonthly" runat="server" CssClass="SubHead" ResourceKey="lblMonthly" />
 <asp:DataList ID="lstArchiveMonths" runat="server" Width="100%" CssClass="CommandButton"

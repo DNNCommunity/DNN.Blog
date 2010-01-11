@@ -1,118 +1,118 @@
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls" %>
-<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="ViewEntry.ascx.vb" Inherits="DotNetNuke.Modules.Blog.ViewEntry" %>
+<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="ViewEntry.ascx.vb"
+ Inherits="DotNetNuke.Modules.Blog.ViewEntry" %>
 <asp:Label ID="lblTrackback" runat="server" />
-<div class="blog_body">
+<div class="BlogBody">
  <!-- Begin Blog Entry Title -->
- <div class="blog_head">
-  <h2 class="blog_title">
+ <div class="BlogHead">
+  <h2 class="BlogTitle">
    <asp:HyperLink ID="lblBlogTitle" runat="server" />
   </h2>
  </div>
  <!-- End Blog Entry Title -->
  <!-- Begin Blog Sub Head -->
- <acronym class="blog_published" title="<%= lblDateTime.Text %>"><span class="blog_pub-month">
+ <acronym class="BlogPublished" title="<%= lblDateTime.Text %>"><span class="BlogPubMonth">
   <asp:Label ID="lblEntryMonth" runat="server" />
- </span><span class="blog_pub-date">
+ </span><span class="BlogPubDate">
   <asp:Label ID="lblEntryDay" runat="server" />
  </span></acronym>
- <p class="blog_subhead">
+ <p class="BlogSubHead">
   <span class="blog_author">
    <asp:Label ID="lblPostedBy" ResourceKey="lblPostedBy" runat="server" />
    <asp:Label ID="lblUserID" runat="server" />
   </span>
   <br />
-  <asp:Label ID="lblDateTime" CssClass="blog_date" runat="server" />&nbsp;
-  <asp:HyperLink ID="lnkRss" runat="server" ImageUrl="~/desktopmodules/Blog/Images/feed-icon-12x12.gif" Target="_blank" resourcekey="lnkRss" />
+  <asp:Label ID="lblDateTime" CssClass="BlogDate" runat="server" />&nbsp;
+  <asp:HyperLink ID="lnkRss" runat="server" Target="_blank" resourcekey="lnkRss">
+   <asp:Image ID="lnkRssIcon" runat="server" ImageUrl="~/desktopmodules/Blog/Images/feed-icon-12x12.gif"
+    AlternateText="RssIcon" />
+  </asp:HyperLink>
  </p>
  <!-- End Blog Sub Head -->
- <div class="horizontalline">
+ <div class="HorizontalLine">
  </div>
  <!-- Begin Blog Entry -->
- <div class="blog_entry_description">
-  <asp:Label ID="lblSummary" runat="server" /></div>
- <asp:Label ID="lblEntry" runat="server" />
+ <div class="BlogEntryDescription">
+  <asp:Label ID="lblSummary" runat="server" />
+ </div>
+ <asp:Literal ID="litEntry" runat="server" />
  <p>
-  <asp:Label ID="lblCopyright" CssClass="blog_copyright" runat="server" Visible="False" />
+  <asp:Label ID="lblCopyright" CssClass="BlogCopyright" runat="server" Visible="False" />
  </p>
  <!-- End Blog Entry -->
  <!-- Blog Entry Footer Section -->
- <div class="blog_footer">
-  <div class="blog_footer_right">
-   <asp:HyperLink ID="lnkTrackBack" ResourceKey="lnkTrackBack" CssClass="blog_trackback" runat="server" />
-   <asp:LinkButton ID="cmdPrint" runat="server" CausesValidation="False" CssClass="blog_print" resourcekey="cmdPrint" />
-   <asp:HyperLink ID="lnkEditEntry" ResourceKey="msgEditEntry" CssClass="blog_edit_link" runat="server" />
+ <div class="BlogFooter">
+  <div class="BlogFooterRight">
+   <asp:HyperLink ID="lnkTrackBack" ResourceKey="lnkTrackBack" CssClass="BlogTrackback" runat="server" />
+   <asp:LinkButton ID="cmdPrint" runat="server" CausesValidation="False" CssClass="BlogPrint" resourcekey="cmdPrint" />
+   <asp:HyperLink ID="lnkEditEntry" ResourceKey="msgEditEntry" CssClass="BlogEditLink" runat="server" />
   </div>
-  <div class="blog_footer_left">
-   <span class="blog_tag">
+  <div class="BlogFooterLeft">
+   <span class="BlogTag">
     <asp:Label ID="lblTags" runat="server" ResourceKey="lblTags" />
     <asp:Repeater ID="rptTags" runat="server">
      <ItemTemplate>
-      <asp:HyperLink runat="server" ID="lnkTags" Text='<%# Eval("Tag") %>' NavigateUrl='<%# DotNetNuke.Modules.Blog.Business.Utility.GetSEOLink(PortalId, TabId, "", Eval("Slug"), "tagid=" & Eval("TagID")) %>'>HyperLink</asp:HyperLink></ItemTemplate>
+      <asp:HyperLink runat="server" ID="lnkTags" Text='<%# Eval("Tag") %>' NavigateUrl='<%# DotNetNuke.Common.NavigateURL(TabId, "", "tagid=" & Eval("TagID")) %>'>HyperLink</asp:HyperLink>
+     </ItemTemplate>
      <SeparatorTemplate>
       ,
      </SeparatorTemplate>
     </asp:Repeater>
    </span>
    <br />
-   <span class="blog_tag">
+   <span class="BlogTag">
     <asp:Label ID="lblCategories" runat="server" ResourceKey="lblCategories" />
     <asp:Repeater ID="rptCategories" runat="server">
      <ItemTemplate>
-      <asp:HyperLink runat="server" ID="lnkTags" Text='<%# Eval("Category") %>' NavigateUrl='<%# DotNetNuke.Modules.Blog.Business.Utility.GetSEOLink(PortalId, TabId, "", Eval("Slug"), "catid=" & Eval("CatID")) %>'>HyperLink</asp:HyperLink></ItemTemplate>
+      <asp:HyperLink runat="server" ID="lnkTags" Text='<%# Eval("Category") %>' NavigateUrl='<%# DotNetNuke.Common.NavigateURL(TabId, "", "catid=" & Eval("CatID")) %>'>HyperLink</asp:HyperLink></ItemTemplate>
      <SeparatorTemplate>
       ,
      </SeparatorTemplate>
     </asp:Repeater>
-   </span><span class="blog_topics">
+   </span>
+   <span class="BlogTopics">
     <asp:Label ID="lblLocation" runat="server" ResourceKey="lblLocation" />
     <asp:HyperLink ID="lnkBlogs" runat="server" Text="Blogs" />
-    <asp:Image ID="imgBlogParentSeparator" runat="server" ImageUrl="~/desktopmodules/Blog/Images/folder_closed.gif" />
+    <asp:Image ID="imgBlogParentSeparator" runat="server" ImageUrl="~/desktopmodules/Blog/Images/folder_closed.gif" AlternateText="Parent Separator" />
     <asp:HyperLink ID="lnkParentBlog" runat="server" />
-    <asp:Image ID="imgParentChildSeparator" runat="server" ImageUrl="~/desktopmodules/Blog/Images/folder_closed.gif" Visible="False" />
+    <asp:Image ID="imgParentChildSeparator" runat="server" ImageUrl="~/desktopmodules/Blog/Images/folder_closed.gif" Visible="False" AlternateText="Child Separator" />
     <asp:HyperLink ID="lnkChildBlog" runat="server" Visible="False" />
    </span>
   </div>
+  <div class="Clear" />
  </div>
- <div id="ShareBadgePRO_Toolbar">
- </div>
- <div class="clear">
- </div>
+ <div id="ShareBadgePRO_Toolbar" />
+ <div class="Clear" />
  <!-- Comments Section -->
  <asp:Panel ID="pnlComments" runat="server" Visible="False">
   <p>
-   <a id="Comments" name="Comments" /><a href="#AddComment">
-    <asp:Label ID="lblComments" runat="server" CssClass="blog_comments" /></a></p>
-  <asp:ImageButton ID="lnkDeleteAllUnapproved" runat="server" ImageUrl="~/images/delete.gif" Visible="false" ImageAlign="AbsMiddle" CausesValidation="false" />
+   <a id="Comments" name="Comments" />
+   <a href="#AddComment"><asp:Label ID="lblComments" runat="server" CssClass="BlogComments" /></a>
+  </p>
+  <asp:ImageButton ID="lnkDeleteAllUnapproved" runat="server" ImageUrl="~/images/delete.gif" Visible="false" ImageAlign="AbsMiddle" CausesValidation="false" AlternateText="Delete Unaproved" />
   <asp:LinkButton ID="btDeleteAllUnapproved" runat="server" Visible="false" resourcekey="DeleteAllUnapproved" CssClass="CommandButton" CausesValidation="false" /><br />
   <asp:DataList ID="lstComments" runat="server" Width="100%">
    <ItemTemplate>
-    <asp:Panel ID="divBlogBubble" runat="server" CssClass="blog_bubble">
+    <asp:Panel ID="divBlogBubble" runat="server" CssClass="BlogBubble">
      <blockquote>
-      <asp:Panel ID="divBlogGravatar" runat="server" CssClass="blog_gravatar">
-       <asp:Image runat="server" Width="48" ID="imgGravatar" />
+      <asp:Panel ID="divBlogGravatar" runat="server" CssClass="BlogGravatar">
+       <asp:Image runat="server" Width="48" ID="imgGravatar" AlternateText="Gravatar" />
       </asp:Panel>
       <p>
-       <asp:ImageButton ID="lnkEditComment" runat="server" Visible="false" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>'
-        CommandName="EditComment" ImageUrl="~/images/edit.gif" ImageAlign="AbsMiddle"></asp:ImageButton>
-       <asp:LinkButton ID="btEditComment" runat="server" Visible="False" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>'
-        CommandName="EditComment" resourcekey="cmdEdit" CssClass="CommandButton">Edit</asp:LinkButton>
-       <asp:ImageButton ID="lnkApproveComment" runat="server" Visible="false" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>'
-        CommandName="ApproveComment" ImageUrl="~/desktopmodules/Blog/images/blog_accept.png"
-        ImageAlign="AbsMiddle" CausesValidation="false"></asp:ImageButton>
-       <asp:LinkButton ID="btApproveComment" runat="server" Visible="False" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>'
-        CommandName="ApproveComment" resourcekey="Approve" CssClass="CommandButton" CausesValidation="false">Approve</asp:LinkButton>
-       <asp:ImageButton ID="lnkDeleteComment" runat="server" Visible="false" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>'
-        CommandName="DeleteComment" ImageUrl="~/images/delete.gif" ImageAlign="AbsMiddle"
-        CausesValidation="false"></asp:ImageButton>
-       <asp:LinkButton ID="btDeleteComment" runat="server" Visible="False" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>'
-        CommandName="DeleteComment" resourcekey="Delete" CssClass="CommandButton" CausesValidation="false">Delete</asp:LinkButton>
+       <asp:ImageButton ID="lnkEditComment" runat="server" Visible="false" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="EditComment" ImageUrl="~/images/edit.gif" ImageAlign="AbsMiddle" AlternateText="Edit Comment" />
+       <asp:LinkButton ID="btEditComment" runat="server" Visible="False" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="EditComment" resourcekey="cmdEdit" CssClass="CommandButton" />
+       <asp:ImageButton ID="lnkApproveComment" runat="server" Visible="false" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="ApproveComment" ImageUrl="~/desktopmodules/Blog/images/blog_accept.png" ImageAlign="AbsMiddle" CausesValidation="false" AlternateText="Approve Comment" />
+       <asp:LinkButton ID="btApproveComment" runat="server" Visible="False" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="ApproveComment" resourcekey="Approve" CssClass="CommandButton" CausesValidation="false" />
+       <asp:ImageButton ID="lnkDeleteComment" runat="server" Visible="false" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="DeleteComment" ImageUrl="~/images/delete.gif" ImageAlign="AbsMiddle" CausesValidation="false" AlternateText="Delete Comment" />
+       <asp:LinkButton ID="btDeleteComment" runat="server" Visible="False" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="DeleteComment" resourcekey="Delete" CssClass="CommandButton" CausesValidation="false" />
        <asp:Label ID="lblTitle" runat="server" CssClass="NormalBold" />
       </p>
       <p>
-       <%# server.htmldecode(DataBinder.Eval(Container.DataItem,"Comment")) %></p>
+       <%# server.htmldecode(DataBinder.Eval(Container.DataItem,"Comment")) %>
+      </p>
      </blockquote>
      <cite>
-      <asp:HyperLink ID="lnkUserName" CssClass="NormalBold" runat="server" Visible="true" />
+      <asp:Label ID="lblUserName" CssClass="NormalBold" runat="server" Text="Label" Visible="true" />
       &nbsp;
       <asp:Label ID="lblCommentDate" runat="server" CssClass="Normal" />
      </cite>
@@ -132,19 +132,20 @@
   <br />
   <table cellspacing="1" cellpadding="1" width="100%" border="0">
    <tr>
-    <td class="blog_lefttd" width="1%">
+    <td class="BlogLeftTD" width="1%">
      <asp:Label ID="lblAuthor" runat="server" ResourceKey="lblAuthor" CssClass="NormalBold" Width="80px" />
     </td>
     <td id="tdAuthor" valign="top" runat="server">
      <asp:TextBox ID="txtAuthor" TabIndex="1" runat="server" Width="99%" />
     </td>
     <td id="tdGravatarPreview" valign="top" align="right" width="1%" rowspan="2" runat="server">
-     <div class="blog_gravatar_preview">
-      <asp:Image ID="imgGravatarPreview" runat="server" /></div>
+     <div class="BlogGravatarPreview">
+      <asp:Image ID="imgGravatarPreview" runat="server" AlternateText="Gravatar Preview" />
+     </div>
     </td>
    </tr>
    <tr id="trGravatarEmail" runat="server">
-    <td class="blog_lefttd" width="1%">
+    <td class="BlogLeftTD" width="1%">
      <asp:Label ID="lblEmail" runat="server" ResourceKey="lblEmail" CssClass="NormalBold" />
     </td>
     <td valign="top">
@@ -155,14 +156,13 @@
     <td>
     </td>
     <td>
-     <asp:Label ID="lblEmailExplanation" runat="server" ResourceKey="lblEmailExplanation" CssClass="Normal">(Optional) Used only to display <a href="http://www.gravatar.com">
-							Gravatar</a></asp:Label>
+     <asp:Label ID="lblEmailExplanation" runat="server" ResourceKey="lblEmailExplanation" CssClass="Normal" />
     </td>
     <td>
     </td>
    </tr>
    <tr id="trCommentWebsite" runat="server">
-    <td class="blog_lefttd" width="1%">
+    <td class="BlogLeftTD" width="1%">
      <asp:Label ID="lblWebsite" runat="server" ResourceKey="lblWebsite" CssClass="NormalBold" Width="80px" />
     </td>
     <td colspan="2">
@@ -170,7 +170,7 @@
     </td>
    </tr>
    <tr id="trCommentTitle" runat="server">
-    <td class="blog_lefttd" width="1%">
+    <td class="BlogLeftTD" width="1%">
      <asp:Label ID="lblCommentTitle" runat="server" ResourceKey="lblCommentTitle" CssClass="NormalBold" />
     </td>
     <td colspan="2">
@@ -190,8 +190,7 @@
    <tr id="rowCaptcha" runat="server">
     <td colspan="3">
      <asp:Label ID="lblCaptcha" runat="server" ResourceKey="lblCaptcha" CssClass="NormalBold" Width="80px" />
-     <dnn:CaptchaControl id="ctlCaptcha" tabIndex="6" runat="server" cssclass="Normal" errorstyle-cssclass="NormalRed" captchawidth="130" captchaheight="40">
-     </dnn:CaptchaControl>
+     <dnn:CaptchaControl id="ctlCaptcha" tabIndex="6" runat="server" cssclass="Normal" errorstyle-cssclass="NormalRed" captchawidth="130" captchaheight="40" />
     </td>
    </tr>
    <tr>

@@ -148,7 +148,7 @@ Partial Class ViewBlog
 
         lblCreated.Text = Utility.FormatDate(m_oBlog.Created, m_oBlog.Culture, m_oBlog.DateFormat, m_oBlog.TimeZone)
 
-        lblBlogDescription.Text = m_oBlog.Description
+        litBlogDescription.Text = m_oBlog.Description
         list = objEntries.ListEntriesByBlog(m_oBlog.BlogID, m_dBlogDate, Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId), Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId), BlogSettings.RecentEntriesMax)
         Me.BasePage.Author = m_oBlog.UserFullName
 
@@ -243,7 +243,7 @@ Partial Class ViewBlog
 #Region " Private Methods "
  Private Sub lstBlogView_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataListItemEventArgs) Handles lstBlogView.ItemDataBound
   Dim lblUserName As System.Web.UI.WebControls.Label = CType(e.Item.FindControl("lblUserName"), System.Web.UI.WebControls.Label)
-  Dim lblDescription As System.Web.UI.WebControls.Literal = CType(e.Item.FindControl("lblDescription"), System.Web.UI.WebControls.Literal)
+  Dim lblDescription As System.Web.UI.WebControls.Literal = CType(e.Item.FindControl("litDescription"), System.Web.UI.WebControls.Literal)
 
   Dim lnkComments As System.Web.UI.WebControls.LinkButton = CType(e.Item.FindControl("lnkComments"), System.Web.UI.WebControls.LinkButton)
   Dim lblPublished As System.Web.UI.WebControls.Label = CType(e.Item.FindControl("lblPublished"), System.Web.UI.WebControls.Label)

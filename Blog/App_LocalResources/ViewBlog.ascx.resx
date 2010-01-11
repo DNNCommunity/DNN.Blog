@@ -185,4 +185,7 @@
   <data name="msgMassEdit.Text" xml:space="preserve">
     <value>Mass Edit Blog Posts</value>
   </data>
+  <data name="lblHits.Text" xml:space="preserve">
+    <value>Hits:</value>
+  </data>
 </root>

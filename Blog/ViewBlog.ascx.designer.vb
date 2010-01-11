@@ -70,13 +70,22 @@ Partial Public Class ViewBlog
  Protected WithEvents lnkRSS As Global.System.Web.UI.WebControls.HyperLink
 
  '''<summary>
- '''lblBlogDescription control.
+ '''Image1 control.
  '''</summary>
  '''<remarks>
  '''Auto-generated field.
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
- Protected WithEvents lblBlogDescription As Global.System.Web.UI.WebControls.Label
+ Protected WithEvents Image1 As Global.System.Web.UI.WebControls.Image
+
+ '''<summary>
+ '''litBlogDescription control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents litBlogDescription As Global.System.Web.UI.WebControls.Literal
 
  '''<summary>
  '''pnlBlogRss control.
@@ -95,6 +104,15 @@ Partial Public Class ViewBlog
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
  Protected WithEvents lnkRecentRss As Global.System.Web.UI.WebControls.HyperLink
+
+ '''<summary>
+ '''lnkRecentRssIcon control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lnkRecentRssIcon As Global.System.Web.UI.WebControls.Image
 
  '''<summary>
  '''InfoEntry control.

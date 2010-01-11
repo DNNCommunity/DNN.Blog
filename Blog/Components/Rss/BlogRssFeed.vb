@@ -277,12 +277,12 @@ Namespace Rss
    If _includeTagsInDescription Then
     Dim TagString As String = TagController.GetTagsByEntry(EntryId)
     If Not TagString = "" Then
-     Description &= "<br /><br />" & Localization.GetString("Tags", Globals.glbSharedResourceFile) & ": " & TagString
+     Description &= "<div class=""tags"">" & Localization.GetString("Tags", Globals.glbSharedResourceFile) & ": " & TagString & "</div>"
     End If
    End If
    If _includeCategoriesInDescription Then
     For Each c As CategoryInfo In CategoryController.ListCatsByEntry(EntryId)
-     Description &= "<br />" & Localization.GetString("Category", Globals.glbSharedResourceFile) & ": <a href=" & NavigateURL(_tabId, "", "CatID=" & c.CatId.ToString) & ">" & c.Category & "</a>"
+     Description &= "<div class=""category"">" & Localization.GetString("Category", Globals.glbSharedResourceFile) & ": <a href=" & NavigateURL(_tabId, "", "CatID=" & c.CatId.ToString) & ">" & c.Category & "</a></div>"
     Next
    End If
    writer.WriteElementString("description", Description)

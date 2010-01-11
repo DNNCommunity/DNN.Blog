@@ -3,25 +3,29 @@
  <asp:Panel ID="pnlBlogInfo" Visible="False" runat="server">
   <table class="BlogInfo" cellspacing="1" cellpadding="1" width="100%" border="0">
    <tr>
-    <td class="blog_Description_Heavy" align="right" width="20" style="white-space: nowrap;">
+    <td class="BlogDescriptionHeavy" style="white-space: nowrap; text-align: right; width: 20px;">
      <asp:Label ID="lblAuthorHeader" runat="server" ResourceKey="lblAuthorHeader" />
     </td>
     <td style="white-space: nowrap;">
-     <asp:Label ID="lblAuthor" runat="server" CssClass="blog_Description" />
+     <asp:Label ID="lblAuthor" runat="server" CssClass="BlogDescription" />
     </td>
-    <td class="blog_Description_Heavy" align="right" width="20" style="white-space: nowrap;">
+    <td class="BlogDescriptionHeavy" style="white-space: nowrap; text-align: right; width: 20px;">
      <asp:Label ID="lblCreatedHeader" runat="server" ResourceKey="lblCreatedHeader" />
     </td>
     <td style="white-space: nowrap;">
-     <asp:Label ID="lblCreated" runat="server" CssClass="blog_Description" />
+     <asp:Label ID="lblCreated" runat="server" CssClass="BlogDescription" />
     </td>
     <td align="right">
-     <asp:HyperLink ID="lnkRSS" runat="server" Visible="False" Target="_blank" ImageUrl="~/desktopmodules/Blog/Images/feed-icon-24x24.gif" />
+     <asp:HyperLink ID="lnkRSS" runat="server" Visible="False" Target="_blank">
+      <asp:Image ID="Image1" runat="server" ImageUrl="~/desktopmodules/Blog/Images/feed-icon-24x24.gif" AlternateText="RssIcon" />
+     </asp:HyperLink>
     </td>
    </tr>
    <tr>
     <td colspan="5">
-     <asp:Label ID="lblBlogDescription" CssClass="blog_Description" runat="server" />
+     <div class="BlogDescription">
+      <asp:Literal ID="litBlogDescription" runat="server" />
+     </div>
     </td>
    </tr>
   </table>
@@ -30,7 +34,9 @@
   <table class="BlogInfo" cellspacing="1" cellpadding="1" width="100%" border="0">
    <tr>
     <td align="right">
-     <asp:HyperLink ID="lnkRecentRss" runat="server" ImageUrl="~/desktopmodules/Blog/Images/feed-icon-24x24.gif" Target="_blank" />
+     <asp:HyperLink ID="lnkRecentRss" runat="server" Target="_blank">
+      <asp:Image ID="lnkRecentRssIcon" runat="server" ImageUrl="~/desktopmodules/Blog/Images/feed-icon-24x24.gif" AlternateText="RssIcon" />
+     </asp:HyperLink>
     </td>
    </tr>
   </table>
@@ -38,34 +44,34 @@
  <asp:Label ID="InfoEntry" ResourceKey="lblInfoEntry" CssClass="NormalBold" runat="server" />
  <asp:DataList ID="lstBlogView" runat="server" Width="100%">
   <ItemTemplate>
-   <div class="blog_body">
+   <div class="BlogBody">
     <!-- Begin Blog Entry Title -->
-    <div class="blog_head">
-     <h2 class="blog_title">
+    <div class="BlogHead">
+     <h2 class="BlogTitle">
       <asp:HyperLink ID="lnkEntry" runat="server">
 							<%# DataBinder.Eval(Container.DataItem, "Title") %>
       </asp:HyperLink>
      </h2>
     </div>
-    <asp:Label ID="lblUserName" runat="server" Visible="false" CssClass="blog_dateline" />
-    <asp:Label ID="lblPublishDate" runat="server" CssClass="blog_dateline" />
-    <p>
-     <asp:Label ID="lblPublished" runat="server" Visible="False" CssClass="NormalRed" ResourceKey="lblPublished">
-						<p>This entry has not been published.</p>
-     </asp:Label>
-     <asp:Literal runat="server" ID="lblDescription" />
-     <asp:HyperLink ID="lnkReadMore" runat="server" ResourceKey="lnkReadMore" CssClass="blog_more_link" />
-    </p>
-    <div class="blog_footer">
-     <div class="blog_footer_right">
-      <asp:LinkButton ID="lnkComments" runat="server" CommandName="Comments" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "EntryID") %>'
-       CssClass="blog_comments_normal"><%= getLnkComment() %> (<%# DataBinder.Eval(Container.DataItem, "CommentCount") %>)</asp:LinkButton>
-      <asp:HyperLink ID="lnkEditEntry" ResourceKey="msgEditEntry" CssClass="blog_edit_link" runat="server" />
+    <asp:Label ID="lblUserName" runat="server" Visible="false" CssClass="BlogDateline" />
+    <asp:Label ID="lblPublishDate" runat="server" CssClass="BlogDateline" />
+    <div style="padding-top: 1em">
+     <asp:Label ID="lblPublished" runat="server" Visible="False" CssClass="NormalRed" ResourceKey="lblPublished" />
+     <asp:Literal ID="litDescription" runat="server" />
+     <div class="BlogReadMore">
+      <asp:HyperLink ID="lnkReadMore" runat="server" ResourceKey="lnkReadMore" CssClass="BlogMoreLink" />
      </div>
-     <div class="blog_footer_left">
-      <span class="blog_topics">
+    </div>
+    <div class="BlogFooter">
+     <div class="BlogFooterRight">
+      <asp:LinkButton ID="lnkComments" runat="server" CommandName="Comments" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "EntryID") %>'
+       CssClass="BlogCommentsNormal"><%= getLnkComment() %> (<%# DataBinder.Eval(Container.DataItem, "CommentCount") %>)</asp:LinkButton>
+      <asp:HyperLink ID="lnkEditEntry" ResourceKey="msgEditEntry" CssClass="BlogEditLink" runat="server" />
+     </div>
+     <div class="BlogFooterLeft">
+      <span class="BlogTopics">
        <asp:HyperLink ID="lnkParentBlog" runat="server" />
-       <asp:Image ID="imgBlogParentSeparator" runat="server" ImageUrl="~/DesktopModules/Blog/images/folder_closed.gif" />
+       <asp:Image ID="imgBlogParentSeparator" runat="server" ImageUrl="~/DesktopModules/Blog/images/folder_closed.gif" AlternateText="Parent Separator" />
        <asp:HyperLink ID="lnkChildBlog" runat="server" />
       </span>
      </div>
@@ -90,11 +96,11 @@
     <tr>
      <td class="Normal">
       <asp:HyperLink ID="lnkParentBlogSearch" runat="server" CssClass="CommandButton" />
-      <asp:Image ID="imgBlogParentSeparatorSearch" runat="server" ImageUrl="~/desktopmodules/Blog/Images/folder_closed.gif" Visible="False" />
+      <asp:Image ID="imgBlogParentSeparatorSearch" runat="server" ImageUrl="~/desktopmodules/Blog/Images/folder_closed.gif" Visible="False" AlternateText="Parent Separator" />
       <asp:HyperLink ID="lnkChildBlogSearch" runat="server" CssClass="CommandButton" Visible="False" />
      </td>
      <td class="SubHead" align="right">
-      Hits:
+      <asp:Label runat="server" ID="lblHits" resourcekey="lblHits" />
       <%# DataBinder.Eval(Container.DataItem, "Rank") %>
      </td>
     </tr>
@@ -105,8 +111,7 @@
     </tr>
     <tr>
      <td class="Normal" align="right" colspan="2">
-      <asp:LinkButton ID="lnkMoreSearch" runat="server" CommandName="Entry" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "EntryID") %>'
-       CssClass="CommandButton" ResourceKey="lnkMoreSearch"> More... </asp:LinkButton>
+      <asp:LinkButton ID="lnkMoreSearch" runat="server" CommandName="Entry" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "EntryID") %>' CssClass="CommandButton" ResourceKey="lnkMoreSearch />
      </td>
     </tr>
    </table>
