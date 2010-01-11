@@ -64,6 +64,7 @@ Namespace Settings
   Private _ShowSocialBookmarks As Boolean = True
   Private _allowSummaryHtml As Boolean = True
   Private _excerptEnabled As Boolean = False
+  Private _feedCacheTime As Integer = 10
 
   Private _portalId As Integer = -1
   Private _tabId As Integer = -1
@@ -116,6 +117,7 @@ Namespace Settings
    Globals.ReadValue(_allSettings, "GravatarCustomUrl", GravatarCustomUrl)
    Globals.ReadValue(_allSettings, "ShowSocialBookmarks", ShowSocialBookmarks)
    Globals.ReadValue(_allSettings, "AllowSummaryHtml", AllowSummaryHtml)
+   Globals.ReadValue(_allSettings, "FeedCacheTime", FeedCacheTime)
 
    If DataVersion < version Then
     DataVersion = version
@@ -184,6 +186,7 @@ Namespace Settings
    Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "GravatarCustomUrl", Me.GravatarCustomUrl)
    Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "ShowSocialBookmarks", Me.ShowSocialBookmarks.ToString)
    Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "AllowSummaryHtml", Me.AllowSummaryHtml.ToString)
+   Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "FeedCacheTime", Me.FeedCacheTime.ToString)
 
    Dim CacheKey As String = "BlogSettings" & _portalId.ToString & "-" & _tabId.ToString
    DotNetNuke.Common.Utilities.DataCache.RemoveCache(CacheKey)
@@ -486,6 +489,15 @@ Namespace Settings
    Get
     Return _excerptEnabled
    End Get
+  End Property
+
+  Public Property FeedCacheTime() As Integer
+   Get
+    Return _feedCacheTime
+   End Get
+   Set(ByVal value As Integer)
+    _feedCacheTime = value
+   End Set
   End Property
 #End Region
 

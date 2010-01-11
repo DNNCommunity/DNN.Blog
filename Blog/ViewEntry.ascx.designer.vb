@@ -97,13 +97,13 @@ Partial Public Class ViewEntry
  Protected WithEvents lnkRssIcon As Global.System.Web.UI.WebControls.Image
 
  '''<summary>
- '''lblSummary control.
+ '''litSummary control.
  '''</summary>
  '''<remarks>
  '''Auto-generated field.
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
- Protected WithEvents lblSummary As Global.System.Web.UI.WebControls.Label
+ Protected WithEvents litSummary As Global.System.Web.UI.WebControls.Literal
 
  '''<summary>
  '''litEntry control.

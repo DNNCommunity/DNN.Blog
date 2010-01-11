@@ -33,7 +33,7 @@
  </div>
  <!-- Begin Blog Entry -->
  <div class="BlogEntryDescription">
-  <asp:Label ID="lblSummary" runat="server" />
+  <asp:Literal ID="litSummary" runat="server" />
  </div>
  <asp:Literal ID="litEntry" runat="server" />
  <p>
@@ -48,48 +48,43 @@
    <asp:HyperLink ID="lnkEditEntry" ResourceKey="msgEditEntry" CssClass="BlogEditLink" runat="server" />
   </div>
   <div class="BlogFooterLeft">
-   <span class="BlogTag">
+   <div class="BlogFooterSub BlogTag">
     <asp:Label ID="lblTags" runat="server" ResourceKey="lblTags" />
     <asp:Repeater ID="rptTags" runat="server">
      <ItemTemplate>
       <asp:HyperLink runat="server" ID="lnkTags" Text='<%# Eval("Tag") %>' NavigateUrl='<%# DotNetNuke.Common.NavigateURL(TabId, "", "tagid=" & Eval("TagID")) %>'>HyperLink</asp:HyperLink>
      </ItemTemplate>
-     <SeparatorTemplate>
-      ,
-     </SeparatorTemplate>
+     <SeparatorTemplate>, </SeparatorTemplate>
     </asp:Repeater>
-   </span>
-   <br />
-   <span class="BlogTag">
+   </div>
+   <div class="BlogFooterSub BlogCategories">
     <asp:Label ID="lblCategories" runat="server" ResourceKey="lblCategories" />
     <asp:Repeater ID="rptCategories" runat="server">
      <ItemTemplate>
       <asp:HyperLink runat="server" ID="lnkTags" Text='<%# Eval("Category") %>' NavigateUrl='<%# DotNetNuke.Common.NavigateURL(TabId, "", "catid=" & Eval("CatID")) %>'>HyperLink</asp:HyperLink></ItemTemplate>
-     <SeparatorTemplate>
-      ,
-     </SeparatorTemplate>
+     <SeparatorTemplate>, </SeparatorTemplate>
     </asp:Repeater>
-   </span>
-   <span class="BlogTopics">
+   </div>
+   <div class="BlogFooterSub BlogTopics">
     <asp:Label ID="lblLocation" runat="server" ResourceKey="lblLocation" />
     <asp:HyperLink ID="lnkBlogs" runat="server" Text="Blogs" />
     <asp:Image ID="imgBlogParentSeparator" runat="server" ImageUrl="~/desktopmodules/Blog/Images/folder_closed.gif" AlternateText="Parent Separator" />
     <asp:HyperLink ID="lnkParentBlog" runat="server" />
     <asp:Image ID="imgParentChildSeparator" runat="server" ImageUrl="~/desktopmodules/Blog/Images/folder_closed.gif" Visible="False" AlternateText="Child Separator" />
     <asp:HyperLink ID="lnkChildBlog" runat="server" Visible="False" />
-   </span>
+   </div>
   </div>
-  <div class="Clear" />
+  <div class="Clear"></div>
  </div>
- <div id="ShareBadgePRO_Toolbar" />
- <div class="Clear" />
+ <div id="ShareBadgePRO_Toolbar"></div>
+ <div class="Clear"></div>
  <!-- Comments Section -->
  <asp:Panel ID="pnlComments" runat="server" Visible="False">
   <p>
-   <a id="Comments" name="Comments" />
+   <a id="Comments" name="Comments"></a>
    <a href="#AddComment"><asp:Label ID="lblComments" runat="server" CssClass="BlogComments" /></a>
   </p>
-  <asp:ImageButton ID="lnkDeleteAllUnapproved" runat="server" ImageUrl="~/images/delete.gif" Visible="false" ImageAlign="AbsMiddle" CausesValidation="false" AlternateText="Delete Unaproved" />
+  <asp:ImageButton ID="lnkDeleteAllUnapproved" runat="server" ImageUrl="~/images/delete.gif" Visible="false" CausesValidation="false" AlternateText="Delete Unaproved" />
   <asp:LinkButton ID="btDeleteAllUnapproved" runat="server" Visible="false" resourcekey="DeleteAllUnapproved" CssClass="CommandButton" CausesValidation="false" /><br />
   <asp:DataList ID="lstComments" runat="server" Width="100%">
    <ItemTemplate>
@@ -124,7 +119,7 @@
   <asp:LinkButton ID="cmdLogin" TabIndex="7" runat="server" CssClass="CommandButton" BorderStyle="None" ResourceKey="cmdLogin" />
  </asp:Panel>
  <asp:Panel ID="pnlAddComment" runat="server">
-  <a id="AddComment" name="AddComment" />
+  <a id="AddComment" name="AddComment"></a>
   <asp:ValidationSummary ID="valSummary" runat="server" CssClass="NormalRed" Enabled="False" />
   <asp:RequiredFieldValidator ID="valCommentAuthor" runat="server" ResourceKey="valCommentAuthor.ErrorMessage" CssClass="NormalRed" Enabled="False" ErrorMessage="Author is required" ControlToValidate="txtAuthor" Display="None" EnableClientScript="False" />
   <asp:RequiredFieldValidator ID="valCommentTitle" runat="server" ResourceKey="valCommentTitle.ErrorMessage" CssClass="NormalRed" Enabled="False" ErrorMessage="Title is required" ControlToValidate="txtCommentTitle" Display="None" EnableClientScript="False" />

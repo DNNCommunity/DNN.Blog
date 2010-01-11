@@ -84,6 +84,8 @@ Partial Class ModuleOptions
     chkIncludeCategoriesInDescription.Checked = BlogSettings.IncludeCategoriesInDescription
     chkIncludeTagsInDescription.Checked = BlogSettings.IncludeTagsInDescription
 
+    txtFeedCacheTime.Text = BlogSettings.FeedCacheTime.ToString
+
     ' 6/14/2008
     ' Add icons to radiobutton
     '
@@ -184,6 +186,7 @@ Partial Class ModuleOptions
     .IncludeCategoriesInDescription = chkIncludeCategoriesInDescription.Checked
     .IncludeTagsInDescription = chkIncludeTagsInDescription.Checked
     .AllowSummaryHtml = chkAllowSummaryHtml.Checked
+    .FeedCacheTime = CInt(txtFeedCacheTime.Text.Trim)
 
     .UpdateSettings()
    End With

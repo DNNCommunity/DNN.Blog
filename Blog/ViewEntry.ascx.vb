@@ -170,13 +170,13 @@ Partial Class ViewEntry
 
      'Rip Rowan 7/5/2008
      'Put description on page, show / hide based on setting
-     lblSummary.Text = Server.HtmlDecode(m_oEntry.Description)
+     litSummary.Text = Server.HtmlDecode(m_oEntry.Description)
 
      'lblSummary.CssClass = "BlogEntryDescription"
      If BlogSettings.ShowSummary Then
-      lblSummary.Visible = True
+      litSummary.Visible = True
      Else
-      lblSummary.Visible = False
+      litSummary.Visible = False
      End If
 
      litEntry.Text = Server.HtmlDecode(m_oEntry.Entry)
@@ -282,7 +282,7 @@ Partial Class ViewEntry
   Dim btEditComment As System.Web.UI.WebControls.LinkButton = CType(e.Item.FindControl("btEditComment"), System.Web.UI.WebControls.LinkButton)
   Dim btApproveComment As System.Web.UI.WebControls.LinkButton = CType(e.Item.FindControl("btApproveComment"), System.Web.UI.WebControls.LinkButton)
   Dim lblTitle As System.Web.UI.WebControls.Label = CType(e.Item.FindControl("lblTitle"), System.Web.UI.WebControls.Label)
-  Dim lnkUserName As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkUserName"), System.Web.UI.WebControls.HyperLink)
+  Dim lblUserName As System.Web.UI.WebControls.Label = CType(e.Item.FindControl("lblUserName"), System.Web.UI.WebControls.Label)
   Dim lblCommentDate As System.Web.UI.WebControls.Label = CType(e.Item.FindControl("lblCommentDate"), System.Web.UI.WebControls.Label)
   Dim imgGravatar As System.Web.UI.WebControls.Image = CType(e.Item.FindControl("imgGravatar"), System.Web.UI.WebControls.Image)
   Dim divBlogBubble As System.Web.UI.WebControls.Panel = CType(e.Item.FindControl("divBlogBubble"), System.Web.UI.WebControls.Panel)
@@ -346,7 +346,7 @@ Partial Class ViewEntry
    tmpName = String.Format(Localization.GetString("lblFormatUserNameUrl.Text", LocalResourceFile), commentInfo.Website, tmpName)
   End If
 
-  lnkUserName.Text = String.Format(Localization.GetString("lblFormatUserName.Text", LocalResourceFile), tmpName)
+  lblUserName.Text = String.Format(Localization.GetString("lblFormatUserName.Text", LocalResourceFile), tmpName)
 
   ' Rip Rowan - 6/14/2008
   ' Suppress image completely if no email

@@ -565,6 +565,24 @@ Partial Public Class ModuleOptions
  Protected WithEvents chkIncludeTagsInDescription As Global.System.Web.UI.WebControls.CheckBox
 
  '''<summary>
+ '''lblFeedCacheTime control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lblFeedCacheTime As Global.System.Web.UI.UserControl
+
+ '''<summary>
+ '''txtFeedCacheTime control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents txtFeedCacheTime As Global.System.Web.UI.WebControls.TextBox
+
+ '''<summary>
  '''secAdvancedSettings control.
  '''</summary>
  '''<remarks>

@@ -2,13 +2,6 @@
 <%@ Register TagPrefix="dnn" TagName="SectionHead" Src="~/controls/SectionHeadControl.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 
-<script runat="server">
-
- Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs)
-
- End Sub
-</script>
-
 <table cellspacing="0" cellpadding="2" summary="ViewBlog setting design table" border="0">
  <tr>
   <td valign="top">
@@ -238,6 +231,14 @@
      </td>
      <td>
       <asp:CheckBox ID="chkIncludeTagsInDescription" runat="server" TextAlign="Left" AutoPostBack="False" />
+     </td>
+    </tr>
+    <tr valign="top">
+     <td class="SubHead" valign="top" width="300">
+      <dnn:label id="lblFeedCacheTime" runat="server" controlname="txtFeedCacheTime" suffix="" />
+     </td>
+     <td>
+      <asp:TextBox runat="server" ID="txtFeedCacheTime" Width="100" />
      </td>
     </tr>
    </table>
