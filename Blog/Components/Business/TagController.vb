@@ -28,6 +28,10 @@ Namespace Business
 
  Public Class TagController
 
+  Public Shared Function GetTag(ByVal TagID As Integer) As TagInfo
+   Return CType(CBO.FillObject(DataProvider.Instance().GetTag(TagID), GetType(TagInfo)), TagInfo)
+  End Function
+
   Public Shared Function GetTagsByEntry(ByVal EntryID As Integer) As String
    Dim TagList As ArrayList
    Dim TagString As String = ""

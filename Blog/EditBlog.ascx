@@ -334,6 +334,9 @@
    </td>
   </tr>
   <tr>
+   <td><asp:Label runat="server" ID="lblChildBlogsOff" resourcekey="lblChildBlogsOff" Visible="true" CssClass="NormalRed" /></td>
+  </tr>
+  <tr>
    <td>
     <hr />
     <br />

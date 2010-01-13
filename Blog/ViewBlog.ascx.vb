@@ -22,7 +22,7 @@ Imports System
 Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Services.Exceptions
-Imports DotNetNuke.Services.Localization
+Imports DotNetNuke.Services.Localization.Localization
 
 Partial Class ViewBlog
  Inherits BlogModuleBase
@@ -54,42 +54,41 @@ Partial Class ViewBlog
    m_sSearchString = Request.Params("Search")
    m_bSearchDisplay = True
    If m_oBlog Is Nothing Then
-    ModuleConfiguration.ModuleTitle = Localization.GetString("msgSearchResults", LocalResourceFile)
+    ModuleConfiguration.ModuleTitle = GetString("msgSearchResults", LocalResourceFile)
    Else
-    ModuleConfiguration.ModuleTitle = Localization.GetString("msgSearchResultsFor", LocalResourceFile) & " " & m_oBlog.Title
+    ModuleConfiguration.ModuleTitle = GetString("msgSearchResultsFor", LocalResourceFile) & " " & m_oBlog.Title
    End If
 
   Else
    If m_oBlog Is Nothing Then
     'Antonio Chagoury 9/1/2007
     'BLG-6126
-    'ModuleConfiguration.ModuleTitle = Localization.GetString("msgMostRecentEntries", LocalResourceFile)
+    'ModuleConfiguration.ModuleTitle = GetString("msgMostRecentEntries", LocalResourceFile)
    Else
     'BLG-6126
     'ModuleConfiguration.ModuleTitle = m_oBlog.Title
     If Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
-     MyActions.Add(GetNextActionID, Localization.GetString("msgEditBlogSettings", LocalResourceFile), "", Url:=EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Blog"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Edit, Visible:=True)
-     MyActions.Add(GetNextActionID, Localization.GetString("msgAddBlogEntry", LocalResourceFile), "", Url:=EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Entry"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Edit, Visible:=True)
-     MyActions.Add(GetNextActionID, Localization.GetString("msgMassEdit", LocalResourceFile), "", Url:=EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Mass_Edit"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Edit, Visible:=True)
+     MyActions.Add(GetNextActionID, GetString("msgEditBlogSettings", LocalResourceFile), "", Url:=EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Blog"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Edit, Visible:=True)
+     MyActions.Add(GetNextActionID, GetString("msgAddBlogEntry", LocalResourceFile), "", Url:=EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Entry"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Edit, Visible:=True)
+     MyActions.Add(GetNextActionID, GetString("msgMassEdit", LocalResourceFile), "", Url:=EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Mass_Edit"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Edit, Visible:=True)
     End If
    End If
   End If
-  MyActions.Add(GetNextActionID, Localization.GetString("msgModuleOptions", LocalResourceFile), "", Url:=EditUrl("", "", "Module_Options"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Admin, Visible:=True)
+  MyActions.Add(GetNextActionID, GetString("msgModuleOptions", LocalResourceFile), "", Url:=EditUrl("", "", "Module_Options"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Admin, Visible:=True)
   Me.ModuleConfiguration.SupportedFeatures = 0
  End Sub
 
  Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
   Try
+
    m_SeoFriendlyUrl = BlogSettings.ShowSeoFriendlyUrl
    Dim objEntries As New EntryController
    Dim list As ArrayList
    If Not Request.Params("BlogDate") Is Nothing Then
-
     m_dBlogDate = CType(Date.Parse(Request.Params("BlogDate")), Date)
-
     'BLG-4154
     'Antonio Chagoury 9/1/2007
-
     'm_dBlogDate = m_dBlogDate.AddDays(1)
     If Not Request.Params("DateType") Is Nothing Then
      m_dBlogDateType = Request.Params("DateType")
@@ -100,7 +99,11 @@ Partial Class ViewBlog
    End If
 
    If Not Page.IsPostBack Then
+
+    Dim pageTitle As String = ""
+
     If m_bSearchDisplay Then
+
      If m_sSearchType = "Phrase" Then
       If m_oBlog Is Nothing Then
        list = New DotNetNuke.Modules.Blog.Business.SearchController().SearchByPhraseByPortal(Me.PortalId, m_sSearchString, DotNetNuke.Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString()))
@@ -123,72 +126,83 @@ Partial Class ViewBlog
      ' if no Entries are shown, show the info Entry
      InfoEntry.Visible = (lstSearchResults.Items.Count = 0)
 
-    Else
+    Else ' not a search display
+
      If Request.Params("catid") Is Nothing Then
 
       If Request.Params("tagid") Is Nothing Then
+
        If m_oBlog Is Nothing Then
         'BLG-4154
         'Antonio Chagoury 9/1/2007
         list = objEntries.ListEntriesByPortal(Me.PortalId, m_dBlogDate, m_dBlogDateType, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), BlogSettings.RecentEntriesMax)
         pnlBlogInfo.Visible = False
-
-        'pnlBlogRss.Visible = ModuleConfiguration.DisplaySyndicate
         If Not lnkRecentRss Is Nothing Then
          lnkRecentRss.NavigateUrl = NavigateURL(Me.TabId, "", "rssid=0")
         End If
        Else
         pnlBlogInfo.Visible = True
-        'pnlBlogRss.Visible = ModuleConfiguration.DisplaySyndicate
         If m_oBlog.ShowFullName Then
          lblAuthor.Text = m_oBlog.UserFullName
         Else
          lblAuthor.Text = m_oBlog.UserName
         End If
-
         lblCreated.Text = Utility.FormatDate(m_oBlog.Created, m_oBlog.Culture, m_oBlog.DateFormat, m_oBlog.TimeZone)
-
         litBlogDescription.Text = m_oBlog.Description
         list = objEntries.ListEntriesByBlog(m_oBlog.BlogID, m_dBlogDate, Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId), Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId), BlogSettings.RecentEntriesMax)
         Me.BasePage.Author = m_oBlog.UserFullName
-
+        pageTitle = Me.BasePage.Title & " - " & m_oBlog.Title
        End If
-      Else
+
+      Else ' we have a tag id
+
        list = objEntries.ListAllEntriesByTag(Me.PortalId, CInt(Request.Params("tagid")), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
        pnlBlogInfo.Visible = False
-
-       'pnlBlogRss.Visible = ModuleConfiguration.DisplaySyndicate
        If Not lnkRecentRss Is Nothing Then
         lnkRecentRss.NavigateUrl = NavigateURL(Me.TabId, "", "rssid=0", "tagid=" + Request.Params("tagid"))
        End If
+       Dim t As TagInfo = TagController.GetTag(CInt(Request.Params("tagid")))
+       If t IsNot Nothing Then
+        pageTitle = Me.BasePage.Title & " - " & t.Tag
+       End If
 
       End If
-     Else
+
+     Else ' we have a cat id
+
       list = objEntries.ListAllEntriesByCategory(Me.PortalId, CInt(Request.Params("catid")), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
       pnlBlogInfo.Visible = False
-
-      'pnlBlogRss.Visible = ModuleConfiguration.DisplaySyndicate
       If Not lnkRecentRss Is Nothing Then
        lnkRecentRss.NavigateUrl = NavigateURL(Me.TabId, "", "rssid=0", "catid=" + Request.Params("catid"))
       End If
+      Dim c As CategoryInfo = CategoryController.GetCategory(CInt(Request.Params("catid")))
+      If c IsNot Nothing Then
+       pageTitle = Me.BasePage.Title & " - " & c.Category
      End If
+
+     End If ' no cat id present
+
      lstBlogView.DataSource = list
      lstBlogView.DataBind()
      ' if no Entries are shown, show the info Entry
      InfoEntry.Visible = (lstBlogView.Items.Count = 0)
 
-     Dim showUniqueTitle As Boolean = BlogSettings.ShowUniqueTitle
-     showUniqueTitle = False
-     If showUniqueTitle Then
+     ' set page title
+     If pageTitle = "" Then
+      pageTitle = Me.BasePage.Title & " - " & ModuleConfiguration.ModuleTitle
+     End If
+     If BlogSettings.ShowUniqueTitle Then
       Try             ' 4.0.1 Bug
        If PortalSettings.Version <> "4.0.1" Then
-        Me.BasePage.Title = Me.BasePage.Title & " - " & ModuleConfiguration.ModuleTitle
+        Me.BasePage.Title = pageTitle
        End If
       Catch exc As Exception
        ProcessModuleLoadException(Me, exc, True)
       End Try
      End If
-    End If
+
+    End If ' search display or not
+
     If Not m_oBlog Is Nothing Then
      If m_oBlog.Syndicated And (m_oBlog.ParentBlogID = -1 Or m_oBlog.SyndicateIndependant) Then
       lnkRSS.NavigateUrl = NavigateURL(Me.TabId, "", "rssid=" & m_oBlog.BlogID.ToString)
@@ -217,13 +231,13 @@ Partial Class ViewBlog
 
     If (InfoEntry.Visible) Then
      If m_bSearchDisplay Then
-      InfoEntry.Text = Localization.GetString("msgNoSearchResult", LocalResourceFile)
+      InfoEntry.Text = GetString("msgNoSearchResult", LocalResourceFile)
      ElseIf m_dBlogDate <> Date.MinValue Then
-      InfoEntry.Text = Localization.GetString("msgNoPeriodResult", LocalResourceFile)
+      InfoEntry.Text = GetString("msgNoPeriodResult", LocalResourceFile)
      ElseIf Not m_oBlog Is Nothing Then
-      InfoEntry.Text = Localization.GetString("msgNoBlogResult", LocalResourceFile)
+      InfoEntry.Text = GetString("msgNoBlogResult", LocalResourceFile)
      Else
-      InfoEntry.Text = Localization.GetString("msgNoResult", LocalResourceFile)
+      InfoEntry.Text = GetString("msgNoResult", LocalResourceFile)
      End If
     End If
    End If
@@ -234,18 +248,11 @@ Partial Class ViewBlog
  End Sub
 #End Region
 
-#Region " Public Methods "
- Public Function getLnkComment() As String
-  getLnkComment = Localization.GetString("lnkComments", LocalResourceFile)
- End Function
-#End Region
-
 #Region " Private Methods "
  Private Sub lstBlogView_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataListItemEventArgs) Handles lstBlogView.ItemDataBound
   Dim lblUserName As System.Web.UI.WebControls.Label = CType(e.Item.FindControl("lblUserName"), System.Web.UI.WebControls.Label)
   Dim lblDescription As System.Web.UI.WebControls.Literal = CType(e.Item.FindControl("litDescription"), System.Web.UI.WebControls.Literal)
-
-  Dim lnkComments As System.Web.UI.WebControls.LinkButton = CType(e.Item.FindControl("lnkComments"), System.Web.UI.WebControls.LinkButton)
+  Dim lnkComments As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkComments"), System.Web.UI.WebControls.HyperLink)
   Dim lblPublished As System.Web.UI.WebControls.Label = CType(e.Item.FindControl("lblPublished"), System.Web.UI.WebControls.Label)
   Dim lblPublishDate As System.Web.UI.WebControls.Label = CType(e.Item.FindControl("lblPublishDate"), System.Web.UI.WebControls.Label)
   Dim lnkParentBlog As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkParentBlog"), System.Web.UI.WebControls.HyperLink)
@@ -275,10 +282,8 @@ Partial Class ViewBlog
   If Not m_oEntry Is Nothing Then
    If Utility.HasBlogPermission(Me.UserId, m_oEntry.UserID, Me.ModuleId) AndAlso Not lnkEditEntry Is Nothing Then
     lnkEditEntry.Visible = True
-
     lnkEditEntry.NavigateUrl = EditUrl("EntryID", CType(e.Item.DataItem, EntryInfo).EntryID.ToString(), "Edit_Entry")
    Else
-
     lnkEditEntry.Visible = False
    End If
   End If
@@ -287,6 +292,7 @@ Partial Class ViewBlog
   ' 10/28/08 RR Replace all instances of BlogNavigateURL with Permalink
   'lnkEntry.NavigateUrl = Utility.BlogNavigateURL(Me.TabId, CType(e.Item.DataItem, EntryInfo), m_SeoFriendlyUrl)
   lnkEntry.NavigateUrl = m_oEntry.PermaLink
+  lnkComments.NavigateUrl = m_oEntry.PermaLink & "#Comments"
 
   'DR-04/24/2009-BLG-9712
   lnkEntry.Attributes.Add("rel", "bookmark")
@@ -302,13 +308,13 @@ Partial Class ViewBlog
   ' Display the proper UserName
   If CType(e.Item.DataItem, EntryInfo).UserName.Length > 0 Then
    If oBlog.ShowFullName Then
-    lblUserName.Text = Localization.GetString("msgCreateFrom", LocalResourceFile) & " "
+    lblUserName.Text = GetString("msgCreateFrom", LocalResourceFile) & " "
     lblUserName.Text += CType(e.Item.DataItem, EntryInfo).UserFullName
-    lblUserName.Text += " " & Localization.GetString("msgCreateOn", LocalResourceFile)
+    lblUserName.Text += " " & GetString("msgCreateOn", LocalResourceFile)
    Else
-    lblUserName.Text = Localization.GetString("msgCreateFrom", LocalResourceFile) & " "
+    lblUserName.Text = GetString("msgCreateFrom", LocalResourceFile) & " "
     lblUserName.Text += CType(e.Item.DataItem, EntryInfo).UserName
-    lblUserName.Text += " " & Localization.GetString("msgCreateOn", LocalResourceFile)
+    lblUserName.Text += " " & GetString("msgCreateOn", LocalResourceFile)
    End If
    lblUserName.Visible = True
   End If
@@ -366,8 +372,13 @@ Partial Class ViewBlog
    End If
   End If
 
-  lnkComments.Visible = ((oBlog.AllowComments Or CType(e.Item.DataItem, EntryInfo).AllowComments) _
-      And CType(IIf(Me.UserId = -1, oBlog.AllowAnonymous, True), Boolean))
+  If ((oBlog.AllowComments Or CType(e.Item.DataItem, EntryInfo).AllowComments) And CType(IIf(Me.UserId = -1, oBlog.AllowAnonymous, True), Boolean)) Then
+   lnkComments.Visible = True
+   lnkComments.Text = String.Format(GetString("lnkComments", LocalResourceFile), CType(e.Item.DataItem, EntryInfo).CommentCount)
+  Else
+   lnkComments.Visible = False
+  End If
+
 
   If oBlog.ParentBlogID = -1 Then
    imgBlogParentSeparator.Visible = False

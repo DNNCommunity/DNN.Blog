@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -387,5 +387,23 @@ About custom images: provide the complete URL to the image (including "http://")
   </data>
   <data name="lblFeedCacheTime.Text" xml:space="preserve">
     <value>RSS Cache Time</value>
+  </data>
+  <data name="lblAllowChildBlogs.Help" xml:space="preserve">
+    <value>Users can create child blogs. Child blogs are superceded by categories from version 4 onward.</value>
+  </data>
+  <data name="lblAllowChildBlogs.Text" xml:space="preserve">
+    <value>Allow Child Blogs</value>
+  </data>
+  <data name="lblChildBlogsStatus.Text" xml:space="preserve">
+    <value>There are {0} child blogs defined in this portal.</value>
+  </data>
+  <data name="lblMigrateChildblogs.Help" xml:space="preserve">
+    <value>Child blogs are succeeded by categories as of version 4 of this module. You can migrate existing child blogs to categories here. Note you can keep working with child blogs as before if you wish.</value>
+  </data>
+  <data name="lblMigrateChildblogs.Text" xml:space="preserve">
+    <value>Manage Child Blogs</value>
+  </data>
+  <data name="cmdMigrateChildblogs.Text" xml:space="preserve">
+    <value>Migrate Child Blogs</value>
   </data>
 </root>

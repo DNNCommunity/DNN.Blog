@@ -15,14 +15,6 @@
       <asp:CheckBox ID="chkForceDescription" runat="server" TextAlign="Left" AutoPostBack="True" />
      </td>
     </tr>
-    <tr>
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblAllowSummaryHtml" runat="server" controlname="chkAllowSummaryHtml" suffix="" />
-     </td>
-     <td>
-      <asp:CheckBox ID="chkAllowSummaryHtml" runat="server" TextAlign="Left" AutoPostBack="True" />
-     </td>
-    </tr>
     <tr id="trSummary" runat="server">
      <td class="SubHead" valign="top" width="300">
       <dnn:label id="lblSummary" runat="server" controlname="txtSummaryLimit" suffix="" />
@@ -299,6 +291,31 @@
      </td>
      <td>
       <asp:CheckBox ID="chkShowSummary" runat="server" TextAlign="Left" AutoPostBack="False" />
+     </td>
+    </tr>
+    <tr>
+     <td class="SubHead" valign="top" width="300">
+      <dnn:label id="lblAllowSummaryHtml" runat="server" controlname="chkAllowSummaryHtml" suffix="" />
+     </td>
+     <td>
+      <asp:CheckBox ID="chkAllowSummaryHtml" runat="server" TextAlign="Left" />
+     </td>
+    </tr>
+    <tr>
+     <td class="SubHead" valign="top" width="300">
+      <dnn:label id="lblAllowChildBlogs" runat="server" controlname="chkAllowChildBlogs" suffix="" />
+     </td>
+     <td>
+      <asp:CheckBox ID="chkAllowChildBlogs" runat="server" TextAlign="Left" />
+     </td>
+    </tr>
+    <tr valign="top">
+     <td class="SubHead" valign="top" width="300">
+      <dnn:label id="lblMigrateChildblogs" runat="server" suffix="" controlname="cmdMigrateChildblogs" />
+     </td>
+     <td>
+      <asp:Label runat="server" ID="lblChildBlogsStatus" /><br />
+      <asp:LinkButton ID="cmdMigrateChildblogs" runat="server" CausesValidation="False" BorderStyle="none" ResourceKey="cmdMigrateChildblogs" CssClass="CommandButton" />
      </td>
     </tr>
    </table>

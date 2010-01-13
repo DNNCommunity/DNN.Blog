@@ -24,7 +24,7 @@ Imports System.Exception
 Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Modules.Blog.File
-Imports DotNetNuke.Services.Localization
+Imports DotNetNuke.Services.Localization.Localization
 Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Common.Globals
@@ -79,9 +79,9 @@ Partial Class EditEntry
   If m_oBlog Is Nothing Then
    Response.Redirect(Request.UrlReferrer.ToString, True)
   ElseIf Not m_oEntry Is Nothing Then
-   Me.ModuleConfiguration.ModuleTitle = Localization.GetString("msgEditBlogEntry", LocalResourceFile)
+   Me.ModuleConfiguration.ModuleTitle = GetString("msgEditBlogEntry", LocalResourceFile)
   Else
-   Me.ModuleConfiguration.ModuleTitle = Localization.GetString("msgAddBlogEntry", LocalResourceFile)
+   Me.ModuleConfiguration.ModuleTitle = GetString("msgAddBlogEntry", LocalResourceFile)
   End If
   If Not Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
    Response.Redirect(NavigateURL())
@@ -103,10 +103,11 @@ Partial Class EditEntry
    Me.pnlUploads.Visible = BlogSettings.EnableUploadOption
 
    'Localize the file attachments datagrid
-   Localization.LocalizeDataGrid(dgLinkedFiles, LocalResourceFile)
+   LocalizeDataGrid(dgLinkedFiles, LocalResourceFile)
 
    If Not Page.IsPostBack Then
-    DotNetNuke.UI.Utilities.ClientAPI.AddButtonConfirm(cmdDelete, Localization.GetString("DeleteItem"))
+
+    DotNetNuke.UI.Utilities.ClientAPI.AddButtonConfirm(cmdDelete, GetString("DeleteItem"))
     cboChildBlogs.DataSource = m_oBlogController.ListBlogs(Me.PortalId, m_oParentBlog.BlogID, True)
     cboChildBlogs.DataBind()
     cboChildBlogs.Items.Insert(0, New ListItem(m_oParentBlog.Title, m_oParentBlog.BlogID.ToString()))
@@ -163,22 +164,7 @@ Partial Class EditEntry
      'RR-09/01/2009-BLG-XXXX
      tbTags.Text = Business.TagController.GetTagsByEntry(m_oEntry.EntryID)
 
-     'm_oCats = m_oCategoryController.ListCategoriesSorted(m_oBlog.PortalID)
      m_oEntryCats = CategoryController.ListCatsByEntry(m_oEntry.EntryID)
-
-     'ddlCategory.DataSource = m_oCats
-     'ddlCategory.DataBind()
-     '' Need to localize next line
-     'ddlCategory.Items.Insert(0, New ListItem(" - Uncategorized - ", "-1"))
-     '' RR-data structures are in place for multi-category, but UI is single at this point
-     'If Not m_oEntryCats Is Nothing Then
-     ' If Not m_oEntryCats.Count = 0 Then
-     '  If Not ddlCategory.Items.FindByValue(m_oEntryCats(0).CatID.ToString) Is Nothing Then
-     '   ddlCategory.Items.FindByValue(m_oEntryCats(0).CatID.ToString).Selected = True
-     '  End If
-     ' End If
-     'End If
-
      For Each c As CategoryInfo In m_oEntryCats
       treeCategories.FindNodeByKey(c.CatID.ToString).Selected = True
      Next
@@ -299,7 +285,7 @@ Partial Class EditEntry
    lnkDeleteFile = CType(e.Item.FindControl("lnkDeleteFile"), System.Web.UI.WebControls.ImageButton)
    If Not lnkDeleteFile Is Nothing Then
     If dgLinkedFiles.EditItemIndex = -1 Then
-     lnkDeleteFile.Attributes.Add("onclick", "return confirm('" & String.Format(Localization.GetString("msgEnsureDeleteFile", Me.LocalResourceFile), lnkDeleteFile.CommandName) & "');")
+     lnkDeleteFile.Attributes.Add("onclick", "return confirm('" & String.Format(GetString("msgEnsureDeleteFile", Me.LocalResourceFile), lnkDeleteFile.CommandName) & "');")
      lnkDeleteFile.ImageUrl = Me.ModulePath & "Images/delete_file.gif"
     End If
    End If
@@ -474,6 +460,7 @@ Partial Class EditEntry
      End If
 
      Business.TagController.UpdateTagsByEntry(m_oEntry.EntryID, tbTags.Text)
+
      Dim selectedCategories As New List(Of Integer)
      For Each n As UI.WebControls.TreeNode In treeCategories.SelectedTreeNodes
       selectedCategories.Add(CInt(n.Key))
@@ -495,7 +482,6 @@ Partial Class EditEntry
      End If
     End With
 
-
    End If
   Catch exc As Exception    'Module failed to load
    ProcessModuleLoadException(Me, exc)
@@ -504,7 +490,7 @@ Partial Class EditEntry
  End Sub
 
  Private Function CreateCopyRight() As String
-  Return Localization.GetString("msgCopyright", LocalResourceFile) & Date.UtcNow.Year & " " & m_oBlog.UserFullName
+  Return GetString("msgCopyright", LocalResourceFile) & Date.UtcNow.Year & " " & m_oBlog.UserFullName
  End Function
 
 #End Region
@@ -536,7 +522,7 @@ Partial Class EditEntry
   If FileType = 0 Then
    If strExtension <> "" Then
     If strExtension.ToLower() <> "jpg" And strExtension.ToLower() <> "gif" And strExtension.ToLower() <> "png" Then
-     Me.valUpload.ErrorMessage = Localization.GetString("valUpload.ErrorMessage", LocalResourceFile)
+     Me.valUpload.ErrorMessage = GetString("valUpload.ErrorMessage", LocalResourceFile)
      Me.valUpload.ErrorMessage = Me.valUpload.ErrorMessage.Replace("[FILENAME]", objFile.FileName)
      Me.valUpload.IsValid = False
      'The File [FILENAME] Is A Restricted File Type for Images. Valid File Types Include JPG, GIF and PNG<br>
@@ -562,15 +548,15 @@ Partial Class EditEntry
      End If
 
     Catch ex As Exception
-     ProcessModuleLoadException(String.Format(Localization.GetString("SaveFileError"), strFileName), Me, ex, True)
+     ProcessModuleLoadException(String.Format(GetString("SaveFileError"), strFileName), Me, ex, True)
     End Try
    Else
-    Me.valUpload.ErrorMessage = String.Format(Localization.GetString("RestrictedFileType"), strFileName, Replace(Me.PortalSettings.HostSettings("FileExtensions").ToString, ",", ", *."))
+    Me.valUpload.ErrorMessage = String.Format(GetString("RestrictedFileType"), strFileName, Replace(Me.PortalSettings.HostSettings("FileExtensions").ToString, ",", ", *."))
     Me.valUpload.IsValid = False
    End If
 
   Else
-   Me.valUpload.ErrorMessage = String.Format(Localization.GetString("DiskSpaceExceeded"), strFileName)
+   Me.valUpload.ErrorMessage = String.Format(GetString("DiskSpaceExceeded"), strFileName)
    Me.valUpload.IsValid = False
   End If
   Return strMessage

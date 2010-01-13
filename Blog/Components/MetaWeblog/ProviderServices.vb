@@ -38,43 +38,6 @@ Imports DotNetNuke.Services.Localization
 Namespace MetaWeblog
 
  Public Class BlogPostServices
-  'Private Shared _providerConfiguration As ProviderConfiguration = ProviderConfiguration.GetProviderConfiguration("data")
-  'Private Shared _connectionString As String
-  'Private Shared _providerPath As String
-  'Private Shared _objectQualifier As String
-  'Private Shared _databaseOwner As String
-
-  'Public Shared ReadOnly Property DatabaseOwner() As String
-  '    Get
-  '        If BlogPostServices.IsNullOrEmpty(_databaseOwner) Then
-  '            ' Read the configuration specific information for this provider
-  '            Dim objProvider As Provider = DirectCast(_providerConfiguration.Providers(_providerConfiguration.DefaultProvider), Provider)
-
-  '            _databaseOwner = objProvider.Attributes("databaseOwner")
-  '            If (_databaseOwner <> "") AndAlso Not _databaseOwner.EndsWith(".") Then
-  '                _databaseOwner += "."
-
-  '            End If
-  '        End If
-  '        Return _databaseOwner
-  '    End Get
-  'End Property
-
-  'Public Shared ReadOnly Property ObjectQualifier() As String
-  '    Get
-  '        If BlogPostServices.IsNullOrEmpty(_objectQualifier) Then
-  '            ' Read the configuration specific information for this provider
-  '            Dim objProvider As Provider = DirectCast(_providerConfiguration.Providers(_providerConfiguration.DefaultProvider), Provider)
-
-  '            _objectQualifier = objProvider.Attributes("objectQualifier")
-  '            If (_objectQualifier <> "") AndAlso Not _objectQualifier.EndsWith("_") Then
-  '                _objectQualifier += "_"
-
-  '            End If
-  '        End If
-  '        Return _objectQualifier
-  '    End Get
-  'End Property
 
   Public Const IMPLEMENTED_BY_MODULE As String = "Implemented_By_Module"
 
@@ -90,6 +53,7 @@ Namespace MetaWeblog
   Public Shared Function GetString(ByVal key As String, ByVal defaultValue As String) As String
    Return GetString(key, defaultValue, "/DesktopModules/blog/App_LocalResources/blogpost")
   End Function
+
   Public Shared Function GetString(ByVal key As String, ByVal defaultValue As String, ByVal localizationFilePath As String) As String
    Dim retValue As String = Localization.GetString(key, localizationFilePath)
    If (retValue Is Nothing) Then
@@ -111,6 +75,7 @@ Namespace MetaWeblog
    End If
    Return retValue
   End Function
+
   Public Shared Function GetFriendlyNameFromModuleDefinition(ByVal moduleDefinition As String) As String
    Dim friendlyName As String
 
@@ -191,6 +156,7 @@ Namespace MetaWeblog
     DotNetNuke.Services.Exceptions.Exceptions.LogException(ex)
    End Try
   End Sub
+
   Private Shared Sub FindImageMatch(ByVal input As String, ByVal sRegex As String, ByVal regexInner As String, ByVal options As RegexOptions, ByVal imageUrls As ArrayList)
    Dim matches As MatchCollection = Regex.Matches(input, sRegex, options)
    For Each match As match In matches
@@ -204,6 +170,7 @@ Namespace MetaWeblog
     End If
    Next
   End Sub
+
   Friend Shared Function IsNullOrEmpty(ByVal value As String) As Boolean
    Dim retValue As Boolean
    If value Is Nothing OrElse value = String.Empty Then
@@ -213,5 +180,6 @@ Namespace MetaWeblog
    End If
    Return retValue
   End Function
+
  End Class
 End Namespace

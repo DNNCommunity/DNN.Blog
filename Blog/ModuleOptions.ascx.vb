@@ -22,9 +22,7 @@ Imports System
 Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Services.Exceptions.Exceptions
-Imports DotNetNuke.Services.Localization
-
-
+Imports DotNetNuke.Services.Localization.Localization
 
 Partial Class ModuleOptions
  Inherits BlogModuleBase
@@ -85,6 +83,7 @@ Partial Class ModuleOptions
     chkIncludeTagsInDescription.Checked = BlogSettings.IncludeTagsInDescription
 
     txtFeedCacheTime.Text = BlogSettings.FeedCacheTime.ToString
+    chkAllowChildBlogs.Checked = BlogSettings.AllowChildBlogs
 
     ' 6/14/2008
     ' Add icons to radiobutton
@@ -93,18 +92,17 @@ Partial Class ModuleOptions
 
     Dim li As ListItem
     For Each li In rblDefaultImage.Items
-     If li.Value = "" Then li.Text = "<img src=""" + ModulePath + "images/grayman.png"" alt=""" & Localization.GetString("liGrayMan.Text", LocalResourceFile) & """ align=""middle""/> " & Localization.GetString("liGrayMan.Text", LocalResourceFile)
-     If li.Value = "identicon" Then li.Text = "<img src=""" + ModulePath + "images/identicon.png"" alt=""" & Localization.GetString("liIdenticon.Text", LocalResourceFile) & """ align=""middle""/> " & Localization.GetString("liIdenticon.Text", LocalResourceFile)
-     If li.Value = "wavatar" Then li.Text = "<img src=""" + ModulePath + "images/wavatar.png"" alt=""" & Localization.GetString("liWavatar.Text", LocalResourceFile) & """ align=""middle""/> " & Localization.GetString("liWavatar.Text", LocalResourceFile)
-     If li.Value = "monsterid" Then li.Text = "<img src=""" + ModulePath + "images/monsterid.png"" alt=""" & Localization.GetString("liMonsterID.Text", LocalResourceFile) & """ align=""middle""/> " & Localization.GetString("liMonsterID.Text", LocalResourceFile)
-     If li.Value = "custom" Then li.Text = "<img src=""" + ModulePath + "images/yourimagehere.png"" alt=""" & Localization.GetString("liCustom.Text", LocalResourceFile) & """ align=""middle""/> " & Localization.GetString("liCustom.Text", LocalResourceFile)
+     If li.Value = "" Then li.Text = "<img src=""" + ModulePath + "images/grayman.png"" alt=""" & GetString("liGrayMan.Text", LocalResourceFile) & """ align=""middle""/> " & GetString("liGrayMan.Text", LocalResourceFile)
+     If li.Value = "identicon" Then li.Text = "<img src=""" + ModulePath + "images/identicon.png"" alt=""" & GetString("liIdenticon.Text", LocalResourceFile) & """ align=""middle""/> " & GetString("liIdenticon.Text", LocalResourceFile)
+     If li.Value = "wavatar" Then li.Text = "<img src=""" + ModulePath + "images/wavatar.png"" alt=""" & GetString("liWavatar.Text", LocalResourceFile) & """ align=""middle""/> " & GetString("liWavatar.Text", LocalResourceFile)
+     If li.Value = "monsterid" Then li.Text = "<img src=""" + ModulePath + "images/monsterid.png"" alt=""" & GetString("liMonsterID.Text", LocalResourceFile) & """ align=""middle""/> " & GetString("liMonsterID.Text", LocalResourceFile)
+     If li.Value = "custom" Then li.Text = "<img src=""" + ModulePath + "images/yourimagehere.png"" alt=""" & GetString("liCustom.Text", LocalResourceFile) & """ align=""middle""/> " & GetString("liCustom.Text", LocalResourceFile)
     Next
-
 
     Dim objBlog As New BlogController
     cmbPageBlogs.DataSource = objBlog.ListBlogs(PortalId, -1, False)
     cmbPageBlogs.DataBind()
-    cmbPageBlogs.Items.Insert(0, New ListItem("<" & Services.Localization.Localization.GetString("Not_Specified", Services.Localization.Localization.SharedResourceFile) & ">", "-1"))
+    cmbPageBlogs.Items.Insert(0, New ListItem("<" & GetString("Not_Specified", SharedResourceFile) & ">", "-1"))
     Try
      cmbPageBlogs.Items.FindByValue(CStr(BlogSettings.PageBlogs)).Selected = True
     Catch
@@ -113,6 +111,11 @@ Partial Class ModuleOptions
     If cmbPageBlogs.Items.Count > 2 Then
      chkEnableDNNSearch.Enabled = (cmbPageBlogs.SelectedIndex = 0)
     End If
+
+    ' calculate child blogs
+    Dim totalBlogs As Integer = objBlog.ListBlogsByPortal(PortalId, True).Count
+    Dim parentBlogs As Integer = objBlog.ListBlogsRootByPortal(PortalId).Count
+    lblChildBlogsStatus.Text = String.Format(GetString("lblChildBlogsStatus", LocalResourceFile), CInt(totalBlogs - parentBlogs))
 
     'Load Bookmarks Settings
     'Dim oBookmarks As New DataSet
@@ -187,6 +190,7 @@ Partial Class ModuleOptions
     .IncludeTagsInDescription = chkIncludeTagsInDescription.Checked
     .AllowSummaryHtml = chkAllowSummaryHtml.Checked
     .FeedCacheTime = CInt(txtFeedCacheTime.Text.Trim)
+    .AllowChildBlogs = chkAllowChildBlogs.Checked
 
     .UpdateSettings()
    End With
@@ -257,27 +261,16 @@ Partial Class ModuleOptions
  '    End If
  'End Sub
 
-#End Region
+ Private Sub cmdMigrateChildblogs_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdMigrateChildblogs.Click
 
-#Region " Web Form Designer Generated Code "
-
- 'This call is required by the Web Form Designer.
- <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+  ' recalculate child blogs
+  Dim totalBlogs As Integer = (New BlogController).ListBlogsByPortal(PortalId, True).Count
+  Dim parentBlogs As Integer = (New BlogController).ListBlogsRootByPortal(PortalId).Count
+  lblChildBlogsStatus.Text = String.Format(GetString("lblChildBlogsStatus", LocalResourceFile), CInt(totalBlogs - parentBlogs))
 
  End Sub
 
- 'NOTE: The following placeholder declaration is required by the Web Form Designer.
- 'Do not delete or move it.
- Private designerPlaceholderDeclaration As System.Object
-
- Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
-  'CODEGEN: This method call is required by the Web Form Designer
-  'Do not modify it using the code editor.
-  InitializeComponent()
- End Sub
-
 #End Region
-
 End Class
 
 

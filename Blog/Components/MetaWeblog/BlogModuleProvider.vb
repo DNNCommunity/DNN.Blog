@@ -103,7 +103,6 @@ Namespace MetaWeblog
 #End Region
 
 #Region "IPublishable Members"
-
   Public Function GetModulesForUser(ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal providerKey As String) As ModuleInfoStruct() Implements IPublishable.GetModulesForUser
 
    Dim infoArrayList As ArrayList = New ArrayList
@@ -374,7 +373,7 @@ Namespace MetaWeblog
 
    Dim i As Integer = 0
    For Each c As Business.CategoryInfo In CatList.Values
-    category.CategoryId = c.CatID
+    category.CategoryId = c.CatId
     category.CategoryName = c.FullCat
     category.Description = c.FullCat
     category.HtmlUrl = "http://google.com"
@@ -410,8 +409,8 @@ Namespace MetaWeblog
 
    blogId = Convert.ToInt32(moduleLevelId)
 
-   Dim blogController As New blogController
-   Dim blogInfo As blogInfo = blogController.GetBlog(blogId)
+   Dim blogController As New BlogController
+   Dim blogInfo As BlogInfo = blogController.GetBlog(blogId)
 
    Return blogInfo.Title
 
@@ -431,7 +430,7 @@ Namespace MetaWeblog
 
    entryId = Convert.ToInt32(itemId)
 
-   Dim entryController As New entryController
+   Dim entryController As New EntryController
 
    ' Need to use reflection to get the right procedure since 
    ' the blog module authors changed the signature in
@@ -439,16 +438,16 @@ Namespace MetaWeblog
    Dim BlogType As Type = entryController.[GetType]()
    Dim miGetEntry As MethodInfo = BlogType.GetMethod("GetEntry")
    Dim piParameters As ParameterInfo() = miGetEntry.GetParameters()
-   Dim entryInfo As entryInfo
+   Dim entryInfo As EntryInfo
    If piParameters.Length = 1 Then
     Dim methodParams As Object() = New Object(0) {}
     methodParams.SetValue(Convert.ToInt32(itemId), 0)
-    entryInfo = DirectCast(miGetEntry.Invoke(entryController, methodParams), entryInfo)
+    entryInfo = DirectCast(miGetEntry.Invoke(entryController, methodParams), EntryInfo)
    Else
     Dim methodParams As Object() = New Object(1) {}
     methodParams.SetValue(Convert.ToInt32(itemId), 0)
     methodParams.SetValue(portalSettings.PortalId, 1)
-    entryInfo = DirectCast(miGetEntry.Invoke(entryController, methodParams), entryInfo)
+    entryInfo = DirectCast(miGetEntry.Invoke(entryController, methodParams), EntryInfo)
    End If
 
    Return entryInfo.PermaLink
@@ -472,7 +471,7 @@ Namespace MetaWeblog
 #Region "Private Procedures Specific to Blog Module"
 
   Private Function GetTimeZoneOffset(ByVal blogId As Integer) As Integer
-   Dim blogController As New blogController
+   Dim blogController As New BlogController
    Dim blog As BlogInfo = blogController.GetBlog(blogId)
    Return blog.TimeZone
   End Function

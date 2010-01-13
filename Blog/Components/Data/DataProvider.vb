@@ -87,6 +87,7 @@ Namespace Data
 #End Region
 
 #Region "Blog_Tags / Blog_Cats Methods"
+  Public MustOverride Function GetTag(ByVal TagID As Integer) As IDataReader
   Public MustOverride Function ListTagsByEntry(ByVal EntryID As Integer) As IDataReader
   Public MustOverride Sub AddEntryTag(ByVal EntryID As Integer, ByVal Tag As String, ByVal Slug As String)
   Public MustOverride Sub DeleteEntryTag(ByVal EntryID As Integer, ByVal Tag As String)

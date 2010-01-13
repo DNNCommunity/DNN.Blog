@@ -151,6 +151,7 @@ Public Class Globals
  End Sub
 #End Region
 
+#Region " Other "
  Public Shared Sub AddModDef(ByVal PortalSettings As Entities.Portals.PortalSettings, ByVal ModuleDefID As Integer, ByVal TabID As Integer, ByVal paneName As String, ByVal position As Integer, ByVal title As String)
 
   Dim objModuleDefinition As Definitions.ModuleDefinitionInfo = (New Definitions.ModuleDefinitionController).GetModuleDefinition(ModuleDefID)
@@ -178,5 +179,6 @@ Public Class Globals
   objModules.AddModule(objModule)
 
  End Sub
+#End Region
 
 End Class

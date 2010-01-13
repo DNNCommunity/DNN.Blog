@@ -76,6 +76,7 @@ Namespace MetaWeblog
      link.Visible = True
 
      phHead.Controls.Add(link)
+
     End If
 
    End If

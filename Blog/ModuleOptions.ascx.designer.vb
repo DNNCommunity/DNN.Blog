@@ -52,24 +52,6 @@ Partial Public Class ModuleOptions
  Protected WithEvents chkForceDescription As Global.System.Web.UI.WebControls.CheckBox
 
  '''<summary>
- '''lblAllowSummaryHtml control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents lblAllowSummaryHtml As Global.System.Web.UI.UserControl
-
- '''<summary>
- '''chkAllowSummaryHtml control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents chkAllowSummaryHtml As Global.System.Web.UI.WebControls.CheckBox
-
- '''<summary>
  '''trSummary control.
  '''</summary>
  '''<remarks>
@@ -707,6 +689,78 @@ Partial Public Class ModuleOptions
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
  Protected WithEvents chkShowSummary As Global.System.Web.UI.WebControls.CheckBox
+
+ '''<summary>
+ '''lblAllowSummaryHtml control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lblAllowSummaryHtml As Global.System.Web.UI.UserControl
+
+ '''<summary>
+ '''chkAllowSummaryHtml control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents chkAllowSummaryHtml As Global.System.Web.UI.WebControls.CheckBox
+
+ '''<summary>
+ '''lblAllowChildBlogs control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lblAllowChildBlogs As Global.System.Web.UI.UserControl
+
+ '''<summary>
+ '''chkAllowChildBlogs control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents chkAllowChildBlogs As Global.System.Web.UI.WebControls.CheckBox
+
+ '''<summary>
+ '''lblMigrateChildblogs control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lblMigrateChildblogs As Global.System.Web.UI.UserControl
+
+ '''<summary>
+ '''lblChildBlogsStatus control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lblChildBlogsStatus As Global.System.Web.UI.WebControls.Label
+
+ '''<summary>
+ '''cmdMigrateChildblogs control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents cmdMigrateChildblogs As Global.System.Web.UI.WebControls.LinkButton
+
+ '''<summary>
+ '''chkAllowMultipleCategories control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents chkAllowMultipleCategories As Global.System.Web.UI.WebControls.CheckBox
 
  '''<summary>
  '''cmdUpdateOptions control.

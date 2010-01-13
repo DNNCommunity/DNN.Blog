@@ -29,7 +29,7 @@ Imports DotNetNuke.Common.Globals
 Partial Class Search
  Inherits BlogModuleBase
 
-#Region "Private member"
+#Region " Private Members "
  Private BlogID As Integer = -1
  Private m_PersonalBlogID As Integer
 #End Region
@@ -60,6 +60,9 @@ Partial Class Search
      list = objBlogs.ListBlogs(PortalId, -1, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
     End If
 
+    If list.Count < 2 Then
+     cboBlogSelect.Visible = False
+    Else
     cboBlogSelect.DataTextField = "Title"
     cboBlogSelect.DataValueField = "BlogID"
     cboBlogSelect.DataSource = list
@@ -70,8 +73,7 @@ Partial Class Search
     If Not cboBlogSelect.Items.FindByValue(BlogID.ToString()) Is Nothing Then
      cboBlogSelect.Items.FindByValue(BlogID.ToString()).Selected = True
     End If
-
-
+    End If
 
     If Not Request.Params("SearchType") Is Nothing Then
      If Request.Params("SearchType") = "Phrase" Then

@@ -64,8 +64,7 @@
     </div>
     <div class="BlogFooter">
      <div class="BlogFooterRight">
-      <asp:LinkButton ID="lnkComments" runat="server" CommandName="Comments" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "EntryID") %>'
-       CssClass="BlogCommentsNormal"><%= getLnkComment() %> (<%# DataBinder.Eval(Container.DataItem, "CommentCount") %>)</asp:LinkButton>
+      <asp:HyperLink ID="lnkComments" runat="server" CssClass="BlogCommentsNormal" />
       <asp:HyperLink ID="lnkEditEntry" ResourceKey="msgEditEntry" CssClass="BlogEditLink" runat="server" />
      </div>
      <div class="BlogFooterLeft">

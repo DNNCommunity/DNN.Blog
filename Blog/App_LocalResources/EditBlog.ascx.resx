@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -294,5 +294,8 @@
   </data>
   <data name="lblAvailableTokens.Text" xml:space="preserve">
     <value>Available Tokens:</value>
+  </data>
+  <data name="lblChildBlogsOff.Text" xml:space="preserve">
+    <value>Child blogs have been switched off by the administrator. Please use categories instead. You can still edit existing child blogs but you won't be able to add new ones.</value>
   </data>
 </root>

@@ -2,6 +2,9 @@
 <%@ Register TagPrefix="dnn" TagName="SectionHead" Src="~/controls/SectionHeadControl.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="TextEditor" Src="~/controls/TextEditor.ascx" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.WebControls" Namespace="DotNetNuke.UI.WebControls" %>
+<p>
+ <asp:Label ID="lblPublished" ResourceKey="lblPublished" runat="server" CssClass="NormalRed" /><br />
+</p>
 <asp:ValidationSummary ID="valSummary" CssClass="NormalRed" EnableClientScript="False" runat="server" DisplayMode="BulletList" />
 <asp:RequiredFieldValidator ID="valTitle" EnableClientScript="False" runat="server" ResourceKey="valTitle.ErrorMessage" Display="None" ControlToValidate="txtTitle" ErrorMessage="Title is required" />
 <asp:RequiredFieldValidator ID="valDescription" EnableClientScript="False" runat="server" ResourceKey="valDescription.ErrorMessage" Display="None" ControlToValidate="txtDescription" ErrorMessage="Description is required" />
@@ -206,7 +209,6 @@
   </td>
  </tr>
 </table>
-<asp:Label ID="lblPublished" ResourceKey="lblPublished" runat="server" CssClass="NormalRed" /><br />
 <asp:LinkButton ID="cmdDraft" ResourceKey="cmdDraft" runat="server" CssClass="CommandButton" BorderStyle="None" />&nbsp;
 <asp:LinkButton ID="cmdPublish" ResourceKey="cmdPublish" runat="server" CssClass="CommandButton" BorderStyle="None" />
 &nbsp;

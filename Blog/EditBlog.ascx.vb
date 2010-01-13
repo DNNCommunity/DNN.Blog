@@ -32,7 +32,7 @@ Imports DotNetNuke.Security
 Partial Class EditBlog
  Inherits BlogModuleBase
 
-#Region "Private member"
+#Region " Private Members "
  Private m_oBlogController As New BlogController
  Private m_oParentBlog As BlogInfo
  Private m_oBlog As BlogInfo
@@ -40,10 +40,48 @@ Partial Class EditBlog
 #End Region
 
 #Region "Controls"
- Protected WithEvents lblTracbacks As System.Web.UI.WebControls.Label
 #End Region
 
 #Region "Event Handlers"
+ Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+
+  If Not (Request.Params("BlogID") Is Nothing) Then
+   If Int32.Parse(Request.Params("BlogID")) > 0 Then
+    m_oBlog = m_oBlogController.GetBlog(Int32.Parse(Request.Params("BlogID")))
+    If Not Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
+     Response.Redirect(NavigateURL())
+    ElseIf m_oBlog.ParentBlogID > -1 Then
+     m_oParentBlog = m_oBlogController.GetBlog(m_oBlog.ParentBlogID)
+    End If
+   End If
+  End If
+
+  If m_oBlog Is Nothing And Not (Request.Params("ParentBlogID") Is Nothing) And BlogSettings.AllowChildBlogs Then
+   If Int32.Parse(Request.Params("ParentBlogID")) > 0 Then
+    m_oParentBlog = m_oBlogController.GetBlog(Int32.Parse(Request.Params("ParentBlogID")))
+   End If
+  End If
+
+  If Not m_oParentBlog Is Nothing Then
+   If Not Utility.HasBlogPermission(Me.UserId, m_oParentBlog.UserID, Me.ModuleId) Then
+    Response.Redirect(NavigateURL())
+   Else
+    If m_oBlog Is Nothing Then
+     Me.ModuleConfiguration.ModuleTitle = Localization.GetString("msgCreateNewChildBlog", LocalResourceFile)
+    Else
+     Me.ModuleConfiguration.ModuleTitle = Localization.GetString("msgEditChildBlog", LocalResourceFile)
+    End If
+   End If
+  Else
+   If m_oBlog Is Nothing Then
+    Me.ModuleConfiguration.ModuleTitle = Localization.GetString("msgCreateBlog", LocalResourceFile)
+   Else
+    Me.ModuleConfiguration.ModuleTitle = Localization.GetString("msgEditBlog", LocalResourceFile)
+   End If
+  End If
+
+ End Sub
+
  Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
   Try
    If Not Page.IsPostBack Then
@@ -54,6 +92,7 @@ Partial Class EditBlog
     Localization.LoadCultureDropDownList(cboCulture, CultureDropDownTypes.NativeName, CType(Page, PageBase).PageCulture.Name)
 
     txtTweetTemplate.Text = Localization.GetString("txtTweetTemplate", LocalResourceFile)
+    lblChildBlogsOff.Visible = (Not BlogSettings.AllowChildBlogs)
 
     If Not m_oBlog Is Nothing Then
      'Load data
@@ -113,7 +152,7 @@ Partial Class EditBlog
       txtSyndicationEmail.Text = m_oBlog.SyndicationEmail
      End If
      cmdDelete.Visible = True
-     btnAddChildBlog.Enabled = True
+     btnAddChildBlog.Enabled = BlogSettings.AllowChildBlogs
      If Not rdoUserName.SelectedItem Is Nothing Then rdoUserName.SelectedItem.Selected = False
      rdoUserName.Items.FindByValue(m_oBlog.ShowFullName.ToString()).Selected = True
      lstChildBlogs.Attributes.Add("onclick", "if (this.selectedIndex > -1) { " & btnEditChildBlog.ClientID & ".disabled = false; " & btnDeleteChildBlog.ClientID & ".disabled = false; }")
@@ -370,60 +409,6 @@ Partial Class EditBlog
    End With
   End If
  End Sub
-#End Region
-
-#Region " Web Form Designer Generated Code "
-
- 'This call is required by the Web Form Designer.
- <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-
- End Sub
-
- 'NOTE: The following placeholder declaration is required by the Web Form Designer.
- 'Do not delete or move it.
- Private designerPlaceholderDeclaration As System.Object
-
- Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
-  'CODEGEN: This method call is required by the Web Form Designer
-  'Do not modify it using the code editor.
-  InitializeComponent()
-
-  If Not (Request.Params("BlogID") Is Nothing) Then
-   If Int32.Parse(Request.Params("BlogID")) > 0 Then
-    m_oBlog = m_oBlogController.GetBlog(Int32.Parse(Request.Params("BlogID")))
-    If Not Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
-     Response.Redirect(NavigateURL())
-    ElseIf m_oBlog.ParentBlogID > -1 Then
-     m_oParentBlog = m_oBlogController.GetBlog(m_oBlog.ParentBlogID)
-    End If
-   End If
-  End If
-
-  If m_oBlog Is Nothing And Not (Request.Params("ParentBlogID") Is Nothing) Then
-   If Int32.Parse(Request.Params("ParentBlogID")) > 0 Then
-    m_oParentBlog = m_oBlogController.GetBlog(Int32.Parse(Request.Params("ParentBlogID")))
-   End If
-  End If
-
-  If Not m_oParentBlog Is Nothing Then
-   If Not Utility.HasBlogPermission(Me.UserId, m_oParentBlog.UserID, Me.ModuleId) Then
-    Response.Redirect(NavigateURL())
-   Else
-    If m_oBlog Is Nothing Then
-     Me.ModuleConfiguration.ModuleTitle = Localization.GetString("msgCreateNewChildBlog", LocalResourceFile)
-    Else
-     Me.ModuleConfiguration.ModuleTitle = Localization.GetString("msgEditChildBlog", LocalResourceFile)
-    End If
-   End If
-  Else
-   If m_oBlog Is Nothing Then
-    Me.ModuleConfiguration.ModuleTitle = Localization.GetString("msgCreateBlog", LocalResourceFile)
-   Else
-    Me.ModuleConfiguration.ModuleTitle = Localization.GetString("msgEditBlog", LocalResourceFile)
-   End If
-  End If
- End Sub
-
 #End Region
 
 End Class

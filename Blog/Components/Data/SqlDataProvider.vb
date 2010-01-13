@@ -241,6 +241,10 @@ Namespace Data
 
 #Region "Blog_Tags / Blog_Cats Methods"
 
+  Public Overrides Function GetTag(ByVal TagID As Integer) As System.Data.IDataReader
+   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_GetTag", TagID), IDataReader)
+  End Function
+
   Public Overrides Function ListTagsByEntry(ByVal EntryID As Integer) As System.Data.IDataReader
    Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_ListTagsByEntry", EntryID), IDataReader)
   End Function

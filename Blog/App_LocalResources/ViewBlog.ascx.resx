@@ -153,7 +153,7 @@
     <value>No entries have been posted for this blog.</value>
   </data>
   <data name="lnkComments.Text" xml:space="preserve">
-    <value>Comments</value>
+    <value>Comments ({0})</value>
   </data>
   <data name="lblPublished.Text" xml:space="preserve">
     <value>&lt;p&gt;This entry has not been published.&lt;/p&gt;</value>
