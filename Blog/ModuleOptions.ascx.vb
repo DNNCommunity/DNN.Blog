@@ -27,14 +27,14 @@ Imports DotNetNuke.Services.Localization.Localization
 Partial Class ModuleOptions
  Inherits BlogModuleBase
 
-#Region "Controls"
+#Region " Controls "
  Protected WithEvents tblSummaryOptions As System.Web.UI.HtmlControls.HtmlTable
  Protected WithEvents tblEntryOptions As System.Web.UI.HtmlControls.HtmlTable
  Protected WithEvents pnlSummaryOptions As System.Web.UI.WebControls.Panel
  Protected WithEvents DropDownList1 As System.Web.UI.WebControls.DropDownList
 #End Region
 
-#Region "Event Handlers"
+#Region " Event Handlers "
  Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
   Try
@@ -116,6 +116,8 @@ Partial Class ModuleOptions
     Dim totalBlogs As Integer = objBlog.ListBlogsByPortal(PortalId, True).Count
     Dim parentBlogs As Integer = objBlog.ListBlogsRootByPortal(PortalId).Count
     lblChildBlogsStatus.Text = String.Format(GetString("lblChildBlogsStatus", LocalResourceFile), CInt(totalBlogs - parentBlogs))
+    DotNetNuke.UI.Utilities.ClientAPI.AddButtonConfirm(cmdMigrateChildblogs, GetString("MigrateConfirm", LocalResourceFile))
+    'cmdMigrateChildblogs
 
     'Load Bookmarks Settings
     'Dim oBookmarks As New DataSet
@@ -156,7 +158,7 @@ Partial Class ModuleOptions
 
 #End Region
 
-#Region "Private Methods"
+#Region " Private Methods "
  Private Sub cmdUpdateOptions_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdUpdateOptions.Click
   Try
    ' Update Settings
@@ -263,6 +265,24 @@ Partial Class ModuleOptions
 
  Private Sub cmdMigrateChildblogs_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdMigrateChildblogs.Click
 
+  ' get sql
+  Dim assembly As Reflection.Assembly = Reflection.Assembly.GetExecutingAssembly()
+  Dim sql As String = ""
+  Using stream As IO.Stream = assembly.GetManifestResourceStream("DotNetNuke.Modules.Blog.ChildblogsToCategories.sql")
+   Using rdr As New IO.StreamReader(stream)
+    sql = rdr.ReadToEnd
+   End Using
+  End Using
+  sql = sql.Replace("@portalid", PortalId.ToString)
+
+  ' run the script
+  Dim res As String = DotNetNuke.Data.DataProvider.Instance().ExecuteScript(sql, False)
+
+  ' run through all categories to make sure the slug is correctly set
+  For Each c As CategoryInfo In CategoryController.ListCategories(PortalId).Values
+   CategoryController.UpdateCategory(c.CatId, c.Category, c.ParentId)
+  Next
+
   ' recalculate child blogs
   Dim totalBlogs As Integer = (New BlogController).ListBlogsByPortal(PortalId, True).Count
   Dim parentBlogs As Integer = (New BlogController).ListBlogsRootByPortal(PortalId).Count
@@ -271,6 +291,7 @@ Partial Class ModuleOptions
  End Sub
 
 #End Region
+
 End Class
 
 

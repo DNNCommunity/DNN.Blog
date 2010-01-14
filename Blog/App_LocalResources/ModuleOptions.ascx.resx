@@ -406,4 +406,7 @@ About custom images: provide the complete URL to the image (including "http://")
   <data name="cmdMigrateChildblogs.Text" xml:space="preserve">
     <value>Migrate Child Blogs</value>
   </data>
+  <data name="MigrateConfirm.Text" xml:space="preserve">
+    <value>Are you sure you wish to eliminate all child blogs and move their content to categories instead?</value>
+  </data>
 </root>

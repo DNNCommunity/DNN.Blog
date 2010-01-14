@@ -418,7 +418,7 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
-    <None Include="Upgrade\03.05.02_category_conversion.sql" />
+    <EmbeddedResource Include="Upgrade\ChildblogsToCategories.sql" />
     <None Include="_Installation\DNN_Blog.dnn" />
     <None Include="_Installation\SQL\01.00.00.SqlDataProvider" />
     <None Include="_Installation\SQL\01.00.01.SqlDataProvider" />
