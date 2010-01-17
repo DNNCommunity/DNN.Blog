@@ -6,32 +6,32 @@
 -- The script will be loaded and executed by the button on Module Options page
 
 -- create categories
-insert into blog_categories (category, slug, parentid, portalid) 
-select distinct b.title, 'Default.aspx', 0, @portalid from blog_blogs b
+insert into {databaseOwner}{objectQualifier}blog_categories (category, slug, parentid, portalid) 
+select distinct b.title, 'Default.aspx', 0, @portalid from {databaseOwner}{objectQualifier}blog_blogs b
 where b.parentblogid > 0 and b.portalid = @portalid
-and not exists(select * from blog_categories where title=b.title and portalid=@portalid)
+and not exists(select * from {databaseOwner}{objectQualifier}blog_categories where title=b.title and portalid=@portalid)
 GO
 
-insert into blog_entry_categories 
+insert into {databaseOwner}{objectQualifier}blog_entry_categories 
       (entryid, catid) 
       select be.entryid, c.catid 
             from (select entryid, b.title 
-                  from blog_entries e 
-                  inner join blog_blogs b on e.blogid = b.blogid  
+                  from {databaseOwner}{objectQualifier}blog_entries e 
+                  inner join {databaseOwner}{objectQualifier}blog_blogs b on e.blogid = b.blogid  
                   where portalid = 0) be 
-      inner join blog_categories c on title = c.category
-where not exists(select * from blog_entry_categories where entryid=be.entryid and catid=c.catid)
+      inner join {databaseOwner}{objectQualifier}blog_categories c on title = c.category
+where not exists(select * from {databaseOwner}{objectQualifier}blog_entry_categories where entryid=be.entryid and catid=c.catid)
 GO
 
-update blog_entries set blogid = parentblogid
-      from blog_entries e
-      inner join blog_blogs b
+update {databaseOwner}{objectQualifier}blog_entries set blogid = parentblogid
+      from {databaseOwner}{objectQualifier}blog_entries e
+      inner join {databaseOwner}{objectQualifier}blog_blogs b
       on e.blogid = b.blogid
       where portalid = @portalid
       and parentblogid > 0
 GO
 
-delete from blog_blogs
+delete from {databaseOwner}{objectQualifier}blog_blogs
       where portalid = @portalid
       and parentblogid > 0
 GO

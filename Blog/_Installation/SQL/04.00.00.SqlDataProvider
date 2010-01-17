@@ -1,5 +1,88 @@
 ﻿/*************** BEGIN 04.00.00.SqlDataProvider ************************/
 
+/*************** REPAIR COLLATIONS ON EXISTING SCHEMA ************************/
+
+-- change collations on Blogs table
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs
+ ALTER COLUMN	[Title] [nvarchar] (255) COLLATE database_default NOT NULL
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs
+ ALTER COLUMN	[Description] [nvarchar] (1024) COLLATE database_default NULL
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs
+ ALTER COLUMN	[DateFormat] [nvarchar] (50) COLLATE database_default NOT NULL
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs
+ ALTER COLUMN	[Culture] [nvarchar] (10) COLLATE database_default NULL
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs
+ ALTER COLUMN	[SyndicationURL] [nvarchar] (1024) COLLATE database_default NULL
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs
+ ALTER COLUMN	[SyndicationEmail] [nvarchar] (255) COLLATE database_default NULL
+GO
+
+-- change collations on Entries table
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Entries
+ ALTER COLUMN	[Title] [nvarchar] (255) COLLATE database_default NOT NULL
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Entries
+ ALTER COLUMN	[Entry] [ntext] COLLATE database_default NOT NULL
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Entries
+ ALTER COLUMN	[Description] [nvarchar] (1024) COLLATE database_default NULL
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Entries
+ ALTER COLUMN	[Copyright] [nvarchar] (255) COLLATE database_default NULL
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Entries
+ ALTER COLUMN	[PermaLink] [nvarchar] (1024) COLLATE database_default NULL
+GO
+
+
+-- change collations on Comments table
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Comments
+ ALTER COLUMN	[Comment] [ntext] COLLATE database_default NOT NULL
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Comments
+ ALTER COLUMN	[Title] [nvarchar] (255) COLLATE database_default NOT NULL
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Comments
+ ALTER COLUMN	Author nvarchar (50) COLLATE database_default NULL
+GO
+
+-- change collations on Settings table (need to temporarily drop primary key)
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Settings
+ DROP CONSTRAINT [PK_{objectQualifier}Blog_Settings]
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Settings
+ ALTER COLUMN	[Key] [nvarchar] (50) COLLATE database_default NOT NULL
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Settings WITH NOCHECK ADD 
+	CONSTRAINT [PK_{objectQualifier}Blog_Settings] PRIMARY KEY  CLUSTERED 
+	(
+		[PortalID],
+		[Key]
+	)  ON [PRIMARY] 
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Settings
+ ALTER COLUMN	[Value] [nvarchar] (1024) COLLATE database_default NOT NULL
+GO
+
 /*************** TABLES ************************/
 
 ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs ADD 
@@ -40,7 +123,7 @@ END
 
 GO
 
-if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Blog_Categories_Portals') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+if not exists (select * from {databaseOwner}sysobjects where id = object_id(N'FK_{objectQualifier}Blog_Categories_Portals') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
 ALTER TABLE {databaseOwner}{objectQualifier}Blog_Categories ADD CONSTRAINT
 	FK_{objectQualifier}Blog_Categories_Portals FOREIGN KEY
 	(
@@ -90,7 +173,7 @@ END
 
 GO
 
-if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Blog_Tags_Portals') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+if not exists (select * from {databaseOwner}sysobjects where id = object_id(N'FK_{objectQualifier}Blog_Tags_Portals') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
 ALTER TABLE {databaseOwner}{objectQualifier}Blog_Tags ADD CONSTRAINT
 	FK_{objectQualifier}Blog_Tags_Portals FOREIGN KEY
 	(
@@ -133,7 +216,7 @@ END
 
 GO
 
-if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Blog_Entry_Categories_Entries') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+if not exists (select * from {databaseOwner}sysobjects where id = object_id(N'FK_{objectQualifier}Blog_Entry_Categories_Entries') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
 ALTER TABLE {databaseOwner}{objectQualifier}Blog_Entry_Categories ADD CONSTRAINT
 	FK_{objectQualifier}Blog_Entry_Categories_Entries FOREIGN KEY
 	(
@@ -146,7 +229,7 @@ ALTER TABLE {databaseOwner}{objectQualifier}Blog_Entry_Categories ADD CONSTRAINT
 
 GO
 
-if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Blog_Entry_Categories_Categories') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+if not exists (select * from {databaseOwner}sysobjects where id = object_id(N'FK_{objectQualifier}Blog_Entry_Categories_Categories') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
 ALTER TABLE {databaseOwner}{objectQualifier}Blog_Entry_Categories ADD CONSTRAINT
 	FK_{objectQualifier}Blog_Entry_Categories_Categories FOREIGN KEY
 	(
@@ -189,7 +272,7 @@ END
 
 GO
 
-if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Blog_Entry_Tags_Entries') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+if not exists (select * from {databaseOwner}sysobjects where id = object_id(N'FK_{objectQualifier}Blog_Entry_Tags_Entries') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
 ALTER TABLE {databaseOwner}{objectQualifier}Blog_Entry_Tags ADD CONSTRAINT
 	FK_{objectQualifier}Blog_Entry_Tags_Entries FOREIGN KEY
 	(
@@ -202,7 +285,7 @@ ALTER TABLE {databaseOwner}{objectQualifier}Blog_Entry_Tags ADD CONSTRAINT
 
 GO
 
-if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Blog_Entry_Tags_Tags') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+if not exists (select * from {databaseOwner}sysobjects where id = object_id(N'FK_{objectQualifier}Blog_Entry_Tags_Tags') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
 ALTER TABLE {databaseOwner}{objectQualifier}Blog_Entry_Tags ADD CONSTRAINT
 	FK_{objectQualifier}Blog_Entry_Tags_Tags FOREIGN KEY
 	(
@@ -218,10 +301,10 @@ GO
 /*************** REPAIR MISSING SETTINGS FK ************************/
 
 DELETE FROM {databaseOwner}{objectQualifier}Blog_Settings
-WHERE NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}Portals p WHERE p.PortalID = Blog_Settings.PortalID)
+WHERE NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}Portals p WHERE p.PortalID = {databaseOwner}{objectQualifier}Blog_Settings.PortalID)
 GO
 
-if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Blog_Settings_Portals') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+if not exists (select * from {databaseOwner}sysobjects where id = object_id(N'FK_{objectQualifier}Blog_Settings_Portals') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
 ALTER TABLE {databaseOwner}{objectQualifier}Blog_Settings ADD CONSTRAINT
 	FK_{objectQualifier}Blog_Settings_Portals FOREIGN KEY
 	(
@@ -237,7 +320,7 @@ GO
 
 /*************** PROCEDURES ************************/
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_UpdateBlog') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_UpdateBlog') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}{objectQualifier}Blog_UpdateBlog
 GO
 
@@ -305,7 +388,7 @@ WHERE
 
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_AddBlog') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_AddBlog') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}{objectQualifier}Blog_AddBlog
 GO
 
@@ -403,7 +486,7 @@ select SCOPE_IDENTITY()
 
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_GetBlog') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_GetBlog') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}{objectQualifier}Blog_GetBlog
 GO
 
@@ -455,7 +538,7 @@ WHERE
 
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_GetBlogMonths') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_GetBlogMonths') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}{objectQualifier}Blog_GetBlogMonths
 GO
 
@@ -501,7 +584,7 @@ END
 
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListBlogs') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListBlogs') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}{objectQualifier}Blog_ListBlogs
 GO
 
@@ -551,7 +634,7 @@ ORDER BY B.Title
 
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListCommentsByBlog') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListCommentsByBlog') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}{objectQualifier}Blog_ListCommentsByBlog
 GO
 
@@ -590,7 +673,7 @@ ORDER BY
 
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListCommentsByPortal') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListCommentsByPortal') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}{objectQualifier}Blog_ListCommentsByPortal
 GO
 
@@ -630,7 +713,7 @@ ORDER BY
 	C.AddedDate desc
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_DelUnAppCommByEntry') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_DelUnAppCommByEntry') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}{objectQualifier}Blog_DelUnAppCommByEntry
 GO
 
@@ -648,7 +731,7 @@ WHERE
 GO
 
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_UpdateEntry') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_UpdateEntry') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}{objectQualifier}Blog_UpdateEntry
 GO
 
@@ -688,7 +771,7 @@ If @Published = 1
 	
 GO
 
-IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_AddCategory') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+IF EXISTS (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_AddCategory') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_AddCategory
 GO
 
@@ -714,7 +797,7 @@ INSERT INTO {databaseOwner}{objectQualifier}Blog_Categories (
 select SCOPE_IDENTITY()
 GO
 
-IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_UpdateCategory') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+IF EXISTS (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_UpdateCategory') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdateCategory
 GO
 

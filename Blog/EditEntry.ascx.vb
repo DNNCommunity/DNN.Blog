@@ -29,12 +29,10 @@ Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Common.Globals
 
-
-
 Partial Class EditEntry
  Inherits BlogModuleBase
 
-#Region "Public Properties"
+#Region " Public Properties "
  Public ReadOnly Property FilePath() As String
   Get
    Return Me.PortalSettings.HomeDirectory & Me.ModuleConfiguration.FriendlyName & "/"
@@ -42,7 +40,7 @@ Partial Class EditEntry
  End Property
 #End Region
 
-#Region "Private member"
+#Region " Private Members "
  Private m_oEntryController As New EntryController
  Private m_oEntry As EntryInfo
  Private m_oBlogController As New BlogController
@@ -54,7 +52,7 @@ Partial Class EditEntry
  Private m_oEntryId As Integer = -1
 #End Region
 
-#Region "Controls"
+#Region " Controls "
  Protected WithEvents txtDescription As DotNetNuke.UI.UserControls.TextEditor
  Protected WithEvents chkDisplaySocialBookmarks As System.Web.UI.WebControls.CheckBox
  Protected WithEvents teBlogEntry As DotNetNuke.UI.UserControls.TextEditor
@@ -107,6 +105,7 @@ Partial Class EditEntry
 
    If Not Page.IsPostBack Then
 
+    InitializeTree()
     DotNetNuke.UI.Utilities.ClientAPI.AddButtonConfirm(cmdDelete, GetString("DeleteItem"))
     cboChildBlogs.DataSource = m_oBlogController.ListBlogs(Me.PortalId, m_oParentBlog.BlogID, True)
     cboChildBlogs.DataBind()
@@ -166,7 +165,7 @@ Partial Class EditEntry
 
      m_oEntryCats = CategoryController.ListCatsByEntry(m_oEntry.EntryID)
      For Each c As CategoryInfo In m_oEntryCats
-      treeCategories.FindNodeByKey(c.CatID.ToString).Selected = True
+      treeCategories.FindNodeByKey(c.CatId.ToString).Selected = True
      Next
 
     Else
@@ -409,7 +408,7 @@ Partial Class EditEntry
 
 #End Region
 
-#Region "Private Methods"
+#Region " Private Methods "
  Private Sub updateEntry(ByVal publish As Boolean, ByVal redirect As Boolean)
   Try
    If Page.IsValid = True Then
@@ -493,6 +492,24 @@ Partial Class EditEntry
   Return GetString("msgCopyright", LocalResourceFile) & Date.UtcNow.Year & " " & m_oBlog.UserFullName
  End Function
 
+ Private Sub InitializeTree()
+  With treeCategories
+   .SystemImagesPath = ResolveUrl("~/images/")
+   '.ImageList.Add(ResolveUrl("~/images/folder.gif"))
+   '.ImageList.Add(ResolveUrl("~/images/icon_securityroles_16px.gif"))
+   '.ImageList.Add(ResolveUrl("~/images/icon_sql_16px.gif"))
+   '.ImageList.Add(ResolveUrl("~/images/file.gif"))
+   .ImageList.Add(ResolveUrl("~/images/spacer.gif"))
+   .ImageList.Add(ResolveUrl("~/images/spacer.gif"))
+   .ImageList.Add(ResolveUrl("~/images/spacer.gif"))
+   .ImageList.Add(ResolveUrl("~/images/spacer.gif"))
+   .IndentWidth = 10
+   .CollapsedNodeImage = ResolveUrl("~/images/max.gif")
+   .ExpandedNodeImage = ResolveUrl("~/images/min.gif")
+   .PopulateNodesFromClient = False
+   '.JSFunction = "catclick();"
+  End With
+ End Sub
 #End Region
 
 #Region "Upload Feature Methods"

@@ -24,22 +24,22 @@ CREATE TABLE {databaseOwner}{objectQualifier}Blog_Blogs (
 	[PortalID] [int] NOT NULL ,
 	[BlogID] [int] IDENTITY (1, 1) NOT NULL ,
 	[UserID] [int] NOT NULL ,
-	[Title] [nvarchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-	[Description] [nvarchar] (1024) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+	[Title] [nvarchar] (255) ,
+	[Description] [nvarchar] (1024) ,
 	[Public] [bit] NOT NULL ,
 	[AllowComments] [bit] NOT NULL ,
 	[AllowAnonymous] [bit] NOT NULL ,
 	[LastEntry] [datetime] NULL ,
 	[Created] [datetime] NOT NULL ,
 	[ShowFullName] [bit] NOT NULL ,
-	[DateFormat] [nvarchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-	[Culture] [nvarchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+	[DateFormat] [nvarchar] (50) ,
+	[Culture] [nvarchar] (10) ,
 	[TimeZone] [int] NOT NULL ,
 	[ParentBlogID] [int] NULL ,
 	[Syndicated] [bit] NOT NULL ,
 	[SyndicateIndependant] [bit] NOT NULL ,
-	[SyndicationURL] [nvarchar] (1024) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[SyndicationEmail] [nvarchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL 
+	[SyndicationURL] [nvarchar] (1024) ,
+	[SyndicationEmail] [nvarchar] (255) 
 ) ON [PRIMARY]
 END
 
@@ -51,9 +51,9 @@ CREATE TABLE {databaseOwner}{objectQualifier}Blog_Comments (
 	[CommentID] [int] IDENTITY (1, 1) NOT NULL ,
 	[EntryID] [int] NOT NULL ,
 	[UserID] [int] NULL ,
-	[Comment] [ntext] COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+	[Comment] [ntext] ,
 	[AddedDate] [datetime] NOT NULL ,
-	[Title] [nvarchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL 
+	[Title] [nvarchar] (255) 
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 END
 
@@ -64,15 +64,15 @@ if not exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwne
 CREATE TABLE {databaseOwner}{objectQualifier}Blog_Entries (
 	[BlogID] [int] NOT NULL ,
 	[EntryID] [int] IDENTITY (1, 1) NOT NULL ,
-	[Title] [nvarchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-	[Entry] [ntext] COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+	[Title] [nvarchar] (255) ,
+	[Entry] [ntext] ,
 	[AddedDate] [datetime] NOT NULL ,
 	[Published] [bit] NOT NULL ,
-	[Description] [nvarchar] (1024) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+	[Description] [nvarchar] (1024) ,
 	[AllowComments] [bit] NULL ,
 	[DisplayCopyright] [bit] NOT NULL ,
-	[Copyright] [nvarchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[PermaLink] [nvarchar] (1024) COLLATE SQL_Latin1_General_CP1_CI_AS NULL 
+	[Copyright] [nvarchar] (255) ,
+	[PermaLink] [nvarchar] (1024) 
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 END
 
@@ -82,8 +82,8 @@ if not exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwne
  BEGIN
 CREATE TABLE {databaseOwner}{objectQualifier}Blog_Settings (
 	[PortalID] [int] NOT NULL ,
-	[Key] [nvarchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-	[Value] [nvarchar] (1024) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL 
+	[Key] [nvarchar] (50) ,
+	[Value] [nvarchar] (1024) 
 ) ON [PRIMARY]
 END
 
