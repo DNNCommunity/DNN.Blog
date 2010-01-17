@@ -37,7 +37,7 @@ ALTER TABLE {databaseOwner}{objectQualifier}Blog_Entries
 GO
 
 ALTER TABLE {databaseOwner}{objectQualifier}Blog_Entries
- ALTER COLUMN	[Description] [nvarchar] (1024) COLLATE database_default NULL
+ ALTER COLUMN	[Description] [ntext] COLLATE database_default NULL
 GO
 
 ALTER TABLE {databaseOwner}{objectQualifier}Blog_Entries
@@ -71,12 +71,9 @@ ALTER TABLE {databaseOwner}{objectQualifier}Blog_Settings
  ALTER COLUMN	[Key] [nvarchar] (50) COLLATE database_default NOT NULL
 GO
 
-ALTER TABLE {databaseOwner}{objectQualifier}Blog_Settings WITH NOCHECK ADD 
-	CONSTRAINT [PK_{objectQualifier}Blog_Settings] PRIMARY KEY  CLUSTERED 
-	(
-		[PortalID],
-		[Key]
-	)  ON [PRIMARY] 
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Settings 
+ ADD CONSTRAINT [PK_{objectQualifier}Blog_Settings] 
+  PRIMARY KEY ([PortalID], [TabID], [Key]) ON [PRIMARY]
 GO
 
 ALTER TABLE {databaseOwner}{objectQualifier}Blog_Settings
