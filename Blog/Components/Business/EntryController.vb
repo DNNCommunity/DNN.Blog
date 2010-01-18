@@ -65,19 +65,13 @@ Namespace Business
    DataProvider.Instance().UpdateEntry(objEntry.BlogID, objEntry.EntryID, objEntry.Title, objEntry.Description, objEntry.Entry, objEntry.Published, objEntry.AllowComments, objEntry.AddedDate, objEntry.DisplayCopyright, objEntry.Copyright, objEntry.PermaLink)
    'DR-19/04/2009-BLG-9760
    If objBlog IsNot Nothing AndAlso objBlog.EnableTwitterIntegration Then
-    Tweet(objBlog, objEntry)
+    Utility.Tweet(objBlog, objEntry)
    End If
   End Sub
 
   Public Sub DeleteEntry(ByVal EntryID As Integer)
    DataProvider.Instance().DeleteEntry(EntryID)
   End Sub
-
-  Private Sub Tweet(ByVal objBlog As BlogInfo, ByVal objEntry As EntryInfo)
-   'DR-19/04/2009-BLG-9760
-   'Send tweet
-  End Sub
-
 
  End Class
 

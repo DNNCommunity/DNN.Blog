@@ -639,45 +639,6 @@ Namespace Business
 
   End Function
 
-  Public Shared Function ShrinkURL(ByVal Url As String, ByVal Provider As String) As String
-   Try
-    'TinyUrl's minimum url lenght is 25
-    'We should shrink our url only is legth is more that 25 charachters
-    If Url.Length <= 25 Then
-     Return Url
-    End If
-
-    Dim strServiceUrl As String = String.Empty
-    Select Case Provider.ToLower
-     Case "tinyurl"
-      strServiceUrl = "http://tinyurl.com/api-create.php?url="
-     Case "isgd"
-      strServiceUrl = "http://is.gd/api.php?longurl="
-     Case "zima"
-      strServiceUrl = "http://zi.ma/?module=ShortURL&file=Add&mode=API&url="
-     Case Else
-      strServiceUrl = "http://tinyurl.com/api-create.php?url="
-    End Select
-
-    If Not Url.ToLower().StartsWith("http") AndAlso Not Url.ToLower().StartsWith("ftp") Then
-     Url = "http://" + Url
-    End If
-
-    Dim UrlShrinkRequest As WebRequest = WebRequest.Create(strServiceUrl + Url)
-    Dim UrlShrinkResponse As WebResponse = UrlShrinkRequest.GetResponse()
-
-    Using reader As StreamReader = New StreamReader(UrlShrinkResponse.GetResponseStream())
-     Return reader.ReadToEnd()
-    End Using
-
-   Catch ex As Exception
-    'If there was an exception, 
-    'then just return the original url
-    Return Url
-   End Try
-
-  End Function
-
   Public Shared Function CreateFriendlySlug(ByVal pagename As String) As String
 
    'Set the PageName
@@ -768,6 +729,77 @@ Namespace Business
 
   End Function
 
+#End Region
+
+#Region " Twitter "
+  Public Shared Sub Tweet(ByVal objBlog As BlogInfo, ByVal objEntry As EntryInfo)
+
+   Dim objPortalSecurity As DotNetNuke.Security.PortalSecurity = Nothing
+   Try
+    objPortalSecurity = New DotNetNuke.Security.PortalSecurity
+
+    Dim strTitle As String = objEntry.Title
+    Dim strUrl As String = ShrinkURL(objEntry.PermaLink, "tinyurl")
+    Dim TwitterStatus As String = objBlog.TweetTemplate.Replace("{title}", strTitle).Replace("{url}", strUrl)
+
+    If TwitterStatus.Length > 140 Then
+     Dim TrimTitleLength As Integer = (TwitterStatus.Length - 140) - strTitle.Length
+     strTitle = HtmlUtils.Shorten(strTitle, TrimTitleLength, "")
+     'reset the tweet message
+     TwitterStatus = objBlog.TweetTemplate.Replace("{title}", strTitle).Replace("{url}", strUrl)
+    End If
+
+    If TwitterStatus.Length <= 140 Then
+     Dim t As New Twitter.Twitter
+     Dim s As String = t.Update(objBlog.TwitterUsername, objPortalSecurity.Decrypt(objBlog.EncryptionKey, objBlog.TwitterPassword), TwitterStatus, Twitter.Twitter.OutputFormatType.XML)
+    End If
+
+   Catch ex As Exception
+    Throw (ex)
+   Finally
+    If Not objPortalSecurity Is Nothing Then objPortalSecurity = Nothing
+   End Try
+
+  End Sub
+
+  Public Shared Function ShrinkURL(ByVal Url As String, ByVal Provider As String) As String
+   Try
+    'TinyUrl's minimum url lenght is 25
+    'We should shrink our url only is length is more that 25 charachters
+    If Url.Length <= 25 Then
+     Return Url
+    End If
+
+    Dim strServiceUrl As String = String.Empty
+    Select Case Provider.ToLower
+     Case "tinyurl"
+      strServiceUrl = "http://tinyurl.com/api-create.php?url="
+     Case "isgd"
+      strServiceUrl = "http://is.gd/api.php?longurl="
+     Case "zima"
+      strServiceUrl = "http://zi.ma/?module=ShortURL&file=Add&mode=API&url="
+     Case Else
+      strServiceUrl = "http://tinyurl.com/api-create.php?url="
+    End Select
+
+    If Not Url.ToLower().StartsWith("http") AndAlso Not Url.ToLower().StartsWith("ftp") Then
+     Url = "http://" + Url
+    End If
+
+    Dim UrlShrinkRequest As WebRequest = WebRequest.Create(strServiceUrl + Url)
+    Dim UrlShrinkResponse As WebResponse = UrlShrinkRequest.GetResponse()
+
+    Using reader As StreamReader = New StreamReader(UrlShrinkResponse.GetResponseStream())
+     Return reader.ReadToEnd()
+    End Using
+
+   Catch ex As Exception
+    'If there was an exception, 
+    'then just return the original url
+    Return Url
+   End Try
+
+  End Function
 #End Region
 
 #Region " Other "
