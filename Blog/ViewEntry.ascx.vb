@@ -60,8 +60,15 @@ Partial Class ViewEntry
  Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
   Try
    If Not Page.IsPostBack Then
+
     If m_oEntry Is Nothing Then
-     Response.Redirect(NavigateURL(), True)
+     Response.Redirect(NavigateURL(), False)
+     Exit Sub
+    End If
+
+    If (Not m_oEntry.Published) AndAlso (Not Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId)) Then
+     Response.Redirect(NavigateURL(), False)
+     Exit Sub
     End If
 
     If Not m_oBlog Is Nothing Then

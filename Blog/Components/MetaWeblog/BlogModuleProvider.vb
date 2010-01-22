@@ -34,7 +34,7 @@ Namespace MetaWeblog
  Public Class BlogModuleProvider
   Implements IPublishable, ILinkable
 
-#Region "Public Properties"
+#Region " Public Properties "
 
   ''' <summary>
   ''' ProviderKey should be set to the Friendly Name of the module for
@@ -102,7 +102,7 @@ Namespace MetaWeblog
 
 #End Region
 
-#Region "IPublishable Members"
+#Region " IPublishable Members "
   Public Function GetModulesForUser(ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal providerKey As String) As ModuleInfoStruct() Implements IPublishable.GetModulesForUser
 
    Dim infoArrayList As ArrayList = New ArrayList
@@ -136,7 +136,7 @@ Namespace MetaWeblog
 
   End Function
 
-#Region "Item Related Procedures"
+#Region " Item Related Procedures "
 
   Public Function GetItem(ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal itemType As ItemType) As Item Implements IPublishable.GetItem
    Dim entryController As New EntryController
@@ -274,6 +274,16 @@ Namespace MetaWeblog
 
    objEntryController.UpdateEntry(objEntry)
 
+   ' check to see if we should tweet
+   If (Not item.StyleDetectionPost) And item.Publish Then
+    Dim b As BlogInfo = blogController.GetBlog(tempBlogID)
+    If b IsNot Nothing Then
+     If b.EnableTwitterIntegration Then
+      Utility.Tweet(b, objEntry)
+     End If
+    End If
+   End If
+
    TagController.UpdateTagsByEntry(entryId, item.Keywords)
 
    CategoryController.UpdateCategoriesByEntry(entryId, item.Categories)
@@ -326,6 +336,9 @@ Namespace MetaWeblog
    ' HtmlEncode the entry
    objEntry.Entry = HttpUtility.HtmlEncode(objEntry.Entry)
 
+   ' Is it a first publish?
+   Dim firstPublish As Boolean = CBool((Not objEntry.Published) And item.Publish)
+
    If item.DateCreated.Year > 1 Then
     ' WLW handles TZ offset automatically.
     ' objEntry.AddedDate = item.DateCreated;
@@ -343,6 +356,16 @@ Namespace MetaWeblog
 
    objEntryController.UpdateEntry(objEntry)
 
+   ' check to see if we should tweet
+   If (Not item.StyleDetectionPost) And firstPublish Then
+    Dim b As BlogInfo = (New BlogController).GetBlog(objEntry.BlogID)
+    If b IsNot Nothing Then
+     If b.EnableTwitterIntegration Then
+      Utility.Tweet(b, objEntry)
+     End If
+    End If
+   End If
+
    TagController.UpdateTagsByEntry(objEntry.EntryID, item.Keywords)
    CategoryController.UpdateCategoriesByEntry(objEntry.EntryID, item.Categories)
 
@@ -358,7 +381,7 @@ Namespace MetaWeblog
 
 #End Region
 
-#Region "Category Related Procedures"
+#Region " Category Related Procedures "
 
   Public Function GetCategories(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings) As ItemCategoryInfo() Implements IPublishable.GetCategories
 
@@ -393,7 +416,7 @@ Namespace MetaWeblog
 
 #End Region
 
-#Region "Optional Procedures (See Comments For Details)"
+#Region " Optional Procedures (See Comments For Details) "
 
   ''' <summary>
   ''' ModuleName is used when sending Trackbacks and Pings.  If these are not used by your 
@@ -468,7 +491,7 @@ Namespace MetaWeblog
 
 #End Region
 
-#Region "Private Procedures Specific to Blog Module"
+#Region " Private Procedures Specific to Blog Module "
 
   Private Function GetTimeZoneOffset(ByVal blogId As Integer) As Integer
    Dim blogController As New BlogController
@@ -490,7 +513,7 @@ Namespace MetaWeblog
     ' We have HTML, so put the HTML in the content above a <!--more--> tag
     item.Content = item.Summary + "<!--more-->" + item.Content
    End If
-   
+
   End Sub
 
 #End Region

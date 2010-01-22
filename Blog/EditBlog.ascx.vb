@@ -39,10 +39,10 @@ Partial Class EditBlog
  Private m_oBlogSettings As Hashtable
 #End Region
 
-#Region "Controls"
+#Region " Controls "
 #End Region
 
-#Region "Event Handlers"
+#Region " Event Handlers "
  Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
 
   If Not (Request.Params("BlogID") Is Nothing) Then
@@ -103,10 +103,9 @@ Partial Class EditBlog
      'Load the Twitter settings
      chkEnableTwitterIntegration.Checked = m_oBlog.EnableTwitterIntegration
      txtTwitterUsername.Text = m_oBlog.TwitterUsername
-     Dim oSec As New PortalSecurity
-     txtTwitterPassword.Text = _
-     oSec.Decrypt(m_oBlog.EncryptionKey, m_oBlog.TwitterPassword)
-     oSec = Nothing
+     'Dim oSec As New PortalSecurity ' is not shown anyway
+     'txtTwitterPassword.Text = oSec.Decrypt(m_oBlog.EncryptionKey, m_oBlog.TwitterPassword)
+     'oSec = Nothing
      txtTweetTemplate.Text = m_oBlog.TweetTemplate
 
      If m_oBlog.AllowComments Then
@@ -366,8 +365,7 @@ Partial Class EditBlog
 
      If txtTwitterPassword.Text.Length > 0 Then
       Dim oSec As New PortalSecurity
-      .TwitterPassword = _
-      oSec.Encrypt(m_oBlog.EncryptionKey, txtTwitterPassword.Text)
+      .TwitterPassword = oSec.Encrypt(m_oBlog.EncryptionKey, txtTwitterPassword.Text)
       oSec = Nothing
      End If
 

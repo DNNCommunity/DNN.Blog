@@ -9,7 +9,7 @@
 insert into {databaseOwner}{objectQualifier}blog_categories (category, slug, parentid, portalid) 
 select distinct b.title, 'Default.aspx', 0, @portalid from {databaseOwner}{objectQualifier}blog_blogs b
 where b.parentblogid > 0 and b.portalid = @portalid
-and not exists(select * from {databaseOwner}{objectQualifier}blog_categories where title=b.title and portalid=@portalid)
+and not exists(select c.* from {databaseOwner}{objectQualifier}blog_categories c where c.category=b.title and c.portalid=@portalid)
 GO
 
 insert into {databaseOwner}{objectQualifier}blog_entry_categories 

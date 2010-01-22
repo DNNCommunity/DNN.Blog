@@ -134,6 +134,10 @@ Partial Class EditEntry
      txtDescriptionText.Visible = True
     End If
 
+    cmdPublish.Text = GetString("SaveAndPublish", LocalResourceFile)
+    cmdDraft.Text = GetString("SaveAsDraft", LocalResourceFile)
+    lblPublished.Text = GetString("UnPublished.Status", LocalResourceFile)
+
     If Not m_oEntry Is Nothing Then
      'Load data
      txtEntryDate.Text = Utility.FormatDate(m_oEntry.AddedDate, m_oBlog.Culture, m_oBlog.DateFormat, m_oBlog.TimeZone)
@@ -145,7 +149,7 @@ Partial Class EditEntry
      End If
      teBlogEntry.Text = Server.HtmlDecode(m_oEntry.Entry)
      'DR-04/16/2009-BLG-9657
-     lblPublished.Visible = Not m_oEntry.Published
+     'lblPublished.Visible = Not m_oEntry.Published
      chkAllowComments.Checked = m_oEntry.AllowComments
      chkDisplayCopyright.Checked = m_oEntry.DisplayCopyright
      If chkDisplayCopyright.Checked Then
@@ -158,7 +162,7 @@ Partial Class EditEntry
      cboChildBlogs.Enabled = True
      Me.dgLinkedFiles.DataSource = FileController.getFileList(Me.FilePath, m_oEntry)
      Me.dgLinkedFiles.DataBind()
-     chkDoNotTweet.Checked = True
+     'chkDoNotTweet.Checked = True
 
      'RR-09/01/2009-BLG-XXXX
      tbTags.Text = Business.TagController.GetTagsByEntry(m_oEntry.EntryID)
@@ -168,12 +172,22 @@ Partial Class EditEntry
       treeCategories.FindNodeByKey(c.CatId.ToString).Selected = True
      Next
 
+     ' set UI based on published status
+     If m_oEntry.Published Then
+      chkDoNotTweet.Visible = False
+      cmdDraft.Text = GetString("SaveAndOffline", LocalResourceFile)
+      cmdPublish.Text = GetString("Save", LocalResourceFile)
+      DotNetNuke.UI.Utilities.ClientAPI.AddButtonConfirm(cmdDraft, GetString("SaveAndOffline.Confirm", LocalResourceFile))
+      lblPublished.Text = GetString("Published.Status", LocalResourceFile)
+     End If
+
     Else
+
      'DR-04/16/2009-BLG-9657
-     lblPublished.Visible = True
      chkAllowComments.Checked = m_oBlog.AllowComments
      txtEntryDate.Text = Utility.FormatDate(Date.UtcNow, m_oBlog.Culture, m_oBlog.DateFormat, m_oBlog.TimeZone)
-     chkDoNotTweet.Checked = False
+     'chkDoNotTweet.Checked = False
+
     End If
 
     If Not Request.UrlReferrer Is Nothing Then
@@ -186,7 +200,8 @@ Partial Class EditEntry
     TagAList = TagController.ListTags(PortalId)
     Dim TagSList(TagAList.Count) As String
     For i As Integer = 0 To TagAList.Count - 1
-     TagSList(i) = Replace(CType(TagAList(i), TagInfo).Tag, " ", "_")
+     'TagSList(i) = Replace(CType(TagAList(i), TagInfo).Tag, " ", "_") ' removed the replace. Not sure why it was there (PAD, 20 Jan)
+     TagSList(i) = CType(TagAList(i), TagInfo).Tag
     Next
 
     Dim TagString As String
@@ -218,17 +233,14 @@ Partial Class EditEntry
  End Sub
 
  Private Sub cmdPublish_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdPublish.Click
-  updateEntry(True, True)
+  updateEntry(True)
+  Response.Redirect(NavigateURL(Me.TabId, "", "BlogID=" & m_oBlog.BlogID.ToString()), True)
  End Sub
 
  Private Sub cmdDraft_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdDraft.Click
   'DR-04/16/2009-BLG-9657
-  updateEntry(False, False)
-
-  If m_oEntryId = -1 Then
-   Me.Response.Redirect(EditUrl("EntryID", m_oEntry.EntryID.ToString(), "Edit_Entry"), False)
-  End If
-
+  updateEntry(False)
+  Me.Response.Redirect(EditUrl("EntryID", m_oEntry.EntryID.ToString(), "Edit_Entry"), False)
  End Sub
 
  Private Sub cmdCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdCancel.Click
@@ -304,7 +316,7 @@ Partial Class EditEntry
    teBlogEntry.Text = teBlogEntry.Text & "UPLOADTEMPLATE"
    Me.valDescription.IsValid = True
    Me.valEntry.IsValid = True
-   updateEntry(False, False)
+   updateEntry(False)
    'DW - 06/06/08 - Doesn't seem to be needed.
    'txtDescription.Text = txtDescription.Text.Replace("UPLOADTEMPLATE", String.Empty)
    bResponse = True
@@ -331,7 +343,7 @@ Partial Class EditEntry
   End If
   If bResponse Then
    teBlogEntry.Text = teBlogEntry.Text.Replace("UPLOADTEMPLATE", "")
-   updateEntry(False, False)
+   updateEntry(False)
 
    If Not m_oEntry Is Nothing Then
     Response.Redirect(EditUrl("EntryID", m_oEntry.EntryID.ToString(), "Edit_Entry"))
@@ -353,7 +365,7 @@ Partial Class EditEntry
    teBlogEntry.Text = teBlogEntry.Text & "UPLOADTEMPLATE"
    Me.valDescription.IsValid = True
    Me.valEntry.IsValid = True
-   updateEntry(False, False)
+   updateEntry(False)
    'DW - 06/06/08 - Doesn't seem to be needed.
    'txtDescription.Text = txtDescription.Text.Replace("UPLOADTEMPLATE", "")
    bResponse = True
@@ -393,7 +405,7 @@ Partial Class EditEntry
   End If
   If bResponse Then
    teBlogEntry.Text = teBlogEntry.Text.Replace("UPLOADTEMPLATE", "")
-   updateEntry(False, False)
+   updateEntry(False)
 
    If Not m_oEntry Is Nothing Then
     Response.Redirect(EditUrl("EntryID", m_oEntry.EntryID.ToString(), "Edit_Entry"))
@@ -409,13 +421,19 @@ Partial Class EditEntry
 #End Region
 
 #Region " Private Methods "
- Private Sub updateEntry(ByVal publish As Boolean, ByVal redirect As Boolean)
+ Private Sub updateEntry(ByVal publish As Boolean)
+
   Try
+
    If Page.IsValid = True Then
+
     If m_oEntry Is Nothing Then
      m_oEntry = New EntryInfo
      m_oEntry = CType(CBO.InitializeObject(m_oEntry, GetType(EntryInfo)), EntryInfo)
     End If
+
+    Dim firstPublish As Boolean = CBool((Not m_oEntry.Published) And publish)
+
     With m_oEntry
      'bind text values to object
      .BlogID = m_oBlog.BlogID
@@ -445,17 +463,21 @@ Partial Class EditEntry
        .BlogID = CType(cboChildBlogs.SelectedItem.Value, Integer)
       End If
      End If
-     'DR-04/19/2009-BLG-9760
-     If publish AndAlso (Not chkDoNotTweet.Checked) Then m_oBlog.EnableTwitterIntegration = True
+
      If Null.IsNull(m_oEntry.EntryID) Then
       .AddedDate = Utility.ToLocalTime(Utility.ParseDate(txtEntryDate.Text, m_oBlog.Culture), m_oBlog.TimeZone)
       .EntryID = m_oEntryController.AddEntry(m_oEntry)
       .PermaLink = Utility.GenerateEntryLink(PortalId, .EntryID, Me.TabId, .Title)
-      m_oEntryController.UpdateEntry(m_oEntry, m_oBlog)
      Else
       .AddedDate = Utility.ParseDate(txtEntryDate.Text, m_oBlog.Culture)
       .PermaLink = Utility.GenerateEntryLink(PortalId, .EntryID, Me.TabId, .Title)
-      m_oEntryController.UpdateEntry(m_oEntry)
+     End If
+     m_oEntryController.UpdateEntry(m_oEntry)
+
+     'DR-04/19/2009-BLG-9760
+     ' check to see if we should tweet
+     If m_oBlog.EnableTwitterIntegration And firstPublish And (Not chkDoNotTweet.Checked) Then
+      Utility.Tweet(m_oBlog, m_oEntry)
      End If
 
      Business.TagController.UpdateTagsByEntry(m_oEntry.EntryID, tbTags.Text)
@@ -472,13 +494,18 @@ Partial Class EditEntry
      If m_oBlog.AutoTrackback Then
       Utility.AutoTrackback(m_oEntry, m_oBlog.Title)
      End If
-     If redirect Then
-      Response.Redirect(NavigateURL(Me.TabId, "", "BlogID=" & .BlogID.ToString()), True)
-     Else
-      lblPublished.Visible = Not publish
-      'DR-05/28/2009-BLG-9556
-      txtEntryDate.ReadOnly = publish
-     End If
+     'If redirect Then
+     ' Response.Redirect(NavigateURL(Me.TabId, "", "BlogID=" & .BlogID.ToString()), True)
+     'Else
+     ' If publish Then
+     '  lblPublished.Text = GetString("Published.Status", LocalResourceFile)
+     ' Else
+     '  lblPublished.Text = GetString("UnPublished.Status", LocalResourceFile)
+     ' End If
+     ' 'lblPublished.Visible = Not publish
+     ' 'DR-05/28/2009-BLG-9556
+     ' txtEntryDate.ReadOnly = publish
+     'End If
     End With
 
    End If

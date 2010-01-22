@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -284,7 +284,7 @@
     <value>Twitter Integration:</value>
   </data>
   <data name="lblTwitterPassword.Text" xml:space="preserve">
-    <value>Password:</value>
+    <value>Password (blank=leave unchanged):</value>
   </data>
   <data name="lblTwitterUsername.Text" xml:space="preserve">
     <value>Twitter Username:</value>

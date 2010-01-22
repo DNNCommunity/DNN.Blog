@@ -220,15 +220,6 @@
   <data name="Filename.Header" xml:space="preserve">
     <value>File Name</value>
   </data>
-  <data name="cmdDraft.Text" xml:space="preserve">
-    <value>Save as draft</value>
-  </data>
-  <data name="cmdPublish.Text" xml:space="preserve">
-    <value>Save &amp; publish</value>
-  </data>
-  <data name="lblPublished.Text" xml:space="preserve">
-    <value>This entry is still a draft: it will not be visible to readers until it is published.</value>
-  </data>
   <data name="chkDoNotTweet.Text" xml:space="preserve">
     <value>Do Not Tweet this Entry Automatically</value>
   </data>
@@ -237,5 +228,26 @@
   </data>
   <data name="lblTags.Text" xml:space="preserve">
     <value>Tags: </value>
+  </data>
+  <data name="Published.Status" xml:space="preserve">
+    <value>This post has been published</value>
+  </data>
+  <data name="UnPublished.Status" xml:space="preserve">
+    <value>This entry is still a draft: it will not be visible to readers until it is published.</value>
+  </data>
+  <data name="SaveAndOffline.Text" xml:space="preserve">
+    <value>Save and take offline</value>
+  </data>
+  <data name="Save.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="SaveAndOffline.Confirm" xml:space="preserve">
+    <value>This will save your changes and take the post offline. Other users will not be able to see it any longer. Do you wish to continue?</value>
+  </data>
+  <data name="SaveAndPublish.Text" xml:space="preserve">
+    <value>Save and publish</value>
+  </data>
+  <data name="SaveAsDraft.Text" xml:space="preserve">
+    <value>Save as draft</value>
   </data>
 </root>

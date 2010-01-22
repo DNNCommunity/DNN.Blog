@@ -38,7 +38,7 @@ Namespace Business
   Private _Description As String
   Private _Entry As String
   Private _AddedDate As DateTime
-  Private _Published As Boolean
+  Private _Published As Boolean = False
   Private _AllowComments As Boolean
   Private _DisplayCopyright As Boolean
   Private _Copyright As String
