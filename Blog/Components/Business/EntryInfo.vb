@@ -28,7 +28,6 @@ Namespace Business
   Implements IPropertyAccess
 
 #Region " Local Variables "
-
   Private _UserID As Integer
   Private _Username As String
   Private _UserFullName As String
@@ -47,7 +46,7 @@ Namespace Business
   Private _SyndicationEmail As String
 #End Region
 
-#Region "Constructors"
+#Region " Constructors "
   Public Sub New()
   End Sub
 
@@ -69,9 +68,7 @@ Namespace Business
   End Sub
 #End Region
 
-#Region "Public Properties"
-
-
+#Region " Public Properties "
   Public Property EntryID() As Integer
    Get
     Return _EntryID
@@ -218,11 +215,9 @@ Namespace Business
     _SyndicationEmail = Value
    End Set
   End Property
-
 #End Region
 
 #Region " IPropertyAccess Methods "
-
   Public ReadOnly Property Cacheability() As Services.Tokens.CacheLevel Implements Services.Tokens.IPropertyAccess.Cacheability
    Get
     Return CacheLevel.fullyCacheable
@@ -250,9 +245,15 @@ Namespace Business
     Case "title"
      Return PropertyAccess.FormatString(Me.Title, strFormat)
     Case "description"
-     Return PropertyAccess.FormatString(Me.Description, strFormat)
+     If String.IsNullOrEmpty(Me.Description) Then
+      Dim desc As String = Utility.removeAllHtmltags(HttpUtility.HtmlDecode(Me.Entry))
+      desc = Left(desc, 1024)
+      Return PropertyAccess.FormatString(desc, strFormat)
+     Else
+      Return PropertyAccess.FormatString(HttpUtility.HtmlDecode(Me.Description), strFormat)
+     End If
     Case "entry"
-     Return PropertyAccess.FormatString(Me.Entry, strFormat)
+     Return PropertyAccess.FormatString(HttpUtility.HtmlDecode(Me.Entry), strFormat)
     Case "addeddate"
      Return (Me.AddedDate.ToString(OutputFormat, formatProvider))
      'Return PropertyAccess.FormatString(Me.AddedDate.ToString, strFormat)
