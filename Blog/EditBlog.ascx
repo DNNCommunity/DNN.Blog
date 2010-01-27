@@ -90,12 +90,8 @@
  </tr>
  <tr>
   <td>
-   <asp:Label ID="lblMetaWeblogOptionsDescription" runat="server" ResourceKey="lblMetaWeblogOptionsDescription" />
-  </td>
- </tr>
- <tr>
-  <td>
-   <br />
+   <asp:Label ID="lblMetaWeblogNotAvailable" runat="server" ResourceKey="lblMetaWeblogNotAvailable" Visible="false" />
+   <asp:Label ID="lblMetaWeblogOptionsDescription" runat="server" ResourceKey="lblMetaWeblogOptionsDescription" /><br /><br />
    <asp:Label ID="lblMetaWeblogUrl" runat="server" Text="http://www.yourdomain.com/desktopmodules/blog/blogpost.ashx" />
   </td>
  </tr>

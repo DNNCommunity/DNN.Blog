@@ -162,6 +162,10 @@ Namespace MetaWeblog
    If entryInfo Is Nothing Then
     Throw New BlogPostException("NoPostAvailable", "There was en error retrieving the blog entry.  Try closing and restarting the software you're using to edit your blog post.")
    End If
+   'Check to make sure user is authorized to view this content
+
+   BlogPostServices.AuthorizeUser(entryInfo.BlogID.ToString(), GetModulesForUser(userInfo, portalSettings, blogSettings, ProviderKey))
+
    item.Link = entryInfo.PermaLink
    item.Content = HttpUtility.HtmlDecode(entryInfo.Entry)
    item.Summary = HttpUtility.HtmlDecode(entryInfo.Description)
@@ -186,6 +190,10 @@ Namespace MetaWeblog
   End Function
 
   Public Function GetRecentItems(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal numberOfItems As Integer, ByVal requestType As RecentItemsRequestType, ByVal providerKey As String) As Item() Implements IPublishable.GetRecentItems
+
+   'Authorize User
+   BlogPostServices.AuthorizeUser(moduleLevelId, GetModulesForUser(userInfo, portalSettings, blogSettings, providerKey))
+
    Dim itemArray As Item() = Nothing
    Dim objBlogController As New BlogController
    Dim intBlogID As Integer = objBlogController.GetBlogByUserID(portalSettings.PortalId, userInfo.UserID).BlogID
@@ -218,6 +226,8 @@ Namespace MetaWeblog
   End Function
 
   Public Function NewItem(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal item As Item) As String Implements IPublishable.NewItem
+
+   BlogPostServices.AuthorizeUser(moduleLevelId, GetModulesForUser(userInfo, portalSettings, blogSettings, ProviderKey))
 
    ExtractSummaryFromExtendedContent(item)
 
@@ -291,8 +301,9 @@ Namespace MetaWeblog
    ' If this is a style detection post, then we write to the Blog_MetaWeblogData table to note
    ' that this post is a new post.  We're just using the DAL+ here to manage this feature.
    If (item.StyleDetectionPost) Then
-    Dim sSQL As String = "UPDATE {databaseOwner}{objectQualifier}Blog_MetaWeblogData " & _
-                        "SET TempInstallUrl = '" & objEntry.PermaLink & "'"
+    Dim blogUrl As String = (New DotNetNuke.Security.PortalSecurity).InputFilter(objEntry.PermaLink, Security.PortalSecurity.FilterFlag.NoSQL)
+    ' DW - 01/27/2010 - Updated to ensure that at least 1 row exists in this table.
+    Dim sSQL As String = "DECLARE @Count INT; SELECT @Count = (SELECT Count(*) FROM {databaseOwner}{objectQualifier}Blog_MetaWeblogData); IF @Count = 0 INSERT INTO {databaseOwner}{objectQualifier}Blog_MetaWeblogData SELECT '" & blogUrl & "' ELSE UPDATE dbo.Blog_MetaWeblogData SET TempInstallUrl = '" & blogUrl & "'"
     DataProvider.Instance.ExecuteSQL(sSQL)
    End If
 
@@ -300,6 +311,8 @@ Namespace MetaWeblog
   End Function
 
   Public Function EditItem(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal item As Item) As Boolean Implements IPublishable.EditItem
+
+   BlogPostServices.AuthorizeUser(moduleLevelId, GetModulesForUser(userInfo, portalSettings, blogSettings, ProviderKey))
 
    ExtractSummaryFromExtendedContent(item)
 
@@ -373,6 +386,13 @@ Namespace MetaWeblog
   End Function
 
   Public Function DeleteItem(ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal itemType As ItemType) As Boolean Implements IPublishable.DeleteItem
+
+   'Authorize User
+   Dim objEntry As EntryInfo = GetEntry(itemId, portalSettings.PortalId)
+   Dim blogId As String = GetBlogIdFromEntry(objEntry)
+
+   BlogPostServices.AuthorizeUser(blogId, GetModulesForUser(userInfo, portalSettings, blogSettings, ProviderKey))
+
    'Create new BlogController to delete the blog entry.
    Dim objEntryController As New EntryController
    objEntryController.DeleteEntry(Convert.ToInt32(itemId))
@@ -492,6 +512,40 @@ Namespace MetaWeblog
 #End Region
 
 #Region " Private Procedures Specific to Blog Module "
+  Private Function GetBlogIdFromEntry(ByVal entryInfo As EntryInfo) As String
+   Dim blogId As String
+   ' Make sure we have the parent blog
+   Dim bc As New BlogController()
+   Dim blogInfo As BlogInfo = bc.GetBlog(entryInfo.BlogID)
+   If blogInfo.ParentBlogID <> -1 Then
+    blogId = blogInfo.ParentBlogID.ToString()
+   Else
+    blogId = blogInfo.BlogID.ToString()
+   End If
+   Return blogId
+  End Function
+
+  Private Function GetEntry(ByVal itemId As String, ByVal portalId As Integer) As EntryInfo
+   Dim objEntryController As New EntryController()
+   ' Need to use reflection to get the right procedure since 
+   ' the blog module authors changed the signature in
+   ' release 03.04.00
+   Dim BlogType As Type = objEntryController.[GetType]()
+   Dim miGetEntry As MethodInfo = BlogType.GetMethod("GetEntry")
+   Dim piParameters As ParameterInfo() = miGetEntry.GetParameters()
+   Dim objEntry As EntryInfo
+   If piParameters.Length = 1 Then
+    Dim methodParams As Object() = New Object(0) {}
+    methodParams.SetValue(Convert.ToInt32(itemId), 0)
+    objEntry = DirectCast(miGetEntry.Invoke(objEntryController, methodParams), EntryInfo)
+   Else
+    Dim methodParams As Object() = New Object(1) {}
+    methodParams.SetValue(Convert.ToInt32(itemId), 0)
+    methodParams.SetValue(portalId, 1)
+    objEntry = DirectCast(miGetEntry.Invoke(objEntryController, methodParams), EntryInfo)
+   End If
+   Return objEntry
+  End Function
 
   Private Function GetTimeZoneOffset(ByVal blogId As Integer) As Integer
    Dim blogController As New BlogController
@@ -515,8 +569,8 @@ Namespace MetaWeblog
    End If
 
   End Sub
-
 #End Region
+
 #End Region
 
  End Class

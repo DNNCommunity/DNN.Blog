@@ -65,19 +65,14 @@ Public Class BlogPost
  Private _tabId As Integer = -1
 
  Public Function getUsersBlogs(ByVal appKey As String, ByVal username As String, ByVal password As String) As Blogger.BlogInfoStruct() Implements Blogger.IBlogger.getUsersBlogs
+
   InitializeMethodCall(username, password)
 
   Dim infoArray As Blogger.BlogInfoStruct()
 
   Try
-   Dim providerKey As String = String.Empty
 
-   If Not Context.Request("key") Is Nothing AndAlso Context.Request("key").ToString() <> String.Empty Then
-    providerKey = Context.Request("key").ToString()
-   Else
-    providerKey = "Blog"
-   End If
-   Dim misArray As ModuleInfoStruct() = _provider.GetModulesForUser(_userInfo, _portalSettings, _blogSettings, providerKey)
+   Dim misArray As ModuleInfoStruct() = _provider.GetModulesForUser(_userInfo, _portalSettings, _blogSettings, "Blog")
 
    ' Translate this to a BlogInfoStruct
    infoArray = New Blogger.BlogInfoStruct(misArray.Length - 1) {}
@@ -101,8 +96,10 @@ Public Class BlogPost
  End Function
 
  Public Function getPost(ByVal postid As String, ByVal username As String, ByVal password As String) As Post Implements IMetaWeblog.getPost
-  Dim post As Post
+
   InitializeMethodCall(username, password)
+
+  Dim post As Post
   Try
    post = getPostFromItem(_provider.GetItem(postid.ToString(), _userInfo, _portalSettings, _blogSettings, ItemType.Post))
 
@@ -136,6 +133,7 @@ Public Class BlogPost
  End Function
 
  Public Function getCategories_WordPress(ByVal blogid As String, ByVal username As String, ByVal password As String) As WordPress.CategoryInfo() Implements WordPress.IWordPress.getCategories
+
   InitializeMethodCall(username, password)
 
   Dim list As List(Of Business.CategoryInfo) = CategoryController.ListCategoriesSorted(_portalSettings.PortalId)
@@ -157,6 +155,7 @@ Public Class BlogPost
  End Function
 
  Public Function getPostCategories(ByVal postid As String, ByVal username As String, ByVal password As String) As MoveableType.Category() Implements MoveableType.IMoveableType.getPostCategories
+
   InitializeMethodCall(username, password)
 
   Dim list As List(Of Business.CategoryInfo) = CategoryController.ListCatsByEntry(CInt(postid))
@@ -174,6 +173,7 @@ Public Class BlogPost
  End Function
 
  Public Function setPostCategories(ByVal postid As String, ByVal username As String, ByVal password As String, ByVal categories As MoveableType.Category()) As Boolean Implements MoveableType.IMoveableType.setPostCategories
+
   InitializeMethodCall(username, password)
 
   Dim catIds As New List(Of Integer)
@@ -188,8 +188,10 @@ Public Class BlogPost
  End Function
 
  Public Function getRecentPosts(ByVal blogid As String, ByVal username As String, ByVal password As String, ByVal numberOfPosts As Integer) As Post() Implements IMetaWeblog.getRecentPosts
-  Dim posts As Post()
+
   InitializeMethodCall(username, password)
+
+  Dim posts As Post()
   Try
    posts = getPostsFromItems(_provider.GetRecentItems(blogid.ToString(), _userInfo, _portalSettings, _blogSettings, numberOfPosts, RecentItemsRequestType.RecentPosts, _provider.ProviderKey))
   Catch ex As BlogPostException
@@ -204,6 +206,7 @@ Public Class BlogPost
   End Try
 
   Return posts
+
  End Function
 
  ''' <summary>
@@ -217,6 +220,7 @@ Public Class BlogPost
  ''' <param name="publish">if set to <c>true</c> [publish].</param>
  ''' <returns></returns>
  Public Function newPost(ByVal blogId As String, ByVal username As String, ByVal password As String, ByVal post As Post, ByVal publish As Boolean) As String Implements IMetaWeblog.newPost
+
   InitializeMethodCall(username, password)
 
   Dim pageId As String = String.Empty
@@ -227,7 +231,7 @@ Public Class BlogPost
 
 
    ' Check to see if this a style detection post.
-   styleDetectionPost = (post.title.Length > 116 AndAlso post.title.Substring(0, 39) = "Temporary Post Used For Style Detection" AndAlso post.title.Substring(80, 36) = "3bfe001a-32de-4114-a6b4-4005b770f6d7")
+            styleDetectionPost = (post.title.Length > 116 AndAlso post.title.Substring(80, 36) = "3bfe001a-32de-4114-a6b4-4005b770f6d7")
 
    ' Check to see if a styleId is passed through the QueryString
    ' however, we'll only do this if we are creating a post for style detection.
@@ -270,8 +274,10 @@ Public Class BlogPost
  End Function
 
  Public Function editPost(ByVal postid As String, ByVal username As String, ByVal password As String, ByVal post As Post, ByVal publish As Boolean) As Boolean Implements IMetaWeblog.editPost
-  Dim success As Boolean = False
+
   InitializeMethodCall(username, password)
+
+  Dim success As Boolean = False
   Try
 
 
@@ -298,10 +304,11 @@ Public Class BlogPost
   Return success
  End Function
 
- Public Function deletePost(ByVal appKey As String, ByVal postid As String, ByVal username As String, ByVal password As String, <XmlRpcParameter(Description:="Where applicable, this specifies whether the blog should be republished after the post has been deleted.")> _
-ByVal publish As Boolean) As Boolean Implements Blogger.IBlogger.deletePost
-  Dim success As Boolean = False
+ Public Function deletePost(ByVal appKey As String, ByVal postid As String, ByVal username As String, ByVal password As String, <XmlRpcParameter(Description:="Where applicable, this specifies whether the blog should be republished after the post has been deleted.")> ByVal publish As Boolean) As Boolean Implements Blogger.IBlogger.deletePost
+
   InitializeMethodCall(username, password)
+
+  Dim success As Boolean = False
   Try
    success = CType(_provider.DeleteItem(postid.ToString(), _userInfo, _portalSettings, _blogSettings, ItemType.Post), Boolean)
   Catch ex As BlogPostException
@@ -319,8 +326,10 @@ ByVal publish As Boolean) As Boolean Implements Blogger.IBlogger.deletePost
 
 
  Public Function getWPCategories(ByVal blog_id As String, ByVal username As String, ByVal password As String) As MetaWeblog.CategoryInfo()
-  Dim categories As MetaWeblog.CategoryInfo()
+
   InitializeMethodCall(username, password)
+
+  Dim categories As MetaWeblog.CategoryInfo()
   Try
    categories = getCategoryInfosFromItemCategoryInfos(_provider.GetCategories(blog_id.ToString(), _userInfo, _portalSettings, _blogSettings))
   Catch ex As BlogPostException
@@ -349,21 +358,31 @@ ByVal publish As Boolean) As Boolean Implements Blogger.IBlogger.deletePost
  End Function
 
  Public Function newMediaObject(ByVal blogid As Object, ByVal username As String, ByVal password As String, ByVal mediaobject As mediaObject) As mediaObjectInfo Implements IMetaWeblog.newMediaObject
+
+  InitializeMethodCall(username, password)
+        BlogPostServices.AuthorizeUser(blogid.ToString(), _provider.GetModulesForUser(_userInfo, _portalSettings, _blogSettings, _provider.ProviderKey))
+
   Dim info As mediaObjectInfo
 
   Try
-   InitializeMethodCall(username, password)
 
    Dim virtualPath As String
    Dim mediaObjectName As String = String.Empty
    Dim fullFilePathAndName As String = String.Empty
    info.url = ""
 
+   Dim strWhiteList As String = "," & DotNetNuke.Entities.Host.HostSettings.GetHostSetting("FileExtensions").ToLower & ","
    Try
 
     ' Shorten WindowsLiveWriter and create one file name.
     mediaObjectName = mediaobject.name.Replace("WindowsLiveWriter", "WLW")
     mediaObjectName = mediaObjectName.Replace("/", "-")
+
+    ' Check permitted file types
+    Dim strExtension As String = Path.GetExtension(mediaObjectName).Replace(".", "")
+    If String.IsNullOrEmpty(strExtension) OrElse strWhiteList.IndexOf("," & strExtension.ToLower & ",") = -1 Then
+     Throw New XmlRpcFaultException(0, GetString("SaveError", String.Format("File {0} refused. Uploading this type of file is not allowed.", mediaObjectName)))
+    End If
 
     virtualPath = _provider.ProviderKey & "/Files/" & blogid.ToString() & "/_temp_images/" & mediaObjectName
 
@@ -398,8 +417,8 @@ ByVal publish As Boolean) As Boolean Implements Blogger.IBlogger.deletePost
  End Function
 
 #Region "Private Procedures"
-
  Private Function ValidateUser(ByVal username As String, ByVal password As String, ByVal ipAddress As String) As UserInfo
+
   Dim userInfo As UserInfo = Nothing
   Try
 
@@ -424,9 +443,11 @@ ByVal publish As Boolean) As Boolean Implements Blogger.IBlogger.deletePost
   End Try
 
   Return userInfo
+
  End Function
 
  Private Function GetRolesByUser(ByVal userId As Integer, ByVal portalId As Integer) As String()
+
   Dim userRoles As String()
   Dim roles As New ArrayList
 
@@ -440,6 +461,7 @@ ByVal publish As Boolean) As Boolean Implements Blogger.IBlogger.deletePost
   userRoles = CType(roles.ToArray(GetType(String)), String())
 
   Return userRoles
+
  End Function
 
  Private Sub GetPortalSettings()
@@ -471,12 +493,13 @@ ByVal publish As Boolean) As Boolean Implements Blogger.IBlogger.deletePost
   Catch ex As XmlRpcFaultException
    Throw
   Catch generatedExceptionName As Exception
-   Throw New XmlRpcFaultException(0, GetString("PortalLoadError", _
-       "Please check your URL to make sure you entered the correct URL for your blog.  The blog posting URL is available through the blog settings for your blog.")) ' & "Error:" & generatedExceptionName.ToString() & " PortalId: " & portalID.ToString()
+   Throw New XmlRpcFaultException(0, GetString("PortalLoadError", "Please check your URL to make sure you entered the correct URL for your blog.  The blog posting URL is available through the blog settings for your blog.")) ' & "Error:" & generatedExceptionName.ToString() & " PortalId: " & portalID.ToString()
   End Try
+
  End Sub
 
  Private Function GetPortalIDFromAlias(ByVal portalAlias As String) As Integer
+
   'Get the PortalAlias based on the Request object
   Dim pc As New PortalController
   Dim portalID As Integer = -1
@@ -491,14 +514,17 @@ ByVal publish As Boolean) As Boolean Implements Blogger.IBlogger.deletePost
    ' will throw an error in the calling procedure.
   End Try
   Return portalID
+
  End Function
 
  Private Function CreateFoldersForFilePath(ByVal folderPath As String) As String
+
   Dim path As String = folderPath.Substring(0, folderPath.LastIndexOf("\"))
   If Not Directory.Exists(path) Then
    Directory.CreateDirectory(path)
   End If
   Return folderPath
+
  End Function
 
  Private Sub MakeImagesRelative(ByRef post As Post)
@@ -534,6 +560,7 @@ ByVal publish As Boolean) As Boolean Implements Blogger.IBlogger.deletePost
  End Sub
 
  Private Function getItemFromPost(ByVal content As Post) As Item
+
   Dim item As New Item
 
   item.AllowComments = CType(IIf(content.mt_allow_comments = 0, -1, content.mt_allow_comments), Integer)
@@ -559,9 +586,11 @@ ByVal publish As Boolean) As Boolean Implements Blogger.IBlogger.deletePost
   item.Publish = content.publish
 
   Return item
+
  End Function
 
  Private Function getPostFromItem(ByVal item As Item) As Post
+
   Dim post As New Post
 
   post.mt_allow_comments = item.AllowComments
@@ -588,9 +617,11 @@ ByVal publish As Boolean) As Boolean Implements Blogger.IBlogger.deletePost
   post.publish = item.Publish
 
   Return post
+
  End Function
 
  Private Function getPageFromItem(ByVal item As Item) As Page
+
   Dim page As New Page
 
   page.page_id = item.ItemId
@@ -603,9 +634,11 @@ ByVal publish As Boolean) As Boolean Implements Blogger.IBlogger.deletePost
   page.dateCreated = item.DateCreated
 
   Return page
+
  End Function
 
  Private Function getPostsFromItems(ByVal items As Item()) As Post()
+
   Dim posts As Post() = New Post(items.Length - 1) {}
   Dim i As Integer = 0
   While i < items.Length
@@ -613,9 +646,11 @@ ByVal publish As Boolean) As Boolean Implements Blogger.IBlogger.deletePost
    i = i + 1
   End While
   Return posts
+
  End Function
 
  Private Function getPagesFromItems(ByVal items As Item()) As Page()
+
   Dim pages As Page() = New Page(items.Length - 1) {}
   Dim i As Integer = 0
   While i < items.Length
@@ -623,9 +658,11 @@ ByVal publish As Boolean) As Boolean Implements Blogger.IBlogger.deletePost
    i = i + 1
   End While
   Return pages
+
  End Function
 
  Private Function getCategoryInfoFromItemCategoryInfo(ByVal ici As ItemCategoryInfo) As MetaWeblog.CategoryInfo
+
   Dim ci As New MetaWeblog.CategoryInfo
   ci.categoryId = ici.CategoryId.ToString()
   ci.categoryName = ici.CategoryName
@@ -634,9 +671,11 @@ ByVal publish As Boolean) As Boolean Implements Blogger.IBlogger.deletePost
   ci.parentId = ici.ParentId.ToString()
   ci.rssUrl = ici.RssUrl
   Return ci
+
  End Function
 
  Private Function getCategoryInfosFromItemCategoryInfos(ByVal ici As ItemCategoryInfo()) As MetaWeblog.CategoryInfo()
+
   Dim ci As MetaWeblog.CategoryInfo() = Nothing
   If Not ici Is Nothing Then
    ci = New MetaWeblog.CategoryInfo(ici.Length - 1) {}
@@ -647,17 +686,21 @@ ByVal publish As Boolean) As Boolean Implements Blogger.IBlogger.deletePost
    End While
   End If
   Return ci
+
  End Function
 
  Private Function getMetaWebLogCategoryInfosFromItemCategoryInfo(ByVal ci As MetaWeblog.CategoryInfo) As MetaWebLogCategoryInfo
+
   Dim mwci As New MetaWebLogCategoryInfo
   mwci.description = ci.description
   mwci.htmlUrl = ci.htmlUrl
   mwci.rssUrl = ci.rssUrl
   Return mwci
+
  End Function
 
  Private Function getMetaWebLogCategoryInfosFromCateogryInfos(ByVal ci As MetaWeblog.CategoryInfo()) As MetaWebLogCategoryInfo()
+
   Dim mwci As MetaWebLogCategoryInfo() = New MetaWebLogCategoryInfo(ci.Length - 1) {}
   Dim i As Integer = 0
   While i < ci.Length
@@ -665,22 +708,30 @@ ByVal publish As Boolean) As Boolean Implements Blogger.IBlogger.deletePost
    i = i + 1
   End While
   Return mwci
+
  End Function
 
  Private Sub InitializeMethodCall(ByVal username As String, ByVal password As String)
+
   Try
    Globals.ReadValue(Context.Request.Params, "tabid", _tabId)
    GetPortalSettings()
    getProvider()
    _blogSettings = Settings.BlogSettings.GetBlogSettings(_portalSettings.PortalId, _tabId)
-   _userInfo = ValidateUser(username, password, Me.Context.Request.UserHostAddress)
+   If Not _blogSettings.AllowWLW Then
+    Throw New XmlRpcFaultException(0, GetString("Access Denied", "Access to the module through this API has been denied. Please contact the Portal Administrator."))
+   Else
+    _userInfo = ValidateUser(username, password, Me.Context.Request.UserHostAddress)
+   End If
   Catch ex As Exception
    LogException(ex)
    Throw
   End Try
+
  End Sub
 
  Private Function GetSummary(ByRef content As Post) As String
+
   Dim summary As String = String.Empty
 
   If Not BlogPostServices.IsNullOrEmpty(content.mt_excerpt) Then
@@ -690,9 +741,11 @@ ByVal publish As Boolean) As Boolean Implements Blogger.IBlogger.deletePost
   End If
 
   Return summary
+
  End Function
 
  Private Function GetPostText(ByRef content As Post) As String
+
   Dim postContent As String = String.Empty
   If BlogPostServices.IsNullOrEmpty(content.mt_excerpt) AndAlso Not BlogPostServices.IsNullOrEmpty(content.mt_text_more) AndAlso Not BlogPostServices.IsNullOrEmpty(content.description) Then
    postContent = content.mt_text_more
@@ -700,6 +753,7 @@ ByVal publish As Boolean) As Boolean Implements Blogger.IBlogger.deletePost
    postContent = content.description
   End If
   Return postContent
+
  End Function
 
  Private Sub HandleTrackbacksOrPings(ByVal moduleLevelId As String, ByVal itemId As String, ByRef content As Post, ByVal publish As Boolean, ByVal provider As IPublishable, ByVal autoDiscovery As Boolean)
@@ -715,6 +769,7 @@ ByVal publish As Boolean) As Boolean Implements Blogger.IBlogger.deletePost
    'TrackingService.TrackbackOrPing(content.mt_tb_ping_urls, content.title, permaLink, blogName, GetSummary(content), GetPostText(content), _
    'autoDiscovery)
   End If
+
  End Sub
 
  Private Function GetString(ByVal localizationKey As String, ByVal defaultValue As String) As String

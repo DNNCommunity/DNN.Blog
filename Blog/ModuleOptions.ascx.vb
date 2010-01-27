@@ -77,6 +77,7 @@ Partial Class ModuleOptions
     chkAllowCommentImages.Checked = BlogSettings.AllowCommentImages
     chkAllowCommentFormatting.Checked = BlogSettings.AllowCommentFormatting
     chkAllowSummaryHtml.Checked = BlogSettings.AllowSummaryHtml
+    chkAllowWLW.Checked = BlogSettings.AllowWLW
 
     chkIncludeBody.Checked = BlogSettings.IncludeBody
     chkIncludeCategoriesInDescription.Checked = BlogSettings.IncludeCategoriesInDescription
@@ -193,6 +194,7 @@ Partial Class ModuleOptions
     .AllowSummaryHtml = chkAllowSummaryHtml.Checked
     .FeedCacheTime = CInt(txtFeedCacheTime.Text.Trim)
     .AllowChildBlogs = chkAllowChildBlogs.Checked
+    .AllowWLW = chkAllowWLW.Checked
 
     .UpdateSettings()
    End With

@@ -118,7 +118,7 @@
       <dnn:label id="lblShowWebsite" runat="server" controlname="lblShowWebsite" suffix="" />
      </td>
      <td>
-      <asp:CheckBox ID="chkShowWebsite" Checked="True" runat="server" TextAlign="Left" AutoPostBack="False" />
+      <asp:CheckBox ID="chkShowWebsite" Checked="True" runat="server" TextAlign="Left" />
      </td>
     </tr>
     <tr>
@@ -126,7 +126,7 @@
       <dnn:label id="lblShowTitle" runat="server" controlname="lblShowTitle" suffix="" />
      </td>
      <td>
-      <asp:CheckBox ID="chkShowCommentTitle" Checked="True" runat="server" TextAlign="Left" AutoPostBack="False" />
+      <asp:CheckBox ID="chkShowCommentTitle" Checked="True" runat="server" TextAlign="Left" />
      </td>
     </tr>
     <tr>
@@ -134,7 +134,7 @@
       <dnn:label id="lblAllowCommentAnchors" runat="server" controlname="lblAllowCommentAnchors" suffix="" />
      </td>
      <td>
-      <asp:CheckBox ID="chkAllowCommentAnchors" Checked="True" runat="server" TextAlign="Left" AutoPostBack="False" />
+      <asp:CheckBox ID="chkAllowCommentAnchors" Checked="True" runat="server" TextAlign="Left" />
      </td>
     </tr>
     <tr>
@@ -142,7 +142,7 @@
       <dnn:label id="lblAllowCommentImages" runat="server" controlname="lblAllowCommentImages" suffix="" />
      </td>
      <td>
-      <asp:CheckBox ID="chkAllowCommentImages" Checked="True" runat="server" TextAlign="Left" AutoPostBack="False" />
+      <asp:CheckBox ID="chkAllowCommentImages" Checked="True" runat="server" TextAlign="Left" />
      </td>
     </tr>
     <tr>
@@ -150,7 +150,7 @@
       <dnn:label id="lblAllowCommentFormatting" runat="server" controlname="lblAllowCommentFormatting" suffix="" />
      </td>
      <td>
-      <asp:CheckBox ID="chkAllowCommentFormatting" Checked="True" runat="server" TextAlign="Left" AutoPostBack="False" />
+      <asp:CheckBox ID="chkAllowCommentFormatting" Checked="True" runat="server" TextAlign="Left" />
      </td>
     </tr>
    </table>
@@ -170,7 +170,7 @@
       <dnn:label id="lblShowUniqueTitle" runat="server" controlname="chkShowUniqueTitle" suffix="" />
      </td>
      <td>
-      <asp:CheckBox ID="chkShowUniqueTitle" runat="server" TextAlign="Left" AutoPostBack="False" />
+      <asp:CheckBox ID="chkShowUniqueTitle" runat="server" TextAlign="Left" />
      </td>
     </tr>
     <tr valign="top">
@@ -178,7 +178,7 @@
       <dnn:label id="lblShowSeoFriendlyUrl" runat="server" controlname="chkShowSeoFriendlyUrl" suffix="" />
      </td>
      <td>
-      <asp:CheckBox ID="chkShowSeoFriendlyUrl" runat="server" TextAlign="Left" AutoPostBack="False" />
+      <asp:CheckBox ID="chkShowSeoFriendlyUrl" runat="server" TextAlign="Left" />
      </td>
     </tr>
     <tr valign="top">
@@ -206,7 +206,7 @@
       <dnn:label id="lblIncludeBody" runat="server" controlname="chkIncludeBody" suffix="" />
      </td>
      <td>
-      <asp:CheckBox ID="chkIncludeBody" runat="server" TextAlign="Left" AutoPostBack="False" />
+      <asp:CheckBox ID="chkIncludeBody" runat="server" TextAlign="Left" />
      </td>
     </tr>
     <tr valign="top">
@@ -214,7 +214,7 @@
       <dnn:label id="lblIncludeCategoriesInDescription" runat="server" controlname="chkIncludeCategoriesInDescription" suffix="" />
      </td>
      <td>
-      <asp:CheckBox ID="chkIncludeCategoriesInDescription" runat="server" TextAlign="Left" AutoPostBack="False" />
+      <asp:CheckBox ID="chkIncludeCategoriesInDescription" runat="server" TextAlign="Left" />
      </td>
     </tr>
     <tr valign="top">
@@ -222,7 +222,7 @@
       <dnn:label id="lblIncludeTagsInDescription" runat="server" controlname="chkIncludeTagsInDescription" suffix="" />
      </td>
      <td>
-      <asp:CheckBox ID="chkIncludeTagsInDescription" runat="server" TextAlign="Left" AutoPostBack="False" />
+      <asp:CheckBox ID="chkIncludeTagsInDescription" runat="server" TextAlign="Left" />
      </td>
     </tr>
     <tr valign="top">
@@ -245,12 +245,20 @@
   <td>
    <dnn:sectionhead id="secAdvancedSettings" isExpanded="true" includerule="True" resourcekey="tblAdvancedSettings" section="tblAdvancedSettings" runat="server" cssclass="Head" />
    <table id="tblAdvancedSettings" cellspacing="0" cellpadding="2" width="100%" summary="Edit ViewBlog Advanced Settings" border="0" runat="server">
+    <tr valign="top">
+     <td class="SubHead" valign="top" width="300">
+      <dnn:label id="lblAllowWLW" runat="server" controlname="chkAllowWLW" suffix="" />
+     </td>
+     <td>
+      <asp:CheckBox ID="chkAllowWLW" runat="server" TextAlign="Left" />
+     </td>
+    </tr>
     <tr>
      <td class="SubHead" valign="top" width="300">
       <dnn:label id="lblUploadOption" runat="server" suffix="" controlname="chkUploadOption" />
      </td>
      <td>
-      <asp:CheckBox ID="chkUploadOption" runat="server" AutoPostBack="False" TextAlign="Left" />
+      <asp:CheckBox ID="chkUploadOption" runat="server" TextAlign="Left" />
      </td>
     </tr>
     <tr>
@@ -266,7 +274,7 @@
       <dnn:label id="lblEnableDNNSearch" runat="server" controlname="chkEnableDNNSearch" suffix="" />
      </td>
      <td>
-      <asp:CheckBox ID="chkEnableDNNSearch" runat="server" TextAlign="Left" AutoPostBack="False" />
+      <asp:CheckBox ID="chkEnableDNNSearch" runat="server" TextAlign="Left" />
      </td>
     </tr>
     <tr>
@@ -274,7 +282,7 @@
       <dnn:label id="lblEnableBookmarks" runat="server" suffix="" controlname="lblEnableBookmarks" />
      </td>
      <td>
-      <asp:CheckBox ID="chkEnableBookmarks" runat="server" AutoPostBack="False" TextAlign="Left" />
+      <asp:CheckBox ID="chkEnableBookmarks" runat="server" TextAlign="Left" />
      </td>
     </tr>
     <tr>
@@ -282,7 +290,7 @@
       <dnn:label id="lblEnforceSummaryTruncation" runat="server" suffix="" controlname="lblEnforceSummaryTruncation" />
      </td>
      <td>
-      <asp:CheckBox ID="chkEnforceSummaryTruncation" runat="server" AutoPostBack="False" TextAlign="Left" />
+      <asp:CheckBox ID="chkEnforceSummaryTruncation" runat="server" TextAlign="Left" />
      </td>
     </tr>
     <tr valign="top">
@@ -290,7 +298,7 @@
       <dnn:label id="lblShowSummary" runat="server" controlname="chkShowSummary" suffix="" />
      </td>
      <td>
-      <asp:CheckBox ID="chkShowSummary" runat="server" TextAlign="Left" AutoPostBack="False" />
+      <asp:CheckBox ID="chkShowSummary" runat="server" TextAlign="Left" />
      </td>
     </tr>
     <tr>

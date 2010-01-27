@@ -31,12 +31,10 @@ Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Entities.Users
 
-
-
 Partial Class ViewEntry
  Inherits BlogModuleBase
 
-#Region "Private members"
+#Region " Private Members "
  Private m_oBlogController As New BlogController
  Private m_oBlog As BlogInfo
  Private m_oParentBlog As BlogInfo
@@ -45,18 +43,14 @@ Partial Class ViewEntry
  Private m_oEntryID As Integer = -1
 #End Region
 
-#Region "Controls"
- 'Protected WithEvents lblAddComment As System.Web.UI.WebControls.Label
+#Region " Controls "
  Protected WithEvents imgGravatar As System.Web.UI.WebControls.Image
  Protected WithEvents lnkCheckGravatar As System.Web.UI.WebControls.LinkButton
- 'Protected WithEvents lnkPermaLink As System.Web.UI.WebControls.HyperLink
  Protected WithEvents AuthorRow As System.Web.UI.HtmlControls.HtmlTableRow
  Protected WithEvents cbUseGravatar As System.Web.UI.WebControls.CheckBox
-
-
 #End Region
 
-#Region "Event Handlers"
+#Region " Event Handlers "
  Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
   Try
    If Not Page.IsPostBack Then
@@ -136,16 +130,13 @@ Partial Class ViewEntry
      Dim requestedUrl As String = DirectCast(HttpContext.Current.Items()("UrlRewrite:OriginalUrl"), String)
      ' DW - 11/12/2008 - Replaced with Permalink
      Dim correctUrl As String = m_oEntry.PermaLink
-     If (BlogSettings.ShowSeoFriendlyUrl And Not requestedUrl Is Nothing And _
-         (Not requestedUrl.ToLower().EndsWith(correctUrl.ToLower()) _
-         And Not System.Web.HttpUtility.UrlDecode(requestedUrl.ToLower()).EndsWith(correctUrl.ToLower()))) Then
+     If (BlogSettings.ShowSeoFriendlyUrl And Not requestedUrl Is Nothing And (Not requestedUrl.ToLower().EndsWith(correctUrl.ToLower()) And Not System.Web.HttpUtility.UrlDecode(requestedUrl.ToLower()).EndsWith(correctUrl.ToLower()))) Then
       'NOTE: We use EndsWith here because NavigateURL returns a relative URL to BlogNavigateURL
       '       when friendly URLs is not turned on for the portal.
       '301 Redirect to the correct format for the page
       Response.Status = "301 Moved Permanently"
       Response.AddHeader("Location", correctUrl)
-      Response.AddHeader("X-Blog-Redirect-Reason", _
-          "No match for requested Url (" & requestedUrl & ").  Correct url is " & correctUrl)
+      Response.AddHeader("X-Blog-Redirect-Reason", "No match for requested Url (" & requestedUrl & ").  Correct url is " & correctUrl)
       Response.End()
      End If
 
@@ -206,7 +197,6 @@ Partial Class ViewEntry
       ' If none of the above, then don't show the RSS link.
       lnkRss.Visible = False
      End If
-
 
      ' 07/12/2008 Rip Rowan
      ' Cleaned up logic in next 7 lines
@@ -312,7 +302,6 @@ Partial Class ViewEntry
   If m_oBlog.UserID = commentInfo.UserID Then
    divBlogBubble.CssClass = "BlogBubbleOwner"
   End If
-
 
   btEditComment.Visible = lnkEditComment.Visible
   ' To Maintain compatibility with previous versions

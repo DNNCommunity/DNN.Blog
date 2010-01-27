@@ -178,7 +178,7 @@ Partial Class ViewBlog
       Dim c As CategoryInfo = CategoryController.GetCategory(CInt(Request.Params("catid")))
       If c IsNot Nothing Then
        pageTitle = Me.BasePage.Title & " - " & c.Category
-     End If
+      End If
 
      End If ' no cat id present
 
@@ -259,7 +259,7 @@ Partial Class ViewBlog
   Dim imgBlogParentSeparator As System.Web.UI.WebControls.Image = CType(e.Item.FindControl("imgBlogParentSeparator"), System.Web.UI.WebControls.Image)
   Dim lnkChildBlog As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkChildBlog"), System.Web.UI.WebControls.HyperLink)
   Dim lnkEntry As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkEntry"), System.Web.UI.WebControls.HyperLink)
-  Dim lnkReadMore As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkReadMore"), System.Web.UI.WebControls.HyperLink)
+  Dim divBlogReadMore As System.Web.UI.HtmlControls.HtmlGenericControl = CType(e.Item.FindControl("divBlogReadMore"), System.Web.UI.HtmlControls.HtmlGenericControl)
 
   Dim oBlog As BlogInfo
 
@@ -299,11 +299,11 @@ Partial Class ViewBlog
 
   'Antonio Chagoury
   'BLG-5307
-  If Not lnkReadMore Is Nothing Then
-   ' 10/28/08 RR Replace all instances of BlogNavigateURL with Permalink
-   'lnkReadMore.NavigateUrl = Utility.BlogNavigateURL(Me.TabId, CType(e.Item.DataItem, EntryInfo), m_SeoFriendlyUrl)
-   lnkReadMore.NavigateUrl = m_oEntry.PermaLink
-  End If
+  'If Not lnkReadMore Is Nothing Then
+  ' ' 10/28/08 RR Replace all instances of BlogNavigateURL with Permalink
+  ' 'lnkReadMore.NavigateUrl = Utility.BlogNavigateURL(Me.TabId, CType(e.Item.DataItem, EntryInfo), m_SeoFriendlyUrl)
+  ' lnkReadMore.NavigateUrl = m_oEntry.PermaLink
+  'End If
 
   ' Display the proper UserName
   If CType(e.Item.DataItem, EntryInfo).UserName.Length > 0 Then
@@ -347,9 +347,11 @@ Partial Class ViewBlog
   End If
   If SummaryLimit = 0 Then
    If ActualSummary.Length > 0 And Entry.Length > 0 Then
-    lnkReadMore.Visible = True
+    'lnkReadMore.Visible = True
+    divBlogReadMore.Visible = True
    Else
-    lnkReadMore.Visible = False
+    'lnkReadMore.Visible = False
+    divBlogReadMore.Visible = False
    End If
    lblDescription.Text = GeneratedSummary
   Else
@@ -360,14 +362,17 @@ Partial Class ViewBlog
     Else
      lblDescription.Text = GeneratedSummary
     End If
-    lnkReadMore.Visible = True
+    'lnkReadMore.Visible = True
+    divBlogReadMore.Visible = True
    Else
     lblDescription.Text = GeneratedSummary
     'Only show the Read More link if there was a Description and an Entry
     If ActualSummary.Length > 0 And Entry.Length > 0 Then
-     lnkReadMore.Visible = True
+     'lnkReadMore.Visible = True
+     divBlogReadMore.Visible = True
     Else
-     lnkReadMore.Visible = False
+     'lnkReadMore.Visible = False
+     divBlogReadMore.Visible = False
     End If
    End If
   End If

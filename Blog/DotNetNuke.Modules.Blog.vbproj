@@ -106,7 +106,6 @@
     <Content Include="BlogFeed.ascx" />
     <Content Include="BlogImport.ascx" />
     <Content Include="BlogList.ascx" />
-    <Content Include="blogpostredirect.aspx" />
     <Content Include="EditBlog.ascx" />
     <Content Include="EditEntry.ascx" />
     <Content Include="module.css" />
@@ -384,6 +383,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="blogpost.ashx" />
+    <Content Include="blogpostredirect.aspx" />
     <Content Include="EditCategories.ascx" />
     <Content Include="MainView.ascx" />
     <Content Include="MassEdit.ascx" />

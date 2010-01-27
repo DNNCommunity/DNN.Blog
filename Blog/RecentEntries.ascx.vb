@@ -78,8 +78,7 @@ Partial Public Class RecentEntries
   End Try
  End Sub
 
- Private Function ProcessTemplate(ByVal objEntry As EntryInfo, ByVal strTemplate As String) _
-As String
+ Private Function ProcessTemplate(ByVal objEntry As EntryInfo, ByVal strTemplate As String) As String
   Dim TemplateManager As TemplateManager = Nothing
   Try
    TemplateManager = New TemplateManager(objEntry)

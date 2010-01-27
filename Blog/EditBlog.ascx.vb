@@ -83,8 +83,11 @@ Partial Class EditBlog
  End Sub
 
  Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
   Try
+
    If Not Page.IsPostBack Then
+
     DotNetNuke.UI.Utilities.ClientAPI.AddButtonConfirm(cmdDelete, Localization.GetString("msgDeleteBlog", LocalResourceFile))
     DotNetNuke.UI.Utilities.ClientAPI.AddButtonConfirm(btnDeleteChildBlog, Localization.GetString("msgDeleteChildBlog", LocalResourceFile))
 
@@ -93,6 +96,12 @@ Partial Class EditBlog
 
     txtTweetTemplate.Text = Localization.GetString("txtTweetTemplate", LocalResourceFile)
     lblChildBlogsOff.Visible = (Not BlogSettings.AllowChildBlogs)
+
+    If Not BlogSettings.AllowWLW Then
+     lblMetaWeblogUrl.Visible = False
+     lblMetaWeblogOptionsDescription.Visible = False
+     lblMetaWeblogNotAvailable.Visible = True
+    End If
 
     If Not m_oBlog Is Nothing Then
      'Load data

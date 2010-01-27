@@ -41,12 +41,34 @@ Namespace MetaWeblog
 
   Public Const IMPLEMENTED_BY_MODULE As String = "Implemented_By_Module"
 
+  ''' <summary>
+  ''' AuthorizeUser checks to make sure this user still has edit rights to this module.  If not, then 
+  ''' we return false.
+  ''' </summary>
+  ''' <param name="moduleId"></param>
+  ''' <param name="modulesAuthorizedForUser"></param>
+  Public Shared Sub AuthorizeUser(ByVal moduleId As String, ByVal modulesAuthorizedForUser As ModuleInfoStruct())
+   Dim isAuthorized As Boolean = False
+
+   For Each mis As ModuleInfoStruct In modulesAuthorizedForUser
+    If mis.ModuleId = moduleId Then
+     isAuthorized = True
+     Exit For
+    End If
+   Next
+
+   If Not isAuthorized Then
+    Throw New Exception(GetString("AuthenticationError", "The action requested is not authorized for the current user account."))
+   End If
+
+  End Sub
+
   Public Shared Function GetRedirectUrl(ByVal providerKey As String, ByVal TabId As Integer) As String
    Dim appPath As String = HttpContext.Current.Request.ApplicationPath
    If appPath = "/" Then
     appPath = String.Empty
    End If
-   Dim returnUrl As String = appPath + "/DesktopModules/blog/blogpostredirect.aspx?IntendedUrl=" + DotNetNuke.Common.NavigateURL(TabId) + "&key=" + HttpUtility.UrlEncode(providerKey)
+   Dim returnUrl As String = appPath + "/DesktopModules/blog/blogpostredirect.aspx?IntendedUrl=" + NavigateURL(TabId) + "&key=" + HttpUtility.UrlEncode(providerKey)
    Return returnUrl
   End Function
 
@@ -144,6 +166,55 @@ Namespace MetaWeblog
      End Try
     Next
 
+    ' Check for any non-image files left behind
+    Dim strWhiteList As String = "," & DotNetNuke.Entities.Host.HostSettings.GetHostSetting("FileExtensions").ToLower & ","
+    For Each tempFile As Match In Regex.Matches(HttpUtility.HtmlDecode(entry.Entry), """([^""]*_temp_images/[^""]*)""")
+     Try
+      Dim moveFromPath As String = HttpContext.Current.Server.MapPath(tempFile.Groups(1).Value)
+      Dim strExtension As String = Path.GetExtension(moveFromPath).Replace(".", "")
+      If (Not String.IsNullOrEmpty(strExtension)) AndAlso strWhiteList.IndexOf("," & strExtension.ToLower & ",") > -1 Then
+       Dim moveToPath As String = moveFromPath.Replace("_temp_images", entry.EntryID.ToString())
+       Dim moveToFolderPath As String = moveToPath.Substring(0, moveToPath.LastIndexOf("\"))
+       ' Make sure the directory exists
+       If Not Directory.Exists(moveToFolderPath) Then
+        ' No problem, we'll just create it!
+        Directory.CreateDirectory(moveToFolderPath)
+       End If
+       ' File may already have been moved.  We'll check first to see.
+       ' Files will haev already been moved in the case where an entry is
+       ' reposted from Windows Live Writer.
+       If System.IO.File.Exists(moveFromPath) Then
+        'Check to see if we need to overwrite an existing image
+        If System.IO.File.Exists(moveToPath) Then
+         System.IO.File.Delete(moveToPath)
+        End If
+        System.IO.File.Move(moveFromPath, moveToPath)
+       End If
+      Else ' we have to delete the file
+       System.IO.File.Delete(moveFromPath)
+      End If
+     Catch ex As Exception
+      ' We'll log the error and fail silently so we can attempt to save the other 
+      ' images.  
+      DotNetNuke.Services.Exceptions.Exceptions.LogException(ex)
+     End Try
+    Next
+
+    ' Clean up old files
+    Try
+     For Each f As IO.FileInfo In (New IO.DirectoryInfo(DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings.HomeDirectoryMapPath & "Blog\Files\" & entry.BlogID.ToString & "\_temp_images")).GetFiles()
+      If f.CreationTime < Now.AddHours(-1) Then
+       Try
+        f.Delete()
+       Catch ex1 As Exception
+        DotNetNuke.Services.Exceptions.Exceptions.LogException(ex1)
+       End Try
+      End If
+     Next
+    Catch ex As Exception
+     DotNetNuke.Services.Exceptions.Exceptions.LogException(ex)
+    End Try
+
     ' Finally, we'll update the URLs
     If Not BlogPostServices.IsNullOrEmpty(entry.Entry) Then
      entry.Entry = entry.Entry.Replace("_temp_images", entry.EntryID.ToString())
@@ -159,11 +230,11 @@ Namespace MetaWeblog
 
   Private Shared Sub FindImageMatch(ByVal input As String, ByVal sRegex As String, ByVal regexInner As String, ByVal options As RegexOptions, ByVal imageUrls As ArrayList)
    Dim matches As MatchCollection = Regex.Matches(input, sRegex, options)
-   For Each match As match In matches
+   For Each match As Match In matches
     ' extract the src attribute from the image
     Dim regexSrc As String = regexInner
     input = match.Value
-    Dim src As match = Regex.Match(input, regexSrc, options)
+    Dim src As Match = Regex.Match(input, regexSrc, options)
     If Not src Is Nothing AndAlso src.Groups("src").Captures.Count > 0 Then
      ' We have an image Url
      imageUrls.Add(src.Groups("src").Captures(0).Value)

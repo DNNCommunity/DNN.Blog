@@ -5,13 +5,13 @@
 		<title>BlogPost Redirect Page</title>
 		<asp:placeholder id="phHead" runat="server"></asp:placeholder>
 	</HEAD>
-	<body style="TEXT-ALIGN: center">
-		<asp:placeholder id="phBody" runat="server"></asp:placeholder>
-		<br>
-		<br>
-		<br>
-		<br>
-		<img src="images/indicator.white.gif" alt="waiting image"> 
+	<body>
+	<asp:placeholder id="phBody" runat="server"></asp:placeholder>
+        <br />
+		<br />
+		<br />
+		<br />
+		<img src="images/indicator.white.gif" alt="waiting image" /> 
 		<!-- Loading Image made available from http://mentalized.net/activity-indicators/ -->
 	</body>
 </HTML>

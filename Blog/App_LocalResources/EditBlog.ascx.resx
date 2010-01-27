@@ -298,4 +298,7 @@
   <data name="lblChildBlogsOff.Text" xml:space="preserve">
     <value>Child blogs have been switched off by the administrator. Please use categories instead. You can still edit existing child blogs but you won't be able to add new ones.</value>
   </data>
+  <data name="lblMetaWeblogNotAvailable.Text" xml:space="preserve">
+    <value>MetaWeblog clients integration has been disabled</value>
+  </data>
 </root>

@@ -409,4 +409,10 @@ About custom images: provide the complete URL to the image (including "http://")
   <data name="MigrateConfirm.Text" xml:space="preserve">
     <value>Are you sure you wish to eliminate all child blogs and move their content to categories instead?</value>
   </data>
+  <data name="lblAllowWLW.Help" xml:space="preserve">
+    <value>If checked users will be able to use Windows Live Writer (or other remote blogging tools that use the MetaWeblog API) to post and edit blog posts.</value>
+  </data>
+  <data name="lblAllowWLW.Text" xml:space="preserve">
+    <value>Allow Windows Live Writer</value>
+  </data>
 </root>

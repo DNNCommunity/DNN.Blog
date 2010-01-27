@@ -66,6 +66,7 @@ Namespace Settings
   Private _excerptEnabled As Boolean = False
   Private _feedCacheTime As Integer = 10
   Private _AllowChildBlogs As Boolean = True
+  Private _allowWLW As Boolean = False
 
   Private _portalId As Integer = -1
   Private _tabId As Integer = -1
@@ -120,6 +121,7 @@ Namespace Settings
    Globals.ReadValue(_allSettings, "AllowSummaryHtml", AllowSummaryHtml)
    Globals.ReadValue(_allSettings, "FeedCacheTime", FeedCacheTime)
    Globals.ReadValue(_allSettings, "AllowChildBlogs", AllowChildBlogs)
+   Globals.ReadValue(_allSettings, "AllowWLW", AllowWLW)
 
    If DataVersion < version Then
     DataVersion = version
@@ -190,6 +192,7 @@ Namespace Settings
    Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "AllowSummaryHtml", Me.AllowSummaryHtml.ToString)
    Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "FeedCacheTime", Me.FeedCacheTime.ToString)
    Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "AllowChildBlogs", Me.AllowChildBlogs.ToString)
+   Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "AllowWLW", Me.AllowWLW.ToString)
 
    Dim CacheKey As String = "BlogSettings" & _portalId.ToString & "-" & _tabId.ToString
    DotNetNuke.Common.Utilities.DataCache.RemoveCache(CacheKey)
@@ -508,6 +511,15 @@ Namespace Settings
    End Get
    Set(ByVal value As Boolean)
     _AllowChildBlogs = value
+   End Set
+  End Property
+
+  Public Property AllowWLW() As Boolean
+   Get
+    Return _allowWLW
+   End Get
+   Set(ByVal value As Boolean)
+    _allowWLW = value
    End Set
   End Property
 #End Region

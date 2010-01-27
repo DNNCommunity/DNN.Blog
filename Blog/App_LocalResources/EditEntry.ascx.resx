@@ -133,7 +133,7 @@
     <value>Description:</value>
   </data>
   <data name="lblEntryDate.Text" xml:space="preserve">
-    <value>Entry Date:</value>
+    <value>Entry Date (local time):</value>
   </data>
   <data name="secLinkedFiles.Text" xml:space="preserve">
     <value>Linked Files:</value>

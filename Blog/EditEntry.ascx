@@ -14,17 +14,17 @@
 <asp:CustomValidator ID="valEntryDateData" EnableClientScript="False" runat="server" ResourceKey="valEntryDateData.ErrorMessage" Display="None" ErrorMessage="Entry Date is not a valid date" />
 <table id="Table1" cellspacing="1" cellpadding="1" width="80%" border="0">
  <tr>
-  <td style="white-space: nowrap; width: 10%;">
+  <td style="white-space:nowrap;width:10%;padding-right:10px;">
    <asp:Label ID="lblEntryDate" CssClass="SubHead" ResourceKey="lblEntryDate" runat="server" />
   </td>
   <td width="40%">
-   <asp:TextBox ID="txtEntryDate" CssClass="NormalTextBox" runat="server" Width="100%" />
+   <asp:TextBox ID="txtEntryDate" CssClass="NormalTextBox" runat="server" Width="90%" />
   </td>
-  <td style="white-space: nowrap; width: 10%;">
+  <td style="white-space:nowrap;width:10%;padding-right:10px;">
    <asp:Label ID="lblChildBlog" CssClass="SubHead" ResourceKey="lblChildBlog" runat="server" />
   </td>
-  <td width="40%">
-   <asp:DropDownList ID="cboChildBlogs" CssClass="NormalTextBox" runat="server" Width="100%" ResourceKey="cboChildBlogs.DataTextField" DataValueField="BlogID" DataTextField="Title" />
+  <td width="40%" style="text-align:right">
+   <asp:DropDownList ID="cboChildBlogs" CssClass="NormalTextBox" runat="server" Width="90%" ResourceKey="cboChildBlogs.DataTextField" DataValueField="BlogID" DataTextField="Title" />
   </td>
  </tr>
  <tr>

@@ -33,4 +33,9 @@ Namespace MetaWeblog
   Post
  End Enum
 
+ Public Enum AuthorizationType
+  ModuleLevelId
+  DnnModuleId
+ End Enum
+
 End Namespace

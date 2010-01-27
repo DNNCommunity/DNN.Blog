@@ -151,6 +151,15 @@ Partial Public Class EditBlog
  Protected WithEvents lblMetaWeblogOptions As Global.System.Web.UI.WebControls.Label
 
  '''<summary>
+ '''lblMetaWeblogNotAvailable control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lblMetaWeblogNotAvailable As Global.System.Web.UI.WebControls.Label
+
+ '''<summary>
  '''lblMetaWeblogOptionsDescription control.
  '''</summary>
  '''<remarks>

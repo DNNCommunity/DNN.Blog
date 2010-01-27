@@ -583,6 +583,24 @@ Partial Public Class ModuleOptions
  Protected WithEvents tblAdvancedSettings As Global.System.Web.UI.HtmlControls.HtmlTable
 
  '''<summary>
+ '''lblAllowWLW control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lblAllowWLW As Global.System.Web.UI.UserControl
+
+ '''<summary>
+ '''chkAllowWLW control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents chkAllowWLW As Global.System.Web.UI.WebControls.CheckBox
+
+ '''<summary>
  '''lblUploadOption control.
  '''</summary>
  '''<remarks>
@@ -752,15 +770,6 @@ Partial Public Class ModuleOptions
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
  Protected WithEvents cmdMigrateChildblogs As Global.System.Web.UI.WebControls.LinkButton
-
- '''<summary>
- '''chkAllowMultipleCategories control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents chkAllowMultipleCategories As Global.System.Web.UI.WebControls.CheckBox
 
  '''<summary>
  '''cmdUpdateOptions control.

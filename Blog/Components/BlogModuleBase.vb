@@ -27,36 +27,33 @@ Imports DotNetNuke
 Public Class BlogModuleBase
  Inherits PortalModuleBase
 
-#Region "Public Constants"
+#Region " Public Constants "
  Public Const RSS_RECENT_ENTRIES As Integer = 0
  Public Const RSS_BLOG_ENTRIES As Integer = 1
  Public Const RSS_SINGLE_ENTRY As Integer = 2
  Public Const RSS_ARCHIV_VIEW As Integer = 3
-
  Public Const CONTROL_VIEW_VIEWBLOG As String = "ViewBlog.ascx"
  Public Const CONTROL_VIEW_VIEWENTRY As String = "ViewEntry.ascx"
  Public Const CONTROL_VIEW_BLOGFEED As String = "BlogFeed.ascx"
  Public Const ONLINE_HELP_URL As String = ""
  Public Const BLOG_TEMPLATES_RESOURCE As String = "/DesktopModules/Blog/App_LocalResources/BlogTemplates.ascx.resx"
-
 #End Region
 
-#Region "Public Enums"
+#Region " Public Enums "
 #End Region
 
-#Region "Public Member"
+#Region " Public Members "
  Public MyActions As New Entities.Modules.Actions.ModuleActionCollection
  Public Shared RssView As RssViews
 #End Region
 
-#Region "Public Methods"
+#Region " Public Methods "
  Public Sub SetModuleConfiguration(ByVal config As Entities.Modules.ModuleInfo)
   ModuleConfiguration = config
  End Sub
-
 #End Region
 
-#Region "Public Properties"
+#Region " Public Properties "
  Public ReadOnly Property BasePage() As DotNetNuke.Framework.CDefault
   Get
    Try

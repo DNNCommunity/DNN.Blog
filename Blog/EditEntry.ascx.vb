@@ -157,7 +157,7 @@ Partial Class EditEntry
       txtCopyright.Text = m_oEntry.Copyright
      End If
      'DR-05/28/2009-BLG-9556
-     txtEntryDate.ReadOnly = m_oEntry.Published
+     txtEntryDate.Enabled = (Not m_oEntry.Published)
      cmdDelete.Visible = True
      cboChildBlogs.Enabled = True
      Me.dgLinkedFiles.DataSource = FileController.getFileList(Me.FilePath, m_oEntry)
@@ -464,13 +464,10 @@ Partial Class EditEntry
       End If
      End If
 
+     .AddedDate = Utility.ToLocalTime(Utility.ParseDate(txtEntryDate.Text, m_oBlog.Culture), m_oBlog.TimeZone)
+     .PermaLink = Utility.GenerateEntryLink(PortalId, .EntryID, Me.TabId, .Title)
      If Null.IsNull(m_oEntry.EntryID) Then
-      .AddedDate = Utility.ToLocalTime(Utility.ParseDate(txtEntryDate.Text, m_oBlog.Culture), m_oBlog.TimeZone)
       .EntryID = m_oEntryController.AddEntry(m_oEntry)
-      .PermaLink = Utility.GenerateEntryLink(PortalId, .EntryID, Me.TabId, .Title)
-     Else
-      .AddedDate = Utility.ParseDate(txtEntryDate.Text, m_oBlog.Culture)
-      .PermaLink = Utility.GenerateEntryLink(PortalId, .EntryID, Me.TabId, .Title)
      End If
      m_oEntryController.UpdateEntry(m_oEntry)
 

@@ -58,8 +58,9 @@
     <div style="padding-top: 1em">
      <asp:Label ID="lblPublished" runat="server" Visible="False" CssClass="NormalRed" ResourceKey="lblPublished" />
      <asp:Literal ID="litDescription" runat="server" />
-     <div class="BlogReadMore">
-      <asp:HyperLink ID="lnkReadMore" runat="server" ResourceKey="lnkReadMore" CssClass="BlogMoreLink" />
+     <div class="BlogReadMore" runat="server" id="divBlogReadMore">
+      <asp:HyperLink runat="server" ID="hlPermaLink" NavigateUrl='<%# DataBinder.Eval(Container.DataItem, "PermaLink") %>' ResourceKey="lnkPermaLink" CssClass="BlogMoreLink" Visible='<%# CBool(CStr(DataBinder.Eval(Container.DataItem, "PermaLink")) <> DotNetNuke.Modules.Blog.Business.Utility.BlogNavigateURL(TabID, PortalId, DataBinder.Eval(Container.DataItem, "EntryID"), DataBinder.Eval(Container.DataItem, "Title"), BlogSettings.ShowSeoFriendlyUrl)) %>' />
+      <asp:HyperLink runat="server" ID="hlMore" NavigateUrl='<%# DotNetNuke.Modules.Blog.Business.Utility.BlogNavigateURL(TabID, PortalId, DataBinder.Eval(Container.DataItem, "EntryID"), DataBinder.Eval(Container.DataItem, "Title"), BlogSettings.ShowSeoFriendlyUrl) %>' ResourceKey="lnkReadMore" CssClass="BlogMoreLink" />
      </div>
     </div>
     <div class="BlogFooter">
@@ -110,7 +111,8 @@
     </tr>
     <tr>
      <td class="Normal" align="right" colspan="2">
-      <asp:LinkButton ID="lnkMoreSearch" runat="server" CommandName="Entry" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "EntryID") %>' CssClass="CommandButton" ResourceKey="lnkMoreSearch />
+      <asp:HyperLink runat="server" ID="hlPermaLinkSearch" NavigateUrl='<%# DataBinder.Eval(Container.DataItem, "PermaLink") %>' ResourceKey="lnkPermaLink" CssClass="CommandButton" Visible='<%# CBool(CStr(DataBinder.Eval(Container.DataItem, "PermaLink")) <> DotNetNuke.Modules.Blog.Business.Utility.BlogNavigateURL(TabID, PortalId, DataBinder.Eval(Container.DataItem, "EntryID"), DataBinder.Eval(Container.DataItem, "EntryTitle"), BlogSettings.ShowSeoFriendlyUrl)) %>' />
+      <asp:HyperLink runat="server" ID="hlMoreSearch" NavigateUrl='<%# DotNetNuke.Modules.Blog.Business.Utility.BlogNavigateURL(TabID, PortalId, DataBinder.Eval(Container.DataItem, "EntryID"), DataBinder.Eval(Container.DataItem, "EntryTitle"), BlogSettings.ShowSeoFriendlyUrl) %>' ResourceKey="lnkReadMore" CssClass="CommandButton" />
      </td>
     </tr>
    </table>
