@@ -66,7 +66,7 @@ Namespace Settings
   Private _excerptEnabled As Boolean = False
   Private _feedCacheTime As Integer = 10
   Private _AllowChildBlogs As Boolean = True
-  Private _allowWLW As Boolean = False
+        Private _allowWLW As Boolean = True
 
   Private _portalId As Integer = -1
   Private _tabId As Integer = -1
