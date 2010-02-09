@@ -32,6 +32,7 @@ Public Class Globals
  Public Const glbSharedResourceFile As String = "DesktopModules/Blog/App_LocalResources/SharedResources"
 
  Public Shared Function RemoveMarkup(ByVal input As String) As String
+  If String.IsNullOrEmpty(input) Then Return ""
   Return Regex.Replace(input, "<[^>]+>", "")
  End Function
 
