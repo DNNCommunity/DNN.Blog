@@ -99,6 +99,12 @@ Namespace Business
     ReturnBlog = GetBlogByUserName(PortalSettings.PortalId, Request.Params("Blog"))
    End If
 
+   If ReturnBlog IsNot Nothing Then
+    If ReturnBlog.PortalID <> PortalSettings.PortalId Then
+     ReturnBlog = Nothing
+    End If
+   End If
+
    Return ReturnBlog
 
   End Function

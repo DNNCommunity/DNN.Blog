@@ -58,7 +58,7 @@ Partial Class EditEntry
  Protected WithEvents teBlogEntry As DotNetNuke.UI.UserControls.TextEditor
 #End Region
 
-#Region "Event Handlers"
+#Region " Event Handlers "
  Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
 
   Try
@@ -465,10 +465,10 @@ Partial Class EditEntry
      End If
 
      .AddedDate = Utility.ToLocalTime(Utility.ParseDate(txtEntryDate.Text, m_oBlog.Culture), m_oBlog.TimeZone)
-     .PermaLink = Utility.GenerateEntryLink(PortalId, .EntryID, Me.TabId, .Title)
      If Null.IsNull(m_oEntry.EntryID) Then
       .EntryID = m_oEntryController.AddEntry(m_oEntry)
      End If
+     .PermaLink = Utility.GenerateEntryLink(PortalId, .EntryID, Me.TabId, .Title)
      m_oEntryController.UpdateEntry(m_oEntry)
 
      'DR-04/19/2009-BLG-9760

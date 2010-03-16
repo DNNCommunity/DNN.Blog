@@ -78,7 +78,7 @@ Public Class BlogPost
    infoArray = New Blogger.BlogInfoStruct(misArray.Length - 1) {}
    Dim i As Integer = 0
    While i < misArray.Length
-    infoArray(i).blogid = misArray(i).ModuleId
+    infoArray(i).blogid = misArray(i).BlogID
     infoArray(i).blogName = misArray(i).ModuleName
     infoArray(i).url = misArray(i).Url
     i = i + 1
@@ -141,12 +141,12 @@ Public Class BlogPost
   Dim i As Integer = 0
   For Each c As DotNetNuke.Modules.Blog.Business.CategoryInfo In list
    With res(i)
-    .categoryId = c.CatID
-    .parentId = c.ParentID
+    .categoryId = c.CatId
+    .parentId = c.ParentId
     .categoryName = c.Category
     .description = c.Category
-    .htmlUrl = "http://www.dummy.com/html" & c.CatID.ToString
-    .rssUrl = "http://www.dummy.com/rss" & c.CatID.ToString
+    .htmlUrl = "http://www.dummy.com/html" & c.CatId.ToString
+    .rssUrl = "http://www.dummy.com/rss" & c.CatId.ToString
    End With
    i += 1
   Next
@@ -163,7 +163,7 @@ Public Class BlogPost
   Dim i As Integer = 0
   For Each c As DotNetNuke.Modules.Blog.Business.CategoryInfo In list
    With res(i)
-    .categoryId = c.CatID.ToString
+    .categoryId = c.CatId.ToString
     .categoryName = c.Category
    End With
    i += 1
@@ -231,7 +231,7 @@ Public Class BlogPost
 
 
    ' Check to see if this a style detection post.
-            styleDetectionPost = (post.title.Length > 116 AndAlso post.title.Substring(80, 36) = "3bfe001a-32de-4114-a6b4-4005b770f6d7")
+   styleDetectionPost = (post.title.Length > 116 AndAlso post.title.Substring(80, 36) = "3bfe001a-32de-4114-a6b4-4005b770f6d7")
 
    ' Check to see if a styleId is passed through the QueryString
    ' however, we'll only do this if we are creating a post for style detection.
@@ -289,7 +289,7 @@ Public Class BlogPost
    item.Publish = publish
    item.ItemType = ItemType.Post
 
-   success = CType(_provider.EditItem(Nothing, _userInfo, _portalSettings, _blogSettings, item), Boolean)
+   success = CType(_provider.EditItem(_userInfo, _portalSettings, _blogSettings, item), Boolean)
 
   Catch ex As BlogPostException
    LogException(ex)
@@ -360,7 +360,7 @@ Public Class BlogPost
  Public Function newMediaObject(ByVal blogid As Object, ByVal username As String, ByVal password As String, ByVal mediaobject As mediaObject) As mediaObjectInfo Implements IMetaWeblog.newMediaObject
 
   InitializeMethodCall(username, password)
-        BlogPostServices.AuthorizeUser(blogid.ToString(), _provider.GetModulesForUser(_userInfo, _portalSettings, _blogSettings, _provider.ProviderKey))
+  BlogPostServices.AuthorizeUser(blogid.ToString(), _provider.GetModulesForUser(_userInfo, _portalSettings, _blogSettings, _provider.ProviderKey))
 
   Dim info As mediaObjectInfo
 

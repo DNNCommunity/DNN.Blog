@@ -45,13 +45,13 @@ Namespace MetaWeblog
   ''' AuthorizeUser checks to make sure this user still has edit rights to this module.  If not, then 
   ''' we return false.
   ''' </summary>
-  ''' <param name="moduleId"></param>
+  ''' <param name="blogId"></param>
   ''' <param name="modulesAuthorizedForUser"></param>
-  Public Shared Sub AuthorizeUser(ByVal moduleId As String, ByVal modulesAuthorizedForUser As ModuleInfoStruct())
+  Public Shared Sub AuthorizeUser(ByVal blogId As String, ByVal modulesAuthorizedForUser As ModuleInfoStruct())
    Dim isAuthorized As Boolean = False
 
    For Each mis As ModuleInfoStruct In modulesAuthorizedForUser
-    If mis.ModuleId = moduleId Then
+    If mis.BlogID = blogId Then
      isAuthorized = True
      Exit For
     End If

@@ -85,7 +85,7 @@ Namespace MetaWeblog
  ''' update or delete items.
  ''' </summary>
  Public Structure ModuleInfoStruct
-  Public ModuleId As String
+  Public BlogID As String
   Public Url As String
   Public ModuleName As String
  End Structure

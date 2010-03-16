@@ -78,14 +78,12 @@ Namespace MetaWeblog
   ''' <param name="providerKey"></param>
   Function GetModulesForUser(ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal providerKey As String) As ModuleInfoStruct()
 
-  ' Note in the blog module, moduleLevelId and ItemId corresponded to BlogId and EntryId
-  Function GetRecentItems(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal numberOfItems As Integer, ByVal requestType As RecentItemsRequestType, ByVal providerKey As String) As Item()
+  ' Note in the blog module, blogId and ItemId corresponded to BlogId and EntryId
+  Function GetRecentItems(ByVal blogId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal numberOfItems As Integer, ByVal requestType As RecentItemsRequestType, ByVal providerKey As String) As Item()
 
   Function GetItem(ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal itemType As ItemType) As Item
 
-  Function EditItem(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal item As Item) As Boolean
-
-
+  Function EditItem(ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal item As Item) As Boolean
 
   ' 11/19/2008 Rip Rowan -  XML Comments removed since extraneous
   '''' <param name="publish">Bool - specifies whether the user clicked publish or save as draft.</param>
@@ -96,18 +94,18 @@ Namespace MetaWeblog
   ''' <summary>
   ''' NewItem is used for creating new blog entries
   ''' </summary>
-  ''' <param name="moduleLevelId">String - the BlogId is tracked through this parameter.</param>
+  ''' <param name="blogId">String - the BlogId is tracked through this parameter.</param>
   ''' <param name="userInfo">DotNetNuke UserInfo object.  This UserInfo object of the user posting the blog entry.</param>
   ''' <param name="portalSettings">DotNetNuke PortaSettings object for the portal to which the entry is being posted.</param>
   ''' <param name="item">Custom Struct - The item struct contains a list of fields related to an entry.</param>
   ''' <returns></returns>
-  Function NewItem(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal item As Item) As String
+  Function NewItem(ByVal blogId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal item As Item) As String
 
   Function DeleteItem(ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal itemType As ItemType) As Boolean
 
-  Function GetCategories(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings) As ItemCategoryInfo()
+  Function GetCategories(ByVal blogId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings) As ItemCategoryInfo()
 
-  Function NewCategory(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings) As Integer
+  Function NewCategory(ByVal blogId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings) As Integer
 
 #End Region
 
@@ -118,11 +116,11 @@ Namespace MetaWeblog
  ' used to integrate with your publishing interfaces.  The blog module currently hanldes
  ' its own trackback capability
  Public Interface ILinkable
-  Function GetModuleName(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings) As String
+  Function GetModuleName(ByVal blogId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings) As String
 
-  Function GetPermaLink(ByVal moduleLevelId As String, ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings) As String
+  Function GetPermaLink(ByVal blogId As String, ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings) As String
 
-  Function GetPingbackSettings(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings) As TrackbackAndPingSettings
+  Function GetPingbackSettings(ByVal blogId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings) As TrackbackAndPingSettings
 
  End Interface
 

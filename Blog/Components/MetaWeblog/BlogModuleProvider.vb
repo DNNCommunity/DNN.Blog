@@ -123,7 +123,7 @@ Namespace MetaWeblog
    If Not blogsList Is Nothing Then
     For Each blog As BlogInfo In blogsList
      Dim blogInfo As New ModuleInfoStruct
-     blogInfo.ModuleId = blog.BlogID.ToString()
+     blogInfo.BlogID = blog.BlogID.ToString()
      blogInfo.ModuleName = blog.Title
      blogInfo.Url = BlogPostServices.GetRedirectUrl(providerKey, blogTabId)
      infoArrayList.Add(blogInfo)
@@ -189,10 +189,10 @@ Namespace MetaWeblog
    Return item
   End Function
 
-  Public Function GetRecentItems(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal numberOfItems As Integer, ByVal requestType As RecentItemsRequestType, ByVal providerKey As String) As Item() Implements IPublishable.GetRecentItems
+  Public Function GetRecentItems(ByVal blogId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal numberOfItems As Integer, ByVal requestType As RecentItemsRequestType, ByVal providerKey As String) As Item() Implements IPublishable.GetRecentItems
 
    'Authorize User
-   BlogPostServices.AuthorizeUser(moduleLevelId, GetModulesForUser(userInfo, portalSettings, blogSettings, providerKey))
+   BlogPostServices.AuthorizeUser(blogId, GetModulesForUser(userInfo, portalSettings, blogSettings, providerKey))
 
    Dim itemArray As Item() = Nothing
    Dim objBlogController As New BlogController
@@ -210,7 +210,7 @@ Namespace MetaWeblog
     item.Link = entry.PermaLink
     item.Content = HttpUtility.HtmlDecode(entry.Entry)
     item.Summary = HttpUtility.HtmlDecode(entry.Description)
-    item.DateCreated = entry.AddedDate.AddMinutes(GetTimeZoneOffset(Convert.ToInt32(moduleLevelId)))
+    item.DateCreated = entry.AddedDate.AddMinutes(GetTimeZoneOffset(Convert.ToInt32(blogId)))
     item.ItemId = entry.EntryID.ToString()
     item.Title = entry.Title
     item.Publish = entry.Published
@@ -225,9 +225,9 @@ Namespace MetaWeblog
    Return itemArray
   End Function
 
-  Public Function NewItem(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal item As Item) As String Implements IPublishable.NewItem
+  Public Function NewItem(ByVal blogId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal item As Item) As String Implements IPublishable.NewItem
 
-   BlogPostServices.AuthorizeUser(moduleLevelId, GetModulesForUser(userInfo, portalSettings, blogSettings, ProviderKey))
+   BlogPostServices.AuthorizeUser(blogId, GetModulesForUser(userInfo, portalSettings, blogSettings, ProviderKey))
 
    ExtractSummaryFromExtendedContent(item)
 
@@ -251,7 +251,7 @@ Namespace MetaWeblog
    End If
 
    If tempBlogID = 0 Then
-    tempBlogID = Convert.ToInt32(moduleLevelId)
+    tempBlogID = Convert.ToInt32(blogId)
    End If
 
    ' Make sure the AddedDate is valid
@@ -310,11 +310,7 @@ Namespace MetaWeblog
    Return entryId.ToString()
   End Function
 
-  Public Function EditItem(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal item As Item) As Boolean Implements IPublishable.EditItem
-
-   BlogPostServices.AuthorizeUser(moduleLevelId, GetModulesForUser(userInfo, portalSettings, blogSettings, ProviderKey))
-
-   ExtractSummaryFromExtendedContent(item)
+  Public Function EditItem(ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal item As Item) As Boolean Implements IPublishable.EditItem
 
    Dim objEntryController As New EntryController
    ' Need to use reflection to get the right procedure since 
@@ -333,6 +329,12 @@ Namespace MetaWeblog
     methodParams.SetValue(portalSettings.PortalId, 1)
     objEntry = DirectCast(miGetEntry.Invoke(objEntryController, methodParams), EntryInfo)
    End If
+
+   ' Check user's authorization to edit post
+   BlogPostServices.AuthorizeUser(objEntry.BlogID.ToString, GetModulesForUser(userInfo, portalSettings, blogSettings, ProviderKey))
+
+   ExtractSummaryFromExtendedContent(item)
+
    objEntry.Title = item.Title
    objEntry.Entry = item.Content
    If blogSettings.AllowSummaryHtml Then

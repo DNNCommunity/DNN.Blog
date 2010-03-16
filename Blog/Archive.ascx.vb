@@ -27,19 +27,20 @@ Imports DotNetNuke.Services.Exceptions.Exceptions
 Partial Public Class Archive
  Inherits BlogModuleBase
 
-#Region "Private member"
+#Region " Private Members "
  Private objBlog As BlogInfo
  Private objCtlBlog As New BlogController
  Private m_Culture As String
  Private m_BlogID As Integer = -1
  Private BlogDate As Date = Date.UtcNow
  Private m_PersonalBlogID As Integer
- 'Private BlogSettings As Hashtable
 #End Region
 
-#Region "Event Handlers"
+#Region " Event Handlers "
  Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
   Try
+
    If Not Request.Params("BlogID") Is Nothing Then
     m_BlogID = CType(Request.Params("BlogID"), Integer)
    End If
@@ -48,8 +49,8 @@ Partial Public Class Archive
    End If
 
    If Not Page.IsPostBack Then
+
     objBlog = objCtlBlog.GetBlogFromContext()
-    'BlogSettings = Utility.GetBlogModuleSettings(Me.PortalId, TabId)
     If BlogSettings.PageBlogs <> -1 Then
      m_PersonalBlogID = BlogSettings.PageBlogs
      m_BlogID = m_PersonalBlogID
@@ -76,22 +77,26 @@ Partial Public Class Archive
     objArchiveMonths = objCtlArchive.GetBlogMonths(Me.PortalId, m_BlogID)
     lstArchiveMonths.DataSource = objArchiveMonths
     lstArchiveMonths.DataBind()
+
    Else
+
     '<BLG-7444 date="04/29/2008" by="dw">
     ' Since we are setting the SelectedDates above, if we have only one selected
     ' date, then this interferes with the ability for SelectionChanged to fire 
     ' properly.  To work around this, we clear the SelectedDate for postbackss.
     calMonth.SelectedDate = Nothing
     '</BLG-7444>
+
    End If
 
   Catch exc As Exception
    ProcessModuleLoadException(Me, exc)
   End Try
+
  End Sub
 #End Region
 
-#Region "Private Methods"
+#Region " Private Methods "
  Private Sub calMonth_SelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles calMonth.SelectionChanged
   ' The Calendar Control supports multiple cultures, but only on the current culture
   ' This is kind of a hack to reset the culture back to the System Culture
