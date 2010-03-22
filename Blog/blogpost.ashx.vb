@@ -376,7 +376,8 @@ Public Class BlogPost
 
     ' Shorten WindowsLiveWriter and create one file name.
     mediaObjectName = mediaobject.name.Replace("WindowsLiveWriter", "WLW")
-    mediaObjectName = mediaObjectName.Replace("/", "-")
+    mediaObjectName = mediaObjectName.Replace("/", "-").Replace(" ", "_")
+    mediaObjectName = HttpContext.Current.Server.UrlEncode(mediaObjectName)
 
     ' Check permitted file types
     Dim strExtension As String = Path.GetExtension(mediaObjectName).Replace(".", "")
