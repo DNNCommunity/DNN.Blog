@@ -198,7 +198,7 @@ Namespace Business
     Case "title"
      Return PropertyAccess.FormatString(Me.Title, strFormat)
     Case "comment"
-     Return PropertyAccess.FormatString(Me.Comment, strFormat)
+     Return PropertyAccess.FormatString(HttpUtility.HtmlDecode(Me.Comment), strFormat)
     Case "addeddate"
      Return (Me.AddedDate.ToString(OutputFormat, formatProvider))
     Case "userid"
