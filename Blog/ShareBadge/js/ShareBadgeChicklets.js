@@ -1,12 +1,3 @@
-//-------------------------------------------//
-// Copyright Inspector IT, Inc.
-// Antonio Chagoury
-// www.inspectorit.com
-// www.cto20.com 
-// www.antoniochagoury.com
-// antonio@inspectorit.com
-//-------------------------------------------//
-
 var sb_chicklets;
 
 function initializeChicklets() {
