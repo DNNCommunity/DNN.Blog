@@ -66,7 +66,8 @@ Namespace Settings
   Private _excerptEnabled As Boolean = False
   Private _feedCacheTime As Integer = 10
   Private _AllowChildBlogs As Boolean = True
-        Private _allowWLW As Boolean = True
+		Private _allowWLW As Boolean = True
+		Private _EnableArchiveDropDown As Boolean = False
 
   Private _portalId As Integer = -1
   Private _tabId As Integer = -1
@@ -122,6 +123,7 @@ Namespace Settings
    Globals.ReadValue(_allSettings, "FeedCacheTime", FeedCacheTime)
    Globals.ReadValue(_allSettings, "AllowChildBlogs", AllowChildBlogs)
    Globals.ReadValue(_allSettings, "AllowWLW", AllowWLW)
+			Globals.ReadValue(_allSettings, "EnableArchiveDropDown", EnableArchiveDropDown)
 
    If DataVersion < version Then
     DataVersion = version
@@ -193,6 +195,7 @@ Namespace Settings
    Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "FeedCacheTime", Me.FeedCacheTime.ToString)
    Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "AllowChildBlogs", Me.AllowChildBlogs.ToString)
    Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "AllowWLW", Me.AllowWLW.ToString)
+			Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "EnableArchiveDropDown", Me.EnableArchiveDropDown.ToString)
 
    Dim CacheKey As String = "BlogSettings" & _portalId.ToString & "-" & _tabId.ToString
    DotNetNuke.Common.Utilities.DataCache.RemoveCache(CacheKey)
@@ -521,7 +524,23 @@ Namespace Settings
    Set(ByVal value As Boolean)
     _allowWLW = value
    End Set
-  End Property
+		End Property
+
+		''' <summary>
+		''' Used to determine if the archive list should display as a data list of links (default) or as a drop down list.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks>CP: Added</remarks>
+		Public Property EnableArchiveDropDown() As Boolean
+			Get
+				Return _EnableArchiveDropDown
+			End Get
+			Set(ByVal value As Boolean)
+				_EnableArchiveDropDown = value
+			End Set
+		End Property
+
 #End Region
 
  End Class

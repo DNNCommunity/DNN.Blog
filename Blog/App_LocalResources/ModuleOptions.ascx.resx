@@ -415,4 +415,10 @@ About custom images: provide the complete URL to the image (including "http://")
   <data name="lblAllowWLW.Text" xml:space="preserve">
     <value>Allow Windows Live Writer</value>
   </data>
+  <data name="lblEnableArchiveDropDown.Help" xml:space="preserve">
+    <value>If checked, the list of archived months will be displayed as a drop down list instead of a data list (default).</value>
+  </data>
+  <data name="lblEnableArchiveDropDown.Text" xml:space="preserve">
+    <value>Use Drop Down List For Archive</value>
+  </data>
 </root>

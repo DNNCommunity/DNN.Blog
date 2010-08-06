@@ -42,7 +42,7 @@
 	</target>
 
     <target name="Compile" depends="init">
-        <exec program="${sys.env.windir}\Microsoft.NET\Framework\v3.5\msbuild.exe" failonerror="true">
+		<exec program="${framework::get-framework-directory(framework::get-target-framework())}\msbuild.exe" failonerror="true">
             <arg value="${subproject.name}.VS2008.sln" />
             <arg value="/p:Configuration=Release" />
             <arg value="/p:Platform=&quot;Any CPU&quot;" />

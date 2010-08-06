@@ -26,11 +26,16 @@ Namespace Business
 
  Public Class ArchiveController
 
-  Public Function GetBlogMonths(ByVal PortalID As Integer, ByVal BlogID As Integer) As ArrayList
-
-   Return CBO.FillCollection(DataProvider.Instance().GetBlogMonths(PortalID, BlogID), GetType(ArchiveMonths))
-
-  End Function
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <param name="PortalID"></param>
+		''' <param name="BlogID"></param>
+		''' <returns></returns>
+		''' <remarks>CP: Changed to generic lists instead of ArrayList</remarks>
+		Public Function GetBlogMonths(ByVal PortalID As Integer, ByVal BlogID As Integer) As List(Of ArchiveMonths)
+			Return CBO.FillCollection(Of ArchiveMonths)(DataProvider.Instance().GetBlogMonths(PortalID, BlogID))
+		End Function
 
   Public Function GetBlogDaysForMonth(ByVal PortalID As Integer, ByVal BlogID As Integer, ByVal BlogDate As Date) As ArrayList
    Return CBO.FillCollection(DataProvider.Instance().GetBlogDaysForMonth(PortalID, BlogID, BlogDate), GetType(ArchiveDays))

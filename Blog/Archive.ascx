@@ -12,6 +12,7 @@
  <OtherMonthDayStyle CssClass="BlogArchiveOtherMonth" />
 </asp:Calendar>
 <asp:Label ID="lblMonthly" runat="server" CssClass="SubHead" ResourceKey="lblMonthly" />
+
 <asp:DataList ID="lstArchiveMonths" runat="server" Width="100%" CssClass="CommandButton"
  CellPadding="0" CellSpacing="0" BorderWidth="0">
  <ItemTemplate>
@@ -29,3 +30,4 @@
   </table>
  </ItemTemplate>
 </asp:DataList>
+<br /><asp:DropDownList ID="ddlArchiveMonths" runat="server" Visible="false" CssClass="NormalTextBox" /><asp:LinkButton ID="cmdGo" runat="server" resourcekey="cmdGo" CssClass="CommandButton" />

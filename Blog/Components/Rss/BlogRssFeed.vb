@@ -150,108 +150,115 @@ Namespace Rss
    output.WriteAttributeString("xmlns", nsSlashPre, Nothing, nsSlashFull)
    output.WriteAttributeString("xmlns", nsTrackbackPre, Nothing, nsTrackbackFull)
 
-   ' set variables for channel header
-   Dim ManagingEditor As String = _blog.SyndicationEmail
-   Dim Title As String = _blog.Title
-   Dim Description As String = _blog.Description
-   Dim Link As System.Uri = _requestUrl
-   Dim Language As String = _portalSettings.DefaultLanguage
+			' CP - Updates to allow aggreated feed (via ID 0) and to avoid unhandled exception if not found. 
+			If _blog Is Nothing Then
+				_blog = New BlogInfo
+				_blog.SyndicationEmail = _portalSettings.Email
+			End If
+			' End Updates
 
-   Select Case _rssView
+			' set variables for channel header
+			Dim ManagingEditor As String = _blog.SyndicationEmail
+			Dim Title As String = _blog.Title
+			Dim Description As String = _blog.Description
+			Dim Link As System.Uri = _requestUrl
+			Dim Language As String = _portalSettings.DefaultLanguage
 
-    Case RssViews.ArchivEntries
+			Select Case _rssView
 
-     ManagingEditor = _portalSettings.Email
-     Title = Localization.GetString("lblArchive.Text", ModulePath & Localization.LocalResourceDirectory & "/Archive")
-     If _portalSettings.ActiveTab.Description <> "" Then
-      Description = _portalSettings.ActiveTab.Description
-     Else
-      Description = _portalSettings.Description
-     End If
-     If _rssId = -1 Then
-      Language = _blog.Culture
-      If _useFriendlyUrls Then
-       Link = New Uri(Utility.checkUriFormat(NavigateURL(_tabId, "", "BlogId=" & _blog.BlogID.ToString()) & "?BlogDate=" & _rssDate))
-      Else
-       Link = New Uri(Utility.checkUriFormat(NavigateURL(_tabId, "", "BlogId=" & _blog.BlogID.ToString()) & "&BlogDate=" & _rssDate))
-      End If
-     Else
-      Language = _portalSettings.DefaultLanguage
-      If _useFriendlyUrls Then
-       Link = New Uri(Utility.checkUriFormat(NavigateURL(_tabId) & "?BlogDate=" & _rssDate))
-      Else
-       Link = New Uri(Utility.checkUriFormat(NavigateURL(_tabId) & "&BlogDate=" & _rssDate))
-      End If
-     End If
+				Case RssViews.ArchivEntries
 
-    Case RssViews.RecentEntries
+					ManagingEditor = _portalSettings.Email
+					Title = Localization.GetString("lblArchive.Text", ModulePath & Localization.LocalResourceDirectory & "/Archive")
+					If _portalSettings.ActiveTab.Description <> "" Then
+						Description = _portalSettings.ActiveTab.Description
+					Else
+						Description = _portalSettings.Description
+					End If
+					If _rssId = -1 Then
+						Language = _blog.Culture
+						If _useFriendlyUrls Then
+							Link = New Uri(Utility.checkUriFormat(NavigateURL(_tabId, "", "BlogId=" & _blog.BlogID.ToString()) & "?BlogDate=" & _rssDate))
+						Else
+							Link = New Uri(Utility.checkUriFormat(NavigateURL(_tabId, "", "BlogId=" & _blog.BlogID.ToString()) & "&BlogDate=" & _rssDate))
+						End If
+					Else
+						Language = _portalSettings.DefaultLanguage
+						If _useFriendlyUrls Then
+							Link = New Uri(Utility.checkUriFormat(NavigateURL(_tabId) & "?BlogDate=" & _rssDate))
+						Else
+							Link = New Uri(Utility.checkUriFormat(NavigateURL(_tabId) & "&BlogDate=" & _rssDate))
+						End If
+					End If
 
-     ManagingEditor = _portalSettings.Email
-     Title = Localization.GetString("msgMostRecentEntries.Text", ModulePath & Localization.LocalResourceDirectory & "/ViewBlog")
-     If _portalSettings.ActiveTab.Description <> "" Then
-      Description = _portalSettings.ActiveTab.Description
-     Else
-      Description = _portalSettings.Description
-     End If
-     Link = New Uri(Utility.checkUriFormat(NavigateURL(_tabId)))
+				Case RssViews.RecentEntries
 
-    Case RssViews.SingleEntry, RssViews.BlogEntries
+					ManagingEditor = _portalSettings.Email
+					Title = Localization.GetString("msgMostRecentEntries.Text", ModulePath & Localization.LocalResourceDirectory & "/ViewBlog")
+					If _portalSettings.ActiveTab.Description <> "" Then
+						Description = _portalSettings.ActiveTab.Description
+					Else
+						Description = _portalSettings.Description
+					End If
+					Link = New Uri(Utility.checkUriFormat(NavigateURL(_tabId)))
 
-     Link = New Uri(Utility.checkUriFormat(NavigateURL(_tabId, "", "BlogId=" & _blog.BlogID)))
-     Language = _blog.Culture
+				Case RssViews.SingleEntry, RssViews.BlogEntries
 
-   End Select
+					Link = New Uri(Utility.checkUriFormat(NavigateURL(_tabId, "", "BlogId=" & _blog.BlogID)))
+					Language = _blog.Culture
 
-   ' Write the channel header block
-   output.WriteElementString("title", Title)
-   output.WriteElementString("description", Description)
-   output.WriteElementString("link", Link.ToString)
-   output.WriteElementString("language", Language)
-   output.WriteElementString("webMaster", ManagingEditor)
-   output.WriteElementString("pubDate", Now.ToString(DateTimeFormatString))
-   output.WriteElementString("lastBuildDate", Now.ToString(DateTimeFormatString))
-   output.WriteElementString("docs", "http://backend.userland.com/rss")
-   output.WriteElementString("generator", "Blog RSS Generator Version " & CType(System.Reflection.Assembly.GetExecutingAssembly.GetName.Version.ToString, String))
-   'output.WriteElementString("copyright", _portal.FooterText)
+			End Select
 
-   ' Get the blog entries
-   Dim dr As IDataReader = Nothing
-   Select Case _rssView
-    Case RssViews.None ' could not be, but ...
-    Case RssViews.RecentEntries
-     dr = Data.DataProvider.Instance().ListEntriesByPortal(_portalSettings.PortalId, Date.UtcNow, Nothing, DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName), DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName), _blogSettings.RecentRssEntriesMax)
-    Case RssViews.BlogEntries
-     If Not _blog Is Nothing Then
-      dr = DotNetNuke.Modules.Blog.Data.DataProvider.Instance().ListEntriesByBlog(_rssId, Date.UtcNow, Utility.HasBlogPermission(_userId, _blog.UserID, _moduleId), Utility.HasBlogPermission(_userId, _blog.UserID, _moduleId), _blogSettings.RecentRssEntriesMax)
-     End If
-    Case RssViews.ArchivEntries
-     Dim m_dBlogDate As Date
-     If _blog IsNot Nothing Then
-      dr = DotNetNuke.Modules.Blog.Data.DataProvider.Instance().ListEntriesByBlog(_rssId, m_dBlogDate.ToUniversalTime, Utility.HasBlogPermission(_userId, _blog.UserID, _moduleId), Utility.HasBlogPermission(_userId, _blog.UserID, _moduleId), _blogSettings.RecentRssEntriesMax)
-     Else
-      dr = Data.DataProvider.Instance().ListEntriesByPortal(_portalSettings.PortalId, m_dBlogDate.ToUniversalTime, Nothing, DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName), DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName), _blogSettings.RecentRssEntriesMax)
-     End If
-    Case RssViews.SingleEntry
-     dr = Data.DataProvider.Instance().GetEntry(_rssEntryId, _portalSettings.PortalId)
-   End Select
+			' Write the channel header block
+			output.WriteElementString("title", Title)
+			output.WriteElementString("description", Description)
+			output.WriteElementString("link", Link.ToString)
+			output.WriteElementString("language", Language)
+			output.WriteElementString("webMaster", ManagingEditor)
+			output.WriteElementString("pubDate", Now.ToString(DateTimeFormatString))
+			output.WriteElementString("lastBuildDate", Now.ToString(DateTimeFormatString))
+			output.WriteElementString("docs", "http://backend.userland.com/rss")
+			output.WriteElementString("generator", "Blog RSS Generator Version " & CType(System.Reflection.Assembly.GetExecutingAssembly.GetName.Version.ToString, String))
+			'output.WriteElementString("copyright", _portal.FooterText)
 
-   ' Now that we should shave a reader let's fill the feed with the contents
-   If dr Is Nothing Then
-    ' throw an error or not?
-   Else
-    Do While dr.Read
-     WriteItem(output, dr)
-    Loop
-    dr.Close()
-    dr.Dispose()
-   End If
+			' Get the blog entries
+			Dim dr As IDataReader = Nothing
+			Select Case _rssView
+				Case RssViews.None ' could not be, but ...
+				Case RssViews.RecentEntries
+					dr = Data.DataProvider.Instance().ListEntriesByPortal(_portalSettings.PortalId, Date.UtcNow, Nothing, DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName), DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName), _blogSettings.RecentRssEntriesMax)
+				Case RssViews.BlogEntries
+					If Not _blog Is Nothing Then
+						dr = DotNetNuke.Modules.Blog.Data.DataProvider.Instance().ListEntriesByBlog(_rssId, Date.UtcNow, Utility.HasBlogPermission(_userId, _blog.UserID, _moduleId), Utility.HasBlogPermission(_userId, _blog.UserID, _moduleId), _blogSettings.RecentRssEntriesMax)
+					End If
+				Case RssViews.ArchivEntries
+					Dim m_dBlogDate As Date
+					If _blog IsNot Nothing Then
+						dr = DotNetNuke.Modules.Blog.Data.DataProvider.Instance().ListEntriesByBlog(_rssId, m_dBlogDate.ToUniversalTime, Utility.HasBlogPermission(_userId, _blog.UserID, _moduleId), Utility.HasBlogPermission(_userId, _blog.UserID, _moduleId), _blogSettings.RecentRssEntriesMax)
+					Else
+						dr = Data.DataProvider.Instance().ListEntriesByPortal(_portalSettings.PortalId, m_dBlogDate.ToUniversalTime, Nothing, DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName), DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName), _blogSettings.RecentRssEntriesMax)
+					End If
+				Case RssViews.SingleEntry
+					dr = Data.DataProvider.Instance().GetEntry(_rssEntryId, _portalSettings.PortalId)
+			End Select
 
-   output.WriteEndElement()
-   output.WriteEndElement()
-   output.Flush()
-   output.Close()
+			' Now that we should shave a reader let's fill the feed with the contents
+			If dr Is Nothing Then
+				' throw an error or not?
+			Else
+				Do While dr.Read
+					WriteItem(output, dr)
+				Loop
+				dr.Close()
+				dr.Dispose()
+			End If
 
-  End Sub
+			output.WriteEndElement()
+			output.WriteEndElement()
+			output.Flush()
+			output.Close()
+
+		End Sub
 
   Public Function CacheKey() As String
    Return String.Format("ID{0}TAB{1}MID{2}ENT{3}DAT{4}BODY{5}LOC{6}USER{7}", _rssId, _tabId, _moduleId, _rssEntryId, _rssDate.Replace(" ", "_"), _includeBody, _locale, _userId)

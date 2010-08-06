@@ -317,6 +317,14 @@
       <asp:CheckBox ID="chkAllowChildBlogs" runat="server" TextAlign="Left" />
      </td>
     </tr>
+    <tr>
+     <td class="SubHead" valign="top" width="300">
+      <dnn:label id="lblEnableArchiveDropDown" runat="server" controlname="chkEnableArchiveDropDown" suffix="" />
+     </td>
+     <td>
+      <asp:CheckBox ID="chkEnableArchiveDropDown" runat="server" TextAlign="Left" />
+     </td>
+    </tr>
     <tr valign="top">
      <td class="SubHead" valign="top" width="300">
       <dnn:label id="lblMigrateChildblogs" runat="server" suffix="" controlname="cmdMigrateChildblogs" />

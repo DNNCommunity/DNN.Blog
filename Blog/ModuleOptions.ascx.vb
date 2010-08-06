@@ -85,7 +85,7 @@ Partial Class ModuleOptions
 
     txtFeedCacheTime.Text = BlogSettings.FeedCacheTime.ToString
     chkAllowChildBlogs.Checked = BlogSettings.AllowChildBlogs
-
+				chkEnableArchiveDropDown.Checked = BlogSettings.EnableArchiveDropDown
     ' 6/14/2008
     ' Add icons to radiobutton
     '
@@ -195,7 +195,7 @@ Partial Class ModuleOptions
     .FeedCacheTime = CInt(txtFeedCacheTime.Text.Trim)
     .AllowChildBlogs = chkAllowChildBlogs.Checked
     .AllowWLW = chkAllowWLW.Checked
-
+				.EnableArchiveDropDown = chkEnableArchiveDropDown.Checked
     .UpdateSettings()
    End With
 

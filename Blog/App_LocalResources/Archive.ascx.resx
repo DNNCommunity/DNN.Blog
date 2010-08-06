@@ -126,4 +126,7 @@
   <data name="lblArchive.Text" xml:space="preserve">
     <value>Archive</value>
   </data>
+  <data name="cmdGo.Text" xml:space="preserve">
+    <value>Go</value>
+  </data>
 </root>
