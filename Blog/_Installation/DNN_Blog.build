@@ -2,7 +2,7 @@
 <!-- targets to be executed, when omitted from command line default is run -->
 <project name="DotNetNuke.Blog" default="BuildAndZip">
 	<target name="init">
-		<property name="nant.settings.currentframework" value="net-2.0" />
+		<property name="nant.settings.currentframework" value="net-3.5" />
 
         <!-- This is where your packaged zips will build to from within the module folder -->
 		<property name="package.dir" value="package" overwrite="false" />
@@ -84,20 +84,18 @@
 			<fileset>
 				<!-- Tell nant what files to grab -->
 				<!-- everything included here ends up in resource.zip, this should be excluded in the CreateBinZip -->
-				<include name="**/images/**/*" />
+				<include name="**/images/*" />
+				<include name="**/js/*" />
+
 				<include name="**/Resources/**/*" />
 				<include name="**/Documentation/*" />
-				<include name="**/js/**/*" />
 				<include name="**/ShareBadge/**/*" />
 				<include name="**/${localresource.dir}/*.resx" />
+				<include name="**/*.ascx" />
 				<include name="**/*.aspx" />
 				<include name="**/*.css" />
 				<include name="**/*.ashx" />
-				<include name="**/*.css" />
 				<include name="**/wlwblog.xml" />
-				<exclude name="**/Trackback.aspx" />
-				<exclude name="**/*.ascx" />
-				<exclude name="**/module.css" />
 				<exclude name="**/Resources.zip" />
 				<exclude name="**/Install/**/*" />
 				<exclude name="**/_sgbak/*" />
@@ -106,6 +104,7 @@
 				<exclude name="**/*.zip" />
 				<exclude name="**/packages/*" />
 				<exclude name="**/ResourceZip/*" />				
+				<exclude name="**/temp/*" />
 			</fileset>
 		</copy>
 
@@ -133,14 +132,15 @@
 			<fileset>
 				<!-- Tell nant what files to grab -->
 				<!-- everything included here ends up in resource.zip, this should be excluded in the CreateBinZip -->
-				<include name="**/images/**/*" />
-				<include name="**/Components/**/*" />
-				<include name="**/js/**/*" />
-				<include name="**/Rss/**/*" />
+				<include name="**/images/*" />
+				<include name="**/js/*" />
+				<include name="**/Themes/Blue/*" />
+				<include name="**/Resources/**/*" />
 				<include name="**/ShareBadge/**/*" />
 				<include name="**/Upgrade/**/*" />
 				<include name="**/Providers/**/*" />
 				<include name="**/${localresource.dir}/*.resx" />
+				<include name="**/*.ascx" />
 				<include name="**/*.aspx" />
 				<include name="**/*.css" />
 				<include name="**/*.ashx" />
@@ -150,16 +150,16 @@
 				<include name="**/*.vbproj" />
 				<include name="**/*.build" />
 				<include name="**/wlwblog.xml" />
-				<exclude name="**/Trackback.aspx" />
-				<exclude name="**/module.css" />
-				<exclude name="**/*.ascx" />
+
+				<exclude name="**/Install/**/*" />
+				<exclude name="**/_sgbak/*" />
 				<exclude name="**/thumbs.db" />
 				<exclude name="**/*.FileList.txt" />
 				<exclude name="**/*.zip" />
 				<exclude name="**/packages/*" />
 				<exclude name="**/ResourceZip/*" />
-				<exclude name="**/Install/**/*" />
-				<exclude name="**/_sgbak/*" />
+				<exclude name="**/temp/*" />
+
 			</fileset>
 		</copy>
 
@@ -187,15 +187,12 @@
 			<fileset>
 				<include name="**${resourcezip.dir}/Resources.zip" />
 				<include name="${module.dll}" />
-				<include name="**/**/*.SqlDataProvider.dll" />
 				<include name="../../bin/CookComputing.XmlRpcV2.dll" />
 				
 				<include name="**/*.sqldataprovider" />
 				<include name="**/*.dnn" />
 				<include name="**/*.txt" />
-				<include name="**/*.ascx" />
-				<include name="**/Trackback.aspx" />
-				<include name="**/module.css" />
+				<exclude name="**/*.ascx" />
 				<exclude name="**/BuildSupport/**/*" />
 				<exclude name="**/*.FileList.txt" />
 			</fileset>
@@ -221,14 +218,11 @@
 			<fileset>
 				<include name="**${resourcezip.dir}/Resources.zip" />
 				<include name="${module.dll}" />
-				<include name="**/**/*.SqlDataProvider.dll" />
 				<include name="../../bin/CookComputing.XmlRpcV2.dll" />
 				<include name="**/*.sqldataprovider" />
 				<include name="**/*.dnn" />
-				<include name="**/*.txt" />
-				<include name="**/*.ascx" />
-				<include name="**/Trackback.aspx" />
-				<include name="**/module.css" />
+				<exclude name="**/*.ascx" />
+
 				<exclude name="**/BuildSupport/**/*" />
 				<exclude name="**/*.FileList.txt" />
 			</fileset>
