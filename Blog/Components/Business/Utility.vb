@@ -61,10 +61,11 @@ Namespace Business
    If IsNumeric(strValue) Then
     If Int(Val(strValue)) = Val(strValue) Then
      If Val(strValue) > -32769 And Val(strValue) < 32768 Then
-      IsInteger = True
+						Return True
      End If
-    End If
-   End If
+				End If
+			End If
+			Return False
   End Function
 #End Region
 

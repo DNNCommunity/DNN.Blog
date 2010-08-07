@@ -97,9 +97,10 @@ Public Class CustomUpgrade
      Next
     Next
    Next
-
+			Return True
   Catch ex As Exception
-   Exceptions.LogException(ex)
+			Exceptions.LogException(ex)
+			Return False
   End Try
  End Function
 
