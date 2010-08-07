@@ -2,14 +2,14 @@
 <!-- targets to be executed, when omitted from command line default is run -->
 <project name="DotNetNuke.Blog" default="BuildAndZip">
 	<target name="init">
-        <property name="nant.settings.currentframework" value="net-2.0" />
+		<property name="nant.settings.currentframework" value="net-2.0" />
 
         <!-- This is where your packaged zips will build to from within the module folder -->
 		<property name="package.dir" value="package" overwrite="false" />
 
 		<!-- This is where your resource.zip will be built so it can be zipped and distributed with the release install zips -->
 		<property name="resourcezip.dir" value="ResourceZip" />
-		<property name="bin.dir" value="bin" />
+		<property name="bin.dir" value="../../bin" />
 		<property name="controls.dir" value="controls" />
 		<property name="localresource.dir" value="App_LocalResources" />
 		<property name="globalresource.dir" value="App_GlobalResources" />
@@ -30,8 +30,6 @@
 		<property name="debug" value="false" overwrite="false" />
 		<property name="config" value="debug" if="${debug}" />
 		<property name="config" value="release" unless="${debug}" />
-
-		<sysinfo failonerror="false" />
 
 		<if test="${verbose}">
 			<echo message="solutionName: ${subproject.name}" />
@@ -100,16 +98,19 @@
 				<exclude name="**/Trackback.aspx" />
 				<exclude name="**/*.ascx" />
 				<exclude name="**/module.css" />
-				<exclude name="**/DNN_Blog_Resources.zip" />
+				<exclude name="**/Resources.zip" />
+				<exclude name="**/Install/**/*" />
+				<exclude name="**/_sgbak/*" />
 				<exclude name="**/thumbs.db" />
 				<exclude name="**/*.FileList.txt" />
 				<exclude name="**/*.zip" />
-
+				<exclude name="**/packages/*" />
+				<exclude name="**/ResourceZip/*" />				
 			</fileset>
 		</copy>
 
 		<mkdir dir="${resourcezip.dir}" unless="${directory::exists(resourcezip.dir)}" />
-		<zip zipfile="${resourcezip.dir}/DNN_Blog_Resources.zip">
+		<zip zipfile="${resourcezip.dir}/Resources.zip">
 			<fileset basedir="temp">
 				<include name="**/*" />
 				<exclude name="**/*.dll" />
@@ -155,11 +156,15 @@
 				<exclude name="**/thumbs.db" />
 				<exclude name="**/*.FileList.txt" />
 				<exclude name="**/*.zip" />
+				<exclude name="**/packages/*" />
+				<exclude name="**/ResourceZip/*" />
+				<exclude name="**/Install/**/*" />
+				<exclude name="**/_sgbak/*" />
 			</fileset>
 		</copy>
 
 		<mkdir dir="${resourcezip.dir}" unless="${directory::exists(resourcezip.dir)}" />
-		<zip zipfile="${resourcezip.dir}/DNN_Blog_Resources.zip">
+		<zip zipfile="${resourcezip.dir}/Resources.zip">
 			<fileset basedir="temp">
 				<include name="**/*" />
 				<exclude name="**/*.dll" />
@@ -180,10 +185,11 @@
 		<!-- DO flatten this as we want to retain folder structure in this and ONLY this zip -->
 		<copy todir="temp" flatten="true">
 			<fileset>
-				<include name="**${resourcezip.dir}/DNN_Blog_Resources.zip" />
-				<include name="bin/${ModuleName}.dll" />
+				<include name="**${resourcezip.dir}/Resources.zip" />
+				<include name="${module.dll}" />
 				<include name="**/**/*.SqlDataProvider.dll" />
-				<include name="../../bin/CookComputing.XmlRpc.dll" />
+				<include name="../../bin/CookComputing.XmlRpcV2.dll" />
+				
 				<include name="**/*.sqldataprovider" />
 				<include name="**/*.dnn" />
 				<include name="**/*.txt" />
@@ -213,10 +219,10 @@
 		<!-- DO flatten this as we want to retain folder structure in this and ONLY this zip -->
 		<copy todir="temp" flatten="true">
 			<fileset>
-				<include name="**${resourcezip.dir}/DNN_Blog_Resources.zip" />
-				<include name="bin/${ModuleName}.dll" />
+				<include name="**${resourcezip.dir}/Resources.zip" />
+				<include name="${module.dll}" />
 				<include name="**/**/*.SqlDataProvider.dll" />
-				<include name="../../bin/CookComputing.XmlRpc.dll" />
+				<include name="../../bin/CookComputing.XmlRpcV2.dll" />
 				<include name="**/*.sqldataprovider" />
 				<include name="**/*.dnn" />
 				<include name="**/*.txt" />
