@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -18,12 +18,8 @@
     <OptionInfer>Off</OptionInfer>
     <SccProjectName>%24/dnnblog/Blog</SccProjectName>
     <SccLocalPath>.</SccLocalPath>
-    <SccAuxPath>https://tfs03.codeplex.com</SccAuxPath>
+    <SccAuxPath>https://tfs.codeplex.com/tfs/TFS03</SccAuxPath>
     <SccProvider>{4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}</SccProvider>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,10 +28,9 @@
     <DefineTrace>true</DefineTrace>
     <OutputPath>..\..\bin\</OutputPath>
     <DocumentationFile>DotNetNuke.Modules.Blog.xml</DocumentationFile>
-    <NoWarn>42353,42354,42355</NoWarn>
+    <NoWarn />
     <WarningsAsErrors>
     </WarningsAsErrors>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -44,10 +39,9 @@
     <Optimize>true</Optimize>
     <OutputPath>..\..\bin\</OutputPath>
     <DocumentationFile>DotNetNuke.Modules.Blog.xml</DocumentationFile>
-    <NoWarn>42353,42354,42355</NoWarn>
+    <NoWarn />
     <WarningsAsErrors>
     </WarningsAsErrors>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CookComputing.XmlRpcV2, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -120,7 +114,6 @@
     <Content Include="Trackback.aspx" />
     <Content Include="ViewBlog.ascx" />
     <Content Include="ViewEntry.ascx" />
-    <Content Include="wlwblog.xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Archive.ascx.designer.vb">
@@ -355,6 +348,13 @@
       <DependentUpon>ViewTagsSettings.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="WLWManifest.aspx.designer.vb">
+      <DependentUpon>WLWManifest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WLWManifest.aspx.vb">
+      <DependentUpon>WLWManifest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_LocalResources\Archive.ascx.resx" />
@@ -391,6 +391,8 @@
     <Content Include="blogpost.ashx" />
     <Content Include="blogpostredirect.aspx" />
     <Content Include="EditCategories.ascx" />
+    <Content Include="include\css\shCoreDefault.css" />
+    <Content Include="include\js\syntaxHighlighter.js" />
     <Content Include="MainView.ascx" />
     <Content Include="MassEdit.ascx" />
     <Content Include="js\bookmarks.js" />
@@ -447,6 +449,7 @@
     <Content Include="ViewCategories.ascx" />
     <Content Include="ViewTags.ascx" />
     <Content Include="ViewTagsSettings.ascx" />
+    <Content Include="WLWManifest.aspx" />
     <Content Include="_Installation\03.03.00.txt" />
     <Content Include="_Installation\03.03.01.txt" />
     <Content Include="_Installation\03.04.00.txt" />
@@ -456,7 +459,7 @@
     <Content Include="_Installation\04.00.00.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
@@ -468,13 +471,12 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2866</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/DotNetNuke/DesktopModules/Blog/</IISUrl>
-          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
-          <IISAppRootUrl>http://localhost/DotNetNuke</IISAppRootUrl>
+          <IISUrl>
+          </IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -557,7 +557,7 @@ Public Class BlogPost
  End Sub
 
  Private Sub getProvider()
-  _provider = New BlogModuleProvider
+  _provider = New BlogModuleProvider(_portalSettings.PortalId)
  End Sub
 
  Private Function getItemFromPost(ByVal content As Post) As Item

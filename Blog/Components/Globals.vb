@@ -153,6 +153,14 @@ Public Class Globals
 #End Region
 
 #Region " Other "
+ Public Shared Function CYesNo(ByVal value As Boolean) As String
+  If value Then
+   Return "Yes"
+  Else
+   Return "No"
+  End If
+ End Function
+
  Public Shared Sub AddModDef(ByVal PortalSettings As Entities.Portals.PortalSettings, ByVal ModuleDefID As Integer, ByVal TabID As Integer, ByVal paneName As String, ByVal position As Integer, ByVal title As String)
 
   Dim objModuleDefinition As Definitions.ModuleDefinitionInfo = (New Definitions.ModuleDefinitionController).GetModuleDefinition(ModuleDefID)

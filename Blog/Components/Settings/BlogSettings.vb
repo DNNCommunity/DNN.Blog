@@ -1,4 +1,6 @@
-﻿'
+﻿Imports System.Xml
+
+'
 ' DotNetNuke -  http://www.dotnetnuke.com
 ' Copyright (c) 2002-2010
 ' by Perpetual Motion Interactive Systems Inc. ( http://www.perpetualmotion.ca )
@@ -68,6 +70,10 @@ Namespace Settings
   Private _AllowChildBlogs As Boolean = True
 		Private _allowWLW As Boolean = True
 		Private _EnableArchiveDropDown As Boolean = False
+  Private _AllowMultipleCategories As Boolean = True
+  Private _useWLWExcerpt As Boolean = False
+  Private _includeFiles As String = ""
+  Private _addJQuery As Boolean = False
 
   Private _portalId As Integer = -1
   Private _tabId As Integer = -1
@@ -124,6 +130,12 @@ Namespace Settings
    Globals.ReadValue(_allSettings, "AllowChildBlogs", AllowChildBlogs)
    Globals.ReadValue(_allSettings, "AllowWLW", AllowWLW)
 			Globals.ReadValue(_allSettings, "EnableArchiveDropDown", EnableArchiveDropDown)
+   Globals.ReadValue(_allSettings, "IncludeFiles", IncludeFiles)
+   Globals.ReadValue(_allSettings, "AddJQuery", AddJQuery)
+
+   ' WLW implementation parameters
+   Globals.ReadValue(_allSettings, "AllowMultipleCategories", AllowMultipleCategories)
+   Globals.ReadValue(_allSettings, "UseWLWExcerpt", UseWLWExcerpt)
 
    If DataVersion < version Then
     DataVersion = version
@@ -196,12 +208,55 @@ Namespace Settings
    Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "AllowChildBlogs", Me.AllowChildBlogs.ToString)
    Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "AllowWLW", Me.AllowWLW.ToString)
 			Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "EnableArchiveDropDown", Me.EnableArchiveDropDown.ToString)
+   Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "IncludeFiles", Me.IncludeFiles)
+   Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "AddJQuery", Me.AddJQuery.ToString)
+
+   ' WLW implementation parameters
+   Business.Utility.UpdateBlogModuleSetting(_portalId, -1, "AllowMultipleCategories", Me.AllowMultipleCategories.ToString)
+   Business.Utility.UpdateBlogModuleSetting(_portalId, -1, "UseWLWExcerpt", Me.UseWLWExcerpt.ToString)
 
    Dim CacheKey As String = "BlogSettings" & _portalId.ToString & "-" & _tabId.ToString
    DotNetNuke.Common.Utilities.DataCache.RemoveCache(CacheKey)
 
   End Sub
 
+  Public Sub WriteWLWManifest(ByRef output As XmlTextWriter)
+
+   output.Formatting = Formatting.Indented
+   output.WriteStartDocument()
+   output.WriteStartElement("manifest")
+   output.WriteAttributeString("xmlns", "http://schemas.microsoft.com/wlw/manifest/weblog")
+   output.WriteStartElement("options")
+
+   output.WriteElementString("clientType", "Metaweblog")
+   output.WriteElementString("supportsMultipleCategories", Globals.CYesNo(AllowMultipleCategories))
+   output.WriteElementString("supportsCategories", "Yes")
+   output.WriteElementString("supportsCustomDate", "Yes")
+   output.WriteElementString("supportsKeywords", "Yes")
+   output.WriteElementString("supportsTrackbacks", "Yes")
+   output.WriteElementString("supportsEmbeds", "No")
+   output.WriteElementString("supportsAuthor", "No")
+   output.WriteElementString("supportsExcerpt", Globals.CYesNo(UseWLWExcerpt))
+   output.WriteElementString("supportsPassword", "No")
+   output.WriteElementString("supportsPages", "No")
+   output.WriteElementString("supportsPageParent", "No")
+   output.WriteElementString("supportsPageOrder", "No")
+   output.WriteElementString("supportsExtendedEntries", "Yes")
+   output.WriteElementString("supportsCommentPolicy", "Yes")
+   output.WriteElementString("supportsPingPolicy", "Yes")
+   output.WriteElementString("supportsPostAsDraft", "Yes")
+   output.WriteElementString("supportsFileUpload", "Yes")
+   output.WriteElementString("supportsSlug", "No")
+   output.WriteElementString("supportsHierarchicalCategories", "Yes")
+   output.WriteElementString("supportsCategoriesInline", "Yes")
+   output.WriteElementString("supportsNewCategories", "No")
+   output.WriteElementString("supportsNewCategoriesInline", "No")
+
+   output.WriteEndElement() ' manifest
+   output.WriteEndElement() ' options
+   output.Flush()
+
+  End Sub
 #End Region
 
 #Region " Properties "
@@ -541,6 +596,41 @@ Namespace Settings
 			End Set
 		End Property
 
+  Public Property AllowMultipleCategories() As Boolean
+   Get
+    Return _AllowMultipleCategories
+   End Get
+   Set(ByVal value As Boolean)
+    _AllowMultipleCategories = value
+   End Set
+  End Property
+
+  Public Property UseWLWExcerpt() As Boolean
+   Get
+    Return _useWLWExcerpt
+   End Get
+   Set(ByVal value As Boolean)
+    _useWLWExcerpt = value
+   End Set
+  End Property
+
+  Public Property IncludeFiles() As String
+   Get
+    Return _includeFiles
+   End Get
+   Set(ByVal value As String)
+    _includeFiles = value
+   End Set
+  End Property
+
+  Public Property AddJQuery() As Boolean
+   Get
+    Return _addJQuery
+   End Get
+   Set(ByVal value As Boolean)
+    _addJQuery = value
+   End Set
+  End Property
 #End Region
 
  End Class

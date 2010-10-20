@@ -29,7 +29,6 @@ Namespace MetaWeblog
 
    Dim intendedUrl As String = String.Empty
    Dim bStyleDetectionPost As Boolean = False
-   Dim link As New HtmlGenericControl("link")
 
    ' Check to see if this is a style detection post.
    Dim sSQL As String = "SELECT TempInstallUrl FROM {databaseOwner}{objectQualifier}Blog_MetaWeblogData"
@@ -68,10 +67,11 @@ Namespace MetaWeblog
       phBody.Controls.Add(script)
      End If
 
-     link = New HtmlGenericControl("link")
+     Dim objBlogModuleProvider As New BlogModuleProvider(CInt(Request.Params("PortalId")))
+     Dim link As New HtmlGenericControl("link")
      link.Attributes.Add("rel", "wlwmanifest")
      link.Attributes.Add("type", "application/wlwmanifest+xml")
-     link.Attributes.Add("href", DotNetNuke.Common.Globals.ApplicationPath & (New BlogModuleProvider).ManifestFilePath)
+     link.Attributes.Add("href", DotNetNuke.Common.Globals.ApplicationPath & objBlogModuleProvider.ManifestFilePath)
      link.Visible = True
 
      phHead.Controls.Add(link)
@@ -79,12 +79,6 @@ Namespace MetaWeblog
     End If
 
    End If
-
-   link.Attributes.Add("rel", "wlwmanifest")
-   link.Attributes.Add("type", "application/wlwmanifest+xml")
-   link.Attributes.Add("href", DotNetNuke.Common.Globals.ApplicationPath & (New BlogModuleProvider).ManifestFilePath)
-   link.Visible = True
-   phHead.Controls.Add(link)
 
   End Sub
 

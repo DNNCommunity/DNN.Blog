@@ -243,14 +243,79 @@
  </tr>
  <tr>
   <td>
-   <dnn:sectionhead id="secAdvancedSettings" isExpanded="true" includerule="True" resourcekey="tblAdvancedSettings" section="tblAdvancedSettings" runat="server" cssclass="Head" />
-   <table id="tblAdvancedSettings" cellspacing="0" cellpadding="2" width="100%" summary="Edit ViewBlog Advanced Settings" border="0" runat="server">
+   <dnn:sectionhead id="secWLWSettings" isExpanded="true" includerule="True" resourcekey="secWLWSettings" section="tblWLWSettings" runat="server" cssclass="Head" />
+   <table id="tblWLWSettings" cellspacing="0" cellpadding="2" width="100%" summary="Edit ViewBlog Windows Live Writer Settings" border="0" runat="server">
     <tr valign="top">
      <td class="SubHead" valign="top" width="300">
       <dnn:label id="lblAllowWLW" runat="server" controlname="chkAllowWLW" suffix="" />
      </td>
      <td>
       <asp:CheckBox ID="chkAllowWLW" runat="server" TextAlign="Left" />
+     </td>
+    </tr>
+    <tr>
+     <td class="SubHead" valign="top" width="300">
+      <dnn:label id="lblUseWLWExcerpt" runat="server" controlname="chkUseWLWExcerpt" suffix="" />
+     </td>
+     <td>
+      <asp:CheckBox ID="chkUseWLWExcerpt" runat="server" TextAlign="Left" />
+     </td>
+    </tr>
+   </table>
+  </td>
+ </tr>
+ <tr>
+  <td>
+   &nbsp;
+  </td>
+ </tr>
+ <tr>
+  <td>
+   <dnn:sectionhead id="secLoadFiles" isExpanded="true" includerule="True" resourcekey="secLoadFiles" section="tblLoadFiles" runat="server" cssclass="Head" />
+   <p><asp:Label runat="server" ID="lblLoadFilesHelp" resourcekey="secLoadFiles.Help" /></p>
+   <table id="tblLoadFiles" cellspacing="0" cellpadding="2" width="100%" summary="Edit ViewBlog Load Additional Files" border="0" runat="server">
+    <tr>
+     <td class="SubHead" valign="top" width="300">
+      <dnn:label id="lblAddJQuery" runat="server" suffix="" controlname="chkAddJQuery" />
+     </td>
+     <td>
+      <asp:CheckBox ID="chkAddJQuery" runat="server" TextAlign="Left" />
+     </td>
+    </tr>
+    <tr valign="top">
+     <td class="SubHead" valign="top" width="300">
+      <dnn:label id="lblHostFiles" runat="server" controlname="cblHostFiles" suffix="" />
+     </td>
+     <td>
+      <asp:CheckBoxList runat="server" ID="cblHostFiles" RepeatColumns="1" />
+     </td>
+    </tr>
+    <tr valign="top">
+     <td class="SubHead" valign="top" width="300">
+      <dnn:label id="lblPortalFiles" runat="server" controlname="cblPortalFiles" suffix="" />
+     </td>
+     <td>
+      <asp:CheckBoxList runat="server" ID="cblPortalFiles" RepeatColumns="1" />
+     </td>
+    </tr>
+   </table>
+  </td>
+ </tr>
+ <tr>
+  <td>
+   &nbsp;
+  </td>
+ </tr>
+ <tr>
+  <td>
+   <dnn:sectionhead id="secAdvancedSettings" isExpanded="true" includerule="True" resourcekey="tblAdvancedSettings" section="tblAdvancedSettings" runat="server" cssclass="Head" />
+   <table id="tblAdvancedSettings" cellspacing="0" cellpadding="2" width="100%" summary="Edit ViewBlog Advanced Settings" border="0" runat="server">
+    <tr>
+     <td class="SubHead" valign="top" width="300">
+      <dnn:label id="lblAllowMultipleCategories" runat="server" controlname="chkAllowMultipleCategories" suffix="" />
+     </td>
+     <td>
+      <asp:CheckBox ID="chkAllowMultipleCategories" runat="server" TextAlign="Left" />
      </td>
     </tr>
     <tr>

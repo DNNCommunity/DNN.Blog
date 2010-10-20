@@ -798,6 +798,8 @@ Partial Class ViewEntry
   'Do not modify it using the code editor.
   InitializeComponent()
 
+  OutputAdditionalFiles = True
+
   Me.ModuleConfiguration.DisplayPrint = False
   If Not (Request.Params("EntryID") Is Nothing) Then
    m_oEntryID = Int32.Parse(Request.Params("EntryID"))

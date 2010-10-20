@@ -86,6 +86,25 @@ Partial Class ModuleOptions
     txtFeedCacheTime.Text = BlogSettings.FeedCacheTime.ToString
     chkAllowChildBlogs.Checked = BlogSettings.AllowChildBlogs
 				chkEnableArchiveDropDown.Checked = BlogSettings.EnableArchiveDropDown
+    chkAllowMultipleCategories.Checked = BlogSettings.AllowMultipleCategories
+    chkUseWLWExcerpt.Checked = BlogSettings.UseWLWExcerpt
+
+    ' Additional files to load
+    Dim fileList As String = ";" & BlogSettings.IncludeFiles
+    AddFolderToList(cblHostFiles, Server.MapPath("~/DesktopModules/Blog/include"), "")
+    AddFolderToList(cblPortalFiles, PortalSettings.HomeDirectoryMapPath & "\Blog\include", "")
+    For Each itm As ListItem In cblHostFiles.Items
+     If fileList.IndexOf(";[H]" & itm.Value & ";") > -1 Then
+      itm.Selected = True
+     End If
+    Next
+    For Each itm As ListItem In cblPortalFiles.Items
+     If fileList.IndexOf(";[P]" & itm.Value & ";") > -1 Then
+      itm.Selected = True
+     End If
+    Next
+    chkAddJQuery.Checked = BlogSettings.AddJQuery
+
     ' 6/14/2008
     ' Add icons to radiobutton
     '
@@ -134,8 +153,6 @@ Partial Class ModuleOptions
   End Try
  End Sub
 
-
-
  Private Sub cmbPageBlogs_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmbPageBlogs.SelectedIndexChanged
   If cmbPageBlogs.Items.Count > 2 Then
    If cmbPageBlogs.SelectedIndex = 0 Then
@@ -157,9 +174,6 @@ Partial Class ModuleOptions
   trGravatarDefaultImageCustomURL.Visible = chkShowGravatars.Checked
  End Sub
 
-#End Region
-
-#Region " Private Methods "
  Private Sub cmdUpdateOptions_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdUpdateOptions.Click
   Try
    ' Update Settings
@@ -194,48 +208,34 @@ Partial Class ModuleOptions
     .AllowSummaryHtml = chkAllowSummaryHtml.Checked
     .FeedCacheTime = CInt(txtFeedCacheTime.Text.Trim)
     .AllowChildBlogs = chkAllowChildBlogs.Checked
-    .AllowWLW = chkAllowWLW.Checked
 				.EnableArchiveDropDown = chkEnableArchiveDropDown.Checked
+    .AllowWLW = chkAllowWLW.Checked
+    .AllowMultipleCategories = chkAllowMultipleCategories.Checked
+    .UseWLWExcerpt = chkUseWLWExcerpt.Checked
+
+    ' additional files
+    Dim fileList As String = ""
+    For Each itm As ListItem In cblHostFiles.Items
+     If itm.Selected Then
+      fileList &= "[H]" & itm.Value & ";"
+     End If
+    Next
+    For Each itm As ListItem In cblPortalFiles.Items
+     If itm.Selected Then
+      fileList &= "[P]" & itm.Value & ";"
+     End If
+    Next
+    .IncludeFiles = fileList
+    .AddJQuery = chkAddJQuery.Checked
+
     .UpdateSettings()
    End With
-
-   'Update Bookmark Settings
-   'Dim chkActive As System.Web.UI.WebControls.CheckBox
-   'Dim litBookmarkId As System.Web.UI.WebControls.Literal
-   'For i As Integer = 0 To dlBookmarks.Items.Count - 1
-   '    chkActive = CType(dlBookmarks.Items(i).Controls(1), System.Web.UI.WebControls.CheckBox)
-   '    litBookmarkId = CType(dlBookmarks.Items(i).Controls(2), System.Web.UI.WebControls.Literal)
-   '    If Not chkActive Is Nothing AndAlso Not litBookmarkId Is Nothing Then
-   '        UpdateBookmarksXML(CInt(litBookmarkId.Text), chkActive.Checked)
-   '    End If
-   'Next
 
    Response.Redirect(NavigateURL(), True)
   Catch exc As Exception 'Module failed to load
    ProcessModuleLoadException(Me, exc)
   End Try
  End Sub
-
- 'Private Sub UpdateBookmarksXML(ByVal BookmarkId As Integer, ByVal Active As Boolean)
- '    Try
- '        Dim oBookmarks As New DataSet
- '        Dim oDataRow() As DataRow
- '        oBookmarks.ReadXml(MapPath(ModulePath & "js/bookmarks.xml"))
-
- '        For x As Integer = 0 To oBookmarks.Tables(0).Rows.Count - 1
- '            If CInt(oBookmarks.Tables(0).Rows(x).Item("Id").ToString) = BookmarkId Then
- '                oBookmarks.Tables(0).Rows(x).Item("Active") = Active
- '                Exit For
- '            End If
- '        Next
- '        oBookmarks.AcceptChanges()
- '        oBookmarks.WriteXml(MapPath(ModulePath & "js/bookmarks.xml"))
- '        oBookmarks = Nothing
-
- '    Catch exc As Exception
- '        ProcessModuleLoadException(Me, exc)
- '    End Try
- 'End Sub
 
  Private Sub cmdCancelOptions_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdCancelOptions.Click
   Try
@@ -253,17 +253,6 @@ Partial Class ModuleOptions
  Private Sub cmdGenerateLinks_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdGenerateLinks.Click
   Utility.CreateAllEntryLinks(PortalId, , TabId)
  End Sub
-
- 'Private Sub dlBookmarks_ItemDataBound(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.DataListItemEventArgs)
- '    Dim imgBookmark As System.Web.UI.WebControls.Image
- '    If e.Item.ItemType = ListItemType.Item OrElse e.Item.ItemType = ListItemType.AlternatingItem Then
- '        imgBookmark = CType(e.Item.FindControl("imgBookmark"), System.Web.UI.WebControls.Image)
- '        If Not imgBookmark Is Nothing Then
- '            imgBookmark.ImageUrl = ModulePath & "images/bookmarks/" & CType(e.Item.DataItem, System.Data.DataRowView).Row("Icon").ToString
- '            imgBookmark.AlternateText = CType(e.Item.DataItem, System.Data.DataRowView).Row("Name").ToString
- '        End If
- '    End If
- 'End Sub
 
  Private Sub cmdMigrateChildblogs_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdMigrateChildblogs.Click
 
@@ -291,7 +280,19 @@ Partial Class ModuleOptions
   lblChildBlogsStatus.Text = String.Format(GetString("lblChildBlogsStatus", LocalResourceFile), CInt(totalBlogs - parentBlogs))
 
  End Sub
+#End Region
 
+#Region " Private Methods "
+ Private Sub AddFolderToList(ByRef cbList As CheckBoxList, ByVal fullPath As String, ByVal relativePath As String)
+  If Not IO.Directory.Exists(fullPath) Then Exit Sub
+  Dim baseDir As New IO.DirectoryInfo(fullPath)
+  For Each d As IO.DirectoryInfo In baseDir.GetDirectories()
+   AddFolderToList(cbList, d.FullName, relativePath & d.Name & "/")
+  Next
+  For Each f As IO.FileInfo In baseDir.GetFiles()
+   cbList.Items.Add(New ListItem(relativePath & f.Name, relativePath & f.Name))
+  Next
+ End Sub
 #End Region
 
 End Class

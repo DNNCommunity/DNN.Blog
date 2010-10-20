@@ -34,6 +34,16 @@ Namespace MetaWeblog
  Public Class BlogModuleProvider
   Implements IPublishable, ILinkable
 
+#Region " Private Members "
+  Private _portalId As Integer = -1
+#End Region
+
+#Region " Constructors "
+  Public Sub New(ByVal PortalId As Integer)
+   _portalId = PortalId
+  End Sub
+#End Region
+
 #Region " Public Properties "
 
   ''' <summary>
@@ -52,7 +62,7 @@ Namespace MetaWeblog
   ''' </summary>
   Public ReadOnly Property ManifestFilePath() As String Implements IPublishable.ManifestFilePath
    Get
-    Return "/DesktopModules/blog/wlwblog.xml"
+    Return "/DesktopModules/Blog/WLWManifest.aspx?PortalID=" & _portalId.ToString
    End Get
   End Property
   ''' <summary>

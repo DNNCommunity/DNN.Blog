@@ -207,12 +207,7 @@ Partial Class EditEntry
     Dim TagString As String
     TagString = "'" + String.Join("','", TagSList) + "'"
 
-    If Not Page.ClientScript.IsClientScriptBlockRegistered("JQUERY") Then
-     Dim jQueryScript As String = "<script src=""" & ModulePath & "js/jquery.min.js"" type=""text/javascript""></script>"
-     ' Dim jQueryScript As String = "<script src=""http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"" type=""text/javascript""></script>"
-     Page.ClientScript.RegisterClientScriptBlock(Me.GetType(), "JQUERY", jQueryScript)
-    End If
-
+    AddJQuery()
 
     If Not Page.ClientScript.IsClientScriptBlockRegistered("TAG") Then
      Dim TagScript As String = "<script src=""" & ModulePath & "js/tag.js"" type=""text/javascript""></script>"

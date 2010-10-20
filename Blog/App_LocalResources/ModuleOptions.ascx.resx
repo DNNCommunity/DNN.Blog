@@ -421,4 +421,43 @@ About custom images: provide the complete URL to the image (including "http://")
   <data name="lblEnableArchiveDropDown.Text" xml:space="preserve">
     <value>Use Drop Down List For Archive</value>
   </data>
+  <data name="lblAllowMultipleCategories.Help" xml:space="preserve">
+    <value>If selected users can select multiple categories per post</value>
+  </data>
+  <data name="lblAllowMultipleCategories.Text" xml:space="preserve">
+    <value>Allow Multiple Categories</value>
+  </data>
+  <data name="lblUseWLWExcerpt.Help" xml:space="preserve">
+    <value>If selected then in WLW the user can use the Excerpt textbox at the bottom to create a summary of the post in plain text. Any split in the post will be ignored and the excerpt will be used instead. This is useful if you want to ensure the summaries are text only (i.e. not HTML).</value>
+  </data>
+  <data name="lblUseWLWExcerpt.Text" xml:space="preserve">
+    <value>Use Excerpt in Windows Live Writer</value>
+  </data>
+  <data name="secWLWSettings.Text" xml:space="preserve">
+    <value>Windows Live Writer Settings</value>
+  </data>
+  <data name="lblHostFiles.Help" xml:space="preserve">
+    <value>Files that were distributed as part of the Blog module</value>
+  </data>
+  <data name="lblHostFiles.Text" xml:space="preserve">
+    <value>Files on host</value>
+  </data>
+  <data name="lblPortalFiles.Help" xml:space="preserve">
+    <value>Files specific to your portal (under [portal home directory]/Blog/Include)</value>
+  </data>
+  <data name="lblPortalFiles.Text" xml:space="preserve">
+    <value>Files on portal</value>
+  </data>
+  <data name="secLoadFiles.Help" xml:space="preserve">
+    <value>You can opt to load additional files to the client when the blog is rendered. This allows for things like syntax highlighting. The blog module includes Alex Gorbatchev's syntax highlighter.</value>
+  </data>
+  <data name="secLoadFiles.Text" xml:space="preserve">
+    <value>Load Additional Files</value>
+  </data>
+  <data name="lblAddJQuery.Help" xml:space="preserve">
+    <value>If selected jQuery will be added</value>
+  </data>
+  <data name="lblAddJQuery.Text" xml:space="preserve">
+    <value>Add jQuery</value>
+  </data>
 </root>
