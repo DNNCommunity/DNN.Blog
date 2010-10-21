@@ -209,16 +209,16 @@ Namespace Data
    Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_GetComment", commentID), IDataReader)
   End Function
 
-  Public Overrides Function ListComments(ByVal EntryID As Integer, ByVal Approved As Boolean) As IDataReader
-   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_ListComments", EntryID, Approved), IDataReader)
-  End Function
-
-        Public Overrides Function ListCommentsByBlog(ByVal BlogID As Integer, ByVal Approved As Boolean, ByVal MaximumComments As Integer) As IDataReader
-            Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_ListCommentsByBlog", BlogID, Approved, MaximumComments), IDataReader)
+        Public Overrides Function ListComments(ByVal EntryID As Integer, ByVal ShowNonApproved As Boolean) As IDataReader
+            Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_ListComments", EntryID, ShowNonApproved), IDataReader)
         End Function
 
-        Public Overrides Function ListCommentsByPortal(ByVal PortalID As Integer, ByVal Approved As Boolean, ByVal MaximumComments As Integer) As IDataReader
-            Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_ListCommentsByPortal", PortalID, Approved, MaximumComments), IDataReader)
+        Public Overrides Function ListCommentsByBlog(ByVal BlogID As Integer, ByVal ShowNonApproved As Boolean, ByVal MaximumComments As Integer) As IDataReader
+            Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_ListCommentsByBlog", BlogID, ShowNonApproved, MaximumComments), IDataReader)
+        End Function
+
+        Public Overrides Function ListCommentsByPortal(ByVal PortalID As Integer, ByVal ShowNonApproved As Boolean, ByVal MaximumComments As Integer) As IDataReader
+            Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_ListCommentsByPortal", PortalID, ShowNonApproved, MaximumComments), IDataReader)
         End Function
 
   Public Overrides Function AddComment(ByVal EntryID As Integer, ByVal userID As Integer, ByVal Title As String, ByVal comment As String, ByVal Author As String, ByVal Approved As Boolean, ByVal Website As String, ByVal Email As String) As Integer
