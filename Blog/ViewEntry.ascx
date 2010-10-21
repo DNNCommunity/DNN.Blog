@@ -5,8 +5,7 @@
 <div class="BlogBody">
  <!-- Begin Blog Entry Title -->
  <div class="BlogHead">
-  <h2 class="BlogTitle">
-   <asp:HyperLink ID="lblBlogTitle" runat="server" />
+  <h2 class="BlogTitle" id="lblBlogTitle" runat="server">
   </h2>
  </div>
  <!-- End Blog Entry Title -->
