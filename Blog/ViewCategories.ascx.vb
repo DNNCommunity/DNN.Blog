@@ -27,15 +27,15 @@ Imports System.Runtime.CompilerServices
 
 
 Partial Class ViewCategories
- Inherits BlogModuleBase
- Implements Entities.Modules.IActionable
+  Inherits BlogModuleBase
+  Implements Entities.Modules.IActionable
 
- Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
-  Me.ModuleConfiguration.SupportedFeatures = 0
- End Sub
+  Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Me.ModuleConfiguration.SupportedFeatures = 0
+  End Sub
 
- Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-  If Not Page.IsPostBack Then
+  Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    If Not Page.IsPostBack Then
 
       Dim CatList As List(Of CategoryInfo) = CategoryController.ListCategoriesSorted(PortalId)
       For Each Cat As CategoryInfo In CatList
@@ -44,41 +44,41 @@ Partial Class ViewCategories
         End If
       Next
 
-  End If
- End Sub
+    End If
+  End Sub
 
- Sub AddCategory(ByVal cat As CategoryInfo, ByVal parentid As Integer)
+  Sub AddCategory(ByVal cat As CategoryInfo, ByVal parentid As Integer)
 
-  Dim node As New TreeNode
+    Dim node As New TreeNode
 
-  node.Text = cat.Category + " (" + cat.Cnt.ToString + ")"
-  node.Value = cat.CatID.ToString
+    node.Text = cat.Category + " (" + cat.Cnt.ToString + ")"
+    node.Value = cat.CatId.ToString
 
-  node.NavigateUrl = Utility.GetSEOLink(PortalId, TabId, "", cat.Slug, "catid=" + cat.CatId.ToString)
+    node.NavigateUrl = Utility.GetSEOLink(PortalId, TabId, "", cat.Slug, "catid=" + cat.CatId.ToString)
 
-  If parentid = 0 Then
-   tvCategories.Nodes.Add(node)
-  Else
-   Dim n As New TreeNode
-   For Each n In tvCategories.Nodes
-    AddChildNode(node, n, parentid)
-   Next
-  End If
- End Sub
+    If parentid = 0 Then
+      tvCategories.Nodes.Add(node)
+    Else
+      Dim n As New TreeNode
+      For Each n In tvCategories.Nodes
+        AddChildNode(node, n, parentid)
+      Next
+    End If
+  End Sub
 
- Sub AddChildNode(ByVal newnode As TreeNode, ByVal n As TreeNode, ByVal parentid As Integer)
+  Sub AddChildNode(ByVal newnode As TreeNode, ByVal n As TreeNode, ByVal parentid As Integer)
 
-  If n.Value = parentid.ToString Then
-   n.ChildNodes.Add(newnode)
-  Else
-   If n.ChildNodes.Count > 0 Then
-    Dim cnode As TreeNode
-    For Each cnode In n.ChildNodes
-     AddChildNode(newnode, cnode, parentid)
-    Next
-   End If
-  End If
- End Sub
+    If n.Value = parentid.ToString Then
+      n.ChildNodes.Add(newnode)
+    Else
+      If n.ChildNodes.Count > 0 Then
+        Dim cnode As TreeNode
+        For Each cnode In n.ChildNodes
+          AddChildNode(newnode, cnode, parentid)
+        Next
+      End If
+    End If
+  End Sub
 
   Private Function CategoryHasChildren(ByVal catlist As List(Of CategoryInfo), ByVal category As CategoryInfo) As Boolean
     For Each cat As CategoryInfo In catlist
