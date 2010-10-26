@@ -28,7 +28,7 @@
      <asp:Label ID="lblCategory" runat="server" Visible="True" CssClass="Normal" Text="Category:" />
     </asp:TableCell>
     <asp:TableCell>
-     <asp:DropDownList ID="ddlBlogs" runat="server" Text=" " />
+     <asp:DropDownList ID="ddlBlogs" runat="server" />
     </asp:TableCell>
     <asp:TableCell HorizontalAlign="Right">
      <asp:CheckBox ID="chkImport" runat="server" CssClass="Normal" ResourceKey="chkImport" Text=" " />
