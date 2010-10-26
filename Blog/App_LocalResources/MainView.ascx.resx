@@ -135,4 +135,28 @@
   <data name="Title.Text" xml:space="preserve">
     <value>Title</value>
   </data>
+  <data name="Blog_Archive.Text" xml:space="preserve">
+    <value>Blog Archive</value>
+  </data>
+  <data name="Blog_Categories.Text" xml:space="preserve">
+    <value>Blog Categories</value>
+  </data>
+  <data name="Blog_List.Text" xml:space="preserve">
+    <value>Blog List</value>
+  </data>
+  <data name="Blog_Tags.Text" xml:space="preserve">
+    <value>Blog Tags</value>
+  </data>
+  <data name="New_Blog.Text" xml:space="preserve">
+    <value>New Blog</value>
+  </data>
+  <data name="Recent_Comments.Text" xml:space="preserve">
+    <value>Recent Comments</value>
+  </data>
+  <data name="Recent_Entries.Text" xml:space="preserve">
+    <value>Recent Entries</value>
+  </data>
+  <data name="Search_Blog.Text" xml:space="preserve">
+    <value>Search Blog</value>
+  </data>
 </root>
