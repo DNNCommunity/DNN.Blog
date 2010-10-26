@@ -23,6 +23,8 @@ Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Services.Localization
+Imports System.Runtime.CompilerServices
+
 
 Partial Class ViewCategories
  Inherits BlogModuleBase
@@ -35,10 +37,12 @@ Partial Class ViewCategories
  Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
   If Not Page.IsPostBack Then
 
-   Dim CatList As List(Of Business.CategoryInfo) = CategoryController.ListCategoriesSorted(PortalId)
-   For Each Cat As CategoryInfo In CatList
-    AddCategory(Cat, Cat.ParentID)
-   Next
+      Dim CatList As List(Of CategoryInfo) = CategoryController.ListCategoriesSorted(PortalId)
+      For Each Cat As CategoryInfo In CatList
+        If CategoryHasChildren(CatList, Cat) OrElse Cat.Cnt > 0 Then
+          AddCategory(Cat, Cat.ParentId)
+        End If
+      Next
 
   End If
  End Sub
@@ -76,14 +80,22 @@ Partial Class ViewCategories
   End If
  End Sub
 
+  Private Function CategoryHasChildren(ByVal catlist As List(Of CategoryInfo), ByVal category As CategoryInfo) As Boolean
+    For Each cat As CategoryInfo In catlist
+      If cat.ParentId = category.CatId Then
+        Return True
+      End If
+    Next
+    Return False
+  End Function
 
- Public ReadOnly Property ModuleActions() As Entities.Modules.Actions.ModuleActionCollection Implements Entities.Modules.IActionable.ModuleActions
-  Get
-   Dim Actions As New Entities.Modules.Actions.ModuleActionCollection
-   Actions.Add(GetNextActionID, Localization.GetString(Entities.Modules.Actions.ModuleActionType.EditContent, LocalResourceFile), "", "", "", EditUrl(), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
-   Return Actions
-  End Get
- End Property
+  Public ReadOnly Property ModuleActions() As Entities.Modules.Actions.ModuleActionCollection Implements Entities.Modules.IActionable.ModuleActions
+    Get
+      Dim Actions As New Entities.Modules.Actions.ModuleActionCollection
+      Actions.Add(GetNextActionID, Localization.GetString(Entities.Modules.Actions.ModuleActionType.EditContent, LocalResourceFile), "", "", "", EditUrl(), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
+      Return Actions
+    End Get
+  End Property
 
 End Class
 

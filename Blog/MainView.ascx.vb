@@ -65,8 +65,11 @@ Partial Public Class MainView
     Dim definitions As New ArrayList
     For Each mi As ModuleDefinitionInfo In mdc.GetModuleDefinitions(ModuleConfiguration.DesktopModuleID)
       If mi.FriendlyName <> "View_Blog" Then
-        mi.FriendlyName = Localization.GetString(mi.FriendlyName, Me.LocalResourceFile)
-        definitions.Add(mi)
+        Dim mdi As New ModuleDefinitionInfo()
+
+        mdi.FriendlyName = Localization.GetString(mi.FriendlyName, Me.LocalResourceFile)
+        mdi.ModuleDefID = mi.ModuleDefID
+        definitions.Add(mdi)
       End If
     Next
     Return definitions
