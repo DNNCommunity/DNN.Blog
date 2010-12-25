@@ -1,0 +1,254 @@
+﻿<?xml version="1.0"?>
+<!-- targets to be executed, when omitted from command line default is run -->
+<project name="DotNetNuke.Modules.Blog" default="BuildAndZip">
+	<target name="init">
+		<property name="nant.settings.currentframework" value="net-3.5" />
+
+        <!-- This is where your packaged zips will build to from within the module folder -->
+		<property name="package.dir" value="package" overwrite="false" />
+
+		<!-- This is where your resource.zip will be built so it can be zipped and distributed with the release install zips -->
+		<property name="resourcezip.dir" value="ResourceZip" />
+		<property name="bin.dir" value="../../bin" />
+		<property name="controls.dir" value="controls" />
+		<property name="localresource.dir" value="App_LocalResources" />
+		<property name="globalresource.dir" value="App_GlobalResources" />
+
+		<property name="binZip" value="_Install" />
+		<property name="srcZip" value="_Source" />
+
+		<property name="rootWeb" value="http://localhost/" overwrite="false" />
+		<property name="webAlias" value="DotNetNuke_Community" overwrite="false" />
+		<property name="verbose" value="false" overwrite="false" />
+
+		<!-- ModuleName value should be set specific to the project -->
+		<property name="ModuleName" value="DotNetNuke.Modules.Blog"  overwrite="false"  />
+		<property name="BuildName" value="Blog"  overwrite="false"  />
+		<property name="subproject.name" value="${ModuleName}"/>
+		<property name="module.dll" value="${bin.dir}/${ModuleName}.dll" />
+
+		<property name="debug" value="false" overwrite="false" />
+		<property name="config" value="debug" if="${debug}" />
+		<property name="config" value="release" unless="${debug}" />
+
+		<if test="${verbose}">
+			<echo message="solutionName: ${subproject.name}" />
+			<echo message="debug:        ${debug}" />
+			<echo message="config:       ${config}" />
+		</if>
+
+	</target>
+
+    <target name="Compile" depends="init">
+		<exec program="${framework::get-framework-directory(framework::get-target-framework())}\msbuild.exe" failonerror="true">
+            <arg value="${subproject.name}.sln" />
+            <arg value="/p:Configuration=Release" />
+            <arg value="/p:Platform=&quot;Any CPU&quot;" />
+        </exec>
+    </target>	
+	<!-- It is important that this target does not run before the Compile target since it will lock the assembly -->
+	<target name="VersionInfo" >
+		<property name="version" value="${assemblyname::get-version(assembly::get-name(assembly::load-from-file(module.dll)))}" />
+		<property name="shortVersion" value="${string::substring(version,0,string::last-index-of(version,'.'))}" />
+
+		<if test="${verbose}">
+			<echo message="shortVersion: ${shortVersion}" />
+			<echo message="version: ${version}" />
+		</if>
+	</target>
+	
+	<target name="CleanPackageBin" depends="init VersionInfo">
+		<delete file="${package.dir}/${BuildName}_${shortVersion}${binZip}.zip" if="${file::exists('${package.dir}/${BuildName}_${shortVersion}${binZip}.zip')}" />
+	</target>
+
+	<target name="CleanPackageSource" depends="init VersionInfo">
+		<delete file="${package.dir}/${BuildName}_${shortVersion}${srcZip}.zip" if="${file::exists('${package.dir}/${BuildName}_${shortVersion}${srcZip}.zip')}" />
+	</target>
+
+	<target name="CleanPackageAll" depends="init">
+		<delete dir="${package.dir}" if="${directory::exists(package.dir)}" />
+	</target>
+
+	<!-- check for resourcezip folder, delete it and its contents if it exists -->
+	<target name="CleanResourceZip" depends="init">
+		<delete dir="${resourcezip.dir}" if="${directory::exists(resourcezip.dir)}" />
+	</target>
+
+	
+	<!-- Begin area for creating resourcezip for installable PA zips (should depend on target that clears where this will build zip file to)-->
+	<target name="CreateResourceZip" depends="CleanResourceZip">
+		<!-- create a flat directory to zip for install -->
+		<mkdir dir="temp" unless="${directory::exists('temp')}" />
+		<!-- DO NOT flatten this as we want to retain folder structure in this and ONLY this zip -->
+		<copy todir="temp" flatten="false">
+			<fileset>
+				<!-- Tell nant what files to grab -->
+				<!-- everything included here ends up in resource.zip, this should be excluded in the CreateBinZip -->
+				<include name="**/images/*" />
+				<include name="**/js/*" />
+
+				<include name="**/Resources/**/*" />
+				<include name="**/Documentation/*" />
+				<include name="**/ShareBadge/**/*" />
+				<include name="**/${localresource.dir}/*.resx" />
+				<include name="**/*.ascx" />
+				<include name="**/*.aspx" />
+				<include name="**/*.css" />
+				<include name="**/*.ashx" />
+				<include name="**/wlwblog.xml" />
+				<exclude name="**/Resources.zip" />
+				<exclude name="**/Install/**/*" />
+				<exclude name="**/_sgbak/*" />
+				<exclude name="**/thumbs.db" />
+				<exclude name="**/*.FileList.txt" />
+				<exclude name="**/*.zip" />
+				<exclude name="**/packages/*" />
+				<exclude name="**/ResourceZip/*" />				
+				<exclude name="**/temp/*" />
+			</fileset>
+		</copy>
+
+		<mkdir dir="${resourcezip.dir}" unless="${directory::exists(resourcezip.dir)}" />
+		<zip zipfile="${resourcezip.dir}/Resources.zip">
+			<fileset basedir="temp">
+				<include name="**/*" />
+				<exclude name="**/*.dll" />
+
+			</fileset>
+		</zip>
+
+		<!--Delete temp directory -->
+		<delete dir="temp" failonerror="false" />
+
+	</target>
+	<!-- End area for resourcezip creation -->
+
+	<!-- Begin area for creating resourcezip for installable PA zips (should depend on target that clears where this will build zip file to)-->
+	<target name="CreateResourceSourceZip" depends="CleanResourceZip">
+		<!-- create a flat directory to zip for install -->
+		<mkdir dir="temp" unless="${directory::exists('temp')}" />
+		<!-- DO NOT flatten this as we want to retain folder structure in this and ONLY this zip -->
+		<copy todir="temp" flatten="false">
+			<fileset>
+				<!-- Tell nant what files to grab -->
+				<!-- everything included here ends up in resource.zip, this should be excluded in the CreateBinZip -->
+				<include name="**/images/*" />
+				<include name="**/js/*" />
+				<include name="**/Themes/Blue/*" />
+				<include name="**/Resources/**/*" />
+				<include name="**/ShareBadge/**/*" />
+				<include name="**/Upgrade/**/*" />
+				<include name="**/Providers/**/*" />
+				<include name="**/${localresource.dir}/*.resx" />
+				<include name="**/*.ascx" />
+				<include name="**/*.aspx" />
+				<include name="**/*.css" />
+				<include name="**/*.ashx" />
+				<include name="**/*.dnn" />
+				<include name="**/*.vb" />
+				<include name="**/*.sln" />
+				<include name="**/*.vbproj" />
+				<include name="**/*.build" />
+				<include name="**/wlwblog.xml" />
+
+				<exclude name="**/Install/**/*" />
+				<exclude name="**/_sgbak/*" />
+				<exclude name="**/thumbs.db" />
+				<exclude name="**/*.FileList.txt" />
+				<exclude name="**/*.zip" />
+				<exclude name="**/packages/*" />
+				<exclude name="**/ResourceZip/*" />
+				<exclude name="**/temp/*" />
+
+			</fileset>
+		</copy>
+
+		<mkdir dir="${resourcezip.dir}" unless="${directory::exists(resourcezip.dir)}" />
+		<zip zipfile="${resourcezip.dir}/Resources.zip">
+			<fileset basedir="temp">
+				<include name="**/*" />
+				<exclude name="**/*.dll" />
+
+			</fileset>
+		</zip>
+
+		<!--Delete temp directory -->
+		<delete dir="temp" failonerror="false" />
+
+	</target>
+	<!-- End area for resourceSourcezip creation -->
+
+
+
+	<!-- Begin area for creating installable PA (should depend on target that clears where this will build zip file to AND resourcezip as this is part of installable PA)-->
+	<target name="CreateBinZip" depends="CleanPackageBin CreateResourceZip">
+		<!-- DO flatten this as we want to retain folder structure in this and ONLY this zip -->
+		<copy todir="temp" flatten="true">
+			<fileset>
+				<include name="**${resourcezip.dir}/Resources.zip" />
+				<include name="${module.dll}" />
+				<include name="../../bin/CookComputing.XmlRpcV2.dll" />
+				
+				<include name="**/*.sqldataprovider" />
+				<include name="**/*.dnn" />
+				<include name="**/*.txt" />
+				<exclude name="**/*.ascx" />
+				<exclude name="**/BuildSupport/**/*" />
+				<exclude name="**/*.FileList.txt" />
+			</fileset>
+		</copy>
+
+		<mkdir dir="${package.dir}" unless="${directory::exists(package.dir)}" />
+		<zip zipfile="${package.dir}/${BuildName}_${shortVersion}${binZip}.zip">
+			<fileset basedir="temp">
+				<include name="**/*" />
+			</fileset>
+		</zip>
+
+		<!--Delete temp directory -->
+		<delete dir="temp" failonerror="false" />
+
+	</target>
+	<!-- End area for installable PA -->
+
+	<!-- Begin area for distributable source code zip (should depend on target that clears where this will build zip file to)-->
+	<target name="CreateSrcZip" depends="CleanPackageSource CreateResourceSourceZip">
+		<!-- DO flatten this as we want to retain folder structure in this and ONLY this zip -->
+		<copy todir="temp" flatten="true">
+			<fileset>
+				<include name="**${resourcezip.dir}/Resources.zip" />
+				<include name="${module.dll}" />
+				<include name="../../bin/CookComputing.XmlRpcV2.dll" />
+				<include name="**/*.sqldataprovider" />
+				<include name="**/*.dnn" />
+				<exclude name="**/*.ascx" />
+
+				<exclude name="**/BuildSupport/**/*" />
+				<exclude name="**/*.FileList.txt" />
+			</fileset>
+		</copy>
+
+		<mkdir dir="${package.dir}" unless="${directory::exists(package.dir)}" />
+		<zip zipfile="${package.dir}/${BuildName}_${shortVersion}${srcZip}.zip">
+			<fileset basedir="temp">
+				<include name="**/*" />
+			</fileset>
+		</zip>
+
+		<!--Delete temp directory -->
+		<delete dir="temp" failonerror="false" />
+
+	</target>
+	<!-- End area for distributable source code zip -->
+
+	<!--  SYNTHETIC TASKS  -->
+	<target name="build" depends="Compile" description="This target compiles the application.
+	" />
+
+	<target name="BuildAndZip" depends="build CreateSrcZip CreateBinZip" description="This target compiles the application and then creates two-three zip files: 
+	              - one that only contains the compiled code and runtime files 
+		      - one is the resourceszip for installable pa's
+	              - the other with compiled code and source code.
+	" />
+
+</project>
