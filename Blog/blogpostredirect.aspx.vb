@@ -19,69 +19,70 @@
 '-------------------------------------------------------------------------
 
 Imports DotNetNuke.Security
+Imports DotNetNuke.Data
+
 
 Namespace MetaWeblog
 
- Partial Class blogpostredirect
-  Inherits System.Web.UI.Page
+  Partial Class blogpostredirect
+    Inherits System.Web.UI.Page
 
-  Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
-   Dim intendedUrl As String = String.Empty
-   Dim bStyleDetectionPost As Boolean = False
+      Dim intendedUrl As String = String.Empty
+      Dim bStyleDetectionPost As Boolean = False
 
-   ' Check to see if this is a style detection post.
-   Dim sSQL As String = "SELECT TempInstallUrl FROM {databaseOwner}{objectQualifier}Blog_MetaWeblogData"
-   Dim sURL As String = String.Empty
-   Dim dr As IDataReader = DirectCast(DotNetNuke.Data.DataProvider.Instance().ExecuteSQL(sSQL), IDataReader)
-   While dr.Read()
-    sURL = dr("TempInstallUrl").ToString() + ""
-   End While
+      ' Check to see if this is a style detection post.
+      Dim sSQL As String = "SELECT TempInstallUrl FROM {databaseOwner}{objectQualifier}Blog_MetaWeblogData"
+      Dim sURL As String = String.Empty
+      Dim dr As IDataReader = DirectCast(DataProvider.Instance().ExecuteSQL(sSQL), IDataReader)
+      While dr.Read()
+        sURL = dr("TempInstallUrl").ToString() + ""
+      End While
 
-   If sURL <> String.Empty Then    'Style Detection Post
+      If sURL <> String.Empty Then    'Style Detection Post
 
-    ' Delete the entry from the TempInstallUrl field in the database.
-    sSQL = "UPDATE {databaseOwner}{objectQualifier}Blog_MetaWeblogData SET TempInstallUrl = ''"
-    DotNetNuke.Data.DataProvider.Instance().ExecuteSQL(sSQL)
-    Response.Redirect(sURL, False)
+        ' Delete the entry from the TempInstallUrl field in the database.
+        sSQL = "UPDATE {databaseOwner}{objectQualifier}Blog_MetaWeblogData SET TempInstallUrl = ''"
+        DataProvider.Instance().ExecuteSQL(sSQL)
+        Response.Redirect(sURL, False)
 
-   Else                            'This is a regular post
+      Else                            'This is a regular post
 
-    ' Retrieve the IntendedUrl from the QueryString
-    If Not Request("IntendedUrl") Is Nothing Then
-     intendedUrl = HttpUtility.UrlDecode(Request("IntendedUrl").ToString())
-     intendedUrl = (New PortalSecurity).InputFilter(intendedUrl, PortalSecurity.FilterFlag.NoScripting).Replace(";", "")
-     ' DW - 01/26/2010 - Check to make sure the requested domain is the same
-     Dim r As New Uri(intendedUrl)
-     If r.Host <> Request.Url.Host Then
-      Return
-     End If
-    End If
+        ' Retrieve the IntendedUrl from the QueryString
+        If Not Request("tab") Is Nothing Then
+          Dim tab As Integer
+          If Integer.TryParse(Request("tab"), tab) Then
+            intendedUrl = DotNetNuke.Common.Globals.NavigateURL(tab)
+          End If
+        End If
 
-    If Not BlogPostServices.IsNullOrEmpty(intendedUrl) Then
+        If Not BlogPostServices.IsNullOrEmpty(intendedUrl) Then
 
-     If Request.UserAgent.IndexOf("Windows Live Writer") < 0 Then
-      Dim script As New HtmlGenericControl("script")
-      script.Attributes.Add("type", "text/javascript")
-      script.InnerText = "window.location.href = '" & intendedUrl & "';"
-      phBody.Controls.Add(script)
-     End If
+          If Request.UserAgent.IndexOf("Windows Live Writer") < 0 Then
+            'Dim script As New HtmlGenericControl("script")
+            'script.Attributes.Add("type", "text/javascript")
+            'script.InnerHtml = "window.location.href ='" & intendedUrl & "';"
+            'phBody.Controls.Add(script)
 
-     Dim objBlogModuleProvider As New BlogModuleProvider(CInt(Request.Params("PortalId")))
-     Dim link As New HtmlGenericControl("link")
-     link.Attributes.Add("rel", "wlwmanifest")
-     link.Attributes.Add("type", "application/wlwmanifest+xml")
-     link.Attributes.Add("href", DotNetNuke.Common.Globals.ApplicationPath & objBlogModuleProvider.ManifestFilePath)
-     link.Visible = True
+            Response.Redirect(intendedUrl)
+          End If
 
-     phHead.Controls.Add(link)
+          Dim objBlogModuleProvider As New BlogModuleProvider(CInt(Request.Params("PortalId")))
+          Dim link As New HtmlGenericControl("link")
+          link.Attributes.Add("rel", "wlwmanifest")
+          link.Attributes.Add("type", "application/wlwmanifest+xml")
+          link.Attributes.Add("href", DotNetNuke.Common.Globals.ApplicationPath & objBlogModuleProvider.ManifestFilePath)
+          link.Visible = True
 
-    End If
+          phHead.Controls.Add(link)
 
-   End If
+        End If
 
-  End Sub
+      End If
 
- End Class
+    End Sub
+
+  End Class
 
 End Namespace

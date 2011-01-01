@@ -118,7 +118,7 @@ Partial Class ViewEntry
           If m_oEntry.DisplayCopyright Then
             If m_oEntry.Copyright.Length > 0 Then
               Me.BasePage.Copyright = m_oEntry.Copyright
-              lblCopyright.Text = m_oEntry.Copyright
+              lblCopyright.Text = (New PortalSecurity).InputFilter(m_oEntry.Copyright, PortalSecurity.FilterFlag.NoScripting)
               lblCopyright.Visible = True
             End If
           End If
@@ -526,7 +526,7 @@ Partial Class ViewEntry
 
     strPrintPage += Server.HtmlDecode(m_oEntry.Entry) & Environment.NewLine & _
     "<hr />" & _
-    Server.HtmlDecode(m_oEntry.Copyright) & Environment.NewLine & _
+    (New PortalSecurity).InputFilter(Server.HtmlDecode(m_oEntry.Copyright), PortalSecurity.FilterFlag.NoScripting) & Environment.NewLine & _
     "</body></html>"
 
     Response.Write(strPrintPage)
@@ -614,7 +614,7 @@ Partial Class ViewEntry
     'Display the Bookmarks Toolbar
     If Not Page.ClientScript.IsStartupScriptRegistered("SB_PRO_TOOLBAR") Then
       Dim SbToolbar As String = "<script type=""text/javascript"">" _
-      & "initializeShareBadge(""ShareBadgePRO_Toolbar"",""" & Replace(EntryTitle, """", "'") & """, """ & EntryUrl & """);" _
+      & "initializeShareBadge(""ShareBadgePRO_Toolbar"",""" & Utility.removeHtmlTags(Replace(EntryTitle, """", "'")) & """, """ & EntryUrl & """);" _
       & "addBadgeItem(7);" _
       & "addBadgeItem(33);" _
       & "addBadgeItem(9);" _

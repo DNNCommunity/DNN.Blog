@@ -1,4 +1,5 @@
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls" %>
+<%@ Import Namespace="DotNetNuke.Modules.Blog.Business" %>
 <%@ Control Language="vb" AutoEventWireup="false" CodeBehind="ViewEntry.ascx.vb"
  Inherits="DotNetNuke.Modules.Blog.ViewEntry" %>
 <asp:Label ID="lblTrackback" runat="server" />
@@ -51,7 +52,7 @@
     <asp:Label ID="lblTags" runat="server" ResourceKey="lblTags" />
     <asp:Repeater ID="rptTags" runat="server">
      <ItemTemplate>
-      <asp:HyperLink runat="server" ID="lnkTags" Text='<%# Eval("Tag") %>' NavigateUrl='<%# DotNetNuke.Common.NavigateURL(TabId, "", "tagid=" & Eval("TagID")) %>'>HyperLink</asp:HyperLink>
+      <asp:HyperLink runat="server" ID="lnkTags" Text='<%# Utility.removeHtmlTags(Eval("Tag")) %>' NavigateUrl='<%# DotNetNuke.Common.NavigateURL(TabId, "", "tagid=" & Eval("TagID")) %>'>HyperLink</asp:HyperLink>
      </ItemTemplate>
      <SeparatorTemplate>, </SeparatorTemplate>
     </asp:Repeater>
