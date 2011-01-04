@@ -66,14 +66,6 @@ Namespace Business
    DataProvider.Instance().UpdateEntry(objEntry.BlogID, objEntry.EntryID, objEntry.Title, objEntry.Description, objEntry.Entry, objEntry.Published, objEntry.AllowComments, objEntry.AddedDate, objEntry.DisplayCopyright, objEntry.Copyright, objEntry.PermaLink)
   End Sub
 
-  'Public Sub UpdateEntry(ByVal objEntry As EntryInfo, ByVal objBlog As BlogInfo)
-  ' DataProvider.Instance().UpdateEntry(objEntry.BlogID, objEntry.EntryID, objEntry.Title, objEntry.Description, objEntry.Entry, objEntry.Published, objEntry.AllowComments, objEntry.AddedDate, objEntry.DisplayCopyright, objEntry.Copyright, objEntry.PermaLink)
-  ' 'DR-19/04/2009-BLG-9760
-  ' If objBlog IsNot Nothing AndAlso objBlog.EnableTwitterIntegration Then
-  '  Utility.Tweet(objBlog, objEntry)
-  ' End If
-  'End Sub
-
   Public Sub DeleteEntry(ByVal EntryID As Integer)
    DataProvider.Instance().DeleteEntry(EntryID)
   End Sub

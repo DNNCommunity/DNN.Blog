@@ -58,7 +58,7 @@ Partial Class EditEntry
  Protected WithEvents teBlogEntry As DotNetNuke.UI.UserControls.TextEditor
 #End Region
 
-#Region " Event Handlers "
+#Region "Event Handlers"
  Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
 
   Try
@@ -117,12 +117,6 @@ Partial Class EditEntry
     Me.lblTrackbackUrl.Visible = Not m_oParentBlog.AutoTrackback
     Me.txtTrackBackUrl.Visible = Not m_oParentBlog.AutoTrackback
     ' end change in 3.1.23
-    'DR-19/04/2009-BLG-9760
-    If m_oBlog IsNot Nothing AndAlso m_oBlog.EnableTwitterIntegration Then
-     chkDoNotTweet.Visible = True
-    Else
-     chkDoNotTweet.Visible = False
-    End If
 
     CategoryController.PopulateTree(treeCategories, PortalId, 0)
 
@@ -174,7 +168,6 @@ Partial Class EditEntry
 
      ' set UI based on published status
      If m_oEntry.Published Then
-      chkDoNotTweet.Visible = False
       cmdDraft.Text = GetString("SaveAndOffline", LocalResourceFile)
       cmdPublish.Text = GetString("Save", LocalResourceFile)
       DotNetNuke.UI.Utilities.ClientAPI.AddButtonConfirm(cmdDraft, GetString("SaveAndOffline.Confirm", LocalResourceFile))
@@ -465,12 +458,6 @@ Partial Class EditEntry
      End If
      .PermaLink = Utility.GenerateEntryLink(PortalId, .EntryID, Me.TabId, .Title)
      m_oEntryController.UpdateEntry(m_oEntry)
-
-     'DR-04/19/2009-BLG-9760
-     ' check to see if we should tweet
-     If m_oBlog.EnableTwitterIntegration And firstPublish And (Not chkDoNotTweet.Checked) Then
-      Utility.Tweet(m_oBlog, m_oEntry)
-     End If
 
      Business.TagController.UpdateTagsByEntry(m_oEntry.EntryID, tbTags.Text)
 

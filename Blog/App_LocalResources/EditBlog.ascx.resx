@@ -274,21 +274,6 @@
   <data name="lblTrackbacks.Text" xml:space="preserve">
     <value>Trackback comments:</value>
   </data>
-  <data name="chkEnableTwitterIntegration.Text" xml:space="preserve">
-    <value>Tweet When I Post a Blog</value>
-  </data>
-  <data name="lblTweetTemplate.Text" xml:space="preserve">
-    <value>Tweet Template:</value>
-  </data>
-  <data name="lblTwitterIntegration.Text" xml:space="preserve">
-    <value>Twitter Integration:</value>
-  </data>
-  <data name="lblTwitterPassword.Text" xml:space="preserve">
-    <value>Password (blank=leave unchanged):</value>
-  </data>
-  <data name="lblTwitterUsername.Text" xml:space="preserve">
-    <value>Twitter Username:</value>
-  </data>
   <data name="txtTweetTemplate.Text" xml:space="preserve">
     <value>Blogged: {title} - {url}</value>
   </data>

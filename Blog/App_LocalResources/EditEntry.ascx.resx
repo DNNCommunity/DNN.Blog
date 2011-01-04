@@ -220,9 +220,6 @@
   <data name="Filename.Header" xml:space="preserve">
     <value>File Name</value>
   </data>
-  <data name="chkDoNotTweet.Text" xml:space="preserve">
-    <value>Do Not Tweet this Entry Automatically</value>
-  </data>
   <data name="lblCategories.Text" xml:space="preserve">
     <value>Categories: </value>
   </data>

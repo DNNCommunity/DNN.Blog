@@ -191,7 +191,6 @@
      <td>
       <asp:CheckBox ID="chkAllowComments" CssClass="Normal" ResourceKey="chkAllowComments" runat="server" />
       <br />
-      <asp:CheckBox ID="chkDoNotTweet" CssClass="Normal" ResourceKey="chkDoNotTweet" runat="server" AutoPostBack="False" Visible="false" /><br />
       <asp:CheckBox ID="chkDisplayCopyright" CssClass="Normal" ResourceKey="chkDisplayCopyright" runat="server" AutoPostBack="True" />
       <asp:Panel ID="pnlCopyright" runat="server" Visible="False">
        <asp:Label ID="lblCopyright" runat="server" CssClass="Normal" ResourceKey="lblCopyright" />

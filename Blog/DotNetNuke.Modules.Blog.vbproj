@@ -180,7 +180,6 @@
     <Compile Include="Components\MetaWeblog\IMetaWeblog.vb" />
     <Compile Include="Components\MoveableType\IMoveableType.vb" />
     <Compile Include="Components\Rss\StringWriterWithEncoding.vb" />
-    <Compile Include="Components\Twitter\Twitter.vb" />
     <Compile Include="Components\WordPress\IWordPress.vb" />
     <Compile Include="EditCategories.ascx.designer.vb">
       <DependentUpon>EditCategories.ascx</DependentUpon>
@@ -450,6 +449,7 @@
     <None Include="_Installation\SQL\03.05.00.SqlDataProvider" />
     <None Include="_Installation\SQL\03.05.01.SqlDataProvider" />
     <None Include="_Installation\SQL\04.00.00.SqlDataProvider" />
+    <None Include="_Installation\SQL\04.01.00.SqlDataProvider" />
     <None Include="_Installation\SQL\Install.04.00.00.SqlDataProvider" />
     <None Include="_Installation\SQL\Uninstall.SqlDataProvider" />
     <Content Include="ViewCategories.ascx" />

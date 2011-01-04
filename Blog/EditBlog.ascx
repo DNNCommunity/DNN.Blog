@@ -103,42 +103,6 @@
  </tr>
  <tr>
   <td>
-   <asp:Label ID="lblTwitterIntegration" CssClass="SubHead" runat="server" ResourceKey="lblTwitterIntegration" />
-  </td>
- </tr>
- <tr>
-  <td>
-   <asp:CheckBox ID="chkEnableTwitterIntegration" CssClass="Normal" runat="server" ResourceKey="chkEnableTwitterIntegration" AutoPostBack="true" />
-  </td>
- </tr>
- <tr>
-  <td>
-   <asp:Label ID="lblTwitterUsername" runat="server" ResourceKey="lblTwitterUsername" /><br />
-   <asp:TextBox class="NormalTextBox" ID="txtTwitterUsername" runat="server" Width="300px" />
-  </td>
- </tr>
- <tr>
-  <td>
-   <asp:Label ID="lblTwitterPassword" runat="server" ResourceKey="lblTwitterPassword" /><br />
-   <asp:TextBox class="NormalTextBox" ID="txtTwitterPassword" runat="server" Width="300px" TextMode="Password" />
-  </td>
- </tr>
- <tr>
-  <td>
-   <asp:Label ID="lblTweetTemplate" runat="server" ResourceKey="lblTweetTemplate" /><br />
-   <asp:TextBox class="NormalTextBox" ID="txtTweetTemplate" runat="server" Width="300px" Height="61px" TextMode="MultiLine" />
-   <br />
-   <i><b><asp:Label runat="server" ID="lblAvailableTokens" resourcekey="lblAvailableTokens" /></b></i> {title}, {url}
-  </td>
- </tr>
- <tr>
-  <td>
-   <hr />
-   <br />
-  </td>
- </tr>
- <tr>
-  <td>
    <asp:Label ID="lblCommentOptions" CssClass="SubHead" runat="server" ResourceKey="lblCommentOptions" />
   </td>
  </tr>
