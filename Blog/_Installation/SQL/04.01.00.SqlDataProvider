@@ -28,6 +28,23 @@ ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs
 DROP COLUMN		[TweetTemplate]
 GO
 
+-- various cleanup
+UPDATE {databaseOwner}{objectQualifier}Blog_Blogs
+SET TimeZone=0
+WHERE TimeZone IS NULL
+GO
+
+UPDATE {databaseOwner}{objectQualifier}Blog_Blogs
+SET SyndicateIndependant=0
+WHERE SyndicateIndependant IS NULL
+GO
+
+UPDATE {databaseOwner}{objectQualifier}Blog_Entries
+SET AllowComments=0
+WHERE AllowComments IS NULL
+GO
+
+
 /*************** PROCEDURES ************************/
 
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_UpdateBlog') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
@@ -176,54 +193,6 @@ select SCOPE_IDENTITY()
 
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_GetBlog') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}{objectQualifier}Blog_GetBlog
-GO
-
-CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlog
-	@BlogID int
-	
-AS
-
-SELECT
-	B.[ParentBlogID],
-	B.[PortalID],
-	B.[BlogID],
-	B.[UserID],
-	U.[UserName],
-	U.[DisplayName] AS UserFullName,
-	B.[Title],
-	B.[Description],
-	B.[Public],
-	B.[AllowComments],
-	B.[AllowAnonymous],
-	B.[LastEntry],
-	B.[Created],
-	B.[Culture],
-	B.[ShowFullname],
-	B.[DateFormat],
-	IsNull(B.[TimeZone],0) AS TimeZone,
-	B.[Syndicated],
-	IsNull(B.[SyndicateIndependant], 0) As SyndicateIndependant,
-	B.[SyndicationURL],
-	B.[SyndicationEmail],
-	B.[EmailNotification],
-	B.[AllowTrackbacks],
-	B.[AutoTrackback],
-	B.[MustApproveComments],
-	B.[MustApproveAnonymous],
-	B.[MustApproveTrackbacks],	
-	B.[UseCaptcha],
-	(SELECT Count(BlogID) FROM {databaseOwner}{objectQualifier}Blog_Blogs WHERE ParentBlogID=B.[BlogID]) AS ChildBlogCount
-FROM
-	{databaseOwner}{objectQualifier}Blog_Blogs B
-	INNER JOIN 
-	{databaseOwner}{objectQualifier}Users U ON B.[UserID] = U.[UserID]
-WHERE
-	[BlogID] = @BlogID
-
-GO
-
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_AddComment') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}{objectQualifier}Blog_AddComment
 GO
@@ -237,7 +206,7 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_AddComment
 	@Approved bit,
 	@Website nvarchar(255),
 	@Email nvarchar(255),
-  @AddedDate datetime
+ @AddedDate datetime
 AS
 
 
@@ -282,7 +251,7 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdateComment
 	@Approved bit,
 	@Website nvarchar(255),
 	@Email nvarchar(255),
-  @AddedDate datetime
+ @AddedDate datetime
 AS
 
 UPDATE {databaseOwner}{objectQualifier}Blog_Comments SET
@@ -300,3 +269,388 @@ WHERE
 
 
 GO
+
+/*************** Blog Retrieval SPROCS ************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_GetBlog') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_GetBlog
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlog
+ @BlogID int
+ 
+AS
+
+SELECT
+ B.*,
+ U.[UserName],
+ U.[DisplayName] AS UserFullName,
+ (SELECT Count(BlogID) FROM {databaseOwner}{objectQualifier}Blog_Blogs WHERE ParentBlogID=B.[BlogID]) AS ChildBlogCount
+FROM
+ {databaseOwner}{objectQualifier}Blog_Blogs B
+ INNER JOIN 
+ {databaseOwner}{objectQualifier}Users U ON B.[UserID] = U.[UserID]
+WHERE
+ [BlogID] = @BlogID
+
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_GetBlogsByUserName') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_GetBlogsByUserName
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlogsByUserName 
+@PortalID int,
+@UserName nvarchar(100)
+
+AS
+
+DECLARE @BlogID int
+
+SELECT
+ B.*,
+ U.[UserName],
+ U.[DisplayName],
+ (SELECT Count(BlogID) FROM {databaseOwner}{objectQualifier}Blog_Blogs WHERE ParentBlogID=B.[BlogID]) AS ChildBlogCount
+FROM
+ {databaseOwner}{objectQualifier}Blog_Blogs B (nolock)
+ INNER JOIN 
+ {databaseOwner}{objectQualifier}Users U (nolock) ON B.[UserID] = U.[UserID]
+WHERE
+ U.UserName = @UserName
+ AND B.PortalID=@PortalID 
+ORDER BY B.[Title]
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListBlogs') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_ListBlogs
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListBlogs
+@PortalID int,
+@ParentBlogID int,
+@ShowNonPublic bit
+AS
+
+SELECT
+ B.*,
+ U.[UserName],
+ U.[DisplayName] AS UserFullName,
+ (SELECT Count(BlogID) FROM {databaseOwner}{objectQualifier}Blog_Blogs WHERE ParentBlogID=B.[BlogID]) AS ChildBlogCount
+FROM
+ {databaseOwner}{objectQualifier}Blog_Blogs B
+ INNER JOIN 
+ {databaseOwner}{objectQualifier}Users U ON B.[UserID] = U.[UserID]
+WHERE B.[PortalID] = @PortalID AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic) AND (B.[ParentBlogID] = @ParentBlogID)
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListBlogsByPortal') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_ListBlogsByPortal
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListBlogsByPortal
+@PortalID int,
+@ShowNonPublic bit
+AS
+
+SELECT
+ B.*,
+ U.[UserName],
+ U.[DisplayName] AS UserFullName,
+ (SELECT Count(BlogID) FROM {databaseOwner}{objectQualifier}Blog_Blogs WHERE ParentBlogID=B.[BlogID]) AS ChildBlogCount
+FROM
+ {databaseOwner}{objectQualifier}Blog_Blogs B
+ INNER JOIN 
+ {databaseOwner}{objectQualifier}Users U ON B.[UserID] = U.[UserID]
+WHERE B.[PortalID] = @PortalID AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+
+GO
+
+/*************** Entry Retrieval SPROCS ************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_GetEntry') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_GetEntry
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetEntry
+ @EntryID int,
+ @PortalId int
+AS
+
+SELECT
+ E.*,
+ B.[UserID],
+ B.[SyndicationEmail],
+ U.[UserName],
+ U.[DisplayName] AS UserFullName,
+ (Select Count(*) FROM {databaseOwner}{objectQualifier}Blog_Comments WHERE EntryID = E.EntryID AND Approved = 1) As CommentCount
+FROM
+ {databaseOwner}{objectQualifier}Blog_Entries E 
+ INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs B ON B.BlogID = E.BlogID 
+ INNER JOIN {databaseOwner}{objectQualifier}Users U ON U.UserID = B.UserID
+WHERE
+ E.[EntryID] = @EntryID and
+ B.PortalId = @PortalId
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListAllEntriesByCategory') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_ListAllEntriesByCategory
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListAllEntriesByCategory
+  @PortalID int,
+  @CatID int,
+  @ShowNonPublic bit = 0,
+  @ShowNonPublished bit=0
+
+AS
+BEGIN
+ SET NOCOUNT ON;
+ SELECT
+  E.*,
+  B.[UserID],
+  B.[SyndicationEmail],
+  U.[UserName],
+  U.[DisplayName] AS UserFullName,
+  (Select Count(*) FROM {databaseOwner}{objectQualifier}Blog_Comments WHERE EntryID = E.EntryID AND Approved = 1) As CommentCount
+ FROM   {databaseOwner}{objectQualifier}Blog_Blogs B INNER JOIN
+  {databaseOwner}{objectQualifier}Blog_Entries E ON B.BlogID = E.BlogID INNER JOIN
+  {databaseOwner}{objectQualifier}Users U ON B.UserID = U.UserID
+  INNER JOIN {databaseOwner}{objectQualifier}Blog_Entry_Categories EC on E.EntryID = EC.EntryID 
+ WHERE B.PortalID = @PortalID
+ AND EC.CatID = @CatID
+ AND (E.Published = 1 OR E.Published <> @ShowNonPublished)
+ AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+ ORDER BY E.AddedDate DESC
+END
+
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListAllEntriesByTag') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_ListAllEntriesByTag
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListAllEntriesByTag
+ @PortalID int,
+ @TagID int,
+ @ShowNonPublic bit = 0,
+ @ShowNonPublished bit=0
+
+AS
+BEGIN
+ SET NOCOUNT ON;
+ SELECT
+  E.*,
+  B.[UserID],
+  B.[SyndicationEmail],
+  U.[UserName],
+  U.[DisplayName] AS UserFullName,
+  (Select Count(*) FROM {databaseOwner}{objectQualifier}Blog_Comments WHERE EntryID = E.EntryID AND Approved = 1) As CommentCount
+ FROM   {databaseOwner}{objectQualifier}Blog_Blogs B INNER JOIN
+  {databaseOwner}{objectQualifier}Blog_Entries E ON B.BlogID = E.BlogID INNER JOIN
+  {databaseOwner}{objectQualifier}Users U ON B.UserID = U.UserID
+  INNER JOIN {databaseOwner}{objectQualifier}Blog_Entry_Tags ET on E.EntryID = ET.EntryID 
+ WHERE B.PortalID = @PortalID
+ AND ET.TagID = @TagID
+ AND (E.Published = 1 OR E.Published <> @ShowNonPublished)
+ AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+ ORDER BY E.AddedDate DESC
+
+END
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListAllEntriesByBlog') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_ListAllEntriesByBlog
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListAllEntriesByBlog
+ @BlogID int
+AS
+
+SELECT
+ E.*,
+ B.[UserID],
+ B.[SyndicationEmail],
+ U.[UserName],
+ U.[DisplayName] AS UserFullName,
+ (Select Count(*) FROM {databaseOwner}{objectQualifier}Blog_Comments WHERE EntryID = E.EntryID AND Approved = 1) As CommentCount
+
+FROM {databaseOwner}{objectQualifier}Blog_Blogs B INNER JOIN
+  {databaseOwner}{objectQualifier}Blog_Entries E ON B.[BlogID] = E.[BlogID] INNER JOIN
+  {databaseOwner}{objectQualifier}Users U ON B.[UserID] = U.[UserID]
+WHERE (B.[BlogID] = @BlogID)
+ORDER BY E.AddedDate DESC
+
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListAllEntriesByPortal') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_ListAllEntriesByPortal
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListAllEntriesByPortal
+@PortalID int,
+@ShowNonPublic bit = 0,
+@ShowNonPublished bit=0
+
+AS
+
+SELECT
+ E.*,
+ B.[UserID],
+ B.[SyndicationEmail],
+ U.[UserName],
+ U.[DisplayName] AS UserFullName,
+ (Select Count(*) FROM {databaseOwner}{objectQualifier}Blog_Comments WHERE EntryID = E.EntryID AND Approved = 1) As CommentCount
+FROM   {databaseOwner}{objectQualifier}Blog_Blogs B INNER JOIN
+  {databaseOwner}{objectQualifier}Blog_Entries E ON B.[BlogID] = E.[BlogID] INNER JOIN
+  {databaseOwner}{objectQualifier}Users U ON B.[UserID] = U.[UserID]
+WHERE B.PortalID = @PortalID 
+ AND (E.[Published] = 1 OR E.[Published] <> @ShowNonPublished)
+ AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+ORDER BY E.AddedDate DESC
+
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListEntriesByPortal') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_ListEntriesByPortal
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListEntriesByPortal
+@PortalID int,
+@BlogDate datetime = null,
+@ShowNonPublic bit = 0,
+@ShowNonPublished bit=0,
+@MaxEntries int = 10
+
+AS
+
+If @BlogDate IS NULL SET @BlogDate = GetUTCDate()
+SET rowcount @MaxEntries
+ SELECT
+ E.*,
+ B.[UserID],
+ B.[SyndicationEmail],
+ U.[UserName],
+ U.[DisplayName] AS UserFullName,
+ (Select Count(*) FROM {databaseOwner}{objectQualifier}Blog_Comments WHERE EntryID = E.EntryID AND Approved = 1) As CommentCount
+FROM   {databaseOwner}{objectQualifier}Blog_Blogs B INNER JOIN
+  {databaseOwner}{objectQualifier}Blog_Entries E ON B.[BlogID] = E.[BlogID] INNER JOIN
+  {databaseOwner}{objectQualifier}Users U ON B.[UserID] = U.[UserID]
+WHERE B.PortalID = @PortalID AND E.AddedDate <=@BlogDate
+ AND (E.[Published] = 1 OR E.[Published] <> @ShowNonPublished)
+ AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+ORDER BY E.AddedDate DESC
+ 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListEntriesByPortalByDay') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_ListEntriesByPortalByDay
+
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListEntriesByPortalByDay
+@PortalID int,
+@BlogDate datetime = null,
+@ShowNonPublic bit = 0,
+@ShowNonPublished bit=0,
+@MaxEntries int = 10
+
+AS
+
+If @BlogDate IS NULL SET @BlogDate = GetUTCDate()
+SET rowcount @MaxEntries
+ SELECT
+ E.*,
+ B.[UserID],
+ B.[SyndicationEmail],
+ U.[UserName],
+ U.[DisplayName] AS UserFullName,
+ (Select Count(*) FROM {databaseOwner}{objectQualifier}Blog_Comments WHERE EntryID = E.EntryID AND Approved = 1) As CommentCount
+FROM  {databaseOwner}{objectQualifier}Blog_Blogs B INNER JOIN
+  {databaseOwner}{objectQualifier}Blog_Entries E ON B.[BlogID] = E.[BlogID] INNER JOIN
+  {databaseOwner}{objectQualifier}Users U ON B.[UserID] = U.[UserID]
+WHERE 
+ B.PortalID = @PortalID AND
+ E.AddedDate BETWEEN @BlogDate AND DateAdd( dd, 1, @BlogDate ) 
+ AND (E.[Published] = 1 OR E.[Published] <> @ShowNonPublished)
+ AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+ORDER BY E.AddedDate DESC
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListEntriesByPortalByMonth') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_ListEntriesByPortalByMonth
+
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListEntriesByPortalByMonth
+@PortalID int,
+@BlogDate datetime = null,
+@ShowNonPublic bit = 0,
+@ShowNonPublished bit=0,
+@MaxEntries int = 10
+
+AS
+
+If @BlogDate IS NULL SET @BlogDate = GetUTCDate()
+SET rowcount @MaxEntries
+ SELECT
+ E.*,
+ B.[UserID],
+ B.[SyndicationEmail],
+ U.[UserName],
+ U.[DisplayName] AS UserFullName,
+ (Select Count(*) FROM {databaseOwner}{objectQualifier}Blog_Comments WHERE EntryID = E.EntryID AND Approved = 1) As CommentCount
+FROM  {databaseOwner}{objectQualifier}Blog_Blogs B INNER JOIN
+  {databaseOwner}{objectQualifier}Blog_Entries E ON B.[BlogID] = E.[BlogID] INNER JOIN
+  {databaseOwner}{objectQualifier}Users U ON B.[UserID] = U.[UserID]
+WHERE 
+ B.PortalID = @PortalID AND
+ E.AddedDate BETWEEN DATEADD(month, DATEDIFF(month, 0, @BlogDate), 0)  AND @BlogDate AND E.AddedDate <=  GetUTCDate()
+ AND (E.[Published] = 1 OR E.[Published] <> @ShowNonPublished)
+ AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+ORDER BY E.AddedDate DESC
+ 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListEntriesByBlog') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_ListEntriesByBlog
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListEntriesByBlog
+ @BlogID int,
+ @BlogDate datetime = null,
+ @ShowNonPublic bit = 0,
+ @ShowNonPublished bit=0,
+ @MaxEntries int =10
+
+AS
+
+If @BlogDate IS NULL SET @BlogDate = GetUTCDate()
+
+ SET rowcount @MaxEntries
+ SELECT
+  E.*,
+  B.[UserID],
+  B.[SyndicationEmail],
+  U.[UserName],
+  U.[DisplayName] AS UserFullName,
+  (Select Count(*) FROM {databaseOwner}{objectQualifier}Blog_Comments WHERE EntryID = E.EntryID AND Approved = 1) As CommentCount
+ FROM   {databaseOwner}{objectQualifier}Blog_Blogs B INNER JOIN
+  {databaseOwner}{objectQualifier}Blog_Entries E ON B.[BlogID] = E.[BlogID] INNER JOIN
+  {databaseOwner}{objectQualifier}Users U ON B.[UserID] = U.[UserID]
+ WHERE (B.[BlogID] = @BlogID OR B.[ParentBlogID] = @BlogID)
+  AND E.AddedDate <=@BlogDate
+  AND (E.[Published] = 1 OR E.[Published] <> @ShowNonPublished)
+  AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+ ORDER BY E.AddedDate DESC
+
+GO
+
