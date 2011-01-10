@@ -32,9 +32,9 @@
     <DefineTrace>true</DefineTrace>
     <OutputPath>..\..\bin\</OutputPath>
     <DocumentationFile>DotNetNuke.Modules.Blog.xml</DocumentationFile>
-    <NoWarn>42353,42354,42355</NoWarn>
-    <WarningsAsErrors>
-    </WarningsAsErrors>
+    <NoWarn>
+    </NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -44,9 +44,9 @@
     <Optimize>true</Optimize>
     <OutputPath>..\..\bin\</OutputPath>
     <DocumentationFile>DotNetNuke.Modules.Blog.xml</DocumentationFile>
-    <NoWarn>42353,42354,42355</NoWarn>
-    <WarningsAsErrors>
-    </WarningsAsErrors>
+    <NoWarn>
+    </NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
