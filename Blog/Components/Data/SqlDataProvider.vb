@@ -221,13 +221,13 @@ Namespace Data
             Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_ListCommentsByPortal", PortalID, ShowNonApproved, MaximumComments), IDataReader)
         End Function
 
-  Public Overrides Function AddComment(ByVal EntryID As Integer, ByVal userID As Integer, ByVal Title As String, ByVal comment As String, ByVal Author As String, ByVal Approved As Boolean, ByVal Website As String, ByVal Email As String) As Integer
-   Return CType(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_AddComment", EntryID, Null.GetNull(userID, DBNull.Value), Title, comment, Null.GetNull(Author, DBNull.Value), Approved, Null.GetNull(Website, DBNull.Value), Null.GetNull(Email, DBNull.Value)), Integer)
-  End Function
+    Public Overrides Function AddComment(ByVal EntryID As Integer, ByVal userID As Integer, ByVal Title As String, ByVal comment As String, ByVal Author As String, ByVal Approved As Boolean, ByVal Website As String, ByVal Email As String, ByVal AddedDate As DateTime) As Integer
+      Return CType(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_AddComment", EntryID, Null.GetNull(userID, DBNull.Value), Title, comment, Null.GetNull(Author, DBNull.Value), Approved, Null.GetNull(Website, DBNull.Value), Null.GetNull(Email, DBNull.Value), Null.GetNull(AddedDate, DBNull.Value)), Integer)
+    End Function
 
-  Public Overrides Sub UpdateComment(ByVal commentID As Integer, ByVal EntryID As Integer, ByVal userID As Integer, ByVal Title As String, ByVal comment As String, ByVal Author As String, ByVal Approved As Boolean, ByVal Website As String, ByVal Email As String)
-   SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_UpdateComment", commentID, EntryID, Null.GetNull(userID, DBNull.Value), Title, comment, Null.GetNull(Author, DBNull.Value), Approved, Null.GetNull(Website, DBNull.Value), Null.GetNull(Email, DBNull.Value))
-  End Sub
+    Public Overrides Sub UpdateComment(ByVal commentID As Integer, ByVal EntryID As Integer, ByVal userID As Integer, ByVal Title As String, ByVal comment As String, ByVal Author As String, ByVal Approved As Boolean, ByVal Website As String, ByVal Email As String, ByVal AddedDate As DateTime)
+      SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_UpdateComment", commentID, EntryID, Null.GetNull(userID, DBNull.Value), Title, comment, Null.GetNull(Author, DBNull.Value), Approved, Null.GetNull(Website, DBNull.Value), Null.GetNull(Email, DBNull.Value), Null.GetNull(AddedDate, DBNull.Value))
+    End Sub
 
   Public Overrides Sub DeleteComment(ByVal commentID As Integer)
    SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_DeleteComment", commentID)
