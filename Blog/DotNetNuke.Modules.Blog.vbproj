@@ -120,6 +120,7 @@
     <Content Include="Trackback.aspx" />
     <Content Include="ViewBlog.ascx" />
     <Content Include="ViewEntry.ascx" />
+    <Content Include="_Installation\04.01.00.txt" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Archive.ascx.designer.vb">
