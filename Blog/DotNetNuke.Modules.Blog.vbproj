@@ -24,6 +24,7 @@
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
+    <UseIISExpress>false</UseIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -121,6 +122,9 @@
     <Content Include="ViewBlog.ascx" />
     <Content Include="ViewEntry.ascx" />
     <Content Include="_Installation\04.01.00.txt" />
+    <Content Include="_Installation\04.05.00.txt" />
+    <Content Include="license.txt" />
+    <Content Include="releasenotes.txt" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Archive.ascx.designer.vb">
@@ -431,6 +435,7 @@
     </None>
     <EmbeddedResource Include="Upgrade\ChildblogsToCategories.sql" />
     <None Include="_Installation\DNN_Blog.dnn" />
+    <None Include="_Installation\DNN_Blog.dnn5" />
     <None Include="_Installation\SQL\01.00.00.SqlDataProvider" />
     <None Include="_Installation\SQL\01.00.01.SqlDataProvider" />
     <None Include="_Installation\SQL\01.00.02.SqlDataProvider" />

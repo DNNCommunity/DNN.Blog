@@ -1,0 +1,18 @@
+﻿<h3>Blog 4.5.0</h3>
+<p class="Contributor">
+    DotNetNuke&reg; <br />
+    <a href="mailto:support@dotnetnuke.com">support@dotnetnuke.com</a><br />
+    <a href=http://www.dotnetnuke.com>http://www.dotnetnuke.com</a><br />
+</p>
+<hr/>
+<div class="License">
+    <h3>About the Core Blog</h3>
+    <p class="Owner">
+        <b>Version 4.5.0</b><br /><br />
+        This version of the module requires DotNetNuke Core 5.4.4 or greater. 
+        FYI: Developers should be aware that the module uses Visual Studio 2010 only. 
+    </p>
+    <ul>
+        <li>123456: Sample text of work item.</li>
+    </ul>
+</div>
