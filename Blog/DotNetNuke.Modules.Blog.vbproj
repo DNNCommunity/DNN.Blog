@@ -31,7 +31,7 @@
     <DebugType>full</DebugType>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\bin\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <DocumentationFile>DotNetNuke.Modules.Blog.xml</DocumentationFile>
     <NoWarn>
     </NoWarn>
@@ -43,7 +43,7 @@
     <DefineDebug>false</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\bin\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <DocumentationFile>DotNetNuke.Modules.Blog.xml</DocumentationFile>
     <NoWarn>
     </NoWarn>
@@ -435,7 +435,7 @@
     </None>
     <EmbeddedResource Include="Upgrade\ChildblogsToCategories.sql" />
     <None Include="_Installation\DNN_Blog.dnn" />
-    <None Include="_Installation\DNN_Blog.dnn5" />
+    <None Include="DNN_Blog.dnn" />
     <None Include="_Installation\SQL\01.00.00.SqlDataProvider" />
     <None Include="_Installation\SQL\01.00.01.SqlDataProvider" />
     <None Include="_Installation\SQL\01.00.02.SqlDataProvider" />
@@ -498,4 +498,19 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <PropertyGroup>
+    <Extension>zip</Extension>
+    <DNNFileName>dnn_Blog</DNNFileName>
+    <PackageName>Blog</PackageName>
+    <BuildScriptsPath>$(MSBuildProjectDirectory)\BuildScripts</BuildScriptsPath>
+    <WebsiteInstallPath>$(MSBuildProjectDirectory)\..\..\Install\Module</WebsiteInstallPath>
+  </PropertyGroup>
+  <Import Project="$(BuildScriptsPath)\Package.Targets" />
+  <Target Name="AfterBuild" DependsOnTargets="DebugProject;Package">
+  </Target>
+  <Target Name="DebugProject" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).dll" DestinationFolder="../../bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).pdb" DestinationFolder="../../bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).xml" DestinationFolder="../../bin" />
+  </Target>
 </Project>
