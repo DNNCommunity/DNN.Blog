@@ -57,7 +57,7 @@
                     <iconFile />
                     <helpUrl />
                     <supportsPartialRendering>True</supportsPartialRendering>
-                    <supportsPopUps>False</supportsPopUps>
+                    <supportsPopUps>True</supportsPopUps>
                   </moduleControl>
                   <moduleControl>
                     <controlKey>Module_Options</controlKey>
@@ -67,7 +67,7 @@
                     <iconFile />
                     <helpUrl />
                     <supportsPartialRendering>True</supportsPartialRendering>
-                    <supportsPopUps>False</supportsPopUps>
+                    <supportsPopUps>True</supportsPopUps>
                   </moduleControl>
                   <moduleControl>
                     <controlKey>Edit_Blog</controlKey>
@@ -77,7 +77,7 @@
                     <iconFile />
                     <helpUrl />
                     <supportsPartialRendering>True</supportsPartialRendering>
-                    <supportsPopUps>False</supportsPopUps>
+                    <supportsPopUps>True</supportsPopUps>
                   </moduleControl>
                   <moduleControl>
                     <controlKey>Mass_Edit</controlKey>
@@ -87,7 +87,7 @@
                     <iconFile />
                     <helpUrl />
                     <supportsPartialRendering>True</supportsPartialRendering>
-                    <supportsPopUps>False</supportsPopUps>
+                    <supportsPopUps>True</supportsPopUps>
                   </moduleControl>
                 </moduleControls>
               </moduleDefinition>
@@ -113,7 +113,7 @@
                     <iconFile />
                     <helpUrl />
                     <supportsPartialRendering>True</supportsPartialRendering>
-                    <supportsPopUps>False</supportsPopUps>
+                    <supportsPopUps>True</supportsPopUps>
                   </moduleControl>
                   <moduleControl>
                     <controlKey>Edit_Blog</controlKey>
@@ -123,7 +123,7 @@
                     <iconFile />
                     <helpUrl />
                     <supportsPartialRendering>True</supportsPartialRendering>
-                    <supportsPopUps>False</supportsPopUps>                  
+                    <supportsPopUps>True</supportsPopUps>                  
                   </moduleControl>
                   <moduleControl>
                     <controlKey>Blog_Import</controlKey>
@@ -133,7 +133,7 @@
                     <iconFile />
                     <helpUrl />
                     <supportsPartialRendering>True</supportsPartialRendering>
-                    <supportsPopUps>False</supportsPopUps>
+                    <supportsPopUps>True</supportsPopUps>
                   </moduleControl>
                 </moduleControls>
               </moduleDefinition>
@@ -159,7 +159,7 @@
                     <iconFile />
                     <helpUrl />
                     <supportsPartialRendering>True</supportsPartialRendering>
-                    <supportsPopUps>False</supportsPopUps>
+                    <supportsPopUps>True</supportsPopUps>
                   </moduleControl>
                   <moduleControl>
                     <controlKey>Edit_Entry</controlKey>
@@ -169,7 +169,7 @@
                     <iconFile />
                     <helpUrl />
                     <supportsPartialRendering>True</supportsPartialRendering>
-                    <supportsPopUps>False</supportsPopUps>
+                    <supportsPopUps>True</supportsPopUps>
                   </moduleControl>
                 </moduleControls>
               </moduleDefinition>
@@ -227,7 +227,7 @@
                     <iconFile />
                     <helpUrl />
                     <supportsPartialRendering>True</supportsPartialRendering>
-                    <supportsPopUps>False</supportsPopUps>
+                    <supportsPopUps>True</supportsPopUps>
                   </moduleControl>
                 </moduleControls>
               </moduleDefinition>
