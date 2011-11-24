@@ -78,7 +78,7 @@ Partial Class ViewEntry
 
   If Not m_oEntry Is Nothing Then
    If Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
-    MyActions.Add(GetNextActionID, Localization.GetString("msgEditEntry", LocalResourceFile), "", Url:=EditUrl("EntryID", m_oEntry.EntryID.ToString(), "Edit_Entry"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Edit, Visible:=True)
+                MyActions.Add(GetNextActionID, Localization.GetString("msgEditEntry", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("EntryID", m_oEntry.EntryID.ToString(), "Edit_Entry"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
     lnkEditEntry.Visible = True
     lnkEditEntry.NavigateUrl = EditUrl("EntryID", m_oEntry.EntryID.ToString(), "Edit_Entry")
    Else

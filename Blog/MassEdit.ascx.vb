@@ -23,6 +23,7 @@ Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Services.Localization
+Imports DotNetNuke.Security
 
 Partial Class MassEdit
  Inherits BlogModuleBase
@@ -49,12 +50,12 @@ Partial Class MassEdit
   If Not m_oBlog Is Nothing Then
 
    If Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
-    MyActions.Add(GetNextActionID, Localization.GetString("msgEditBlogSettings", LocalResourceFile), "", Url:=EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Blog"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Edit, Visible:=True)
-    MyActions.Add(GetNextActionID, Localization.GetString("msgAddBlogEntry", LocalResourceFile), "", Url:=EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Entry"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Edit, Visible:=True)
-    MyActions.Add(GetNextActionID, Localization.GetString("msgMassEdit", LocalResourceFile), "", Url:=EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Mass_Edit"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Edit, Visible:=True)
+                MyActions.Add(GetNextActionID, Localization.GetString("msgEditBlogSettings", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Blog"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
+                MyActions.Add(GetNextActionID, Localization.GetString("msgAddBlogEntry", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Entry"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
+                MyActions.Add(GetNextActionID, Localization.GetString("msgMassEdit", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Mass_Edit"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
    End If
   End If
-  MyActions.Add(GetNextActionID, Localization.GetString("msgModuleOptions", LocalResourceFile), "", Url:=EditUrl("", "", "Module_Options"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Admin, Visible:=True)
+        MyActions.Add(GetNextActionID, Localization.GetString("msgModuleOptions", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("", "", "Module_Options"), False, DotNetNuke.Security.SecurityAccessLevel.Admin, True, False)
   Me.ModuleConfiguration.SupportedFeatures = 0
 
  End Sub

@@ -68,13 +68,13 @@ Partial Class ViewBlog
     'BLG-6126
     'ModuleConfiguration.ModuleTitle = m_oBlog.Title
     If Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
-     MyActions.Add(GetNextActionID, GetString("msgEditBlogSettings", LocalResourceFile), "", Url:=EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Blog"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Edit, Visible:=True)
-     MyActions.Add(GetNextActionID, GetString("msgAddBlogEntry", LocalResourceFile), "", Url:=EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Entry"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Edit, Visible:=True)
-     MyActions.Add(GetNextActionID, GetString("msgMassEdit", LocalResourceFile), "", Url:=EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Mass_Edit"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Edit, Visible:=True)
+                    MyActions.Add(GetNextActionID, GetString("msgEditBlogSettings", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Blog"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
+                    MyActions.Add(GetNextActionID, GetString("msgAddBlogEntry", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Entry"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
+                    MyActions.Add(GetNextActionID, GetString("msgMassEdit", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Mass_Edit"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
     End If
    End If
   End If
-  MyActions.Add(GetNextActionID, GetString("msgModuleOptions", LocalResourceFile), "", Url:=EditUrl("", "", "Module_Options"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Admin, Visible:=True)
+        MyActions.Add(GetNextActionID, GetString("msgModuleOptions", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("", "", "Module_Options"), False, DotNetNuke.Security.SecurityAccessLevel.Admin, True, False)
   Me.ModuleConfiguration.SupportedFeatures = 0
  End Sub
 

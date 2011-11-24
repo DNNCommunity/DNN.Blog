@@ -257,28 +257,8 @@
             </script>
             <script type="Install">
               <path>_Installation/sql</path>
-              <name>01.00.01.SqlDataProvider</name>
-              <version>01.00.01</version>
-            </script>
-            <script type="Install">
-              <path>_Installation/sql</path>
               <name>01.00.02.SqlDataProvider</name>
               <version>01.00.02</version>
-            </script>
-            <script type="Install">
-              <path>_Installation/sql</path>
-              <name>01.00.03.SqlDataProvider</name>
-              <version>01.00.03</version>
-            </script>
-            <script type="Install">
-              <path>_Installation/sql</path>
-              <name>03.00.00.SqlDataProvider</name>
-              <version>03.00.00</version>
-            </script>
-            <script type="Install">
-              <path>_Installation/sql</path>
-              <name>03.00.01.SqlDataProvider</name>
-              <version>03.00.01</version>
             </script>
             <script type="Install">
               <path>_Installation/sql</path>
@@ -314,11 +294,6 @@
               <path>_Installation/sql</path>
               <name>03.03.00.SqlDataProvider</name>
               <version>03.03.00</version>
-            </script>
-            <script type="Install">
-              <path>_Installation/sql</path>
-              <name>03.03.01.SqlDataProvider</name>
-              <version>03.03.01</version>
             </script>
             <script type="Install">
               <path>_Installation/sql</path>

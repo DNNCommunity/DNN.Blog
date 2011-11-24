@@ -10,7 +10,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>DotNetNuke.Modules.Blog</RootNamespace>
     <AssemblyName>DotNetNuke.Modules.Blog</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <MyType>Custom</MyType>
     <OptionExplicit>On</OptionExplicit>
     <OptionCompare>Binary</OptionCompare>
@@ -25,6 +25,7 @@
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
     <UseIISExpress>false</UseIISExpress>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -43,7 +44,7 @@
     <DefineDebug>false</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
-    <OutputPath>bin\</OutputPath>
+    <OutputPath>..\..\bin\</OutputPath>
     <DocumentationFile>DotNetNuke.Modules.Blog.xml</DocumentationFile>
     <NoWarn>
     </NoWarn>
@@ -56,35 +57,31 @@
       <HintPath>_Dependencies\CookComputing.XmlRpcV2.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DotNetNuke, Version=4.5.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>_Dependencies\DotNetNuke.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="DotNetNuke">
+      <HintPath>..\..\bin\DotNetNuke.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.WebControls, Version=1.5.3.20116, Culture=neutral">
+    <Reference Include="DotNetNuke.WebControls, Version=2.4.0.598, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>_Dependencies\DotNetNuke.WebControls.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\bin\DotNetNuke.WebControls.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.WebUtility, Version=3.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>_Dependencies\DotNetNuke.WebUtility.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\bin\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>_Dependencies\Microsoft.ApplicationBlocks.Data.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Microsoft.ApplicationBlocks.Data">
+      <HintPath>..\..\bin\Microsoft.ApplicationBlocks.Data.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="System.Web.Mobile" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Import Include="Microsoft.VisualBasic" />
@@ -434,14 +431,19 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <EmbeddedResource Include="Upgrade\ChildblogsToCategories.sql" />
+    <Content Include="web.config" />
+    <Content Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </Content>
+    <Content Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </Content>
     <None Include="_Installation\DNN_Blog.dnn" />
-    <None Include="DNN_Blog.dnn" />
+    <None Include="DNN_Blog.dnn">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="_Installation\SQL\01.00.00.SqlDataProvider" />
-    <None Include="_Installation\SQL\01.00.01.SqlDataProvider" />
     <None Include="_Installation\SQL\01.00.02.SqlDataProvider" />
-    <None Include="_Installation\SQL\01.00.03.SqlDataProvider" />
-    <None Include="_Installation\SQL\03.00.00.SqlDataProvider" />
-    <None Include="_Installation\SQL\03.00.01.SqlDataProvider" />
     <None Include="_Installation\SQL\03.01.04.SqlDataProvider" />
     <None Include="_Installation\SQL\03.01.07.SqlDataProvider" />
     <None Include="_Installation\SQL\03.01.12.SqlDataProvider" />
@@ -449,13 +451,13 @@
     <None Include="_Installation\SQL\03.01.20.SqlDataProvider" />
     <None Include="_Installation\SQL\03.01.21.SqlDataProvider" />
     <None Include="_Installation\SQL\03.03.00.SqlDataProvider" />
-    <None Include="_Installation\SQL\03.03.01.SqlDataProvider" />
     <None Include="_Installation\SQL\03.04.00.SqlDataProvider" />
     <None Include="_Installation\SQL\03.04.01.SqlDataProvider" />
     <None Include="_Installation\SQL\03.05.00.SqlDataProvider" />
     <None Include="_Installation\SQL\03.05.01.SqlDataProvider" />
     <None Include="_Installation\SQL\04.00.00.SqlDataProvider" />
     <None Include="_Installation\SQL\04.01.00.SqlDataProvider" />
+    <None Include="_Installation\SQL\06.00.00.SqlDataProvider" />
     <None Include="_Installation\SQL\Install.04.00.00.SqlDataProvider" />
     <None Include="_Installation\SQL\Uninstall.SqlDataProvider" />
     <Content Include="ViewCategories.ascx" />

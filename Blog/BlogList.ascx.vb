@@ -56,13 +56,13 @@ Partial Class BlogList
   If DotNetNuke.Security.PortalSecurity.HasNecessaryPermission(Security.SecurityAccessLevel.Edit, PortalSettings, ModuleConfiguration) Then
    m_oBlog = m_oBlogController.GetBlogByUserID(Me.PortalId, Me.UserId)
    If m_oBlog Is Nothing Then
-    MyActions.Add(GetNextActionID, Localization.GetString("msgCreateBlog", LocalResourceFile), "", Url:=EditUrl("", "", "Edit_Blog"), Secure:=DotNetNuke.Security.SecurityAccessLevel.View, Visible:=True)
+                MyActions.Add(GetNextActionID, Localization.GetString("msgCreateBlog", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("", "", "Edit_Blog"), False, DotNetNuke.Security.SecurityAccessLevel.View, True, False)
    Else
-    MyActions.Add(GetNextActionID, Localization.GetString("msgEditBlogSettings", LocalResourceFile), "", Url:=EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Blog"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Edit, Visible:=True)
-    MyActions.Add(GetNextActionID, Localization.GetString("msgAddBlogEntry", LocalResourceFile), "", Url:=EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Entry"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Edit, Visible:=True)
+                MyActions.Add(GetNextActionID, Localization.GetString("msgEditBlogSettings", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Blog"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
+                MyActions.Add(GetNextActionID, Localization.GetString("msgAddBlogEntry", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Entry"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
    End If
    If ForumBlog.Utils.isForumBlogInstalled(PortalId, TabId, False) Then
-    MyActions.Add(GetNextActionID, Localization.GetString("msgImportBlog", LocalResourceFile), "", Url:=EditUrl("Blog_Import"), Secure:=DotNetNuke.Security.SecurityAccessLevel.Admin, Visible:=True)
+                MyActions.Add(GetNextActionID, Localization.GetString("msgImportBlog", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("Blog_Import"), False, DotNetNuke.Security.SecurityAccessLevel.Admin, True, False)
    End If
   End If
 
