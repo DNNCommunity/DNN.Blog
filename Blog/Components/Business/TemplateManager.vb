@@ -1,7 +1,7 @@
 ﻿'
-' DotNetNuke -  http://www.dotnetnuke.com
-' Copyright (c) 2002-2010
-' by Perpetual Motion Interactive Systems Inc. ( http://www.perpetualmotion.ca )
+' DotNetNuke® - http://www.dotnetnuke.com
+' Copyright (c) 2002-2012
+' by DotNetNuke Corporation
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 ' documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,34 +16,35 @@
 ' THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 ' DEALINGS IN THE SOFTWARE.
-'-------------------------------------------------------------------------
+'
 
 Imports DotNetNuke.Services.Tokens
 
 Namespace Business
- Public Class TemplateManager
-  Inherits TokenReplace
 
-  Public Sub New(ByVal objComment As CommentInfo)
-   MyBase.new(Scope.DefaultSettings)
-   Me.UseObjectLessExpression = True
-   Me.PropertySource(ObjectLessToken) = objComment
-  End Sub
+    Public Class TemplateManager
+        Inherits TokenReplace
 
-  Public Sub New(ByVal objEntry As EntryInfo)
-   MyBase.new(Scope.DefaultSettings)
-   Me.UseObjectLessExpression = True
-   Me.PropertySource(ObjectLessToken) = objEntry
-  End Sub
+        Public Sub New(ByVal objComment As CommentInfo)
+            MyBase.new(Scope.DefaultSettings)
+            Me.UseObjectLessExpression = True
+            Me.PropertySource(ObjectLessToken) = objComment
+        End Sub
 
-  Protected Overrides Function replacedTokenValue(ByVal strObjectName As String, ByVal strPropertyName As String, ByVal strFormat As String) As String
-   Return MyBase.replacedTokenValue(strObjectName, strPropertyName, strFormat)
-  End Function
+        Public Sub New(ByVal objEntry As EntryInfo)
+            MyBase.new(Scope.DefaultSettings)
+            Me.UseObjectLessExpression = True
+            Me.PropertySource(ObjectLessToken) = objEntry
+        End Sub
 
-  Public Function ProcessTemplate(ByVal strSourceText As String) As String
-   Return MyBase.ReplaceTokens(strSourceText)
-  End Function
+        Protected Overrides Function replacedTokenValue(ByVal strObjectName As String, ByVal strPropertyName As String, ByVal strFormat As String) As String
+            Return MyBase.replacedTokenValue(strObjectName, strPropertyName, strFormat)
+        End Function
 
- End Class
+        Public Function ProcessTemplate(ByVal strSourceText As String) As String
+            Return MyBase.ReplaceTokens(strSourceText)
+        End Function
+
+    End Class
 
 End Namespace

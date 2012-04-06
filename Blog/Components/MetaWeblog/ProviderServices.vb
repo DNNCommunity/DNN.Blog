@@ -1,7 +1,7 @@
 '
-' DotNetNuke -  http://www.dotnetnuke.com
-' Copyright (c) 2002-2010
-' by Perpetual Motion Interactive Systems Inc. ( http://www.perpetualmotion.ca )
+' DotNetNuke® - http://www.dotnetnuke.com
+' Copyright (c) 2002-2012
+' by DotNetNuke Corporation
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 ' documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,23 +16,14 @@
 ' THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 ' DEALINGS IN THE SOFTWARE.
-'-------------------------------------------------------------------------
+'
 
 Imports System
-Imports System.Data
-Imports System.Drawing
 Imports System.IO
-Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Web
-Imports DotNetNuke.Common
-Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Data
 Imports DotNetNuke.Modules.Blog.Business
-Imports DotNetNuke.Entities.Modules
-Imports DotNetNuke.Entities.Portals
-Imports DotNetNuke.Framework.Providers
-Imports DotNetNuke.Services.FileSystem
 Imports DotNetNuke.Services.Localization
 
 Namespace MetaWeblog
@@ -260,5 +251,6 @@ Namespace MetaWeblog
       Return path.StartsWith(rootpath)
     End Function
 
-  End Class
+    End Class
+
 End Namespace

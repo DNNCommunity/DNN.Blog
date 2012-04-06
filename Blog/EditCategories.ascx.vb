@@ -1,7 +1,7 @@
 ﻿'
-' DotNetNuke -  http://www.dotnetnuke.com
-' Copyright (c) 2002-2010
-' by Perpetual Motion Interactive Systems Inc. ( http://www.perpetualmotion.ca )
+' DotNetNuke® - http://www.dotnetnuke.com
+' Copyright (c) 2002-2012
+' by DotNetNuke Corporation
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 ' documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,14 +16,12 @@
 ' THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 ' DEALINGS IN THE SOFTWARE.
-'-------------------------------------------------------------------------
+'
 
 Imports System
 Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Modules.Blog.Business
-Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Services.Localization
-
 
 Partial Class EditCategories
  Inherits BlogModuleBase
@@ -163,10 +161,8 @@ Partial Class EditCategories
 
  End Sub
 
- Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Response.Redirect(NavigateURL(), False)
+    End Sub
 
-  Response.Redirect(NavigateURL(), False)
-
- End Sub
 End Class
-

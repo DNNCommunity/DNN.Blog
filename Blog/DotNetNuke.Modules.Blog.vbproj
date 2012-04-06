@@ -415,7 +415,10 @@
     <None Include="Providers\Data\SqlDataProvider\Install.04.00.00.SqlDataProvider" />
     <None Include="Providers\Data\SqlDataProvider\Uninstall.SqlDataProvider" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Components\Controllers\" />
+    <Folder Include="Components\Entities\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <ProjectExtensions>

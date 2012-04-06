@@ -1,7 +1,7 @@
 '
-' DotNetNuke -  http://www.dotnetnuke.com
-' Copyright (c) 2002-2010
-' by Perpetual Motion Interactive Systems Inc. ( http://www.perpetualmotion.ca )
+' DotNetNuke® - http://www.dotnetnuke.com
+' Copyright (c) 2002-2012
+' by DotNetNuke Corporation
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 ' documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,27 +16,30 @@
 ' THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 ' DEALINGS IN THE SOFTWARE.
-'-------------------------------------------------------------------------
+'
 
 Imports System
-Imports System.Text
 
 Namespace MetaWeblog
- Public Class BlogPostException
-  Inherits Exception
-  Private _resourceKey As String
-  Public Sub New(ByVal resourceKey As String, ByVal defaultMessage As String)
-   MyBase.New(defaultMessage)
-   _resourceKey = resourceKey
-  End Sub
 
-  Public Property ResourceKey() As String
-   Get
-    Return _resourceKey
-   End Get
-   Set(ByVal Value As String)
-    _resourceKey = Value
-   End Set
-  End Property
- End Class
+    Public Class BlogPostException
+        Inherits Exception
+
+        Private _resourceKey As String
+        Public Sub New(ByVal resourceKey As String, ByVal defaultMessage As String)
+            MyBase.New(defaultMessage)
+            _resourceKey = resourceKey
+        End Sub
+
+        Public Property ResourceKey() As String
+            Get
+                Return _resourceKey
+            End Get
+            Set(ByVal Value As String)
+                _resourceKey = Value
+            End Set
+        End Property
+
+    End Class
+
 End Namespace
