@@ -31,7 +31,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("DotNetNuke Blog Module")> 
 <Assembly: AssemblyCompany("DotNetNuke Corp.")> 
 <Assembly: AssemblyProduct("http://www.dotnetnuke.com")> 
-<Assembly: AssemblyCopyright("Copyright 2002-2011 by DotNetNuke.")> 
+<Assembly: AssemblyCopyright("Copyright 2002-2012 by DotNetNuke.")> 
 <Assembly: AssemblyTrademark("DotNetNuke")> 
 <Assembly: CLSCompliant(True)> 
 
@@ -45,8 +45,8 @@ Imports System.Runtime.InteropServices
 ' You can specify all the values or you can default the Build and Revision Numbers 
 ' by using the '*' as shown below:
 
-<Assembly: AssemblyVersion("04.01.00")> 
+<Assembly: AssemblyVersion("04.05.00")> 
 
 <Assembly: Guid("49cae2ac-30c7-45fe-8663-948e1543d8d3")> 
-<Assembly: AssemblyInformationalVersion("04.01.00")> 
-<Assembly: AssemblyFileVersion("04.01.00")> 
+<Assembly: AssemblyInformationalVersion("04.05.00")> 
+<Assembly: AssemblyFileVersion("04.05.00")> 

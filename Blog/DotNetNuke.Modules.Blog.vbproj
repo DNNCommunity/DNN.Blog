@@ -424,28 +424,9 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <EmbeddedResource Include="Upgrade\ChildblogsToCategories.sql" />
-    <None Include="_Installation\DNN_Blog.dnn" />
     <None Include="DNN_Blog.dnn">
       <SubType>Designer</SubType>
     </None>
-    <None Include="_Installation\SQL\01.00.00.SqlDataProvider" />
-    <None Include="_Installation\SQL\01.00.02.SqlDataProvider" />
-    <None Include="_Installation\SQL\03.01.04.SqlDataProvider" />
-    <None Include="_Installation\SQL\03.01.07.SqlDataProvider" />
-    <None Include="_Installation\SQL\03.01.12.SqlDataProvider" />
-    <None Include="_Installation\SQL\03.01.15.SqlDataProvider" />
-    <None Include="_Installation\SQL\03.01.20.SqlDataProvider" />
-    <None Include="_Installation\SQL\03.01.21.SqlDataProvider" />
-    <None Include="_Installation\SQL\03.03.00.SqlDataProvider" />
-    <None Include="_Installation\SQL\03.04.00.SqlDataProvider" />
-    <None Include="_Installation\SQL\03.04.01.SqlDataProvider" />
-    <None Include="_Installation\SQL\03.05.00.SqlDataProvider" />
-    <None Include="_Installation\SQL\03.05.01.SqlDataProvider" />
-    <None Include="_Installation\SQL\04.00.00.SqlDataProvider" />
-    <None Include="_Installation\SQL\04.01.00.SqlDataProvider" />
-    <None Include="_Installation\SQL\06.00.00.SqlDataProvider" />
-    <None Include="_Installation\SQL\Install.04.00.00.SqlDataProvider" />
-    <None Include="_Installation\SQL\Uninstall.SqlDataProvider" />
     <Content Include="ViewCategories.ascx" />
     <Content Include="ViewTags.ascx" />
     <Content Include="ViewTagsSettings.ascx" />
@@ -460,6 +441,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Documentation\" />
+    <Folder Include="Providers\Data\SqlDataProvider\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

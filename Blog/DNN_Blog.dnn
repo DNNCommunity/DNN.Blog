@@ -331,6 +331,10 @@
 			  <name>Install.04.00.00.SqlDataProvider</name>
 			  <version>04.00.00</version>
 			</script>
+			  <script type="Install">
+				  <name>Install.04.05.00.SqlDataProvider</name>
+				  <version>04.05.00</version>
+			  </script>
 			<script type="UnInstall">
 			  <name>Uninstall.SqlDataProvider</name>
 			  <version>04.05.00</version>
@@ -379,6 +383,10 @@
 			<file>
 			  <path>Install\Module</path>
 			  <name>Blog_04.01.00_Install.resources</name>
+			</file>
+			<file>
+				<path>Install\Module</path>
+				<name>Blog_04.01.01_Install.resources</name>
 			</file>
 			<file>
 			  <path>bin</path>
