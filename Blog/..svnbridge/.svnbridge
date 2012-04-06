@@ -9,4 +9,15 @@ ResourceZip
 _ReSharper.DotNetNuke.Modules.Blog
 obj
 package
+</Value></Property><Property><Name>svn:ignore</Name><Value>*.cache
+*.manifest
+*.suo
+*.user
+Install.04.00.00.SqlDataProvider
+ResourceZip
+_ReSharper.DotNetNuke.Modules.Blog
+bin
+obj
+package
+packages
 </Value></Property></Properties></ItemProperties>
