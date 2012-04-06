@@ -1,4 +1,0 @@
-'Remove prior uninstalled versions to prevent future installation conflicts
-Install\Module\Blog_03.02.00_Install.resources
-Install\Module\Blog_03.03.00_Install.resources
-Install\Module\Blog_03.03.01_Install.resources

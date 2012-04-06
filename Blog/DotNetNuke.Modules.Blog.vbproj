@@ -103,6 +103,8 @@
     <Content Include="BlogFeed.ascx" />
     <Content Include="BlogImport.ascx" />
     <Content Include="BlogList.ascx" />
+    <Content Include="Documentation\License.txt" />
+    <Content Include="Documentation\ReleaseNotes.txt" />
     <Content Include="EditBlog.ascx" />
     <Content Include="EditEntry.ascx" />
     <Content Include="module.css" />
@@ -111,10 +113,6 @@
     <Content Include="Trackback.aspx" />
     <Content Include="ViewBlog.ascx" />
     <Content Include="ViewEntry.ascx" />
-    <Content Include="_Installation\04.01.00.txt" />
-    <Content Include="_Installation\04.05.00.txt" />
-    <Content Include="license.txt" />
-    <Content Include="releasenotes.txt" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Archive.ascx.designer.vb">
@@ -170,7 +168,6 @@
     <Compile Include="Components\Settings\RecentEntriesSettings.vb">
     </Compile>
     <Compile Include="Components\Settings\TagViewSettings.vb" />
-    <Compile Include="Components\Data\SqlDataProvider.vb" />
     <Compile Include="Components\Globals.vb" />
     <Compile Include="Components\MetaWeblog\IMetaWeblog.vb" />
     <Compile Include="Components\MoveableType\IMoveableType.vb" />
@@ -195,7 +192,6 @@
     <Compile Include="Components\Business\CategoryInfo.vb" />
     <Compile Include="Components\Business\CommentController.vb" />
     <Compile Include="Components\Business\CommentInfo.vb" />
-    <Compile Include="Components\Data\DataProvider.vb" />
     <Compile Include="Components\Business\EntryController.vb" />
     <Compile Include="Components\Business\EntryInfo.vb" />
     <Compile Include="Components\File\FileController.vb" />
@@ -248,25 +244,9 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
-    <Compile Include="My Project\Application.Designer.vb">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Application.myapp</DependentUpon>
-    </Compile>
-    <Compile Include="My Project\MyExtensions\MyWebExtension.vb">
-      <VBMyExtensionTemplateID>Microsoft.VisualBasic.Web.MyExtension</VBMyExtensionTemplateID>
-      <VBMyExtensionTemplateVersion>1.0.0.0</VBMyExtensionTemplateVersion>
-    </Compile>
-    <Compile Include="My Project\Resources.Designer.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="My Project\Settings.Designer.vb">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
     <Compile Include="Components\Rss\BlogRssFeed.vb" />
+    <Compile Include="Providers\Data\DataProvider.vb" />
+    <Compile Include="Providers\Data\SqlDataProvider\SqlDataProvider.vb" />
     <Compile Include="RecentComments.ascx.designer.vb">
       <DependentUpon>RecentComments.ascx</DependentUpon>
     </Compile>
@@ -380,12 +360,6 @@
     <Content Include="App_LocalResources\RecentEntries.ascx.resx" />
     <Content Include="App_LocalResources\RecentEntriesSettings.ascx.resx" />
     <Content Include="App_LocalResources\BlogTemplates.ascx.resx" />
-    <EmbeddedResource Include="My Project\Resources.resx">
-      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
-      <CustomToolNamespace>My.Resources</CustomToolNamespace>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="blogpost.ashx" />
@@ -414,15 +388,6 @@
     <Content Include="Styles\Blog-Full_Grey.xsl" />
     <Content Include="Styles\Blog-Headlines.xsl" />
     <Content Include="Styles\Blog-Head_Grey.xsl" />
-    <None Include="My Project\Application.myapp">
-      <Generator>MyApplicationCodeGenerator</Generator>
-      <LastGenOutput>Application.Designer.vb</LastGenOutput>
-    </None>
-    <None Include="My Project\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <CustomToolNamespace>My</CustomToolNamespace>
-      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
-    </None>
     <EmbeddedResource Include="Upgrade\ChildblogsToCategories.sql" />
     <None Include="DNN_Blog.dnn">
       <SubType>Designer</SubType>
@@ -431,18 +396,26 @@
     <Content Include="ViewTags.ascx" />
     <Content Include="ViewTagsSettings.ascx" />
     <Content Include="WLWManifest.aspx" />
-    <Content Include="_Installation\03.03.00.txt" />
-    <Content Include="_Installation\03.03.01.txt" />
-    <Content Include="_Installation\03.04.00.txt" />
-    <Content Include="_Installation\03.04.01.txt" />
-    <Content Include="_Installation\03.05.00.txt" />
-    <Content Include="_Installation\03.05.01.txt" />
-    <Content Include="_Installation\04.00.00.txt" />
+    <None Include="Providers\Data\SqlDataProvider\01.00.00.SqlDataProvider" />
+    <None Include="Providers\Data\SqlDataProvider\01.00.02.SqlDataProvider" />
+    <None Include="Providers\Data\SqlDataProvider\03.01.04.SqlDataProvider" />
+    <None Include="Providers\Data\SqlDataProvider\03.01.07.SqlDataProvider" />
+    <None Include="Providers\Data\SqlDataProvider\03.01.12.SqlDataProvider" />
+    <None Include="Providers\Data\SqlDataProvider\03.01.15.SqlDataProvider" />
+    <None Include="Providers\Data\SqlDataProvider\03.01.20.SqlDataProvider" />
+    <None Include="Providers\Data\SqlDataProvider\03.01.21.SqlDataProvider" />
+    <None Include="Providers\Data\SqlDataProvider\03.03.00.SqlDataProvider" />
+    <None Include="Providers\Data\SqlDataProvider\03.04.00.SqlDataProvider" />
+    <None Include="Providers\Data\SqlDataProvider\03.04.01.SqlDataProvider" />
+    <None Include="Providers\Data\SqlDataProvider\03.05.00.SqlDataProvider" />
+    <None Include="Providers\Data\SqlDataProvider\03.05.01.SqlDataProvider" />
+    <None Include="Providers\Data\SqlDataProvider\04.00.00.SqlDataProvider" />
+    <None Include="Providers\Data\SqlDataProvider\04.01.00.SqlDataProvider" />
+    <None Include="Providers\Data\SqlDataProvider\04.05.00.SqlDataProvider" />
+    <None Include="Providers\Data\SqlDataProvider\Install.04.00.00.SqlDataProvider" />
+    <None Include="Providers\Data\SqlDataProvider\Uninstall.SqlDataProvider" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Documentation\" />
-    <Folder Include="Providers\Data\SqlDataProvider\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <ProjectExtensions>

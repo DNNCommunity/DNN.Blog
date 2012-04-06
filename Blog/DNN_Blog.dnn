@@ -5,12 +5,12 @@
 	  <description>Blog Module for DotNetNuke</description>
 	  <owner>
 		<name>DotNetNuke</name>
-		<organization>DotNetNuke</organization>
+		<organization>DotNetNuke Corporation</organization>
 		<url>http://dnnblog.codeplex.com</url>
-		<email>support@dotnetnuke.com</email>
+		  <email />
 	  </owner>
-	  <license src="license.txt" />
-	  <releaseNotes src="releasenotes.txt" />
+		<license src="License.txt"></license>
+		<releaseNotes src="ReleaseNotes.txt"></releaseNotes>
 	  <dependencies>
 		<dependency type="CoreVersion">06.02.00</dependency>
 	  </dependencies>
@@ -264,9 +264,20 @@
 			</assembly>
 		  </assemblies>
 		</component>
+		<component type="File">
+			<files>
+				<basePath>DesktopModules\DNNQA\Documentation</basePath>
+				<file>
+					<name>License.txt</name>
+				</file>
+				<file>
+					<name>ReleaseNotes.txt</name>
+				</file>
+			</files>
+		</component>
 		<component type="Script">
 		  <scripts>
-			<basePath>DesktopModules\Blog\_Installation\SQL</basePath>
+			<basePath>DesktopModules\Blog\Providers\Data\SqlDataProvider</basePath>
 			<script type="Install">
 			  <name>01.00.00.SqlDataProvider</name>
 			  <version>01.00.00</version>
@@ -328,13 +339,13 @@
 			  <version>04.01.00</version>
 			</script>
 			<script type="Install">
+				<name>04.05.00.SqlDataProvider</name>
+				<version>04.05.00</version>
+			</script>
+			<script type="Install">
 			  <name>Install.04.00.00.SqlDataProvider</name>
 			  <version>04.00.00</version>
 			</script>
-			  <script type="Install">
-				  <name>Install.04.05.00.SqlDataProvider</name>
-				  <version>04.05.00</version>
-			  </script>
 			<script type="UnInstall">
 			  <name>Uninstall.SqlDataProvider</name>
 			  <version>04.05.00</version>
