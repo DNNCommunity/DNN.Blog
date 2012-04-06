@@ -101,7 +101,6 @@
     <Content Include="Archive.ascx" />
     <Content Include="Blog.ascx" />
     <Content Include="BlogFeed.ascx" />
-    <Content Include="BlogImport.ascx" />
     <Content Include="BlogList.ascx" />
     <Content Include="Documentation\License.txt" />
     <Content Include="Documentation\ReleaseNotes.txt" />
@@ -136,13 +135,6 @@
       <DependentUpon>BlogFeed.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="BlogImport.ascx.designer.vb">
-      <DependentUpon>BlogImport.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="BlogImport.ascx.vb">
-      <DependentUpon>BlogImport.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="BlogList.ascx.designer.vb">
       <DependentUpon>BlogList.ascx</DependentUpon>
     </Compile>
@@ -161,6 +153,19 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Components\Blogger\IBlogger.vb" />
+    <Compile Include="Components\Controllers\ArchiveController.vb" />
+    <Compile Include="Components\Controllers\BlogController.vb" />
+    <Compile Include="Components\Controllers\CategoryController.vb" />
+    <Compile Include="Components\Controllers\CommentController.vb" />
+    <Compile Include="Components\Controllers\EntryController.vb" />
+    <Compile Include="Components\Controllers\InterfaceController.vb" />
+    <Compile Include="Components\Controllers\SearchController.vb" />
+    <Compile Include="Components\Controllers\TagController.vb" />
+    <Compile Include="Components\Entities\BlogInfo.vb" />
+    <Compile Include="Components\Entities\CategoryInfo.vb" />
+    <Compile Include="Components\Entities\CommentInfo.vb" />
+    <Compile Include="Components\Entities\EntryInfo.vb" />
+    <Compile Include="Components\Entities\TagInfo.vb" />
     <Compile Include="Components\Settings\BlogSettings.vb" />
     <Compile Include="Components\Business\TemplateManager.vb" />
     <Compile Include="Components\Settings\RecentCommentsSettings.vb">
@@ -180,22 +185,12 @@
       <DependentUpon>EditCategories.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Components\Business\ArchiveController.vb" />
     <Compile Include="Components\Business\ArchiveDays.vb" />
     <Compile Include="Components\Business\ArchiveMonths.vb" />
-    <Compile Include="Components\Business\BlogController.vb" />
-    <Compile Include="Components\Business\BlogInfo.vb" />
     <Compile Include="Components\BlogModuleBase.vb">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Components\Business\CategoryController.vb" />
-    <Compile Include="Components\Business\CategoryInfo.vb" />
-    <Compile Include="Components\Business\CommentController.vb" />
-    <Compile Include="Components\Business\CommentInfo.vb" />
-    <Compile Include="Components\Business\EntryController.vb" />
-    <Compile Include="Components\Business\EntryInfo.vb" />
     <Compile Include="Components\File\FileController.vb" />
-    <Compile Include="Components\Business\InterfaceController.vb" />
     <Compile Include="Components\MetaWeblog\BlogModuleProvider.vb" />
     <Compile Include="Components\MetaWeblog\ProviderEnums.vb" />
     <Compile Include="Components\MetaWeblog\ProviderExceptions.vb" />
@@ -203,10 +198,7 @@
     <Compile Include="Components\MetaWeblog\ProviderServices.vb" />
     <Compile Include="Components\MetaWeblog\ProviderStructs.vb" />
     <Compile Include="Components\Business\PingBackService.vb" />
-    <Compile Include="Components\Business\SearchController.vb" />
     <Compile Include="Components\Business\SearchResult.vb" />
-    <Compile Include="Components\Business\TagController.vb" />
-    <Compile Include="Components\Business\TagInfo.vb" />
     <Compile Include="Components\Business\Utility.vb" />
     <Compile Include="EditBlog.ascx.designer.vb">
       <DependentUpon>EditBlog.ascx</DependentUpon>
@@ -415,10 +407,7 @@
     <None Include="Providers\Data\SqlDataProvider\Install.04.00.00.SqlDataProvider" />
     <None Include="Providers\Data\SqlDataProvider\Uninstall.SqlDataProvider" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Components\Controllers\" />
-    <Folder Include="Components\Entities\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <ProjectExtensions>
