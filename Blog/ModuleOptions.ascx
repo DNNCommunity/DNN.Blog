@@ -1,418 +1,222 @@
 <%@ Control Language="vb" AutoEventWireup="false" CodeBehind="ModuleOptions.ascx.vb" Inherits="DotNetNuke.Modules.Blog.ModuleOptions" %>
-<%@ Register TagPrefix="dnn" TagName="SectionHead" Src="~/controls/SectionHeadControl.ascx" %>
+<%@ Import Namespace="DotNetNuke.Services.Localization" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
+<div class="dnnForm dnnBlogOptions dnnClear" id="dnnBlogOptions">
+    <div class="dnnFormExpandContent"><a href=""><%=Localization.GetString("ExpandAll", Localization.SharedResourceFile)%></a></div>
+    <div class="dnnFormItem dnnFormHelp dnnClear"><p class="dnnFormRequired"><span><%=LocalizeString("RequiredFields")%></span></p></div>
+    <div>
+        <h2 id="dnnSitePanel-GeneralSettings" class="dnnFormSectionHead"><a href="" class="dnnSectionExpanded"><%=LocalizeString("secGeneralSettings")%></a></h2>
+        <fieldset>
+            <div class="dnnFormItem">
+                <dnn:label id="lblMandatory" runat="server" controlname="chkForceDescription" suffix="" />
+                <asp:CheckBox ID="chkForceDescription" runat="server" AutoPostBack="True" />
+            </div>
+            <asp:Panel class="dnnFormItem" id="pnlSummary" runat="server">
+                <dnn:label id="lblSummary" runat="server" controlname="txtSummaryLimit" suffix="" />
+                <asp:TextBox ID="txtSummaryLimit" runat="server" Text="1024" />
+            </asp:Panel>
+            <asp:Panel class="dnnFormItem" id="pnlSearchSummary" runat="server">
+                <dnn:label id="lblSearchSummary" runat="server" controlname="txtSearchLimit" suffix="" />
+                <asp:TextBox ID="txtSearchLimit" runat="server" Text="255" />
+            </asp:Panel>
+            <div class="dnnFormItem">
+                <dnn:label id="lblMaxImageWidth" runat="server" controlname="txtMaxImageWidth" suffix="" />
+                <asp:TextBox ID="txtMaxImageWidth" runat="server" Text="400" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label id="lblRecentEntriesMax" runat="server" controlname="txtRecentEntriesMax" suffix="" />
+                <asp:TextBox ID="txtRecentEntriesMax" runat="server" Text="10" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label id="lblRecentRssEntriesMax" runat="server" controlname="txtRecentRssEntriesMax" suffix="" />
+                <asp:TextBox ID="txtRecentRssEntriesMax" runat="server" Text="10" />
+            </div>
+        </fieldset>
+        <h2 id="dnnSitePanel-CommentSettings" class="dnnFormSectionHead"><a href="" class=""><%=LocalizeString("secCommentSettings")%></a></h2>
+        <fieldset>
+            <div class="dnnFormItem">
+                <dnn:label id="lblShowGravatars" runat="server" controlname="lblShowGravatars" suffix="" />
+                <asp:CheckBox ID="chkShowGravatars" runat="server" AutoPostBack="True" />
+            </div>
+            <asp:Panel class="dnnFormItem" id="pnlGravatarImageWidth" runat="server">
+                <dnn:label id="lblGravatarImageWidth" runat="server" controlname="lblGravatarImageWidth" suffix="" />
+                <asp:TextBox ID="txtGravatarImageWidth" runat="server" Text="48" />
+            </asp:Panel>
+            <asp:Panel class="dnnFormItem" id="pnlGravatarRating" runat="server">
+                <dnn:label id="lblGravatarRating" runat="server" controlname="lblGravatarRating" suffix="" />
+                <asp:RadioButtonList ID="rblGravatarRating" runat="server" CssClass="dnnFormRadioButtons">
+                   <asp:ListItem Value="G" Selected="True" resourceKey="rblGravatarRating_g" />
+                   <asp:ListItem Value="PG" resourceKey="rblGravatarRating_pg" />
+                   <asp:ListItem Value="R" resourceKey="rblGravatarRating_r" />
+                   <asp:ListItem Value="X" resourceKey="rblGravatarRating_x" />
+                  </asp:RadioButtonList>
+            </asp:Panel>
+            <asp:Panel class="dnnFormItem" id="pnlGravatarDefaultImageUrl" runat="server">
+                <dnn:label id="lblGravatarDefaultImageUrl" runat="server" controlname="lblGravatarDefaultImageUrl" suffix="" />
+                <asp:RadioButtonList ID="rblDefaultImage" runat="server" CssClass="dnnFormRadioButtons">
+                   <asp:ListItem Value="" Selected="True" Text="Gray Man" />
+                   <asp:ListItem Value="identicon" Text="Identicon" />
+                   <asp:ListItem Value="wavatar" Text="Wavatar" />
+                   <asp:ListItem Value="monsterid" Text="MonsterID" />
+                   <asp:ListItem Value="custom" Text="Custom" />
+                </asp:RadioButtonList>
+            </asp:Panel>
+            <asp:Panel class="dnnFormItem" id="pnlGravatarDefaultImageCustomURL" runat="server">
+                <dnn:label id="lblGravatarDefaultImageCustomURL" runat="server" controlname="lblGravatarDefaultImageCustomURL" suffix="" />
+                <asp:TextBox ID="txtGravatarDefaultImageCustomURL" runat="server" />
+            </asp:Panel>
+            <div class="dnnFormItem">
+                <dnn:label id="lblShowWebsite" runat="server" controlname="lblShowWebsite" suffix="" />
+                <asp:CheckBox ID="chkShowWebsite" Checked="True" runat="server" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label id="lblShowTitle" runat="server" controlname="lblShowTitle" suffix="" />
+                <asp:CheckBox ID="chkShowCommentTitle" Checked="True" runat="server" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label id="lblAllowCommentAnchors" runat="server" controlname="lblAllowCommentAnchors" suffix="" />
+                <asp:CheckBox ID="chkAllowCommentAnchors" Checked="True" runat="server" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label id="lblAllowCommentImages" runat="server" controlname="lblAllowCommentImages" suffix="" />
+                <asp:CheckBox ID="chkAllowCommentImages" Checked="True" runat="server" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label id="lblAllowCommentFormatting" runat="server" controlname="lblAllowCommentFormatting" suffix="" />
+                <asp:CheckBox ID="chkAllowCommentFormatting" Checked="True" runat="server" />
+            </div>
+        </fieldset>
+        <h2 id="dnnSitePanel-SEOSettings" class="dnnFormSectionHead"><a href="" class=""><%=LocalizeString("tblSEOSettings")%></a></h2>
+        <fieldset>
+            <div class="dnnFormItem">
+                <dnn:label id="lblShowUniqueTitle" runat="server" controlname="chkShowUniqueTitle" suffix="" />
+                <asp:CheckBox ID="chkShowUniqueTitle" runat="server" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label id="lblShowSeoFriendlyUrl" runat="server" controlname="chkShowSeoFriendlyUrl" suffix="" />
+                <asp:CheckBox ID="chkShowSeoFriendlyUrl" runat="server" />
+            </div>
+            <div class="dnnFormItem">
+                 <dnn:label id="lblRegenerateLinks" runat="server" suffix="" controlname="cmdGenerateLinks" />
+                 <div class="dnnLeft">
+                    <asp:LinkButton ID="cmdGenerateLinks" runat="server" CausesValidation="False" resourceKey="cmdGenerateLinks" CssClass="dnnSecondaryAction" />
+                 </div>
+            </div>
+        </fieldset>
+        <h2 id="dnnSitePanel-RSSSettings" class="dnnFormSectionHead"><a href="" class=""><%=LocalizeString("secRSSSettings")%></a></h2>
+        <fieldset>
+            <div class="dnnFormItem">
+                <dnn:label id="lblIncludeBody" runat="server" controlname="chkIncludeBody" suffix="" />
+                <asp:CheckBox ID="chkIncludeBody" runat="server" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label id="lblIncludeCategoriesInDescription" runat="server" controlname="chkIncludeCategoriesInDescription" suffix="" />
+                <asp:CheckBox ID="chkIncludeCategoriesInDescription" runat="server" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label id="lblIncludeTagsInDescription" runat="server" controlname="chkIncludeTagsInDescription" suffix="" />
+                <asp:CheckBox ID="chkIncludeTagsInDescription" runat="server" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label id="lblFeedCacheTime" runat="server" controlname="txtFeedCacheTime" suffix="" />
+                <asp:TextBox runat="server" ID="txtFeedCacheTime" Width="100" />
+            </div>          
+        </fieldset>
+        <h2 id="dnnSitePanel-WLWSettings" class="dnnFormSectionHead"><a href="" class=""><%=LocalizeString("secWLWSettings")%></a></h2>
+        <fieldset>
+            <div class="dnnFormItem">
+                <dnn:label id="lblAllowWLW" runat="server" controlname="chkAllowWLW" suffix="" />
+                <asp:CheckBox ID="chkAllowWLW" runat="server" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label id="lblUseWLWExcerpt" runat="server" controlname="chkUseWLWExcerpt" suffix="" />
+                <asp:CheckBox ID="chkUseWLWExcerpt" runat="server" />
+            </div>
+        </fieldset>
+        <h2 id="dnnSitePanel-LoadFiles" class="dnnFormSectionHead"><a href="" class=""><%=LocalizeString("secLoadFiles")%></a></h2>
+        <fieldset>
+            <div class="dnnFormItem">
+                <dnn:label id="lblAddJQuery" runat="server" suffix="" controlname="chkAddJQuery" />
+                <asp:CheckBox ID="chkAddJQuery" runat="server" TextAlign="Left" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label id="lblHostFiles" runat="server" controlname="cblHostFiles" suffix="" />
+                <asp:CheckBoxList runat="server" ID="cblHostFiles" RepeatColumns="1" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label id="lblPortalFiles" runat="server" controlname="cblPortalFiles" suffix="" />
+                <asp:CheckBoxList runat="server" ID="cblPortalFiles" RepeatColumns="1" CssClass="dnnBlogCheckbox" />
+            </div>
+        </fieldset>
+        <h2 id="dnnSitePanel-AdvancedSettings" class="dnnFormSectionHead"><a href="" class=""><%=LocalizeString("tblAdvancedSettings")%></a></h2>
+        <fieldset>
+            <div class="dnnFormItem">
+                <dnn:label id="lblAllowMultipleCategories" runat="server" controlname="chkAllowMultipleCategories" suffix="" />
+                <asp:CheckBox ID="chkAllowMultipleCategories" runat="server" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label id="lblUploadOption" runat="server" suffix="" controlname="chkUploadOption" />
+                <asp:CheckBox ID="chkUploadOption" runat="server" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label id="lblPageBlogs" runat="server" controlname="cmbPageBlogs" suffix="" />
+                <asp:DropDownList ID="cmbPageBlogs" AutoPostBack="True" DataValueField="BlogID" DataTextField="Title" runat="server" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label id="lblEnableDNNSearch" runat="server" controlname="chkEnableDNNSearch" suffix="" />
+                <asp:CheckBox ID="chkEnableDNNSearch" runat="server" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label id="lblEnableBookmarks" runat="server" suffix="" controlname="lblEnableBookmarks" />
+                <asp:CheckBox ID="chkEnableBookmarks" runat="server" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label id="lblEnforceSummaryTruncation" runat="server" suffix="" controlname="lblEnforceSummaryTruncation" />
+                <asp:CheckBox ID="chkEnforceSummaryTruncation" runat="server" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label id="lblShowSummary" runat="server" controlname="chkShowSummary" suffix="" />
+                <asp:CheckBox ID="chkShowSummary" runat="server" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label id="lblAllowSummaryHtml" runat="server" controlname="chkAllowSummaryHtml" suffix="" />
+                <asp:CheckBox ID="chkAllowSummaryHtml" runat="server" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label id="lblAllowChildBlogs" runat="server" controlname="chkAllowChildBlogs" suffix="" />
+                <asp:CheckBox ID="chkAllowChildBlogs" runat="server" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label id="lblEnableArchiveDropDown" runat="server" controlname="chkEnableArchiveDropDown" suffix="" />
+                <asp:CheckBox ID="chkEnableArchiveDropDown" runat="server" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label id="lblMigrateChildblogs" runat="server" suffix="" controlname="cmdMigrateChildblogs" />
+                <asp:Label runat="server" ID="lblChildBlogsStatus" />
+                <div class="dnnRight">
+                    <asp:LinkButton ID="cmdMigrateChildblogs" runat="server" CausesValidation="False" resourceKey="cmdMigrateChildblogs" CssClass="dnnSecondaryAction" />
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <ul class="dnnActions">
+        <li><asp:LinkButton ID="cmdUpdateOptions" runat="server" CausesValidation="False" resourceKey="cmdUpdate" CssClass="dnnPrimaryAction" /></li>
+        <li><asp:HyperLink ID="hlCancelOptions" runat="server" resourceKey="cmdCancel" CssClass="dnnSecondaryAction" /></li>
+    </ul>
+</div>
+<script language="javascript" type="text/javascript">
+    /*globals jQuery, window, Sys */
+    (function ($, Sys) {
+        function setupDnnBlogSettings() {
+            $('#dnnBlogOptions').dnnPanels();
+        };
 
-<table cellspacing="0" cellpadding="2" summary="ViewBlog setting design table" border="0">
- <tr>
-  <td valign="top">
-   <dnn:sectionhead id="secGeneralSettings" isExpanded="true" includerule="True" resourcekey="secGeneralSettings" section="tblGeneralSetting" runat="server" cssclass="Head" />
-   <table id="tblGeneralSetting" cellspacing="2" cellpadding="2" width="100%" summary="Edit ViewBlog Basic Settings" border="0" runat="server">
-    <tr>
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblMandatory" runat="server" controlname="chkForceDescription" suffix="" />
-     </td>
-     <td>
-      <asp:CheckBox ID="chkForceDescription" runat="server" TextAlign="Left" AutoPostBack="True" />
-     </td>
-    </tr>
-    <tr id="trSummary" runat="server">
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblSummary" runat="server" controlname="txtSummaryLimit" suffix="" />
-     </td>
-     <td>
-      <asp:TextBox ID="txtSummaryLimit" runat="server" Text="1024" />
-     </td>
-    </tr>
-    <tr id="trSearchSummary" valign="top" runat="server">
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblSearchSummary" runat="server" controlname="txtSearchLimit" suffix="" />
-     </td>
-     <td>
-      <asp:TextBox ID="txtSearchLimit" runat="server" Text="255" />
-     </td>
-    </tr>
-    <tr id="Tr1" valign="top" runat="server">
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblMaxImageWidth" runat="server" controlname="txtMaxImageWidth" suffix="" />
-     </td>
-     <td>
-      <asp:TextBox ID="txtMaxImageWidth" runat="server" Text="400" />
-     </td>
-    </tr>
-    <tr>
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblRecentEntriesMax" runat="server" controlname="txtRecentEntriesMax" suffix="" />
-     </td>
-     <td>
-      <asp:TextBox ID="txtRecentEntriesMax" runat="server" Text="10" />
-     </td>
-    </tr>
-    <tr valign="top">
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblRecentRssEntriesMax" runat="server" controlname="txtRecentRssEntriesMax" suffix="" />
-     </td>
-     <td>
-      <asp:TextBox ID="txtRecentRssEntriesMax" runat="server" Text="10" />
-     </td>
-    </tr>
-   </table>
-  </td>
- </tr>
- <tr>
-  <td valign="top">
-   <dnn:sectionhead id="secCommentSettings" isExpanded="True" includerule="True" resourcekey="secCommentSettings" section="tblCommentSettings" runat="server" cssclass="Head" />
-   <table id="tblCommentSettings" cellspacing="2" cellpadding="2" width="100%" summary="Edit Blog Comment Settings" border="0" runat="server">
-    <tr>
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblShowGravatars" runat="server" controlname="lblShowGravatars" suffix="" />
-     </td>
-     <td>
-      <asp:CheckBox ID="chkShowGravatars" runat="server" AutoPostBack="True" />
-     </td>
-    </tr>
-    <tr id="trGravatarImageWidth" runat="server">
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblGravatarImageWidth" runat="server" controlname="lblGravatarImageWidth" suffix="" />
-     </td>
-     <td>
-      <asp:TextBox ID="txtGravatarImageWidth" runat="server" Text="48" />
-     </td>
-    </tr>
-    <tr id="trGravatarRating" runat="server">
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblGravatarRating" runat="server" controlname="lblGravatarRating" suffix="" />
-     </td>
-     <td>
-      <asp:RadioButtonList ID="rblGravatarRating" runat="server">
-       <asp:ListItem Value="G" Selected="True" ResourceKey="rblGravatarRating_g" />
-       <asp:ListItem Value="PG" ResourceKey="rblGravatarRating_pg" />
-       <asp:ListItem Value="R" ResourceKey="rblGravatarRating_r" />
-       <asp:ListItem Value="X" ResourceKey="rblGravatarRating_x" />
-      </asp:RadioButtonList>
-     </td>
-    </tr>
-    <tr id="trGravatarDefaultImageUrl" runat="server">
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblGravatarDefaultImageUrl" runat="server" controlname="lblGravatarDefaultImageUrl" suffix="" />
-     </td>
-     <td>
-      <asp:RadioButtonList ID="rblDefaultImage" runat="server">
-       <asp:ListItem Value="" Selected="True" Text="Gray Man" />
-       <asp:ListItem Value="identicon" Text="Identicon" />
-       <asp:ListItem Value="wavatar" Text="Wavatar" />
-       <asp:ListItem Value="monsterid" Text="MonsterID" />
-       <asp:ListItem Value="custom" Text="Custom" />
-      </asp:RadioButtonList>
-     </td>
-    </tr>
-    <tr id="trGravatarDefaultImageCustomURL" runat="server">
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblGravatarDefaultImageCustomURL" runat="server" controlname="lblGravatarDefaultImageCustomURL" suffix="" />
-     </td>
-     <td>
-      <asp:TextBox ID="txtGravatarDefaultImageCustomURL" runat="server" Width="290px" />
-     </td>
-    </tr>
-    <tr>
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblShowWebsite" runat="server" controlname="lblShowWebsite" suffix="" />
-     </td>
-     <td>
-      <asp:CheckBox ID="chkShowWebsite" Checked="True" runat="server" TextAlign="Left" />
-     </td>
-    </tr>
-    <tr>
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblShowTitle" runat="server" controlname="lblShowTitle" suffix="" />
-     </td>
-     <td>
-      <asp:CheckBox ID="chkShowCommentTitle" Checked="True" runat="server" TextAlign="Left" />
-     </td>
-    </tr>
-    <tr>
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblAllowCommentAnchors" runat="server" controlname="lblAllowCommentAnchors" suffix="" />
-     </td>
-     <td>
-      <asp:CheckBox ID="chkAllowCommentAnchors" Checked="True" runat="server" TextAlign="Left" />
-     </td>
-    </tr>
-    <tr>
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblAllowCommentImages" runat="server" controlname="lblAllowCommentImages" suffix="" />
-     </td>
-     <td>
-      <asp:CheckBox ID="chkAllowCommentImages" Checked="True" runat="server" TextAlign="Left" />
-     </td>
-    </tr>
-    <tr>
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblAllowCommentFormatting" runat="server" controlname="lblAllowCommentFormatting" suffix="" />
-     </td>
-     <td>
-      <asp:CheckBox ID="chkAllowCommentFormatting" Checked="True" runat="server" TextAlign="Left" />
-     </td>
-    </tr>
-   </table>
-  </td>
- </tr>
- <tr>
-  <td>
-   &nbsp;
-  </td>
- </tr>
- <tr>
-  <td>
-   <dnn:sectionhead id="secSEOSettings" isExpanded="true" includerule="True" resourcekey="tblSEOSettings" section="tblSEOSettings" runat="server" cssclass="Head" />
-   <table id="tblSEOSettings" cellspacing="0" cellpadding="2" width="100%" summary="Edit ViewBlog SEO Settings" border="0" runat="server">
-    <tr valign="top">
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblShowUniqueTitle" runat="server" controlname="chkShowUniqueTitle" suffix="" />
-     </td>
-     <td>
-      <asp:CheckBox ID="chkShowUniqueTitle" runat="server" TextAlign="Left" />
-     </td>
-    </tr>
-    <tr valign="top">
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblShowSeoFriendlyUrl" runat="server" controlname="chkShowSeoFriendlyUrl" suffix="" />
-     </td>
-     <td>
-      <asp:CheckBox ID="chkShowSeoFriendlyUrl" runat="server" TextAlign="Left" />
-     </td>
-    </tr>
-    <tr valign="top">
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblRegenerateLinks" runat="server" suffix="" controlname="cmdGenerateLinks" />
-     </td>
-     <td>
-      <asp:LinkButton ID="cmdGenerateLinks" runat="server" CausesValidation="False" BorderStyle="none" ResourceKey="cmdGenerateLinks" CssClass="CommandButton" />
-     </td>
-    </tr>
-   </table>
-  </td>
- </tr>
- <tr>
-  <td>
-   &nbsp;
-  </td>
- </tr>
- <tr>
-  <td>
-   <dnn:sectionhead id="secRSSSettings" isExpanded="true" includerule="True" resourcekey="secRSSSettings" section="tblRSSSettings" runat="server" cssclass="Head" />
-   <table id="tblRSSSettings" cellspacing="0" cellpadding="2" width="100%" summary="Edit Blog RSS Settings" border="0" runat="server">
-    <tr valign="top">
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblIncludeBody" runat="server" controlname="chkIncludeBody" suffix="" />
-     </td>
-     <td>
-      <asp:CheckBox ID="chkIncludeBody" runat="server" TextAlign="Left" />
-     </td>
-    </tr>
-    <tr valign="top">
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblIncludeCategoriesInDescription" runat="server" controlname="chkIncludeCategoriesInDescription" suffix="" />
-     </td>
-     <td>
-      <asp:CheckBox ID="chkIncludeCategoriesInDescription" runat="server" TextAlign="Left" />
-     </td>
-    </tr>
-    <tr valign="top">
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblIncludeTagsInDescription" runat="server" controlname="chkIncludeTagsInDescription" suffix="" />
-     </td>
-     <td>
-      <asp:CheckBox ID="chkIncludeTagsInDescription" runat="server" TextAlign="Left" />
-     </td>
-    </tr>
-    <tr valign="top">
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblFeedCacheTime" runat="server" controlname="txtFeedCacheTime" suffix="" />
-     </td>
-     <td>
-      <asp:TextBox runat="server" ID="txtFeedCacheTime" Width="100" />
-     </td>
-    </tr>
-   </table>
-  </td>
- </tr>
- <tr>
-  <td>
-   &nbsp;
-  </td>
- </tr>
- <tr>
-  <td>
-   <dnn:sectionhead id="secWLWSettings" isExpanded="true" includerule="True" resourcekey="secWLWSettings" section="tblWLWSettings" runat="server" cssclass="Head" />
-   <table id="tblWLWSettings" cellspacing="0" cellpadding="2" width="100%" summary="Edit ViewBlog Windows Live Writer Settings" border="0" runat="server">
-    <tr valign="top">
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblAllowWLW" runat="server" controlname="chkAllowWLW" suffix="" />
-     </td>
-     <td>
-      <asp:CheckBox ID="chkAllowWLW" runat="server" TextAlign="Left" />
-     </td>
-    </tr>
-    <tr>
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblUseWLWExcerpt" runat="server" controlname="chkUseWLWExcerpt" suffix="" />
-     </td>
-     <td>
-      <asp:CheckBox ID="chkUseWLWExcerpt" runat="server" TextAlign="Left" />
-     </td>
-    </tr>
-   </table>
-  </td>
- </tr>
- <tr>
-  <td>
-   &nbsp;
-  </td>
- </tr>
- <tr>
-  <td>
-   <dnn:sectionhead id="secLoadFiles" isExpanded="true" includerule="True" resourcekey="secLoadFiles" section="tblLoadFiles" runat="server" cssclass="Head" />
-   <p><asp:Label runat="server" ID="lblLoadFilesHelp" resourcekey="secLoadFiles.Help" /></p>
-   <table id="tblLoadFiles" cellspacing="0" cellpadding="2" width="100%" summary="Edit ViewBlog Load Additional Files" border="0" runat="server">
-    <tr>
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblAddJQuery" runat="server" suffix="" controlname="chkAddJQuery" />
-     </td>
-     <td>
-      <asp:CheckBox ID="chkAddJQuery" runat="server" TextAlign="Left" />
-     </td>
-    </tr>
-    <tr valign="top">
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblHostFiles" runat="server" controlname="cblHostFiles" suffix="" />
-     </td>
-     <td>
-      <asp:CheckBoxList runat="server" ID="cblHostFiles" RepeatColumns="1" />
-     </td>
-    </tr>
-    <tr valign="top">
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblPortalFiles" runat="server" controlname="cblPortalFiles" suffix="" />
-     </td>
-     <td>
-      <asp:CheckBoxList runat="server" ID="cblPortalFiles" RepeatColumns="1" />
-     </td>
-    </tr>
-   </table>
-  </td>
- </tr>
- <tr>
-  <td>
-   &nbsp;
-  </td>
- </tr>
- <tr>
-  <td>
-   <dnn:sectionhead id="secAdvancedSettings" isExpanded="true" includerule="True" resourcekey="tblAdvancedSettings" section="tblAdvancedSettings" runat="server" cssclass="Head" />
-   <table id="tblAdvancedSettings" cellspacing="0" cellpadding="2" width="100%" summary="Edit ViewBlog Advanced Settings" border="0" runat="server">
-    <tr>
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblAllowMultipleCategories" runat="server" controlname="chkAllowMultipleCategories" suffix="" />
-     </td>
-     <td>
-      <asp:CheckBox ID="chkAllowMultipleCategories" runat="server" TextAlign="Left" />
-     </td>
-    </tr>
-    <tr>
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblUploadOption" runat="server" suffix="" controlname="chkUploadOption" />
-     </td>
-     <td>
-      <asp:CheckBox ID="chkUploadOption" runat="server" TextAlign="Left" />
-     </td>
-    </tr>
-    <tr>
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblPageBlogs" runat="server" controlname="cmbPageBlogs" suffix="" />
-     </td>
-     <td>
-      <asp:DropDownList ID="cmbPageBlogs" AutoPostBack="True" DataValueField="BlogID" DataTextField="Title" runat="server" />
-     </td>
-    </tr>
-    <tr valign="top">
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblEnableDNNSearch" runat="server" controlname="chkEnableDNNSearch" suffix="" />
-     </td>
-     <td>
-      <asp:CheckBox ID="chkEnableDNNSearch" runat="server" TextAlign="Left" />
-     </td>
-    </tr>
-    <tr>
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblEnableBookmarks" runat="server" suffix="" controlname="lblEnableBookmarks" />
-     </td>
-     <td>
-      <asp:CheckBox ID="chkEnableBookmarks" runat="server" TextAlign="Left" />
-     </td>
-    </tr>
-    <tr>
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblEnforceSummaryTruncation" runat="server" suffix="" controlname="lblEnforceSummaryTruncation" />
-     </td>
-     <td>
-      <asp:CheckBox ID="chkEnforceSummaryTruncation" runat="server" TextAlign="Left" />
-     </td>
-    </tr>
-    <tr valign="top">
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblShowSummary" runat="server" controlname="chkShowSummary" suffix="" />
-     </td>
-     <td>
-      <asp:CheckBox ID="chkShowSummary" runat="server" TextAlign="Left" />
-     </td>
-    </tr>
-    <tr>
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblAllowSummaryHtml" runat="server" controlname="chkAllowSummaryHtml" suffix="" />
-     </td>
-     <td>
-      <asp:CheckBox ID="chkAllowSummaryHtml" runat="server" TextAlign="Left" />
-     </td>
-    </tr>
-    <tr>
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblAllowChildBlogs" runat="server" controlname="chkAllowChildBlogs" suffix="" />
-     </td>
-     <td>
-      <asp:CheckBox ID="chkAllowChildBlogs" runat="server" TextAlign="Left" />
-     </td>
-    </tr>
-    <tr>
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblEnableArchiveDropDown" runat="server" controlname="chkEnableArchiveDropDown" suffix="" />
-     </td>
-     <td>
-      <asp:CheckBox ID="chkEnableArchiveDropDown" runat="server" TextAlign="Left" />
-     </td>
-    </tr>
-    <tr valign="top">
-     <td class="SubHead" valign="top" width="300">
-      <dnn:label id="lblMigrateChildblogs" runat="server" suffix="" controlname="cmdMigrateChildblogs" />
-     </td>
-     <td>
-      <asp:Label runat="server" ID="lblChildBlogsStatus" /><br />
-      <asp:LinkButton ID="cmdMigrateChildblogs" runat="server" CausesValidation="False" BorderStyle="none" ResourceKey="cmdMigrateChildblogs" CssClass="CommandButton" />
-     </td>
-    </tr>
-   </table>
-  </td>
- </tr>
- <tr>
-  <td>
-   &nbsp;
-  </td>
- </tr>
- <tr>
-  <td>
-   <asp:LinkButton class="CommandButton" ID="cmdUpdateOptions" runat="server" CausesValidation="False" BorderStyle="none" ResourceKey="cmdUpdate" />&nbsp;
-   <asp:LinkButton ID="cmdCancelOptions" runat="server" CausesValidation="False" BorderStyle="none" ResourceKey="cmdCancel" CssClass="CommandButton" />
-  </td>
- </tr>
-</table>
-<p>
-</p>
+        $(document).ready(function () {
+            setupDnnBlogSettings();
+            Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
+                setupDnnBlogSettings();
+            });
+        });
+
+    } (jQuery, window.Sys));
+</script>   

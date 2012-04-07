@@ -16,5 +16,8 @@
 			<li>Integrated with the core Journal API.</li>
 			<li>Updated manifest to 5.0 format (from 3.0).</li>
 			<li>Automated packaging and made project structure more inline with other DotNetNuke modules and projects.<li>
+			<li>Converted module to use DNN 6 form pattern.</li>
+			<li>Changed all jQuery registration to use proper core methods.</li>
+			<li>Offloaded all script and css loading to Client Dependency Framework.</li>
 		</ul>
 </div>
