@@ -31,44 +31,68 @@
 						  <moduleControl>
 							  <controlKey />
 							  <controlSrc>DesktopModules/Blog/MainView.ascx</controlSrc>
+							  <supportsPartialRendering>False</supportsPartialRendering>
+							  <controlTitle>View Blog</controlTitle>
 							  <controlType>View</controlType>
-							  <supportsPartialRendering>True</supportsPartialRendering>
+							  <iconFile />
+							  <helpUrl />
 							  <supportsPopUps>False</supportsPopUps>
-						  </moduleControl>
-						  <moduleControl>
-							  <controlKey>View_Entry</controlKey>
-							  <controlSrc>DesktopModules/Blog/ViewEntry.ascx</controlSrc>
-							  <controlType>View</controlType>
-							  <supportsPartialRendering>True</supportsPartialRendering>
-							  <supportsPopUps>False</supportsPopUps>
-						  </moduleControl>
-						  <moduleControl>
-							  <controlKey>Edit_Entry</controlKey>
-							  <controlSrc>DesktopModules/Blog/EditEntry.ascx</controlSrc>
-							  <controlType>Edit</controlType>
-							  <supportsPartialRendering>True</supportsPartialRendering>
-							  <supportsPopUps>True</supportsPopUps>
-						  </moduleControl>
-						  <moduleControl>
-							  <controlKey>Module_Options</controlKey>
-							  <controlSrc>DesktopModules/Blog/ModuleOptions.ascx</controlSrc>
-							  <controlType>Admin</controlType>
-							  <supportsPartialRendering>True</supportsPartialRendering>
-							  <supportsPopUps>True</supportsPopUps>
+							  <viewOrder>0</viewOrder>
 						  </moduleControl>
 						  <moduleControl>
 							  <controlKey>Edit_Blog</controlKey>
 							  <controlSrc>DesktopModules/Blog/EditBlog.ascx</controlSrc>
-							  <controlType>Edit</controlType>
 							  <supportsPartialRendering>True</supportsPartialRendering>
-							  <supportsPopUps>True</supportsPopUps>
+							  <controlTitle>Edit Blog</controlTitle>
+							  <controlType>Edit</controlType>
+							  <iconFile />
+							  <helpUrl />
+							  <supportsPopUps>False</supportsPopUps>
+							  <viewOrder>0</viewOrder>
+						  </moduleControl>
+						  <moduleControl>
+							  <controlKey>Edit_Entry</controlKey>
+							  <controlSrc>DesktopModules/Blog/EditEntry.ascx</controlSrc>
+							  <supportsPartialRendering>False</supportsPartialRendering>
+							  <controlTitle>Edit Entry</controlTitle>
+							  <controlType>Edit</controlType>
+							  <iconFile />
+							  <helpUrl />
+							  <supportsPopUps>False</supportsPopUps>
+							  <viewOrder>0</viewOrder>
 						  </moduleControl>
 						  <moduleControl>
 							  <controlKey>Mass_Edit</controlKey>
 							  <controlSrc>DesktopModules/Blog/MassEdit.ascx</controlSrc>
+							  <supportsPartialRendering>False</supportsPartialRendering>
+							  <controlTitle>Mass Edit</controlTitle>
 							  <controlType>Edit</controlType>
+							  <iconFile />
+							  <helpUrl />
+							  <supportsPopUps>False</supportsPopUps>
+							  <viewOrder>0</viewOrder>
+						  </moduleControl>
+						  <moduleControl>
+							  <controlKey>Module_Options</controlKey>
+							  <controlSrc>DesktopModules/Blog/ModuleOptions.ascx</controlSrc>
 							  <supportsPartialRendering>True</supportsPartialRendering>
-							  <supportsPopUps>True</supportsPopUps>
+							  <controlTitle>Blog Options</controlTitle>
+							  <controlType>Admin</controlType>
+							  <iconFile />
+							  <helpUrl />
+							  <supportsPopUps>False</supportsPopUps>
+							  <viewOrder>0</viewOrder>
+						  </moduleControl>
+						  <moduleControl>
+							  <controlKey>View_Entry</controlKey>
+							  <controlSrc>DesktopModules/Blog/ViewEntry.ascx</controlSrc>
+							  <supportsPartialRendering>False</supportsPartialRendering>
+							  <controlTitle>View Entry</controlTitle>
+							  <controlType>View</controlType>
+							  <iconFile />
+							  <helpUrl />
+							  <supportsPopUps>False</supportsPopUps>
+							  <viewOrder>0</viewOrder>
 						  </moduleControl>
 					  </moduleControls>
 				  </moduleDefinition>
@@ -79,163 +103,231 @@
 						  <moduleControl>
 							  <controlKey />
 							  <controlSrc>DesktopModules/Blog/BlogList.ascx</controlSrc>
+							  <supportsPartialRendering>False</supportsPartialRendering>
+							  <controlTitle>Blog List</controlTitle>
 							  <controlType>View</controlType>
-							  <supportsPartialRendering>True</supportsPartialRendering>
+							  <iconFile />
+							  <helpUrl />
 							  <supportsPopUps>False</supportsPopUps>
-						  </moduleControl>
-						  <moduleControl>
-							  <controlKey>Edit_Entry</controlKey>
-							  <controlSrc>DesktopModules/Blog/EditEntry.ascx</controlSrc>
-							  <controlType>Edit</controlType>
-							  <supportsPartialRendering>True</supportsPartialRendering>
-							  <supportsPopUps>True</supportsPopUps>
-						  </moduleControl>
-						  <moduleControl>
-							  <controlKey>Edit_Blog</controlKey>
-							  <controlSrc>DesktopModules/Blog/EditBlog.ascx</controlSrc>
-							  <controlType>Edit</controlType>
-							  <supportsPartialRendering>True</supportsPartialRendering>
-							  <supportsPopUps>True</supportsPopUps>
+							  <viewOrder>0</viewOrder>
 						  </moduleControl>
 						  <moduleControl>
 							  <controlKey>Blog_Import</controlKey>
 							  <controlSrc>DesktopModules/Blog/BlogImport.ascx</controlSrc>
+							  <supportsPartialRendering>False</supportsPartialRendering>
+							  <controlTitle>Import Blog</controlTitle>
 							  <controlType>Edit</controlType>
-							  <supportsPartialRendering>True</supportsPartialRendering>
-							  <supportsPopUps>True</supportsPopUps>
+							  <iconFile />
+							  <helpUrl />
+							  <supportsPopUps>False</supportsPopUps>
+							  <viewOrder>0</viewOrder>
+						  </moduleControl>
+						  <moduleControl>
+							  <controlKey>Edit_Blog</controlKey>
+							  <controlSrc>DesktopModules/Blog/EditBlog.ascx</controlSrc>
+							  <supportsPartialRendering>False</supportsPartialRendering>
+							  <controlTitle>Edit Blog</controlTitle>
+							  <controlType>Edit</controlType>
+							  <iconFile />
+							  <helpUrl />
+							  <supportsPopUps>False</supportsPopUps>
+							  <viewOrder>0</viewOrder>
+						  </moduleControl>
+						  <moduleControl>
+							  <controlKey>Edit_Entry</controlKey>
+							  <controlSrc>DesktopModules/Blog/EditEntry.ascx</controlSrc>
+							  <supportsPartialRendering>False</supportsPartialRendering>
+							  <controlTitle>Edit Entry</controlTitle>
+							  <controlType>Edit</controlType>
+							  <iconFile />
+							  <helpUrl />
+							  <supportsPopUps>False</supportsPopUps>
+							  <viewOrder>0</viewOrder>
 						  </moduleControl>
 					  </moduleControls>
 				  </moduleDefinition>
 				  <moduleDefinition>
 					  <friendlyName>New_Blog</friendlyName>
-					  <cachetime>-1</cachetime>
+					  <defaultCacheTime>-1</defaultCacheTime>
 					  <moduleControls>
 						  <moduleControl>
 							  <controlKey />
 							  <controlSrc>DesktopModules/Blog/Blog.ascx</controlSrc>
+							  <supportsPartialRendering>False</supportsPartialRendering>
+							  <controlTitle>Blog</controlTitle>
 							  <controlType>View</controlType>
-							  <supportsPartialRendering>True</supportsPartialRendering>
+							  <iconFile />
+							  <helpUrl />
 							  <supportsPopUps>False</supportsPopUps>
+							  <viewOrder>0</viewOrder>
 						  </moduleControl>
 						  <moduleControl>
 							  <controlKey>Edit_Blog</controlKey>
 							  <controlSrc>DesktopModules/Blog/EditBlog.ascx</controlSrc>
+							  <supportsPartialRendering>False</supportsPartialRendering>
+							  <controlTitle>Edit Blog</controlTitle>
 							  <controlType>Edit</controlType>
-							  <supportsPartialRendering>True</supportsPartialRendering>
-							  <supportsPopUps>True</supportsPopUps>
+							  <iconFile />
+							  <helpUrl />
+							  <supportsPopUps>False</supportsPopUps>
+							  <viewOrder>0</viewOrder>
 						  </moduleControl>
 						  <moduleControl>
 							  <controlKey>Edit_Entry</controlKey>
 							  <controlSrc>DesktopModules/Blog/EditEntry.ascx</controlSrc>
+							  <supportsPartialRendering>False</supportsPartialRendering>
+							  <controlTitle>Edit Entry</controlTitle>
 							  <controlType>Edit</controlType>
-							  <supportsPartialRendering>True</supportsPartialRendering>
-							  <supportsPopUps>True</supportsPopUps>
+							  <iconFile />
+							  <helpUrl />
+							  <supportsPopUps>False</supportsPopUps>
+							  <viewOrder>0</viewOrder>
 						  </moduleControl>
 					  </moduleControls>
 				  </moduleDefinition>
 				  <moduleDefinition>
 					  <friendlyName>Search_Blog</friendlyName>
-					  <cachetime>-1</cachetime>
+					  <defaultCacheTime>-1</defaultCacheTime>
 					  <moduleControls>
 						  <moduleControl>
 							  <controlKey />
 							  <controlSrc>DesktopModules/Blog/Search.ascx</controlSrc>
+							  <supportsPartialRendering>False</supportsPartialRendering>
+							  <controlTitle>Search Blog</controlTitle>
 							  <controlType>View</controlType>
-							  <supportsPartialRendering>True</supportsPartialRendering>
+							  <iconFile />
+							  <helpUrl />
 							  <supportsPopUps>False</supportsPopUps>
+							  <viewOrder>0</viewOrder>
 						  </moduleControl>
 					  </moduleControls>
 				  </moduleDefinition>
 				  <moduleDefinition>
 					  <friendlyName>Blog_Archive</friendlyName>
-					  <cachetime>-1</cachetime>
+					  <defaultCacheTime>-1</defaultCacheTime>
 					  <moduleControls>
 						  <moduleControl>
 							  <controlKey />
 							  <controlSrc>DesktopModules/Blog/Archive.ascx</controlSrc>
+							  <supportsPartialRendering>False</supportsPartialRendering>
+							  <controlTitle>Archive</controlTitle>
 							  <controlType>View</controlType>
-							  <supportsPartialRendering>True</supportsPartialRendering>
+							  <iconFile />
+							  <helpUrl />
 							  <supportsPopUps>False</supportsPopUps>
+							  <viewOrder>0</viewOrder>
 						  </moduleControl>
 					  </moduleControls>
 				  </moduleDefinition>
 				  <moduleDefinition>
 					  <friendlyName>Recent_Entries</friendlyName>
-					  <cachetime>-1</cachetime>
+					  <defaultCacheTime>-1</defaultCacheTime>
 					  <moduleControls>
 						  <moduleControl>
 							  <controlKey />
 							  <controlSrc>DesktopModules/Blog/RecentEntries.ascx</controlSrc>
+							  <supportsPartialRendering>False</supportsPartialRendering>
+							  <controlTitle />
 							  <controlType>View</controlType>
-							  <supportsPartialRendering>True</supportsPartialRendering>
+							  <iconFile />
+							  <helpUrl />
 							  <supportsPopUps>False</supportsPopUps>
+							  <viewOrder>0</viewOrder>
 						  </moduleControl>
 						  <moduleControl>
 							  <controlKey>Settings</controlKey>
 							  <controlSrc>DesktopModules/Blog/RecentEntriesSettings.ascx</controlSrc>
+							  <supportsPartialRendering>False</supportsPartialRendering>
+							  <controlTitle>Recent Blog Entries Settings</controlTitle>
 							  <controlType>Edit</controlType>
-							  <supportsPartialRendering>True</supportsPartialRendering>
-							  <supportsPopUps>True</supportsPopUps>
+							  <iconFile />
+							  <helpUrl />
+							  <supportsPopUps>False</supportsPopUps>
+							  <viewOrder>0</viewOrder>
 						  </moduleControl>
 					  </moduleControls>
 				  </moduleDefinition>
 				  <moduleDefinition>
 					  <friendlyName>Recent_Comments</friendlyName>
-					  <cachetime>-1</cachetime>
+					  <defaultCacheTime>-1</defaultCacheTime>
 					  <moduleControls>
 						  <moduleControl>
 							  <controlKey />
 							  <controlSrc>DesktopModules/Blog/RecentComments.ascx</controlSrc>
+							  <supportsPartialRendering>False</supportsPartialRendering>
+							  <controlTitle />
 							  <controlType>View</controlType>
-							  <supportsPartialRendering>True</supportsPartialRendering>
+							  <iconFile />
+							  <helpUrl />
 							  <supportsPopUps>False</supportsPopUps>
+							  <viewOrder>0</viewOrder>
 						  </moduleControl>
 						  <moduleControl>
 							  <controlKey>Settings</controlKey>
 							  <controlSrc>DesktopModules/Blog/RecentCommentsSettings.ascx</controlSrc>
+							  <supportsPartialRendering>False</supportsPartialRendering>
+							  <controlTitle>Recent Blog Comments Settings</controlTitle>
 							  <controlType>Edit</controlType>
-							  <supportsPartialRendering>True</supportsPartialRendering>
+							  <iconFile />
+							  <helpUrl />
 							  <supportsPopUps>False</supportsPopUps>
+							  <viewOrder>0</viewOrder>
 						  </moduleControl>
 					  </moduleControls>
 				  </moduleDefinition>
 				  <moduleDefinition>
 					  <friendlyName>Blog_Categories</friendlyName>
-					  <cachetime>-1</cachetime>
+					  <defaultCacheTime>-1</defaultCacheTime>
 					  <moduleControls>
 						  <moduleControl>
 							  <controlKey />
 							  <controlSrc>DesktopModules/Blog/ViewCategories.ascx</controlSrc>
+							  <supportsPartialRendering>False</supportsPartialRendering>
+							  <controlTitle>View Categories</controlTitle>
 							  <controlType>View</controlType>
-							  <supportsPartialRendering>True</supportsPartialRendering>
+							  <iconFile />
+							  <helpUrl />
 							  <supportsPopUps>False</supportsPopUps>
+							  <viewOrder>0</viewOrder>
 						  </moduleControl>
 						  <moduleControl>
 							  <controlKey>Edit</controlKey>
 							  <controlSrc>DesktopModules/Blog/EditCategories.ascx</controlSrc>
+							  <supportsPartialRendering>False</supportsPartialRendering>
+							  <controlTitle>Edit Categories</controlTitle>
 							  <controlType>Edit</controlType>
-							  <supportsPartialRendering>True</supportsPartialRendering>
+							  <iconFile />
+							  <helpUrl />
 							  <supportsPopUps>False</supportsPopUps>
+							  <viewOrder>0</viewOrder>
 						  </moduleControl>
 					  </moduleControls>
 				  </moduleDefinition>
 				  <moduleDefinition>
 					  <friendlyName>Blog_Tags</friendlyName>
-					  <cachetime>-1</cachetime>
+					  <defaultCacheTime>-1</defaultCacheTime>
 					  <moduleControls>
 						  <moduleControl>
 							  <controlKey />
 							  <controlSrc>DesktopModules/Blog/ViewTags.ascx</controlSrc>
+							  <supportsPartialRendering>False</supportsPartialRendering>
+							  <controlTitle>View Tags</controlTitle>
 							  <controlType>View</controlType>
-							  <supportsPartialRendering>True</supportsPartialRendering>
+							  <iconFile />
+							  <helpUrl />
 							  <supportsPopUps>False</supportsPopUps>
+							  <viewOrder>0</viewOrder>
 						  </moduleControl>
 						  <moduleControl>
 							  <controlKey>Settings</controlKey>
 							  <controlSrc>DesktopModules/Blog/ViewTagsSettings.ascx</controlSrc>
+							  <supportsPartialRendering>False</supportsPartialRendering>
+							  <controlTitle>Tags Settings</controlTitle>
 							  <controlType>Edit</controlType>
-							  <supportsPartialRendering>True</supportsPartialRendering>
+							  <iconFile />
+							  <helpUrl />
 							  <supportsPopUps>False</supportsPopUps>
+							  <viewOrder>0</viewOrder>
 						  </moduleControl>
 					  </moduleControls>
 				  </moduleDefinition>
