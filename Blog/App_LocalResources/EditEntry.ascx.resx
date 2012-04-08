@@ -121,25 +121,25 @@
     <value>Description is required</value>
   </data>
   <data name="lblCopyright.Text" xml:space="preserve">
-    <value>Copyright: </value>
+    <value>Copyright</value>
   </data>
   <data name="lblSummary.Text" xml:space="preserve">
-    <value>Summary:</value>
+    <value>Summary</value>
   </data>
   <data name="lblTitle.Text" xml:space="preserve">
-    <value>Title:</value>
+    <value>Title</value>
   </data>
   <data name="lblAttachmentDescription.Text" xml:space="preserve">
-    <value>Description:</value>
+    <value>Description</value>
   </data>
   <data name="lblEntryDate.Text" xml:space="preserve">
-    <value>Entry Date (local time):</value>
+    <value>Entry Date (local time)</value>
   </data>
   <data name="secLinkedFiles.Text" xml:space="preserve">
-    <value>Linked Files:</value>
+    <value>Linked Files</value>
   </data>
   <data name="lblDescription.Text" xml:space="preserve">
-    <value>Blog:</value>
+    <value>Blog</value>
   </data>
   <data name="ModuleHelp.Text" xml:space="preserve">
     <value>&lt;h1&gt;Blog - Edit Entry&lt;/h1&gt;
@@ -148,20 +148,20 @@
   <data name="valTitle.ErrorMessage" xml:space="preserve">
     <value>Title is required</value>
   </data>
-  <data name="chkAllowComments.Text" xml:space="preserve">
+  <data name="lblAllowComments.Help" xml:space="preserve">
     <value>Allow users to comment on this entry (overrides Blog Setting)</value>
   </data>
   <data name="valEntry.ErrorMessage" xml:space="preserve">
     <value>Entry is Required</value>
   </data>
-  <data name="chkDisplayCopyright.Text" xml:space="preserve">
-    <value>Display Copyright notice at the bottom of your entry.</value>
+  <data name="lblDisplayCopyright.Help" xml:space="preserve">
+    <value>If checked, displays a copyright notice at the bottom of your entry.</value>
   </data>
   <data name="valUpload.ErrorMessage" xml:space="preserve">
     <value>The File [FILENAME] Is A Restricted File Type for Images. Valid File Types Include JPG, GIF and PNG&lt;br&gt;</value>
   </data>
   <data name="lblAddAttachment.Text" xml:space="preserve">
-    <value>Attachment:</value>
+    <value>Attachment</value>
   </data>
   <data name="msgCopyright.Text" xml:space="preserve">
     <value>Copyright ©</value>
@@ -188,22 +188,22 @@
     <value>Entry Date is required</value>
   </data>
   <data name="lblAltText.Text" xml:space="preserve">
-    <value>Alt Text:</value>
+    <value>Alt Text</value>
   </data>
   <data name="lblAddPicture.Text" xml:space="preserve">
-    <value>Picture:</value>
+    <value>Picture</value>
   </data>
   <data name="secEntryOptions.Text" xml:space="preserve">
-    <value>Entry Options:</value>
+    <value>Entry Options</value>
   </data>
   <data name="lblEntryOptions.Text" xml:space="preserve">
-    <value>Entry Options:</value>
+    <value>Entry Options</value>
   </data>
   <data name="secUploadOption.Text" xml:space="preserve">
-    <value>Upload Options:</value>
+    <value>Upload Options</value>
   </data>
   <data name="lblChildBlog.Text" xml:space="preserve">
-    <value>Parent Blog:</value>
+    <value>Parent Blog</value>
   </data>
   <data name="txtDescriptionOptional.Text" xml:space="preserve">
     <value>(The summary is optional, if you choose to not supply one, a short summary will be generated from your entry.)</value>
@@ -215,16 +215,16 @@
     <value>Edit blog entry</value>
   </data>
   <data name="lblTrackbackUrl.Text" xml:space="preserve">
-    <value>Trackback Url:</value>
+    <value>Trackback Url</value>
   </data>
   <data name="Filename.Header" xml:space="preserve">
     <value>File Name</value>
   </data>
   <data name="lblCategories.Text" xml:space="preserve">
-    <value>Categories: </value>
+    <value>Categories</value>
   </data>
   <data name="lblTags.Text" xml:space="preserve">
-    <value>Tags: </value>
+    <value>Tags</value>
   </data>
   <data name="Published.Status" xml:space="preserve">
     <value>This post has been published</value>
@@ -246,5 +246,14 @@
   </data>
   <data name="SaveAsDraft.Text" xml:space="preserve">
     <value>Save as draft</value>
+  </data>
+  <data name="BlogContent.Text" xml:space="preserve">
+    <value>Entry Content</value>
+  </data>
+  <data name="lblAllowComments.Text" xml:space="preserve">
+    <value>Enable Comments</value>
+  </data>
+  <data name="lblDisplayCopyright.Text" xml:space="preserve">
+    <value>Display Copyright</value>
   </data>
 </root>

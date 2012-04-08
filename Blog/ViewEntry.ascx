@@ -124,78 +124,83 @@
   <asp:RequiredFieldValidator ID="valCommentAuthor" runat="server" ResourceKey="valCommentAuthor.ErrorMessage" CssClass="NormalRed" Enabled="False" ErrorMessage="Author is required" ControlToValidate="txtAuthor" Display="None" EnableClientScript="False" />
   <asp:RequiredFieldValidator ID="valCommentTitle" runat="server" ResourceKey="valCommentTitle.ErrorMessage" CssClass="NormalRed" Enabled="False" ErrorMessage="Title is required" ControlToValidate="txtCommentTitle" Display="None" EnableClientScript="False" />
   <asp:RequiredFieldValidator ID="valComment" runat="server" ResourceKey="valComment.ErrorMessage" CssClass="NormalRed" Enabled="False" ErrorMessage="Comment is required" ControlToValidate="txtComment" Display="None" EnableClientScript="False" />
-  <br />
-  <table cellspacing="1" cellpadding="1" width="100%" border="0">
-   <tr>
-    <td class="BlogLeftTD" width="1%">
-     <asp:Label ID="lblAuthor" runat="server" ResourceKey="lblAuthor" CssClass="NormalBold" Width="80px" />
-    </td>
-    <td id="tdAuthor" valign="top" runat="server">
-     <asp:TextBox ID="txtAuthor" TabIndex="1" runat="server" Width="99%" />
-    </td>
-    <td id="tdGravatarPreview" valign="top" align="right" width="1%" rowspan="2" runat="server">
-     <div class="BlogGravatarPreview">
-      <asp:Image ID="imgGravatarPreview" runat="server" AlternateText="Gravatar Preview" />
-     </div>
-    </td>
-   </tr>
-   <tr id="trGravatarEmail" runat="server">
-    <td class="BlogLeftTD" width="1%">
-     <asp:Label ID="lblEmail" runat="server" ResourceKey="lblEmail" CssClass="NormalBold" />
-    </td>
-    <td valign="top">
-     <asp:TextBox ID="txtEmail" TabIndex="2" runat="server" Width="99%" />
-    </td>
-   </tr>
-   <tr id="trUseGravatar" runat="server">
-    <td>
-    </td>
-    <td>
-     <asp:Label ID="lblEmailExplanation" runat="server" ResourceKey="lblEmailExplanation" CssClass="Normal" />
-    </td>
-    <td>
-    </td>
-   </tr>
-   <tr id="trCommentWebsite" runat="server">
-    <td class="BlogLeftTD" width="1%">
-     <asp:Label ID="lblWebsite" runat="server" ResourceKey="lblWebsite" CssClass="NormalBold" Width="80px" />
-    </td>
-    <td colspan="2">
-     <asp:TextBox ID="txtWebsite" TabIndex="3" runat="server" Width="99%" />
-    </td>
-   </tr>
-   <tr id="trCommentTitle" runat="server">
-    <td class="BlogLeftTD" width="1%">
-     <asp:Label ID="lblCommentTitle" runat="server" ResourceKey="lblCommentTitle" CssClass="NormalBold" />
-    </td>
-    <td colspan="2">
-     <asp:TextBox ID="txtCommentTitle" TabIndex="4" runat="server" Width="99%" />
-    </td>
-   </tr>
-   <tr>
-    <td colspan="3">
-     <asp:Label ID="lblComment" runat="server" ResourceKey="lblComment" CssClass="NormalBold" />
-    </td>
-   </tr>
-   <tr>
-    <td colspan="3">
-     <asp:TextBox ID="txtComment" TabIndex="5" runat="server" CssClass="NormalTextBox" Width="99%" TextMode="MultiLine" Rows="8" />
-    </td>
-   </tr>
-   <tr id="rowCaptcha" runat="server">
-    <td colspan="3">
-     <asp:Label ID="lblCaptcha" runat="server" ResourceKey="lblCaptcha" CssClass="NormalBold" Width="80px" />
-     <dnn:CaptchaControl id="ctlCaptcha" tabIndex="6" runat="server" cssclass="Normal" errorstyle-cssclass="NormalRed" captchawidth="130" captchaheight="40" />
-    </td>
-   </tr>
-   <tr>
-    <td colspan="3">
-     <asp:LinkButton ID="cmdAddComment" TabIndex="7" runat="server" CssClass="CommandButton" BorderStyle="None" />&nbsp;&nbsp;
-     <asp:LinkButton ID="cmdCancel" TabIndex="8" runat="server" ResourceKey="cmdCancel" CssClass="CommandButton" BorderStyle="None" CausesValidation="False" />&nbsp;
-     <asp:LinkButton ID="cmdDeleteComment" TabIndex="9" runat="server" ResourceKey="cmdDelete" CssClass="CommandButton" Visible="False" BorderStyle="None" />
-    </td>
-   </tr>
-  </table>
+  <div>
+    <fieldset>
+      <table cellspacing="1" cellpadding="1" width="100%" border="0">
+       <tr>
+        <td class="BlogLeftTD" width="1%">
+         <asp:Label ID="lblAuthor" runat="server" ResourceKey="lblAuthor" CssClass="NormalBold" Width="80px" />
+        </td>
+        <td id="tdAuthor" valign="top" runat="server">
+         <asp:TextBox ID="txtAuthor" TabIndex="1" runat="server" Width="99%" />
+        </td>
+        <td id="tdGravatarPreview" valign="top" align="right" width="1%" rowspan="2" runat="server">
+         <div class="BlogGravatarPreview">
+          <asp:Image ID="imgGravatarPreview" runat="server" AlternateText="Gravatar Preview" />
+         </div>
+        </td>
+       </tr>
+       <tr id="trGravatarEmail" runat="server">
+        <td class="BlogLeftTD" width="1%">
+         <asp:Label ID="lblEmail" runat="server" ResourceKey="lblEmail" CssClass="NormalBold" />
+        </td>
+        <td valign="top">
+         <asp:TextBox ID="txtEmail" TabIndex="2" runat="server" Width="99%" />
+        </td>
+       </tr>
+       <tr id="trUseGravatar" runat="server">
+        <td>
+        </td>
+        <td>
+         <asp:Label ID="lblEmailExplanation" runat="server" ResourceKey="lblEmailExplanation" CssClass="Normal" />
+        </td>
+        <td>
+        </td>
+       </tr>
+       <tr id="trCommentWebsite" runat="server">
+        <td class="BlogLeftTD" width="1%">
+         <asp:Label ID="lblWebsite" runat="server" ResourceKey="lblWebsite" CssClass="NormalBold" Width="80px" />
+        </td>
+        <td colspan="2">
+         <asp:TextBox ID="txtWebsite" TabIndex="3" runat="server" Width="99%" />
+        </td>
+       </tr>
+       <tr id="trCommentTitle" runat="server">
+        <td class="BlogLeftTD" width="1%">
+         <asp:Label ID="lblCommentTitle" runat="server" ResourceKey="lblCommentTitle" CssClass="NormalBold" />
+        </td>
+        <td colspan="2">
+         <asp:TextBox ID="txtCommentTitle" TabIndex="4" runat="server" Width="99%" />
+        </td>
+       </tr>
+       <tr>
+        <td colspan="3">
+         <asp:Label ID="lblComment" runat="server" ResourceKey="lblComment" CssClass="NormalBold" />
+        </td>
+       </tr>
+       <tr>
+        <td colspan="3">
+         <asp:TextBox ID="txtComment" TabIndex="5" runat="server" Width="99%" TextMode="MultiLine" Rows="8" />
+        </td>
+       </tr>
+       <tr id="rowCaptcha" runat="server">
+        <td colspan="3">
+         <asp:Label ID="lblCaptcha" runat="server" ResourceKey="lblCaptcha" CssClass="NormalBold" Width="80px" />
+         <dnn:CaptchaControl id="ctlCaptcha" tabIndex="6" runat="server" cssclass="Normal" errorstyle-cssclass="NormalRed" captchawidth="130" captchaheight="40" />
+        </td>
+       </tr>
+       <tr>
+        <td colspan="3">
+            <ul class="dnnActions">
+                <li><asp:LinkButton ID="cmdAddComment" TabIndex="7" runat="server" CssClass="dnnPrimaryAction" /></li>
+                 <li><asp:LinkButton ID="cmdCancel" TabIndex="8" runat="server" ResourceKey="cmdCancel" CssClass="dnnSecondaryAction" CausesValidation="False" /></li>
+                 <li><asp:LinkButton ID="cmdDeleteComment" TabIndex="9" runat="server" ResourceKey="cmdDelete" CssClass="dnnSecondaryAction" Visible="False" /></li>
+            </ul>
+        </td>
+       </tr>
+      </table>
+      </fieldset>
+  </div>
   <asp:TextBox ID="txtClientIP" runat="server" Visible="false" />
  </asp:Panel>
 </div>

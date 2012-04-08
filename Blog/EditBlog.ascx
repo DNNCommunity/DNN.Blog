@@ -9,12 +9,12 @@
             <div class="dnnFormItem dnnFormHelp dnnClear"><p class="dnnFormRequired"><span><%=LocalizeString("RequiredFields")%></span></p></div>
             <div class="dnnFormItem">
                 <dnn:Label ID="lblTitle" runat="server" ControlToName="txtTitle" suffix=":" />
-                <asp:TextBox ID="txtTitle" runat="server" ResourceKey="txtTitle" />
+                <asp:TextBox ID="txtTitle" runat="server" ResourceKey="txtTitle" CssClass="dnnFormRequired" />
                 <asp:RequiredFieldValidator ID="valTitle" runat="server" Display="Dynamic" ControlToValidate="txtTitle" resourcekey="valTitle.ErrorMessage" CssClass="dnnFormError" />
             </div>
             <div class="dnnFormItem">
                 <dnn:Label ID="lblDescription" runat="server" controltoname="txtDescription" suffix=":" />
-                <asp:TextBox ID="txtDescription" runat="server" Rows="5" TextMode="MultiLine" />
+                <asp:TextBox ID="txtDescription" runat="server" Rows="5" TextMode="MultiLine" CssClass="dnnFormRequired" />
                 <asp:RequiredFieldValidator ID="valTitleDescription" runat="server" Display="Dynamic" resourcekey="valTitleDescription.ErrorMessage" ControlToValidate="txtDescription" CssClass="dnnFormError" />
             </div>
             <div class="dnnFormItem">

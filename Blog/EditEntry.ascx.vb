@@ -28,19 +28,23 @@ Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Services.Journal
+Imports DotNetNuke.Framework
 
 Partial Class EditEntry
     Inherits BlogModuleBase
 
-#Region " Public Properties "
+#Region "Public Properties"
+
     Public ReadOnly Property FilePath() As String
         Get
             Return Me.PortalSettings.HomeDirectory & Me.ModuleConfiguration.FriendlyName & "/"
         End Get
     End Property
+
 #End Region
 
-#Region " Private Members "
+#Region "Private Members"
+
     Private m_oEntryController As New EntryController
     Private m_oEntry As EntryInfo
     Private m_oBlogController As New BlogController
@@ -50,19 +54,24 @@ Partial Class EditEntry
     Private m_oCats As List(Of Business.CategoryInfo)
     Private m_oEntryCats As List(Of Business.CategoryInfo)
     Private m_oEntryId As Integer = -1
+
 #End Region
 
-#Region " Controls "
+#Region "Controls"
+
     Protected WithEvents txtDescription As DotNetNuke.UI.UserControls.TextEditor
-    Protected WithEvents chkDisplaySocialBookmarks As System.Web.UI.WebControls.CheckBox
     Protected WithEvents teBlogEntry As DotNetNuke.UI.UserControls.TextEditor
+
 #End Region
 
 #Region "Event Handlers"
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
 
+    Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
         Try
+            jQuery.RequestUIRegistration()
+
             Globals.ReadValue(Me.Request.Params, "EntryID", m_oEntryId)
+
             If m_oEntryId > -1 Then
                 m_oEntry = m_oEntryController.GetEntry(m_oEntryId, PortalId)
                 m_oBlog = m_oBlogController.GetBlog(m_oEntry.BlogID)
@@ -71,45 +80,44 @@ Partial Class EditEntry
             Else
                 m_oBlog = m_oBlogController.GetBlogByUserID(Me.PortalId, Me.UserId)
             End If
+
+            If m_oBlog Is Nothing Then
+                Response.Redirect(Request.UrlReferrer.ToString, True)
+            ElseIf Not m_oEntry Is Nothing Then
+                Me.ModuleConfiguration.ModuleTitle = GetString("msgEditBlogEntry", LocalResourceFile)
+            Else
+                Me.ModuleConfiguration.ModuleTitle = GetString("msgAddBlogEntry", LocalResourceFile)
+            End If
+
+            If Not Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
+                Response.Redirect(NavigateURL())
+            End If
+
+            If m_oBlog.ParentBlogID > -1 Then
+                m_oParentBlog = m_oBlogController.GetBlog(m_oBlog.ParentBlogID)
+            Else
+                m_oParentBlog = m_oBlog
+            End If
         Catch
         End Try
-
-        If m_oBlog Is Nothing Then
-            Response.Redirect(Request.UrlReferrer.ToString, True)
-        ElseIf Not m_oEntry Is Nothing Then
-            Me.ModuleConfiguration.ModuleTitle = GetString("msgEditBlogEntry", LocalResourceFile)
-        Else
-            Me.ModuleConfiguration.ModuleTitle = GetString("msgAddBlogEntry", LocalResourceFile)
-        End If
-        If Not Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
-            Response.Redirect(NavigateURL())
-        End If
-
-        If m_oBlog.ParentBlogID > -1 Then
-            m_oParentBlog = m_oBlogController.GetBlog(m_oBlog.ParentBlogID)
-        Else
-            m_oParentBlog = m_oBlog
-        End If
-
     End Sub
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
-
             valDescription.Enabled = BlogSettings.EntryDescriptionRequired
-            txtDescriptionOptional.Visible = Not valDescription.Enabled
+            pnlDescOpt.Visible = Not valDescription.Enabled
             Me.pnlUploads.Visible = BlogSettings.EnableUploadOption
 
             'Localize the file attachments datagrid
             LocalizeDataGrid(dgLinkedFiles, LocalResourceFile)
 
             If Not Page.IsPostBack Then
-
                 InitializeTree()
-                DotNetNuke.UI.Utilities.ClientAPI.AddButtonConfirm(cmdDelete, GetString("DeleteItem"))
+
                 cboChildBlogs.DataSource = m_oBlogController.ListBlogs(Me.PortalId, m_oParentBlog.BlogID, True)
                 cboChildBlogs.DataBind()
                 cboChildBlogs.Items.Insert(0, New ListItem(m_oParentBlog.Title, m_oParentBlog.BlogID.ToString()))
+
                 If Not cboChildBlogs.Items.FindByValue(m_oBlog.BlogID.ToString()) Is Nothing Then
                     cboChildBlogs.Items.FindByValue(m_oBlog.BlogID.ToString()).Selected = True
                 End If
@@ -130,7 +138,7 @@ Partial Class EditEntry
 
                 cmdPublish.Text = GetString("SaveAndPublish", LocalResourceFile)
                 cmdDraft.Text = GetString("SaveAsDraft", LocalResourceFile)
-                lblPublished.Text = GetString("UnPublished.Status", LocalResourceFile)
+                'lblPublished.Text = GetString("UnPublished.Status", LocalResourceFile)
 
                 If Not m_oEntry Is Nothing Then
                     'Load data
@@ -170,8 +178,7 @@ Partial Class EditEntry
                     If m_oEntry.Published Then
                         cmdDraft.Text = GetString("SaveAndOffline", LocalResourceFile)
                         cmdPublish.Text = GetString("Save", LocalResourceFile)
-                        DotNetNuke.UI.Utilities.ClientAPI.AddButtonConfirm(cmdDraft, GetString("SaveAndOffline.Confirm", LocalResourceFile))
-                        lblPublished.Text = GetString("Published.Status", LocalResourceFile)
+                        'lblPublished.Text = GetString("Published.Status", LocalResourceFile)
                     End If
 
                 Else
@@ -200,56 +207,42 @@ Partial Class EditEntry
                 Dim TagString As String
                 TagString = "'" + String.Join("','", TagSList) + "'"
 
-                AddJQuery()
-
                 If Not Page.ClientScript.IsClientScriptBlockRegistered("TAG") Then
                     Dim TagScript As String = "<script src=""" & ModulePath & "js/tag.js"" type=""text/javascript""></script>"
                     Page.ClientScript.RegisterClientScriptBlock(Me.GetType(), "TAG", TagScript)
                 End If
-
 
                 If Not Page.ClientScript.IsClientScriptBlockRegistered("TAGSUGGEST") Then
                     Dim TagSuggestScript As String = "<script type=""text/javascript"">jQuery(function(){setGlobalTags([" + TagString + "]);jQuery('#" + tbTags.ClientID + "').tagSuggest({separator:','});});</script>"
                     Page.ClientScript.RegisterClientScriptBlock(Me.GetType(), "TAGSUGGEST", TagSuggestScript)
                 End If
 
-            End If
+                Dim cancelUrl As String = ModuleContext.NavigateUrl(ModuleContext.TabId, "", False, "")
+                If Not Request.QueryString("BlogId") Is Nothing Then
+                    cancelUrl = Utility.AddTOQueryString(NavigateURL(), "BlogID", Request.QueryString("BlogId").ToString())
+                ElseIf Not Request.QueryString("EntryId") Is Nothing Then
+                    cancelUrl = Utility.AddTOQueryString(NavigateURL(), "EntryId", Request.QueryString("EntryId").ToString())
+                End If
 
+                hlCancel.NavigateUrl = cancelUrl
+            End If
         Catch exc As Exception
             ProcessModuleLoadException(Me, exc)
         End Try
     End Sub
 
-    Private Sub cmdPublish_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdPublish.Click
+    Protected Sub cmdPublish_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdPublish.Click
         updateEntry(True)
         Response.Redirect(NavigateURL(Me.TabId, "", "BlogID=" & m_oBlog.BlogID.ToString()), True)
     End Sub
 
-    Private Sub cmdDraft_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdDraft.Click
+    Protected Sub cmdDraft_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdDraft.Click
         'DR-04/16/2009-BLG-9657
         updateEntry(False)
         Me.Response.Redirect(EditUrl("EntryID", m_oEntry.EntryID.ToString(), "Edit_Entry"), False)
     End Sub
 
-    Private Sub cmdCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdCancel.Click
-        Try
-            'Antonio Chagoury
-            'BLG-5813
-            'Response.Redirect(CType(ViewState("URLReferrer"), String), True)
-            If Not Request.QueryString("BlogId") Is Nothing Then
-                Response.Redirect(Utility.AddTOQueryString(NavigateURL(), "BlogID", Request.QueryString("BlogId").ToString()), True)
-            ElseIf Not Request.QueryString("EntryId") Is Nothing Then
-                Response.Redirect(Utility.AddTOQueryString(NavigateURL(), "EntryId", Request.QueryString("EntryId").ToString()), True)
-            Else
-                Response.Redirect(NavigateURL(), True)
-            End If
-
-        Catch exc As Exception    'Module failed to load
-            ProcessModuleLoadException(Me, exc)
-        End Try
-    End Sub
-
-    Private Sub cmdDelete_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdDelete.Click
+    Protected Sub cmdDelete_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdDelete.Click
         Try
             If Not m_oEntry Is Nothing Then
                 DeleteAllFiles()
@@ -263,22 +256,22 @@ Partial Class EditEntry
         End Try
     End Sub
 
-    Private Sub valEntry_ServerValidate(ByVal source As Object, ByVal args As System.Web.UI.WebControls.ServerValidateEventArgs) Handles valEntry.ServerValidate
+    Protected Sub valEntry_ServerValidate(ByVal source As Object, ByVal args As System.Web.UI.WebControls.ServerValidateEventArgs) Handles valEntry.ServerValidate
         args.IsValid = teBlogEntry.Text.Length > 0
     End Sub
 
-    Private Sub valEntryDateData_ServerValidate(ByVal source As System.Object, ByVal args As System.Web.UI.WebControls.ServerValidateEventArgs) Handles valEntryDateData.ServerValidate
+    Protected Sub valEntryDateData_ServerValidate(ByVal source As System.Object, ByVal args As System.Web.UI.WebControls.ServerValidateEventArgs) Handles valEntryDateData.ServerValidate
         args.IsValid = Utility.IsValidDate(txtEntryDate.Text, m_oBlog.Culture)
     End Sub
 
-    Private Sub chkDisplayCopyright_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkDisplayCopyright.CheckedChanged
+    Protected Sub chkDisplayCopyright_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkDisplayCopyright.CheckedChanged
         pnlCopyright.Visible = chkDisplayCopyright.Checked
         If pnlCopyright.Visible Then
             txtCopyright.Text = CreateCopyRight()
         End If
     End Sub
 
-    Private Sub dgLinkedFiles_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles dgLinkedFiles.ItemDataBound
+    Protected Sub dgLinkedFiles_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles dgLinkedFiles.ItemDataBound
         Dim lnkDeleteFile As ImageButton
         If e.Item.ItemType = ListItemType.Item Or e.Item.ItemType = ListItemType.EditItem Or e.Item.ItemType = ListItemType.AlternatingItem Or e.Item.ItemType = ListItemType.SelectedItem Then
             lnkDeleteFile = CType(e.Item.FindControl("lnkDeleteFile"), System.Web.UI.WebControls.ImageButton)
@@ -295,7 +288,7 @@ Partial Class EditEntry
         DeleteFile(e.CommandName)
     End Sub
 
-    Private Sub btnUploadPicture_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnUploadPicture.Click
+    Protected Sub btnUploadPicture_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnUploadPicture.Click
         Dim bResponse As Boolean = False
         Dim strImage As String
         If m_oEntry Is Nothing Then
@@ -343,7 +336,7 @@ Partial Class EditEntry
         End If
     End Sub
 
-    Private Sub btnUploadAttachment_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnUploadAttachment.Click
+    Protected Sub btnUploadAttachment_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnUploadAttachment.Click
         Dim bResponse As Boolean = False
         Dim strAttachment As String
         Dim strDescription As String
@@ -408,9 +401,9 @@ Partial Class EditEntry
 
 #End Region
 
-#Region " Private Methods "
-    Private Sub updateEntry(ByVal publish As Boolean)
+#Region "Private Methods"
 
+    Private Sub updateEntry(ByVal publish As Boolean)
         Try
 
             If Page.IsValid = True Then
@@ -539,6 +532,7 @@ Partial Class EditEntry
             '.JSFunction = "catclick();"
         End With
     End Sub
+
 #End Region
 
 #Region "Upload Feature Methods"
@@ -552,12 +546,10 @@ Partial Class EditEntry
     End Function
 
     Private Function UploadFiles(ByVal PortalId As Integer, ByVal EntryPath As String, ByVal objFile As HttpPostedFile, ByVal FileType As Integer) As String
-
         Dim objPortalController As New PortalController
         Dim strMessage As String = ""
         Dim strFileName As String = ""
         Dim strExtension As String = ""
-
 
         If objFile.FileName <> "" Then
             strFileName = EntryPath & Path.GetFileName(objFile.FileName)

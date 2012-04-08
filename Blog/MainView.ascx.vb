@@ -25,137 +25,139 @@ Imports DotNetNuke.Services.Localization.Localization
 Imports DotNetNuke.Services.Localization
 
 Partial Public Class MainView
-  Inherits BlogModuleBase
-  Implements Entities.Modules.IActionable
+    Inherits BlogModuleBase
+    Implements Entities.Modules.IActionable
 
 #Region " IActionable "
-  Public ReadOnly Property ModuleActions() As DotNetNuke.Entities.Modules.Actions.ModuleActionCollection Implements DotNetNuke.Entities.Modules.IActionable.ModuleActions
-    Get
-      Return MyActions
-    End Get
-  End Property
+    Public ReadOnly Property ModuleActions() As DotNetNuke.Entities.Modules.Actions.ModuleActionCollection Implements DotNetNuke.Entities.Modules.IActionable.ModuleActions
+        Get
+            Return MyActions
+        End Get
+    End Property
 #End Region
 
 #Region "Private Methods"
-  Private Function resolveParams(ByVal params As System.Collections.Specialized.NameValueCollection) As String
-    Dim sRet As String = BlogModuleBase.CONTROL_VIEW_VIEWBLOG
-    RssView = RssViews.None
-    If Not Request.Params("EntryId") Is Nothing And Request.Params("BlogDate") Is Nothing Then
-      sRet = BlogModuleBase.CONTROL_VIEW_VIEWENTRY
-    ElseIf Not Request.Params("RssId") Is Nothing And Request.Params("BlogDate") Is Nothing Then
-      If Int32.Parse(Request.Params("RssId")) = 0 Then
-        RssView = RssViews.RecentEntries
-      Else
-        RssView = RssViews.BlogEntries
-      End If
-      sRet = BlogModuleBase.CONTROL_VIEW_BLOGFEED
-    ElseIf Not Request.Params("rssentryid") Is Nothing Then
-      sRet = BlogModuleBase.CONTROL_VIEW_BLOGFEED
-      RssView = RssViews.SingleEntry
-    ElseIf Not Request.Params("rssdate") Is Nothing Then
-      sRet = BlogModuleBase.CONTROL_VIEW_BLOGFEED
-      RssView = RssViews.ArchivEntries
-    End If
-    Return sRet
-  End Function
+    Private Function resolveParams(ByVal params As System.Collections.Specialized.NameValueCollection) As String
+        Dim sRet As String = BlogModuleBase.CONTROL_VIEW_VIEWBLOG
+        RssView = RssViews.None
+        If Not Request.Params("EntryId") Is Nothing And Request.Params("BlogDate") Is Nothing Then
+            sRet = BlogModuleBase.CONTROL_VIEW_VIEWENTRY
+        ElseIf Not Request.Params("RssId") Is Nothing And Request.Params("BlogDate") Is Nothing Then
+            If Int32.Parse(Request.Params("RssId")) = 0 Then
+                RssView = RssViews.RecentEntries
+            Else
+                RssView = RssViews.BlogEntries
+            End If
+            sRet = BlogModuleBase.CONTROL_VIEW_BLOGFEED
+        ElseIf Not Request.Params("rssentryid") Is Nothing Then
+            sRet = BlogModuleBase.CONTROL_VIEW_BLOGFEED
+            RssView = RssViews.SingleEntry
+        ElseIf Not Request.Params("rssdate") Is Nothing Then
+            sRet = BlogModuleBase.CONTROL_VIEW_BLOGFEED
+            RssView = RssViews.ArchivEntries
+        End If
+        Return sRet
+    End Function
 
-  Private Function GetModuleDefinitions() As ArrayList
+    Private Function GetModuleDefinitions() As ArrayList
 
-    Dim mdc As New ModuleDefinitionController
-    Dim definitions As New ArrayList
-    For Each mi As ModuleDefinitionInfo In mdc.GetModuleDefinitions(ModuleConfiguration.DesktopModuleID)
-      If mi.FriendlyName <> "View_Blog" Then
-        Dim mdi As New ModuleDefinitionInfo()
+        Dim mdc As New ModuleDefinitionController
+        Dim definitions As New ArrayList
+        For Each mi As ModuleDefinitionInfo In mdc.GetModuleDefinitions(ModuleConfiguration.DesktopModuleID)
+            If mi.FriendlyName <> "View_Blog" Then
+                Dim mdi As New ModuleDefinitionInfo()
 
-        mdi.FriendlyName = Localization.GetString(mi.FriendlyName, Me.LocalResourceFile)
-        mdi.ModuleDefID = mi.ModuleDefID
-        definitions.Add(mdi)
-      End If
-    Next
-    Return definitions
+                mdi.FriendlyName = Localization.GetString(mi.FriendlyName, Me.LocalResourceFile)
+                mdi.ModuleDefID = mi.ModuleDefID
+                definitions.Add(mdi)
+            End If
+        Next
+        Return definitions
 
-  End Function
+    End Function
 
 #End Region
 
 #Region "Event Handlers"
-  Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
-    Dim moduleControl As String
-    moduleControl = resolveParams(Request.Params)
-    Select Case moduleControl
 
-      Case BlogModuleBase.CONTROL_VIEW_BLOGFEED
-        Dim BlogFeedCtl As BlogFeed = CType(Me.LoadControl(Me.ModulePath & "BlogFeed.ascx"), BlogFeed)
-        BlogFeedCtl.SetModuleConfiguration(ModuleConfiguration)
-        BlogFeedCtl.ID = System.IO.Path.GetFileNameWithoutExtension(Me.ModulePath & "BlogFeed.ascx")
-        Controls.Add(BlogFeedCtl)
-        ModuleConfiguration = BlogFeedCtl.ModuleConfiguration
+    Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Dim moduleControl As String
+        moduleControl = resolveParams(Request.Params)
+        Select Case moduleControl
 
-      Case BlogModuleBase.CONTROL_VIEW_VIEWBLOG
-        Dim ViewBlogCtl As ViewBlog = CType(Me.LoadControl(Me.ModulePath & "ViewBlog.ascx"), ViewBlog)
-        ViewBlogCtl.SetModuleConfiguration(ModuleConfiguration)
-        ViewBlogCtl.ID = System.IO.Path.GetFileNameWithoutExtension(Me.ModulePath & "ViewBlog.ascx")
-        Controls.Add(ViewBlogCtl)
-        ModuleConfiguration = ViewBlogCtl.ModuleConfiguration
-        'DR-01/30/2009-BLG-8538
-        For Each action As ModuleAction In ViewBlogCtl.MyActions
-          action.ID = GetNextActionID()
-          Me.MyActions.Add(action)
-        Next
+            Case BlogModuleBase.CONTROL_VIEW_BLOGFEED
+                Dim BlogFeedCtl As BlogFeed = CType(Me.LoadControl(Me.ModulePath & "BlogFeed.ascx"), BlogFeed)
+                BlogFeedCtl.SetModuleConfiguration(ModuleConfiguration)
+                BlogFeedCtl.ID = System.IO.Path.GetFileNameWithoutExtension(Me.ModulePath & "BlogFeed.ascx")
+                Controls.Add(BlogFeedCtl)
+                ModuleConfiguration = BlogFeedCtl.ModuleConfiguration
 
-      Case BlogModuleBase.CONTROL_VIEW_VIEWENTRY
-        Dim ViewEntryCtl As ViewEntry = CType(Me.LoadControl(Me.ModulePath & "ViewEntry.ascx"), ViewEntry)
-        ViewEntryCtl.SetModuleConfiguration(ModuleConfiguration)
-        ViewEntryCtl.ID = System.IO.Path.GetFileNameWithoutExtension(Me.ModulePath & "ViewEntry.ascx")
-        Controls.Add(ViewEntryCtl)
-        ModuleConfiguration = ViewEntryCtl.ModuleConfiguration
-        'DR-01/30/2009-BLG-8538
-        For Each action As ModuleAction In ViewEntryCtl.MyActions
-          action.ID = GetNextActionID()
-          Me.MyActions.Add(action)
-        Next
+            Case BlogModuleBase.CONTROL_VIEW_VIEWBLOG
+                Dim ViewBlogCtl As ViewBlog = CType(Me.LoadControl(Me.ModulePath & "ViewBlog.ascx"), ViewBlog)
+                ViewBlogCtl.SetModuleConfiguration(ModuleConfiguration)
+                ViewBlogCtl.ID = System.IO.Path.GetFileNameWithoutExtension(Me.ModulePath & "ViewBlog.ascx")
+                Controls.Add(ViewBlogCtl)
+                ModuleConfiguration = ViewBlogCtl.ModuleConfiguration
+                'DR-01/30/2009-BLG-8538
+                For Each action As ModuleAction In ViewBlogCtl.MyActions
+                    action.ID = GetNextActionID()
+                    Me.MyActions.Add(action)
+                Next
 
-      Case Else
-        Dim ViewBlogCtl As ViewBlog = CType(Me.LoadControl(Me.ModulePath & "ViewBlog.ascx"), ViewBlog)
-        ViewBlogCtl.SetModuleConfiguration(ModuleConfiguration)
-        ViewBlogCtl.ID = System.IO.Path.GetFileNameWithoutExtension(Me.ModulePath & "ViewBlog.ascx")
-        Controls.Add(ViewBlogCtl)
-        ModuleConfiguration = ViewBlogCtl.ModuleConfiguration
-        'DR-01/30/2009-BLG-8538
-        For Each action As ModuleAction In ViewBlogCtl.MyActions
-          action.ID = GetNextActionID()
-          Me.MyActions.Add(action)
-        Next
+            Case BlogModuleBase.CONTROL_VIEW_VIEWENTRY
+                Dim ViewEntryCtl As ViewEntry = CType(Me.LoadControl(Me.ModulePath & "ViewEntry.ascx"), ViewEntry)
+                ViewEntryCtl.SetModuleConfiguration(ModuleConfiguration)
+                ViewEntryCtl.ID = System.IO.Path.GetFileNameWithoutExtension(Me.ModulePath & "ViewEntry.ascx")
+                Controls.Add(ViewEntryCtl)
+                ModuleConfiguration = ViewEntryCtl.ModuleConfiguration
+                'DR-01/30/2009-BLG-8538
+                For Each action As ModuleAction In ViewEntryCtl.MyActions
+                    action.ID = GetNextActionID()
+                    Me.MyActions.Add(action)
+                Next
 
-    End Select
+            Case Else
+                Dim ViewBlogCtl As ViewBlog = CType(Me.LoadControl(Me.ModulePath & "ViewBlog.ascx"), ViewBlog)
+                ViewBlogCtl.SetModuleConfiguration(ModuleConfiguration)
+                ViewBlogCtl.ID = System.IO.Path.GetFileNameWithoutExtension(Me.ModulePath & "ViewBlog.ascx")
+                Controls.Add(ViewBlogCtl)
+                ModuleConfiguration = ViewBlogCtl.ModuleConfiguration
+                'DR-01/30/2009-BLG-8538
+                For Each action As ModuleAction In ViewBlogCtl.MyActions
+                    action.ID = GetNextActionID()
+                    Me.MyActions.Add(action)
+                Next
 
-    If Not Me.IsPostBack Then
-      If DotNetNuke.Security.Permissions.TabPermissionController.HasTabPermission("EDIT") Then
-        pnlAddModuleDefs.Visible = True
-        ddModuleDef.DataSource = GetModuleDefinitions()
-        ddModuleDef.DataBind()
-        ddModuleDef.Items.Insert(0, New ListItem(GetString("Select", LocalResourceFile), "-1"))
-        Dim intItem As Integer
-        For intItem = 0 To PortalSettings.ActiveTab.Panes.Count - 1
-          ddPane.Items.Add(Convert.ToString(PortalSettings.ActiveTab.Panes(intItem)))
-        Next intItem
-        If Not ddPane.Items.FindByValue(DotNetNuke.Common.Globals.glbDefaultPane) Is Nothing Then
-          ddPane.Items.FindByValue(DotNetNuke.Common.Globals.glbDefaultPane).Selected = True
+        End Select
+
+        If Not Me.IsPostBack Then
+            If DotNetNuke.Security.Permissions.TabPermissionController.HasTabPermission("EDIT") Then
+                pnlAddModuleDefs.Visible = ModuleContext.IsEditable
+                ddModuleDef.DataSource = GetModuleDefinitions()
+                ddModuleDef.DataBind()
+                ddModuleDef.Items.Insert(0, New ListItem(GetString("Select", LocalResourceFile), "-1"))
+                Dim intItem As Integer
+                For intItem = 0 To PortalSettings.ActiveTab.Panes.Count - 1
+                    ddPane.Items.Add(Convert.ToString(PortalSettings.ActiveTab.Panes(intItem)))
+                Next intItem
+                If Not ddPane.Items.FindByValue(DotNetNuke.Common.Globals.glbDefaultPane) Is Nothing Then
+                    ddPane.Items.FindByValue(DotNetNuke.Common.Globals.glbDefaultPane).Selected = True
+                End If
+                ddPosition.Items.Clear()
+                ddPosition.Items.Add(New ListItem(GetString("Top", "admin/controlpanel/App_LocalResources/iconbar"), "0"))
+                ddPosition.Items.Add(New ListItem(GetString("Bottom", "admin/controlpanel/App_LocalResources/iconbar"), "-1"))
+                txtTitle.Text = GetString("Title", LocalResourceFile)
+            End If
         End If
-        ddPosition.Items.Clear()
-        ddPosition.Items.Add(New ListItem(GetString("Top", "admin/controlpanel/App_LocalResources/iconbar"), "0"))
-        ddPosition.Items.Add(New ListItem(GetString("Bottom", "admin/controlpanel/App_LocalResources/iconbar"), "-1"))
-        txtTitle.Text = GetString("Title", LocalResourceFile)
-      End If
-    End If
 
-  End Sub
+    End Sub
 
-  Private Sub cmdAdd_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdAdd.Click
-    If CInt(ddModuleDef.SelectedValue) = -1 Then Exit Sub
-    Globals.AddModDef(PortalSettings, CInt(ddModuleDef.SelectedValue), TabId, ddPane.SelectedValue, CInt(ddPosition.SelectedValue), txtTitle.Text.Trim)
-    Me.Response.Redirect(DotNetNuke.Common.NavigateURL(), False)
-  End Sub
+    Protected Sub cmdAdd_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdAdd.Click
+        If CInt(ddModuleDef.SelectedValue) = -1 Then Exit Sub
+        Globals.AddModDef(PortalSettings, CInt(ddModuleDef.SelectedValue), TabId, ddPane.SelectedValue, CInt(ddPosition.SelectedValue), txtTitle.Text.Trim)
+        Me.Response.Redirect(DotNetNuke.Common.NavigateURL(), False)
+    End Sub
+
 #End Region
 
 End Class
