@@ -12,28 +12,28 @@ SET @cmd = 'ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs DROP CONSTRAI
 EXEC(@cmd)
 GO
 
-IF NOT EXISTS (select * from sysobjects o inner join syscolumns c on o.id = c.Id and o.id = object_id('{objectQualifier}Blog_Blogs') and c.name = 'EnableTwitterIntegration')
+IF EXISTS (select * from sysobjects o inner join syscolumns c on o.id = c.Id and o.id = object_id('{objectQualifier}Blog_Blogs') and c.name = 'EnableTwitterIntegration')
 	BEGIN
 		ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs
 		DROP COLUMN	[EnableTwitterIntegration]
 	END
 GO
 
-IF NOT EXISTS (select * from sysobjects o inner join syscolumns c on o.id = c.Id and o.id = object_id('{objectQualifier}Blog_Blogs') and c.name = 'TwitterUsername')
+IF EXISTS (select * from sysobjects o inner join syscolumns c on o.id = c.Id and o.id = object_id('{objectQualifier}Blog_Blogs') and c.name = 'TwitterUsername')
 	BEGIN
 		ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs
 		DROP COLUMN	[TwitterUsername]
 	END
 GO
 
-IF NOT EXISTS (select * from sysobjects o inner join syscolumns c on o.id = c.Id and o.id = object_id('{objectQualifier}Blog_Blogs') and c.name = 'TwitterPassword')
+IF EXISTS (select * from sysobjects o inner join syscolumns c on o.id = c.Id and o.id = object_id('{objectQualifier}Blog_Blogs') and c.name = 'TwitterPassword')
 	BEGIN
 		ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs
 		DROP COLUMN	[TwitterPassword]
 	END
 GO
 
-IF NOT EXISTS (select * from sysobjects o inner join syscolumns c on o.id = c.Id and o.id = object_id('{objectQualifier}Blog_Blogs') and c.name = 'TweetTemplate')
+IF EXISTS (select * from sysobjects o inner join syscolumns c on o.id = c.Id and o.id = object_id('{objectQualifier}Blog_Blogs') and c.name = 'TweetTemplate')
 	BEGIN
 		ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs
 		DROP COLUMN	[TweetTemplate]
