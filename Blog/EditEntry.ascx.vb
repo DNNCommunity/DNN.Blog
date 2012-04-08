@@ -20,6 +20,8 @@
 
 Imports System
 Imports System.IO
+Imports DotNetNuke.UI.Skins.Controls
+Imports DotNetNuke.Web.Client.ClientResourceManagement
 Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Modules.Blog.File
@@ -29,6 +31,8 @@ Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Services.Journal
 Imports DotNetNuke.Framework
+Imports System.Linq
+Imports DotNetNuke.Entities.Content.Taxonomy
 
 Partial Class EditEntry
     Inherits BlogModuleBase
@@ -66,9 +70,11 @@ Partial Class EditEntry
 
 #Region "Event Handlers"
 
-    Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Protected Overloads Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
         Try
             jQuery.RequestUIRegistration()
+            ClientResourceManager.RegisterScript(Page, TemplateSourceDirectory + "/js/jquery.tagify.js")
+            ClientResourceManager.RegisterScript(Page, TemplateSourceDirectory + "/js/jquery.qaplaceholder.js")
 
             Globals.ReadValue(Me.Request.Params, "EntryID", m_oEntryId)
 
@@ -164,10 +170,11 @@ Partial Class EditEntry
                     cboChildBlogs.Enabled = True
                     Me.dgLinkedFiles.DataSource = FileController.getFileList(Me.FilePath, m_oEntry)
                     Me.dgLinkedFiles.DataBind()
-                    'chkDoNotTweet.Checked = True
 
-                    'RR-09/01/2009-BLG-XXXX
-                    tbTags.Text = Business.TagController.GetTagsByEntry(m_oEntry.EntryID)
+                    For Each t As Term In m_oEntry.Terms
+                        txtTags.Text = txtTags.Text + t.Name + ","
+                    Next
+                    'tbTags.Text = Business.TagController.GetTagsByEntry(m_oEntry.EntryID)
 
                     m_oEntryCats = CategoryController.ListCatsByEntry(m_oEntry.EntryID)
                     For Each c As CategoryInfo In m_oEntryCats
@@ -182,12 +189,10 @@ Partial Class EditEntry
                     End If
 
                 Else
-
                     'DR-04/16/2009-BLG-9657
                     chkAllowComments.Checked = m_oBlog.AllowComments
                     txtEntryDate.Text = Utility.FormatDate(Date.UtcNow, m_oBlog.Culture, m_oBlog.DateFormat, m_oBlog.TimeZone)
                     'chkDoNotTweet.Checked = False
-
                 End If
 
                 If Not Request.UrlReferrer Is Nothing Then
@@ -212,10 +217,10 @@ Partial Class EditEntry
                     Page.ClientScript.RegisterClientScriptBlock(Me.GetType(), "TAG", TagScript)
                 End If
 
-                If Not Page.ClientScript.IsClientScriptBlockRegistered("TAGSUGGEST") Then
-                    Dim TagSuggestScript As String = "<script type=""text/javascript"">jQuery(function(){setGlobalTags([" + TagString + "]);jQuery('#" + tbTags.ClientID + "').tagSuggest({separator:','});});</script>"
-                    Page.ClientScript.RegisterClientScriptBlock(Me.GetType(), "TAGSUGGEST", TagSuggestScript)
-                End If
+                'If Not Page.ClientScript.IsClientScriptBlockRegistered("TAGSUGGEST") Then
+                '    Dim TagSuggestScript As String = "<script type=""text/javascript"">jQuery(function(){setGlobalTags([" + TagString + "]);jQuery('#" + tbTags.ClientID + "').tagSuggest({separator:','});});</script>"
+                '    Page.ClientScript.RegisterClientScriptBlock(Me.GetType(), "TAGSUGGEST", TagSuggestScript)
+                'End If
 
                 Dim cancelUrl As String = ModuleContext.NavigateUrl(ModuleContext.TabId, "", False, "")
                 If Not Request.QueryString("BlogId") Is Nothing Then
@@ -246,7 +251,7 @@ Partial Class EditEntry
         Try
             If Not m_oEntry Is Nothing Then
                 DeleteAllFiles()
-                m_oEntryController.DeleteEntry(m_oEntry.EntryID)
+                m_oEntryController.DeleteEntry(m_oEntry.EntryID, m_oEntry.ContentItemId)
                 Response.Redirect(Utility.AddTOQueryString(NavigateURL(), "BlogID", m_oEntry.BlogID.ToString()), True)
             Else
                 Response.Redirect(NavigateURL(), True)
@@ -438,6 +443,7 @@ Partial Class EditEntry
                     .AllowComments = chkAllowComments.Checked
                     .DisplayCopyright = chkDisplayCopyright.Checked
                     .Copyright = txtCopyright.Text
+                    .ModuleID = ModuleContext.ModuleId
 
                     If Not cboChildBlogs.SelectedItem Is Nothing Then
                         If CType(cboChildBlogs.SelectedItem.Value, Double) > 0 Then
@@ -447,12 +453,30 @@ Partial Class EditEntry
 
                     .AddedDate = Utility.ToLocalTime(Utility.ParseDate(txtEntryDate.Text, m_oBlog.Culture), m_oBlog.TimeZone)
                     If Null.IsNull(m_oEntry.EntryID) Then
-                        .EntryID = m_oEntryController.AddEntry(m_oEntry)
+                        .EntryID = m_oEntryController.AddEntry(m_oEntry, ModuleContext.TabId).EntryID
                     End If
                     .PermaLink = Utility.GenerateEntryLink(PortalId, .EntryID, Me.TabId, .Title)
-                    m_oEntryController.UpdateEntry(m_oEntry)
 
-                    Business.TagController.UpdateTagsByEntry(m_oEntry.EntryID, tbTags.Text)
+                    Dim userEnteredTerms As Array = txtTags.Text.Trim.Split(","c)
+                    Dim terms As New List(Of Term)
+
+                    For Each s As String In userEnteredTerms
+                        If s.Length > 0 Then
+                            'If (ContainsSpecialCharacters) Then
+                            '    UI.Skins.Skin.AddModuleMessage(control, msg, ModuleMessage.ModuleMessageType.RedError);
+                            'End If
+                            Dim newTerm As Term = Modules.Blog.Terms.CreateAndReturnTerm(s, 1)
+                            terms.Add(newTerm)
+                        End If
+                    Next
+
+                    .Terms.Clear()
+                    .Terms.AddRange(terms)
+
+                    'Business.TagController.UpdateTagsByEntry(m_oEntry.EntryID, tbTags.Text)
+
+
+                    m_oEntryController.UpdateEntry(m_oEntry, Me.TabId)
 
                     Dim selectedCategories As New List(Of Integer)
                     For Each n As UI.WebControls.TreeNode In treeCategories.SelectedTreeNodes
@@ -478,36 +502,38 @@ Partial Class EditEntry
                     ' 'DR-05/28/2009-BLG-9556
                     ' txtEntryDate.ReadOnly = publish
                     'End If
-                    If (publish) Then
-                        Dim jc As New JournalController
-                        Dim objectKey As String = String.Format("{0}:{1}", .BlogID.ToString(), m_oEntry.EntryID.ToString())
-                        Dim ji As JournalItem = jc.Journal_GetByKey(PortalId, objectKey)
-                        If Not ji Is Nothing Then
-                            jc.Journal_DeleteByKey(PortalId, objectKey)
-                            ji = New JournalItem
-                        End If
+                    ' '' ''    If (publish) Then
+                    ' '' ''        Dim jc As New JournalController
+                    ' '' ''        Dim objectKey As String = String.Format("{0}:{1}", .BlogID.ToString(), m_oEntry.EntryID.ToString())
+                    ' '' ''        Dim ji As JournalItem = jc.Journal_GetByKey(PortalId, objectKey)
+                    ' '' ''        If Not ji Is Nothing Then
+                    ' '' ''            jc.Journal_DeleteByKey(PortalId, objectKey)
+                    ' '' ''            ji = New JournalItem
+                    ' '' ''        End If
 
-                        ji.PortalId = PortalId
-                        ji.ProfileId = UserId
-                        ji.UserId = UserId
-                        ji.Title = .Title
-                        ji.ItemData = New ItemData()
-                        ji.ItemData.Url = Utility.AddTOQueryString(NavigateURL(), "EntryId", m_oEntry.EntryID.ToString())
-                        ji.Summary = m_oEntry.Description
-                        ji.Body = Nothing
-                        ji.JournalTypeId = 7
-                        ji.ObjectKey = objectKey
-                        ji.SecuritySet = "E,"
+                    ' '' ''        ji.PortalId = ModuleContext.PortalId
+                    ' '' ''        ji.ProfileId = ModuleContext.PortalSettings.UserId
+                    ' '' ''        ji.UserId = ModuleContext.PortalSettings.UserId
+                    ' '' ''        ' I I believe we should add this (CP must ask WM)
+                    ' '' ''        'ji.ContentItemId = m_oEntry.ContentItemId
 
-                        jc.Journal_Save(ji, -1)
-                    End If
+                    ' '' ''        ji.Title = .Title
+                    ' '' ''        ji.ItemData = New ItemData()
+                    ' '' ''        ji.ItemData.Url = Utility.AddTOQueryString(NavigateURL(), "EntryId", m_oEntry.EntryID.ToString())
+                    ' '' ''        ji.Summary = m_oEntry.Description
+                    ' '' ''        ji.Body = Nothing
+                    ' '' ''        ji.JournalTypeId = 7
+                    ' '' ''        ji.ObjectKey = objectKey
+                    ' '' ''        ji.SecuritySet = "E,"
+
+                    ' '' ''        jc.Journal_Save(ji, -1)
+                    ' '' ''    End If
                 End With
 
             End If
         Catch exc As Exception    'Module failed to load
             ProcessModuleLoadException(Me, exc)
         End Try
-
     End Sub
 
     Private Function CreateCopyRight() As String

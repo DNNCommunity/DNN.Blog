@@ -42,7 +42,7 @@ Partial Public Class ViewBlog
 
 #Region "Event Handlers"
 
-    Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Protected Overloads Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
         m_oBlog = m_oBlogController.GetBlogFromContext()
         m_PersonalBlogID = BlogSettings.PageBlogs
 
@@ -373,6 +373,7 @@ Partial Public Class ViewBlog
         End If
 
         If ((oBlog.AllowComments Or CType(e.Item.DataItem, EntryInfo).AllowComments) And CType(IIf(Me.UserId = -1, oBlog.AllowAnonymous, True), Boolean)) Then
+            'If ((oBlog.AllowComments Or CType(e.Item.DataItem, EntryInfo).AllowComments)) Then
             lnkComments.Visible = True
             lnkComments.Text = String.Format(GetString("lnkComments", LocalResourceFile), CType(e.Item.DataItem, EntryInfo).CommentCount)
         Else
@@ -419,13 +420,6 @@ Partial Public Class ViewBlog
         End If
         oBlog = Nothing
     End Sub
-
-    'Antonio Chagoury
-    'No one was using this, so I am cleaning this up
-
-    'Private Function AddMoreLink(ByVal Description As String, ByVal EntryID As Integer) As String
-    '    Return Description & "<br><div style='text-align: right; width: 100%'><a class='CommandButton' href='" & Request.Url.GetLeftPart(UriPartial.Path) & "?tabid=" & Me.TabId & "&EntryID=" & EntryID & "'>More...</a></div>"
-    'End Function
 
     Protected Sub lstBlogView_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataListCommandEventArgs) Handles lstBlogView.ItemCommand
         ' DW - 04/22/2008 - Added to allow the use of the new BlogNavigateURL method

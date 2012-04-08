@@ -17,12 +17,15 @@
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 ' DEALINGS IN THE SOFTWARE.
 '
+
 Option Strict On
 Option Explicit On
 
 Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Entities.Content
 Imports DotNetNuke.Entities.Content.Common
+Imports DotNetNuke.Entities.Content.Taxonomy
+Imports System.Linq
 
 ''' <summary>
 ''' This class is used for managing taxonomy/folksonomy related terms via integration with the core.
@@ -52,5 +55,33 @@ Public Class Terms
     Friend Sub RemoveEntryTerms(ByVal objContent As ContentItem)
         Util.GetTermController().RemoveTermsFromContent(objContent)
     End Sub
+
+    Friend Shared Function CreateAndReturnTerm(name As String, vocabularyId As Integer) As Term
+        Dim termController As ITermController = DotNetNuke.Entities.Content.Common.Util.GetTermController()
+        Dim existantTerm As Term = termController.GetTermsByVocabulary(vocabularyId).Where(Function(t) t.Name.ToLower() = name.ToLower()).FirstOrDefault()
+        If existantTerm IsNot Nothing Then
+            Return existantTerm
+        End If
+
+        Dim termId As Integer = termController.AddTerm(New Term(vocabularyId) With { _
+         .Name = name _
+        })
+        Return New Term() With { _
+         .Name = name, _
+         .TermId = termId _
+        }
+    End Function
+
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="id"></param>
+    ''' <param name="vocabularyId"></param>
+    ''' <returns>The core 'Term'.</returns>
+    Friend Shared Function GetTermById(id As Integer, vocabularyId As Integer) As Term
+        Dim termController As ITermController = DotNetNuke.Entities.Content.Common.Util.GetTermController()
+        Dim existantTerm As Term = termController.GetTermsByVocabulary(vocabularyId).Where(Function(t) t.TermId = id).FirstOrDefault()
+        Return existantTerm
+    End Function
 
 End Class

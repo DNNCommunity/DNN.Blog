@@ -49,137 +49,130 @@ Partial Class BlogList
  Private lblFooter As System.Web.UI.WebControls.Label
 #End Region
 
-#Region " Event Handlers "
- Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+#Region "Event Handlers"
 
-  ' 11/19/2008 Rip Rowan replaced deprecated code
-  If DotNetNuke.Security.PortalSecurity.HasNecessaryPermission(Security.SecurityAccessLevel.Edit, PortalSettings, ModuleConfiguration) Then
-   m_oBlog = m_oBlogController.GetBlogByUserID(Me.PortalId, Me.UserId)
-   If m_oBlog Is Nothing Then
+    Protected Overloads Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        ' 11/19/2008 Rip Rowan replaced deprecated code
+        If DotNetNuke.Security.PortalSecurity.HasNecessaryPermission(Security.SecurityAccessLevel.Edit, PortalSettings, ModuleConfiguration) Then
+            m_oBlog = m_oBlogController.GetBlogByUserID(Me.PortalId, Me.UserId)
+            If m_oBlog Is Nothing Then
                 MyActions.Add(GetNextActionID, Localization.GetString("msgCreateBlog", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("", "", "Edit_Blog"), False, DotNetNuke.Security.SecurityAccessLevel.View, True, False)
-   Else
+            Else
                 MyActions.Add(GetNextActionID, Localization.GetString("msgEditBlogSettings", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Blog"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
                 MyActions.Add(GetNextActionID, Localization.GetString("msgAddBlogEntry", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Entry"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
-   End If
-   If ForumBlog.Utils.isForumBlogInstalled(PortalId, TabId, False) Then
+            End If
+            If ForumBlog.Utils.isForumBlogInstalled(PortalId, TabId, False) Then
                 MyActions.Add(GetNextActionID, Localization.GetString("msgImportBlog", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("Blog_Import"), False, DotNetNuke.Security.SecurityAccessLevel.Admin, True, False)
-   End If
-  End If
+            End If
+        End If
+    End Sub
 
- End Sub
+    Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Try
+            Dim list As ArrayList
+            'DR-04/17/2009-BLG-9754
+            m_BlogTitleStringTemplate = Localization.GetString("BlogTitleStringTemplate", LocalResourceFile)
 
- Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-  Try
-   Dim list As ArrayList
-   'DR-04/17/2009-BLG-9754
-   m_BlogTitleStringTemplate = Localization.GetString("BlogTitleStringTemplate", LocalResourceFile)
+            If Not Request.Params("BlogID") Is Nothing Then
+                m_iSelectedBlogID = Int32.Parse(Request.Params("BlogID"))
+            End If
+            If Not Request.Params("ParentBlogID") Is Nothing Then
+                m_iParentBlogID = Int32.Parse(Request.Params("ParentBlogID"))
+            End If
 
-   If Not Request.Params("BlogID") Is Nothing Then
-    m_iSelectedBlogID = Int32.Parse(Request.Params("BlogID"))
-   End If
-   If Not Request.Params("ParentBlogID") Is Nothing Then
-    m_iParentBlogID = Int32.Parse(Request.Params("ParentBlogID"))
-   End If
+            m_PersonalBlogID = BlogSettings.PageBlogs
 
-   m_PersonalBlogID = BlogSettings.PageBlogs
+            If Not Page.IsPostBack Then
+                list = m_oBlogController.ListBlogs(PortalId, m_PersonalBlogID, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
+                lstBlogs.DataSource = list
+                lstBlogs.DataBind()
 
-   If Not Page.IsPostBack Then
-    list = m_oBlogController.ListBlogs(PortalId, m_PersonalBlogID, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
-    lstBlogs.DataSource = list
-    lstBlogs.DataBind()
+                ' if no Entries are shown, show the Footer
+                lstBlogs.ShowFooter = (lstBlogs.Items.Count = 0)
+                lstBlogs.ShowHeader = Not lstBlogs.ShowFooter
+                Try
+                    If lstBlogs.ShowFooter Then
+                        lblFooter = CType(lstBlogs.Controls(lstBlogs.Controls.Count - 1).FindControl("lblFooter"), System.Web.UI.WebControls.Label)
+                        If m_PersonalBlogID = -1 Then       ' General Blog Page
+                            lblFooter.Text = Localization.GetString("msgNoBlogsInPortal", LocalResourceFile)
+                        Else
+                            lblFooter.Text = Localization.GetString("msgNoCategriesInBlog", LocalResourceFile)
+                        End If
+                    End If
+                Catch ex As Exception
 
-    ' if no Entries are shown, show the Footer
-    lstBlogs.ShowFooter = (lstBlogs.Items.Count = 0)
-    lstBlogs.ShowHeader = Not lstBlogs.ShowFooter
-    Try
-     If lstBlogs.ShowFooter Then
-      lblFooter = CType(lstBlogs.Controls(lstBlogs.Controls.Count - 1).FindControl("lblFooter"), System.Web.UI.WebControls.Label)
-      If m_PersonalBlogID = -1 Then       ' General Blog Page
-       lblFooter.Text = Localization.GetString("msgNoBlogsInPortal", LocalResourceFile)
-      Else
-       lblFooter.Text = Localization.GetString("msgNoCategriesInBlog", LocalResourceFile)
-      End If
-     End If
-    Catch ex As Exception
+                End Try
 
-    End Try
+            End If
+        Catch exc As Exception
+            ProcessModuleLoadException(Me, exc)
+        End Try
+    End Sub
 
-   End If
-  Catch exc As Exception
-   ProcessModuleLoadException(Me, exc)
-  End Try
- End Sub
-#End Region
+    Protected Sub lstBlogs_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataListItemEventArgs) Handles lstBlogs.ItemDataBound
+        Dim lnkBlogLink As HyperLink = CType(e.Item.FindControl("lnkBlogLink"), HyperLink)
+        Dim lnkBlogLinkIcon As Image = CType(e.Item.FindControl("lnkBlogLinkIcon"), Image)
+        Dim lnkBlog As HyperLink = CType(e.Item.FindControl("lnkBlog"), HyperLink)
+        Dim lnkBlogRSS As HyperLink = CType(e.Item.FindControl("lnkBlogRSS"), HyperLink)
 
-#Region " Private Methods "
- Private Sub lstBlogs_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataListItemEventArgs) Handles lstBlogs.ItemDataBound
+        If Not e.Item.DataItem Is Nothing Then
+            lnkBlogLink.NavigateUrl = NavigateURL(Me.TabId, "", "&BlogID=" & CType(e.Item.DataItem, BlogInfo).BlogID.ToString())
+            lnkBlog.NavigateUrl = NavigateURL(Me.TabId, "", "&BlogID=" & CType(e.Item.DataItem, BlogInfo).BlogID.ToString())
+            'DR-04/17/2009-BLG-9754
+            lnkBlog.Text = String.Format(m_BlogTitleStringTemplate, CType(e.Item.DataItem, BlogInfo).Title, CType(e.Item.DataItem, BlogInfo).BlogPostCount)
 
-  Dim lnkBlogLink As HyperLink = CType(e.Item.FindControl("lnkBlogLink"), HyperLink)
-  Dim lnkBlogLinkIcon As Image = CType(e.Item.FindControl("lnkBlogLinkIcon"), Image)
-  Dim lnkBlog As HyperLink = CType(e.Item.FindControl("lnkBlog"), HyperLink)
-  Dim lnkBlogRSS As HyperLink = CType(e.Item.FindControl("lnkBlogRSS"), HyperLink)
+            If m_PersonalBlogID = -1 Then
+                If CType(e.Item.DataItem, BlogInfo).Syndicated Then
+                    lnkBlogRSS.NavigateUrl = NavigateURL(Me.TabId, "", "rssid=" & CType(e.Item.DataItem, BlogInfo).BlogID.ToString())
+                    lnkBlogRSS.Visible = True
+                End If
+            Else
+                If CType(e.Item.DataItem, BlogInfo).Syndicated And CType(e.Item.DataItem, BlogInfo).SyndicateIndependant Then
+                    lnkBlogRSS.NavigateUrl = NavigateURL(Me.TabId, "", "rssid=" & CType(e.Item.DataItem, BlogInfo).BlogID.ToString())
+                    lnkBlogRSS.Visible = True
+                End If
+            End If
+            If CType(e.Item.DataItem, BlogInfo).BlogID = m_iSelectedBlogID Or CType(e.Item.DataItem, BlogInfo).BlogID = m_iParentBlogID Then
+                Dim trBlogChildren As System.Web.UI.WebControls.TableRow = CType(e.Item.FindControl("trBlogChildren"), System.Web.UI.WebControls.TableRow)
+                Dim tdBlogChildren As System.Web.UI.WebControls.TableCell = CType(e.Item.FindControl("tdBlogChildren"), System.Web.UI.WebControls.TableCell)
+                lstBlogChildren = CType(e.Item.FindControl("lstBlogChildren"), System.Web.UI.WebControls.DataList)
+                AddHandler lstBlogChildren.ItemDataBound, AddressOf lstBlogChildren_ItemDataBound
+                lstBlogChildren.DataSource = m_oBlogController.ListBlogs(Me.PortalId, CType(e.Item.DataItem, BlogInfo).BlogID, (CType(e.Item.DataItem, BlogInfo).UserID = Me.UserId Or DotNetNuke.Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString())))
+                lstBlogChildren.DataBind()
+                If lstBlogChildren.Items.Count > 0 Then
+                    trBlogChildren.Visible = True
+                    tdBlogChildren.Controls.Add(lstBlogChildren)
+                    lnkBlogLinkIcon.ImageUrl = "~/desktopmodules/Blog/Images/folder_opened.gif"
+                    lstBlogChildren.Visible = True
+                End If
+            Else
+                If CType(e.Item.DataItem, BlogInfo).ChildBlogCount > 0 Then
+                    lnkBlogLinkIcon.ImageUrl = "~/desktopmodules/Blog/Images/folder_closed.gif"
+                End If
+            End If
+        ElseIf Not lnkBlog Is Nothing Then
+            lnkBlog.NavigateUrl = NavigateURL()
+        End If
+    End Sub
 
-  If Not e.Item.DataItem Is Nothing Then
-   lnkBlogLink.NavigateUrl = NavigateURL(Me.TabId, "", "&BlogID=" & CType(e.Item.DataItem, BlogInfo).BlogID.ToString())
-   lnkBlog.NavigateUrl = NavigateURL(Me.TabId, "", "&BlogID=" & CType(e.Item.DataItem, BlogInfo).BlogID.ToString())
-   'DR-04/17/2009-BLG-9754
-   lnkBlog.Text = String.Format(m_BlogTitleStringTemplate, CType(e.Item.DataItem, BlogInfo).Title, CType(e.Item.DataItem, BlogInfo).BlogPostCount)
+    Protected Sub lstBlogChildren_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataListItemEventArgs)
+        Dim lnkChildIcon As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkChildIcon"), System.Web.UI.WebControls.HyperLink)
+        Dim lnkChildBlog As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkChildBlog"), System.Web.UI.WebControls.HyperLink)
+        Dim lnkChildBlogRSS As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkChildBlogRSS"), System.Web.UI.WebControls.HyperLink)
 
-   If m_PersonalBlogID = -1 Then
-    If CType(e.Item.DataItem, BlogInfo).Syndicated Then
-     lnkBlogRSS.NavigateUrl = NavigateURL(Me.TabId, "", "rssid=" & CType(e.Item.DataItem, BlogInfo).BlogID.ToString())
-     lnkBlogRSS.Visible = True
-    End If
-   Else
-    If CType(e.Item.DataItem, BlogInfo).Syndicated And CType(e.Item.DataItem, BlogInfo).SyndicateIndependant Then
-     lnkBlogRSS.NavigateUrl = NavigateURL(Me.TabId, "", "rssid=" & CType(e.Item.DataItem, BlogInfo).BlogID.ToString())
-     lnkBlogRSS.Visible = True
-    End If
-   End If
-   If CType(e.Item.DataItem, BlogInfo).BlogID = m_iSelectedBlogID Or CType(e.Item.DataItem, BlogInfo).BlogID = m_iParentBlogID Then
-    Dim trBlogChildren As System.Web.UI.WebControls.TableRow = CType(e.Item.FindControl("trBlogChildren"), System.Web.UI.WebControls.TableRow)
-    Dim tdBlogChildren As System.Web.UI.WebControls.TableCell = CType(e.Item.FindControl("tdBlogChildren"), System.Web.UI.WebControls.TableCell)
-    lstBlogChildren = CType(e.Item.FindControl("lstBlogChildren"), System.Web.UI.WebControls.DataList)
-    AddHandler lstBlogChildren.ItemDataBound, AddressOf lstBlogChildren_ItemDataBound
-    lstBlogChildren.DataSource = m_oBlogController.ListBlogs(Me.PortalId, CType(e.Item.DataItem, BlogInfo).BlogID, (CType(e.Item.DataItem, BlogInfo).UserID = Me.UserId Or DotNetNuke.Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString())))
-    lstBlogChildren.DataBind()
-    If lstBlogChildren.Items.Count > 0 Then
-     trBlogChildren.Visible = True
-     tdBlogChildren.Controls.Add(lstBlogChildren)
-     lnkBlogLinkIcon.ImageUrl = "~/desktopmodules/Blog/Images/folder_opened.gif"
-     lstBlogChildren.Visible = True
-    End If
-   Else
-    If CType(e.Item.DataItem, BlogInfo).ChildBlogCount > 0 Then
-     lnkBlogLinkIcon.ImageUrl = "~/desktopmodules/Blog/Images/folder_closed.gif"
-    End If
-   End If
-  ElseIf Not lnkBlog Is Nothing Then
-   lnkBlog.NavigateUrl = NavigateURL()
-  End If
+        lnkChildIcon.NavigateUrl = NavigateURL(Me.TabId, "", "&BlogID=" & CType(e.Item.DataItem, BlogInfo).BlogID.ToString() & "&ParentBlogID=" & CType(e.Item.DataItem, BlogInfo).ParentBlogID.ToString())
+        lnkChildBlog.NavigateUrl = NavigateURL(Me.TabId, "", "&BlogID=" & CType(e.Item.DataItem, BlogInfo).BlogID.ToString() & "&ParentBlogID=" & CType(e.Item.DataItem, BlogInfo).ParentBlogID.ToString())
 
- End Sub
+        If CType(e.Item.DataItem, BlogInfo).Syndicated And CType(e.Item.DataItem, BlogInfo).SyndicateIndependant Then
+            lnkChildBlogRSS.NavigateUrl = NavigateURL(Me.TabId, "", "rssid=" & CType(e.Item.DataItem, BlogInfo).BlogID.ToString())
+            lnkChildBlogRSS.Visible = True
+        End If
 
+        'DR-04/17/2009-BLG-9754
+        lnkChildBlog.Text = String.Format(m_BlogTitleStringTemplate, CType(e.Item.DataItem, BlogInfo).Title, CType(e.Item.DataItem, BlogInfo).BlogPostCount)
 
- Private Sub lstBlogChildren_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataListItemEventArgs)
-  Dim lnkChildIcon As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkChildIcon"), System.Web.UI.WebControls.HyperLink)
-  Dim lnkChildBlog As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkChildBlog"), System.Web.UI.WebControls.HyperLink)
-  Dim lnkChildBlogRSS As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkChildBlogRSS"), System.Web.UI.WebControls.HyperLink)
+    End Sub
 
-  lnkChildIcon.NavigateUrl = NavigateURL(Me.TabId, "", "&BlogID=" & CType(e.Item.DataItem, BlogInfo).BlogID.ToString() & "&ParentBlogID=" & CType(e.Item.DataItem, BlogInfo).ParentBlogID.ToString())
-  lnkChildBlog.NavigateUrl = NavigateURL(Me.TabId, "", "&BlogID=" & CType(e.Item.DataItem, BlogInfo).BlogID.ToString() & "&ParentBlogID=" & CType(e.Item.DataItem, BlogInfo).ParentBlogID.ToString())
-
-  If CType(e.Item.DataItem, BlogInfo).Syndicated And CType(e.Item.DataItem, BlogInfo).SyndicateIndependant Then
-   lnkChildBlogRSS.NavigateUrl = NavigateURL(Me.TabId, "", "rssid=" & CType(e.Item.DataItem, BlogInfo).BlogID.ToString())
-   lnkChildBlogRSS.Visible = True
-  End If
-
-  'DR-04/17/2009-BLG-9754
-  lnkChildBlog.Text = String.Format(m_BlogTitleStringTemplate, CType(e.Item.DataItem, BlogInfo).Title, CType(e.Item.DataItem, BlogInfo).BlogPostCount)
-
- End Sub
 #End Region
 
 End Class
-
-

@@ -92,6 +92,8 @@ Public Class Content
         End If
         objContent.Content = objEntry.Entry
         objContent.TabID = tabId
+        objContent.ModuleID = objEntry.ModuleID
+
         Util.GetContentController().UpdateContentItem(objContent)
 
         ' Update Terms
@@ -103,18 +105,18 @@ Public Class Content
     ''' Deletes a content item from the data store (via core API).
     ''' </summary>
     ''' <param name="objEntry"></param>
-    Friend Shared Sub DeleteContentItem(ByVal objEntry As EntryInfo)
-        If objEntry.ContentItemId <= Null.NullInteger Then
+    Friend Shared Sub DeleteContentItem(ByVal contentItemId As Integer)
+        If contentItemId <= Null.NullInteger Then
             Return
         End If
-        Dim objContent As ContentItem = Util.GetContentController().GetContentItem(objEntry.ContentItemId)
+        Dim objContent As ContentItem = Util.GetContentController().GetContentItem(contentItemId)
         If objContent Is Nothing Then
             Return
         End If
 
         ' remove any metadata/terms associated first (perhaps we should just rely on ContentItem cascade delete here?)
         Dim cntTerms As New Terms()
-        cntTerms.RemoveEntryTerms(objEntry)
+        cntTerms.RemoveEntryTerms(objContent)
 
         Util.GetContentController().DeleteContentItem(objContent)
     End Sub

@@ -86,7 +86,7 @@
 						  <moduleControl>
 							  <controlKey>View_Entry</controlKey>
 							  <controlSrc>DesktopModules/Blog/ViewEntry.ascx</controlSrc>
-							  <supportsPartialRendering>False</supportsPartialRendering>
+							  <supportsPartialRendering>True</supportsPartialRendering>
 							  <controlTitle>View Entry</controlTitle>
 							  <controlType>View</controlType>
 							  <iconFile />

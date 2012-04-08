@@ -1,21 +1,19 @@
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls" %>
-<%@ Import Namespace="DotNetNuke.Modules.Blog.Business" %>
-<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="ViewEntry.ascx.vb"
- Inherits="DotNetNuke.Modules.Blog.ViewEntry" %>
+<%@ Register TagPrefix="dba" Assembly="DotNetNuke.Modules.Blog" Namespace="DotNetNuke.Modules.Blog" %>
+<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="ViewEntry.ascx.vb" Inherits="DotNetNuke.Modules.Blog.ViewEntry" %>
 <asp:Label ID="lblTrackback" runat="server" />
-<div class="BlogBody">
- <!-- Begin Blog Entry Title -->
- <div class="BlogHead">
-  <h2 class="BlogTitle" id="lblBlogTitle" runat="server">
-  </h2>
- </div>
- <!-- End Blog Entry Title -->
- <!-- Begin Blog Sub Head -->
- <acronym class="BlogPublished" title="<%= lblDateTime.Text %>"><span class="BlogPubMonth">
-  <asp:Label ID="lblEntryMonth" runat="server" />
- </span><span class="BlogPubDate">
-  <asp:Label ID="lblEntryDay" runat="server" />
- </span></acronym>
+<div class="dnnForm dnnViewEntry dnnClear">
+    <div class="BlogHead">
+        <h2 class="dnnFormSectionHead" id="lblBlogTitle" runat="server" />
+    </div>
+    <acronym class="BlogPublished" title="<%= lblDateTime.Text %>">
+        <span class="BlogPubMonth">
+            <asp:Label ID="lblEntryMonth" runat="server" />
+        </span>
+        <span class="BlogPubDate">
+            <asp:Label ID="lblEntryDay" runat="server" />
+        </span>
+    </acronym>
  <p class="BlogSubHead">
   <span class="blog_author">
    <asp:Label ID="lblPostedBy" ResourceKey="lblPostedBy" runat="server" />
@@ -29,8 +27,7 @@
   </asp:HyperLink>
  </p>
  <!-- End Blog Sub Head -->
- <div class="HorizontalLine">
- </div>
+ <div class="HorizontalLine"></div>
  <!-- Begin Blog Entry -->
  <div class="BlogEntryDescription">
   <asp:Literal ID="litSummary" runat="server" />
@@ -41,21 +38,21 @@
  </p>
  <!-- End Blog Entry -->
  <!-- Blog Entry Footer Section -->
- <div class="BlogFooter">
-  <div class="BlogFooterRight">
-   <asp:HyperLink ID="lnkTrackBack" ResourceKey="lnkTrackBack" CssClass="BlogTrackback" runat="server" />
-   <asp:LinkButton ID="cmdPrint" runat="server" CausesValidation="False" CssClass="BlogPrint" resourcekey="cmdPrint" />
-   <asp:HyperLink ID="lnkEditEntry" ResourceKey="msgEditEntry" CssClass="BlogEditLink" runat="server" />
-  </div>
-  <div class="BlogFooterLeft">
-   <div class="BlogFooterSub BlogTag">
-    <asp:Label ID="lblTags" runat="server" ResourceKey="lblTags" />
-    <asp:Repeater ID="rptTags" runat="server">
-     <ItemTemplate>
-      <asp:HyperLink runat="server" ID="lnkTags" Text='<%# Utility.removeHtmlTags(Eval("Tag")) %>' NavigateUrl='<%# DotNetNuke.Common.NavigateURL(TabId, "", "tagid=" & Eval("TagID")) %>'>HyperLink</asp:HyperLink>
-     </ItemTemplate>
-     <SeparatorTemplate>, </SeparatorTemplate>
-    </asp:Repeater>
+ <div class="dnnClear">
+ <div class="dnnRight">
+        <asp:HyperLink ID="lnkTrackBack" ResourceKey="lnkTrackBack" CssClass="BlogTrackback" runat="server" />
+        <asp:LinkButton ID="cmdPrint" runat="server" CausesValidation="False" CssClass="BlogPrint" resourcekey="cmdPrint" />
+        <asp:HyperLink ID="lnkEditEntry" ResourceKey="msgEditEntry" CssClass="BlogEditLink" runat="server" />
+    </div>
+  <div class="dnnLeft">
+   <div class="tags dnnClear BlogTopics">
+       <div class="dnnLeft">
+            <asp:Repeater ID="rptTags" runat="server" OnItemDataBound="RptTagsItemDataBound">
+                <ItemTemplate>
+                    <dba:Tags ID="dbaSingleTag" runat="server" EnableViewState="false" />
+                </ItemTemplate>
+            </asp:Repeater>
+       </div>
    </div>
    <div class="BlogFooterSub BlogCategories">
     <asp:Label ID="lblCategories" runat="server" ResourceKey="lblCategories" />
@@ -64,26 +61,19 @@
       <asp:HyperLink runat="server" ID="lnkTags" Text='<%# Eval("Category") %>' NavigateUrl='<%# DotNetNuke.Common.NavigateURL(TabId, "", "catid=" & Eval("CatID")) %>'>HyperLink</asp:HyperLink></ItemTemplate>
      <SeparatorTemplate>, </SeparatorTemplate>
     </asp:Repeater>
-   </div>
-   <div class="BlogFooterSub BlogTopics">
-    <asp:Label ID="lblLocation" runat="server" ResourceKey="lblLocation" />
     <asp:HyperLink ID="lnkBlogs" runat="server" Text="Blogs" />
     <asp:Image ID="imgBlogParentSeparator" runat="server" ImageUrl="~/desktopmodules/Blog/Images/folder_closed.gif" AlternateText="Parent Separator" />
     <asp:HyperLink ID="lnkParentBlog" runat="server" />
     <asp:Image ID="imgParentChildSeparator" runat="server" ImageUrl="~/desktopmodules/Blog/Images/folder_closed.gif" Visible="False" AlternateText="Child Separator" />
     <asp:HyperLink ID="lnkChildBlog" runat="server" Visible="False" />
    </div>
-  </div>
-  <div class="Clear"></div>
+  </div>  
  </div>
  <div id="ShareBadgePRO_Toolbar"></div>
- <div class="Clear"></div>
  <!-- Comments Section -->
  <asp:Panel ID="pnlComments" runat="server" Visible="False">
-  <p>
    <a id="Comments" name="Comments"></a>
-   <a href="#AddComment"><asp:Label ID="lblComments" runat="server" CssClass="BlogComments" /></a>
-  </p>
+   <h3 class="BlogComments"><a href="#AddComment"><asp:Label ID="lblComments" runat="server" /></a></h3>
   <asp:ImageButton ID="lnkDeleteAllUnapproved" runat="server" ImageUrl="~/images/delete.gif" Visible="false" CausesValidation="false" AlternateText="Delete Unaproved" />
   <asp:LinkButton ID="btDeleteAllUnapproved" runat="server" Visible="false" resourcekey="DeleteAllUnapproved" CssClass="CommandButton" CausesValidation="false" /><br />
   <asp:DataList ID="lstComments" runat="server" Width="100%">
@@ -204,3 +194,19 @@
   <asp:TextBox ID="txtClientIP" runat="server" Visible="false" />
  </asp:Panel>
 </div>
+<script language="javascript" type="text/javascript">
+    /*globals jQuery, window, Sys */
+    (function ($, Sys) {
+        function setupDnnQuestions() {
+            $('.qaTooltip').qaTooltip();
+        }
+
+        $(document).ready(function () {
+            setupDnnQuestions();
+            Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
+                setupDnnQuestions();
+            });
+        });
+
+    } (jQuery, window.Sys));
+</script>  

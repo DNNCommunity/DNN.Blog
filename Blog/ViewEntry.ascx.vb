@@ -19,6 +19,8 @@
 '
 
 Imports System
+Imports DotNetNuke.Entities.Content
+Imports DotNetNuke.Web.Client.ClientResourceManagement
 Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Security
 Imports DotNetNuke.Common.Globals
@@ -27,6 +29,8 @@ Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Entities.Users
+Imports DotNetNuke.Framework
+Imports System.Linq
 
 Partial Public Class ViewEntry
     Inherits BlogModuleBase
@@ -53,7 +57,12 @@ Partial Public Class ViewEntry
 
 #Region "Event Handlers"
 
-    Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Protected Overloads Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        jQuery.RequestUIRegistration()
+        ClientResourceManager.RegisterScript(Page, TemplateSourceDirectory + "/js/jquery.qatooltip.js")
+        ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js")
+        ClientResourceManager.RegisterScript(Page, TemplateSourceDirectory + "/js/jquery.qaplaceholder.js")
+
         OutputAdditionalFiles = True
 
         Me.ModuleConfiguration.DisplayPrint = False
@@ -63,36 +72,38 @@ Partial Public Class ViewEntry
             If Not m_oEntry Is Nothing Then
                 m_oBlog = m_oBlogController.GetBlog(m_oEntry.BlogID)
 
-
                 If Not m_oBlog.Public And Not Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
                     Response.Redirect(NavigateURL(), True)
                     Exit Sub
                 End If
+
+                If Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
+                    MyActions.Add(GetNextActionID, Localization.GetString("msgEditEntry", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("EntryID", m_oEntry.EntryID.ToString(), "Edit_Entry"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
+                    lnkEditEntry.Visible = True
+                    lnkEditEntry.NavigateUrl = EditUrl("EntryID", m_oEntry.EntryID.ToString(), "Edit_Entry")
+                Else
+                    lnkEditEntry.Visible = False
+                End If
+
+                Dim keyWords As String = ""
+                Dim keyCount As Integer = 1
+                Dim count As Integer = keyCount
+
+                ' needs to be integrated w/ keyword limit constant
+                For Each term As DotNetNuke.Entities.Content.Taxonomy.Term In m_oEntry.Terms
+                    keyWords += "," + term.Name
+                    keyCount += 1
+                Next
+                Utility.SetPageMetaAndOpenGraph(CType(Page, CDefault), ModuleContext, m_oEntry.Title, m_oEntry.Entry, keyWords, m_oEntry.PermaLink)
             End If
         End If
 
-        'Antonio Chagoury
-        'Removing this as I have added a Blog Title Label
-        'If Not m_oEntry Is Nothing Then
-        '    Me.ModuleConfiguration.ModuleTitle = m_oEntry.Title
-        'End If
-
-        If Not m_oEntry Is Nothing Then
-            If Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
-                MyActions.Add(GetNextActionID, Localization.GetString("msgEditEntry", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("EntryID", m_oEntry.EntryID.ToString(), "Edit_Entry"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
-                lnkEditEntry.Visible = True
-                lnkEditEntry.NavigateUrl = EditUrl("EntryID", m_oEntry.EntryID.ToString(), "Edit_Entry")
-            Else
-                lnkEditEntry.Visible = False
-            End If
-        End If
-        Me.ModuleConfiguration.SupportedFeatures = 0
+        'Me.ModuleConfiguration.SupportedFeatures = 0
     End Sub
 
     Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             If Not Page.IsPostBack Then
-
                 If m_oEntry Is Nothing Then
                     Response.Redirect(NavigateURL(), False)
                     Exit Sub
@@ -104,7 +115,6 @@ Partial Public Class ViewEntry
                 End If
 
                 If Not m_oBlog Is Nothing Then
-
                     If Not Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, ModuleId) Then
                         If UserId = -1 Then
                             If m_oBlog.MustApproveAnonymous Then
@@ -161,8 +171,8 @@ Partial Public Class ViewEntry
                         End If
                     End If
                 End If
-                If Not m_oEntry Is Nothing Then
 
+                If Not m_oEntry Is Nothing Then
                     'DW - 08/14/2008 - Added code to issue a 301 Redirect in cases where the URL of the page is not the same
                     ' as that created by the new BlogNavigateURL function
                     Dim requestedUrl As String = DirectCast(HttpContext.Current.Items()("UrlRewrite:OriginalUrl"), String)
@@ -283,6 +293,22 @@ Partial Public Class ViewEntry
 
                 End If
 
+                ' Make sure content item and moduleid are proper here (because we integrated content items years after module was built)
+                If (m_oEntry.ModuleID < 1 Or m_oEntry.ContentItemId < 1 Or m_oEntry.TabID < 1) Then
+                    Dim cntEntry As New EntryController()
+
+                    m_oEntry.ModuleID = ModuleContext.ModuleId
+                    m_oEntry.TabID = ModuleContext.TabId
+
+                    If (m_oEntry.ContentItemId < 1) Then
+                        Dim cntTaxonomy As New Content()
+                        Dim objContentItem As ContentItem = cntTaxonomy.CreateContentItem(m_oEntry, ModuleContext.TabId)
+                        m_oEntry.ContentItemId = objContentItem.ContentItemId
+                    End If
+
+                    cntEntry.UpdateEntry(m_oEntry, ModuleContext.TabId)
+                End If
+
                 rowCaptcha.Visible = (pnlComments.Visible And m_oBlog.UseCaptcha And Not Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, ModuleId))
             End If
 
@@ -295,13 +321,12 @@ Partial Public Class ViewEntry
                 ctlCaptcha.Text = Localization.GetString("CaptchaText", Me.LocalResourceFile)
             End If
 
-            Dim taglist As ArrayList = TagController.ListTagsByEntry(m_oEntry.EntryID)
-            rptTags.DataSource = taglist
+            'Dim taglist As ArrayList = TagController.ListTagsByEntry(m_oEntry.EntryID)
+            rptTags.DataSource = m_oEntry.Terms
             rptTags.DataBind()
 
             rptCategories.DataSource = CategoryController.ListCatsByEntry(m_oEntry.EntryID)
             rptCategories.DataBind()
-
         Catch exc As Exception
             ProcessModuleLoadException(Me, exc)
         End Try
@@ -356,8 +381,9 @@ Partial Public Class ViewEntry
         ' Rip Rowan 6/13/2008
         ' Hide comment titles if not enabled in settings
         lblTitle.Visible = BlogSettings.ShowCommentTitle
-
-        lblCommentDate.Text = Utility.FormatDate(commentInfo.AddedDate, m_oBlog.Culture, m_oBlog.DateFormat, m_oBlog.TimeZone)
+        Dim x As Date = Utility.AdjustedDate(commentInfo.AddedDate, m_oBlog.Culture, m_oBlog.DateFormat, m_oBlog.TimeZone)
+        lblCommentDate.Text = Utility.CalculateDateForDisplay(x)
+        'lblCommentDate.Text = Utility.FormatDate(commentInfo.AddedDate, m_oBlog.Culture, m_oBlog.DateFormat, m_oBlog.TimeZone)
         If Not commentInfo.Approved Then
             lnkApproveComment.Visible = True
         Else
@@ -504,7 +530,7 @@ Partial Public Class ViewEntry
                 BindCommentsList()
             End If
         Catch exc As Exception
-
+            LogException(exc)
         End Try
     End Sub
 
@@ -588,6 +614,18 @@ Partial Public Class ViewEntry
         End If
     End Sub
 
+    Protected Sub RptTagsItemDataBound(sender As Object, e As RepeaterItemEventArgs)
+        Dim tagControl As Tags = DirectCast(e.Item.FindControl("dbaSingleTag"), Tags)
+        Dim term As Taxonomy.Term = DirectCast(e.Item.DataItem, Taxonomy.Term)
+        Dim colTerms As New List(Of Taxonomy.Term)
+        colTerms.Add(term)
+
+        tagControl.ModContext = ModuleContext
+        tagControl.DataSource = colTerms
+        'tagControl.CountMode = TagTimeFrame;	
+        tagControl.DataBind()
+    End Sub
+
 #End Region
 
 #Region "Private Methods"
@@ -614,8 +652,6 @@ Partial Public Class ViewEntry
                                  + ";}else{" + imgGravatarPreview.ClientID + ".src=" + strOnchangeNoEmail + ";}")
 
         imgGravatarPreview.ImageUrl = GetGravatarUrl(txtEmail.Text)
-
-
     End Sub
 
     Private Sub AddSocialBookmarks(ByVal EntryTitle As String, ByVal EntryUrl As String)
@@ -643,7 +679,10 @@ Partial Public Class ViewEntry
 
         'Initialize the CSS for ShareBadge
         If Not Page.ClientScript.IsClientScriptBlockRegistered("SB_PRO_CSS") Then
-            CType(Me.Page, DotNetNuke.Framework.CDefault).AddStyleSheet("SB_PRO_CSS", ModulePath & "ShareBadge/css/ShareBadge.css", False)
+            'CType(Me.Page, DotNetNuke.Framework.CDefault).AddStyleSheet("SB_PRO_CSS", ModulePath & "ShareBadge/css/ShareBadge.css", False)
+            ClientResourceManager.RegisterStyleSheet(Page, ControlPath & "ShareBadge/css/ShareBadge.css")
+
+
             'Dim SbProCss As String = "<link rel=""stylesheet"" href=""" & ModulePath & "ShareBadge/css/ShareBadge.css"" type=""text/css"" />"
             'Page.ClientScript.RegisterClientScriptBlock(Me.GetType(), "SB_PRO_CSS", SbProCss)
         End If
@@ -716,7 +755,6 @@ Partial Public Class ViewEntry
         Dim MonthFormat As DateTimeFormatInfo = oCultureInfo.DateTimeFormat
 
         Return MonthFormat.AbbreviatedMonthNames(oCultureInfo.Calendar.GetMonth(strDate.AddMinutes(TimeZone)) - 1)
-
     End Function
 
     Private Function GetDay(ByVal strDate As Date, ByVal TimeZone As Integer) As String

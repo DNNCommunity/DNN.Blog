@@ -1,7 +1,7 @@
 '
-' DotNetNuke -  http://www.dotnetnuke.com
-' Copyright (c) 2002-2010
-' by Perpetual Motion Interactive Systems Inc. ( http://www.perpetualmotion.ca )
+' DotNetNuke® - http://www.dotnetnuke.com
+' Copyright (c) 2002-2012
+' by DotNetNuke Corporation
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 ' documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,7 +16,8 @@
 ' THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 ' DEALINGS IN THE SOFTWARE.
-'-------------------------------------------------------------------------
+'
+
 Imports System.IO
 Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Entities.Portals
@@ -28,7 +29,7 @@ Public Class CustomUpgrade
 
 #Region "Forum/Blog Import"
 
-    Public Function ImportForumBlog(ByVal GroupID As Integer, ByVal BlogID As Integer) As Boolean
+    Public Function ImportForumBlog(ByVal GroupID As Integer, ByVal BlogID As Integer, ByVal ModuleID As Integer) As Boolean
         Try
             Dim m_PortalSettings As PortalSettings = CType(HttpContext.Current.Items("PortalSettings"), PortalSettings)
             Dim m_Forum_GroupsController As New Forum_GroupsController
@@ -82,7 +83,9 @@ Public Class CustomUpgrade
                     m_EntryInfo.UserFullName = m_BlogInfo.UserFullName
                     m_EntryInfo.UserID = m_BlogInfo.UserID
                     m_EntryInfo.UserName = m_BlogInfo.UserName
-                    Dim EntryID As Integer = m_EntryController.AddEntry(m_EntryInfo)
+                    m_EntryInfo.ModuleID = ModuleID
+
+                    Dim EntryID As Integer = m_EntryController.AddEntry(m_EntryInfo, -1).EntryID
                     Dim CommentList As New ArrayList
                     CommentList = m_Forum_ThreadRatingController.List(ti.ThreadID)
                     For Each ci As Forum_ThreadRatingInfo In CommentList
@@ -165,8 +168,6 @@ Public Class CustomUpgrade
             Dim oldEntryId As Integer
             Dim oldCommentId As Integer
 
-
-
             ' replace all NewBlog controls with the new blog controls
             Dim _allModules As ArrayList = _moduleController.GetAllModules()
             For Each mi As ModuleInfo In _allModules
@@ -226,7 +227,7 @@ Public Class CustomUpgrade
                     For Each ei As EntryInfo In _entries
                         oldEntryId = ei.EntryID
                         ei.BlogID = BlogId
-                        EntryId = _EntryController.AddEntry(ei)
+                        EntryId = _EntryController.AddEntry(ei, ei.TabID).EntryID
                         Dim _comments As ArrayList = _NewBlogUgradeController.Upgrade_ListComments(ei.EntryID)
                         For Each ci As CommentInfo In _comments
                             oldCommentId = ci.CommentID

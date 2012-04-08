@@ -240,6 +240,6 @@
     <value>Tags:</value>
   </data>
   <data name="lblCategories.Text" xml:space="preserve">
-    <value>Categories:</value>
+    <value>File Under:</value>
   </data>
 </root>

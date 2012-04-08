@@ -25,266 +25,265 @@ Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Services.Localization
 
 Partial Class MassEdit
- Inherits BlogModuleBase
+    Inherits BlogModuleBase
 
 #Region " Private Members "
- Private m_oBlogController As New BlogController
- Private m_oBlog As BlogInfo
- Private m_dBlogDate As Date = Date.UtcNow
- Private m_dBlogDateType As String
- Private m_PersonalBlogID As Integer
+
+    Private m_oBlogController As New BlogController
+    Private m_oBlog As BlogInfo
+    Private m_dBlogDate As Date = Date.UtcNow
+    Private m_dBlogDateType As String
+    Private m_PersonalBlogID As Integer
+
 #End Region
 
-#Region " Event Handlers "
- Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+#Region "Event Handlers"
 
-  m_oBlog = m_oBlogController.GetBlogFromContext()
-  m_PersonalBlogID = BlogSettings.PageBlogs
+    Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
 
-  If m_PersonalBlogID <> -1 And m_oBlog Is Nothing Then
-   Dim objBlog As New BlogController
-   m_oBlog = objBlog.GetBlog(m_PersonalBlogID)
-   'ModuleConfiguration.ModuleTitle = m_oBlog.Title
-  End If
-  If Not m_oBlog Is Nothing Then
+        m_oBlog = m_oBlogController.GetBlogFromContext()
+        m_PersonalBlogID = BlogSettings.PageBlogs
 
-   If Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
+        If m_PersonalBlogID <> -1 And m_oBlog Is Nothing Then
+            Dim objBlog As New BlogController
+            m_oBlog = objBlog.GetBlog(m_PersonalBlogID)
+            'ModuleConfiguration.ModuleTitle = m_oBlog.Title
+        End If
+        If Not m_oBlog Is Nothing Then
+
+            If Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
                 MyActions.Add(GetNextActionID, Localization.GetString("msgEditBlogSettings", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Blog"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
                 MyActions.Add(GetNextActionID, Localization.GetString("msgAddBlogEntry", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Entry"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
                 MyActions.Add(GetNextActionID, Localization.GetString("msgMassEdit", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Mass_Edit"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
-   End If
-  End If
+            End If
+        End If
         MyActions.Add(GetNextActionID, Localization.GetString("msgModuleOptions", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("", "", "Module_Options"), False, DotNetNuke.Security.SecurityAccessLevel.Admin, True, False)
-  Me.ModuleConfiguration.SupportedFeatures = 0
+        Me.ModuleConfiguration.SupportedFeatures = 0
 
- End Sub
+    End Sub
 
- Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-  Try
+    Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Try
+            Dim objEntries As New EntryController
+            Dim list As ArrayList
+            Dim currentpage As Integer
 
-   Dim objEntries As New EntryController
-   Dim list As ArrayList
-   Dim currentpage As Integer
+            If Not Page.IsPostBack Then
+                If m_oBlog Is Nothing Then
+                    list = objEntries.ListEntriesByPortal(Me.PortalId, m_dBlogDate, m_dBlogDateType, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), 10000)
 
-   If Not Page.IsPostBack Then
-    If m_oBlog Is Nothing Then
-     list = objEntries.ListEntriesByPortal(Me.PortalId, m_dBlogDate, m_dBlogDateType, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), 10000)
+                Else
+                    list = objEntries.ListEntriesByBlog(m_oBlog.BlogID, m_dBlogDate, Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId), Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId), 10000)
+                End If
 
-    Else
-     list = objEntries.ListEntriesByBlog(m_oBlog.BlogID, m_dBlogDate, Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId), Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId), 10000)
-    End If
+                Dim PageSize As Integer = 20 'Display 20 items per page
 
-    Dim PageSize As Integer = 20 'Display 20 items per page
+                'Get the currentpage index from the url parameter  
+                If Request.QueryString("currentpage") IsNot Nothing Then
+                    currentpage = CInt(Request.QueryString("currentpage"))
+                Else
+                    currentpage = 1
+                End If
 
-    'Get the currentpage index from the url parameter  
-    If Request.QueryString("currentpage") IsNot Nothing Then
-     currentpage = CInt(Request.QueryString("currentpage"))
-    Else
-     currentpage = 1
-    End If
+                Dim objPagedDataSource As New PagedDataSource
+                objPagedDataSource.DataSource = list
+                objPagedDataSource.PageSize = PageSize
+                objPagedDataSource.CurrentPageIndex = currentpage - 1
+                objPagedDataSource.AllowPaging = True
 
-    Dim objPagedDataSource As New PagedDataSource
-    objPagedDataSource.DataSource = list
-    objPagedDataSource.PageSize = PageSize
-    objPagedDataSource.CurrentPageIndex = currentpage - 1
-    objPagedDataSource.AllowPaging = True
+                With Pagecontrol
+                    .TotalRecords = list.Count
+                    .PageSize = PageSize
+                    .CurrentPage = currentpage
+                    .TabID = TabId
+                    .QuerystringParams = "ctl/Mass_Edit/mid/" + Me.ModuleId.ToString + "/"
+                End With
 
-    With Pagecontrol
-     .TotalRecords = list.Count
-     .PageSize = PageSize
-     .CurrentPage = currentpage
-     .TabID = TabId
-     .QuerystringParams = "ctl/Mass_Edit/mid/" + Me.ModuleId.ToString + "/"
-    End With
+                rptEdit.DataSource = objPagedDataSource
+                rptEdit.DataBind()
 
-    rptEdit.DataSource = objPagedDataSource
-    rptEdit.DataBind()
+            End If
 
-   End If
+        Catch exc As Exception
+            ProcessModuleLoadException(Me, exc)
+        End Try
+    End Sub
 
-  Catch exc As Exception
-   ProcessModuleLoadException(Me, exc)
-  End Try
- End Sub
+    Protected Sub rptEdit_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.RepeaterCommandEventArgs) Handles rptEdit.ItemCommand
+        If (e.Item.ItemType = ListItemType.Item Or e.Item.ItemType = ListItemType.AlternatingItem) Then
 
- Protected Sub rptEdit_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.RepeaterCommandEventArgs) Handles rptEdit.ItemCommand
-  If (e.Item.ItemType = ListItemType.Item Or e.Item.ItemType = ListItemType.AlternatingItem) Then
+            If e.CommandName = "Edit" Then
+                SetEdit(e)
+            End If
 
-   If e.CommandName = "Edit" Then
-    SetEdit(e)
-   End If
+            If e.CommandName = "Save" Then
+                SaveItem(e)
+            End If
 
-   If e.CommandName = "Save" Then
-    SaveItem(e)
-   End If
+            If e.CommandName = "Cancel" Then
+                RptEditDisable()
+            End If
+        End If
 
-   If e.CommandName = "Cancel" Then
-    RptEditDisable()
-   End If
-  End If
+    End Sub
 
- End Sub
+    Protected Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Response.Redirect(NavigateURL(), False)
+    End Sub
 
- Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Protected Sub rptEdit_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.RepeaterItemEventArgs) Handles rptEdit.ItemDataBound
+        If (e.Item.ItemType = ListItemType.Item Or e.Item.ItemType = ListItemType.AlternatingItem) Then
 
-  Response.Redirect(NavigateURL(), False)
+            Dim ti As String
+            Dim eid As Integer = CType(CType(e.Item.DataItem, EntryInfo).EntryID, Integer)
+            ti = TagController.GetTagsByEntry(eid)
+            Dim litTags As Literal = CType(e.Item.FindControl("litTags"), Literal)
+            Dim tbTags As TextBox = CType(e.Item.FindControl("tbTags"), TextBox)
+            litTags.Text = ti
+            tbTags.Text = ti
+            tbTags.Visible = False
 
- End Sub
+            Dim ci As List(Of Business.CategoryInfo) = CategoryController.ListCatsByEntry(eid)
+            Dim cl As List(Of Business.CategoryInfo) = CategoryController.ListCategoriesSorted(PortalId)
+
+            Dim dlCat As DropDownList = CType(e.Item.FindControl("ddlCat"), DropDownList)
+
+            dlCat.DataSource = cl
+
+            dlCat.DataBind()
+            dlCat.Items.Insert(0, New ListItem(" - Uncategorized - ", "-1"))
+
+            Dim litCat As Literal = CType(e.Item.FindControl("litCat"), Literal)
+            If ci.Count > 0 Then
+                litCat.Text = ci(0).Category
+                If Not dlCat.Items.FindByValue(ci(0).CatId.ToString) Is Nothing Then
+                    dlCat.Items.FindByValue(ci(0).CatId.ToString).Selected = True
+                End If
+            End If
+            dlCat.Visible = False
+
+            Dim litTitle As Literal = CType(e.Item.FindControl("litTitle"), Literal)
+            If litTitle.Text.Length > 30 Then litTitle.Text = Left(litTitle.Text, 30) + "..."
+            Dim tbTitle As TextBox = CType(e.Item.FindControl("tbTitle"), TextBox)
+            tbTitle.Visible = False
+
+            Dim cbPub As CheckBox = CType(e.Item.FindControl("cbPublished"), CheckBox)
+            cbPub.Enabled = False
+            Dim cbComments As CheckBox = CType(e.Item.FindControl("cbComments"), CheckBox)
+            cbComments.Enabled = False
+
+        End If
+
+    End Sub
+
+    Protected Sub SaveItem(ByVal e As System.Web.UI.WebControls.RepeaterCommandEventArgs)
+        Dim item As RepeaterItem = e.Item
+        Dim tbTitle As TextBox = CType(item.FindControl("tbTitle"), TextBox)
+        Dim tbTags As TextBox = CType(item.FindControl("tbTags"), TextBox)
+        Dim dlCat As DropDownList = CType(item.FindControl("ddlCat"), DropDownList)
+        Dim cbPub As CheckBox = CType(item.FindControl("cbPublished"), CheckBox)
+        Dim cbComments As CheckBox = CType(item.FindControl("cbComments"), CheckBox)
+
+        TagController.UpdateTagsByEntry(CInt(e.CommandArgument), tbTags.Text)
+
+        Dim litTags As Literal = CType(item.FindControl("litTags"), Literal)
+        litTags.Text = tbTags.Text
+
+        CategoryController.UpdateCategoriesByEntry(CInt(e.CommandArgument), CInt(dlCat.SelectedValue))
+
+        Dim litCat As Literal = CType(item.FindControl("litCat"), Literal)
+        litCat.Text = dlCat.SelectedItem.Text
+
+        Dim ec As New EntryController
+        Dim ei As EntryInfo
+        ei = ec.GetEntry(CInt(e.CommandArgument), PortalId)
+        ei.Title = tbTitle.Text
+        ei.AllowComments = cbComments.Checked
+        ei.Published = cbPub.Checked
+        ec.UpdateEntry(ei, ModuleContext.TabId)
+
+        Dim litTitle As Literal = CType(item.FindControl("litTitle"), Literal)
+        If tbTitle.Text.Length > 30 Then litTitle.Text = Left(tbTitle.Text, 30) + "..." Else litTitle.Text = tbTitle.Text
+
+        RptEditDisable()
+
+    End Sub
+
+    Protected Sub SetEdit(ByVal e As System.Web.UI.WebControls.RepeaterCommandEventArgs)
+        Dim item As RepeaterItem = e.Item
+
+        RptEditDisable()
+
+        Dim litTags As Literal = CType(item.FindControl("litTags"), Literal)
+        Dim tbTags As TextBox = CType(item.FindControl("tbTags"), TextBox)
+        Dim litCat As Literal = CType(item.FindControl("litCat"), Literal)
+        Dim dlCat As DropDownList = CType(item.FindControl("ddlCat"), DropDownList)
+        Dim btnEditCmd As LinkButton = CType(item.FindControl("btnEditCmd"), LinkButton)
+        Dim btnSaveCmd As LinkButton = CType(item.FindControl("btnSaveCmd"), LinkButton)
+        Dim btnCancelCmd As LinkButton = CType(item.FindControl("btnCancelCmd"), LinkButton)
+        Dim litTitle As Literal = CType(item.FindControl("litTitle"), Literal)
+        Dim tbTitle As TextBox = CType(item.FindControl("tbTitle"), TextBox)
+        Dim cbPub As CheckBox = CType(item.FindControl("cbPublished"), CheckBox)
+        Dim cbComments As CheckBox = CType(item.FindControl("cbComments"), CheckBox)
+
+        litTitle.Visible = False
+        tbTitle.Visible = True
+        litTags.Visible = False
+        tbTags.Visible = True
+        litCat.Visible = False
+        dlCat.Visible = True
+        btnEditCmd.Visible = False
+        btnSaveCmd.Visible = True
+        btnCancelCmd.Visible = True
+        cbPub.Enabled = True
+        cbComments.Enabled = True
+
+    End Sub
+
 #End Region
 
 #Region " Private Methods "
- Private Sub rptEdit_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.RepeaterItemEventArgs) Handles rptEdit.ItemDataBound
 
-  If (e.Item.ItemType = ListItemType.Item Or e.Item.ItemType = ListItemType.AlternatingItem) Then
+    Private Sub RptEditDisable()
+        Dim litTags As Literal
+        Dim tbTags As TextBox
+        Dim litCat As Literal
+        Dim dlCat As DropDownList
+        Dim btnEditCmd As LinkButton
+        Dim btnSaveCmd As LinkButton
+        Dim btnCancelCmd As LinkButton
+        Dim litTitle As Literal
+        Dim tbTitle As TextBox
+        Dim cbPub As CheckBox
+        Dim cbComments As CheckBox
 
-   Dim ti As String
-   Dim eid As Integer = CType(CType(e.Item.DataItem, EntryInfo).EntryID, Integer)
-   ti = TagController.GetTagsByEntry(eid)
-   Dim litTags As Literal = CType(e.Item.FindControl("litTags"), Literal)
-   Dim tbTags As TextBox = CType(e.Item.FindControl("tbTags"), TextBox)
-   litTags.Text = ti
-   tbTags.Text = ti
-   tbTags.Visible = False
+        For Each item As RepeaterItem In rptEdit.Items
+            litTitle = CType(item.FindControl("litTitle"), Literal)
+            tbTitle = CType(item.FindControl("tbTitle"), TextBox)
+            litTags = CType(item.FindControl("litTags"), Literal)
+            tbTags = CType(item.FindControl("tbTags"), TextBox)
+            litCat = CType(item.FindControl("litCat"), Literal)
+            dlCat = CType(item.FindControl("ddlCat"), DropDownList)
+            btnEditCmd = CType(item.FindControl("btnEditCmd"), LinkButton)
+            btnSaveCmd = CType(item.FindControl("btnSaveCmd"), LinkButton)
+            btnCancelCmd = CType(item.FindControl("btnCancelCmd"), LinkButton)
+            cbPub = CType(item.FindControl("cbPublished"), CheckBox)
+            cbComments = CType(item.FindControl("cbComments"), CheckBox)
 
-   Dim ci As List(Of Business.CategoryInfo) = CategoryController.ListCatsByEntry(eid)
-   Dim cl As List(Of Business.CategoryInfo) = CategoryController.ListCategoriesSorted(PortalId)
+            litTitle.Visible = True
+            tbTitle.Visible = False
+            litTags.Visible = True
+            tbTags.Visible = False
+            litCat.Visible = True
+            dlCat.Visible = False
+            btnEditCmd.Visible = True
+            btnCancelCmd.Visible = False
+            btnSaveCmd.Visible = False
+            cbPub.Enabled = False
+            cbComments.Enabled = False
+        Next
+    End Sub
 
-   Dim dlCat As DropDownList = CType(e.Item.FindControl("ddlCat"), DropDownList)
-
-   dlCat.DataSource = cl
-
-   dlCat.DataBind()
-   dlCat.Items.Insert(0, New ListItem(" - Uncategorized - ", "-1"))
-
-   Dim litCat As Literal = CType(e.Item.FindControl("litCat"), Literal)
-   If ci.Count > 0 Then
-    litCat.Text = ci(0).Category
-    If Not dlCat.Items.FindByValue(ci(0).CatID.ToString) Is Nothing Then
-     dlCat.Items.FindByValue(ci(0).CatID.ToString).Selected = True
-    End If
-   End If
-   dlCat.Visible = False
-
-   Dim litTitle As Literal = CType(e.Item.FindControl("litTitle"), Literal)
-   If litTitle.Text.Length > 30 Then litTitle.Text = Left(litTitle.Text, 30) + "..."
-   Dim tbTitle As TextBox = CType(e.Item.FindControl("tbTitle"), TextBox)
-   tbTitle.Visible = False
-
-   Dim cbPub As CheckBox = CType(e.Item.FindControl("cbPublished"), CheckBox)
-   cbPub.Enabled = False
-   Dim cbComments As CheckBox = CType(e.Item.FindControl("cbComments"), CheckBox)
-   cbComments.Enabled = False
-
-  End If
-
- End Sub
-
- Private Sub SaveItem(ByVal e As System.Web.UI.WebControls.RepeaterCommandEventArgs)
-
-  Dim item As RepeaterItem = e.Item
-  Dim tbTitle As TextBox = CType(item.FindControl("tbTitle"), TextBox)
-  Dim tbTags As TextBox = CType(item.FindControl("tbTags"), TextBox)
-  Dim dlCat As DropDownList = CType(item.FindControl("ddlCat"), DropDownList)
-  Dim cbPub As CheckBox = CType(item.FindControl("cbPublished"), CheckBox)
-  Dim cbComments As CheckBox = CType(item.FindControl("cbComments"), CheckBox)
-
-  TagController.UpdateTagsByEntry(CInt(e.CommandArgument), tbTags.Text)
-
-  Dim litTags As Literal = CType(item.FindControl("litTags"), Literal)
-  litTags.Text = tbTags.Text
-
-  CategoryController.UpdateCategoriesByEntry(CInt(e.CommandArgument), CInt(dlCat.SelectedValue))
-
-  Dim litCat As Literal = CType(item.FindControl("litCat"), Literal)
-  litCat.Text = dlCat.SelectedItem.Text
-
-  Dim ec As New EntryController
-  Dim ei As EntryInfo
-  ei = ec.GetEntry(CInt(e.CommandArgument), PortalId)
-  ei.Title = tbTitle.Text
-  ei.AllowComments = cbComments.Checked
-  ei.Published = cbPub.Checked
-  ec.UpdateEntry(ei)
-
-  Dim litTitle As Literal = CType(item.FindControl("litTitle"), Literal)
-  If tbTitle.Text.Length > 30 Then litTitle.Text = Left(tbTitle.Text, 30) + "..." Else litTitle.Text = tbTitle.Text
-
-  RptEditDisable()
-
- End Sub
-
- Private Sub SetEdit(ByVal e As System.Web.UI.WebControls.RepeaterCommandEventArgs)
-
-  Dim item As RepeaterItem = e.Item
-
-  RptEditDisable()
-
-  Dim litTags As Literal = CType(item.FindControl("litTags"), Literal)
-  Dim tbTags As TextBox = CType(item.FindControl("tbTags"), TextBox)
-  Dim litCat As Literal = CType(item.FindControl("litCat"), Literal)
-  Dim dlCat As DropDownList = CType(item.FindControl("ddlCat"), DropDownList)
-  Dim btnEditCmd As LinkButton = CType(item.FindControl("btnEditCmd"), LinkButton)
-  Dim btnSaveCmd As LinkButton = CType(item.FindControl("btnSaveCmd"), LinkButton)
-  Dim btnCancelCmd As LinkButton = CType(item.FindControl("btnCancelCmd"), LinkButton)
-  Dim litTitle As Literal = CType(item.FindControl("litTitle"), Literal)
-  Dim tbTitle As TextBox = CType(item.FindControl("tbTitle"), TextBox)
-  Dim cbPub As CheckBox = CType(item.FindControl("cbPublished"), CheckBox)
-  Dim cbComments As CheckBox = CType(item.FindControl("cbComments"), CheckBox)
-
-  litTitle.Visible = False
-  tbTitle.Visible = True
-  litTags.Visible = False
-  tbTags.Visible = True
-  litCat.Visible = False
-  dlCat.Visible = True
-  btnEditCmd.Visible = False
-  btnSaveCmd.Visible = True
-  btnCancelCmd.Visible = True
-  cbPub.Enabled = True
-  cbComments.Enabled = True
-
- End Sub
-
- Private Sub RptEditDisable()
-
-  Dim litTags As Literal
-  Dim tbTags As TextBox
-  Dim litCat As Literal
-  Dim dlCat As DropDownList
-  Dim btnEditCmd As LinkButton
-  Dim btnSaveCmd As LinkButton
-  Dim btnCancelCmd As LinkButton
-  Dim litTitle As Literal
-  Dim tbTitle As TextBox
-  Dim cbPub As CheckBox
-  Dim cbComments As CheckBox
-
-  For Each item As RepeaterItem In rptEdit.Items
-   litTitle = CType(item.FindControl("litTitle"), Literal)
-   tbTitle = CType(item.FindControl("tbTitle"), TextBox)
-   litTags = CType(item.FindControl("litTags"), Literal)
-   tbTags = CType(item.FindControl("tbTags"), TextBox)
-   litCat = CType(item.FindControl("litCat"), Literal)
-   dlCat = CType(item.FindControl("ddlCat"), DropDownList)
-   btnEditCmd = CType(item.FindControl("btnEditCmd"), LinkButton)
-   btnSaveCmd = CType(item.FindControl("btnSaveCmd"), LinkButton)
-   btnCancelCmd = CType(item.FindControl("btnCancelCmd"), LinkButton)
-   cbPub = CType(item.FindControl("cbPublished"), CheckBox)
-   cbComments = CType(item.FindControl("cbComments"), CheckBox)
-
-   litTitle.Visible = True
-   tbTitle.Visible = False
-   litTags.Visible = True
-   tbTags.Visible = False
-   litCat.Visible = True
-   dlCat.Visible = False
-   btnEditCmd.Visible = True
-   btnCancelCmd.Visible = False
-   btnSaveCmd.Visible = False
-   cbPub.Enabled = False
-   cbComments.Enabled = False
-  Next
- End Sub
 #End Region
 
 End Class

@@ -30,6 +30,9 @@ Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Services.Log.EventLog
 Imports DotNetNuke.Entities.Portals
+Imports DotNetNuke.Framework
+Imports DotNetNuke.UI.Modules
+Imports DotNetNuke.Services.Localization
 
 Namespace Business
 
@@ -338,6 +341,7 @@ Namespace Business
 #End Region
 
 #Region " Dates "
+
         Public Shared Function FormatDate(ByVal [Date] As DateTime, ByVal Culture As String, ByVal DateFormat As String, ByVal TimeZone As Integer, Optional ByVal ToUniversal As Boolean = False) As String
             If Culture.Length = 0 Then Culture = System.Threading.Thread.CurrentThread.CurrentCulture.Name
             Dim dtf As System.Globalization.DateTimeFormatInfo = New System.Globalization.CultureInfo(Culture, False).DateTimeFormat
@@ -347,6 +351,17 @@ Namespace Business
                 [Date] = [Date].AddMinutes(TimeZone)
             End If
             Return [Date].ToString(DateFormat, dtf)
+        End Function
+
+        Public Shared Function AdjustedDate(ByVal [Date] As DateTime, ByVal Culture As String, ByVal DateFormat As String, ByVal TimeZone As Integer, Optional ByVal ToUniversal As Boolean = False) As Date
+            If Culture.Length = 0 Then Culture = System.Threading.Thread.CurrentThread.CurrentCulture.Name
+            Dim dtf As System.Globalization.DateTimeFormatInfo = New System.Globalization.CultureInfo(Culture, False).DateTimeFormat
+            If ToUniversal = True Then
+                [Date] = [Date].ToUniversalTime().AddMinutes(TimeZone)
+            Else
+                [Date] = [Date].AddMinutes(TimeZone)
+            End If
+            Return [Date]
         End Function
 
         Public Shared Function ToLocalTime(ByVal [Date] As DateTime, ByVal TimeZone As Integer) As DateTime
@@ -479,6 +494,128 @@ Namespace Business
         End Sub
 #End Region
 
+#Region "SEO"
+
+        Public Shared Sub SetPageMetaAndOpenGraph(defaultPage As CDefault, modContext As ModuleInstanceContext, title As String, content As String, keyWords As String, link As String)
+            defaultPage.Title = title
+
+            Dim meta As New HtmlMeta()
+            meta.Attributes.Add("property", "og:title")
+            meta.Attributes.Add("content", title)
+            defaultPage.Header.Controls.Add(meta)
+
+            content = (HttpUtility.HtmlDecode(content))
+            Dim description As String = TruncateString(content, Constants.SeoDescriptionLimit, False)
+
+            If description.Length > 0 Then
+                defaultPage.Description = description
+
+                meta = New HtmlMeta()
+                meta.Attributes.Add("property", "og:description")
+                meta.Attributes.Add("content", description)
+                defaultPage.Header.Controls.Add(meta)
+            End If
+
+            meta = New HtmlMeta()
+            meta.Attributes.Add("property", "og:type")
+            meta.Attributes.Add("content", "article")
+            defaultPage.Header.Controls.Add(meta)
+
+            If keyWords.Length > 0 Then
+                defaultPage.KeyWords = keyWords
+
+                meta = New HtmlMeta()
+                meta.Attributes.Add("property", "article:tag")
+                meta.Attributes.Add("content", keyWords)
+                defaultPage.Header.Controls.Add(meta)
+            End If
+
+            meta = New HtmlMeta()
+            meta.Attributes.Add("property", "og:url")
+            meta.Attributes.Add("content", link)
+            defaultPage.Header.Controls.Add(meta)
+
+            meta = New HtmlMeta()
+            meta.Attributes.Add("property", "og:site_name")
+            meta.Attributes.Add("content", modContext.PortalSettings.PortalName)
+            defaultPage.Header.Controls.Add(meta)
+
+            If modContext.PortalSettings.LogoFile.Trim().Length > 0 Then
+                Dim url As String = "http://" + modContext.PortalAlias.HTTPAlias + "/Portals/" + modContext.PortalId.ToString() + "/" + modContext.PortalSettings.LogoFile
+                meta = New HtmlMeta()
+                meta.Attributes.Add("property", "og:image")
+                meta.Attributes.Add("content", url)
+                defaultPage.Header.Controls.Add(meta)
+            End If
+        End Sub
+
+        Public Shared Function TruncateString(source As String, length As Integer, showElipse As Boolean) As String
+            If source.Length > length Then
+                source = source.Substring(0, length)
+                If showElipse Then
+                    source += "..."
+                End If
+            End If
+            Return source
+        End Function
+
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="date"></param>
+        ''' <returns></returns>
+        Public Shared Function CalculateDateForDisplay([date] As DateTime) As String
+            Dim utcDate As DateTime = [date].ToUniversalTime()
+            Dim utcTimeDifference As TimeSpan = Services.SystemDateTime.SystemDateTime.GetCurrentTimeUtc() - utcDate
+
+            If utcTimeDifference.TotalSeconds < 60 Then
+                Return CInt(utcTimeDifference.TotalSeconds).ToString() + Localization.GetString("secondsago", Constants.SharedResourceFileName)
+            End If
+            If utcTimeDifference.TotalMinutes < 60 Then
+                If utcTimeDifference.TotalMinutes < 2 Then
+                    Return CInt(utcTimeDifference.TotalMinutes).ToString() + Localization.GetString("minuteago", Constants.SharedResourceFileName)
+                End If
+                Return CInt(utcTimeDifference.TotalMinutes).ToString() + Localization.GetString("minutesago", Constants.SharedResourceFileName)
+            End If
+            If utcTimeDifference.TotalHours < 24 Then
+                If utcTimeDifference.TotalHours < 2 Then
+                    Return CInt(utcTimeDifference.TotalHours).ToString() + Localization.GetString("hourago", Constants.SharedResourceFileName)
+                End If
+                Return CInt(utcTimeDifference.TotalHours).ToString() + Localization.GetString("hoursago", Constants.SharedResourceFileName)
+            End If
+
+            If utcTimeDifference.TotalDays < 7 Then
+                If utcTimeDifference.TotalDays < 2 Then
+                    Return CInt(utcTimeDifference.TotalDays).ToString() + Localization.GetString("dayago", Constants.SharedResourceFileName)
+                End If
+                Return CInt(utcTimeDifference.TotalDays).ToString() + Localization.GetString("daysago", Constants.SharedResourceFileName)
+            End If
+
+            If utcTimeDifference.TotalDays < 30 Then
+                If utcTimeDifference.TotalDays < 14 Then
+                    Return CInt((utcTimeDifference.TotalDays) / 7).ToString() + Localization.GetString("weekago", Constants.SharedResourceFileName)
+                End If
+                Return CInt((utcTimeDifference.TotalDays) / 7).ToString() + Localization.GetString("weeksago", Constants.SharedResourceFileName)
+            End If
+
+            If utcTimeDifference.TotalDays < 180 Then
+                If utcTimeDifference.TotalDays < 60 Then
+                    Return CInt((utcTimeDifference.TotalDays) / 30).ToString() + Localization.GetString("monthago", Constants.SharedResourceFileName)
+                End If
+                Return CInt((utcTimeDifference.TotalDays) / 30).ToString() + Localization.GetString("monthsago", Constants.SharedResourceFileName)
+            End If
+
+            'if (utcTimeDifference.TotalDays < 60)
+            '{
+            '    return 1 + Localization.GetString("monthago", Constants.SharedResourceFileName);
+            '}
+
+            ' anything else (this is the only time we have to personalize it to the user)
+            Return [date].ToShortDateString()
+        End Function
+
+#End Region
+
 #Region "Urls"
 
         Public Shared Function GetSEOLink(ByVal PortalId As Integer, ByVal TabID As Integer, ByVal ControlKey As String, ByVal Title As String, ByVal ParamArray AdditionalParameters() As String) As String
@@ -609,7 +746,7 @@ Namespace Business
                         CurrentTabId = TabID
                     End If
                     entry.PermaLink = GenerateEntryLink(PortalID, entry.EntryID, CurrentTabId)
-                    m_EntryController.UpdateEntry(entry)
+                    m_EntryController.UpdateEntry(entry, CurrentTabId)
                 End If
             Next
         End Sub

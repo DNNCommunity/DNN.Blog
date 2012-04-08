@@ -224,8 +224,7 @@ Namespace Business
                                     m_Entry.UserFullName = xmlEntry.Item("userFullName").InnerText
                                     m_Entry.UserID = Integer.Parse(xmlEntry.Item("userID").InnerText)
                                     m_Entry.UserName = xmlEntry.Item("userName").InnerText
-                                    EntryID = Me.addEntry(m_Blog, m_Entry)
-                                    m_Entry.EntryID = EntryID
+                                    m_Entry = Me.addEntry(m_Blog, m_Entry, ModuleID)
                                     Dim xmlComment As XmlNode
                                     Dim xmlComments As XmlNode = GetContent(xmlEntry.LastChild.OuterXml.ToString, "comments")
                                     If Not IsNothing(xmlComments) Then
@@ -290,13 +289,14 @@ Namespace Business
             Return retVal
         End Function
 
-        Private Function addEntry(ByVal blog As BlogInfo, ByVal entry As EntryInfo) As Integer
+        Private Function addEntry(ByVal blog As BlogInfo, ByVal entry As EntryInfo, ByVal moduleId As Integer) As EntryInfo
             Dim m_EntryController As New EntryController
             entry.BlogID = blog.BlogID
             entry.UserFullName = blog.UserFullName
             entry.UserID = blog.UserID
             entry.UserName = blog.UserName
-            Return m_EntryController.AddEntry(entry)
+            entry.ModuleID = moduleId
+            Return m_EntryController.AddEntry(entry, entry.TabID)
         End Function
 
         Private Function addComments(ByVal entry As EntryInfo, ByVal comment As CommentInfo) As Integer

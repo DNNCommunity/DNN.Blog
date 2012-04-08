@@ -18,6 +18,7 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
+Imports DotNetNuke.Entities.Content
 Imports DotNetNuke.Modules.Blog.Data
 Imports DotNetNuke.Common.Utilities
 
@@ -57,17 +58,58 @@ Namespace Business
             Return CBO.FillCollection(DataProvider.Instance().ListAllEntriesByTag(PortalID, TagID, ShowNonPublic, ShowNonPublished), GetType(EntryInfo))
         End Function
 
-        Public Function AddEntry(ByVal objEntry As EntryInfo) As Integer
-            Return CType(DataProvider.Instance().AddEntry(objEntry.BlogID, objEntry.Title, objEntry.Description, objEntry.Entry, objEntry.Published, objEntry.AllowComments, objEntry.AddedDate, objEntry.DisplayCopyright, objEntry.Copyright, objEntry.PermaLink), Integer)
+        Public Function AddEntry(ByVal objEntry As EntryInfo, ByVal tabId As Integer) As EntryInfo
+            objEntry.EntryID = CType(DataProvider.Instance().AddEntry(objEntry.BlogID, objEntry.Title, objEntry.Description, objEntry.Entry, objEntry.Published, objEntry.AllowComments, objEntry.AddedDate, objEntry.DisplayCopyright, objEntry.Copyright, objEntry.PermaLink), Integer)
+
+            objEntry.ContentItemId = CompleteEntryCreation(objEntry, tabId)
+
+            Return objEntry
         End Function
 
-        Public Sub UpdateEntry(ByVal objEntry As EntryInfo)
-            DataProvider.Instance().UpdateEntry(objEntry.BlogID, objEntry.EntryID, objEntry.Title, objEntry.Description, objEntry.Entry, objEntry.Published, objEntry.AllowComments, objEntry.AddedDate, objEntry.DisplayCopyright, objEntry.Copyright, objEntry.PermaLink)
+        Public Sub UpdateEntry(ByVal objEntry As EntryInfo, ByVal tabId As Integer)
+            DataProvider.Instance().UpdateEntry(objEntry.BlogID, objEntry.EntryID, objEntry.Title, objEntry.Description, objEntry.Entry, objEntry.Published, objEntry.AllowComments, objEntry.AddedDate, objEntry.DisplayCopyright, objEntry.Copyright, objEntry.PermaLink, objEntry.ContentItemId)
+
+            CompleteEntryUpdate(objEntry, tabId)
         End Sub
 
-        Public Sub DeleteEntry(ByVal EntryID As Integer)
+        Public Sub DeleteEntry(ByVal EntryID As Integer, ByVal contentItemId As Integer)
             DataProvider.Instance().DeleteEntry(EntryID)
+
+            CompleteEntryDelete(contentItemId)
         End Sub
+
+#Region "Private Methods"
+
+        ''' <summary>
+        ''' This completes the things necessary for creating a content item in the data store.
+        ''' </summary>
+        ''' <param name="objEntry"></param>
+        ''' <param name="tabId"></param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Private Shared Function CompleteEntryCreation(ByVal objEntry As EntryInfo, ByVal tabId As Integer) As Integer
+            Dim cntTaxonomy As New Content()
+            Dim objContentItem As ContentItem = cntTaxonomy.CreateContentItem(objEntry, tabId)
+
+            Return objContentItem.ContentItemId
+        End Function
+
+        ''' <summary>
+        ''' Handles any content item/taxonomy updates, then deals w/ cache clearing (if applicable)
+        ''' </summary>
+        ''' <param name="objEntry"></param>
+        ''' <param name="tabId"></param>
+        ''' <remarks></remarks>
+        Private Shared Sub CompleteEntryUpdate(ByVal objEntry As EntryInfo, ByVal tabId As Integer)
+            Dim cntTaxonomy As New Content()
+            cntTaxonomy.UpdateContentItem(objEntry, tabId)
+        End Sub
+
+        Private Shared Sub CompleteEntryDelete(ByVal contentItemId As Integer)
+            Content.DeleteContentItem(contentItemId)
+        End Sub
+
+#End Region
 
     End Class
 

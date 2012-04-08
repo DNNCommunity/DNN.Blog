@@ -123,6 +123,30 @@
   <data name="Category.Text" xml:space="preserve">
     <value>Category</value>
   </data>
+  <data name="dayago.Text" xml:space="preserve">
+    <value> day ago</value>
+  </data>
+  <data name="daysago.Text" xml:space="preserve">
+    <value> days ago</value>
+  </data>
+  <data name="hourago.Text" xml:space="preserve">
+    <value> hour ago</value>
+  </data>
+  <data name="hoursago.Text" xml:space="preserve">
+    <value> hours ago</value>
+  </data>
+  <data name="minuteago.Text" xml:space="preserve">
+    <value> minute ago</value>
+  </data>
+  <data name="minutesago.Text" xml:space="preserve">
+    <value> minutes ago</value>
+  </data>
+  <data name="monthago.Text" xml:space="preserve">
+    <value> month ago</value>
+  </data>
+  <data name="monthsago.Text" xml:space="preserve">
+    <value> months ago</value>
+  </data>
   <data name="More.Text" xml:space="preserve">
     <value>More ...</value>
   </data>

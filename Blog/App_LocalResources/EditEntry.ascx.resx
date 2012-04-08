@@ -256,4 +256,7 @@
   <data name="lblDisplayCopyright.Text" xml:space="preserve">
     <value>Display Copyright</value>
   </data>
+  <data name="AddTags.Text" xml:space="preserve">
+    <value>start typing to associate tags</value>
+  </data>
 </root>

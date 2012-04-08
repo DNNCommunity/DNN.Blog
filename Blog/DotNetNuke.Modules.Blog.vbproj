@@ -45,15 +45,19 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Accessibility">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="CookComputing.XmlRpcV2, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>_Dependencies\CookComputing.XmlRpcV2.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DotNetNuke">
-		<SpecificVersion>False</SpecificVersion>
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\DotNetNuke.dll</HintPath>
     </Reference>
+    <Reference Include="DotNetNuke.Web, Version=6.2.0.1055, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="DotNetNuke.Web.Client, Version=6.1.2.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="DotNetNuke.WebControls, Version=2.4.0.598, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -104,6 +108,7 @@
     <Content Include="Blog.ascx" />
     <Content Include="BlogFeed.ascx" />
     <Content Include="BlogList.ascx" />
+    <Content Include="BlogTerms.asmx" />
     <Content Include="Documentation\License.txt" />
     <Content Include="Documentation\ReleaseNotes.txt" />
     <Content Include="EditBlog.ascx" />
@@ -154,7 +159,12 @@
       <DependentUpon>blogpostredirect.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="BlogTerms.asmx.vb">
+      <DependentUpon>BlogTerms.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Components\Blogger\IBlogger.vb" />
+    <Compile Include="Components\Business\Constants.vb" />
     <Compile Include="Components\Business\Content.vb" />
     <Compile Include="Components\Business\Terms.vb" />
     <Compile Include="Components\Controllers\ArchiveController.vb" />
@@ -182,6 +192,7 @@
     <Compile Include="Components\MoveableType\IMoveableType.vb" />
     <Compile Include="Components\Rss\StringWriterWithEncoding.vb" />
     <Compile Include="Components\WordPress\IWordPress.vb" />
+    <Compile Include="Controls\Tags.vb" />
     <Compile Include="EditCategories.ascx.designer.vb">
       <DependentUpon>EditCategories.ascx</DependentUpon>
     </Compile>

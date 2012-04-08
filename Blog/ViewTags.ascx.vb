@@ -27,7 +27,7 @@ Partial Public Class ViewTags
     Private _settings As Settings.TagViewSettings
 
     Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
-        Me.ModuleConfiguration.SupportedFeatures = 0
+        'Me.ModuleConfiguration.SupportedFeatures = 0
         _settings = DotNetNuke.Modules.Blog.Settings.TagViewSettings.GetTagViewSettings(TabModuleId)
     End Sub
 
