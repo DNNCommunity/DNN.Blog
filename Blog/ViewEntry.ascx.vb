@@ -468,8 +468,8 @@ Partial Public Class ViewEntry
             valCommentTitle.Enabled = True
             valComment.Enabled = True
             valSummary.Enabled = True
-            Page.Validate()
-            If Page.IsValid And ((m_oBlog.UseCaptcha And ctlCaptcha.IsValid) Or (Not m_oBlog.UseCaptcha) Or Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, ModuleId)) Then
+
+            If (txtComment.Text.Length > 0) And ((m_oBlog.UseCaptcha And ctlCaptcha.IsValid) Or (Not m_oBlog.UseCaptcha) Or Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, ModuleId)) Then
                 Dim oComment As New CommentInfo
                 Dim oCommentController As New CommentController
 

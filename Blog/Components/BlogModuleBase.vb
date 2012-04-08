@@ -93,6 +93,8 @@ Public Class BlogModuleBase
 #Region "Event Handlers"
 
     Protected Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Init
+        jQuery.RequestUIRegistration()
+
         Dim script As New StringBuilder
         script.AppendLine("<script type=""text/javascript"">")
         script.AppendLine("//<![CDATA[")
@@ -104,9 +106,6 @@ Public Class BlogModuleBase
 
     Protected Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.PreRender
         If OutputAdditionalFiles Then
-            If BlogSettings.AddJQuery Then
-                jQuery.RequestUIRegistration()
-            End If
             For Each f As String In BlogSettings.IncludeFiles.Split(";"c)
                 If Not String.IsNullOrEmpty(f) Then
                     If f.ToLower.EndsWith(".js") Then

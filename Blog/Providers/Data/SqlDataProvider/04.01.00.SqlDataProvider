@@ -12,20 +12,32 @@ SET @cmd = 'ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs DROP CONSTRAI
 EXEC(@cmd)
 GO
 
-ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs
-DROP COLUMN    [EnableTwitterIntegration]
+IF NOT EXISTS (select * from sysobjects o inner join syscolumns c on o.id = c.Id and o.id = object_id('{objectQualifier}Blog_Blogs') and c.name = 'EnableTwitterIntegration')
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs
+		DROP COLUMN	[EnableTwitterIntegration]
+	END
 GO
 
-ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs
-DROP COLUMN        [TwitterUsername]
+IF NOT EXISTS (select * from sysobjects o inner join syscolumns c on o.id = c.Id and o.id = object_id('{objectQualifier}Blog_Blogs') and c.name = 'TwitterUsername')
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs
+		DROP COLUMN	[TwitterUsername]
+	END
 GO
 
-ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs
-DROP COLUMN        [TwitterPassword]
+IF NOT EXISTS (select * from sysobjects o inner join syscolumns c on o.id = c.Id and o.id = object_id('{objectQualifier}Blog_Blogs') and c.name = 'TwitterPassword')
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs
+		DROP COLUMN	[TwitterPassword]
+	END
 GO
 
-ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs
-DROP COLUMN        [TweetTemplate]
+IF NOT EXISTS (select * from sysobjects o inner join syscolumns c on o.id = c.Id and o.id = object_id('{objectQualifier}Blog_Blogs') and c.name = 'TweetTemplate')
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs
+		DROP COLUMN	[TweetTemplate]
+	END
 GO
 
 -- various cleanup
@@ -52,58 +64,58 @@ drop procedure {databaseOwner}{objectQualifier}Blog_UpdateBlog
 GO
 
 CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdateBlog
-    @PortalID int,
-    @BlogID int, 
-    @ParentBlogID int = -1,
-    @UserID int, 
-    @Title nvarchar(512), 
-    @Description nvarchar(1024), 
-    @Public bit, 
-    @AllowComments bit, 
-    @AllowAnonymous bit,
-    @ShowFullName bit,
-    @Culture nvarchar(10),
-    @DateFormat nvarchar(50),
-    @TimeZone int,
-    @Syndicated bit,
-    @SyndicateIndependant bit,
-    @SyndicationURL nvarchar(1024),
-    @SyndicationEmail nvarchar(255),
-    @EmailNotification bit,
-    @AllowTrackbacks bit,
-    @AutoTrackback bit,
-    @MustApproveComments bit,
-    @MustApproveAnonymous bit,
-    @MustApproveTrackbacks bit,
-    @UseCaptcha bit
+	@PortalID int,
+	@BlogID int, 
+	@ParentBlogID int = -1,
+	@UserID int, 
+	@Title nvarchar(512), 
+	@Description nvarchar(1024), 
+	@Public bit, 
+	@AllowComments bit, 
+	@AllowAnonymous bit,
+	@ShowFullName bit,
+	@Culture nvarchar(10),
+	@DateFormat nvarchar(50),
+	@TimeZone int,
+	@Syndicated bit,
+	@SyndicateIndependant bit,
+	@SyndicationURL nvarchar(1024),
+	@SyndicationEmail nvarchar(255),
+	@EmailNotification bit,
+	@AllowTrackbacks bit,
+	@AutoTrackback bit,
+	@MustApproveComments bit,
+	@MustApproveAnonymous bit,
+	@MustApproveTrackbacks bit,
+	@UseCaptcha bit
 AS
 
 UPDATE {databaseOwner}{objectQualifier}Blog_Blogs SET
-    [PortalID] = @PortalID,
-    [ParentBlogID] = @ParentBlogID,
-    [UserID] = @UserID,
-    [Title] = @Title,
-    [Description] = @Description,
-    [Public] = @Public,
-    [AllowComments] = @AllowComments,
-    [AllowAnonymous] = @AllowAnonymous,
-    [ShowFullName] = @ShowFullName,
-    [Culture] = @Culture,
-    [DateFormat] = @DateFormat,
-    [TimeZone] = @TimeZone,
-    [Syndicated] = @Syndicated,
-    [SyndicateIndependant] = @SyndicateIndependant,
-    [SyndicationURL] = @SyndicationURL,
-    [SyndicationEmail] = @SyndicationEmail,
-    [EmailNotification] = @EmailNotification,
-    [AllowTrackbacks] = @AllowTrackbacks,
-    [AutoTrackback] = @AutoTrackback,
-    [MustApproveComments] = @MustApproveComments,
-    [MustApproveAnonymous] = @MustApproveAnonymous,
-    [MustApproveTrackbacks] = @MustApproveTrackbacks,
-    [UseCaptcha] = @UseCaptcha
+	[PortalID] = @PortalID,
+	[ParentBlogID] = @ParentBlogID,
+	[UserID] = @UserID,
+	[Title] = @Title,
+	[Description] = @Description,
+	[Public] = @Public,
+	[AllowComments] = @AllowComments,
+	[AllowAnonymous] = @AllowAnonymous,
+	[ShowFullName] = @ShowFullName,
+	[Culture] = @Culture,
+	[DateFormat] = @DateFormat,
+	[TimeZone] = @TimeZone,
+	[Syndicated] = @Syndicated,
+	[SyndicateIndependant] = @SyndicateIndependant,
+	[SyndicationURL] = @SyndicationURL,
+	[SyndicationEmail] = @SyndicationEmail,
+	[EmailNotification] = @EmailNotification,
+	[AllowTrackbacks] = @AllowTrackbacks,
+	[AutoTrackback] = @AutoTrackback,
+	[MustApproveComments] = @MustApproveComments,
+	[MustApproveAnonymous] = @MustApproveAnonymous,
+	[MustApproveTrackbacks] = @MustApproveTrackbacks,
+	[UseCaptcha] = @UseCaptcha
 WHERE
-    [BlogID] = @BlogID
+	[BlogID] = @BlogID
 
 GO
 
@@ -112,81 +124,81 @@ drop procedure {databaseOwner}{objectQualifier}Blog_AddBlog
 GO
 
 CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_AddBlog
-    @PortalID int,
-    @ParentBlogID int = -1,
-    @UserID int,
-    @Title nvarchar(512),
-    @Description nvarchar(1024),
-    @Public bit,
-    @AllowComments bit,
-    @AllowAnonymous bit,
-    @ShowFullName bit,
-    @Culture nvarchar(10),
-    @DateFormat nvarchar(50),
-    @TimeZone int,
-    @Syndicated bit,
-    @SyndicateIndependant bit,
-    @SyndicationURL nvarchar(1024),
-    @SyndicationEmail nvarchar(255),
-    @EmailNotification bit,
-    @AllowTrackbacks bit,
-    @AutoTrackback bit,
-    @MustApproveComments bit,
-    @MustApproveAnonymous bit,
-    @MustApproveTrackbacks bit,
-    @UseCaptcha bit
+	@PortalID int,
+	@ParentBlogID int = -1,
+	@UserID int,
+	@Title nvarchar(512),
+	@Description nvarchar(1024),
+	@Public bit,
+	@AllowComments bit,
+	@AllowAnonymous bit,
+	@ShowFullName bit,
+	@Culture nvarchar(10),
+	@DateFormat nvarchar(50),
+	@TimeZone int,
+	@Syndicated bit,
+	@SyndicateIndependant bit,
+	@SyndicationURL nvarchar(1024),
+	@SyndicationEmail nvarchar(255),
+	@EmailNotification bit,
+	@AllowTrackbacks bit,
+	@AutoTrackback bit,
+	@MustApproveComments bit,
+	@MustApproveAnonymous bit,
+	@MustApproveTrackbacks bit,
+	@UseCaptcha bit
 AS
 
 INSERT INTO {databaseOwner}{objectQualifier}Blog_Blogs (
-    [PortalID],
-    [ParentBlogID],
-    [UserID],
-    [Title],
-    [Description],
-    [Public],
-    [AllowComments],
-    [AllowAnonymous],
-    [ShowFullName],
-    [Culture],
-    [DateFormat],
-    [TimeZone],
-    [Created],
-    [Syndicated],
-    [SyndicateIndependant],
-    [SyndicationURL],
-    [SyndicationEmail],
-    [EmailNotification],
-    [AllowTrackbacks],
-    [AutoTrackback],
-    [MustApproveComments],
-    [MustApproveAnonymous],
-    [MustApproveTrackbacks],
-    [UseCaptcha]
+	[PortalID],
+	[ParentBlogID],
+	[UserID],
+	[Title],
+	[Description],
+	[Public],
+	[AllowComments],
+	[AllowAnonymous],
+	[ShowFullName],
+	[Culture],
+	[DateFormat],
+	[TimeZone],
+	[Created],
+	[Syndicated],
+	[SyndicateIndependant],
+	[SyndicationURL],
+	[SyndicationEmail],
+	[EmailNotification],
+	[AllowTrackbacks],
+	[AutoTrackback],
+	[MustApproveComments],
+	[MustApproveAnonymous],
+	[MustApproveTrackbacks],
+	[UseCaptcha]
 ) VALUES (
-    @PortalID,
-    @ParentBlogID,
-    @UserID,
-    @Title,
-    @Description,
-    @Public,
-    @AllowComments,
-    @AllowAnonymous,
-    @ShowFullName,
-    @Culture,
-    @DateFormat,
-    @TimeZone,
-    GetUTCDate(),
-    @Syndicated,
-    @SyndicateIndependant,
-    @SyndicationURL,
-    @SyndicationEmail,
-    @EmailNotification,
-    @AllowTrackbacks,
-    @AutoTrackback,
-    @MustApproveComments,
-    @MustApproveAnonymous,
-    @MustApproveTrackbacks,
-    @UseCaptcha
+	@PortalID,
+	@ParentBlogID,
+	@UserID,
+	@Title,
+	@Description,
+	@Public,
+	@AllowComments,
+	@AllowAnonymous,
+	@ShowFullName,
+	@Culture,
+	@DateFormat,
+	@TimeZone,
+	GetUTCDate(),
+	@Syndicated,
+	@SyndicateIndependant,
+	@SyndicationURL,
+	@SyndicationEmail,
+	@EmailNotification,
+	@AllowTrackbacks,
+	@AutoTrackback,
+	@MustApproveComments,
+	@MustApproveAnonymous,
+	@MustApproveTrackbacks,
+	@UseCaptcha
 )
 
 select SCOPE_IDENTITY()
@@ -198,39 +210,39 @@ drop procedure {databaseOwner}{objectQualifier}Blog_AddComment
 GO
 
 CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_AddComment
-    @EntryID int,
-    @UserID int,
-    @Title nvarchar(255),
-    @Comment ntext,
-    @Author nvarchar(50),
-    @Approved bit,
-    @Website nvarchar(255),
-    @Email nvarchar(255),
+	@EntryID int,
+	@UserID int,
+	@Title nvarchar(255),
+	@Comment ntext,
+	@Author nvarchar(50),
+	@Approved bit,
+	@Website nvarchar(255),
+	@Email nvarchar(255),
 @AddedDate datetime
 AS
 
 
 INSERT INTO {databaseOwner}{objectQualifier}Blog_Comments (
-    [EntryID],
-    [UserID],
-    [Title],
-    [Comment],
-    [Author],
-    [Approved],
-    [AddedDate],
-    [Website],
-    [Email]
+	[EntryID],
+	[UserID],
+	[Title],
+	[Comment],
+	[Author],
+	[Approved],
+	[AddedDate],
+	[Website],
+	[Email]
 
 ) VALUES (
-    @EntryID,
-    @UserID,
-    @Title,
-    @Comment,
-    @Author,
-    @Approved,
-    COALESCE(@AddedDate, GetUTCDate()),
-    @Website,
-    @Email
+	@EntryID,
+	@UserID,
+	@Title,
+	@Comment,
+	@Author,
+	@Approved,
+	COALESCE(@AddedDate, GetUTCDate()),
+	@Website,
+	@Email
 )
 
 select SCOPE_IDENTITY()
@@ -242,30 +254,30 @@ drop procedure {databaseOwner}{objectQualifier}Blog_UpdateComment
 GO
 
 CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdateComment
-    @CommentID int, 
-    @EntryID int, 
-    @UserID int, 
-    @Title nvarchar(255),
-    @Comment ntext,
-    @Author nvarchar(50),
-    @Approved bit,
-    @Website nvarchar(255),
-    @Email nvarchar(255),
+	@CommentID int, 
+	@EntryID int, 
+	@UserID int, 
+	@Title nvarchar(255),
+	@Comment ntext,
+	@Author nvarchar(50),
+	@Approved bit,
+	@Website nvarchar(255),
+	@Email nvarchar(255),
 @AddedDate datetime
 AS
 
 UPDATE {databaseOwner}{objectQualifier}Blog_Comments SET
-    [EntryID] = @EntryID,
-    [UserID] = @UserID,
-    [Title] = @Title,
-    [Comment] = @Comment,
-    [Author] = @Author,
-    [Approved] = @Approved,
-    [AddedDate] = COALESCE(@AddedDate, GetUTCDate()),
-    [Website] = @Website,
-    [Email] = @Email
+	[EntryID] = @EntryID,
+	[UserID] = @UserID,
+	[Title] = @Title,
+	[Comment] = @Comment,
+	[Author] = @Author,
+	[Approved] = @Approved,
+	[AddedDate] = COALESCE(@AddedDate, GetUTCDate()),
+	[Website] = @Website,
+	[Email] = @Email
 WHERE
-    [CommentID] = @CommentID
+	[CommentID] = @CommentID
 
 
 GO

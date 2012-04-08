@@ -124,10 +124,10 @@ if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQua
 ALTER TABLE {databaseOwner}{objectQualifier}Blog_Categories ADD CONSTRAINT
 	FK_{objectQualifier}Blog_Categories_Portals FOREIGN KEY
 	(
-    PortalID
+	PortalID
 	) REFERENCES {databaseOwner}{objectQualifier}Portals
 	(
-    PortalID
+	PortalID
 	) ON DELETE CASCADE
 	 NOT FOR REPLICATION
 
@@ -174,10 +174,10 @@ if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQua
 ALTER TABLE {databaseOwner}{objectQualifier}Blog_Tags ADD CONSTRAINT
 	FK_{objectQualifier}Blog_Tags_Portals FOREIGN KEY
 	(
-    PortalID
+	PortalID
 	) REFERENCES {databaseOwner}{objectQualifier}Portals
 	(
-    PortalID
+	PortalID
 	) ON DELETE CASCADE
 	 NOT FOR REPLICATION
 
@@ -217,10 +217,10 @@ if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQua
 ALTER TABLE {databaseOwner}{objectQualifier}Blog_Entry_Categories ADD CONSTRAINT
 	FK_{objectQualifier}Blog_Entry_Categories_Entries FOREIGN KEY
 	(
-    EntryID
+	EntryID
 	) REFERENCES {databaseOwner}{objectQualifier}Blog_Entries
 	(
-    EntryID
+	EntryID
 	) ON DELETE CASCADE
 	 NOT FOR REPLICATION
 
@@ -230,10 +230,10 @@ if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQua
 ALTER TABLE {databaseOwner}{objectQualifier}Blog_Entry_Categories ADD CONSTRAINT
 	FK_{objectQualifier}Blog_Entry_Categories_Categories FOREIGN KEY
 	(
-    CatID
+	CatID
 	) REFERENCES {databaseOwner}{objectQualifier}Blog_Categories
 	(
-    CatID
+	CatID
 	) ON DELETE CASCADE
 	 NOT FOR REPLICATION
 
@@ -273,10 +273,10 @@ if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQua
 ALTER TABLE {databaseOwner}{objectQualifier}Blog_Entry_Tags ADD CONSTRAINT
 	FK_{objectQualifier}Blog_Entry_Tags_Entries FOREIGN KEY
 	(
-    EntryID
+	EntryID
 	) REFERENCES {databaseOwner}{objectQualifier}Blog_Entries
 	(
-    EntryID
+	EntryID
 	) ON DELETE CASCADE
 	 NOT FOR REPLICATION
 
@@ -286,10 +286,10 @@ if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQua
 ALTER TABLE {databaseOwner}{objectQualifier}Blog_Entry_Tags ADD CONSTRAINT
 	FK_{objectQualifier}Blog_Entry_Tags_Tags FOREIGN KEY
 	(
-    TagID
+	TagID
 	) REFERENCES {databaseOwner}{objectQualifier}Blog_Tags
 	(
-    TagID
+	TagID
 	) ON DELETE CASCADE
 	 NOT FOR REPLICATION
 
@@ -305,10 +305,10 @@ if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQua
 ALTER TABLE {databaseOwner}{objectQualifier}Blog_Settings ADD CONSTRAINT
 	FK_{objectQualifier}Blog_Settings_Portals FOREIGN KEY
 	(
-    PortalID
+	PortalID
 	) REFERENCES {databaseOwner}{objectQualifier}Portals
 	(
-    PortalID
+	PortalID
 	) ON DELETE CASCADE
 	 NOT FOR REPLICATION
 
@@ -549,9 +549,9 @@ AS
 If @BlogID > -1
 BEGIN
 	SELECT
-	     DATEPART(mm, E.AddedDate) as AddedMonth,
-	     DATEPART(yy, E.AddedDate) as AddedYear,
-	     COUNT(EntryId) AS PostCount
+		 DATEPART(mm, E.AddedDate) as AddedMonth,
+		 DATEPART(yy, E.AddedDate) as AddedYear,
+		 COUNT(EntryId) AS PostCount
 	
 	FROM {databaseOwner}{objectQualifier}Blog_Entries E INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs B ON
 		B.[BlogID] = E.[BlogID]
@@ -565,9 +565,9 @@ END
 ELSE
 BEGIN
 	SELECT
-	     DATEPART(mm, E.AddedDate) as AddedMonth,
-	     DATEPART(yy, E.AddedDate) as AddedYear,
-	     COUNT(EntryId) AS PostCount
+		 DATEPART(mm, E.AddedDate) as AddedMonth,
+		 DATEPART(yy, E.AddedDate) as AddedYear,
+		 COUNT(EntryId) AS PostCount
 	
 	FROM {databaseOwner}{objectQualifier}Blog_Entries E INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs B ON
 		B.[BlogID] = E.[BlogID]
@@ -910,7 +910,7 @@ BEGIN
 	DECLARE @tagid int
 	SET @tagid = (SELECT TagID FROM {databaseOwner}{objectQualifier}Blog_Tags WHERE Tag = @tag)
 
-    	DELETE FROM {databaseOwner}{objectQualifier}Blog_Entry_Tags WHERE EntryID = @entryid and TagID = @tagid
+		DELETE FROM {databaseOwner}{objectQualifier}Blog_Entry_Tags WHERE EntryID = @entryid and TagID = @tagid
 
 END
 
@@ -1036,13 +1036,13 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListCategories
 AS
 BEGIN
 	SET NOCOUNT ON;
-    	SELECT BC.*, CASE WHEN CC.Cnt IS NULL THEN 0 ELSE CC.Cnt END AS Cnt
+		SELECT BC.*, CASE WHEN CC.Cnt IS NULL THEN 0 ELSE CC.Cnt END AS Cnt
 	FROM {databaseOwner}{objectQualifier}Blog_Categories BC
 	LEFT OUTER JOIN
- 	(select ec.CatID, Count(0) as Cnt
- 	from {databaseOwner}{objectQualifier}Blog_Entry_Categories ec
- 	INNER JOIN {databaseOwner}{objectQualifier}Blog_Entries e ON e.EntryId=ec.EntryId
- 	group by ec.CatID, e.Published having e.Published=1) CC ON BC.CatID = CC.CatID
+	(select ec.CatID, Count(0) as Cnt
+	from {databaseOwner}{objectQualifier}Blog_Entry_Categories ec
+	INNER JOIN {databaseOwner}{objectQualifier}Blog_Entries e ON e.EntryId=ec.EntryId
+	group by ec.CatID, e.Published having e.Published=1) CC ON BC.CatID = CC.CatID
 	WHERE BC.PortalID = @PortalID
 
 END

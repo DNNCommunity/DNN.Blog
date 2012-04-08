@@ -100,7 +100,6 @@ Partial Public Class ModuleOptions
                         itm.Selected = True
                     End If
                 Next
-                chkAddJQuery.Checked = BlogSettings.AddJQuery
 
                 ' 6/14/2008
                 ' Add icons to radiobutton
@@ -223,7 +222,6 @@ Partial Public Class ModuleOptions
                     End If
                 Next
                 .IncludeFiles = fileList
-                .AddJQuery = chkAddJQuery.Checked
 
                 .UpdateSettings()
             End With

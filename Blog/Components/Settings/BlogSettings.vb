@@ -131,7 +131,6 @@ Namespace Settings
             Globals.ReadValue(_allSettings, "AllowWLW", AllowWLW)
             Globals.ReadValue(_allSettings, "EnableArchiveDropDown", EnableArchiveDropDown)
             Globals.ReadValue(_allSettings, "IncludeFiles", IncludeFiles)
-            Globals.ReadValue(_allSettings, "AddJQuery", AddJQuery)
 
             ' WLW implementation parameters
             Globals.ReadValue(_allSettings, "AllowMultipleCategories", AllowMultipleCategories)
@@ -209,7 +208,6 @@ Namespace Settings
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "AllowWLW", Me.AllowWLW.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "EnableArchiveDropDown", Me.EnableArchiveDropDown.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "IncludeFiles", Me.IncludeFiles)
-            Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "AddJQuery", Me.AddJQuery.ToString)
 
             ' WLW implementation parameters
             Business.Utility.UpdateBlogModuleSetting(_portalId, -1, "AllowMultipleCategories", Me.AllowMultipleCategories.ToString)
@@ -623,14 +621,6 @@ Namespace Settings
             End Set
         End Property
 
-        Public Property AddJQuery() As Boolean
-            Get
-                Return _addJQuery
-            End Get
-            Set(ByVal value As Boolean)
-                _addJQuery = value
-            End Set
-        End Property
 #End Region
 
     End Class

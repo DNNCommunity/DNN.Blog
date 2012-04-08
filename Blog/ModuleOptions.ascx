@@ -136,10 +136,6 @@
         <h2 id="dnnSitePanel-LoadFiles" class="dnnFormSectionHead"><a href="" class=""><%=LocalizeString("secLoadFiles")%></a></h2>
         <fieldset>
             <div class="dnnFormItem">
-                <dnn:label id="lblAddJQuery" runat="server" suffix="" controlname="chkAddJQuery" />
-                <asp:CheckBox ID="chkAddJQuery" runat="server" TextAlign="Left" />
-            </div>
-            <div class="dnnFormItem">
                 <dnn:label id="lblHostFiles" runat="server" controlname="cblHostFiles" suffix="" />
                 <asp:CheckBoxList runat="server" ID="cblHostFiles" RepeatColumns="1" />
             </div>
