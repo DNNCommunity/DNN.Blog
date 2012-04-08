@@ -154,6 +154,8 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Components\Blogger\IBlogger.vb" />
+    <Compile Include="Components\Business\Content.vb" />
+    <Compile Include="Components\Business\Terms.vb" />
     <Compile Include="Components\Controllers\ArchiveController.vb" />
     <Compile Include="Components\Controllers\BlogController.vb" />
     <Compile Include="Components\Controllers\CategoryController.vb" />

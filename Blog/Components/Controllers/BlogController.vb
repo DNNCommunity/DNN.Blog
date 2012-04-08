@@ -44,7 +44,6 @@ Namespace Business
 
   End Function
 
-
   Public Function GetBlogsByUserName(ByVal PortalID As Integer, ByVal UserName As String) As ArrayList
 
    Return CBO.FillCollection(DataProvider.Instance().GetBlogsByUserName(PortalID, UserName), GetType(BlogInfo))
@@ -108,6 +107,23 @@ Namespace Business
    Return ReturnBlog
 
   End Function
+
+#Region "Taxonomy"
+
+
+
+#End Region
+
+#Region " 4.5.0 Upgrade"
+
+        Public Function GetAllPublishedPortalBlogEntries(ByVal PortalID As Integer) As List(Of EntryInfo)
+
+            Return Nothing
+            'Return CBO.FillCollection(DataProvider.Instance().ListBlogsRootByPortal(PortalID), GetType(BlogInfo))
+
+        End Function
+
+#End Region
 
  End Class
 

@@ -14,10 +14,12 @@
 		<ul>
 			<li>Corrected blog comment sorting problem.</li>
 			<li>Integrated with the core Journal API.</li>
+			<li>20789 - wired in fix submitted by J Sheely around blank author names.</li>
 			<li>Updated manifest to 5.0 format (from 3.0).</li>
-			<li>Automated packaging and made project structure more inline with other DotNetNuke modules and projects.<li>
-			<li>Converted module to use DNN 6 form pattern.</li>
-			<li>Changed all jQuery registration to use proper core methods.</li>
+			<li>Automated packaging and made project structure more inline with other DotNetNuke modules and projects.</li>
+			<li>Converted module to use DNN 6 form pattern (also removed h1, h2 and font-family styling from module.css).</li>
+			<li>Changed all jQuery registration to use proper core methods (now loads jQuery UI too).</li>
 			<li>Offloaded all script and css loading to Client Dependency Framework.</li>
+			<li>Integrated core taxonomy & folksonomy (migrated previous categories/tags over).</li>
 		</ul>
 </div>

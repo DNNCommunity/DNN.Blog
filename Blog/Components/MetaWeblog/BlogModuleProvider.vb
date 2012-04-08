@@ -55,7 +55,7 @@ Namespace MetaWeblog
 
   Public ReadOnly Property RootBlogPath() As String
    Get
-    Dim ps As PortalSettings = DotNetNuke.Common.GetPortalSettings
+                Dim ps As PortalSettings = Common.GetPortalSettings
     Return ps.HomeDirectoryMapPath + ProviderKey
    End Get
   End Property
