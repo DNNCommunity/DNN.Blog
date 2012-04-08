@@ -120,6 +120,12 @@
   <data name="ControlTitle_settings.Text" xml:space="preserve">
     <value>Blog Tag Settings</value>
   </data>
+  <data name="lblDisplayMode.Help" xml:space="preserve">
+    <value>Determine how the tag list will be displayed.</value>
+  </data>
+  <data name="lblDisplayMode.Text" xml:space="preserve">
+    <value>Display Mode</value>
+  </data>
   <data name="optTagCloud.Text" xml:space="preserve">
     <value>Tag Cloud</value>
   </data>

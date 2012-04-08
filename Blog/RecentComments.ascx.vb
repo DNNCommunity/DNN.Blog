@@ -24,70 +24,70 @@ Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Services.Localization
 
 Partial Public Class RecentComments
-  Inherits BlogModuleBase
+    Inherits BlogModuleBase
 
-  Private _settings As Settings.RecentCommentsSettings
+    Private _settings As Settings.RecentCommentsSettings
 
-  Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-    _settings = DotNetNuke.Modules.Blog.Settings.RecentCommentsSettings.GetRecentCommentsSettings(TabModuleId)
-    LoadRecentComments()
-  End Sub
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        _settings = DotNetNuke.Modules.Blog.Settings.RecentCommentsSettings.GetRecentCommentsSettings(TabModuleId)
+        LoadRecentComments()
+    End Sub
 
-  Private Sub LoadRecentComments()
-    Dim RecentComments As List(Of CommentInfo) = Nothing
-    Dim oController As CommentController = Nothing
-    Dim strTemplate As String
-    Dim strBuilder As StringBuilder = Nothing
-    Dim strRecentEntries As String = Nothing
-    Try
-      oController = New CommentController
+    Private Sub LoadRecentComments()
+        Dim RecentComments As List(Of CommentInfo) = Nothing
+        Dim oController As CommentController = Nothing
+        Dim strTemplate As String
+        Dim strBuilder As StringBuilder = Nothing
+        Dim strRecentEntries As String = Nothing
+        Try
+            oController = New CommentController
 
-      If Request.QueryString("BlogID") IsNot Nothing Then
-        RecentComments = oController.ListCommentsByBlog(CInt(Request.QueryString("BlogID")), False, _settings.RecentCommentsMax)
-      Else
-        RecentComments = oController.ListCommentsByPortal(PortalId, False, _settings.RecentCommentsMax)
-      End If
+            If Request.QueryString("BlogID") IsNot Nothing Then
+                RecentComments = oController.ListCommentsByBlog(CInt(Request.QueryString("BlogID")), False, _settings.RecentCommentsMax)
+            Else
+                RecentComments = oController.ListCommentsByPortal(PortalId, False, _settings.RecentCommentsMax)
+            End If
 
-      If RecentComments IsNot Nothing AndAlso RecentComments.Count > 0 Then
-        strBuilder = New StringBuilder
-        For Each Comment As CommentInfo In RecentComments
+            If RecentComments IsNot Nothing AndAlso RecentComments.Count > 0 Then
+                strBuilder = New StringBuilder
+                For Each Comment As CommentInfo In RecentComments
 
-          strTemplate = _settings.RecentCommentsTemplate
-          strTemplate = strTemplate.Replace("[PERMALINK]", Utility.GenerateEntryLink(PortalId, Comment.EntryID, TabId, Nothing) & "#Comments")
-          strTemplate = ProcessTemplate(Comment, strTemplate)
+                    strTemplate = _settings.RecentCommentsTemplate
+                    strTemplate = strTemplate.Replace("[PERMALINK]", Utility.GenerateEntryLink(PortalId, Comment.EntryID, TabId, Nothing) & "#Comments")
+                    strTemplate = ProcessTemplate(Comment, strTemplate)
 
-          strBuilder.Append(strTemplate)
-        Next
-      Else
-        UI.Skins.Skin.AddModuleMessage(Me, Localization.GetString("MsgNoRecentComments", LocalResourceFile), UI.Skins.Controls.ModuleMessage.ModuleMessageType.YellowWarning)
-      End If
+                    strBuilder.Append(strTemplate)
+                Next
+            Else
+                UI.Skins.Skin.AddModuleMessage(Me, Localization.GetString("MsgNoRecentComments", LocalResourceFile), UI.Skins.Controls.ModuleMessage.ModuleMessageType.YellowWarning)
+            End If
 
-      ' assign the content
-      If strBuilder IsNot Nothing Then
-        Me.RecentComments.Controls.Add(New LiteralControl(strBuilder.ToString))
-      End If
+            ' assign the content
+            If strBuilder IsNot Nothing Then
+                Me.RecentComments.Controls.Add(New LiteralControl(strBuilder.ToString))
+            End If
 
-    Catch ex As Exception
-      ProcessModuleLoadException(Me, ex)
-    Finally
-      If RecentComments IsNot Nothing Then RecentComments = Nothing
-      If oController IsNot Nothing Then oController = Nothing
-      If strBuilder IsNot Nothing Then strBuilder = Nothing
-    End Try
-  End Sub
+        Catch ex As Exception
+            ProcessModuleLoadException(Me, ex)
+        Finally
+            If RecentComments IsNot Nothing Then RecentComments = Nothing
+            If oController IsNot Nothing Then oController = Nothing
+            If strBuilder IsNot Nothing Then strBuilder = Nothing
+        End Try
+    End Sub
 
-  Private Function ProcessTemplate(ByVal objComment As CommentInfo, ByVal strTemplate As String) _
-      As String
-    Dim TemplateManager As TemplateManager = Nothing
-    Try
-      TemplateManager = New TemplateManager(objComment)
-      Return TemplateManager.ProcessTemplate(strTemplate)
-    Catch ex As Exception
-      ProcessModuleLoadException(Me, ex)
-      Return Nothing
-    Finally
-      If TemplateManager IsNot Nothing Then TemplateManager = Nothing
-    End Try
-  End Function
+    Private Function ProcessTemplate(ByVal objComment As CommentInfo, ByVal strTemplate As String) _
+        As String
+        Dim TemplateManager As TemplateManager = Nothing
+        Try
+            TemplateManager = New TemplateManager(objComment)
+            Return TemplateManager.ProcessTemplate(strTemplate)
+        Catch ex As Exception
+            ProcessModuleLoadException(Me, ex)
+            Return Nothing
+        Finally
+            If TemplateManager IsNot Nothing Then TemplateManager = Nothing
+        End Try
+    End Function
 
 End Class

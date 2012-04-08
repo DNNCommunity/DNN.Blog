@@ -1,5 +1,6 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="EditCategories.ascx.vb" Inherits="DotNetNuke.Modules.Blog.EditCategories" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls"%>
+<%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <table style="width: 100%;">
  <tr>
   <td>

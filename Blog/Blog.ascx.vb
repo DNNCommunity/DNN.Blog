@@ -23,82 +23,76 @@ Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Services.Exceptions.Exceptions
 
-Partial Class Blog
- Inherits BlogModuleBase
- Implements Entities.Modules.IActionable
+Partial Public Class Blog
+    Inherits BlogModuleBase
+    Implements Entities.Modules.IActionable
 
-#Region "Controls"
-#End Region
+#Region "Event Handlers"
 
-#Region " Event Handlers "
- Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-  Try
-   Dim objBlogs As New BlogController
-   Dim objBlog As BlogInfo
-   Dim m_PersonalBlogID As Integer = BlogSettings.PageBlogs
+    Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Try
+            Dim objBlogs As New BlogController
+            Dim objBlog As BlogInfo
+            Dim m_PersonalBlogID As Integer = BlogSettings.PageBlogs
 
-   If Not Page.IsPostBack Then
+            If Not Page.IsPostBack Then
+                ' 11/19/2008 Rip Rowan replaced deprecated code
+                'If DotNetNuke.Security.PortalSecurity.HasEditPermissions(Me.ModuleId) Then
+                If DotNetNuke.Security.PortalSecurity.HasNecessaryPermission(Security.SecurityAccessLevel.Edit, PortalSettings, ModuleConfiguration) Then
+                    objBlog = objBlogs.GetBlogByUserID(Me.PortalId, Me.UserId)
+                    If objBlog Is Nothing Then
+                        pnlBlog.Visible = True
+                        pnlExistingBlog.Visible = False
+                        lblLogin.Visible = False
+                        lnkBlog.Visible = True
+                    Else
+                        pnlBlog.Visible = False
+                        pnlExistingBlog.Visible = True
+                        ViewState("BlogID") = objBlog.BlogID
+                    End If
+                Else
+                    If m_PersonalBlogID = -1 Then
+                        pnlBlog.Visible = True
+                    Else
+                        pnlBlog.Visible = False
+                    End If
+                    pnlExistingBlog.Visible = False
+                    lblLogin.Visible = True
+                    lnkBlog.Visible = False
+                End If
+            End If
+        Catch exc As Exception
+            ProcessModuleLoadException(Me, exc)
+        End Try
+    End Sub
 
-    ' 11/19/2008 Rip Rowan replaced deprecated code
-    'If DotNetNuke.Security.PortalSecurity.HasEditPermissions(Me.ModuleId) Then
-    If DotNetNuke.Security.PortalSecurity.HasNecessaryPermission(Security.SecurityAccessLevel.Edit, PortalSettings, ModuleConfiguration) Then
-     objBlog = objBlogs.GetBlogByUserID(Me.PortalId, Me.UserId)
-     If objBlog Is Nothing Then
-      pnlBlog.Visible = True
-      pnlExistingBlog.Visible = False
-      lblLogin.Visible = False
-      lnkBlog.Visible = True
-     Else
-      pnlBlog.Visible = False
-      pnlExistingBlog.Visible = True
-      ViewState("BlogID") = objBlog.BlogID
-     End If
-    Else
-     If m_PersonalBlogID = -1 Then
-      pnlBlog.Visible = True
-     Else
-      pnlBlog.Visible = False
-     End If
-     pnlExistingBlog.Visible = False
-     lblLogin.Visible = True
-     lnkBlog.Visible = False
-    End If
-   End If
-  Catch exc As Exception
-   ProcessModuleLoadException(Me, exc)
-  End Try
- End Sub
 #End Region
 
 #Region " Private Methods "
- Private Sub lnkBlog_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lnkBlog.Click
-  Response.Redirect(EditUrl("BlogID", "-1", "Edit_Blog"))
- End Sub
+    Private Sub lnkBlog_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lnkBlog.Click
+        Response.Redirect(EditUrl("BlogID", "-1", "Edit_Blog"))
+    End Sub
 
- Private Sub lnkEditBlog_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lnkEditBlog.Click
-  Response.Redirect(EditUrl("BlogID", CType(ViewState("BlogID"), String), "Edit_Blog"))
- End Sub
+    Private Sub lnkEditBlog_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lnkEditBlog.Click
+        Response.Redirect(EditUrl("BlogID", CType(ViewState("BlogID"), String), "Edit_Blog"))
+    End Sub
 
- Private Sub lnkViewBlog_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lnkViewBlog.Click
-  Response.Redirect(NavigateURL(Me.TabId, "", "BlogID=" & CType(ViewState("BlogID"), String)))
- End Sub
+    Private Sub lnkViewBlog_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lnkViewBlog.Click
+        Response.Redirect(NavigateURL(Me.TabId, "", "BlogID=" & CType(ViewState("BlogID"), String)))
+    End Sub
 
- Private Sub lnkAddEntry_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lnkAddEntry.Click
-  Response.Redirect(EditUrl("", "", "Edit_Entry"))
- End Sub
+    Private Sub lnkAddEntry_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lnkAddEntry.Click
+        Response.Redirect(EditUrl("", "", "Edit_Entry"))
+    End Sub
 
 #End Region
 
 #Region " Public Properties "
- Public ReadOnly Property ModuleActions() As Entities.Modules.Actions.ModuleActionCollection Implements Entities.Modules.IActionable.ModuleActions
-  Get
-   Return MyActions
-  End Get
- End Property
+    Public ReadOnly Property ModuleActions() As Entities.Modules.Actions.ModuleActionCollection Implements Entities.Modules.IActionable.ModuleActions
+        Get
+            Return MyActions
+        End Get
+    End Property
 #End Region
 
 End Class
-
-
-
-

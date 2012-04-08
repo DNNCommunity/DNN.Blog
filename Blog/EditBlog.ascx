@@ -8,28 +8,28 @@
         <fieldset>
             <div class="dnnFormItem dnnFormHelp dnnClear"><p class="dnnFormRequired"><span><%=LocalizeString("RequiredFields")%></span></p></div>
             <div class="dnnFormItem">
-                <dnn:Label ID="lblTitle" runat="server" ControlToName="txtTitle" suffix=":" />
+                <dnn:Label ID="lblTitle" runat="server" controlname="txtTitle" suffix=":" />
                 <asp:TextBox ID="txtTitle" runat="server" ResourceKey="txtTitle" CssClass="dnnFormRequired" />
                 <asp:RequiredFieldValidator ID="valTitle" runat="server" Display="Dynamic" ControlToValidate="txtTitle" resourcekey="valTitle.ErrorMessage" CssClass="dnnFormError" />
             </div>
             <div class="dnnFormItem">
-                <dnn:Label ID="lblDescription" runat="server" controltoname="txtDescription" suffix=":" />
+                <dnn:Label ID="lblDescription" runat="server" controlname="txtDescription" suffix=":" />
                 <asp:TextBox ID="txtDescription" runat="server" Rows="5" TextMode="MultiLine" CssClass="dnnFormRequired" />
                 <asp:RequiredFieldValidator ID="valTitleDescription" runat="server" Display="Dynamic" resourcekey="valTitleDescription.ErrorMessage" ControlToValidate="txtDescription" CssClass="dnnFormError" />
             </div>
             <div class="dnnFormItem">
-                <dnn:Label ID="lblPublic" runat="server" controltoname="chkPublic" suffix=":" />
+                <dnn:Label ID="lblPublic" runat="server" controlname="chkPublic" suffix=":" />
                 <asp:CheckBox ID="chkPublic" runat="server" />
             </div>
             <div class="dnnFormItem">
-                <dnn:Label ID="lblUserIdentity" runat="server" ControlToName="rdoUserName" suffix=":" />
+                <dnn:Label ID="lblUserIdentity" runat="server" controlname="rdoUserName" suffix=":" />
                 <asp:RadioButtonList ID="rdoUserName" CssClass="dnnFormRadioButtons" runat="server">
                     <asp:ListItem Value="False" Selected="True" ResourceKey="rdoUserName_UserName" />
                     <asp:ListItem Value="True" ResourceKey="rdoUserName_FullName" />
                 </asp:RadioButtonList>
             </div>
             <div class="dnnFormItem">
-                <dnn:Label id="lblMetaWebBlog" runat="server" controltoname="" suffix=":" />
+                <dnn:Label id="lblMetaWebBlog" runat="server" controlname="" suffix=":" />
                 <div>
                     <asp:Label ID="lblMetaWeblogNotAvailable" runat="server" ResourceKey="lblMetaWeblogNotAvailable" Visible="false" />
                     <asp:Label ID="lblMetaWeblogUrl" runat="server" Text="http://www.yourdomain.com/desktopmodules/blog/blogpost.ashx" />
@@ -39,7 +39,7 @@
         <h2 id="dnnSitePanel-CommentOptions" class="dnnFormSectionHead"><a href="" class=""><%=LocalizeString("lblCommentOptions")%></a></h2>
         <fieldset>
             <div class="dnnFormItem">
-                <dnn:Label ID="lblUsersComments" runat="server" controltoname="rdoUsersComments" />
+                <dnn:Label ID="lblUsersComments" runat="server" controlname="rdoUsersComments" />
                 <asp:RadioButtonList ID="rdoUsersComments" runat="server" CssClass="dnnFormRadioButtons">
                     <asp:ListItem Value="Allow" resourceKey="rdoComments_Allow" Selected="True" />
                     <asp:ListItem Value="RequireApproval" resourceKey="rdoComments_RequireApproval" />
@@ -47,7 +47,7 @@
                 </asp:RadioButtonList>
             </div>
             <div class="dnnFormItem">
-                <dnn:Label ID="lblAnonymousComments" runat="server" controltoname="rdoAnonymousComments" suffix=":" />
+                <dnn:Label ID="lblAnonymousComments" runat="server" controlname="rdoAnonymousComments" suffix=":" />
                 <asp:RadioButtonList ID="rdoAnonymousComments" runat="server" CssClass="dnnFormRadioButtons">
                     <asp:ListItem Value="Allow" resourceKey="rdoComments_Allow" Selected="True" />
                     <asp:ListItem Value="RequireApproval" resourceKey="rdoComments_RequireApproval" />
@@ -55,7 +55,7 @@
                 </asp:RadioButtonList>
             </div>
             <div class="dnnFormItem">
-                <dnn:Label ID="lblTrackbacks" runat="server" controltoname="rdoTrackbacks" suffix=":" />
+                <dnn:Label ID="lblTrackbacks" runat="server" controlname="rdoTrackbacks" suffix=":" />
                 <asp:RadioButtonList ID="rdoTrackbacks" runat="server" CssClass="dnnFormRadioButtons">
                     <asp:ListItem Value="Allow" resourceKey="rdoComments_Allow" Selected="True" />
                     <asp:ListItem Value="RequireApproval" resourceKey="rdoComments_RequireApproval" />
@@ -63,46 +63,46 @@
                 </asp:RadioButtonList>
             </div>
             <div class="dnnFormItem">
-                <dnn:Label ID="lblCaptcha" runat="server" controltoname="chkCaptcha" suffix=":" />
+                <dnn:Label ID="lblCaptcha" runat="server" controlname="chkCaptcha" suffix=":" />
                 <asp:CheckBox ID="chkCaptcha" runat="server" />
             </div>
             <div class="dnnFormItem">
-                <dnn:Label ID="lblAutoTrackbacks" runat="server" controltoname="chkAutoTrackbacks" suffix=":" />
+                <dnn:Label ID="lblAutoTrackbacks" runat="server" controlname="chkAutoTrackbacks" suffix=":" />
                 <asp:CheckBox ID="chkAutoTrackbacks" runat="server" />
             </div>
             <div class="dnnFormItem">
-                <dnn:Label ID="lblEmailNotification" runat="server" controltoname="chkEmailNotification" suffix=":" />
+                <dnn:Label ID="lblEmailNotification" runat="server" controlname="chkEmailNotification" suffix=":" />
                 <asp:CheckBox ID="chkEmailNotification" runat="server" />           
             </div>
             <div class="dnnFormItem">
-                <dnn:Label ID="lblSyndicate" runat="server" controltoname="chkSyndicate" suffix=":" />
+                <dnn:Label ID="lblSyndicate" runat="server" controlname="chkSyndicate" suffix=":" />
                 <asp:CheckBox ID="chkSyndicate" runat="server" />
             </div>
             <div class="dnnFormItem">
-                <dnn:Label ID="lblSyndicateIndependant" runat="server" controltoname="chkSyndicateIndependant" suffix=":" />
+                <dnn:Label ID="lblSyndicateIndependant" runat="server" controlname="chkSyndicateIndependant" suffix=":" />
                 <asp:CheckBox ID="chkSyndicateIndependant" runat="server" />
             </div>
             <div class="dnnFormItem">
-                <dnn:Label ID="lblSyndicationEmail" runat="server" controltoname="txtSyndicationEmail" suffix=":" />
+                <dnn:Label ID="lblSyndicationEmail" runat="server" controlname="txtSyndicationEmail" suffix=":" />
                 <asp:TextBox ID="txtSyndicationEmail" runat="server" />
             </div>
             <div class="dnnFormItem">
-                <dnn:Label ID="lblRegenerate" runat="server" controltoname="cmdGenerateLinks" suffix=":" />
+                <dnn:Label ID="lblRegenerate" runat="server" controlname="cmdGenerateLinks" suffix=":" />
                 <asp:LinkButton ID="cmdGenerateLinks" runat="server" CausesValidation="False" resourceKey="cmdGenerateLinks" CssClass="dnnSecondaryAction" />
             </div>
         </fieldset>
         <h2 id="dnnSitePanel-TimeOptions" class="dnnFormSectionHead"><a href="" class=""><%=LocalizeString("lblTimeOptions")%></a></h2>
         <fieldset>            
             <div class="dnnFormItem">
-                <dnn:Label ID="lblTimeZone" runat="server" controltoname="cboTimeZone" suffix=":" />
+                <dnn:Label ID="lblTimeZone" runat="server" controlname="cboTimeZone" suffix=":" />
                 <asp:DropDownList ID="cboTimeZone" runat="server" AutoPostBack="True" />
             </div>
             <div class="dnnFormItem">
-                <dnn:Label ID="lblCulture" runat="server" controltoname="cboCulture" suffix=":" />
+                <dnn:Label ID="lblCulture" runat="server" controlname="cboCulture" suffix=":" />
                 <asp:DropDownList ID="cboCulture" runat="server" AutoPostBack="True" />
             </div>
             <div class="dnnFormItem">
-                <dnn:Label ID="lblDateFormat" runat="server" controltoname="cboDateFormat" suffix=":" />
+                <dnn:Label ID="lblDateFormat" runat="server" controlname="cboDateFormat" suffix=":" />
                 <asp:DropDownList ID="cboDateFormat" runat="server" />
             </div>
         </fieldset>

@@ -21,45 +21,45 @@
 Imports DotNetNuke.Modules.Blog.Business
 
 Partial Public Class ViewTags
- 'Inherits BlogModuleBase
- Inherits DotNetNuke.Entities.Modules.PortalModuleBase
+    'Inherits BlogModuleBase
+    Inherits DotNetNuke.Entities.Modules.PortalModuleBase
 
- Private _settings As Settings.TagViewSettings
+    Private _settings As Settings.TagViewSettings
 
- Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
-  Me.ModuleConfiguration.SupportedFeatures = 0
-  _settings = DotNetNuke.Modules.Blog.Settings.TagViewSettings.GetTagViewSettings(TabModuleId)
- End Sub
+    Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Me.ModuleConfiguration.SupportedFeatures = 0
+        _settings = DotNetNuke.Modules.Blog.Settings.TagViewSettings.GetTagViewSettings(TabModuleId)
+    End Sub
 
- Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-  Dim TagController As New TagController
-  Dim TagList As ArrayList
-  Dim tag As TagInfo
-  Dim TagDisplayMode As String
-  TagDisplayMode = _settings.TagDisplayMode
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Dim TagController As New TagController
+        Dim TagList As ArrayList
+        Dim tag As TagInfo
+        Dim TagDisplayMode As String
+        TagDisplayMode = _settings.TagDisplayMode
 
-  If TagDisplayMode = "List" Then
-   TagList = TagController.ListTags(PortalId)
-   For Each tag In TagList
-    Dim a As New HtmlAnchor()
-    a.HRef = Utility.GetSEOLink(PortalId, TabId, "", tag.Slug, "tagid=" + tag.TagId.ToString)
-    a.InnerText = tag.Tag + " (" + tag.Cnt.ToString + ")"
-    a.Title = tag.Tag
-    phTags.Controls.Add(a)
-    phTags.Controls.Add(New LiteralControl("<br />"))
-   Next
-  Else
-   TagList = TagController.ListWeightedTags(PortalId)
-   For Each tag In TagList
-    Dim a As New HtmlAnchor()
-    a.HRef = Utility.GetSEOLink(PortalId, TabId, "", tag.Slug, "tagid=" + tag.TagId.ToString)
-    a.InnerText = tag.Tag
-    a.Title = tag.Tag
-    a.Attributes("class") = "TagCloud" + tag.Weight.ToString
-    phTags.Controls.Add(a)
-    phTags.Controls.Add(New LiteralControl(" "))
-   Next
-  End If
- End Sub
+        If TagDisplayMode = "List" Then
+            TagList = TagController.ListTags(PortalId)
+            For Each tag In TagList
+                Dim a As New HtmlAnchor()
+                a.HRef = Utility.GetSEOLink(PortalId, TabId, "", tag.Slug, "tagid=" + tag.TagId.ToString)
+                a.InnerText = tag.Tag + " (" + tag.Cnt.ToString + ")"
+                a.Title = tag.Tag
+                phTags.Controls.Add(a)
+                phTags.Controls.Add(New LiteralControl("<br />"))
+            Next
+        Else
+            TagList = TagController.ListWeightedTags(PortalId)
+            For Each tag In TagList
+                Dim a As New HtmlAnchor()
+                a.HRef = Utility.GetSEOLink(PortalId, TabId, "", tag.Slug, "tagid=" + tag.TagId.ToString)
+                a.InnerText = tag.Tag
+                a.Title = tag.Tag
+                a.Attributes("class") = "TagCloud" + tag.Weight.ToString
+                phTags.Controls.Add(a)
+                phTags.Controls.Add(New LiteralControl(" "))
+            Next
+        End If
+    End Sub
 
 End Class

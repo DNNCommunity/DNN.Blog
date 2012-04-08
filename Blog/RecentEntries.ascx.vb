@@ -25,69 +25,69 @@ Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.Security
 
 Partial Public Class RecentEntries
- Inherits BlogModuleBase
+    Inherits BlogModuleBase
 
- Private _settings As Settings.RecentEntriesSettings
+    Private _settings As Settings.RecentEntriesSettings
 
- Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-  _settings = DotNetNuke.Modules.Blog.Settings.RecentEntriesSettings.GetRecentEntriesSettings(TabModuleId)
-  LoadRecentEntries()
- End Sub
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        _settings = DotNetNuke.Modules.Blog.Settings.RecentEntriesSettings.GetRecentEntriesSettings(TabModuleId)
+        LoadRecentEntries()
+    End Sub
 
- Private Sub LoadRecentEntries()
-  Dim RecentEntries As ArrayList = Nothing
-  Dim oController As EntryController = Nothing
-  Dim strTemplate As String
-  Dim strBuilder As StringBuilder = Nothing
-  Dim strRecentEntries As String = Nothing
-  Try
-   oController = New EntryController
+    Private Sub LoadRecentEntries()
+        Dim RecentEntries As ArrayList = Nothing
+        Dim oController As EntryController = Nothing
+        Dim strTemplate As String
+        Dim strBuilder As StringBuilder = Nothing
+        Dim strRecentEntries As String = Nothing
+        Try
+            oController = New EntryController
 
-   If Request.QueryString("BlogID") IsNot Nothing Then
-    RecentEntries = oController.ListEntriesByBlog(CInt(Request.QueryString("BlogID")), Nothing, PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), _settings.RecentEntriesMax)
-   Else
-    RecentEntries = oController.ListEntriesByPortal(PortalId, Nothing, Nothing, PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), _settings.RecentEntriesMax)
-   End If
+            If Request.QueryString("BlogID") IsNot Nothing Then
+                RecentEntries = oController.ListEntriesByBlog(CInt(Request.QueryString("BlogID")), Nothing, PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), _settings.RecentEntriesMax)
+            Else
+                RecentEntries = oController.ListEntriesByPortal(PortalId, Nothing, Nothing, PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), _settings.RecentEntriesMax)
+            End If
 
-   If RecentEntries IsNot Nothing AndAlso RecentEntries.Count > 0 Then
-    strBuilder = New StringBuilder
-    For Each Entry As EntryInfo In RecentEntries
+            If RecentEntries IsNot Nothing AndAlso RecentEntries.Count > 0 Then
+                strBuilder = New StringBuilder
+                For Each Entry As EntryInfo In RecentEntries
 
-     strTemplate = _settings.RecentEntriesTemplate
-     strTemplate = ProcessTemplate(Entry, strTemplate)
-     strBuilder.Append(strTemplate)
+                    strTemplate = _settings.RecentEntriesTemplate
+                    strTemplate = ProcessTemplate(Entry, strTemplate)
+                    strBuilder.Append(strTemplate)
 
-    Next
+                Next
 
-   Else
-    UI.Skins.Skin.AddModuleMessage(Me, Localization.GetString("MsgNoRecentEntries", LocalResourceFile), UI.Skins.Controls.ModuleMessage.ModuleMessageType.YellowWarning)
-   End If
+            Else
+                UI.Skins.Skin.AddModuleMessage(Me, Localization.GetString("MsgNoRecentEntries", LocalResourceFile), UI.Skins.Controls.ModuleMessage.ModuleMessageType.YellowWarning)
+            End If
 
-   ' assign the content
-   If strBuilder IsNot Nothing Then
-    Me.RecentEntries.Controls.Add(New LiteralControl(strBuilder.ToString))
-   End If
+            ' assign the content
+            If strBuilder IsNot Nothing Then
+                Me.RecentEntries.Controls.Add(New LiteralControl(strBuilder.ToString))
+            End If
 
-  Catch ex As Exception
-   ProcessModuleLoadException(Me, ex)
-  Finally
-   If RecentEntries IsNot Nothing Then RecentEntries = Nothing
-   If oController IsNot Nothing Then oController = Nothing
-   If strBuilder IsNot Nothing Then strBuilder = Nothing
-  End Try
- End Sub
+        Catch ex As Exception
+            ProcessModuleLoadException(Me, ex)
+        Finally
+            If RecentEntries IsNot Nothing Then RecentEntries = Nothing
+            If oController IsNot Nothing Then oController = Nothing
+            If strBuilder IsNot Nothing Then strBuilder = Nothing
+        End Try
+    End Sub
 
- Private Function ProcessTemplate(ByVal objEntry As EntryInfo, ByVal strTemplate As String) As String
-  Dim TemplateManager As TemplateManager = Nothing
-  Try
-   TemplateManager = New TemplateManager(objEntry)
-   Return TemplateManager.ProcessTemplate(strTemplate)
-  Catch ex As Exception
-   ProcessModuleLoadException(Me, ex)
-   Return Nothing
-  Finally
-   If TemplateManager IsNot Nothing Then TemplateManager = Nothing
-  End Try
- End Function
+    Private Function ProcessTemplate(ByVal objEntry As EntryInfo, ByVal strTemplate As String) As String
+        Dim TemplateManager As TemplateManager = Nothing
+        Try
+            TemplateManager = New TemplateManager(objEntry)
+            Return TemplateManager.ProcessTemplate(strTemplate)
+        Catch ex As Exception
+            ProcessModuleLoadException(Me, ex)
+            Return Nothing
+        Finally
+            If TemplateManager IsNot Nothing Then TemplateManager = Nothing
+        End Try
+    End Function
 
 End Class
