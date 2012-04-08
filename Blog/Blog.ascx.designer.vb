@@ -50,6 +50,15 @@ Partial Public Class Blog
     Protected WithEvents pnlExistingBlog As Global.System.Web.UI.WebControls.Panel
 
     '''<summary>
+    '''lnkAddEntry control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lnkAddEntry As Global.System.Web.UI.WebControls.LinkButton
+
+    '''<summary>
     '''lnkEditBlog control.
     '''</summary>
     '''<remarks>
@@ -66,13 +75,4 @@ Partial Public Class Blog
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lnkViewBlog As Global.System.Web.UI.WebControls.LinkButton
-
-    '''<summary>
-    '''lnkAddEntry control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lnkAddEntry As Global.System.Web.UI.WebControls.LinkButton
 End Class

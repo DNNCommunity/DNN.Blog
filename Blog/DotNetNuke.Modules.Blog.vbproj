@@ -25,7 +25,7 @@
     <DebugType>full</DebugType>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\</OutputPath>
+    <OutputPath>..\..\bin\</OutputPath>
     <DocumentationFile>DotNetNuke.Modules.Blog.xml</DocumentationFile>
     <NoWarn>
     </NoWarn>
@@ -51,6 +51,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="DotNetNuke">
+		<SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\DotNetNuke.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Web.Client, Version=6.1.2.0, Culture=neutral, processorArchitecture=MSIL" />
