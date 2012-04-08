@@ -1,4 +1,4 @@
-﻿<h3>Blog 4.5.0</h3>
+﻿<h3>Blog 5.0.0</h3>
 <p class="Contributor">
 	DotNetNuke&reg; <br />
 	<a href="mailto:support@dotnetnuke.com">support@dotnetnuke.com</a><br />
@@ -28,5 +28,6 @@
 			<li>Made comment time stamps use friendly date format (x hours/days ago).</li>
 			<li>20935 - Corrected column drop bug seen in upgrades to 4.1.0.</li>
 			<li>Updated CookComputing.XmlRpcV2.dll</li>
+			<li>Added new social sharing option, big 4 only, same as it was done in Q&A.</li>
 		</ul>
 </div>

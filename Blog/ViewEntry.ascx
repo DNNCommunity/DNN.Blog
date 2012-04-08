@@ -69,7 +69,11 @@
    </div>
   </div>  
  </div>
- <div id="ShareBadgePRO_Toolbar"></div>
+ <div id="ShareBadgePRO_Toolbar" style="display:none;"></div>
+ <div class="dnnRight">
+    <asp:Literal ID="litSocialSharing" runat="server" />
+ </div>
+
  <!-- Comments Section -->
  <asp:Panel ID="pnlComments" runat="server" Visible="False">
    <a id="Comments" name="Comments"></a>
@@ -199,12 +203,38 @@
     (function ($, Sys) {
         function setupDnnQuestions() {
             $('.qaTooltip').qaTooltip();
+
+            var po = document.createElement('script');
+            po.type = 'text/javascript';
+            po.async = true;
+            po.src = 'https://apis.google.com/js/plusone.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+
+            !function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (!d.getElementById(id)) {
+                    js = d.createElement(s); js.id = id; js.src = "//platform.twitter.com/widgets.js";
+                    fjs.parentNode.insertBefore(js, fjs);
+                }
+            } (document, "script", "twitter-wjs");
+
+            !function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) return;
+                js = d.createElement(s); js.id = id;
+                js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+                fjs.parentNode.insertBefore(js, fjs);
+            } (document, 'script', 'facebook-jssdk');
         }
 
         $(document).ready(function () {
             setupDnnQuestions();
             Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
                 setupDnnQuestions();
+
+                twttr.widgets.load();
+                FB.XFBML.parse();
+                IN.parse();
             });
         });
 

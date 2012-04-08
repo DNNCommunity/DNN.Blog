@@ -221,6 +221,15 @@ Partial Public Class ViewEntry
     Protected WithEvents lnkChildBlog As Global.System.Web.UI.WebControls.HyperLink
 
     '''<summary>
+    '''litSocialSharing control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents litSocialSharing As Global.System.Web.UI.WebControls.Literal
+
+    '''<summary>
     '''pnlComments control.
     '''</summary>
     '''<remarks>

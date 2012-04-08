@@ -346,3 +346,12 @@ ul.dnnBlogAuthorActions, ul.dnnBlogAuthorActions li{list-style:none;margin:0px;p
 .tag-menu .tm-description{line-height:13px;font-size:11px;margin-bottom:8px;}
 .tag-menu .tm-description p{margin-bottom:8px;}
 /* -- end Tooltip -- */
+/* social area */
+ul.qaSocialActions{clear:both;margin:0px;padding:0px;min-height: 28px;}
+ul.qaSocialActions, ul.qaSocialActions li{list-style:none;padding:0px;}
+	ul.qaSocialActions li {display:block;float:left;padding:4px;}
+.connect_widget_not_connected_text{display:none !important; /*to hide the counter!*/}
+.fb_edge_widget_with_comment iframe{width:47px !important;}
+/* but make the span that holds the comment box larger */
+span.fb_edge_comment_widget.fb_iframe_widget iframe{width:401px !important;}
+/* end social area */

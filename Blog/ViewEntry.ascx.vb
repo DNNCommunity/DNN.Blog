@@ -62,6 +62,7 @@ Partial Public Class ViewEntry
         ClientResourceManager.RegisterScript(Page, TemplateSourceDirectory + "/js/jquery.qatooltip.js")
         ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js")
         ClientResourceManager.RegisterScript(Page, TemplateSourceDirectory + "/js/jquery.qaplaceholder.js")
+        ClientResourceManager.RegisterScript(Page, "https://platform.linkedin.com/in.js")
 
         OutputAdditionalFiles = True
 
@@ -200,6 +201,19 @@ Partial Public Class ViewEntry
                     If BlogSettings.ShowSocialBookmarks Then
                         AddSocialBookmarks(m_oEntry.Title, m_oEntry.PermaLink)
                     End If
+
+                    ' CP: Social Sharing
+                    Dim facebookContent As String = ""
+                    Dim googleContent As String = ""
+                    Dim twitterContent As String = ""
+                    Dim linkedInContent As String = ""
+
+                    facebookContent = "<li><div class='fb-like' data-send='false' data-width='46' data-show-faces='false' data-layout='button_count'></div></li>"
+                    googleContent = "<li><g:plusone annotation='none' size='medium'></g:plusone></li>"
+                    twitterContent = "<li><a href='https://twitter.com/share' data-lang='en' data-count='none' class='twitter-share-button' data-size='small'" + "'></a></li>"
+                    linkedInContent = "<li><script type='IN/Share'></script></li>"
+
+                    litSocialSharing.Text = "<ul class='qaSocialActions'>" + facebookContent + googleContent + twitterContent + linkedInContent + "</ul>"
 
                     'Antonio Chagoury
                     'Leave the module title as it should be
