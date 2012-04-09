@@ -356,3 +356,4 @@ ul.qaSocialActions, ul.qaSocialActions li{list-style:none;padding:0px;}
 /* but make the span that holds the comment box larger */
 span.fb_edge_comment_widget.fb_iframe_widget iframe{width:401px !important;}
 /* end social area */
+.percentRight{float: right;padding-left: 4px;}

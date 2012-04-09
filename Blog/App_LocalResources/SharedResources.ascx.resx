@@ -153,4 +153,7 @@
   <data name="Tags.Text" xml:space="preserve">
     <value>Tags</value>
   </data>
+  <data name="posts.text" xml:space="preserve">
+    <value>posts</value>
+  </data>
 </root>

@@ -85,7 +85,7 @@ Partial Public Class ViewTags
 
         tagControl.ModContext = ModuleContext
         tagControl.DataSource = colTerms
-        'tagControl.CountMode = TagTimeFrame;	
+        tagControl.CountMode = Constants.TagMode.ShowTotalUsage
         tagControl.DataBind()
     End Sub
 
