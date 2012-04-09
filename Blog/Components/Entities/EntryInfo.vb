@@ -226,6 +226,11 @@ Namespace Business
         End Property
 #End Region
 
+        Public Function EntryTerms(vocabularyId As Integer) As List(Of TermInfo)
+            Dim cntTerms As New TermController()
+            Return cntTerms.GetTermsByContentItem(ContentItemId, vocabularyId)
+        End Function
+
 #Region "IHydratable Implementation"
 
         ''' <summary>

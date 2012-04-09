@@ -18,7 +18,9 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
+Imports DotNetNuke.Web.Client.ClientResourceManagement
 Imports DotNetNuke.Modules.Blog.Business
+Imports DotNetNuke.Framework
 
 Partial Public Class ViewTags
     'Inherits BlogModuleBase
@@ -27,6 +29,9 @@ Partial Public Class ViewTags
     Private _settings As Settings.TagViewSettings
 
     Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        jQuery.RequestUIRegistration()
+        ClientResourceManager.RegisterScript(Page, TemplateSourceDirectory + "/js/jquery.qatooltip.js")
+        ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js")
         'Me.ModuleConfiguration.SupportedFeatures = 0
         _settings = DotNetNuke.Modules.Blog.Settings.TagViewSettings.GetTagViewSettings(TabModuleId)
     End Sub
@@ -39,15 +44,22 @@ Partial Public Class ViewTags
         TagDisplayMode = _settings.TagDisplayMode
 
         If TagDisplayMode = "List" Then
-            TagList = TagController.ListTags(PortalId)
-            For Each tag In TagList
-                Dim a As New HtmlAnchor()
-                a.HRef = Utility.GetSEOLink(PortalId, TabId, "", tag.Slug, "tagid=" + tag.TagId.ToString)
-                a.InnerText = tag.Tag + " (" + tag.Cnt.ToString + ")"
-                a.Title = tag.Tag
-                phTags.Controls.Add(a)
-                phTags.Controls.Add(New LiteralControl("<br />"))
-            Next
+            'TagList = TagController.ListTags(PortalId)
+            'For Each tag In TagList
+            '    Dim a As New HtmlAnchor()
+            '    a.HRef = Utility.GetSEOLink(PortalId, TabId, "", tag.Slug, "tagid=" + tag.TagId.ToString)
+            '    a.InnerText = tag.Tag + " (" + tag.Cnt.ToString + ")"
+            '    a.Title = tag.Tag
+            '    phTags.Controls.Add(a)
+            '    phTags.Controls.Add(New LiteralControl("<br />"))
+            'Next
+
+            Dim cntTerm As New TermController
+            Dim colTags As List(Of TermInfo)
+            colTags = cntTerm.GetTermsByContentType(ModuleContext.PortalId, ModuleContext.ModuleId, 1)
+
+            rptTags.DataSource = colTags
+            rptTags.DataBind()
         Else
             TagList = TagController.ListWeightedTags(PortalId)
             For Each tag In TagList
@@ -60,6 +72,21 @@ Partial Public Class ViewTags
                 phTags.Controls.Add(New LiteralControl(" "))
             Next
         End If
+    End Sub
+
+    Protected Sub RptTagsItemDataBound(sender As Object, e As RepeaterItemEventArgs)
+        Dim tagControl As Tags = DirectCast(e.Item.FindControl("dbaSingleTag"), Tags)
+        Dim term As TermInfo = DirectCast(e.Item.DataItem, TermInfo)
+        Dim colTerms As New List(Of TermInfo)
+
+        If term IsNot Nothing Then
+            colTerms.Add(term)
+        End If
+
+        tagControl.ModContext = ModuleContext
+        tagControl.DataSource = colTerms
+        'tagControl.CountMode = TagTimeFrame;	
+        tagControl.DataBind()
     End Sub
 
 End Class

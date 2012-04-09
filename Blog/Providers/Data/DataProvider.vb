@@ -173,6 +173,15 @@ Namespace Data
 
 #End Region
 
+#Region "Terms"
+
+        Public MustOverride Function GetTermsByContentType(ByVal portalId As Integer, ByVal contentTypeId As Integer, ByVal moduleId As Integer, ByVal vocabularyId As Integer) As IDataReader
+
+        Public MustOverride Function GetTermsByContentItem(ByVal contentItemId As Integer, ByVal vocabularyId As Integer) As IDataReader
+
+#End Region
+
+
 #End Region
 
     End Class

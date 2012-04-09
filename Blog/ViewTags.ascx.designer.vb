@@ -14,6 +14,24 @@ Option Explicit On
 Partial Public Class ViewTags
 
     '''<summary>
+    '''pnlTagList control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents pnlTagList As Global.System.Web.UI.WebControls.Panel
+
+    '''<summary>
+    '''rptTags control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents rptTags As Global.System.Web.UI.WebControls.Repeater
+
+    '''<summary>
     '''phTags control.
     '''</summary>
     '''<remarks>

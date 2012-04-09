@@ -32,12 +32,6 @@ Imports DotNetNuke.Common.Utilities
 ''' <remarks></remarks>
 Public Class Content
 
-#Region "Private Members"
-
-    Private Const ContentTypeName As String = "DNN_Blog"
-
-#End Region
-
     ''' <summary>
     ''' Creates a content item in the data store (via core API). Also, associates any 'terms'. 
     ''' </summary>
@@ -47,7 +41,7 @@ Public Class Content
     ''' <remarks>Once created, a thread is immediately updated (thread = content item). Will handlescontent type check too.</remarks>
     Friend Function CreateContentItem(ByVal objEntry As EntryInfo, ByVal tabId As Integer) As ContentItem
         Dim typeController As IContentTypeController = New ContentTypeController
-        Dim colContentTypes As IQueryable(Of ContentType) = (From t In typeController.GetContentTypes() Where t.ContentType = ContentTypeName Select t)
+        Dim colContentTypes As IQueryable(Of ContentType) = (From t In typeController.GetContentTypes() Where t.ContentType = Constants.ContentTypeName Select t)
         Dim ContentTypeID As Integer
 
         If colContentTypes.Count > 0 Then
@@ -121,6 +115,27 @@ Public Class Content
         Util.GetContentController().DeleteContentItem(objContent)
     End Sub
 
+    ''' <summary>
+    ''' This is used to determine the ContentTypeID (part of the Core API) based on this module's content type. If the content type doesn't exist yet for the module, it is created.
+    ''' </summary>
+    ''' <returns>The primary key value (ContentTypeID) from the core API's Content Types table.</returns>
+    ''' <remarks></remarks>
+    Friend Shared Function GetContentTypeID() As Integer
+        Dim typeController As New ContentTypeController()
+        Dim colContentTypes As IQueryable(Of ContentType)
+        colContentTypes = (From t In typeController.GetContentTypes() Where t.ContentType = Constants.ContentTypeName)
+        Dim contentTypeId As Integer
+
+        If colContentTypes.Count() > 0 Then
+            Dim contentType As ContentType = colContentTypes.Single()
+            contentTypeId = If(contentType Is Nothing, CreateContentType(), contentType.ContentTypeId)
+        Else
+            contentTypeId = CreateContentType()
+        End If
+
+        Return contentTypeId
+    End Function
+
 #Region "Private Methods"
 
     ''' <summary>
@@ -130,7 +145,7 @@ Public Class Content
     ''' <remarks></remarks>
     Private Shared Function CreateContentType() As Integer
         Dim cntType As New ContentTypeController()
-        Dim objContentType As ContentType = New ContentType() With {.ContentType = ContentTypeName}
+        Dim objContentType As ContentType = New ContentType() With {.ContentType = Constants.ContentTypeName}
 
         Return cntType.AddContentType(objContentType)
     End Function

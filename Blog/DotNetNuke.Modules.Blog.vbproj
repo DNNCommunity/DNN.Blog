@@ -81,6 +81,7 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="Telerik.Web.UI, Version=2011.3.1115.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
     <Import Include="Microsoft.VisualBasic" />
@@ -171,7 +172,8 @@
     <Compile Include="Components\Controllers\BlogController.vb" />
     <Compile Include="Components\Controllers\CategoryController.vb" />
     <Compile Include="Components\Controllers\CommentController.vb" />
-    <Compile Include="Components\Controllers\EntryController.vb" />
+    <Compile Include="Components\Controllers\TermController.vb" />
+    <Compile Include="Components\Entities\EntryController.vb" />
     <Compile Include="Components\Controllers\InterfaceController.vb" />
     <Compile Include="Components\Controllers\SearchController.vb" />
     <Compile Include="Components\Controllers\TagController.vb" />
@@ -180,6 +182,7 @@
     <Compile Include="Components\Entities\CommentInfo.vb" />
     <Compile Include="Components\Entities\EntryInfo.vb" />
     <Compile Include="Components\Entities\TagInfo.vb" />
+    <Compile Include="Components\Entities\TermInfo.vb" />
     <Compile Include="Components\Settings\BlogSettings.vb" />
     <Compile Include="Components\Business\TemplateManager.vb" />
     <Compile Include="Components\Settings\RecentCommentsSettings.vb">

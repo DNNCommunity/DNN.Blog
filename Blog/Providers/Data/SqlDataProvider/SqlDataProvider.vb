@@ -30,12 +30,15 @@ Namespace Data
         Inherits DataProvider
 
 #Region "Private Members"
+
         Private Const ProviderType As String = "data"
+        Private Const ModuleQualifier As String = "Blog_"
         Private _providerConfiguration As Framework.Providers.ProviderConfiguration = Framework.Providers.ProviderConfiguration.GetProviderConfiguration(ProviderType)
         Private _connectionString As String
         Private _providerPath As String
         Private _objectQualifier As String
         Private _databaseOwner As String
+
 #End Region
 
 #Region "Constructors"
@@ -93,10 +96,14 @@ Namespace Data
         End Property
 #End Region
 
-#Region "General Public Methods"
+#Region "Private Methods"
 
         Private Function GetNull(ByVal Field As Object) As Object
             Return Null.GetNull(Field, DBNull.Value)
+        End Function
+
+        Private Function GetFullyQualifiedName(name As String) As String
+            Return DatabaseOwner + ObjectQualifier + ModuleQualifier + name
         End Function
 
 #End Region
@@ -391,13 +398,15 @@ Namespace Data
 #Region "ForumBlog upgrade methods"
 
 #Region "Forum_Groups Methods"
+
         Public Overrides Function Upgrade_ListForum_Groups(ByVal portalID As Integer) As IDataReader
-            Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_Upgrade_ForumGroupsList", GetNull(portalID)), IDataReader)
+            Return CType(SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Upgrade_ForumGroupsList"), GetNull(portalID)), IDataReader)
         End Function
 
         Public Overrides Function Upgrade_ListForum_GroupsByGroup(ByVal groupID As Integer) As IDataReader
-            Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_Upgrade_ForumGroupsByGroup", GetNull(groupID)), IDataReader)
+            Return CType(SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Upgrade_ForumGroupsByGroup"), GetNull(groupID)), IDataReader)
         End Function
+
 #End Region
 
 #Region "Forum_Forums Methods"
@@ -423,6 +432,18 @@ Namespace Data
             Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_Upgrade_ForumThreadRatingList", ThreadID), IDataReader)
         End Function
 #End Region
+
+#End Region
+
+#Region "Terms"
+
+        Public Overrides Function GetTermsByContentType(portalId As Integer, contentTypeId As Integer, moduleId As Integer, vocabularyId As Integer) As IDataReader
+            Return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Term_GetByContentType"), portalId, contentTypeId, moduleId, vocabularyId)
+        End Function
+
+        Public Overrides Function GetTermsByContentItem(contentItemId As Integer, vocabularyId As Integer) As IDataReader
+            Return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Term_GetByContentItem"), contentItemId, vocabularyId)
+        End Function
 
 #End Region
 

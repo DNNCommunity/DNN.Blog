@@ -336,7 +336,7 @@ Partial Public Class ViewEntry
             End If
 
             'Dim taglist As ArrayList = TagController.ListTagsByEntry(m_oEntry.EntryID)
-            rptTags.DataSource = m_oEntry.Terms
+            rptTags.DataSource = m_oEntry.EntryTerms(1)
             rptTags.DataBind()
 
             rptCategories.DataSource = CategoryController.ListCatsByEntry(m_oEntry.EntryID)
@@ -630,8 +630,8 @@ Partial Public Class ViewEntry
 
     Protected Sub RptTagsItemDataBound(sender As Object, e As RepeaterItemEventArgs)
         Dim tagControl As Tags = DirectCast(e.Item.FindControl("dbaSingleTag"), Tags)
-        Dim term As Taxonomy.Term = DirectCast(e.Item.DataItem, Taxonomy.Term)
-        Dim colTerms As New List(Of Taxonomy.Term)
+        Dim term As TermInfo = DirectCast(e.Item.DataItem, TermInfo)
+        Dim colTerms As New List(Of TermInfo)
         colTerms.Add(term)
 
         tagControl.ModContext = ModuleContext
