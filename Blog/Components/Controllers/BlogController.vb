@@ -51,9 +51,7 @@ Namespace Business
   End Function
 
   Public Function ListBlogs(ByVal PortalID As Integer, ByVal ParentBlogID As Integer, ByVal ShowNonPublic As Boolean) As ArrayList
-
    Return CBO.FillCollection(DataProvider.Instance().ListBlogs(PortalID, ParentBlogID, ShowNonPublic), GetType(BlogInfo))
-
   End Function
 
   Public Function ListBlogsByPortal(ByVal PortalID As Integer, ByVal ShowNonPublic As Boolean) As ArrayList
@@ -63,9 +61,7 @@ Namespace Business
   End Function
 
   Public Function ListBlogsRootByPortal(ByVal PortalID As Integer) As ArrayList
-
    Return CBO.FillCollection(DataProvider.Instance().ListBlogsRootByPortal(PortalID), GetType(BlogInfo))
-
   End Function
 
   Public Function AddBlog(ByVal objBlog As BlogInfo) As Integer
@@ -107,12 +103,6 @@ Namespace Business
    Return ReturnBlog
 
   End Function
-
-#Region "Taxonomy"
-
-
-
-#End Region
 
 #Region " 4.5.0 Upgrade"
 

@@ -426,6 +426,7 @@ Namespace Business
             TimeZone = Convert.ToInt32(Null.SetNull(dr.Item("TimeZone"), TimeZone))
             Title = Convert.ToString(Null.SetNull(dr.Item("Title"), Title))
             UseCaptcha = Convert.ToBoolean(Null.SetNull(dr.Item("UseCaptcha"), UseCaptcha))
+            BlogPostCount = Convert.ToInt32(Null.SetNull(dr.Item("BlogPostCount"), UserID))
             UserID = Convert.ToInt32(Null.SetNull(dr.Item("UserID"), UserID))
 
         End Sub

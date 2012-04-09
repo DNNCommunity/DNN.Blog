@@ -90,19 +90,15 @@ Partial Class BlogList
                 ' if no Entries are shown, show the Footer
                 lstBlogs.ShowFooter = (lstBlogs.Items.Count = 0)
                 lstBlogs.ShowHeader = Not lstBlogs.ShowFooter
-                Try
-                    If lstBlogs.ShowFooter Then
-                        lblFooter = CType(lstBlogs.Controls(lstBlogs.Controls.Count - 1).FindControl("lblFooter"), System.Web.UI.WebControls.Label)
-                        If m_PersonalBlogID = -1 Then       ' General Blog Page
-                            lblFooter.Text = Localization.GetString("msgNoBlogsInPortal", LocalResourceFile)
-                        Else
-                            lblFooter.Text = Localization.GetString("msgNoCategriesInBlog", LocalResourceFile)
-                        End If
+
+                If lstBlogs.ShowFooter Then
+                    lblFooter = CType(lstBlogs.Controls(lstBlogs.Controls.Count - 1).FindControl("lblFooter"), System.Web.UI.WebControls.Label)
+                    If m_PersonalBlogID = -1 Then       ' General Blog Page
+                        lblFooter.Text = Localization.GetString("msgNoBlogsInPortal", LocalResourceFile)
+                    Else
+                        lblFooter.Text = Localization.GetString("msgNoCategriesInBlog", LocalResourceFile)
                     End If
-                Catch ex As Exception
-
-                End Try
-
+                End If
             End If
         Catch exc As Exception
             ProcessModuleLoadException(Me, exc)
@@ -170,7 +166,6 @@ Partial Class BlogList
 
         'DR-04/17/2009-BLG-9754
         lnkChildBlog.Text = String.Format(m_BlogTitleStringTemplate, CType(e.Item.DataItem, BlogInfo).Title, CType(e.Item.DataItem, BlogInfo).BlogPostCount)
-
     End Sub
 
 #End Region
