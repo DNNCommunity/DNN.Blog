@@ -77,7 +77,7 @@ Public Class Content
     ''' <param name="objEntry"></param>
     ''' <param name="tabId"></param>
     ''' <remarks></remarks>
-    Friend Sub UpdateContentItem(ByVal objEntry As EntryInfo, ByVal tabId As Integer)
+    Friend Sub UpdateContentItem(ByVal objEntry As EntryInfo, ByVal tabId As Integer, ByVal portalId As Integer)
         Dim objContent As New ContentItem
         objContent = Util.GetContentController().GetContentItem(objEntry.ContentItemId)
 
@@ -93,6 +93,9 @@ Public Class Content
         ' Update Terms
         Dim cntTerm As New Terms()
         cntTerm.ManageEntryTerms(objEntry, objContent)
+
+        DataCache.RemoveCache(Constants.ModuleCacheKeyPrefix + Constants.ContentItemTermsCacheKey + objEntry.ContentItemId.ToString() + Constants.VocabularySuffixCacheKey)
+        DataCache.GetCache(Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.PortalSuffixCacheKey + portalId.ToString())
     End Sub
 
     ''' <summary>

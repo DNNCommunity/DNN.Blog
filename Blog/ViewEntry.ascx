@@ -45,15 +45,6 @@
         <asp:HyperLink ID="lnkEditEntry" ResourceKey="msgEditEntry" CssClass="BlogEditLink" runat="server" />
     </div>
   <div class="dnnLeft">
-   <div class="tags dnnClear BlogTopics">
-       <div class="dnnLeft">
-            <asp:Repeater ID="rptTags" runat="server" OnItemDataBound="RptTagsItemDataBound">
-                <ItemTemplate>
-                    <dba:Tags ID="dbaSingleTag" runat="server" EnableViewState="false" />
-                </ItemTemplate>
-            </asp:Repeater>
-       </div>
-   </div>
    <div class="BlogFooterSub BlogCategories">
     <asp:Label ID="lblCategories" runat="server" ResourceKey="lblCategories" />
     <asp:Repeater ID="rptCategories" runat="server">
@@ -66,6 +57,15 @@
     <asp:HyperLink ID="lnkParentBlog" runat="server" />
     <asp:Image ID="imgParentChildSeparator" runat="server" ImageUrl="~/desktopmodules/Blog/Images/folder_closed.gif" Visible="False" AlternateText="Child Separator" />
     <asp:HyperLink ID="lnkChildBlog" runat="server" Visible="False" />
+   </div>
+   <div class="tags dnnClear BlogTopics">
+       <div class="dnnLeft">
+            <asp:Repeater ID="rptTags" runat="server" OnItemDataBound="RptTagsItemDataBound">
+                <ItemTemplate>
+                    <dba:Tags ID="dbaSingleTag" runat="server" EnableViewState="false" />
+                </ItemTemplate>
+            </asp:Repeater>
+       </div>
    </div>
   </div>  
  </div>

@@ -63,13 +63,15 @@ Namespace Business
 
             objEntry.ContentItemId = CompleteEntryCreation(objEntry, tabId)
 
+
+
             Return objEntry
         End Function
 
-        Public Sub UpdateEntry(ByVal objEntry As EntryInfo, ByVal tabId As Integer)
+        Public Sub UpdateEntry(ByVal objEntry As EntryInfo, ByVal tabId As Integer, ByVal portalId As Integer)
             DataProvider.Instance().UpdateEntry(objEntry.BlogID, objEntry.EntryID, objEntry.Title, objEntry.Description, objEntry.Entry, objEntry.Published, objEntry.AllowComments, objEntry.AddedDate, objEntry.DisplayCopyright, objEntry.Copyright, objEntry.PermaLink, objEntry.ContentItemId)
 
-            CompleteEntryUpdate(objEntry, tabId)
+            CompleteEntryUpdate(objEntry, tabId, portalId)
         End Sub
 
         Public Sub DeleteEntry(ByVal EntryID As Integer, ByVal contentItemId As Integer)
@@ -100,9 +102,9 @@ Namespace Business
         ''' <param name="objEntry"></param>
         ''' <param name="tabId"></param>
         ''' <remarks></remarks>
-        Private Shared Sub CompleteEntryUpdate(ByVal objEntry As EntryInfo, ByVal tabId As Integer)
+        Private Shared Sub CompleteEntryUpdate(ByVal objEntry As EntryInfo, ByVal tabId As Integer, ByVal portalId As Integer)
             Dim cntTaxonomy As New Content()
-            cntTaxonomy.UpdateContentItem(objEntry, tabId)
+            cntTaxonomy.UpdateContentItem(objEntry, tabId, portalId)
         End Sub
 
         Private Shared Sub CompleteEntryDelete(ByVal contentItemId As Integer)

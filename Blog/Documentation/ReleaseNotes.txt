@@ -29,5 +29,6 @@
 			<li>20935 - Corrected column drop bug seen in upgrades to 4.1.0.</li>
 			<li>Updated CookComputing.XmlRpcV2.dll</li>
 			<li>Added new social sharing option, big 4 only, same as it was done in Q&A.</li>
+			<li>Replaced custom tag cloud with Rad Tag Cloud (and now wired into core folksonomy).</li>
 		</ul>
 </div>

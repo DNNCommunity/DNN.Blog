@@ -746,7 +746,7 @@ Namespace Business
                         CurrentTabId = TabID
                     End If
                     entry.PermaLink = GenerateEntryLink(PortalID, entry.EntryID, CurrentTabId)
-                    m_EntryController.UpdateEntry(entry, CurrentTabId)
+                    m_EntryController.UpdateEntry(entry, CurrentTabId, PortalID)
                 End If
             Next
         End Sub

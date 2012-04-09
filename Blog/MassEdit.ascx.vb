@@ -200,7 +200,7 @@ Partial Class MassEdit
         ei.Title = tbTitle.Text
         ei.AllowComments = cbComments.Checked
         ei.Published = cbPub.Checked
-        ec.UpdateEntry(ei, ModuleContext.TabId)
+        ec.UpdateEntry(ei, ModuleContext.TabId, ModuleContext.PortalId)
 
         Dim litTitle As Literal = CType(item.FindControl("litTitle"), Literal)
         If tbTitle.Text.Length > 30 Then litTitle.Text = Left(tbTitle.Text, 30) + "..." Else litTitle.Text = tbTitle.Text

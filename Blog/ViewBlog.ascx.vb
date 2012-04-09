@@ -129,6 +129,10 @@ Partial Public Class ViewBlog
                                 'BLG-4154
                                 'Antonio Chagoury 9/1/2007
                                 list = objEntries.ListEntriesByPortal(Me.PortalId, m_dBlogDate, m_dBlogDateType, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), BlogSettings.RecentEntriesMax)
+
+
+
+
                                 pnlBlogInfo.Visible = False
                                 If Not lnkRecentRss Is Nothing Then
                                     lnkRecentRss.NavigateUrl = NavigateURL(Me.TabId, "", "rssid=0")
@@ -245,6 +249,7 @@ Partial Public Class ViewBlog
         Dim lnkChildBlog As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkChildBlog"), System.Web.UI.WebControls.HyperLink)
         Dim lnkEntry As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkEntry"), System.Web.UI.WebControls.HyperLink)
         Dim divBlogReadMore As System.Web.UI.HtmlControls.HtmlGenericControl = CType(e.Item.FindControl("divBlogReadMore"), System.Web.UI.HtmlControls.HtmlGenericControl)
+        Dim tagControl As Tags = DirectCast(e.Item.FindControl("dbaTag"), Tags)
 
         Dim oBlog As BlogInfo
 
@@ -282,6 +287,9 @@ Partial Public Class ViewBlog
             hlMore.Text = Localization.GetString("lnkReadMore", LocalResourceFile)
             hlMore.Visible = (m_oEntry.PermaLink <> DotNetNuke.Modules.Blog.Business.Utility.BlogNavigateURL(TabId, PortalId, m_oEntry.EntryID, m_oEntry.Title, BlogSettings.ShowSeoFriendlyUrl))
 
+            tagControl.ModContext = ModuleContext
+            tagControl.DataSource = m_oEntry.EntryTerms(1)
+            tagControl.DataBind()
         End If
 
         ' 10/28/08 RR Replace all instances of BlogNavigateURL with Permalink

@@ -188,4 +188,7 @@
   <data name="lnkPermaLink.Text" xml:space="preserve">
     <value>PermaLink</value>
   </data>
+  <data name="lblCategories.Text" xml:space="preserve">
+    <value>File Under:</value>
+  </data>
 </root>

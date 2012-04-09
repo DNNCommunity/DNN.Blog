@@ -476,7 +476,7 @@ Partial Class EditEntry
                     'Business.TagController.UpdateTagsByEntry(m_oEntry.EntryID, tbTags.Text)
 
 
-                    m_oEntryController.UpdateEntry(m_oEntry, Me.TabId)
+                    m_oEntryController.UpdateEntry(m_oEntry, Me.TabId, PortalId)
 
                     Dim selectedCategories As New List(Of Integer)
                     For Each n As UI.WebControls.TreeNode In treeCategories.SelectedTreeNodes

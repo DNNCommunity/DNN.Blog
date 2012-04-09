@@ -232,7 +232,7 @@ Public Class BlogPost
             item.StyleId = styleId
             item.ItemType = ItemType.Post
 
-            pageId = _provider.NewItem(blogId.ToString(), _userInfo, _portalSettings, _blogSettings, item, moduleId)
+            pageId = _provider.NewItem(blogId.ToString(), _userInfo, _portalSettings, _blogSettings, item)
 
             Dim pingableProvider As ILinkable = CType(_provider, ILinkable)
             Dim taps As TrackbackAndPingSettings = pingableProvider.GetPingbackSettings(blogId, _userInfo, _portalSettings)
@@ -535,7 +535,6 @@ Public Class BlogPost
     End Sub
 
     Private Function getItemFromPost(ByVal content As Post) As Item
-
         Dim item As New Item
 
         item.AllowComments = CType(IIf(content.mt_allow_comments = 0, -1, content.mt_allow_comments), Integer)
@@ -561,7 +560,6 @@ Public Class BlogPost
         item.Publish = content.publish
 
         Return item
-
     End Function
 
     Private Function getPostFromItem(ByVal item As Item) As Post

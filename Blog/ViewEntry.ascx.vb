@@ -320,7 +320,7 @@ Partial Public Class ViewEntry
                         m_oEntry.ContentItemId = objContentItem.ContentItemId
                     End If
 
-                    cntEntry.UpdateEntry(m_oEntry, ModuleContext.TabId)
+                    cntEntry.UpdateEntry(m_oEntry, ModuleContext.TabId, ModuleContext.PortalId)
                 End If
 
                 rowCaptcha.Visible = (pnlComments.Visible And m_oBlog.UseCaptcha And Not Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, ModuleId))

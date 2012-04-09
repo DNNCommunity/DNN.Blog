@@ -1,5 +1,7 @@
 <%@ Control Language="vb" AutoEventWireup="false" CodeBehind="ViewBlog.ascx.vb" Inherits="DotNetNuke.Modules.Blog.ViewBlog" %>
-<div>
+<%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls" %>
+<%@ Register TagPrefix="dba" Assembly="DotNetNuke.Modules.Blog" Namespace="DotNetNuke.Modules.Blog" %>
+<div class="dnnClear">
  <asp:Panel ID="pnlBlogInfo" Visible="False" runat="server">
   <table class="BlogInfo" cellspacing="1" cellpadding="1" width="100%" border="0">
    <tr>
@@ -41,7 +43,7 @@
    </tr>
   </table>
  </asp:Panel>
- <asp:Label ID="InfoEntry" ResourceKey="lblInfoEntry" CssClass="NormalBold" runat="server" />
+ <asp:Label ID="InfoEntry" ResourceKey="lblInfoEntry" runat="server" />
  <asp:DataList ID="lstBlogView" runat="server" Width="100%">
   <ItemTemplate>
    <div class="BlogBody">
@@ -69,11 +71,17 @@
 	  <asp:HyperLink ID="lnkEditEntry" ResourceKey="msgEditEntry" CssClass="BlogEditLink" runat="server" />
 	 </div>
 	 <div class="BlogFooterLeft">
-	  <span class="BlogTopics">
-	   <asp:HyperLink ID="lnkParentBlog" runat="server" />
-	   <asp:Image ID="imgBlogParentSeparator" runat="server" ImageUrl="~/DesktopModules/Blog/images/folder_closed.gif" AlternateText="Parent Separator" />
-	   <asp:HyperLink ID="lnkChildBlog" runat="server" />
-	  </span>
+        <div class="BlogCategories">
+		<asp:Label ID="lblCategories" runat="server" ResourceKey="lblCategories" />
+		<asp:HyperLink ID="lnkParentBlog" runat="server" />
+		<asp:Image ID="imgBlogParentSeparator" runat="server" ImageUrl="~/DesktopModules/Blog/images/folder_closed.gif" AlternateText="Parent Separator" />
+		<asp:HyperLink ID="lnkChildBlog" runat="server" />
+	  </div>
+		<div class="tags dnnClear BlogTopics">
+		   <div class="dnnLeft">
+				<div class="tags"><dba:Tags ID="dbaTag" runat="server" EnableViewState="false" /></div>
+		   </div>
+	   </div>
 	 </div>
 	</div>
    </div>

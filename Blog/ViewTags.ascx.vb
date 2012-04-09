@@ -21,6 +21,7 @@
 Imports DotNetNuke.Web.Client.ClientResourceManagement
 Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Framework
+Imports Telerik.Web.UI
 
 Partial Public Class ViewTags
     'Inherits BlogModuleBase
@@ -37,40 +38,23 @@ Partial Public Class ViewTags
     End Sub
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Dim TagController As New TagController
-        Dim TagList As ArrayList
-        Dim tag As TagInfo
         Dim TagDisplayMode As String
         TagDisplayMode = _settings.TagDisplayMode
 
+        Dim cntTerm As New TermController
+        Dim colTags As List(Of TermInfo)
+        colTags = cntTerm.GetTermsByContentType(ModuleContext.PortalId, ModuleContext.ModuleId, 1)
+
         If TagDisplayMode = "List" Then
-            'TagList = TagController.ListTags(PortalId)
-            'For Each tag In TagList
-            '    Dim a As New HtmlAnchor()
-            '    a.HRef = Utility.GetSEOLink(PortalId, TabId, "", tag.Slug, "tagid=" + tag.TagId.ToString)
-            '    a.InnerText = tag.Tag + " (" + tag.Cnt.ToString + ")"
-            '    a.Title = tag.Tag
-            '    phTags.Controls.Add(a)
-            '    phTags.Controls.Add(New LiteralControl("<br />"))
-            'Next
-
-            Dim cntTerm As New TermController
-            Dim colTags As List(Of TermInfo)
-            colTags = cntTerm.GetTermsByContentType(ModuleContext.PortalId, ModuleContext.ModuleId, 1)
-
             rptTags.DataSource = colTags
             rptTags.DataBind()
+            pnlTagList.Visible = True
+            pnlTagCloud.Visible = False
         Else
-            TagList = TagController.ListWeightedTags(PortalId)
-            For Each tag In TagList
-                Dim a As New HtmlAnchor()
-                a.HRef = Utility.GetSEOLink(PortalId, TabId, "", tag.Slug, "tagid=" + tag.TagId.ToString)
-                a.InnerText = tag.Tag
-                a.Title = tag.Tag
-                a.Attributes("class") = "TagCloud" + tag.Weight.ToString
-                phTags.Controls.Add(a)
-                phTags.Controls.Add(New LiteralControl(" "))
-            Next
+            rtcTags.DataSource = colTags
+            rtcTags.DataBind()
+            pnlTagList.Visible = False
+            pnlTagCloud.Visible = True
         End If
     End Sub
 
@@ -87,6 +71,17 @@ Partial Public Class ViewTags
         tagControl.DataSource = colTerms
         tagControl.CountMode = Constants.TagMode.ShowTotalUsage
         tagControl.DataBind()
+    End Sub
+
+    Protected Sub RtcCloudItemDataBound(sender As Object, e As RadTagCloudEventArgs)
+        Dim term As TermInfo = DirectCast(e.Item.DataItem, TermInfo)
+        Dim cloudLink As RadTagCloudItem = e.Item
+        Dim link As String = DotNetNuke.Common.NavigateURL(ModuleContext.TabId, "", "tagid=" & term.TermId)
+
+        cloudLink.NavigateUrl = link
+
+        'CloudsItemDataBound(Me, New TagCloudEventArgs(Of TermInfo, RadTagCloudItem)(term, cloudLink))
+
     End Sub
 
 End Class

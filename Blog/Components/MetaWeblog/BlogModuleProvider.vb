@@ -178,11 +178,8 @@ Namespace MetaWeblog
                 methodParams.SetValue(portalSettings.PortalId, 1)
                 entryInfo = DirectCast(miGetEntry.Invoke(entryController, methodParams), EntryInfo)
             End If
-            If entryInfo Is Nothing Then
-                Throw New BlogPostException("NoPostAvailable", "There was en error retrieving the blog entry.  Try closing and restarting the software you're using to edit your blog post.")
-            End If
-            'Check to make sure user is authorized to view this content
 
+            'Check to make sure user is authorized to view this content
             BlogPostServices.AuthorizeUser(entryInfo.BlogID.ToString(), GetModulesForUser(userInfo, portalSettings, blogSettings, ProviderKey))
 
             item.Link = entryInfo.PermaLink
@@ -244,7 +241,7 @@ Namespace MetaWeblog
             Return itemArray
         End Function
 
-        Public Function NewItem(ByVal blogId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal item As Item, ByVal moduleId As Integer) As String Implements IPublishable.NewItem
+        Public Function NewItem(ByVal blogId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal item As Item) As String Implements IPublishable.NewItem
             BlogPostServices.AuthorizeUser(blogId, GetModulesForUser(userInfo, portalSettings, blogSettings, ProviderKey))
 
             ExtractSummaryFromExtendedContent(item)
@@ -291,8 +288,9 @@ Namespace MetaWeblog
             objEntry.DisplayCopyright = False
             objEntry.Copyright = ""
             objEntry.BlogID = tempBlogID
-            objEntry.ModuleID = moduleId
+            objEntry.ModuleID = -1
             objEntry.EntryID = objEntryController.AddEntry(objEntry, blogTabID).EntryID
+            objEntry.TabID = blogTabID
 
             'True in the last parameter just specifies that we want the SEO Friendly URL to be saved
             ' in the permalink field which is used by WLW to redirect to post after entry is made.
@@ -300,9 +298,9 @@ Namespace MetaWeblog
 
             BlogPostServices.ProcessItemImages(objEntry, RootBlogPath)
 
-            objEntryController.UpdateEntry(objEntry, objEntry.ContentItemId)
+            objEntryController.UpdateEntry(objEntry, objEntry.TabID, PortalID)
 
-            TagController.UpdateTagsByEntry(entryId, item.Keywords)
+            'TagController.UpdateTagsByEntry(entryId, item.Keywords)
 
             CategoryController.UpdateCategoriesByEntry(entryId, item.Categories)
 
@@ -336,6 +334,7 @@ Namespace MetaWeblog
                 methodParams.SetValue(portalSettings.PortalId, 1)
                 objEntry = DirectCast(miGetEntry.Invoke(objEntryController, methodParams), EntryInfo)
             End If
+            'objEntry = GetEntry(item.ItemId.ToString(), portalSettings.PortalId)
 
             ' Check user's authorization to edit post
             BlogPostServices.AuthorizeUser(objEntry.BlogID.ToString, GetModulesForUser(userInfo, portalSettings, blogSettings, ProviderKey))
@@ -376,7 +375,7 @@ Namespace MetaWeblog
 
             BlogPostServices.ProcessItemImages(objEntry, RootBlogPath)
 
-            objEntryController.UpdateEntry(objEntry, objEntry.ContentItemId)
+            objEntryController.UpdateEntry(objEntry, objEntry.ContentItemId, portalSettings.PortalId)
 
             TagController.UpdateTagsByEntry(objEntry.EntryID, item.Keywords)
             CategoryController.UpdateCategoriesByEntry(objEntry.EntryID, item.Categories)
@@ -454,7 +453,6 @@ Namespace MetaWeblog
             Dim blogInfo As BlogInfo = blogController.GetBlog(blogId)
 
             Return blogInfo.Title
-
         End Function
 
         ''' <summary>
@@ -466,7 +464,6 @@ Namespace MetaWeblog
         ''' <param name="portalSettings"></param>
         ''' <returns></returns>
         Public Function GetPermaLink(ByVal id As String, ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings) As String Implements ILinkable.GetPermaLink
-
             Dim entryId As Integer
 
             entryId = Convert.ToInt32(itemId)
@@ -491,10 +488,12 @@ Namespace MetaWeblog
                 entryInfo = DirectCast(miGetEntry.Invoke(entryController, methodParams), EntryInfo)
             End If
 
-            Return entryInfo.PermaLink
-
+            If entryInfo IsNot Nothing Then
+                Return entryInfo.PermaLink
+            Else
+                Return Nothing
+            End If
         End Function
-
 
         Public Function GetPingbackSettings(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings) As TrackbackAndPingSettings Implements ILinkable.GetPingbackSettings
             Dim trackbackSettings As New TrackbackAndPingSettings

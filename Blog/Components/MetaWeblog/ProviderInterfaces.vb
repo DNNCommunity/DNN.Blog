@@ -97,7 +97,7 @@ Namespace MetaWeblog
         ''' <param name="portalSettings">DotNetNuke PortaSettings object for the portal to which the entry is being posted.</param>
         ''' <param name="item">Custom Struct - The item struct contains a list of fields related to an entry.</param>
         ''' <returns></returns>
-        Function NewItem(ByVal blogId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal item As Item, ByVal moduleId As Integer) As String
+        Function NewItem(ByVal blogId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal item As Item) As String
 
         Function DeleteItem(ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal itemType As ItemType) As Boolean
 

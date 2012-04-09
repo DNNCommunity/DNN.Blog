@@ -12,6 +12,9 @@
 		</ul>	
 	</div>
 </asp:Panel>
+<asp:Panel ID="pnlTagCloud" runat="server" class="dnnBlogTagCloud dnnClear">
+	<dnnweb:DnnTagCloud ID="rtcTags" runat="server" Width="176" RenderItemWeight="true" DataValueField="TermID" DataTextField="Name" DataWeightField="TotalTermUsage" OnItemDataBound="RtcCloudItemDataBound" />
+</asp:Panel>
 <asp:PlaceHolder ID="phTags" runat="server" />
 <script language="javascript" type="text/javascript">
 	/*globals jQuery, window, Sys */

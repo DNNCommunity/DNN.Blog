@@ -114,6 +114,9 @@
     <Content Include="Documentation\ReleaseNotes.txt" />
     <Content Include="EditBlog.ascx" />
     <Content Include="EditEntry.ascx" />
+    <Content Include="js\jquery.qaplaceholder.js" />
+    <Content Include="js\jquery.qatooltip.js" />
+    <Content Include="js\jquery.tagify.js" />
     <Content Include="module.css" />
     <Content Include="ModuleOptions.ascx" />
     <Content Include="Search.ascx" />
@@ -173,7 +176,7 @@
     <Compile Include="Components\Controllers\CategoryController.vb" />
     <Compile Include="Components\Controllers\CommentController.vb" />
     <Compile Include="Components\Controllers\TermController.vb" />
-    <Compile Include="Components\Entities\EntryController.vb" />
+    <Compile Include="Components\Controllers\EntryController.vb" />
     <Compile Include="Components\Controllers\InterfaceController.vb" />
     <Compile Include="Components\Controllers\SearchController.vb" />
     <Compile Include="Components\Controllers\TagController.vb" />
@@ -382,7 +385,6 @@
     <Content Include="js\bookmarks.js" />
     <Content Include="js\bookmarks.xml" />
     <Content Include="js\Gravatar.js" />
-    <Content Include="js\jquery.min.js" />
     <Content Include="js\md5.js" />
     <Content Include="js\tag.js" />
     <Content Include="RecentComments.ascx" />
