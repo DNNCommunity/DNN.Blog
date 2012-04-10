@@ -340,7 +340,7 @@ Namespace Business
         End Function
 #End Region
 
-#Region " Dates "
+#Region "Dates"
 
         Public Shared Function FormatDate(ByVal [Date] As DateTime, ByVal Culture As String, ByVal DateFormat As String, ByVal TimeZone As Integer, Optional ByVal ToUniversal As Boolean = False) As String
             If Culture.Length = 0 Then Culture = System.Threading.Thread.CurrentThread.CurrentCulture.Name
@@ -496,8 +496,8 @@ Namespace Business
 
 #Region "SEO"
 
-        Public Shared Sub SetPageMetaAndOpenGraph(defaultPage As CDefault, modContext As ModuleInstanceContext, title As String, content As String, keyWords As String, link As String)
-            defaultPage.Title = title
+        Public Shared Sub SetPageMetaAndOpenGraph(ByVal defaultPage As CDefault, ByVal modContext As ModuleInstanceContext, ByVal title As String, ByVal content As String, ByVal keyWords As String, ByVal link As String)
+            defaultPage.Title = title + " - " + modContext.PortalSettings.PortalName
 
             Dim meta As New HtmlMeta()
             meta.Attributes.Add("property", "og:title")

@@ -98,8 +98,6 @@ Partial Public Class ViewBlog
             End If
 
             If Not Page.IsPostBack Then
-                Dim pageTitle As String = ""
-
                 If m_bSearchDisplay Then
                     If m_sSearchType = "Phrase" Then
                         If m_oBlog Is Nothing Then
@@ -123,21 +121,29 @@ Partial Public Class ViewBlog
                     ' if no Entries are shown, show the info Entry
                     InfoEntry.Visible = (lstSearchResults.Items.Count = 0)
                 Else ' not a search display
+
+                    Dim pageTitle As String = Me.BasePage.Title
+                    Dim keyWords As String = Me.BasePage.KeyWords
+                    Dim pageDescription As String = Me.BasePage.Description
+                    Dim pageAuthor As String = Me.BasePage.Author
+                    Dim pageUrl As String = NavigateURL()
+
                     If Request.Params("catid") Is Nothing Then
                         If Request.Params("tagid") Is Nothing Then
                             If m_oBlog Is Nothing Then
+                                ' most recent approved blog list (default view), no category/tag specified
+
                                 'BLG-4154
                                 'Antonio Chagoury 9/1/2007
                                 list = objEntries.ListEntriesByPortal(Me.PortalId, m_dBlogDate, m_dBlogDateType, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), BlogSettings.RecentEntriesMax)
-
-
-
 
                                 pnlBlogInfo.Visible = False
                                 If Not lnkRecentRss Is Nothing Then
                                     lnkRecentRss.NavigateUrl = NavigateURL(Me.TabId, "", "rssid=0")
                                 End If
                             Else
+                                ' Specific blog view , no category/tag specified
+
                                 pnlBlogInfo.Visible = True
                                 If m_oBlog.ShowFullName Then
                                     lblAuthor.Text = m_oBlog.UserFullName
@@ -147,8 +153,12 @@ Partial Public Class ViewBlog
                                 lblCreated.Text = Utility.FormatDate(m_oBlog.Created, m_oBlog.Culture, m_oBlog.DateFormat, m_oBlog.TimeZone)
                                 litBlogDescription.Text = m_oBlog.Description
                                 list = objEntries.ListEntriesByBlog(m_oBlog.BlogID, m_dBlogDate, Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId), Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId), BlogSettings.RecentEntriesMax)
-                                Me.BasePage.Author = m_oBlog.UserFullName
-                                pageTitle = Me.BasePage.Title & " - " & m_oBlog.Title
+
+                                ' TODO: Page Meta
+                                pageTitle = m_oBlog.Title
+                                pageDescription = m_oBlog.Description
+                                pageAuthor = m_oBlog.UserFullName
+                                pageUrl = NavigateURL()
                             End If
                         Else ' we have a tag id
                             list = objEntries.ListAllEntriesByTag(Me.PortalId, CInt(Request.Params("tagid")), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
@@ -158,8 +168,11 @@ Partial Public Class ViewBlog
                             End If
                             Dim t As TagInfo = TagController.GetTag(CInt(Request.Params("tagid")))
                             If t IsNot Nothing Then
-                                pageTitle = Me.BasePage.Title & " - " & t.Tag
+                                'pageTitle = Me.BasePage.Title & " - " & t.Tag
                             End If
+
+                            ' TODO: Page Meta
+
                         End If
                     Else ' we have a cat id
                         list = objEntries.ListAllEntriesByCategory(Me.PortalId, CInt(Request.Params("catid")), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
@@ -169,8 +182,11 @@ Partial Public Class ViewBlog
                         End If
                         Dim c As CategoryInfo = CategoryController.GetCategory(CInt(Request.Params("catid")))
                         If c IsNot Nothing Then
-                            pageTitle = Me.BasePage.Title & " - " & c.Category
+                            'pageTitle = Me.BasePage.Title & " - " & c.Category
                         End If
+
+                        ' TODO: Page Meta
+
                     End If ' no cat id present
 
                     lstBlogView.DataSource = list
@@ -178,19 +194,24 @@ Partial Public Class ViewBlog
                     ' if no Entries are shown, show the info Entry
                     InfoEntry.Visible = (lstBlogView.Items.Count = 0)
 
-                    ' set page title
-                    If pageTitle = "" Then
-                        pageTitle = Me.BasePage.Title & " - " & ModuleConfiguration.ModuleTitle
-                    End If
-                    If BlogSettings.ShowUniqueTitle Then
-                        Try             ' 4.0.1 Bug
-                            If PortalSettings.Version <> "4.0.1" Then
-                                Me.BasePage.Title = pageTitle
-                            End If
-                        Catch exc As Exception
-                            ProcessModuleLoadException(Me, exc, True)
-                        End Try
-                    End If
+
+
+                    ' TODO: Page Meta
+                    Utility.SetPageMetaAndOpenGraph(BasePage, ModuleContext, pageTitle, pageDescription, keyWords, pageUrl)
+
+                    '' set page title
+                    ''If pageTitle = "" Then
+                    ''    pageTitle = Me.BasePage.Title & " - " & ModuleConfiguration.ModuleTitle
+                    ''End If
+                    'If BlogSettings.ShowUniqueTitle Then
+                    '    Try             ' 4.0.1 Bug
+                    '        If PortalSettings.Version <> "4.0.1" Then
+                    '            'Me.BasePage.Title = pageTitle
+                    '        End If
+                    '    Catch exc As Exception
+                    '        ProcessModuleLoadException(Me, exc, True)
+                    '    End Try
+                    'End If
                 End If ' search display or not
 
                 If Not m_oBlog Is Nothing Then

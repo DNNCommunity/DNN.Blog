@@ -56,8 +56,15 @@ padding:0;
 
 .BlogTopics {
 	background-image:url(images/Tag_16X16_Standard.png);
+		background-repeat:no-repeat;
 	display:inline-block;
 	padding-left: 24px;
+	padding-bottom: 0px;
+}
+
+.BlogCategories
+{
+	padding-bottom: 8px;
 }
 
 .BlogMoreLink {
@@ -141,15 +148,6 @@ margin-left:8px;
 background-repeat:no-repeat;
 padding-left:20px;
 font-size:11px;
-}
-
-.BlogTopics, .BlogPermalink {
-background-position:left;
-background-repeat:no-repeat;
-padding-left:20px;
-display:block;
-clear:both;
-float:none;
 }
 
 .BlogDate {

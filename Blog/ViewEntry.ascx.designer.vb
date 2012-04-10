@@ -536,15 +536,6 @@ Partial Public Class ViewEntry
     Protected WithEvents cmdAddComment As Global.System.Web.UI.WebControls.LinkButton
 
     '''<summary>
-    '''cmdCancel control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents cmdCancel As Global.System.Web.UI.WebControls.LinkButton
-
-    '''<summary>
     '''cmdDeleteComment control.
     '''</summary>
     '''<remarks>
@@ -552,6 +543,24 @@ Partial Public Class ViewEntry
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cmdDeleteComment As Global.System.Web.UI.WebControls.LinkButton
+
+    '''<summary>
+    '''litAddComment control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents litAddComment As Global.System.Web.UI.WebControls.Literal
+
+    '''<summary>
+    '''cmdCancel control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents cmdCancel As Global.System.Web.UI.WebControls.LinkButton
 
     '''<summary>
     '''txtClientIP control.

@@ -356,24 +356,6 @@ Partial Public Class ModuleOptions
     Protected WithEvents chkAllowCommentFormatting As Global.System.Web.UI.WebControls.CheckBox
 
     '''<summary>
-    '''lblShowUniqueTitle control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblShowUniqueTitle As Global.DotNetNuke.UI.UserControls.LabelControl
-
-    '''<summary>
-    '''chkShowUniqueTitle control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents chkShowUniqueTitle As Global.System.Web.UI.WebControls.CheckBox
-
-    '''<summary>
     '''lblShowSeoFriendlyUrl control.
     '''</summary>
     '''<remarks>

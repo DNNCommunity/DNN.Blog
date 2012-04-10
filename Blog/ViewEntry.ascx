@@ -1,6 +1,7 @@
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls" %>
 <%@ Register TagPrefix="dba" Assembly="DotNetNuke.Modules.Blog" Namespace="DotNetNuke.Modules.Blog" %>
 <%@ Control Language="vb" AutoEventWireup="false" CodeBehind="ViewEntry.ascx.vb" Inherits="DotNetNuke.Modules.Blog.ViewEntry" %>
+<%@ Import Namespace="DotNetNuke.Services.Localization" %>
 <asp:Label ID="lblTrackback" runat="server" />
 <div class="dnnForm dnnViewEntry dnnClear">
     <div class="BlogHead">
@@ -73,13 +74,12 @@
  <div class="dnnRight">
     <asp:Literal ID="litSocialSharing" runat="server" />
  </div>
-
  <!-- Comments Section -->
  <asp:Panel ID="pnlComments" runat="server" Visible="False">
    <a id="Comments" name="Comments"></a>
    <h3 class="BlogComments"><a href="#AddComment"><asp:Label ID="lblComments" runat="server" /></a></h3>
-  <asp:ImageButton ID="lnkDeleteAllUnapproved" runat="server" ImageUrl="~/images/delete.gif" Visible="false" CausesValidation="false" AlternateText="Delete Unaproved" />
-  <asp:LinkButton ID="btDeleteAllUnapproved" runat="server" Visible="false" resourcekey="DeleteAllUnapproved" CssClass="CommandButton" CausesValidation="false" /><br />
+  <asp:ImageButton ID="lnkDeleteAllUnapproved" runat="server" ImageUrl="~/images/delete.gif" Visible="false" CausesValidation="false" CssClass="dnnBlogDeleteAllComments" />
+  <asp:LinkButton ID="btDeleteAllUnapproved" runat="server" Visible="false" resourcekey="DeleteAllUnapproved" CssClass="dnnBlogDeleteAllComments" CausesValidation="false" /><br />
   <asp:DataList ID="lstComments" runat="server" Width="100%">
    <ItemTemplate>
     <asp:Panel ID="divBlogBubble" runat="server" CssClass="BlogBubble">
@@ -88,12 +88,12 @@
        <asp:Image runat="server" Width="48" ID="imgGravatar" AlternateText="Gravatar" />
       </asp:Panel>
       <p>
-       <asp:ImageButton ID="lnkEditComment" runat="server" Visible="false" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="EditComment" ImageUrl="~/images/edit.gif" AlternateText="Edit Comment" />
-       <asp:LinkButton ID="btEditComment" runat="server" Visible="False" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="EditComment" resourcekey="cmdEdit" CssClass="CommandButton" />
-       <asp:ImageButton ID="lnkApproveComment" runat="server" Visible="false" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="ApproveComment" ImageUrl="~/desktopmodules/Blog/images/blog_accept.png" CausesValidation="false" AlternateText="Approve Comment" />
+       <asp:ImageButton ID="lnkEditComment" runat="server" Visible="false" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="EditComment" ImageUrl="~/images/edit.gif" />
+       <asp:LinkButton ID="btEditComment" runat="server" Visible="False" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="EditComment" resourcekey="cmdEdit" />
+       <asp:ImageButton ID="lnkApproveComment" runat="server" Visible="false" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="ApproveComment" ImageUrl="~/desktopmodules/Blog/images/blog_accept.png" CausesValidation="false" />
        <asp:LinkButton ID="btApproveComment" runat="server" Visible="False" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="ApproveComment" resourcekey="Approve" CssClass="CommandButton" CausesValidation="false" />
-       <asp:ImageButton ID="lnkDeleteComment" runat="server" Visible="false" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="DeleteComment" ImageUrl="~/images/delete.gif" CausesValidation="false" AlternateText="Delete Comment" />
-       <asp:LinkButton ID="btDeleteComment" runat="server" Visible="False" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="DeleteComment" resourcekey="Delete" CssClass="CommandButton" CausesValidation="false" />
+       <asp:ImageButton ID="lnkDeleteComment" runat="server" Visible="false" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="DeleteComment" ImageUrl="~/images/delete.gif" CausesValidation="false" CssClass="dnnBlogCommentDelete" />
+       <asp:LinkButton ID="btDeleteComment" runat="server" Visible="False" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="DeleteComment" resourcekey="Delete" CssClass="dnnBlogCommentDelete"  CausesValidation="false" />
        <asp:Label ID="lblTitle" runat="server" CssClass="NormalBold" />
       </p>
       <p>
@@ -118,7 +118,7 @@
   <asp:RequiredFieldValidator ID="valCommentAuthor" runat="server" ResourceKey="valCommentAuthor.ErrorMessage" CssClass="NormalRed" Enabled="False" ErrorMessage="Author is required" ControlToValidate="txtAuthor" Display="None" EnableClientScript="False" />
   <asp:RequiredFieldValidator ID="valCommentTitle" runat="server" ResourceKey="valCommentTitle.ErrorMessage" CssClass="NormalRed" Enabled="False" ErrorMessage="Title is required" ControlToValidate="txtCommentTitle" Display="None" EnableClientScript="False" />
   <asp:RequiredFieldValidator ID="valComment" runat="server" ResourceKey="valComment.ErrorMessage" CssClass="NormalRed" Enabled="False" ErrorMessage="Comment is required" ControlToValidate="txtComment" Display="None" EnableClientScript="False" />
-  <div>
+  <div id="CommentForm">
     <fieldset>
       <table cellspacing="1" cellpadding="1" width="100%" border="0">
        <tr>
@@ -187,7 +187,6 @@
         <td colspan="3">
             <ul class="dnnActions">
                 <li><asp:LinkButton ID="cmdAddComment" TabIndex="7" runat="server" CssClass="dnnPrimaryAction" /></li>
-                 <li><asp:LinkButton ID="cmdCancel" TabIndex="8" runat="server" ResourceKey="cmdCancel" CssClass="dnnSecondaryAction" CausesValidation="False" /></li>
                  <li><asp:LinkButton ID="cmdDeleteComment" TabIndex="9" runat="server" ResourceKey="cmdDelete" CssClass="dnnSecondaryAction" Visible="False" /></li>
             </ul>
         </td>
@@ -195,6 +194,10 @@
       </table>
       </fieldset>
   </div>
+  <ul class="dnnActions">
+    <li><asp:Literal ID="litAddComment" runat="server" /></li>
+    <li><asp:LinkButton ID="cmdCancel" TabIndex="8" runat="server" ResourceKey="cmdCancel" CssClass="dnnSecondaryAction" CausesValidation="False" /></li>
+  </ul>
   <asp:TextBox ID="txtClientIP" runat="server" Visible="false" />
  </asp:Panel>
 </div>
@@ -203,6 +206,39 @@
     (function ($, Sys) {
         function setupDnnQuestions() {
             $('.qaTooltip').qaTooltip();
+
+            $("#CommentForm").hide();
+            $("#linkAdd").click(function () {
+                $("#CommentForm").show('highlight', '', 500, '');
+                $("#linkAdd").hide();
+                return false;
+            });
+
+
+            $('.dnnBlogCommentDelete').dnnConfirm({
+                text: '<%= LocalizeString("DeleteItem") %>',
+                yesText: '<%= Localization.GetString("Yes.Text", Localization.SharedResourceFile) %>',
+                noText: '<%= Localization.GetString("No.Text", Localization.SharedResourceFile) %>',
+                title: '<%= Localization.GetString("Confirm.Text", Localization.SharedResourceFile) %>'
+            });
+            $('.dnnBlogDeleteAllComments').dnnConfirm({
+                text: '<%= LocalizeString("msgDeleteAllUnapproved") %>',
+                yesText: '<%= Localization.GetString("Yes.Text", Localization.SharedResourceFile) %>',
+                noText: '<%= Localization.GetString("No.Text", Localization.SharedResourceFile) %>',
+                title: '<%= Localization.GetString("Confirm.Text", Localization.SharedResourceFile) %>'
+            });
+            $('.dnnBlogAddComment').dnnConfirm({
+                text: '<%= LocalizeString("cmdAddCommentMessage") %>',
+                yesText: '<%= Localization.GetString("Yes.Text", Localization.SharedResourceFile) %>',
+                noText: '<%= Localization.GetString("No.Text", Localization.SharedResourceFile) %>',
+                title: '<%= Localization.GetString("Confirm.Text", Localization.SharedResourceFile) %>'
+            });
+
+//            $("#linkAdd").click(function () {
+//                $("#CommentForm").show('highlight', '', 500, '');
+//                $("#linkAdd").hide();
+//                return false;
+//            });
 
             var po = document.createElement('script');
             po.type = 'text/javascript';

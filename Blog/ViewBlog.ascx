@@ -71,7 +71,7 @@
 	  <asp:HyperLink ID="lnkEditEntry" ResourceKey="msgEditEntry" CssClass="BlogEditLink" runat="server" />
 	 </div>
 	 <div class="BlogFooterLeft">
-        <div class="BlogCategories">
+		<div class="BlogCategories">
 		<asp:Label ID="lblCategories" runat="server" ResourceKey="lblCategories" />
 		<asp:HyperLink ID="lnkParentBlog" runat="server" />
 		<asp:Image ID="imgBlogParentSeparator" runat="server" ImageUrl="~/DesktopModules/Blog/images/folder_closed.gif" AlternateText="Parent Separator" />

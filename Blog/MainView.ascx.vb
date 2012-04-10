@@ -86,16 +86,16 @@ Partial Public Class MainView
         Select Case moduleControl
 
             Case BlogModuleBase.CONTROL_VIEW_BLOGFEED
-                Dim BlogFeedCtl As BlogFeed = CType(Me.LoadControl(Me.ModulePath & "BlogFeed.ascx"), BlogFeed)
+                Dim BlogFeedCtl As BlogFeed = CType(Me.LoadControl(Me.ControlPath & "BlogFeed.ascx"), BlogFeed)
                 BlogFeedCtl.SetModuleConfiguration(ModuleConfiguration)
-                BlogFeedCtl.ID = System.IO.Path.GetFileNameWithoutExtension(Me.ModulePath & "BlogFeed.ascx")
+                BlogFeedCtl.ID = System.IO.Path.GetFileNameWithoutExtension(Me.ControlPath & "BlogFeed.ascx")
                 Controls.Add(BlogFeedCtl)
                 ModuleConfiguration = BlogFeedCtl.ModuleConfiguration
 
             Case BlogModuleBase.CONTROL_VIEW_VIEWBLOG
-                Dim ViewBlogCtl As ViewBlog = CType(Me.LoadControl(Me.ModulePath & "ViewBlog.ascx"), ViewBlog)
+                Dim ViewBlogCtl As ViewBlog = CType(Me.LoadControl(Me.ControlPath & "ViewBlog.ascx"), ViewBlog)
                 ViewBlogCtl.SetModuleConfiguration(ModuleConfiguration)
-                ViewBlogCtl.ID = System.IO.Path.GetFileNameWithoutExtension(Me.ModulePath & "ViewBlog.ascx")
+                ViewBlogCtl.ID = System.IO.Path.GetFileNameWithoutExtension(Me.ControlPath & "ViewBlog.ascx")
                 Controls.Add(ViewBlogCtl)
                 ModuleConfiguration = ViewBlogCtl.ModuleConfiguration
                 'DR-01/30/2009-BLG-8538
@@ -105,9 +105,9 @@ Partial Public Class MainView
                 Next
 
             Case BlogModuleBase.CONTROL_VIEW_VIEWENTRY
-                Dim ViewEntryCtl As ViewEntry = CType(Me.LoadControl(Me.ModulePath & "ViewEntry.ascx"), ViewEntry)
+                Dim ViewEntryCtl As ViewEntry = CType(Me.LoadControl(Me.ControlPath & "ViewEntry.ascx"), ViewEntry)
                 ViewEntryCtl.SetModuleConfiguration(ModuleConfiguration)
-                ViewEntryCtl.ID = System.IO.Path.GetFileNameWithoutExtension(Me.ModulePath & "ViewEntry.ascx")
+                ViewEntryCtl.ID = System.IO.Path.GetFileNameWithoutExtension(Me.ControlPath & "ViewEntry.ascx")
                 Controls.Add(ViewEntryCtl)
                 ModuleConfiguration = ViewEntryCtl.ModuleConfiguration
                 'DR-01/30/2009-BLG-8538
@@ -117,9 +117,9 @@ Partial Public Class MainView
                 Next
 
             Case Else
-                Dim ViewBlogCtl As ViewBlog = CType(Me.LoadControl(Me.ModulePath & "ViewBlog.ascx"), ViewBlog)
+                Dim ViewBlogCtl As ViewBlog = CType(Me.LoadControl(Me.ControlPath & "ViewBlog.ascx"), ViewBlog)
                 ViewBlogCtl.SetModuleConfiguration(ModuleConfiguration)
-                ViewBlogCtl.ID = System.IO.Path.GetFileNameWithoutExtension(Me.ModulePath & "ViewBlog.ascx")
+                ViewBlogCtl.ID = System.IO.Path.GetFileNameWithoutExtension(Me.ControlPath & "ViewBlog.ascx")
                 Controls.Add(ViewBlogCtl)
                 ModuleConfiguration = ViewBlogCtl.ModuleConfiguration
                 'DR-01/30/2009-BLG-8538

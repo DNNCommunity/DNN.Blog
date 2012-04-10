@@ -86,20 +86,26 @@ Partial Public Class ViewEntry
                     lnkEditEntry.Visible = False
                 End If
 
-                Dim keyWords As String = ""
                 Dim keyCount As Integer = 1
                 Dim count As Integer = keyCount
+
+                Dim pageTitle As String = m_oEntry.Title
+                Dim keyWords As String = ""
+                Dim pageDescription As String = m_oEntry.Entry
+                Dim pageUrl As String = m_oEntry.PermaLink
+                Dim pageAuthor As String = m_oBlog.UserFullName
 
                 ' needs to be integrated w/ keyword limit constant
                 For Each term As DotNetNuke.Entities.Content.Taxonomy.Term In m_oEntry.Terms
                     keyWords += "," + term.Name
                     keyCount += 1
                 Next
-                Utility.SetPageMetaAndOpenGraph(CType(Page, CDefault), ModuleContext, m_oEntry.Title, m_oEntry.Entry, keyWords, m_oEntry.PermaLink)
+
+                Utility.SetPageMetaAndOpenGraph(CType(Page, CDefault), ModuleContext, pageTitle, pageDescription, keyWords, pageUrl)
             End If
         End If
 
-        'Me.ModuleConfiguration.SupportedFeatures = 0
+        Me.ModuleConfiguration.SupportedFeatures = 0
     End Sub
 
     Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -119,11 +125,11 @@ Partial Public Class ViewEntry
                     If Not Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, ModuleId) Then
                         If UserId = -1 Then
                             If m_oBlog.MustApproveAnonymous Then
-                                DotNetNuke.UI.Utilities.ClientAPI.AddButtonConfirm(cmdAddComment, Localization.GetString("cmdAddCommentMessage", LocalResourceFile))
+                                cmdAddComment.CssClass = "dnnPrimaryAction dnnBlogAddComment"
                             End If
                         Else
                             If m_oBlog.MustApproveComments Then
-                                DotNetNuke.UI.Utilities.ClientAPI.AddButtonConfirm(cmdAddComment, Localization.GetString("cmdAddCommentMessage", LocalResourceFile))
+                                cmdAddComment.CssClass = "dnnPrimaryAction dnnBlogAddComment"
                             End If
                         End If
                     End If
@@ -135,13 +141,10 @@ Partial Public Class ViewEntry
                     End If
                     'lblUserID.NavigateUrl = NavigateURL(TabId, "ViewProfile", "UserTicket=" & u.EncryptParameter(m_oBlog.UserID.ToString))
 
-                    Me.BasePage.Author = m_oBlog.UserFullName
                     pnlComments.Visible = m_oBlog.AllowComments
 
                     'DR-04/20/2009-BLG-6908
                     If Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
-                        DotNetNuke.UI.Utilities.ClientAPI.AddButtonConfirm(btDeleteAllUnapproved, Localization.GetString("msgDeleteAllUnapproved", LocalResourceFile))
-                        DotNetNuke.UI.Utilities.ClientAPI.AddButtonConfirm(lnkDeleteAllUnapproved, Localization.GetString("msgDeleteAllUnapproved", LocalResourceFile))
                         btDeleteAllUnapproved.Visible = True
                         lnkDeleteAllUnapproved.Visible = True
                     Else
@@ -197,10 +200,10 @@ Partial Public Class ViewEntry
                     lblEntryMonth.Text = GetMonth(m_oEntry.AddedDate, m_oBlog.TimeZone)
                     lblEntryDay.Text = GetDay(m_oEntry.AddedDate, m_oBlog.TimeZone)
 
-                    'Antonio Chagoury - 4/11/2008
-                    If BlogSettings.ShowSocialBookmarks Then
-                        AddSocialBookmarks(m_oEntry.Title, m_oEntry.PermaLink)
-                    End If
+                    ''Antonio Chagoury - 4/11/2008
+                    'If BlogSettings.ShowSocialBookmarks Then
+                    '    AddSocialBookmarks(m_oEntry.Title, m_oEntry.PermaLink)
+                    'End If
 
                     ' CP: Social Sharing
                     Dim facebookContent As String = ""
@@ -221,12 +224,12 @@ Partial Public Class ViewEntry
                     'Don Worthley - 04/05/2008
                     'Added back in
 
-                    If BlogSettings.ShowUniqueTitle Then
-                        Try             ' 4.0.1 Bug
-                            Me.BasePage.Title = Me.BasePage.Title & " - " & m_oEntry.Title
-                        Catch
-                        End Try
-                    End If
+                    'If BlogSettings.ShowUniqueTitle Then
+                    '    Try             ' 4.0.1 Bug
+                    '        Me.BasePage.Title = Me.BasePage.Title & " - " & m_oEntry.Title
+                    '    Catch
+                    '    End Try
+                    'End If
 
                     'Rip Rowan 7/5/2008
                     'Put description on page, show / hide based on setting
@@ -273,12 +276,28 @@ Partial Public Class ViewEntry
                     txtEmail.ReadOnly = Not m_oBlog.AllowAnonymous
                     txtWebsite.ReadOnly = Not m_oBlog.AllowAnonymous
 
+                    If ModuleContext.PortalSettings.UserId > 0 Then
+                        litAddComment.Text = "<a href='#' id='linkAdd' class='dnnPrimaryAction'>" + Localization.GetString("AddComment", LocalResourceFile) + "</a>"
+                    Else
+                        If m_oBlog.AllowAnonymous Then
+                            litAddComment.Text = "<a href='#' id='linkAdd' class='dnnPrimaryAction'>" + Localization.GetString("AddComment", LocalResourceFile) + "</a>"
+                        Else
+                            Dim returnUrl As String = HttpContext.Current.Request.RawUrl
+                            If returnUrl.IndexOf("?returnurl=") <> -1 Then
+                                returnUrl = returnUrl.Substring(0, returnUrl.IndexOf("?returnurl="))
+                            End If
+
+                            returnUrl = HttpUtility.UrlEncode(returnUrl)
+                            litAddComment.Text = "<a href='" + DotNetNuke.Common.Globals.LoginURL(returnUrl, False) + "' class='dnnPrimaryAction'>" + Localization.GetString("AddComment", LocalResourceFile) + "</a>"
+                        End If
+                    End If
+
                     'lnkPermaLink.NavigateUrl = m_oEntry.PermaLink
 
                     'Antonio Chagoury
                     'BLG(-4471): Fixed CDATA enconding in 
                     'title and description for trackbacks
-                    lnkTrackBack.NavigateUrl = HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) & Me.ModulePath & "Trackback.aspx?id=" & m_oEntry.EntryID & "&blogid=" & m_oEntry.BlogID
+                    lnkTrackBack.NavigateUrl = HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) & Me.ControlPath & "Trackback.aspx?id=" & m_oEntry.EntryID & "&blogid=" & m_oEntry.BlogID
 
                     'Only show the add email row if we are showing Gravatars - DW - 4/22/2008
                     trGravatarEmail.Visible = BlogSettings.ShowGravatars
@@ -436,9 +455,7 @@ Partial Public Class ViewEntry
         Else
             'imgGravatar.Visible = False
             divBlogGravatar.Visible = False
-
         End If
-
     End Sub
 
     Protected Sub lstComments_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataListCommandEventArgs) Handles lstComments.ItemCommand
@@ -537,6 +554,8 @@ Partial Public Class ViewEntry
                     oCommentController.UpdateComment(oComment)
                 Else
                     oComment.CommentID = oCommentController.AddComment(oComment)
+                    'TODO: CP: Integrate w/ Journal (Contest module is sample doing this already, problem in Beta 1 is journal will break without editing its SharedResources.resx for a journal type template)
+
                     If m_oBlog.EmailNotification = True Then
                         sendMail(m_oBlog, oComment)
                     End If
@@ -649,7 +668,7 @@ Partial Public Class ViewEntry
         ' Set up MD5 script block for gravatar image preview swapping
 
         If Not Page.ClientScript.IsClientScriptBlockRegistered("GR_MD5") Then
-            Dim GrMD5Script As String = "<script src=""" & ModulePath & "js/MD5.js"" type=""text/javascript""></script>"
+            Dim GrMD5Script As String = "<script src=""" & ControlPath & "js/MD5.js"" type=""text/javascript""></script>"
             Page.ClientScript.RegisterClientScriptBlock(Me.GetType(), "SB_MD5", GrMD5Script)
         End If
 
@@ -668,59 +687,59 @@ Partial Public Class ViewEntry
         imgGravatarPreview.ImageUrl = GetGravatarUrl(txtEmail.Text)
     End Sub
 
-    Private Sub AddSocialBookmarks(ByVal EntryTitle As String, ByVal EntryUrl As String)
-        'Antonio Chagoury - 5/11/2008
-        'Adding social bookmarks
+    'Private Sub AddSocialBookmarks(ByVal EntryTitle As String, ByVal EntryUrl As String)
+    '    'Antonio Chagoury - 5/11/2008
+    '    'Adding social bookmarks
 
-        'Initialize the ShareBadge Chicklets Array
-        If Not Page.ClientScript.IsClientScriptBlockRegistered("SB_CHICKLETS") Then
-            Dim SbChickletsScript As String = "<script language=""javascript1.2"" type=""text/javascript"">" _
-            & "var strImagePath = ""http://" & PortalAlias.HTTPAlias _
-            & "/DesktopModules/Blog/ShareBadge/"";</script>" _
-            & "<script src=""" & ModulePath & "ShareBadge/js/ShareBadgeChicklets.js""" _
-            & "language=""javascript1.2"" type=""text/javascript""></script>"
+    '    'Initialize the ShareBadge Chicklets Array
+    '    If Not Page.ClientScript.IsClientScriptBlockRegistered("SB_CHICKLETS") Then
+    '        Dim SbChickletsScript As String = "<script language=""javascript1.2"" type=""text/javascript"">" _
+    '        & "var strImagePath = ""http://" & PortalAlias.HTTPAlias _
+    '        & "/DesktopModules/Blog/ShareBadge/"";</script>" _
+    '        & "<script src=""" & ControlPath & "ShareBadge/js/ShareBadgeChicklets.js""" _
+    '        & "language=""javascript1.2"" type=""text/javascript""></script>"
 
-            Page.ClientScript.RegisterClientScriptBlock(Me.GetType(), "SB_CHICKLETS", SbChickletsScript)
-
-
-        End If
-
-        'Initialize the main ShareBadge Script
-        If Not Page.ClientScript.IsClientScriptBlockRegistered("SB_PRO") Then
-            Dim SbProScript As String = "<script src=""" & ModulePath & "ShareBadge/js/ShareBadgePro.js"" language=""javascript1.2"" type=""text/javascript""></script>"
-            Page.ClientScript.RegisterClientScriptBlock(Me.GetType(), "SB_PRO", SbProScript)
-        End If
-
-        'Initialize the CSS for ShareBadge
-        If Not Page.ClientScript.IsClientScriptBlockRegistered("SB_PRO_CSS") Then
-            'CType(Me.Page, DotNetNuke.Framework.CDefault).AddStyleSheet("SB_PRO_CSS", ModulePath & "ShareBadge/css/ShareBadge.css", False)
-            ClientResourceManager.RegisterStyleSheet(Page, ControlPath & "ShareBadge/css/ShareBadge.css")
+    '        Page.ClientScript.RegisterClientScriptBlock(Me.GetType(), "SB_CHICKLETS", SbChickletsScript)
 
 
-            'Dim SbProCss As String = "<link rel=""stylesheet"" href=""" & ModulePath & "ShareBadge/css/ShareBadge.css"" type=""text/css"" />"
-            'Page.ClientScript.RegisterClientScriptBlock(Me.GetType(), "SB_PRO_CSS", SbProCss)
-        End If
+    '    End If
 
-        'Display the Bookmarks Toolbar
-        If Not Page.ClientScript.IsStartupScriptRegistered("SB_PRO_TOOLBAR") Then
-            Dim SbToolbar As String = "<script type=""text/javascript"">" _
-            & "initializeShareBadge(""ShareBadgePRO_Toolbar"",""" & Utility.removeHtmlTags(Replace(EntryTitle, """", "'")) & """, """ & EntryUrl & """);" _
-            & "addBadgeItem(7);" _
-            & "addBadgeItem(33);" _
-            & "addBadgeItem(9);" _
-            & "addBadgeItem(14);" _
-            & "addBadgeItem(17);" _
-            & "addBadgeItem(20);" _
-            & "addBadgeItem(27);" _
-            & "addBadgeItem(28);" _
-            & "addBadgeItem(31);" _
-            & "addBadgeItem(32);" _
-            & "</script>"
+    '    'Initialize the main ShareBadge Script
+    '    If Not Page.ClientScript.IsClientScriptBlockRegistered("SB_PRO") Then
+    '        Dim SbProScript As String = "<script src=""" & ControlPath & "ShareBadge/js/ShareBadgePro.js"" language=""javascript1.2"" type=""text/javascript""></script>"
+    '        Page.ClientScript.RegisterClientScriptBlock(Me.GetType(), "SB_PRO", SbProScript)
+    '    End If
 
-            Page.ClientScript.RegisterStartupScript(Me.GetType(), "SB_PRO_TOOLBAR", SbToolbar)
-        End If
+    '    'Initialize the CSS for ShareBadge
+    '    If Not Page.ClientScript.IsClientScriptBlockRegistered("SB_PRO_CSS") Then
+    '        'CType(Me.Page, DotNetNuke.Framework.CDefault).AddStyleSheet("SB_PRO_CSS", ModulePath & "ShareBadge/css/ShareBadge.css", False)
+    '        ClientResourceManager.RegisterStyleSheet(Page, ControlPath & "ShareBadge/css/ShareBadge.css")
 
-    End Sub
+
+    '        'Dim SbProCss As String = "<link rel=""stylesheet"" href=""" & ModulePath & "ShareBadge/css/ShareBadge.css"" type=""text/css"" />"
+    '        'Page.ClientScript.RegisterClientScriptBlock(Me.GetType(), "SB_PRO_CSS", SbProCss)
+    '    End If
+
+    '    'Display the Bookmarks Toolbar
+    '    If Not Page.ClientScript.IsStartupScriptRegistered("SB_PRO_TOOLBAR") Then
+    '        Dim SbToolbar As String = "<script type=""text/javascript"">" _
+    '        & "initializeShareBadge(""ShareBadgePRO_Toolbar"",""" & Utility.removeHtmlTags(Replace(EntryTitle, """", "'")) & """, """ & EntryUrl & """);" _
+    '        & "addBadgeItem(7);" _
+    '        & "addBadgeItem(33);" _
+    '        & "addBadgeItem(9);" _
+    '        & "addBadgeItem(14);" _
+    '        & "addBadgeItem(17);" _
+    '        & "addBadgeItem(20);" _
+    '        & "addBadgeItem(27);" _
+    '        & "addBadgeItem(28);" _
+    '        & "addBadgeItem(31);" _
+    '        & "addBadgeItem(32);" _
+    '        & "</script>"
+
+    '        Page.ClientScript.RegisterStartupScript(Me.GetType(), "SB_PRO_TOOLBAR", SbToolbar)
+    '    End If
+
+    'End Sub
 
     Private Sub BindCommentsList()
         Dim objCtlComments As New CommentController

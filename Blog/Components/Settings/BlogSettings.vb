@@ -106,7 +106,7 @@ Namespace Settings
             Globals.ReadValue(_allSettings, "SearchBlogComment", SearchBlogComment)
             Globals.ReadValue(_allSettings, "EnableUploadOption", EnableUploadOption)
             Globals.ReadValue(_allSettings, "ShowSummary", ShowSummary)
-            Globals.ReadValue(_allSettings, "ShowUniqueTitle", ShowUniqueTitle)
+            'Globals.ReadValue(_allSettings, "ShowUniqueTitle", ShowUniqueTitle)
             Globals.ReadValue(_allSettings, "ShowCommentTitle", ShowCommentTitle)
             Globals.ReadValue(_allSettings, "AllowCommentAnchors", AllowCommentAnchors)
             Globals.ReadValue(_allSettings, "AllowCommentImages", AllowCommentImages)
@@ -124,7 +124,7 @@ Namespace Settings
             Globals.ReadValue(_allSettings, "IncludeTagsInDescription", IncludeTagsInDescription)
             Globals.ReadValue(_allSettings, "GravatarDefaultImageUrl", GravatarDefaultImageUrl)
             Globals.ReadValue(_allSettings, "GravatarCustomUrl", GravatarCustomUrl)
-            Globals.ReadValue(_allSettings, "ShowSocialBookmarks", ShowSocialBookmarks)
+            'Globals.ReadValue(_allSettings, "ShowSocialBookmarks", ShowSocialBookmarks)
             Globals.ReadValue(_allSettings, "AllowSummaryHtml", AllowSummaryHtml)
             Globals.ReadValue(_allSettings, "FeedCacheTime", FeedCacheTime)
             Globals.ReadValue(_allSettings, "AllowChildBlogs", AllowChildBlogs)
@@ -183,7 +183,7 @@ Namespace Settings
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "SearchBlogComment", Me.SearchBlogComment.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "EnableUploadOption", Me.EnableUploadOption.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "ShowSummary", Me.ShowSummary.ToString)
-            Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "ShowUniqueTitle", Me.ShowUniqueTitle.ToString)
+            'Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "ShowUniqueTitle", Me.ShowUniqueTitle.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "ShowCommentTitle", Me.ShowCommentTitle.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "AllowCommentAnchors", Me.AllowCommentAnchors.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "AllowCommentImages", Me.AllowCommentImages.ToString)
@@ -201,7 +201,7 @@ Namespace Settings
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "IncludeTagsInDescription", Me.IncludeTagsInDescription.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "GravatarDefaultImageUrl", Me.GravatarDefaultImageUrl)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "GravatarCustomUrl", Me.GravatarCustomUrl)
-            Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "ShowSocialBookmarks", Me.ShowSocialBookmarks.ToString)
+            'Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "ShowSocialBookmarks", Me.ShowSocialBookmarks.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "AllowSummaryHtml", Me.AllowSummaryHtml.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "FeedCacheTime", Me.FeedCacheTime.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "AllowChildBlogs", Me.AllowChildBlogs.ToString)
@@ -366,15 +366,6 @@ Namespace Settings
             End Set
         End Property
 
-        Public Property ShowUniqueTitle() As Boolean
-            Get
-                Return _ShowUniqueTitle
-            End Get
-            Set(ByVal Value As Boolean)
-                _ShowUniqueTitle = Value
-            End Set
-        End Property
-
         Public Property ShowCommentTitle() As Boolean
             Get
                 Return _ShowCommentTitle
@@ -528,14 +519,14 @@ Namespace Settings
             End Set
         End Property
 
-        Public Property ShowSocialBookmarks() As Boolean
-            Get
-                Return _ShowSocialBookmarks
-            End Get
-            Set(ByVal Value As Boolean)
-                _ShowSocialBookmarks = Value
-            End Set
-        End Property
+        'Public Property ShowSocialBookmarks() As Boolean
+        '    Get
+        '        Return _ShowSocialBookmarks
+        '    End Get
+        '    Set(ByVal Value As Boolean)
+        '        _ShowSocialBookmarks = Value
+        '    End Set
+        'End Property
 
         Public Property AllowSummaryHtml() As Boolean
             Get

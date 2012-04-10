@@ -213,7 +213,7 @@ Partial Class EditEntry
                 TagString = "'" + String.Join("','", TagSList) + "'"
 
                 If Not Page.ClientScript.IsClientScriptBlockRegistered("TAG") Then
-                    Dim TagScript As String = "<script src=""" & ModulePath & "js/tag.js"" type=""text/javascript""></script>"
+                    Dim TagScript As String = "<script src=""" & ControlPath & "js/tag.js"" type=""text/javascript""></script>"
                     Page.ClientScript.RegisterClientScriptBlock(Me.GetType(), "TAG", TagScript)
                 End If
 
@@ -283,7 +283,7 @@ Partial Class EditEntry
             If Not lnkDeleteFile Is Nothing Then
                 If dgLinkedFiles.EditItemIndex = -1 Then
                     lnkDeleteFile.Attributes.Add("onclick", "return confirm('" & String.Format(GetString("msgEnsureDeleteFile", Me.LocalResourceFile), lnkDeleteFile.CommandName) & "');")
-                    lnkDeleteFile.ImageUrl = Me.ModulePath & "Images/delete_file.gif"
+                    lnkDeleteFile.ImageUrl = Me.ControlPath & "Images/delete_file.gif"
                 End If
             End If
         End If
@@ -502,32 +502,34 @@ Partial Class EditEntry
                     ' 'DR-05/28/2009-BLG-9556
                     ' txtEntryDate.ReadOnly = publish
                     'End If
-                    ' '' ''    If (publish) Then
-                    ' '' ''        Dim jc As New JournalController
-                    ' '' ''        Dim objectKey As String = String.Format("{0}:{1}", .BlogID.ToString(), m_oEntry.EntryID.ToString())
-                    ' '' ''        Dim ji As JournalItem = jc.Journal_GetByKey(PortalId, objectKey)
-                    ' '' ''        If Not ji Is Nothing Then
-                    ' '' ''            jc.Journal_DeleteByKey(PortalId, objectKey)
-                    ' '' ''            ji = New JournalItem
-                    ' '' ''        End If
+                    If (publish) Then
+                        Dim jc As New JournalController
+                        Dim objectKey As String = String.Format("{0}:{1}", .BlogID.ToString(), m_oEntry.EntryID.ToString())
+                        Dim ji As JournalItem = jc.Journal_GetByKey(PortalId, objectKey)
+                        If Not ji Is Nothing Then
+                            jc.Journal_DeleteByKey(PortalId, objectKey)
 
-                    ' '' ''        ji.PortalId = ModuleContext.PortalId
-                    ' '' ''        ji.ProfileId = ModuleContext.PortalSettings.UserId
-                    ' '' ''        ji.UserId = ModuleContext.PortalSettings.UserId
-                    ' '' ''        ' I I believe we should add this (CP must ask WM)
-                    ' '' ''        'ji.ContentItemId = m_oEntry.ContentItemId
+                        End If
 
-                    ' '' ''        ji.Title = .Title
-                    ' '' ''        ji.ItemData = New ItemData()
-                    ' '' ''        ji.ItemData.Url = Utility.AddTOQueryString(NavigateURL(), "EntryId", m_oEntry.EntryID.ToString())
-                    ' '' ''        ji.Summary = m_oEntry.Description
-                    ' '' ''        ji.Body = Nothing
-                    ' '' ''        ji.JournalTypeId = 7
-                    ' '' ''        ji.ObjectKey = objectKey
-                    ' '' ''        ji.SecuritySet = "E,"
+                        ji = New JournalItem
 
-                    ' '' ''        jc.Journal_Save(ji, -1)
-                    ' '' ''    End If
+                        ji.PortalId = ModuleContext.PortalId
+                        ji.ProfileId = ModuleContext.PortalSettings.UserId
+                        ji.UserId = ModuleContext.PortalSettings.UserId
+                        ' I believe we should add this (CP must ask WM)
+                        ji.ContentItemId = m_oEntry.ContentItemId
+
+                        ji.Title = .Title
+                        ji.ItemData = New ItemData()
+                        ji.ItemData.Url = Utility.AddTOQueryString(NavigateURL(), "EntryId", m_oEntry.EntryID.ToString())
+                        ji.Summary = m_oEntry.Description
+                        ji.Body = Nothing
+                        ji.JournalTypeId = 7
+                        ji.ObjectKey = objectKey
+                        ji.SecuritySet = "E,"
+
+                        jc.Journal_Save(ji, -1)
+                    End If
                 End With
 
             End If

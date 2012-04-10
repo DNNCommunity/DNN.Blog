@@ -66,9 +66,9 @@ Partial Public Class ModuleOptions
                 chkUploadOption.Checked = BlogSettings.EnableUploadOption
                 chkShowSummary.Checked = BlogSettings.ShowSummary
                 chkShowCommentTitle.Checked = BlogSettings.ShowCommentTitle
-                chkShowUniqueTitle.Checked = BlogSettings.ShowUniqueTitle
+                'chkShowUniqueTitle.Checked = BlogSettings.ShowUniqueTitle
                 chkShowSeoFriendlyUrl.Checked = BlogSettings.ShowSeoFriendlyUrl
-                chkEnableBookmarks.Checked = BlogSettings.ShowSocialBookmarks
+                'chkEnableBookmarks.Checked = BlogSettings.ShowSocialBookmarks
                 chkEnforceSummaryTruncation.Checked = BlogSettings.EnforceSummaryTruncation
                 chkAllowCommentAnchors.Checked = BlogSettings.AllowCommentAnchors
                 chkAllowCommentImages.Checked = BlogSettings.AllowCommentImages
@@ -108,11 +108,11 @@ Partial Public Class ModuleOptions
 
                 Dim li As ListItem
                 For Each li In rblDefaultImage.Items
-                    If li.Value = "" Then li.Text = "<img src=""" + ModulePath + "images/grayman.png"" alt=""" & GetString("liGrayMan.Text", LocalResourceFile) & """ align=""middle""/> " & GetString("liGrayMan.Text", LocalResourceFile)
-                    If li.Value = "identicon" Then li.Text = "<img src=""" + ModulePath + "images/identicon.png"" alt=""" & GetString("liIdenticon.Text", LocalResourceFile) & """ align=""middle""/> " & GetString("liIdenticon.Text", LocalResourceFile)
-                    If li.Value = "wavatar" Then li.Text = "<img src=""" + ModulePath + "images/wavatar.png"" alt=""" & GetString("liWavatar.Text", LocalResourceFile) & """ align=""middle""/> " & GetString("liWavatar.Text", LocalResourceFile)
-                    If li.Value = "monsterid" Then li.Text = "<img src=""" + ModulePath + "images/monsterid.png"" alt=""" & GetString("liMonsterID.Text", LocalResourceFile) & """ align=""middle""/> " & GetString("liMonsterID.Text", LocalResourceFile)
-                    If li.Value = "custom" Then li.Text = "<img src=""" + ModulePath + "images/yourimagehere.png"" alt=""" & GetString("liCustom.Text", LocalResourceFile) & """ align=""middle""/> " & GetString("liCustom.Text", LocalResourceFile)
+                    If li.Value = "" Then li.Text = "<img src=""" + ControlPath + "images/grayman.png"" alt=""" & GetString("liGrayMan.Text", LocalResourceFile) & """ align=""middle""/> " & GetString("liGrayMan.Text", LocalResourceFile)
+                    If li.Value = "identicon" Then li.Text = "<img src=""" + ControlPath + "images/identicon.png"" alt=""" & GetString("liIdenticon.Text", LocalResourceFile) & """ align=""middle""/> " & GetString("liIdenticon.Text", LocalResourceFile)
+                    If li.Value = "wavatar" Then li.Text = "<img src=""" + ControlPath + "images/wavatar.png"" alt=""" & GetString("liWavatar.Text", LocalResourceFile) & """ align=""middle""/> " & GetString("liWavatar.Text", LocalResourceFile)
+                    If li.Value = "monsterid" Then li.Text = "<img src=""" + ControlPath + "images/monsterid.png"" alt=""" & GetString("liMonsterID.Text", LocalResourceFile) & """ align=""middle""/> " & GetString("liMonsterID.Text", LocalResourceFile)
+                    If li.Value = "custom" Then li.Text = "<img src=""" + ControlPath + "images/yourimagehere.png"" alt=""" & GetString("liCustom.Text", LocalResourceFile) & """ align=""middle""/> " & GetString("liCustom.Text", LocalResourceFile)
                 Next
 
                 Dim objBlog As New BlogController
@@ -186,7 +186,7 @@ Partial Public Class ModuleOptions
                 .AllowCommentAnchors = chkAllowCommentAnchors.Checked
                 .AllowCommentImages = chkAllowCommentImages.Checked
                 .AllowCommentFormatting = chkAllowCommentFormatting.Checked
-                .ShowUniqueTitle = chkShowUniqueTitle.Checked
+                '.ShowUniqueTitle = chkShowUniqueTitle.Checked
                 .ShowSeoFriendlyUrl = chkShowSeoFriendlyUrl.Checked
                 .PageBlogs = CInt(cmbPageBlogs.SelectedItem.Value)
                 .EnableDNNSearch = chkEnableDNNSearch.Checked
@@ -196,7 +196,7 @@ Partial Public Class ModuleOptions
                 .GravatarDefaultImageUrl = rblDefaultImage.SelectedValue
                 .GravatarCustomUrl = txtGravatarDefaultImageCustomURL.Text
                 .ShowWebsite = chkShowWebsite.Checked()
-                .ShowSocialBookmarks = chkEnableBookmarks.Checked
+                '.ShowSocialBookmarks = chkEnableBookmarks.Checked
                 .EnforceSummaryTruncation = chkEnforceSummaryTruncation.Checked
                 .IncludeBody = chkIncludeBody.Checked
                 .IncludeCategoriesInDescription = chkIncludeCategoriesInDescription.Checked

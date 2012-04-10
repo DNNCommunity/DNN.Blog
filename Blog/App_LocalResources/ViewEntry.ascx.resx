@@ -242,4 +242,7 @@
   <data name="lblCategories.Text" xml:space="preserve">
     <value>File Under:</value>
   </data>
+  <data name="AddComment.Text" xml:space="preserve">
+    <value>Comment</value>
+  </data>
 </root>

@@ -50,4 +50,6 @@ Imports DotNetNuke.Common.Utilities
         Return colTerms.ToJson()
     End Function
 
+    ' TODO: CP - Create a new method to return a list of terms based on searchTerm and vocabulary
+
 End Class

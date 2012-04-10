@@ -89,10 +89,6 @@
         <h2 id="dnnSitePanel-SEOSettings" class="dnnFormSectionHead"><a href="" class=""><%=LocalizeString("tblSEOSettings")%></a></h2>
         <fieldset>
             <div class="dnnFormItem">
-                <dnn:label id="lblShowUniqueTitle" runat="server" controlname="chkShowUniqueTitle" suffix="" />
-                <asp:CheckBox ID="chkShowUniqueTitle" runat="server" />
-            </div>
-            <div class="dnnFormItem">
                 <dnn:label id="lblShowSeoFriendlyUrl" runat="server" controlname="chkShowSeoFriendlyUrl" suffix="" />
                 <asp:CheckBox ID="chkShowSeoFriendlyUrl" runat="server" />
             </div>
