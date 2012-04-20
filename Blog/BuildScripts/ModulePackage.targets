@@ -33,6 +33,7 @@
     <ItemGroup>
       <InstallInclude Include="**\*.ascx" />
       <InstallInclude Include="**\*.asmx" />
+	  <InstallInclude Include="**\*.ashx" />
       <InstallInclude Include="**\*.css" />
       <InstallInclude Include="**\*.html" />
       <InstallInclude Include="**\*.htm" />
@@ -46,6 +47,7 @@
     <ItemGroup>
       <SourceInclude Include="**\*.ascx" />
       <SourceInclude Include="**\*.asmx" />
+	  <SourceInclude Include="**\*.ashx" />
       <SourceInclude Include="**\*.css" />
       <SourceInclude Include="**\*.xsl" />
       <SourceInclude Include="**\*.html" />
