@@ -28,6 +28,8 @@ Partial Public Class ViewTags
     Inherits DotNetNuke.Entities.Modules.PortalModuleBase
 
     Private _settings As Settings.TagViewSettings
+    Protected WithEvents rtcTags As DotNetNuke.Web.UI.WebControls.DnnTagCloud
+
 
     Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
         jQuery.RequestUIRegistration()

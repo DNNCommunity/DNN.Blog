@@ -435,13 +435,4 @@ Partial Public Class EditEntry
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents valUpload As Global.System.Web.UI.WebControls.CustomValidator
-
-    '''<summary>
-    '''cbEditPost control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents cbEditPost As Global.DotNetNuke.Web.UI.WebControls.DnnCodeBlock
 End Class

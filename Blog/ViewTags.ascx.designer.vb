@@ -41,15 +41,6 @@ Partial Public Class ViewTags
     Protected WithEvents pnlTagCloud As Global.System.Web.UI.WebControls.Panel
 
     '''<summary>
-    '''rtcTags control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents rtcTags As Global.DotNetNuke.Web.UI.WebControls.DnnTagCloud
-
-    '''<summary>
     '''phTags control.
     '''</summary>
     '''<remarks>

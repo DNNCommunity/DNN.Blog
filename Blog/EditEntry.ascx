@@ -121,71 +121,69 @@
 </div>
 <asp:CustomValidator ID="valEntry" EnableClientScript="False" runat="server" ResourceKey="valEntry.ErrorMessage" Display="None" />
 <asp:CustomValidator ID="valUpload" EnableClientScript="False" runat="server" Display="None" />
-<dnnweb:DnnCodeBlock ID="cbEditPost" runat="server">
-	<script language="javascript" type="text/javascript">
-		/*globals jQuery, window, Sys */
-		(function ($, Sys) {
-			function setupDnnEditBlogEntry() {
-				$('#dnnBlogEditEntry').dnnPanels();
+<script language="javascript" type="text/javascript">
+	/*globals jQuery, window, Sys */
+	(function ($, Sys) {
+		function setupDnnEditBlogEntry() {
+			$('#dnnBlogEditEntry').dnnPanels();
 
-				$('.dnnEntryDelete').dnnConfirm({
-					text: '<%= LocalizeString("DeleteItem") %>',
-					yesText: '<%= Localization.GetString("Yes.Text", Localization.SharedResourceFile) %>',
-					noText: '<%= Localization.GetString("No.Text", Localization.SharedResourceFile) %>',
-					title: '<%= Localization.GetString("Confirm.Text", Localization.SharedResourceFile) %>'
-				});
-				$('.dnnSaveOffline').dnnConfirm({
-					text: '<%= LocalizeString("SaveAndOffline.Confirm") %>',
-					yesText: '<%= Localization.GetString("Yes.Text", Localization.SharedResourceFile) %>',
-					noText: '<%= Localization.GetString("No.Text", Localization.SharedResourceFile) %>',
-					title: '<%= Localization.GetString("Confirm.Text", Localization.SharedResourceFile) %>'
-				});
-
-				function split(val) {
-					return val.split(/,\s*/);
-				}
-
-				function extractLast(term) {
-					return split(term).pop();
-				}
-
-				var myTextArea = $('#<%= txtTags.ClientID  %>').tagify({ delimiters: [9, 13, 44, 59, 188], addTagPrompt: '<%= Localization.GetString("AddTags", LocalResourceFile) %>' }); // tab, return, comma, semicolon
-				myTextArea.tagify('inputField').autocomplete({
-					source: function (request, response) {
-						$.ajax({
-							type: "POST",
-							url: '<%= ResolveUrl("~/DesktopModules/Blog/BlogTerms.asmx/SearchTags")%>',
-							data: "{'searchTerm' : '" + extractLast(request.term) + "'}",
-							contentType: "application/json",
-							dataType: "json",
-							success: function (data) {
-								var suggestions = [];
-								mydata = data;
-								$.each($.parseJSON(data.d), function (i, val) {
-									suggestions.push(val);
-								});
-								response(suggestions);
-							}
-						});
-					},
-					minLength: 2,
-					close: function (event, ui) { myTextArea.tagify('add'); myTextArea.tagify('serialize'); }
-				});
-			};
-
-			$(document).ready(function () {
-				setupDnnEditBlogEntry();
-				Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
-					setupDnnEditBlogEntry();
-				});
+			$('.dnnEntryDelete').dnnConfirm({
+				text: '<%= LocalizeString("DeleteItem") %>',
+				yesText: '<%= Localization.GetString("Yes.Text", Localization.SharedResourceFile) %>',
+				noText: '<%= Localization.GetString("No.Text", Localization.SharedResourceFile) %>',
+				title: '<%= Localization.GetString("Confirm.Text", Localization.SharedResourceFile) %>'
+			});
+			$('.dnnSaveOffline').dnnConfirm({
+				text: '<%= LocalizeString("SaveAndOffline.Confirm") %>',
+				yesText: '<%= Localization.GetString("Yes.Text", Localization.SharedResourceFile) %>',
+				noText: '<%= Localization.GetString("No.Text", Localization.SharedResourceFile) %>',
+				title: '<%= Localization.GetString("Confirm.Text", Localization.SharedResourceFile) %>'
 			});
 
-		} (jQuery, window.Sys));
-	</script>  
-	<script language="javascript" type="text/javascript">
-		function serializeTags(source, args) {
-			$('#<%= txtTags.ClientID %>').tagify('serialize');
-			args.IsValid = true;
+			function split(val) {
+				return val.split(/,\s*/);
+			}
+
+			function extractLast(term) {
+				return split(term).pop();
+			}
+
+			var myTextArea = $('#<%= txtTags.ClientID  %>').tagify({ delimiters: [9, 13, 44, 59, 188], addTagPrompt: '<%= Localization.GetString("AddTags", LocalResourceFile) %>' }); // tab, return, comma, semicolon
+			myTextArea.tagify('inputField').autocomplete({
+				source: function (request, response) {
+					$.ajax({
+						type: "POST",
+						url: '<%= ResolveUrl("~/DesktopModules/Blog/BlogTerms.asmx/SearchTags")%>',
+						data: "{'searchTerm' : '" + extractLast(request.term) + "'}",
+						contentType: "application/json",
+						dataType: "json",
+						success: function (data) {
+							var suggestions = [];
+							mydata = data;
+							$.each($.parseJSON(data.d), function (i, val) {
+								suggestions.push(val);
+							});
+							response(suggestions);
+						}
+					});
+				},
+				minLength: 2,
+				close: function (event, ui) { myTextArea.tagify('add'); myTextArea.tagify('serialize'); }
+			});
 		};
-	</script>
-</dnnweb:DnnCodeBlock>
+
+		$(document).ready(function () {
+			setupDnnEditBlogEntry();
+			Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
+				setupDnnEditBlogEntry();
+			});
+		});
+
+	} (jQuery, window.Sys));
+</script>  
+<script language="javascript" type="text/javascript">
+	function serializeTags(source, args) {
+		$('#<%= txtTags.ClientID %>').tagify('serialize');
+		args.IsValid = true;
+	};
+</script>
