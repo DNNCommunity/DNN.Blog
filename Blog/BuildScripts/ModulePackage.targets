@@ -60,7 +60,10 @@
       <SourceInclude Include="**\images\*.*" />
       <SourceInclude Include="**\*.cs" />
       <SourceInclude Include="**\*.cs.designer" />
+	  <SourceInclude Include="**\*.vb" />
+      <SourceInclude Include="**\*.vb.designer" />
       <SourceInclude Include="**\*.csproj" />
+	  <SourceInclude Include="**\*.vbproj" />
       <SourceInclude Include="**\*.targets" />
       <SourceInclude Include="**\*.sln" />
 	  <SourceInclude Include="**\Tests\*.*" />

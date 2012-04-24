@@ -358,7 +358,7 @@
 		</component>
 		<component type="File">
 			<files>
-				<basePath>DesktopModules\DNNQA\Documentation</basePath>
+				<basePath>DesktopModules\Blog\Documentation</basePath>
 				<file>
 					<name>License.txt</name>
 				</file>
