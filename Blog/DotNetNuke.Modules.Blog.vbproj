@@ -399,7 +399,6 @@
     <Content Include="Styles\Blog-Full_Grey.xsl" />
     <Content Include="Styles\Blog-Headlines.xsl" />
     <Content Include="Styles\Blog-Head_Grey.xsl" />
-    <EmbeddedResource Include="Upgrade\ChildblogsToCategories.sql" />
     <None Include="DNN_Blog.dnn">
       <SubType>Designer</SubType>
     </None>
