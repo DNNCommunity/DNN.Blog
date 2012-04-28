@@ -33,6 +33,7 @@ Imports DotNetNuke.Services.Journal
 Imports DotNetNuke.Framework
 Imports System.Linq
 Imports DotNetNuke.Entities.Content.Taxonomy
+Imports Telerik.Web.UI
 
 Partial Class EditEntry
     Inherits BlogModuleBase
@@ -58,6 +59,12 @@ Partial Class EditEntry
     Private m_oCats As List(Of Business.CategoryInfo)
     Private m_oEntryCats As List(Of Business.CategoryInfo)
     Private m_oEntryId As Integer = -1
+
+    Private ReadOnly Property VocabularyId() As Integer
+        Get
+            Return BlogSettings.VocabularyId
+        End Get
+    End Property
 
 #End Region
 
@@ -118,7 +125,7 @@ Partial Class EditEntry
             LocalizeDataGrid(dgLinkedFiles, LocalResourceFile)
 
             If Not Page.IsPostBack Then
-                InitializeTree()
+                PopulateCategories()
 
                 cboChildBlogs.DataSource = m_oBlogController.ListBlogs(Me.PortalId, m_oParentBlog.BlogID, True)
                 cboChildBlogs.DataBind()
@@ -132,7 +139,7 @@ Partial Class EditEntry
                 Me.txtTrackBackUrl.Visible = Not m_oParentBlog.AutoTrackback
                 ' end change in 3.1.23
 
-                CategoryController.PopulateTree(treeCategories, PortalId, 0)
+                'CategoryController.PopulateTree(treeCategories, PortalId, 0)
 
                 If BlogSettings.AllowSummaryHtml Then
                     txtDescription.Visible = True
@@ -172,13 +179,15 @@ Partial Class EditEntry
                     Me.dgLinkedFiles.DataBind()
 
                     For Each t As Term In m_oEntry.Terms
-                        txtTags.Text = txtTags.Text + t.Name + ","
-                    Next
-                    'tbTags.Text = Business.TagController.GetTagsByEntry(m_oEntry.EntryID)
-
-                    m_oEntryCats = CategoryController.ListCatsByEntry(m_oEntry.EntryID)
-                    For Each c As CategoryInfo In m_oEntryCats
-                        treeCategories.FindNodeByKey(c.CatId.ToString).Selected = True
+                        If t.VocabularyId = 1 Then
+                            txtTags.Text = txtTags.Text + t.Name + ","
+                        Else
+                            Dim objNode As RadTreeNode = dtCategories.FindNodeByValue(t.TermId.ToString())
+                            If objNode IsNot Nothing Then
+                                objNode.Checked = True
+                                objNode.ExpandParentNodes()
+                            End If
+                        End If
                     Next
 
                     ' set UI based on published status
@@ -410,9 +419,7 @@ Partial Class EditEntry
 
     Private Sub updateEntry(ByVal publish As Boolean)
         Try
-
             If Page.IsValid = True Then
-
                 If m_oEntry Is Nothing Then
                     m_oEntry = New EntryInfo
                     m_oEntry = CType(CBO.InitializeObject(m_oEntry, GetType(EntryInfo)), EntryInfo)
@@ -470,19 +477,18 @@ Partial Class EditEntry
                         End If
                     Next
 
+                    ' TODO: loop through selected categories, addd to term collection prior to save
+                    If VocabularyId > 0 Then
+                        For Each t As RadTreeNode In dtCategories.CheckedNodes
+                            Dim objTerm As Term = Modules.Blog.Terms.GetTermById(Convert.ToInt32(t.Value), VocabularyId)
+                            terms.Add(objTerm)
+                        Next
+                    End If
+
                     .Terms.Clear()
                     .Terms.AddRange(terms)
 
-                    'Business.TagController.UpdateTagsByEntry(m_oEntry.EntryID, tbTags.Text)
-
-
                     m_oEntryController.UpdateEntry(m_oEntry, Me.TabId, PortalId)
-
-                    Dim selectedCategories As New List(Of Integer)
-                    For Each n As UI.WebControls.TreeNode In treeCategories.SelectedTreeNodes
-                        selectedCategories.Add(CInt(n.Key))
-                    Next
-                    CategoryController.UpdateCategoriesByEntry(m_oEntry.EntryID, selectedCategories)
 
                     If txtTrackBackUrl.Text <> "" Then
                         PingBackService.SendTrackBack(txtTrackBackUrl.Text, m_oEntry, m_oBlog.Title)
@@ -490,25 +496,14 @@ Partial Class EditEntry
                     If m_oBlog.AutoTrackback Then
                         Utility.AutoTrackback(m_oEntry, m_oBlog.Title)
                     End If
-                    'If redirect Then
-                    ' Response.Redirect(NavigateURL(Me.TabId, "", "BlogID=" & .BlogID.ToString()), True)
-                    'Else
-                    ' If publish Then
-                    '  lblPublished.Text = GetString("Published.Status", LocalResourceFile)
-                    ' Else
-                    '  lblPublished.Text = GetString("UnPublished.Status", LocalResourceFile)
-                    ' End If
-                    ' 'lblPublished.Visible = Not publish
-                    ' 'DR-05/28/2009-BLG-9556
-                    ' txtEntryDate.ReadOnly = publish
-                    'End If
+
+                    ' NOTE: 6.2 Journal Integration
                     If (publish) Then
                         Dim jc As New JournalController
                         Dim objectKey As String = String.Format("{0}:{1}", .BlogID.ToString(), m_oEntry.EntryID.ToString())
                         Dim ji As JournalItem = jc.Journal_GetByKey(PortalId, objectKey)
                         If Not ji Is Nothing Then
                             jc.Journal_DeleteByKey(PortalId, objectKey)
-
                         End If
 
                         ji = New JournalItem
@@ -516,9 +511,7 @@ Partial Class EditEntry
                         ji.PortalId = ModuleContext.PortalId
                         ji.ProfileId = ModuleContext.PortalSettings.UserId
                         ji.UserId = ModuleContext.PortalSettings.UserId
-                        ' I believe we should add this (CP must ask WM)
                         ji.ContentItemId = m_oEntry.ContentItemId
-
                         ji.Title = .Title
                         ji.ItemData = New ItemData()
                         ji.ItemData.Url = Utility.AddTOQueryString(NavigateURL(), "EntryId", m_oEntry.EntryID.ToString())
@@ -531,7 +524,6 @@ Partial Class EditEntry
                         jc.Journal_Save(ji, -1)
                     End If
                 End With
-
             End If
         Catch exc As Exception    'Module failed to load
             ProcessModuleLoadException(Me, exc)
@@ -542,23 +534,16 @@ Partial Class EditEntry
         Return GetString("msgCopyright", LocalResourceFile) & Date.UtcNow.Year & " " & m_oBlog.UserFullName
     End Function
 
-    Private Sub InitializeTree()
-        With treeCategories
-            .SystemImagesPath = ResolveUrl("~/images/")
-            '.ImageList.Add(ResolveUrl("~/images/folder.gif"))
-            '.ImageList.Add(ResolveUrl("~/images/icon_securityroles_16px.gif"))
-            '.ImageList.Add(ResolveUrl("~/images/icon_sql_16px.gif"))
-            '.ImageList.Add(ResolveUrl("~/images/file.gif"))
-            .ImageList.Add(ResolveUrl("~/images/spacer.gif"))
-            .ImageList.Add(ResolveUrl("~/images/spacer.gif"))
-            .ImageList.Add(ResolveUrl("~/images/spacer.gif"))
-            .ImageList.Add(ResolveUrl("~/images/spacer.gif"))
-            .IndentWidth = 10
-            .CollapsedNodeImage = ResolveUrl("~/images/max.gif")
-            .ExpandedNodeImage = ResolveUrl("~/images/min.gif")
-            .PopulateNodesFromClient = False
-            '.JSFunction = "catclick();"
-        End With
+    Private Sub PopulateCategories()
+        If VocabularyId > 0 Then
+            Dim termController As ITermController = DotNetNuke.Entities.Content.Common.Util.GetTermController()
+            Dim colCategories As IQueryable(Of Term) = termController.GetTermsByVocabulary(VocabularyId)
+
+            dtCategories.DataSource = colCategories
+            dtCategories.DataBind()
+        Else
+            pnlCategories.Visible = False
+        End If
     End Sub
 
 #End Region

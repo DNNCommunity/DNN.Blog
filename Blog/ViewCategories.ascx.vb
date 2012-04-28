@@ -19,77 +19,25 @@
 '
 
 Imports DotNetNuke.Modules.Blog.Business
-Imports DotNetNuke.Services.Localization
 
 Partial Class ViewCategories
-  Inherits BlogModuleBase
-  Implements Entities.Modules.IActionable
+    Inherits DotNetNuke.Entities.Modules.PortalModuleBase
 
-  Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
-    Me.ModuleConfiguration.SupportedFeatures = 0
-  End Sub
+#Region "Event Handlers"
 
-  Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-    If Not Page.IsPostBack Then
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        If Not Page.IsPostBack Then
 
-      Dim CatList As List(Of CategoryInfo) = CategoryController.ListCategoriesSorted(PortalId)
-      For Each Cat As CategoryInfo In CatList
-        If CategoryHasChildren(CatList, Cat) OrElse Cat.Cnt > 0 Then
-          AddCategory(Cat, Cat.ParentId)
+            ' we need to get the categories to display (depends on what is in the URL)
+
         End If
-      Next
+    End Sub
 
-    End If
-  End Sub
+#End Region
 
-  Sub AddCategory(ByVal cat As CategoryInfo, ByVal parentid As Integer)
+#Region "Private Methods"
 
-    Dim node As New TreeNode
 
-    node.Text = cat.Category + " (" + cat.Cnt.ToString + ")"
-    node.Value = cat.CatId.ToString
-
-    node.NavigateUrl = Utility.GetSEOLink(PortalId, TabId, "", cat.Slug, "catid=" + cat.CatId.ToString)
-
-    If parentid = 0 Then
-      tvCategories.Nodes.Add(node)
-    Else
-      Dim n As New TreeNode
-      For Each n In tvCategories.Nodes
-        AddChildNode(node, n, parentid)
-      Next
-    End If
-  End Sub
-
-  Sub AddChildNode(ByVal newnode As TreeNode, ByVal n As TreeNode, ByVal parentid As Integer)
-
-    If n.Value = parentid.ToString Then
-      n.ChildNodes.Add(newnode)
-    Else
-      If n.ChildNodes.Count > 0 Then
-        Dim cnode As TreeNode
-        For Each cnode In n.ChildNodes
-          AddChildNode(newnode, cnode, parentid)
-        Next
-      End If
-    End If
-  End Sub
-
-  Private Function CategoryHasChildren(ByVal catlist As List(Of CategoryInfo), ByVal category As CategoryInfo) As Boolean
-    For Each cat As CategoryInfo In catlist
-      If cat.ParentId = category.CatId Then
-        Return True
-      End If
-    Next
-    Return False
-  End Function
-
-  Public ReadOnly Property ModuleActions() As Entities.Modules.Actions.ModuleActionCollection Implements Entities.Modules.IActionable.ModuleActions
-    Get
-      Dim Actions As New Entities.Modules.Actions.ModuleActionCollection
-      Actions.Add(GetNextActionID, Localization.GetString(Entities.Modules.Actions.ModuleActionType.EditContent, LocalResourceFile), "", "", "", EditUrl(), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
-      Return Actions
-    End Get
-  End Property
+#End Region
 
 End Class

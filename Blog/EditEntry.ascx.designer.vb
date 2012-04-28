@@ -20,7 +20,7 @@ Partial Public Class EditEntry
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblEntryDate As Global.DotNetNuke.UI.UserControls.LabelControl
+    Protected WithEvents lblEntryDate As Global.System.Web.UI.UserControl
 
     '''<summary>
     '''txtEntryDate control.
@@ -56,7 +56,7 @@ Partial Public Class EditEntry
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblChildBlog As Global.DotNetNuke.UI.UserControls.LabelControl
+    Protected WithEvents lblChildBlog As Global.System.Web.UI.UserControl
 
     '''<summary>
     '''cboChildBlogs control.
@@ -74,7 +74,7 @@ Partial Public Class EditEntry
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblTitle As Global.DotNetNuke.UI.UserControls.LabelControl
+    Protected WithEvents lblTitle As Global.System.Web.UI.UserControl
 
     '''<summary>
     '''txtTitle control.
@@ -101,7 +101,7 @@ Partial Public Class EditEntry
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblSummary As Global.DotNetNuke.UI.UserControls.LabelControl
+    Protected WithEvents lblSummary As Global.System.Web.UI.UserControl
 
     '''<summary>
     '''txtDescriptionText control.
@@ -137,7 +137,34 @@ Partial Public Class EditEntry
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblDescription As Global.DotNetNuke.UI.UserControls.LabelControl
+    Protected WithEvents lblDescription As Global.System.Web.UI.UserControl
+
+    '''<summary>
+    '''pnlCategories control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents pnlCategories As Global.System.Web.UI.WebControls.Panel
+
+    '''<summary>
+    '''lblCategories control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblCategories As Global.System.Web.UI.UserControl
+
+    '''<summary>
+    '''dtCategories control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents dtCategories As Global.DotNetNuke.Web.UI.WebControls.DnnTreeView
 
     '''<summary>
     '''lblTags control.
@@ -146,7 +173,7 @@ Partial Public Class EditEntry
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblTags As Global.DotNetNuke.UI.UserControls.LabelControl
+    Protected WithEvents lblTags As Global.System.Web.UI.UserControl
 
     '''<summary>
     '''txtTags control.
@@ -167,24 +194,6 @@ Partial Public Class EditEntry
     Protected WithEvents valtxtTags As Global.System.Web.UI.WebControls.CustomValidator
 
     '''<summary>
-    '''lblCategories control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblCategories As Global.DotNetNuke.UI.UserControls.LabelControl
-
-    '''<summary>
-    '''treeCategories control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents treeCategories As Global.DotNetNuke.UI.WebControls.dnntree
-
-    '''<summary>
     '''pnlUploads control.
     '''</summary>
     '''<remarks>
@@ -200,7 +209,7 @@ Partial Public Class EditEntry
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblAddPicture As Global.DotNetNuke.UI.UserControls.LabelControl
+    Protected WithEvents lblAddPicture As Global.System.Web.UI.UserControl
 
     '''<summary>
     '''picFilename control.
@@ -227,7 +236,7 @@ Partial Public Class EditEntry
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblAltText As Global.DotNetNuke.UI.UserControls.LabelControl
+    Protected WithEvents lblAltText As Global.System.Web.UI.UserControl
 
     '''<summary>
     '''txtAltText control.
@@ -245,7 +254,7 @@ Partial Public Class EditEntry
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblAddAttachment As Global.DotNetNuke.UI.UserControls.LabelControl
+    Protected WithEvents lblAddAttachment As Global.System.Web.UI.UserControl
 
     '''<summary>
     '''attFilename control.
@@ -272,7 +281,7 @@ Partial Public Class EditEntry
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblAttachmentDescription As Global.DotNetNuke.UI.UserControls.LabelControl
+    Protected WithEvents lblAttachmentDescription As Global.System.Web.UI.UserControl
 
     '''<summary>
     '''txtAttachmentDescription control.
@@ -299,7 +308,7 @@ Partial Public Class EditEntry
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblAllowComments As Global.DotNetNuke.UI.UserControls.LabelControl
+    Protected WithEvents lblAllowComments As Global.System.Web.UI.UserControl
 
     '''<summary>
     '''chkAllowComments control.
@@ -317,7 +326,7 @@ Partial Public Class EditEntry
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblDisplayCopyright As Global.DotNetNuke.UI.UserControls.LabelControl
+    Protected WithEvents lblDisplayCopyright As Global.System.Web.UI.UserControl
 
     '''<summary>
     '''chkDisplayCopyright control.
@@ -344,7 +353,7 @@ Partial Public Class EditEntry
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblCopyright As Global.DotNetNuke.UI.UserControls.LabelControl
+    Protected WithEvents lblCopyright As Global.System.Web.UI.UserControl
 
     '''<summary>
     '''txtCopyright control.
@@ -362,7 +371,7 @@ Partial Public Class EditEntry
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblTrackbackUrl As Global.DotNetNuke.UI.UserControls.LabelControl
+    Protected WithEvents lblTrackbackUrl As Global.System.Web.UI.UserControl
 
     '''<summary>
     '''txtTrackBackUrl control.

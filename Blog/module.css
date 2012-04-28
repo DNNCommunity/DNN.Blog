@@ -307,11 +307,11 @@ font-size:11px;
 }
 
 /* Tagify */
-.ui-menu {width: 295px;}
-.tagify-container {width: 300px;height: 100px;border: 1px solid #CCC;background-color: #FFF;border-radius: 2px;font-family: Verdana, sans-serif;font-size: 12px;overflow: auto;}
+.ui-menu {width: 225px;}
+.tagify-container {width: 350px;height: 100px;border: 1px solid #CCC;background-color: #FFF;border-radius: 2px;font-family: Verdana, sans-serif;font-size: 12px;overflow: auto;}
 	.tagify-container > span {display: inline-block;padding: 3px 5px;margin: 3px;border-radius: 2px;border: 1px solid #EEE;background-color: #E4E4E4;color: #000;}
 	.tagify-container > span > a {padding-left: 5px;color: #eb1414;text-decoration: none;font-weight: bold;border: 0px none;}
-	.tagify-container > input {border: 0px none;width: 290px;}
+	.tagify-container > input {border: 0px none;width: 350px;}
 	.tagify-container > input:focus {outline: none;}
 /* end tagify */
 /* ----- jquery-ui autocomplete (also in EditPost.ascx) ----- */
@@ -354,4 +354,9 @@ ul.qaSocialActions, ul.qaSocialActions li{list-style:none;padding:0px;}
 /* but make the span that holds the comment box larger */
 span.fb_edge_comment_widget.fb_iframe_widget iframe{width:401px !important;}
 /* end social area */
-.percentRight{float: right;padding-left: 4px;}
+.percentRight{float: right;padding-left: 4px}
+			  
+			  
+/* Category Selection */	
+
+ul.rlbList {list-style:none;}

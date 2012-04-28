@@ -123,6 +123,9 @@ Public Class BlogPost
     Public Function getCategories_WordPress(ByVal blogid As String, ByVal username As String, ByVal password As String) As WordPress.CategoryInfo() Implements WordPress.IWordPress.getCategories
         InitializeMethodCall(username, password)
 
+
+
+
         Dim list As List(Of Business.CategoryInfo) = CategoryController.ListCategoriesSorted(_portalSettings.PortalId)
         Dim res(list.Count - 1) As WordPress.CategoryInfo
         Dim i As Integer = 0
@@ -143,6 +146,10 @@ Public Class BlogPost
     Public Function getPostCategories(ByVal postid As String, ByVal username As String, ByVal password As String) As MoveableType.Category() Implements MoveableType.IMoveableType.getPostCategories
         InitializeMethodCall(username, password)
 
+
+
+
+
         Dim list As List(Of Business.CategoryInfo) = CategoryController.ListCatsByEntry(CInt(postid))
         Dim res(list.Count - 1) As MoveableType.Category
         Dim i As Integer = 0
@@ -157,8 +164,10 @@ Public Class BlogPost
     End Function
 
     Public Function setPostCategories(ByVal postid As String, ByVal username As String, ByVal password As String, ByVal categories As MoveableType.Category()) As Boolean Implements MoveableType.IMoveableType.setPostCategories
-
         InitializeMethodCall(username, password)
+
+
+
 
         Dim catIds As New List(Of Integer)
         Dim i As Integer = 0

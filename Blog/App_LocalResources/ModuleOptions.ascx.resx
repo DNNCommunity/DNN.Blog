@@ -130,19 +130,19 @@
     <value>Basic Settings</value>
   </data>
   <data name="lblUploadOption.Text" xml:space="preserve">
-    <value>Allow Upload Options:</value>
+    <value>Allow Upload Options</value>
   </data>
   <data name="lblRecentEntriesMax.Help" xml:space="preserve">
     <value>You can limit the number of entries for Most recent entries.</value>
   </data>
   <data name="lblRecentRssEntriesMax.Text" xml:space="preserve">
-    <value>Limit Recent RSS entries to:</value>
+    <value>Limit Recent RSS entries to</value>
   </data>
   <data name="lblSearchSummary.Text" xml:space="preserve">
-    <value>Limit Search Summary To:</value>
+    <value>Limit Search Summary to</value>
   </data>
   <data name="lblRecentEntriesMax.Text" xml:space="preserve">
-    <value>Limit recent entries to:</value>
+    <value>Limit recent entries to</value>
   </data>
   <data name="lblSummary.Help" xml:space="preserve">
     <value>Enter the desired cutoff in characters for the auto-generated summary of blog entries.  To set no limit, enter a value of 0.  Use the avanced option labeled Enforce Summary Truncation to also truncate entries with summaries.  The default is to only truncate auto-generated summaries.</value>
@@ -151,13 +151,13 @@
     <value>Multiple Bloggers</value>
   </data>
   <data name="lblSummary.Text" xml:space="preserve">
-    <value>Limit Auto-Generated Entry Summary To:</value>
+    <value>Limit Auto-Generated Entry Summary to</value>
   </data>
   <data name="lblPortalSearchOption.Help" xml:space="preserve">
     <value>For use the global Portal Search Options for Blog Content you can control it with the options below</value>
   </data>
   <data name="lblMandatory.Text" xml:space="preserve">
-    <value>Make Entry Summary Mandatory:</value>
+    <value>Make Entry Summary Mandatory</value>
   </data>
   <data name="lblUploadOption.Help" xml:space="preserve">
     <value>If you enable this option you give users the permission to upload images and attachments to their blog entry.</value>
@@ -169,7 +169,7 @@
     <value>It is strongly suggested that during search operations you limit the length of the entry returned so that results can be scanned quickly.</value>
   </data>
   <data name="lblShowSummary.Text" xml:space="preserve">
-    <value>Include Summary in Entry:</value>
+    <value>Include Summary in Entry</value>
   </data>
   <data name="lblShowSummary.Help" xml:space="preserve">
     <value>If this option is enabled, the summary (if available) will be shown on the top of the single entry view.</value>
@@ -213,7 +213,7 @@ About Identicon, Wavicon, and MonsterID: Gravatar will be displayed for users wh
     <value>If you enable this option a blog specific title will be displayed in the title bar of the browser</value>
   </data>
   <data name="lblMaxImageWidth.Text" xml:space="preserve">
-    <value>Limit Upload Image Width To:</value>
+    <value>Limit Upload Image Width to</value>
   </data>
   <data name="lblMaxImageWidth.Help" xml:space="preserve">
     <value>You can limit the image width to a maximum with this option</value>
@@ -231,25 +231,25 @@ About Identicon, Wavicon, and MonsterID: Gravatar will be displayed for users wh
     <value>Comment Settings</value>
   </data>
   <data name="lblShowGravatars.Text" xml:space="preserve">
-    <value>Show Avatars:</value>
+    <value>Show Avatars</value>
   </data>
   <data name="lblShowGravatars.Help" xml:space="preserve">
     <value>Check to show Gravatar images next to comments.</value>
   </data>
   <data name="lblGravatarImageWidth.Text" xml:space="preserve">
-    <value>Image Width:</value>
+    <value>Image Width</value>
   </data>
   <data name="lblGravatarImageWidth.Help" xml:space="preserve">
     <value>Enter the width of the Gravatar image.  The default width (48) matches the default style of the comments</value>
   </data>
   <data name="lblGravatarRating.Text" xml:space="preserve">
-    <value>Image Rating:</value>
+    <value>Image Rating</value>
   </data>
   <data name="lblGravatarRating.Help" xml:space="preserve">
     <value>Gravatar images are rated based on the content.  G rated images are appropriate for all audiences while PG, R and X rated images may contain inappropriate for some audiences.</value>
   </data>
   <data name="lblGravatarDefaultImageUrl.Text" xml:space="preserve">
-    <value>Default Image URL:</value>
+    <value>Default Image URL</value>
   </data>
   <data name="lblGravatarDefaultImageUrl.Help" xml:space="preserve">
     <value>These images will be used for comments left by users without a Gravatar.&lt;br/&gt;
@@ -269,7 +269,7 @@ About custom images: provide the complete URL to the image (including "http://")
     <value>If you enable this option, a social bookmarks toolbar will be added to your blog entry page.</value>
   </data>
   <data name="lblShowWebsite.Text" xml:space="preserve">
-    <value>Show Website:</value>
+    <value>Show Website</value>
   </data>
   <data name="lblShowWebsite.Help" xml:space="preserve">
     <value>Check to allow website to be included with comment.</value>
@@ -278,13 +278,13 @@ About custom images: provide the complete URL to the image (including "http://")
     <value>URL to custom avatar image (including "http://").  Used only if "Custom" is selected above.</value>
   </data>
   <data name="lblGravatarDefaultImageCustomURL.Text" xml:space="preserve">
-    <value>Custom Image URL:</value>
+    <value>Custom Image URL</value>
   </data>
   <data name="lblShowTitle.Help" xml:space="preserve">
     <value>Check to allow users to create unique titles for entry comments</value>
   </data>
   <data name="lblShowTitle.Text" xml:space="preserve">
-    <value>Show Title:</value>
+    <value>Show Title</value>
   </data>
   <data name="liCustom.Text" xml:space="preserve">
     <value>Custom</value>
@@ -459,5 +459,14 @@ About custom images: provide the complete URL to the image (including "http://")
   </data>
   <data name="lblAddJQuery.Text" xml:space="preserve">
     <value>Add jQuery</value>
+  </data>
+  <data name="lblCatVocabRoot.Help" xml:space="preserve">
+    <value>A portal level vocabulary root must be specified in order for categories to be available to bloggers for selection.</value>
+  </data>
+  <data name="lblCatVocabRoot.Text" xml:space="preserve">
+    <value>Category Vocabulary Root</value>
+  </data>
+  <data name="NoneSpecified.Text" xml:space="preserve">
+    <value>None Specified</value>
   </data>
 </root>

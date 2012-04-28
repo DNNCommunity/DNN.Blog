@@ -23,33 +23,45 @@ Imports DotNetNuke.Services.Exceptions
 Partial Public Class ViewTagsSettings
  Inherits Entities.Modules.ModuleSettingsBase
 
- Private _settings As Settings.TagViewSettings
+#Region "Private Members"
 
- Private Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Init
-  _settings = DotNetNuke.Modules.Blog.Settings.TagViewSettings.GetTagViewSettings(TabModuleId)
- End Sub
+    Private _settings As Settings.TagViewSettings
 
- Public Overrides Sub LoadSettings()
-  Try
-   If (Page.IsPostBack = False) Then
+#End Region
 
-    rblTagDisplayMode.SelectedValue = _settings.TagDisplayMode
+#Region "Event Handlers"
 
-   End If
-  Catch exc As Exception           'Module failed to load
-   ProcessModuleLoadException(Me, exc)
-  End Try
- End Sub
+    Private Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Init
+        _settings = DotNetNuke.Modules.Blog.Settings.TagViewSettings.GetTagViewSettings(TabModuleId)
+    End Sub
 
- Public Overrides Sub UpdateSettings()
-  Try
+#End Region
 
-   _settings.TagDisplayMode = rblTagDisplayMode.SelectedValue
-   _settings.UpdateSettings()
+#Region "Base Methods"
 
-  Catch exc As Exception           'Module failed to load
-   ProcessModuleLoadException(Me, exc)
-  End Try
- End Sub
+    Public Overrides Sub LoadSettings()
+        Try
+            If (Page.IsPostBack = False) Then
 
+                rblTagDisplayMode.SelectedValue = _settings.TagDisplayMode
+
+            End If
+        Catch exc As Exception           'Module failed to load
+            ProcessModuleLoadException(Me, exc)
+        End Try
+    End Sub
+
+    Public Overrides Sub UpdateSettings()
+        Try
+
+            _settings.TagDisplayMode = rblTagDisplayMode.SelectedValue
+            _settings.UpdateSettings()
+
+        Catch exc As Exception           'Module failed to load
+            ProcessModuleLoadException(Me, exc)
+        End Try
+    End Sub
+
+#End Region
+ 
 End Class

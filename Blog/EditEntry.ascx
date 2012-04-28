@@ -2,7 +2,6 @@
 <%@ Import Namespace="DotNetNuke.Services.Localization" %>
 <%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" TagName="TextEditor" Src="~/controls/TextEditor.ascx" %>
-<%@ Register TagPrefix="dnn" Assembly="DotNetNuke.WebControls" Namespace="DotNetNuke.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <div class="dnnForm dnnBlogEditEntry dnnClear" id="dnnBlogEditEntry">
 	<h2 id="dnnSitePanel-BlogContent" class="dnnFormSectionHead"><a href="" class="dnnFormSectionExpanded"><%= LocalizeString("BlogContent")%></a></h2>
@@ -40,16 +39,18 @@
 				<dnn:texteditor id="teBlogEntry" runat="server" width="550" height="400" />
 			</div>
 		</div>
+		<asp:Panel ID="pnlCategories" runat="server" class="dnnFormItem">
+			<dnn:Label ID="lblCategories" ResourceKey="lblCategories" runat="server" controlname="dtCategories" suffix=":" />
+			<div class="dnnLeft">
+				<dnnweb:DnnTreeView id="dtCategories" runat="server" CheckBoxes="true" DataFieldID="TermID" DataFieldParentID="ParentTermID" DataTextField="Name" DataValueField="TermID" />
+			</div>    
+		</asp:Panel>
 		<div class="dnnFormItem">
 			<dnn:Label ID="lblTags" runat="server" controlname="txtTags" suffix=":" />
 			<asp:TextBox ID="txtTags" runat="server" />	
 			<asp:CustomValidator ID="valtxtTags" runat="server" ClientValidationFunction="serializeTags" ControlToValidate="txtTags" ValidateOnEmpty="true" />
 		</div>
-		<div class="dnnFormItem">
-			<dnn:Label ID="lblCategories" runat="server" ControlToName="treeCategories" suffix=":" />
-			<dnn:dnntree runat="server" id="treeCategories" CheckBoxes="True" SystemImagesPath="~/images/" CollapsedNodeImage="~/images/max.gif" ExpandedNodeImage="~/images/min.gif" />
-		</div>    
-	</fieldset>
+	</fieldset>			
 	<asp:Panel ID="pnlUploads" runat="server" Visible="true">
 		<h2 id="dnnSitePanel-UploadOptions" class="dnnFormSectionHead"><a href="" class=""><%=LocalizeString("secUploadOption")%></a></h2>
 		<fieldset>
@@ -126,6 +127,16 @@
 	(function ($, Sys) {
 		function setupDnnEditBlogEntry() {
 			$('#dnnBlogEditEntry').dnnPanels();
+
+
+			$("#catAvailable").draggable();
+			$("#catSelected").droppable({
+				drop: function (event, ui) {
+					$(this)
+					.addClass("ui-state-highlight");
+				}
+			});
+
 
 			$('.dnnEntryDelete').dnnConfirm({
 				text: '<%= LocalizeString("DeleteItem") %>',

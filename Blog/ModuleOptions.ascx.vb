@@ -24,6 +24,7 @@ Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Services.Exceptions.Exceptions
 Imports DotNetNuke.Services.Localization.Localization
 Imports DotNetNuke.Framework
+Imports DotNetNuke.Services.Localization
 
 Partial Public Class ModuleOptions
     Inherits BlogModuleBase
@@ -35,8 +36,8 @@ Partial Public Class ModuleOptions
             jQuery.RequestUIRegistration()
             'ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js");
 
-
             If Not Page.IsPostBack Then
+                PopulateDropDowns()
                 ' Load settings
                 chkForceDescription.Checked = BlogSettings.EntryDescriptionRequired
                 txtSummaryLimit.Text = BlogSettings.SummaryMaxLength.ToString
@@ -85,6 +86,7 @@ Partial Public Class ModuleOptions
                 chkEnableArchiveDropDown.Checked = BlogSettings.EnableArchiveDropDown
                 chkAllowMultipleCategories.Checked = BlogSettings.AllowMultipleCategories
                 chkUseWLWExcerpt.Checked = BlogSettings.UseWLWExcerpt
+                ddlCatVocabRoot.SelectedValue = BlogSettings.VocabularyId.ToString()
 
                 ' Additional files to load
                 Dim fileList As String = ";" & BlogSettings.IncludeFiles
@@ -101,38 +103,13 @@ Partial Public Class ModuleOptions
                     End If
                 Next
 
-                ' 6/14/2008
-                ' Add icons to radiobutton
-                '
-                ' have to do localization manually, otherwise, built-in localizer will overwrite the changes made here
 
-                Dim li As ListItem
-                For Each li In rblDefaultImage.Items
-                    If li.Value = "" Then li.Text = "<img src=""" + ControlPath + "images/grayman.png"" alt=""" & GetString("liGrayMan.Text", LocalResourceFile) & """ align=""middle""/> " & GetString("liGrayMan.Text", LocalResourceFile)
-                    If li.Value = "identicon" Then li.Text = "<img src=""" + ControlPath + "images/identicon.png"" alt=""" & GetString("liIdenticon.Text", LocalResourceFile) & """ align=""middle""/> " & GetString("liIdenticon.Text", LocalResourceFile)
-                    If li.Value = "wavatar" Then li.Text = "<img src=""" + ControlPath + "images/wavatar.png"" alt=""" & GetString("liWavatar.Text", LocalResourceFile) & """ align=""middle""/> " & GetString("liWavatar.Text", LocalResourceFile)
-                    If li.Value = "monsterid" Then li.Text = "<img src=""" + ControlPath + "images/monsterid.png"" alt=""" & GetString("liMonsterID.Text", LocalResourceFile) & """ align=""middle""/> " & GetString("liMonsterID.Text", LocalResourceFile)
-                    If li.Value = "custom" Then li.Text = "<img src=""" + ControlPath + "images/yourimagehere.png"" alt=""" & GetString("liCustom.Text", LocalResourceFile) & """ align=""middle""/> " & GetString("liCustom.Text", LocalResourceFile)
-                Next
-
-                Dim objBlog As New BlogController
-                cmbPageBlogs.DataSource = objBlog.ListBlogs(PortalId, -1, False)
-                cmbPageBlogs.DataBind()
-                cmbPageBlogs.Items.Insert(0, New ListItem("<" & GetString("Not_Specified", SharedResourceFile) & ">", "-1"))
-                Try
-                    cmbPageBlogs.Items.FindByValue(CStr(BlogSettings.PageBlogs)).Selected = True
-                Catch
-                End Try
                 chkEnableDNNSearch.Checked = BlogSettings.EnableDNNSearch
                 If cmbPageBlogs.Items.Count > 2 Then
                     chkEnableDNNSearch.Enabled = (cmbPageBlogs.SelectedIndex = 0)
                 End If
 
-                ' calculate child blogs
-                Dim totalBlogs As Integer = objBlog.ListBlogsByPortal(PortalId, True).Count
-                Dim parentBlogs As Integer = objBlog.ListBlogsRootByPortal(PortalId).Count
-                lblChildBlogsStatus.Text = String.Format(GetString("lblChildBlogsStatus", LocalResourceFile), CInt(totalBlogs - parentBlogs))
-                DotNetNuke.UI.Utilities.ClientAPI.AddButtonConfirm(cmdMigrateChildblogs, GetString("MigrateConfirm", LocalResourceFile))
+
                 'cmdMigrateChildblogs
 
                 'Load Bookmarks Settings
@@ -208,6 +185,7 @@ Partial Public Class ModuleOptions
                 .AllowWLW = chkAllowWLW.Checked
                 .AllowMultipleCategories = chkAllowMultipleCategories.Checked
                 .UseWLWExcerpt = chkUseWLWExcerpt.Checked
+                .VocabularyId = Convert.ToInt32(ddlCatVocabRoot.SelectedValue)
 
                 ' additional files
                 Dim fileList As String = ""
@@ -270,6 +248,43 @@ Partial Public Class ModuleOptions
 #End Region
 
 #Region "Private Methods"
+
+    Private Sub PopulateDropDowns()
+        ' 6/14/2008
+        ' Add icons to radiobutton
+        ' have to do localization manually, otherwise, built-in localizer will overwrite the changes made here
+        Dim li As ListItem
+        For Each li In rblDefaultImage.Items
+            If li.Value = "" Then li.Text = "<img src=""" + ControlPath + "images/grayman.png"" alt=""" & GetString("liGrayMan.Text", LocalResourceFile) & """ align=""middle""/> " & GetString("liGrayMan.Text", LocalResourceFile)
+            If li.Value = "identicon" Then li.Text = "<img src=""" + ControlPath + "images/identicon.png"" alt=""" & GetString("liIdenticon.Text", LocalResourceFile) & """ align=""middle""/> " & GetString("liIdenticon.Text", LocalResourceFile)
+            If li.Value = "wavatar" Then li.Text = "<img src=""" + ControlPath + "images/wavatar.png"" alt=""" & GetString("liWavatar.Text", LocalResourceFile) & """ align=""middle""/> " & GetString("liWavatar.Text", LocalResourceFile)
+            If li.Value = "monsterid" Then li.Text = "<img src=""" + ControlPath + "images/monsterid.png"" alt=""" & GetString("liMonsterID.Text", LocalResourceFile) & """ align=""middle""/> " & GetString("liMonsterID.Text", LocalResourceFile)
+            If li.Value = "custom" Then li.Text = "<img src=""" + ControlPath + "images/yourimagehere.png"" alt=""" & GetString("liCustom.Text", LocalResourceFile) & """ align=""middle""/> " & GetString("liCustom.Text", LocalResourceFile)
+        Next
+
+        Dim objBlog As New BlogController
+        cmbPageBlogs.DataSource = objBlog.ListBlogs(PortalId, -1, False)
+        cmbPageBlogs.DataBind()
+        cmbPageBlogs.Items.Insert(0, New ListItem("<" & GetString("Not_Specified", SharedResourceFile) & ">", "-1"))
+        Try
+            cmbPageBlogs.Items.FindByValue(CStr(BlogSettings.PageBlogs)).Selected = True
+        Catch
+        End Try
+
+        ' calculate child blogs
+        Dim totalBlogs As Integer = objBlog.ListBlogsByPortal(PortalId, True).Count
+        Dim parentBlogs As Integer = objBlog.ListBlogsRootByPortal(PortalId).Count
+        lblChildBlogsStatus.Text = String.Format(GetString("lblChildBlogsStatus", LocalResourceFile), CInt(totalBlogs - parentBlogs))
+        DotNetNuke.UI.Utilities.ClientAPI.AddButtonConfirm(cmdMigrateChildblogs, GetString("MigrateConfirm", LocalResourceFile))
+
+        ddlCatVocabRoot.DataSource = Terms.GetPortalVocabularies(ModuleContext.PortalId)
+        ddlCatVocabRoot.DataBind()
+
+        Dim catli As New ListItem
+        catli.Text = Localization.GetString("NoneSpecified", LocalResourceFile)
+        catli.Value = "0"
+        ddlCatVocabRoot.Items.Insert(0, catli)
+    End Sub
 
     Private Sub AddFolderToList(ByRef cbList As CheckBoxList, ByVal fullPath As String, ByVal relativePath As String)
         If Not IO.Directory.Exists(fullPath) Then Exit Sub

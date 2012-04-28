@@ -24,18 +24,18 @@ Imports DotNetNuke.Framework
 Imports Telerik.Web.UI
 
 Partial Public Class ViewTags
-    'Inherits BlogModuleBase
     Inherits DotNetNuke.Entities.Modules.PortalModuleBase
 
     Private _settings As Settings.TagViewSettings
     Protected WithEvents rtcTags As DotNetNuke.Web.UI.WebControls.DnnTagCloud
 
+#Region "Event Handlers"
 
     Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
         jQuery.RequestUIRegistration()
         ClientResourceManager.RegisterScript(Page, TemplateSourceDirectory + "/js/jquery.qatooltip.js")
         ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js")
-        'Me.ModuleConfiguration.SupportedFeatures = 0
+
         _settings = DotNetNuke.Modules.Blog.Settings.TagViewSettings.GetTagViewSettings(TabModuleId)
     End Sub
 
@@ -81,9 +81,8 @@ Partial Public Class ViewTags
         Dim link As String = DotNetNuke.Common.NavigateURL(ModuleContext.TabId, "", "tagid=" & term.TermId)
 
         cloudLink.NavigateUrl = link
-
-        'CloudsItemDataBound(Me, New TagCloudEventArgs(Of TermInfo, RadTagCloudItem)(term, cloudLink))
-
     End Sub
+
+#End Region
 
 End Class

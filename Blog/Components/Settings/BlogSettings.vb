@@ -21,6 +21,7 @@
 Imports System.Xml
 
 Namespace Settings
+
     ''' <summary>
     ''' This class abstracts all settings for the module and makes sure they're (a) defaulted and (b) hard typed 
     ''' throughout the application.
@@ -31,7 +32,8 @@ Namespace Settings
     ''' </history>
     Public Class BlogSettings
 
-#Region " Private Members "
+#Region "Private Members"
+
         Private _allSettings As Hashtable
         Private _PageBlogs As Integer = -1
         Private _EnableDNNSearch As Boolean = False
@@ -79,11 +81,13 @@ Namespace Settings
         Private _tabId As Integer = -1
 
         Private Const version As String = "03.05.00"
+        Private _vocabularyId As Integer = 1
+
 #End Region
 
-#Region " Constructors "
-        Public Sub New(ByVal PortalID As Integer, ByVal TabID As Integer)
+#Region "Constructors"
 
+        Public Sub New(ByVal PortalID As Integer, ByVal TabID As Integer)
             _portalId = PortalID
             _tabId = TabID
             Dim mc As New DotNetNuke.Entities.Modules.ModuleController
@@ -136,6 +140,8 @@ Namespace Settings
             Globals.ReadValue(_allSettings, "AllowMultipleCategories", AllowMultipleCategories)
             Globals.ReadValue(_allSettings, "UseWLWExcerpt", UseWLWExcerpt)
 
+            Globals.ReadValue(_allSettings, "VocabularyId", VocabularyId)
+
             If DataVersion < version Then
                 DataVersion = version
                 Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "DataVersion", version)
@@ -153,7 +159,6 @@ Namespace Settings
                 End If
             Catch
             End Try
-
         End Sub
 
         Public Shared Function GetBlogSettings(ByVal PortalId As Integer, ByVal TabId As Integer) As BlogSettings
@@ -165,11 +170,12 @@ Namespace Settings
             End If
             Return bs
         End Function
+
 #End Region
 
-#Region " Public Members "
-        Public Overridable Sub UpdateSettings()
+#Region "Public Members"
 
+        Public Overridable Sub UpdateSettings()
             Dim objModules As New DotNetNuke.Entities.Modules.ModuleController
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "PageBlogs", Me.PageBlogs.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "EnableDNNSearch", Me.EnableDNNSearch.ToString)
@@ -213,13 +219,15 @@ Namespace Settings
             Business.Utility.UpdateBlogModuleSetting(_portalId, -1, "AllowMultipleCategories", Me.AllowMultipleCategories.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, -1, "UseWLWExcerpt", Me.UseWLWExcerpt.ToString)
 
+            ' We save this at 'global' and tab level so its available to WLW as well as normal module usage.
+            Business.Utility.UpdateBlogModuleSetting(_portalId, -1, "VocabularyId", Me.VocabularyId.ToString)
+            Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "VocabularyId", Me.VocabularyId.ToString)
+
             Dim CacheKey As String = "BlogSettings" & _portalId.ToString & "-" & _tabId.ToString
             DotNetNuke.Common.Utilities.DataCache.RemoveCache(CacheKey)
-
         End Sub
 
         Public Sub WriteWLWManifest(ByRef output As XmlTextWriter)
-
             output.Formatting = Formatting.Indented
             output.WriteStartDocument()
             output.WriteStartElement("manifest")
@@ -253,11 +261,12 @@ Namespace Settings
             output.WriteEndElement() ' manifest
             output.WriteEndElement() ' options
             output.Flush()
-
         End Sub
+
 #End Region
 
-#Region " Properties "
+#Region "Properties"
+
         Public Property PageBlogs() As Integer
             Get
                 Return _PageBlogs
@@ -609,6 +618,21 @@ Namespace Settings
             End Get
             Set(ByVal value As String)
                 _includeFiles = value
+            End Set
+        End Property
+
+        ''' <summary>
+        ''' This is the base vocabulary (restricted to current portal level) to be used for all categories selection options.
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Property VocabularyId() As Integer
+            Get
+                Return _vocabularyId
+            End Get
+            Set(value As Integer)
+                _vocabularyId = value
             End Set
         End Property
 

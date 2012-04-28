@@ -48,7 +48,7 @@ Public Class Terms
     End Sub
 
     ''' <summary>
-    ''' 
+    ''' This will remove all terms from a content item object (categories or tags)
     ''' </summary>
     ''' <param name="objContent"></param>
     ''' <remarks></remarks>
@@ -56,6 +56,13 @@ Public Class Terms
         Util.GetTermController().RemoveTermsFromContent(objContent)
     End Sub
 
+    ''' <summary>
+    ''' This method will create a term under a specific vocabulary (meant for tags) in the core data store and return the newly created term.
+    ''' </summary>
+    ''' <param name="name"></param>
+    ''' <param name="vocabularyId"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Friend Shared Function CreateAndReturnTerm(name As String, vocabularyId As Integer) As Term
         Dim termController As ITermController = DotNetNuke.Entities.Content.Common.Util.GetTermController()
         Dim existantTerm As Term = termController.GetTermsByVocabulary(vocabularyId).Where(Function(t) t.Name.ToLower() = name.ToLower()).FirstOrDefault()
@@ -73,7 +80,7 @@ Public Class Terms
     End Function
 
     ''' <summary>
-    ''' 
+    ''' This method checks to see if a term exists under a specific vocabulary and returns it (if available)
     ''' </summary>
     ''' <param name="id"></param>
     ''' <param name="vocabularyId"></param>
@@ -82,6 +89,20 @@ Public Class Terms
         Dim termController As ITermController = DotNetNuke.Entities.Content.Common.Util.GetTermController()
         Dim existantTerm As Term = termController.GetTermsByVocabulary(vocabularyId).Where(Function(t) t.TermId = id).FirstOrDefault()
         Return existantTerm
+    End Function
+
+    ''' <summary>
+    ''' This method queries the core Vocabulary and returns only application level vocabularies available to the current portal.
+    ''' </summary>
+    ''' <param name="portalId"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Friend Shared Function GetPortalVocabularies(portalId As Integer) As List(Of Vocabulary)
+        Dim cntVocab As IVocabularyController = DotNetNuke.Entities.Content.Common.Util.GetVocabularyController()
+        Dim colVocabularies As IQueryable(Of Vocabulary) = cntVocab.GetVocabularies()
+        Dim portalVocabularies As IQueryable(Of Vocabulary) = From v In colVocabularies Where v.ScopeTypeId = 2 And v.ScopeId = portalId
+
+        Return portalVocabularies.ToList()
     End Function
 
 End Class
