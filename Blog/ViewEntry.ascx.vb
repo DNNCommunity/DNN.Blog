@@ -276,10 +276,10 @@ Partial Public Class ViewEntry
                     txtWebsite.ReadOnly = Not m_oBlog.AllowAnonymous
 
                     If ModuleContext.PortalSettings.UserId > 0 Then
-                        litAddComment.Text = "<a href='#' id='linkAdd' class='dnnPrimaryAction'>" + Localization.GetString("AddComment", LocalResourceFile) + "</a>"
+                        litAddComment.Text = "<a href='#AddComment' id='linkAdd' class='dnnPrimaryAction'>" + Localization.GetString("AddComment", LocalResourceFile) + "</a>"
                     Else
                         If m_oBlog.AllowAnonymous Then
-                            litAddComment.Text = "<a href='#' id='linkAdd' class='dnnPrimaryAction'>" + Localization.GetString("AddComment", LocalResourceFile) + "</a>"
+                            litAddComment.Text = "<a href='#AddComment' id='linkAdd' class='dnnPrimaryAction'>" + Localization.GetString("AddComment", LocalResourceFile) + "</a>"
                         Else
                             Dim returnUrl As String = HttpContext.Current.Request.RawUrl
                             If returnUrl.IndexOf("?returnurl=") <> -1 Then
@@ -298,31 +298,9 @@ Partial Public Class ViewEntry
                     'title and description for trackbacks
                     lnkTrackBack.NavigateUrl = HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) & Me.ControlPath & "Trackback.aspx?id=" & m_oEntry.EntryID & "&blogid=" & m_oEntry.BlogID
 
-                    'Only show the add email row if we are showing Gravatars - DW - 4/22/2008
-                    trGravatarEmail.Visible = BlogSettings.ShowGravatars
-
-                    'Only show the add website row if we are showing URL with comments - 
-                    'DW(-6 / 6 / 2008)
-                    trCommentWebsite.Visible = BlogSettings.ShowWebsite
-
-                    ' Only show the title row if unique comment titles are allowed in the settings
-                    ' Rip Rowan 6/13/2008
-                    trCommentTitle.Visible = BlogSettings.ShowCommentTitle
-
-                    'Additionally, only show Gravatar Preview and checkbox if showing Gravatars
-                    'DW - 06/06/2008
-                    'Added trGravatarEmail
-                    'RR - 06/12/2008
-
-                    trGravatarEmail.Visible = BlogSettings.ShowGravatars
-                    trUseGravatar.Visible = BlogSettings.ShowGravatars
-                    tdGravatarPreview.Visible = BlogSettings.ShowGravatars
-                    If BlogSettings.ShowGravatars Then
-                        tdAuthor.ColSpan = 1
-                    Else
-                        tdAuthor.ColSpan = 2
-                    End If
-
+                    pnlWebsite.Visible = BlogSettings.ShowWebsite
+                    pnlCommentTitle.Visible = BlogSettings.ShowCommentTitle
+                    pnlGravatar.Visible = BlogSettings.ShowGravatars
                 End If
 
                 ' Make sure content item and moduleid are proper here (because we integrated content items years after module was built)
@@ -341,14 +319,14 @@ Partial Public Class ViewEntry
                     cntEntry.UpdateEntry(m_oEntry, ModuleContext.TabId, ModuleContext.PortalId)
                 End If
 
-                rowCaptcha.Visible = (pnlComments.Visible And m_oBlog.UseCaptcha And Not Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, ModuleId))
+                pnlCaptcha.Visible = (pnlComments.Visible And m_oBlog.UseCaptcha And Not Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, ModuleId))
             End If
 
             AddGravatarImagePreview()
 
             txtClientIP.Text = HttpContext.Current.Request.UserHostAddress.ToString
 
-            If rowCaptcha.Visible Then
+            If pnlCaptcha.Visible Then
                 ctlCaptcha.ErrorMessage = Localization.GetString("InvalidCaptcha", Me.LocalResourceFile)
                 ctlCaptcha.Text = Localization.GetString("CaptchaText", Me.LocalResourceFile)
             End If

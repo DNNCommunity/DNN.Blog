@@ -61,7 +61,7 @@
     </div>
     <asp:Panel ID="pnlComments" runat="server" Visible="False">
         <a id="Comments" name="Comments"></a>
-        <h3 class="BlogComments"><a href="#AddComment"><asp:Label ID="lblComments" runat="server" /></a></h3>
+        <h3 class="BlogComments"><a id="linkAddComment" href="#AddComment"><asp:Label ID="lblComments" runat="server" /></a></h3>
         <asp:ImageButton ID="lnkDeleteAllUnapproved" runat="server" ImageUrl="~/images/delete.gif" Visible="false" CausesValidation="false" CssClass="dnnBlogDeleteAllComments" />
         <asp:LinkButton ID="btDeleteAllUnapproved" runat="server" Visible="false" resourcekey="DeleteAllUnapproved" CssClass="dnnBlogDeleteAllComments" CausesValidation="false" /><br />
         <asp:DataList ID="lstComments" runat="server" Width="100%">
@@ -94,85 +94,55 @@
     </asp:Panel>
     <asp:Panel ID="pnlAddComment" runat="server">
         <a id="AddComment" name="AddComment"></a>
-        <asp:ValidationSummary ID="valSummary" runat="server" CssClass="NormalRed" Enabled="False" />
-        <asp:RequiredFieldValidator ID="valCommentAuthor" runat="server" ResourceKey="valCommentAuthor.ErrorMessage" CssClass="NormalRed" Enabled="False" ErrorMessage="Author is required" ControlToValidate="txtAuthor" Display="None" EnableClientScript="False" />
-        <asp:RequiredFieldValidator ID="valCommentTitle" runat="server" ResourceKey="valCommentTitle.ErrorMessage" CssClass="NormalRed" Enabled="False" ErrorMessage="Title is required" ControlToValidate="txtCommentTitle" Display="None" EnableClientScript="False" />
-        <asp:RequiredFieldValidator ID="valComment" runat="server" ResourceKey="valComment.ErrorMessage" CssClass="NormalRed" Enabled="False" ErrorMessage="Comment is required" ControlToValidate="txtComment" Display="None" EnableClientScript="False" />
-        <div id="CommentForm">
+        <asp:ValidationSummary ID="valSummary" runat="server" CssClass="dnnFormMessage dnnFormValidationSummary" Enabled="False" />
+        <asp:RequiredFieldValidator ID="valCommentAuthor" runat="server" ResourceKey="valCommentAuthor.ErrorMessage" CssClass="dnnFormError" Enabled="False" ErrorMessage="Author is required" ControlToValidate="txtAuthor" Display="None" EnableClientScript="False" />
+        <asp:RequiredFieldValidator ID="valCommentTitle" runat="server" ResourceKey="valCommentTitle.ErrorMessage" CssClass="dnnFormError" Enabled="False" ErrorMessage="Title is required" ControlToValidate="txtCommentTitle" Display="None" EnableClientScript="False" />
+        <asp:RequiredFieldValidator ID="valComment" runat="server" ResourceKey="valComment.ErrorMessage" CssClass="dnnFormError" Enabled="False" ErrorMessage="Comment is required" ControlToValidate="txtComment" Display="None" EnableClientScript="False" />
+        <div id="CommentForm" class="dnnClear">
             <fieldset>
-                <table cellspacing="1" cellpadding="1" width="100%" border="0">
-                    <tr>
-                        <td class="BlogLeftTD" width="1%">
-                            <asp:Label ID="lblAuthor" runat="server" ResourceKey="lblAuthor" CssClass="NormalBold" Width="80px" />
-                        </td>
-                        <td id="tdAuthor" valign="top" runat="server">
-                            <asp:TextBox ID="txtAuthor" TabIndex="1" runat="server" Width="99%" />
-                        </td>
-                        <td id="tdGravatarPreview" valign="top" align="right" width="1%" rowspan="2" runat="server">
-                            <div class="BlogGravatarPreview">
-                                <asp:Image ID="imgGravatarPreview" runat="server" AlternateText="Gravatar Preview" />
-                            </div>
-                        </td>
-                    </tr>
-                    <tr id="trGravatarEmail" runat="server">
-                        <td class="BlogLeftTD" width="1%">
-                            <asp:Label ID="lblEmail" runat="server" ResourceKey="lblEmail" CssClass="NormalBold" />
-                        </td>
-                        <td valign="top">
-                            <asp:TextBox ID="txtEmail" TabIndex="2" runat="server" Width="99%" />
-                        </td>
-                    </tr>
-                    <tr id="trUseGravatar" runat="server">
-                        <td></td>
-                        <td><asp:Label ID="lblEmailExplanation" runat="server" ResourceKey="lblEmailExplanation" CssClass="Normal" /></td>
-                        <td></td>
-                    </tr>
-                    <tr id="trCommentWebsite" runat="server">
-                        <td class="BlogLeftTD" width="1%">
-                            <asp:Label ID="lblWebsite" runat="server" ResourceKey="lblWebsite" CssClass="NormalBold" Width="80px" />
-                        </td>
-                        <td colspan="2">
-                            <asp:TextBox ID="txtWebsite" TabIndex="3" runat="server" Width="99%" />
-                        </td>
-                    </tr>
-                    <tr id="trCommentTitle" runat="server">
-                        <td class="BlogLeftTD" width="1%">
-                            <asp:Label ID="lblCommentTitle" runat="server" ResourceKey="lblCommentTitle" CssClass="NormalBold" />
-                        </td>
-                        <td colspan="2">
-                            <asp:TextBox ID="txtCommentTitle" TabIndex="4" runat="server" Width="99%" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            <asp:Label ID="lblComment" runat="server" ResourceKey="lblComment" CssClass="NormalBold" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            <asp:TextBox ID="txtComment" TabIndex="5" runat="server" Width="99%" TextMode="MultiLine" Rows="8" />
-                        </td>
-                    </tr>
-                    <tr id="rowCaptcha" runat="server">
-                        <td colspan="3">
-                            <asp:Label ID="lblCaptcha" runat="server" ResourceKey="lblCaptcha" CssClass="NormalBold" Width="80px" />
-                            <dnn:CaptchaControl id="ctlCaptcha" tabIndex="6" runat="server" cssclass="Normal" errorstyle-cssclass="NormalRed" captchawidth="130" captchaheight="40" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            <ul class="dnnActions">
-                                <li><asp:LinkButton ID="cmdAddComment" TabIndex="7" runat="server" CssClass="dnnPrimaryAction" /></li>
-                                <li><asp:LinkButton ID="cmdDeleteComment" TabIndex="9" runat="server" ResourceKey="cmdDelete" CssClass="dnnSecondaryAction" Visible="False" /></li>
-                            </ul>
-                        </td>
-                    </tr>
-                </table>
+                <div class="dnnFormItem">
+                    <label for="<%= txtAuthor.ClientID %>"><%= Localization.GetString("lblAuthor", LocalResourceFile)%></label>
+                    <asp:TextBox ID="txtAuthor" TabIndex="1" runat="server" />                   
+                </div>
+                <asp:Panel runat="server" ID="pnlGravatar">
+                    <div class="dnnFormItem">
+                        <label for="<%= txtEmail.ClientID %>"><%= Localization.GetString("lblEmail", LocalResourceFile)%></label>
+                        <asp:TextBox ID="txtEmail" TabIndex="2" runat="server" />
+                    </div>
+                    <div class="dnnFormItem">
+                        <label>Email optional:</label>
+                        <div class="dnnLeft">
+                            <%= Localization.GetString("lblEmailExplanation", LocalResourceFile)%>
+                        </div>
+                        <div class="dnnRight">
+                            <asp:Image ID="imgGravatarPreview" runat="server" AlternateText="Gravatar Preview" />
+                        </div>
+                    </div>
+                </asp:Panel>
+                <asp:Panel class="dnnFormItem" id="pnlWebsite" runat="server">
+                    <label for="<%= txtWebsite.ClientID %>"><%= Localization.GetString("lblWebsite", LocalResourceFile)%></label>
+                    <asp:TextBox ID="txtWebsite" TabIndex="3" runat="server" />
+                </asp:Panel>
+                <asp:Panel class="dnnFormItem" id="pnlCommentTitle" runat="server">
+                    <label for="<%= txtCommentTitle.ClientID %>"><%= Localization.GetString("lblCommentTitle", LocalResourceFile)%></label>
+                    <asp:TextBox ID="txtCommentTitle" TabIndex="4" runat="server" />
+                </asp:Panel>
+                <div class="dnnFormItem">
+                    <label for="<%= txtComment.ClientID %>"><%= Localization.GetString("lblComment", LocalResourceFile)%></label>
+                    <asp:TextBox ID="txtComment" TabIndex="5" runat="server" TextMode="MultiLine" Rows="8" Width="350" />
+                </div>
+                <asp:Panel ID="pnlCaptcha" runat="server" CssClass="dnnFormItem">
+                    <label for="<%= ctlCaptcha.ClientID %>"><%= Localization.GetString("lblCaptcha", LocalResourceFile)%></label>
+                    <dnn:CaptchaControl id="ctlCaptcha" tabIndex="6" runat="server" errorstyle-cssclass="dnnFormError" captchawidth="130" captchaheight="40" />
+                </asp:Panel>
+                <ul class="dnnActions">
+                    <li><asp:LinkButton ID="cmdAddComment" TabIndex="7" runat="server" CssClass="dnnPrimaryAction" /></li>
+                    <li><asp:LinkButton ID="cmdDeleteComment" TabIndex="9" runat="server" ResourceKey="cmdDelete" CssClass="dnnSecondaryAction" Visible="False" /></li>
+                </ul>
             </fieldset>
         </div>
-        <ul class="dnnActions">
+        <ul class="dnnActions" id="ulAddComment">
             <li><asp:Literal ID="litAddComment" runat="server" /></li>
-            <li><asp:LinkButton ID="cmdCancel" TabIndex="8" runat="server" ResourceKey="cmdCancel" CssClass="dnnSecondaryAction" CausesValidation="False" /></li>
         </ul>
         <asp:TextBox ID="txtClientIP" runat="server" Visible="false" />
     </asp:Panel>
@@ -187,9 +157,15 @@
             $("#linkAdd").click(function () {
                 $("#CommentForm").show('highlight', '', 500, '');
                 $("#linkAdd").hide();
-                return false;
+                $("#ulAddComment").hide();
+                return true;
             });
-
+            $("#linkAddComment").click(function () {
+                $("#CommentForm").show('highlight', '', 500, '');
+                $("#linkAdd").hide();
+                $("#ulAddComment").hide();
+                return true;
+            });
 
             $('.dnnBlogCommentDelete').dnnConfirm({
                 text: '<%= LocalizeString("DeleteItem") %>',

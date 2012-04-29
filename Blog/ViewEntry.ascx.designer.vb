@@ -329,24 +329,6 @@ Partial Public Class ViewEntry
     Protected WithEvents valComment As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
     '''<summary>
-    '''lblAuthor control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblAuthor As Global.System.Web.UI.WebControls.Label
-
-    '''<summary>
-    '''tdAuthor control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents tdAuthor As Global.System.Web.UI.HtmlControls.HtmlTableCell
-
-    '''<summary>
     '''txtAuthor control.
     '''</summary>
     '''<remarks>
@@ -356,40 +338,13 @@ Partial Public Class ViewEntry
     Protected WithEvents txtAuthor As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
-    '''tdGravatarPreview control.
+    '''pnlGravatar control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents tdGravatarPreview As Global.System.Web.UI.HtmlControls.HtmlTableCell
-
-    '''<summary>
-    '''imgGravatarPreview control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents imgGravatarPreview As Global.System.Web.UI.WebControls.Image
-
-    '''<summary>
-    '''trGravatarEmail control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents trGravatarEmail As Global.System.Web.UI.HtmlControls.HtmlTableRow
-
-    '''<summary>
-    '''lblEmail control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblEmail As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents pnlGravatar As Global.System.Web.UI.WebControls.Panel
 
     '''<summary>
     '''txtEmail control.
@@ -401,40 +356,22 @@ Partial Public Class ViewEntry
     Protected WithEvents txtEmail As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
-    '''trUseGravatar control.
+    '''imgGravatarPreview control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents trUseGravatar As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents imgGravatarPreview As Global.System.Web.UI.WebControls.Image
 
     '''<summary>
-    '''lblEmailExplanation control.
+    '''pnlWebsite control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblEmailExplanation As Global.System.Web.UI.WebControls.Label
-
-    '''<summary>
-    '''trCommentWebsite control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents trCommentWebsite As Global.System.Web.UI.HtmlControls.HtmlTableRow
-
-    '''<summary>
-    '''lblWebsite control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblWebsite As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents pnlWebsite As Global.System.Web.UI.WebControls.Panel
 
     '''<summary>
     '''txtWebsite control.
@@ -446,22 +383,13 @@ Partial Public Class ViewEntry
     Protected WithEvents txtWebsite As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
-    '''trCommentTitle control.
+    '''pnlCommentTitle control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents trCommentTitle As Global.System.Web.UI.HtmlControls.HtmlTableRow
-
-    '''<summary>
-    '''lblCommentTitle control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblCommentTitle As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents pnlCommentTitle As Global.System.Web.UI.WebControls.Panel
 
     '''<summary>
     '''txtCommentTitle control.
@@ -473,15 +401,6 @@ Partial Public Class ViewEntry
     Protected WithEvents txtCommentTitle As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
-    '''lblComment control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblComment As Global.System.Web.UI.WebControls.Label
-
-    '''<summary>
     '''txtComment control.
     '''</summary>
     '''<remarks>
@@ -491,22 +410,13 @@ Partial Public Class ViewEntry
     Protected WithEvents txtComment As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
-    '''rowCaptcha control.
+    '''pnlCaptcha control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents rowCaptcha As Global.System.Web.UI.HtmlControls.HtmlTableRow
-
-    '''<summary>
-    '''lblCaptcha control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblCaptcha As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents pnlCaptcha As Global.System.Web.UI.WebControls.Panel
 
     '''<summary>
     '''ctlCaptcha control.
@@ -543,15 +453,6 @@ Partial Public Class ViewEntry
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents litAddComment As Global.System.Web.UI.WebControls.Literal
-
-    '''<summary>
-    '''cmdCancel control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents cmdCancel As Global.System.Web.UI.WebControls.LinkButton
 
     '''<summary>
     '''txtClientIP control.
