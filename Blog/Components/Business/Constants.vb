@@ -45,7 +45,7 @@ Public Class Constants
     ''' </summary>
     Public Const SeoKeywordsLimit As Integer = 15
 
-    Public Const SharedResourceFileName As String = "~/DesktopModules/Blog/App_LocalResources/SharedResources.ascx.resx"
+    Public Const SharedResourceFileName As String = "~/DesktopModules/Blog/App_LocalResources/SharedResources.resx"
 
     Public Const ModuleCacheKeyPrefix As String = "DNN_Blog_"
 

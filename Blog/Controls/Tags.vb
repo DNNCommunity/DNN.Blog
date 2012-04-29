@@ -75,7 +75,7 @@ Public Class Tags
     ''' </summary>
     Friend ReadOnly Property SharedResourceFile() As String
         Get
-            Return ResolveUrl("~/DesktopModules/Blog/App_LocalResources/SharedResources.ascx.resx")
+            Return ResolveUrl("~/DesktopModules/Blog/App_LocalResources/SharedResources.resx")
         End Get
     End Property
 

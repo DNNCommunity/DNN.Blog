@@ -368,7 +368,7 @@
     <Content Include="App_LocalResources\ViewBlog.ascx.resx" />
     <Content Include="App_LocalResources\ViewCategories.ascx.resx" />
     <Content Include="App_LocalResources\ViewEntry.ascx.resx" />
-    <Content Include="App_LocalResources\SharedResources.ascx.resx" />
+    <Content Include="App_LocalResources\SharedResources.resx" />
     <Content Include="App_LocalResources\ViewTagsSettings.ascx.resx" />
     <Content Include="App_LocalResources\MassEdit.ascx.resx" />
     <Content Include="App_LocalResources\RecentComments.ascx.resx" />

@@ -156,4 +156,7 @@
   <data name="posts.text" xml:space="preserve">
     <value>posts</value>
   </data>
+  <data name="GHOSTWRITER.Text" xml:space="preserve">
+    <value>Ghost Writer</value>
+  </data>
 </root>

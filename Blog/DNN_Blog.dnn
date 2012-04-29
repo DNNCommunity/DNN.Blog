@@ -95,6 +95,9 @@
 							  <viewOrder>0</viewOrder>
 						  </moduleControl>
 					  </moduleControls>
+					  <permissions>
+						  <permission code="DNN_BLOG_MODULE" key="GHOSTWRITER" name="Ghost Writer" />
+					  </permissions>
 				  </moduleDefinition>
 				  <moduleDefinition>
 					  <friendlyName>Blog_List</friendlyName>
@@ -184,6 +187,9 @@
 							  <viewOrder>0</viewOrder>
 						  </moduleControl>
 					  </moduleControls>
+					  <permissions>
+						  <permission code="DNN_BLOG_MODULE" key="GHOSTWRITER" name="Ghost Writer" />
+					  </permissions>
 				  </moduleDefinition>
 				  <moduleDefinition>
 					  <friendlyName>Search_Blog</friendlyName>
