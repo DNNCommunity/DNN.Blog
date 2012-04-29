@@ -391,7 +391,8 @@ Namespace Business
 
 #End Region
 
-#Region " Blog Settings "
+#Region "Blog Settings"
+
         Public Shared Sub UpgradeApplication(ByVal PortalID As Integer, ByVal DataVersion As String)
             Select Case DataVersion
                 Case "03.05.00"
@@ -415,6 +416,7 @@ Namespace Business
             End If
             Return blogTabId
         End Function
+
 #End Region
 
 #Region " Trackback "

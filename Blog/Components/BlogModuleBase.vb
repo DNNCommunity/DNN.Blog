@@ -39,9 +39,11 @@ Public Class BlogModuleBase
 #Region " Public Enums "
 #End Region
 
-#Region " Public Members "
-  Public MyActions As New Entities.Modules.Actions.ModuleActionCollection
-  Public Shared RssView As RssViews
+#Region "Public Members"
+
+    Public MyActions As New Entities.Modules.Actions.ModuleActionCollection
+    Public Shared RssView As RssViews
+
 #End Region
 
 #Region "Public Methods"
@@ -52,42 +54,46 @@ Public Class BlogModuleBase
 
 #End Region
 
-#Region " Public Properties "
-  Public ReadOnly Property BasePage() As DotNetNuke.Framework.CDefault
-    Get
-      Try
-        Return CType(Me.Page, DotNetNuke.Framework.CDefault)
-      Catch
-        Return Nothing
-      End Try
-    End Get
-  End Property
+#Region "Public Properties"
 
-  Public Property BlogSettings() As Settings.BlogSettings
-    Get
-      If _blogSettings Is Nothing Then
-        _blogSettings = DotNetNuke.Modules.Blog.Settings.BlogSettings.GetBlogSettings(PortalId, TabId)
-      End If
-      Return _blogSettings
-    End Get
-    Set(ByVal value As Settings.BlogSettings)
-      _blogSettings = value
-    End Set
-  End Property
+    Public ReadOnly Property BasePage() As DotNetNuke.Framework.CDefault
+        Get
+            Try
+                Return CType(Me.Page, DotNetNuke.Framework.CDefault)
+            Catch
+                Return Nothing
+            End Try
+        End Get
+    End Property
 
-  Public Property OutputAdditionalFiles() As Boolean
-    Get
-      Return _outputAdditionalFiles
-    End Get
-    Set(ByVal value As Boolean)
-      _outputAdditionalFiles = value
-    End Set
-  End Property
+    Public Property BlogSettings() As Settings.BlogSettings
+        Get
+            If _blogSettings Is Nothing Then
+                _blogSettings = DotNetNuke.Modules.Blog.Settings.BlogSettings.GetBlogSettings(PortalId, TabId)
+            End If
+            Return _blogSettings
+        End Get
+        Set(ByVal value As Settings.BlogSettings)
+            _blogSettings = value
+        End Set
+    End Property
+
+    Public Property OutputAdditionalFiles() As Boolean
+        Get
+            Return _outputAdditionalFiles
+        End Get
+        Set(ByVal value As Boolean)
+            _outputAdditionalFiles = value
+        End Set
+    End Property
+
 #End Region
 
-#Region " Private Members "
-  Private _blogSettings As Settings.BlogSettings
-  Private _outputAdditionalFiles As Boolean = False
+#Region "Private Members"
+
+    Private _blogSettings As Settings.BlogSettings
+    Private _outputAdditionalFiles As Boolean = False
+
 #End Region
 
 #Region "Event Handlers"

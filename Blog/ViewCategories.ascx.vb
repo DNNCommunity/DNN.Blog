@@ -18,25 +18,73 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports DotNetNuke.Modules.Blog.Business
+Imports DotNetNuke.Entities.Content.Taxonomy
+Imports System.Linq
+Imports Telerik.Web.UI
 
 Partial Class ViewCategories
     Inherits DotNetNuke.Entities.Modules.PortalModuleBase
+
+#Region "Private Members"
+
+    Private _blogSettings As Settings.BlogSettings
+
+    Private Property BlogSettings() As Settings.BlogSettings
+        Get
+            If _blogSettings Is Nothing Then
+                _blogSettings = DotNetNuke.Modules.Blog.Settings.BlogSettings.GetBlogSettings(PortalId, -1)
+            End If
+            Return _blogSettings
+        End Get
+        Set(ByVal value As Settings.BlogSettings)
+            _blogSettings = value
+        End Set
+    End Property
+
+    Private ReadOnly Property VocabularyId() As Integer
+        Get
+            Return BlogSettings.VocabularyId
+        End Get
+    End Property
+
+#End Region
 
 #Region "Event Handlers"
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         If Not Page.IsPostBack Then
 
-            ' we need to get the categories to display (depends on what is in the URL)
+            If VocabularyId > 0 Then
+                Dim termController As ITermController = DotNetNuke.Entities.Content.Common.Util.GetTermController()
+                Dim colCategories As IQueryable(Of Term) = termController.GetTermsByVocabulary(VocabularyId)
 
+                dtCategories.DataSource = colCategories
+                dtCategories.DataBind()
+            End If
         End If
     End Sub
 
-#End Region
+    Protected Sub RptTagsItemDataBound(sender As Object, e As RepeaterItemEventArgs)
+        Dim tagControl As Tags = DirectCast(e.Item.FindControl("dbaSingleTag"), Tags)
+        Dim term As TermInfo = DirectCast(e.Item.DataItem, TermInfo)
+        Dim colTerms As New List(Of TermInfo)
 
-#Region "Private Methods"
+        If term IsNot Nothing Then
+            colTerms.Add(term)
+        End If
 
+        tagControl.ModContext = ModuleContext
+        tagControl.DataSource = colTerms
+        tagControl.CountMode = Constants.TagMode.ShowTotalUsage
+        tagControl.DataBind()
+    End Sub
+
+    Protected Sub TvNodeItemDataBound(sender As Object, e As RadTreeNodeEventArgs)
+        'Dim term As TermInfo = DirectCast(e.DataItem, TermInfo)
+
+        Dim categoryId As Integer = Convert.ToInt32(e.Node.Value)
+        e.Node.NavigateUrl = ModuleContext.NavigateUrl(ModuleContext.TabId, "", False, "catid=" + categoryId.ToString())
+    End Sub
 
 #End Region
 

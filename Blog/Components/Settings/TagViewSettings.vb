@@ -30,54 +30,58 @@ Namespace Settings
  ''' </history>
  Public Class TagViewSettings
 
-#Region " Private Members "
-  Private _allSettings As Hashtable
-  Private _tabModuleId As Integer = -1
-  Private _TagDisplayMode As String = "List"
+#Region "Private Members"
+
+        Private _allSettings As Hashtable
+        Private _tabModuleId As Integer = -1
+        Private _TagDisplayMode As String = "List"
+
 #End Region
 
-#Region " Constructors "
-  Public Sub New(ByVal TabModuleId As Integer)
+#Region "Constructors"
 
-   _tabModuleId = TabModuleId
-   _allSettings = (New DotNetNuke.Entities.Modules.ModuleController).GetTabModuleSettings(_tabModuleId)
-   Globals.ReadValue(_allSettings, "TagDisplayMode", TagDisplayMode)
+        Public Sub New(ByVal TabModuleId As Integer)
+            _tabModuleId = TabModuleId
+            _allSettings = (New DotNetNuke.Entities.Modules.ModuleController).GetTabModuleSettings(_tabModuleId)
+            Globals.ReadValue(_allSettings, "TagDisplayMode", TagDisplayMode)
+        End Sub
 
-  End Sub
+        Public Shared Function GetTagViewSettings(ByVal TabModuleId As Integer) As TagViewSettings
+            Dim CacheKey As String = "TagViewSettings" & TabModuleId.ToString
+            Dim bs As TagViewSettings = CType(DotNetNuke.Common.Utilities.DataCache.GetCache(CacheKey), TagViewSettings)
+            If bs Is Nothing Then
+                bs = New TagViewSettings(TabModuleId)
+                DotNetNuke.Common.Utilities.DataCache.SetCache(CacheKey, bs)
+            End If
+            Return bs
+        End Function
 
-  Public Shared Function GetTagViewSettings(ByVal TabModuleId As Integer) As TagViewSettings
-   Dim CacheKey As String = "TagViewSettings" & TabModuleId.ToString
-   Dim bs As TagViewSettings = CType(DotNetNuke.Common.Utilities.DataCache.GetCache(CacheKey), TagViewSettings)
-   If bs Is Nothing Then
-    bs = New TagViewSettings(TabModuleId)
-    DotNetNuke.Common.Utilities.DataCache.SetCache(CacheKey, bs)
-   End If
-   Return bs
-  End Function
 #End Region
 
-#Region " Public Members "
-  Public Overridable Sub UpdateSettings()
+#Region "Public Members"
 
-   Dim objModules As New DotNetNuke.Entities.Modules.ModuleController
-   With objModules
-    .UpdateTabModuleSetting(_tabModuleId, "TagDisplayMode", TagDisplayMode)
-   End With
-   Dim CacheKey As String = "TagViewSettings" & _tabModuleId.ToString
-   DotNetNuke.Common.Utilities.DataCache.RemoveCache(CacheKey)
+        Public Overridable Sub UpdateSettings()
+            Dim objModules As New DotNetNuke.Entities.Modules.ModuleController
+            With objModules
+                .UpdateTabModuleSetting(_tabModuleId, "TagDisplayMode", TagDisplayMode)
+            End With
+            Dim CacheKey As String = "TagViewSettings" & _tabModuleId.ToString
+            DotNetNuke.Common.Utilities.DataCache.RemoveCache(CacheKey)
+        End Sub
 
-  End Sub
 #End Region
 
-#Region " Properties "
-  Public Property TagDisplayMode() As String
-   Get
-    Return _TagDisplayMode
-   End Get
-   Set(ByVal Value As String)
-    _TagDisplayMode = Value
-   End Set
-  End Property
+#Region "Properties"
+
+        Public Property TagDisplayMode() As String
+            Get
+                Return _TagDisplayMode
+            End Get
+            Set(ByVal Value As String)
+                _TagDisplayMode = Value
+            End Set
+        End Property
+
 #End Region
 
  End Class

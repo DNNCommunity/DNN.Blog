@@ -27,27 +27,19 @@ Namespace Business
  Public Class BlogController
 
   Public Function GetBlog(ByVal blogID As Integer) As BlogInfo
-
    Return CType(CBO.FillObject(DataProvider.Instance().GetBlog(blogID), GetType(BlogInfo)), BlogInfo)
-
   End Function
 
   Public Function GetBlogByUserID(ByVal PortalID As Integer, ByVal UserID As Integer) As BlogInfo
-
    Return CType(CBO.FillObject(DataProvider.Instance().GetBlogByUserID(PortalID, UserID), GetType(BlogInfo)), BlogInfo)
-
   End Function
 
   Public Function GetBlogByUserName(ByVal PortalID As Integer, ByVal UserName As String) As BlogInfo
-
    Return CType(CBO.FillObject(DataProvider.Instance().GetBlogByUserName(PortalID, UserName), GetType(BlogInfo)), BlogInfo)
-
   End Function
 
   Public Function GetBlogsByUserName(ByVal PortalID As Integer, ByVal UserName As String) As ArrayList
-
    Return CBO.FillCollection(DataProvider.Instance().GetBlogsByUserName(PortalID, UserName), GetType(BlogInfo))
-
   End Function
 
   Public Function ListBlogs(ByVal PortalID As Integer, ByVal ParentBlogID As Integer, ByVal ShowNonPublic As Boolean) As ArrayList
@@ -55,9 +47,7 @@ Namespace Business
   End Function
 
   Public Function ListBlogsByPortal(ByVal PortalID As Integer, ByVal ShowNonPublic As Boolean) As ArrayList
-
    Return CBO.FillCollection(DataProvider.Instance().ListBlogsByPortal(PortalID, ShowNonPublic), GetType(BlogInfo))
-
   End Function
 
   Public Function ListBlogsRootByPortal(ByVal PortalID As Integer) As ArrayList
@@ -77,13 +67,10 @@ Namespace Business
   End Sub
 
   Public Sub DeleteBlog(ByVal blogID As Integer)
-
    DataProvider.Instance().DeleteBlog(blogID)
-
   End Sub
 
   Public Function GetBlogFromContext() As BlogInfo
-
    Dim ReturnBlog As BlogInfo = Nothing
    Dim Request As HttpRequest = HttpContext.Current.Request
    Dim PortalSettings As DotNetNuke.Entities.Portals.PortalSettings = CType(HttpContext.Current.Items("PortalSettings"), DotNetNuke.Entities.Portals.PortalSettings)
@@ -101,7 +88,6 @@ Namespace Business
    End If
 
    Return ReturnBlog
-
   End Function
 
 #Region " 4.5.0 Upgrade"
