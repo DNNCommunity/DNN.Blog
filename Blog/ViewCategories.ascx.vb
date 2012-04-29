@@ -18,8 +18,8 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports DotNetNuke.Entities.Content.Taxonomy
 Imports System.Linq
+Imports DotNetNuke.Entities.Content.Taxonomy
 Imports Telerik.Web.UI
 
 Partial Class ViewCategories
@@ -47,6 +47,17 @@ Partial Class ViewCategories
         End Get
     End Property
 
+    Private ReadOnly Property BlogCategories() As List(Of TermInfo)
+        Get
+            If (VocabularyId > 0) Then
+                Dim cntTerm As New Business.TermController
+                Return cntTerm.GetTermsByContentType(ModuleContext.PortalId, VocabularyId)
+            Else
+                Return Nothing
+            End If
+        End Get
+    End Property
+
 #End Region
 
 #Region "Event Handlers"
@@ -56,9 +67,9 @@ Partial Class ViewCategories
 
             If VocabularyId > 0 Then
                 Dim termController As ITermController = DotNetNuke.Entities.Content.Common.Util.GetTermController()
-                Dim colCategories As IQueryable(Of Term) = termController.GetTermsByVocabulary(VocabularyId)
+                Dim colCoreCategories As IQueryable(Of Term) = termController.GetTermsByVocabulary(VocabularyId)
 
-                dtCategories.DataSource = colCategories
+                dtCategories.DataSource = colCoreCategories
                 dtCategories.DataBind()
 
                 If Request.Params("catid") IsNot Nothing Then
@@ -89,10 +100,18 @@ Partial Class ViewCategories
     End Sub
 
     Protected Sub TvNodeItemDataBound(sender As Object, e As RadTreeNodeEventArgs)
-        'Dim term As TermInfo = DirectCast(e.DataItem, TermInfo)
-
         Dim categoryId As Integer = Convert.ToInt32(e.Node.Value)
         e.Node.NavigateUrl = ModuleContext.NavigateUrl(ModuleContext.TabId, "", False, "catid=" + categoryId.ToString())
+
+        If BlogCategories IsNot Nothing Then
+            Dim objTerm As TermInfo = (From c In BlogCategories Where c.TermId = categoryId Select c).SingleOrDefault()
+
+            If objTerm IsNot Nothing Then
+                e.Node.Text = e.Node.Text + " (" + objTerm.TotalTermUsage.ToString() + ")"
+            Else
+                e.Node.Text = e.Node.Text + " (0)"
+            End If
+        End If
     End Sub
 
 #End Region

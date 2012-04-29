@@ -51,7 +51,7 @@ Public Class Constants
 
     Public Const VocabTermsCacheKey As String = "Vocabulary_Terms_"
 
-    Public Const PortalSuffixCacheKey As String = "Portal_"
+    Public Const VocabSuffixCacheKey As String = "Vocabulary_"
 
     Public Const VocabularySuffixCacheKey As String = "Vocabulary_"
 

@@ -95,7 +95,7 @@ Public Class Content
         cntTerm.ManageEntryTerms(objEntry, objContent)
 
         DataCache.RemoveCache(Constants.ModuleCacheKeyPrefix + Constants.ContentItemTermsCacheKey + objEntry.ContentItemId.ToString() + Constants.VocabularySuffixCacheKey)
-        DataCache.RemoveCache(Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.PortalSuffixCacheKey + portalId.ToString())
+        DataCache.RemoveCache(Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + portalId.ToString())
     End Sub
 
     ''' <summary>

@@ -45,7 +45,7 @@ Partial Public Class ViewTags
 
         Dim cntTerm As New TermController
         Dim colTags As List(Of TermInfo)
-        colTags = cntTerm.GetTermsByContentType(ModuleContext.PortalId, ModuleContext.ModuleId, 1)
+        colTags = cntTerm.GetTermsByContentType(ModuleContext.PortalId, 1) ' the 1 ensures tags only
 
         If TagDisplayMode = "List" Then
             rptTags.DataSource = colTags

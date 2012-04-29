@@ -437,8 +437,8 @@ Namespace Data
 
 #Region "Terms"
 
-        Public Overrides Function GetTermsByContentType(portalId As Integer, contentTypeId As Integer, moduleId As Integer, vocabularyId As Integer) As IDataReader
-            Return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Term_GetByContentType"), portalId, contentTypeId, moduleId, vocabularyId)
+        Public Overrides Function GetTermsByContentType(portalId As Integer, contentTypeId As Integer, vocabularyId As Integer) As IDataReader
+            Return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Term_GetByContentType"), portalId, contentTypeId, vocabularyId)
         End Function
 
         Public Overrides Function GetTermsByContentItem(contentItemId As Integer, vocabularyId As Integer) As IDataReader

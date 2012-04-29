@@ -28,25 +28,27 @@ Namespace Business
 
     Public Class TermController
 
-        Public Function GetTermsByContentType(portalId As Integer, moduleId As Integer, vocabularyId As Integer) As List(Of TermInfo)
-            'DotNetNuke.Common.Requires.PropertyNotNegative("portalId", "", portalId)
-            'DotNetNuke.Common.Requires.PropertyNotNegative("moduleId", "", moduleId)
-            Dim colTerms As List(Of TermInfo) = DirectCast(DataCache.GetCache(Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.PortalSuffixCacheKey + portalId.ToString()), List(Of TermInfo))
+        Public Function GetTermsByContentType(ByVal portalId As Integer, ByVal vocabularyId As Integer) As List(Of TermInfo)
+            DotNetNuke.Common.Requires.PropertyNotNegative("portalId", "", portalId)
+            DotNetNuke.Common.Requires.PropertyNotNegative("vocabularyId", "", vocabularyId)
+
+            Dim colTerms As List(Of TermInfo) = DirectCast(DataCache.GetCache(Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + vocabularyId.ToString()), List(Of TermInfo))
 
             If colTerms Is Nothing Then
                 Dim timeOut As Integer = 20 * Convert.ToInt32(Host.PerformanceSetting)
 
-                colTerms = CBO.FillCollection(Of TermInfo)(DataProvider.Instance().GetTermsByContentType(portalId, Content.GetContentTypeID(), moduleId, vocabularyId))
+                colTerms = CBO.FillCollection(Of TermInfo)(DataProvider.Instance().GetTermsByContentType(portalId, Content.GetContentTypeID(), vocabularyId))
 
                 If timeOut > 0 And colTerms IsNot Nothing Then
-                    DataCache.SetCache(Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.PortalSuffixCacheKey + portalId.ToString(), colTerms, TimeSpan.FromMinutes(timeOut))
+                    DataCache.SetCache(Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + vocabularyId.ToString(), colTerms, TimeSpan.FromMinutes(timeOut))
                 End If
             End If
             Return colTerms
         End Function
 
-        Public Function GetTermsByContentItem(contentItemId As Integer, vocabularyId As Integer) As List(Of TermInfo)
-            'DotNetNuke.Common.Requires.PropertyNotNegative("contentItemId", "", contentItemId);
+        Public Function GetTermsByContentItem(ByVal contentItemId As Integer, ByVal vocabularyId As Integer) As List(Of TermInfo)
+            DotNetNuke.Common.Requires.PropertyNotNegative("contentItemId", "", contentItemId)
+
             Dim colTerms As List(Of TermInfo) = DirectCast(DataCache.GetCache(Constants.ModuleCacheKeyPrefix + Constants.ContentItemTermsCacheKey + contentItemId.ToString() + Constants.VocabularySuffixCacheKey), List(Of TermInfo))
 
             If colTerms Is Nothing Then
