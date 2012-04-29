@@ -3,11 +3,6 @@ font-size:10px;
 color:#036;
 }
 
-.BlogDescriptionHeavy {
-font-size:10pt;
-font-weight:700;
-}
-
 .BlogPublished {
 display:block;
 text-align:center;
@@ -254,46 +249,6 @@ div.BlogBubble p {
 color:#000;
 }
 
-.TagCloud1 {
-font-size:xx-small;
-}
-
-.TagCloud2 {
-font-size:x-small;
-}
-
-.TagCloud3 {
-font-size:small;
-}
-
-.TagCloud4 {
-font-size:medium;
-}
-
-.TagCloud5 {
-font-size:large;
-}
-
-.TagCloud6 {
-font-size:x-large;
-}
-
-.TagCloud7 {
-font-size:xx-large;
-}
-
-span.tagMatches {
-margin-left:10px;
-}
-
-span.tagMatches span {
-margin-right:4px;
-background-color:#0000AB;
-color:#fff;
-cursor:pointer;
-padding:2px;
-}
-
 .BlogInfo,.BlogReadMore {
 padding-bottom:10px;
 }
@@ -368,4 +323,14 @@ ul.rlbList {list-style:none;}
 }
 .BlogCategories label{
 	font-weight: bold;
+}
+
+.vbHeader{
+		padding-bottom:12px;
+}
+.vbBody{
+	padding:2px;
+}
+.vbHeader img{
+	padding:px;
 }

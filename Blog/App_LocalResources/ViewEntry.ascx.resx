@@ -204,7 +204,7 @@
     <value>{0} comment(s) so far...</value>
   </data>
   <data name="lnkRss.Text" xml:space="preserve">
-    <value />
+    <value>The RSS syndication link for this blog</value>
   </data>
   <data name="valCommentEmail.ErrorMessage" xml:space="preserve">
     <value>Email is required</value>

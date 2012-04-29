@@ -49,10 +49,10 @@
 		<ItemTemplate>
 			<div class="vbEntry">
 				<h2><asp:HyperLink ID="lnkEntry" runat="server"><%# DataBinder.Eval(Container.DataItem, "Title") %></asp:HyperLink></h2>
-				<p>
+				<div class="vbHeader">
 					<asp:Literal ID="litAuthor" runat="server" />
 					<asp:Label ID="lblPublishDate" runat="server" />
-				</p>
+				</div>
 				<div class="vbBody">
 					<asp:Label ID="lblPublished" runat="server" Visible="False" CssClass="NormalRed" ResourceKey="lblPublished" />
 					<asp:Literal ID="litDescription" runat="server" />

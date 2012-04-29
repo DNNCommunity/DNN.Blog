@@ -86,6 +86,15 @@ Partial Public Class ViewEntry
     Protected WithEvents lnkRssIcon As Global.System.Web.UI.WebControls.Image
 
     '''<summary>
+    '''litSocialSharing control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents litSocialSharing As Global.System.Web.UI.WebControls.Literal
+
+    '''<summary>
     '''litSummary control.
     '''</summary>
     '''<remarks>
@@ -210,15 +219,6 @@ Partial Public Class ViewEntry
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents rptTags As Global.System.Web.UI.WebControls.Repeater
-
-    '''<summary>
-    '''litSocialSharing control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents litSocialSharing As Global.System.Web.UI.WebControls.Literal
 
     '''<summary>
     '''pnlComments control.
