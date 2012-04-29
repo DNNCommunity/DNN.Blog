@@ -166,10 +166,6 @@ Partial Public Class ViewBlog
                             If Not lnkRecentRss Is Nothing Then
                                 lnkRecentRss.NavigateUrl = NavigateURL(Me.TabId, "", "rssid=0", "tagid=" + Request.Params("tagid"))
                             End If
-                            Dim t As TagInfo = TagController.GetTag(CInt(Request.Params("tagid")))
-                            If t IsNot Nothing Then
-                                'pageTitle = Me.BasePage.Title & " - " & t.Tag
-                            End If
 
                             ' TODO: Page Meta
 
@@ -179,10 +175,6 @@ Partial Public Class ViewBlog
                         pnlBlogInfo.Visible = False
                         If Not lnkRecentRss Is Nothing Then
                             lnkRecentRss.NavigateUrl = NavigateURL(Me.TabId, "", "rssid=0", "catid=" + Request.Params("catid"))
-                        End If
-                        Dim c As CategoryInfo = CategoryController.GetCategory(CInt(Request.Params("catid")))
-                        If c IsNot Nothing Then
-                            'pageTitle = Me.BasePage.Title & " - " & c.Category
                         End If
 
                         ' TODO: Page Meta
@@ -194,24 +186,8 @@ Partial Public Class ViewBlog
                     ' if no Entries are shown, show the info Entry
                     InfoEntry.Visible = (lstBlogView.Items.Count = 0)
 
-
-
                     ' TODO: Page Meta
                     Utility.SetPageMetaAndOpenGraph(BasePage, ModuleContext, pageTitle, pageDescription, keyWords, pageUrl)
-
-                    '' set page title
-                    ''If pageTitle = "" Then
-                    ''    pageTitle = Me.BasePage.Title & " - " & ModuleConfiguration.ModuleTitle
-                    ''End If
-                    'If BlogSettings.ShowUniqueTitle Then
-                    '    Try             ' 4.0.1 Bug
-                    '        If PortalSettings.Version <> "4.0.1" Then
-                    '            'Me.BasePage.Title = pageTitle
-                    '        End If
-                    '    Catch exc As Exception
-                    '        ProcessModuleLoadException(Me, exc, True)
-                    '    End Try
-                    'End If
                 End If ' search display or not
 
                 If Not m_oBlog Is Nothing Then
@@ -253,150 +229,121 @@ Partial Public Class ViewBlog
                     End If
                 End If
             End If
-
         Catch exc As Exception
             ProcessModuleLoadException(Me, exc)
         End Try
     End Sub
 
     Protected Sub lstBlogView_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataListItemEventArgs) Handles lstBlogView.ItemDataBound
-        Dim litAuthor As System.Web.UI.WebControls.Literal = CType(e.Item.FindControl("litAuthor"), System.Web.UI.WebControls.Literal)
-        Dim lblDescription As System.Web.UI.WebControls.Literal = CType(e.Item.FindControl("litDescription"), System.Web.UI.WebControls.Literal)
-        Dim lnkComments As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkComments"), System.Web.UI.WebControls.HyperLink)
-        Dim lblPublished As System.Web.UI.WebControls.Label = CType(e.Item.FindControl("lblPublished"), System.Web.UI.WebControls.Label)
-        Dim lblPublishDate As System.Web.UI.WebControls.Label = CType(e.Item.FindControl("lblPublishDate"), System.Web.UI.WebControls.Label)
-        Dim lnkParentBlog As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkParentBlog"), System.Web.UI.WebControls.HyperLink)
-        Dim imgBlogParentSeparator As System.Web.UI.WebControls.Image = CType(e.Item.FindControl("imgBlogParentSeparator"), System.Web.UI.WebControls.Image)
-        Dim lnkChildBlog As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkChildBlog"), System.Web.UI.WebControls.HyperLink)
-        Dim lnkEntry As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkEntry"), System.Web.UI.WebControls.HyperLink)
-        Dim divBlogReadMore As System.Web.UI.HtmlControls.HtmlGenericControl = CType(e.Item.FindControl("divBlogReadMore"), System.Web.UI.HtmlControls.HtmlGenericControl)
-        Dim tagControl As Tags = DirectCast(e.Item.FindControl("dbaTag"), Tags)
 
-        Dim oBlog As BlogInfo
+        If e.Item.ItemType = ListItemType.AlternatingItem Or e.Item.ItemType = ListItemType.Item Then
+            Dim litAuthor As System.Web.UI.WebControls.Literal = CType(e.Item.FindControl("litAuthor"), System.Web.UI.WebControls.Literal)
+            Dim lblDescription As System.Web.UI.WebControls.Literal = CType(e.Item.FindControl("litDescription"), System.Web.UI.WebControls.Literal)
+            Dim lnkComments As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkComments"), System.Web.UI.WebControls.HyperLink)
+            Dim lblPublished As System.Web.UI.WebControls.Label = CType(e.Item.FindControl("lblPublished"), System.Web.UI.WebControls.Label)
+            Dim lblPublishDate As System.Web.UI.WebControls.Label = CType(e.Item.FindControl("lblPublishDate"), System.Web.UI.WebControls.Label)
+            Dim lnkParentBlog As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkParentBlog"), System.Web.UI.WebControls.HyperLink)
+            Dim imgBlogParentSeparator As System.Web.UI.WebControls.Image = CType(e.Item.FindControl("imgBlogParentSeparator"), System.Web.UI.WebControls.Image)
+            Dim lnkChildBlog As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkChildBlog"), System.Web.UI.WebControls.HyperLink)
+            Dim lnkEntry As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkEntry"), System.Web.UI.WebControls.HyperLink)
+            Dim divBlogReadMore As System.Web.UI.HtmlControls.HtmlGenericControl = CType(e.Item.FindControl("divBlogReadMore"), System.Web.UI.HtmlControls.HtmlGenericControl)
+            Dim tagControl As Tags = DirectCast(e.Item.FindControl("dbaTag"), Tags)
 
-        If m_oBlog Is Nothing Then
-            oBlog = m_oBlogController.GetBlog(CType(CType(e.Item.DataItem, EntryInfo).BlogID, Integer))
-        Else
-            If m_oBlog.BlogID <> CType(CType(e.Item.DataItem, EntryInfo).BlogID, Integer) Then
+            Dim oBlog As BlogInfo
+
+            If m_oBlog Is Nothing Then
                 oBlog = m_oBlogController.GetBlog(CType(CType(e.Item.DataItem, EntryInfo).BlogID, Integer))
             Else
-                oBlog = m_oBlog
-            End If
-        End If
-
-        ' Added this in order to have the Edit Entry Link on all the pages.
-        Dim m_oEntry As EntryInfo = CType(e.Item.DataItem, EntryInfo)
-        Dim lnkEditEntry As HyperLink
-        Dim imgEdit As System.Web.UI.WebControls.Image
-        lnkEditEntry = CType(e.Item.FindControl("lnkEditEntry"), HyperLink)
-        imgEdit = CType(e.Item.FindControl("imgEdit"), System.Web.UI.WebControls.Image)
-        If Not m_oEntry Is Nothing Then
-            If Utility.HasBlogPermission(Me.UserId, m_oEntry.UserID, Me.ModuleId) AndAlso Not lnkEditEntry Is Nothing Then
-                lnkEditEntry.Visible = True
-                lnkEditEntry.NavigateUrl = EditUrl("EntryID", CType(e.Item.DataItem, EntryInfo).EntryID.ToString(), "Edit_Entry")
-            Else
-                lnkEditEntry.Visible = False
-            End If
-
-            Dim hlPermaLink As HyperLink = CType(e.Item.FindControl("hlPermaLink"), HyperLink)
-            hlPermaLink.NavigateUrl = m_oEntry.PermaLink
-            hlPermaLink.Text = Localization.GetString("lnkPermaLink", LocalResourceFile)
-            hlPermaLink.Visible = (m_oEntry.PermaLink <> DotNetNuke.Modules.Blog.Business.Utility.BlogNavigateURL(TabId, PortalId, m_oEntry.EntryID, m_oEntry.Title, BlogSettings.ShowSeoFriendlyUrl))
-
-            Dim hlMore As HyperLink = CType(e.Item.FindControl("hlMore"), HyperLink)
-            hlMore.NavigateUrl = DotNetNuke.Modules.Blog.Business.Utility.BlogNavigateURL(TabId, PortalId, m_oEntry.EntryID, m_oEntry.Title, BlogSettings.ShowSeoFriendlyUrl)
-            hlMore.Text = Localization.GetString("lnkReadMore", LocalResourceFile)
-            hlMore.Visible = (m_oEntry.PermaLink <> DotNetNuke.Modules.Blog.Business.Utility.BlogNavigateURL(TabId, PortalId, m_oEntry.EntryID, m_oEntry.Title, BlogSettings.ShowSeoFriendlyUrl))
-
-            tagControl.ModContext = ModuleContext
-            tagControl.DataSource = m_oEntry.EntryTerms(1)
-            tagControl.DataBind()
-        End If
-
-        ' 10/28/08 RR Replace all instances of BlogNavigateURL with Permalink
-        'lnkEntry.NavigateUrl = Utility.BlogNavigateURL(Me.TabId, CType(e.Item.DataItem, EntryInfo), m_SeoFriendlyUrl)
-        lnkEntry.NavigateUrl = m_oEntry.PermaLink
-        lnkComments.NavigateUrl = m_oEntry.PermaLink & "#Comments"
-
-        'DR-04/24/2009-BLG-9712
-        lnkEntry.Attributes.Add("rel", "bookmark")
-
-        'Antonio Chagoury
-        'BLG-5307
-        'If Not lnkReadMore Is Nothing Then
-        ' ' 10/28/08 RR Replace all instances of BlogNavigateURL with Permalink
-        ' 'lnkReadMore.NavigateUrl = Utility.BlogNavigateURL(Me.TabId, CType(e.Item.DataItem, EntryInfo), m_SeoFriendlyUrl)
-        ' lnkReadMore.NavigateUrl = m_oEntry.PermaLink
-        'End If
-
-        ' Display the proper UserName
-        If CType(e.Item.DataItem, EntryInfo).UserName.Length > 0 Then
-            Dim userProfile As String = DotNetNuke.Common.Globals.UserProfileURL(m_oEntry.UserID)
-
-            If oBlog.ShowFullName Then
-                litAuthor.Text = GetString("msgCreateFrom", LocalResourceFile) & " "
-                litAuthor.Text += "<a href='" + userProfile + "'>"
-                litAuthor.Text += CType(e.Item.DataItem, EntryInfo).UserFullName
-                litAuthor.Text += "</a>"
-                litAuthor.Text += " " & GetString("msgCreateOn", LocalResourceFile)
-            Else
-                litAuthor.Text = GetString("msgCreateFrom", LocalResourceFile) & " "
-                litAuthor.Text += "<a href='" + userProfile + "'>"
-                litAuthor.Text += CType(e.Item.DataItem, EntryInfo).UserName
-                litAuthor.Text += "</a>"
-                litAuthor.Text += " " & GetString("msgCreateOn", LocalResourceFile)
-            End If
-            litAuthor.Visible = True
-        End If
-
-        lblPublished.Visible = Not CType(e.Item.DataItem, EntryInfo).Published
-        lblPublishDate.Text = Utility.FormatDate(CType(e.Item.DataItem, EntryInfo).AddedDate, oBlog.Culture, oBlog.DateFormat, oBlog.TimeZone)
-
-        Dim SummaryLimit As Integer = 0
-        If m_bSearchDisplay Then
-            SummaryLimit = BlogSettings.SearchSummaryMaxLength
-        Else
-            SummaryLimit = BlogSettings.SummaryMaxLength
-        End If
-
-        ' Don Worthley - 04/21/2008 - Updated the following logic to account for both the description
-        '   and the entry text.  Previously, the code was just looking at the entry text when truncation
-        '   was being performed.  The updated code will use the description if one exists and use the 
-        '   entry if no description exists.
-        ' DW - Updated again to make the truncation of the summary optional based on the EnforceSummaryTruncation
-        '       blog setting.
-        Dim ActualSummary As String = Server.HtmlDecode(CType(e.Item.DataItem, EntryInfo).Description)
-        Dim Entry As String = Server.HtmlDecode(CType(e.Item.DataItem, EntryInfo).Entry)
-        Dim GeneratedSummary As String = CType(IIf(ActualSummary Is Nothing, String.Empty, ActualSummary), String)
-        Dim EnforceSummaryTruncation As Boolean = BlogSettings.EnforceSummaryTruncation
-        If GeneratedSummary = String.Empty Then
-            GeneratedSummary = Entry
-            ' We'll set the EnforceSummaryTruncation flag to true since generated summaries should
-            ' always be truncated.
-            EnforceSummaryTruncation = True
-        End If
-        If SummaryLimit = 0 Then
-            If ActualSummary.Length > 0 And Entry.Length > 0 Then
-                'lnkReadMore.Visible = True
-                divBlogReadMore.Visible = True
-            Else
-                'lnkReadMore.Visible = False
-                divBlogReadMore.Visible = False
-            End If
-            lblDescription.Text = GeneratedSummary
-        Else
-            If GeneratedSummary.Length > SummaryLimit Then
-                'We need to truncate, but only EnforceSummaryTruncation is True
-                If EnforceSummaryTruncation Then
-                    lblDescription.Text = Utility.CleanHTML(GeneratedSummary, SummaryLimit)
+                If m_oBlog.BlogID <> CType(CType(e.Item.DataItem, EntryInfo).BlogID, Integer) Then
+                    oBlog = m_oBlogController.GetBlog(CType(CType(e.Item.DataItem, EntryInfo).BlogID, Integer))
                 Else
-                    lblDescription.Text = GeneratedSummary
+                    oBlog = m_oBlog
                 End If
-                'lnkReadMore.Visible = True
-                divBlogReadMore.Visible = True
+            End If
+
+            ' Added this in order to have the Edit Entry Link on all the pages.
+            Dim m_oEntry As EntryInfo = CType(e.Item.DataItem, EntryInfo)
+            Dim lnkEditEntry As HyperLink
+            Dim imgEdit As System.Web.UI.WebControls.Image
+            lnkEditEntry = CType(e.Item.FindControl("lnkEditEntry"), HyperLink)
+            imgEdit = CType(e.Item.FindControl("imgEdit"), System.Web.UI.WebControls.Image)
+            If Not m_oEntry Is Nothing Then
+                If Utility.HasBlogPermission(Me.UserId, m_oEntry.UserID, Me.ModuleId) AndAlso Not lnkEditEntry Is Nothing Then
+                    lnkEditEntry.Visible = True
+                    lnkEditEntry.NavigateUrl = EditUrl("EntryID", CType(e.Item.DataItem, EntryInfo).EntryID.ToString(), "Edit_Entry")
+                Else
+                    lnkEditEntry.Visible = False
+                End If
+
+                Dim hlPermaLink As HyperLink = CType(e.Item.FindControl("hlPermaLink"), HyperLink)
+                hlPermaLink.NavigateUrl = m_oEntry.PermaLink
+                hlPermaLink.Text = Localization.GetString("lnkPermaLink", LocalResourceFile)
+                hlPermaLink.Visible = (m_oEntry.PermaLink <> DotNetNuke.Modules.Blog.Business.Utility.BlogNavigateURL(TabId, PortalId, m_oEntry.EntryID, m_oEntry.Title, BlogSettings.ShowSeoFriendlyUrl))
+
+                Dim hlMore As HyperLink = CType(e.Item.FindControl("hlMore"), HyperLink)
+                hlMore.NavigateUrl = DotNetNuke.Modules.Blog.Business.Utility.BlogNavigateURL(TabId, PortalId, m_oEntry.EntryID, m_oEntry.Title, BlogSettings.ShowSeoFriendlyUrl)
+                hlMore.Text = Localization.GetString("lnkReadMore", LocalResourceFile)
+                hlMore.Visible = (m_oEntry.PermaLink <> DotNetNuke.Modules.Blog.Business.Utility.BlogNavigateURL(TabId, PortalId, m_oEntry.EntryID, m_oEntry.Title, BlogSettings.ShowSeoFriendlyUrl))
+
+                tagControl.ModContext = ModuleContext
+                tagControl.DataSource = m_oEntry.EntryTerms(1)
+                tagControl.DataBind()
+            End If
+
+            ' 10/28/08 RR Replace all instances of BlogNavigateURL with Permalink
+            'lnkEntry.NavigateUrl = Utility.BlogNavigateURL(Me.TabId, CType(e.Item.DataItem, EntryInfo), m_SeoFriendlyUrl)
+            lnkEntry.NavigateUrl = m_oEntry.PermaLink
+            lnkComments.NavigateUrl = m_oEntry.PermaLink & "#Comments"
+
+            'DR-04/24/2009-BLG-9712
+            lnkEntry.Attributes.Add("rel", "bookmark")
+
+            If CType(e.Item.DataItem, EntryInfo).UserName.Length > 0 Then
+                Dim userProfile As String = DotNetNuke.Common.Globals.UserProfileURL(m_oEntry.UserID)
+
+                If oBlog.ShowFullName Then
+                    litAuthor.Text = GetString("msgCreateFrom", LocalResourceFile) & " "
+                    litAuthor.Text += "<a href='" + userProfile + "'>"
+                    litAuthor.Text += CType(e.Item.DataItem, EntryInfo).UserFullName
+                    litAuthor.Text += "</a>"
+                    litAuthor.Text += " " & GetString("msgCreateOn", LocalResourceFile)
+                Else
+                    litAuthor.Text = GetString("msgCreateFrom", LocalResourceFile) & " "
+                    litAuthor.Text += "<a href='" + userProfile + "'>"
+                    litAuthor.Text += CType(e.Item.DataItem, EntryInfo).UserName
+                    litAuthor.Text += "</a>"
+                    litAuthor.Text += " " & GetString("msgCreateOn", LocalResourceFile)
+                End If
+                litAuthor.Visible = True
+            End If
+
+            lblPublished.Visible = Not CType(e.Item.DataItem, EntryInfo).Published
+            lblPublishDate.Text = Utility.FormatDate(CType(e.Item.DataItem, EntryInfo).AddedDate, oBlog.Culture, oBlog.DateFormat, oBlog.TimeZone)
+
+            Dim SummaryLimit As Integer = 0
+            If m_bSearchDisplay Then
+                SummaryLimit = BlogSettings.SearchSummaryMaxLength
             Else
-                lblDescription.Text = GeneratedSummary
-                'Only show the Read More link if there was a Description and an Entry
+                SummaryLimit = BlogSettings.SummaryMaxLength
+            End If
+
+            ' Don Worthley - 04/21/2008 - Updated the following logic to account for both the description
+            '   and the entry text.  Previously, the code was just looking at the entry text when truncation
+            '   was being performed.  The updated code will use the description if one exists and use the 
+            '   entry if no description exists.
+            ' DW - Updated again to make the truncation of the summary optional based on the EnforceSummaryTruncation
+            '       blog setting.
+            Dim ActualSummary As String = Server.HtmlDecode(CType(e.Item.DataItem, EntryInfo).Description)
+            Dim Entry As String = Server.HtmlDecode(CType(e.Item.DataItem, EntryInfo).Entry)
+            Dim GeneratedSummary As String = CType(IIf(ActualSummary Is Nothing, String.Empty, ActualSummary), String)
+            Dim EnforceSummaryTruncation As Boolean = BlogSettings.EnforceSummaryTruncation
+            If GeneratedSummary = String.Empty Then
+                GeneratedSummary = Entry
+                ' We'll set the EnforceSummaryTruncation flag to true since generated summaries should
+                ' always be truncated.
+                EnforceSummaryTruncation = True
+            End If
+            If SummaryLimit = 0 Then
                 If ActualSummary.Length > 0 And Entry.Length > 0 Then
                     'lnkReadMore.Visible = True
                     divBlogReadMore.Visible = True
@@ -404,56 +351,78 @@ Partial Public Class ViewBlog
                     'lnkReadMore.Visible = False
                     divBlogReadMore.Visible = False
                 End If
-            End If
-        End If
-
-        If ((oBlog.AllowComments Or CType(e.Item.DataItem, EntryInfo).AllowComments) And CType(IIf(Me.UserId = -1, oBlog.AllowAnonymous, True), Boolean)) Then
-            'If ((oBlog.AllowComments Or CType(e.Item.DataItem, EntryInfo).AllowComments)) Then
-            lnkComments.Visible = True
-            lnkComments.Text = String.Format(GetString("lnkComments", LocalResourceFile), CType(e.Item.DataItem, EntryInfo).CommentCount)
-        Else
-            lnkComments.Visible = False
-        End If
-
-        If oBlog.ParentBlogID = -1 Then
-            imgBlogParentSeparator.Visible = False
-            lnkChildBlog.Visible = False
-            If Not m_oBlog Is Nothing Then
-                If m_oBlog.BlogID = oBlog.BlogID Then
-                    lnkParentBlog.Visible = False
-                    imgBlogParentSeparator.Visible = False
-                    lnkChildBlog.Visible = False
+                lblDescription.Text = GeneratedSummary
+            Else
+                If GeneratedSummary.Length > SummaryLimit Then
+                    'We need to truncate, but only EnforceSummaryTruncation is True
+                    If EnforceSummaryTruncation Then
+                        lblDescription.Text = Utility.CleanHTML(GeneratedSummary, SummaryLimit)
+                    Else
+                        lblDescription.Text = GeneratedSummary
+                    End If
+                    'lnkReadMore.Visible = True
+                    divBlogReadMore.Visible = True
+                Else
+                    lblDescription.Text = GeneratedSummary
+                    'Only show the Read More link if there was a Description and an Entry
+                    If ActualSummary.Length > 0 And Entry.Length > 0 Then
+                        'lnkReadMore.Visible = True
+                        divBlogReadMore.Visible = True
+                    Else
+                        'lnkReadMore.Visible = False
+                        divBlogReadMore.Visible = False
+                    End If
                 End If
             End If
-            If lnkParentBlog.Visible Then
-                lnkParentBlog.Text = oBlog.Title
-                lnkParentBlog.NavigateUrl = NavigateURL(Me.TabId, "", "&BlogID=" & oBlog.BlogID.ToString())
+
+            If ((oBlog.AllowComments Or CType(e.Item.DataItem, EntryInfo).AllowComments) And CType(IIf(Me.UserId = -1, oBlog.AllowAnonymous, True), Boolean)) Then
+                'If ((oBlog.AllowComments Or CType(e.Item.DataItem, EntryInfo).AllowComments)) Then
+                lnkComments.Visible = True
+                lnkComments.Text = String.Format(GetString("lnkComments", LocalResourceFile), CType(e.Item.DataItem, EntryInfo).CommentCount)
+            Else
+                lnkComments.Visible = False
             End If
-        Else
-            If Not m_oBlog Is Nothing Then
-                If m_oBlog.BlogID = oBlog.BlogID Then
-                    lnkParentBlog.Visible = False
-                    imgBlogParentSeparator.Visible = False
-                    lnkChildBlog.Visible = False
-                ElseIf m_oBlog.BlogID = oBlog.ParentBlogID Then
-                    lnkParentBlog.Visible = False
-                    imgBlogParentSeparator.Visible = False
+
+            If oBlog.ParentBlogID = -1 Then
+                imgBlogParentSeparator.Visible = False
+                lnkChildBlog.Visible = False
+                If Not m_oBlog Is Nothing Then
+                    If m_oBlog.BlogID = oBlog.BlogID Then
+                        lnkParentBlog.Visible = False
+                        imgBlogParentSeparator.Visible = False
+                        lnkChildBlog.Visible = False
+                    End If
+                End If
+                If lnkParentBlog.Visible Then
+                    lnkParentBlog.Text = oBlog.Title
+                    lnkParentBlog.NavigateUrl = NavigateURL(Me.TabId, "", "&BlogID=" & oBlog.BlogID.ToString())
+                End If
+            Else
+                If Not m_oBlog Is Nothing Then
+                    If m_oBlog.BlogID = oBlog.BlogID Then
+                        lnkParentBlog.Visible = False
+                        imgBlogParentSeparator.Visible = False
+                        lnkChildBlog.Visible = False
+                    ElseIf m_oBlog.BlogID = oBlog.ParentBlogID Then
+                        lnkParentBlog.Visible = False
+                        imgBlogParentSeparator.Visible = False
+                    End If
+                End If
+                If lnkParentBlog.Visible Then
+                    Dim oParentBlog As BlogInfo = m_oBlogController.GetBlog(oBlog.ParentBlogID)
+                    lnkParentBlog.Text = oParentBlog.Title
+                    lnkParentBlog.NavigateUrl = NavigateURL(Me.TabId, "", "&BlogID=" & oParentBlog.BlogID.ToString())
+                    imgBlogParentSeparator.Visible = True
+                    oParentBlog = Nothing
+                End If
+                If lnkChildBlog.Visible Then
+                    lnkChildBlog.Text = oBlog.Title
+                    lnkChildBlog.NavigateUrl = NavigateURL(Me.TabId, "", "&BlogID=" & oBlog.BlogID.ToString() & "&ParentBlogID=" & oBlog.ParentBlogID.ToString())
+                    lnkChildBlog.Visible = True
                 End If
             End If
-            If lnkParentBlog.Visible Then
-                Dim oParentBlog As BlogInfo = m_oBlogController.GetBlog(oBlog.ParentBlogID)
-                lnkParentBlog.Text = oParentBlog.Title
-                lnkParentBlog.NavigateUrl = NavigateURL(Me.TabId, "", "&BlogID=" & oParentBlog.BlogID.ToString())
-                imgBlogParentSeparator.Visible = True
-                oParentBlog = Nothing
-            End If
-            If lnkChildBlog.Visible Then
-                lnkChildBlog.Text = oBlog.Title
-                lnkChildBlog.NavigateUrl = NavigateURL(Me.TabId, "", "&BlogID=" & oBlog.BlogID.ToString() & "&ParentBlogID=" & oBlog.ParentBlogID.ToString())
-                lnkChildBlog.Visible = True
-            End If
+            oBlog = Nothing
         End If
-        oBlog = Nothing
     End Sub
 
     Protected Sub lstBlogView_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataListCommandEventArgs) Handles lstBlogView.ItemCommand

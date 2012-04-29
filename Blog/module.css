@@ -362,3 +362,10 @@ span.fb_edge_comment_widget.fb_iframe_widget iframe{width:401px !important;}
 ul.rlbList {list-style:none;}
 
 .bobsContent, .boasContent{}
+.blogSeparator{
+	border-bottom: 1px solid #9e9e9e;
+	padding:8px;
+}
+.BlogCategories label{
+	font-weight: bold;
+}
