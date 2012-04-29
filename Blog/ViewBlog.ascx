@@ -55,8 +55,10 @@
 	  </asp:HyperLink>
 	 </h2>
 	</div>
-	<asp:Label ID="lblUserName" runat="server" Visible="false" CssClass="BlogDateline" />
-	<asp:Label ID="lblPublishDate" runat="server" CssClass="BlogDateline" />
+	<div class="BlogDateline">
+		<asp:Literal ID="litAuthor" runat="server" />
+		<asp:Label ID="lblPublishDate" runat="server" />
+	</div>
 	<div style="padding-top: 1em">
 	 <asp:Label ID="lblPublished" runat="server" Visible="False" CssClass="NormalRed" ResourceKey="lblPublished" />
 	 <asp:Literal ID="litDescription" runat="server" />

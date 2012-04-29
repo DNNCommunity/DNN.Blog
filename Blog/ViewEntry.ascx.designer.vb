@@ -50,22 +50,13 @@ Partial Public Class ViewEntry
     Protected WithEvents lblEntryDay As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''lblPostedBy control.
+    '''hlAuthor control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblPostedBy As Global.System.Web.UI.WebControls.Label
-
-    '''<summary>
-    '''lblUserID control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblUserID As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents hlAuthor As Global.System.Web.UI.WebControls.HyperLink
 
     '''<summary>
     '''lblDateTime control.

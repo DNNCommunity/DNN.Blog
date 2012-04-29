@@ -28,7 +28,7 @@ Public Class Constants
         ShowTotalUsage = 4
     End Enum
 
-    Public Const ContentTypeName As String = "DNN_Blog" ' change to DNN_Blog_Entry
+    Public Const ContentTypeName As String = "DNN_Blog_Entry" ' change to DNN_Blog_Entry
 
     ''' <summary>
     ''' A recommended limit for a meta page title for SEO purposes.
@@ -55,6 +55,6 @@ Public Class Constants
 
     Public Const VocabularySuffixCacheKey As String = "Vocabulary_"
 
-    Public Const ContentItemTermsCacheKey As String = "Portal_Terms_"
+    Public Const ContentItemTermsCacheKey As String = "ContentItem_Terms_"
 
 End Class

@@ -260,7 +260,7 @@ Partial Public Class ViewBlog
     End Sub
 
     Protected Sub lstBlogView_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataListItemEventArgs) Handles lstBlogView.ItemDataBound
-        Dim lblUserName As System.Web.UI.WebControls.Label = CType(e.Item.FindControl("lblUserName"), System.Web.UI.WebControls.Label)
+        Dim litAuthor As System.Web.UI.WebControls.Literal = CType(e.Item.FindControl("litAuthor"), System.Web.UI.WebControls.Literal)
         Dim lblDescription As System.Web.UI.WebControls.Literal = CType(e.Item.FindControl("litDescription"), System.Web.UI.WebControls.Literal)
         Dim lnkComments As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkComments"), System.Web.UI.WebControls.HyperLink)
         Dim lblPublished As System.Web.UI.WebControls.Label = CType(e.Item.FindControl("lblPublished"), System.Web.UI.WebControls.Label)
@@ -331,16 +331,22 @@ Partial Public Class ViewBlog
 
         ' Display the proper UserName
         If CType(e.Item.DataItem, EntryInfo).UserName.Length > 0 Then
+            Dim userProfile As String = DotNetNuke.Common.Globals.UserProfileURL(m_oEntry.UserID)
+
             If oBlog.ShowFullName Then
-                lblUserName.Text = GetString("msgCreateFrom", LocalResourceFile) & " "
-                lblUserName.Text += CType(e.Item.DataItem, EntryInfo).UserFullName
-                lblUserName.Text += " " & GetString("msgCreateOn", LocalResourceFile)
+                litAuthor.Text = GetString("msgCreateFrom", LocalResourceFile) & " "
+                litAuthor.Text += "<a href='" + userProfile + "'>"
+                litAuthor.Text += CType(e.Item.DataItem, EntryInfo).UserFullName
+                litAuthor.Text += "</a>"
+                litAuthor.Text += " " & GetString("msgCreateOn", LocalResourceFile)
             Else
-                lblUserName.Text = GetString("msgCreateFrom", LocalResourceFile) & " "
-                lblUserName.Text += CType(e.Item.DataItem, EntryInfo).UserName
-                lblUserName.Text += " " & GetString("msgCreateOn", LocalResourceFile)
+                litAuthor.Text = GetString("msgCreateFrom", LocalResourceFile) & " "
+                litAuthor.Text += "<a href='" + userProfile + "'>"
+                litAuthor.Text += CType(e.Item.DataItem, EntryInfo).UserName
+                litAuthor.Text += "</a>"
+                litAuthor.Text += " " & GetString("msgCreateOn", LocalResourceFile)
             End If
-            lblUserName.Visible = True
+            litAuthor.Visible = True
         End If
 
         lblPublished.Visible = Not CType(e.Item.DataItem, EntryInfo).Published

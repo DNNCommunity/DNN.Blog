@@ -245,4 +245,7 @@
   <data name="AddComment.Text" xml:space="preserve">
     <value>Comment</value>
   </data>
+  <data name="by.Text" xml:space="preserve">
+    <value>by </value>
+  </data>
 </root>

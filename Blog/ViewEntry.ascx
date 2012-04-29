@@ -17,8 +17,7 @@
     </acronym>
  <p class="BlogSubHead">
   <span class="blog_author">
-   <asp:Label ID="lblPostedBy" ResourceKey="lblPostedBy" runat="server" />
-   <asp:Label ID="lblUserID" runat="server" />
+    <%= Localization.GetString("by", LocalResourceFile)%><asp:HyperLink ID="hlAuthor" runat="server" />
   </span>
   <br />
   <asp:Label ID="lblDateTime" CssClass="BlogDate" runat="server" />&nbsp;

@@ -30,7 +30,6 @@ Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Entities.Users
 Imports DotNetNuke.Framework
-Imports System.Linq
 
 Partial Public Class ViewEntry
     Inherits BlogModuleBase
@@ -135,11 +134,11 @@ Partial Public Class ViewEntry
                     End If
 
                     If m_oBlog.ShowFullName Then
-                        lblUserID.Text = m_oEntry.UserFullName
+                        hlAuthor.Text = m_oEntry.UserFullName
                     Else
-                        lblUserID.Text = m_oEntry.UserName
+                        hlAuthor.Text = m_oEntry.UserName
                     End If
-                    'lblUserID.NavigateUrl = NavigateURL(TabId, "ViewProfile", "UserTicket=" & u.EncryptParameter(m_oBlog.UserID.ToString))
+                    hlAuthor.NavigateUrl = DotNetNuke.Common.Globals.UserProfileURL(m_oEntry.UserID)
 
                     pnlComments.Visible = m_oBlog.AllowComments
 
