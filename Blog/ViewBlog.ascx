@@ -49,7 +49,7 @@
    <div class="BlogBody">
 	<!-- Begin Blog Entry Title -->
 	<div class="BlogHead">
-	 <h2 class="BlogTitle">
+	 <h2>
 	  <asp:HyperLink ID="lnkEntry" runat="server">
 			<%# DataBinder.Eval(Container.DataItem, "Title") %>
 	  </asp:HyperLink>
