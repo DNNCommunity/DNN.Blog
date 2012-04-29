@@ -127,7 +127,7 @@
     <value>You can limit the number of RSS entries for Most recent entries.</value>
   </data>
   <data name="secGeneralSettings.Text" xml:space="preserve">
-    <value>Basic Settings</value>
+    <value>General</value>
   </data>
   <data name="lblUploadOption.Text" xml:space="preserve">
     <value>Allow Upload Options</value>
@@ -228,7 +228,7 @@ About Identicon, Wavicon, and MonsterID: Gravatar will be displayed for users wh
     <value>Select which Social Bookmark and Network sites you wish to enable for your blogs.&lt;br&gt;We have taken the liberty to select the most common and most popular networks.</value>
   </data>
   <data name="secCommentSettings.Text" xml:space="preserve">
-    <value>Comment Settings</value>
+    <value>Comment</value>
   </data>
   <data name="lblShowGravatars.Text" xml:space="preserve">
     <value>Show Avatars</value>
@@ -314,7 +314,7 @@ About custom images: provide the complete URL to the image (including "http://")
     <value>Advanced Settings</value>
   </data>
   <data name="tblSEOSettings.Text" xml:space="preserve">
-    <value>SEO Settings</value>
+    <value>SEO</value>
   </data>
   <data name="lblRegenerateLinks.Text" xml:space="preserve">
     <value>Manage Entry Links</value>
@@ -434,7 +434,7 @@ About custom images: provide the complete URL to the image (including "http://")
     <value>Use Excerpt in Windows Live Writer</value>
   </data>
   <data name="secWLWSettings.Text" xml:space="preserve">
-    <value>Windows Live Writer Settings</value>
+    <value>Windows Live Writer</value>
   </data>
   <data name="lblHostFiles.Help" xml:space="preserve">
     <value>Files that were distributed as part of the Blog module</value>
@@ -452,7 +452,7 @@ About custom images: provide the complete URL to the image (including "http://")
     <value>You can opt to load additional files to the client when the blog is rendered. This allows for things like syntax highlighting. The blog module includes Alex Gorbatchev's syntax highlighter.</value>
   </data>
   <data name="secLoadFiles.Text" xml:space="preserve">
-    <value>Load Additional Files</value>
+    <value>Additional Files</value>
   </data>
   <data name="lblAddJQuery.Help" xml:space="preserve">
     <value>If selected jQuery will be added</value>
@@ -468,5 +468,8 @@ About custom images: provide the complete URL to the image (including "http://")
   </data>
   <data name="NoneSpecified.Text" xml:space="preserve">
     <value>None Specified</value>
+  </data>
+  <data name="BasicSettings.Text" xml:space="preserve">
+    <value>Basic Settings</value>
   </data>
 </root>

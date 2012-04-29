@@ -122,24 +122,6 @@ Partial Public Class ModuleOptions
     Protected WithEvents txtRecentEntriesMax As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
-    '''lblRecentRssEntriesMax control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblRecentRssEntriesMax As Global.System.Web.UI.UserControl
-
-    '''<summary>
-    '''txtRecentRssEntriesMax control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents txtRecentRssEntriesMax As Global.System.Web.UI.WebControls.TextBox
-
-    '''<summary>
     '''lblShowGravatars control.
     '''</summary>
     '''<remarks>
@@ -464,6 +446,24 @@ Partial Public Class ModuleOptions
     Protected WithEvents txtFeedCacheTime As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
+    '''lblRecentRssEntriesMax control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblRecentRssEntriesMax As Global.System.Web.UI.UserControl
+
+    '''<summary>
+    '''txtRecentRssEntriesMax control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents txtRecentRssEntriesMax As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
     '''lblAllowWLW control.
     '''</summary>
     '''<remarks>
@@ -498,42 +498,6 @@ Partial Public Class ModuleOptions
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents chkUseWLWExcerpt As Global.System.Web.UI.WebControls.CheckBox
-
-    '''<summary>
-    '''lblHostFiles control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblHostFiles As Global.System.Web.UI.UserControl
-
-    '''<summary>
-    '''cblHostFiles control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents cblHostFiles As Global.System.Web.UI.WebControls.CheckBoxList
-
-    '''<summary>
-    '''lblPortalFiles control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblPortalFiles As Global.System.Web.UI.UserControl
-
-    '''<summary>
-    '''cblPortalFiles control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents cblPortalFiles As Global.System.Web.UI.WebControls.CheckBoxList
 
     '''<summary>
     '''lblCatVocabRoot control.
@@ -759,6 +723,42 @@ Partial Public Class ModuleOptions
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cmdMigrateChildblogs As Global.System.Web.UI.WebControls.LinkButton
+
+    '''<summary>
+    '''lblHostFiles control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblHostFiles As Global.System.Web.UI.UserControl
+
+    '''<summary>
+    '''cblHostFiles control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents cblHostFiles As Global.System.Web.UI.WebControls.CheckBoxList
+
+    '''<summary>
+    '''lblPortalFiles control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblPortalFiles As Global.System.Web.UI.UserControl
+
+    '''<summary>
+    '''cblPortalFiles control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents cblPortalFiles As Global.System.Web.UI.WebControls.CheckBoxList
 
     '''<summary>
     '''cmdUpdateOptions control.
