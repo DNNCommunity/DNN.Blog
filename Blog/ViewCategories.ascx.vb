@@ -60,6 +60,15 @@ Partial Class ViewCategories
 
                 dtCategories.DataSource = colCategories
                 dtCategories.DataBind()
+
+                If Request.Params("catid") IsNot Nothing Then
+                    Dim catId As Integer = Convert.ToInt32(Request.Params("catid"))
+                    Dim objNode As RadTreeNode = dtCategories.FindNodeByValue(catId.ToString())
+                    If objNode IsNot Nothing Then
+                        objNode.Selected = True
+                        objNode.ExpandParentNodes()
+                    End If
+                End If
             End If
         End If
     End Sub

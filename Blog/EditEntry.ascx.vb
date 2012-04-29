@@ -20,7 +20,6 @@
 
 Imports System
 Imports System.IO
-Imports DotNetNuke.UI.Skins.Controls
 Imports DotNetNuke.Web.Client.ClientResourceManagement
 Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Modules.Blog.Business
@@ -207,29 +206,6 @@ Partial Class EditEntry
                 If Not Request.UrlReferrer Is Nothing Then
                     ViewState("URLReferrer") = Request.UrlReferrer.ToString
                 End If
-
-                ' stuff for tag suggestions
-                Dim TagController As New TagController
-                Dim TagAList As ArrayList
-                TagAList = TagController.ListTags(PortalId)
-                Dim TagSList(TagAList.Count) As String
-                For i As Integer = 0 To TagAList.Count - 1
-                    'TagSList(i) = Replace(CType(TagAList(i), TagInfo).Tag, " ", "_") ' removed the replace. Not sure why it was there (PAD, 20 Jan)
-                    TagSList(i) = CType(TagAList(i), TagInfo).Tag
-                Next
-
-                Dim TagString As String
-                TagString = "'" + String.Join("','", TagSList) + "'"
-
-                If Not Page.ClientScript.IsClientScriptBlockRegistered("TAG") Then
-                    Dim TagScript As String = "<script src=""" & ControlPath & "js/tag.js"" type=""text/javascript""></script>"
-                    Page.ClientScript.RegisterClientScriptBlock(Me.GetType(), "TAG", TagScript)
-                End If
-
-                'If Not Page.ClientScript.IsClientScriptBlockRegistered("TAGSUGGEST") Then
-                '    Dim TagSuggestScript As String = "<script type=""text/javascript"">jQuery(function(){setGlobalTags([" + TagString + "]);jQuery('#" + tbTags.ClientID + "').tagSuggest({separator:','});});</script>"
-                '    Page.ClientScript.RegisterClientScriptBlock(Me.GetType(), "TAGSUGGEST", TagSuggestScript)
-                'End If
 
                 Dim cancelUrl As String = ModuleContext.NavigateUrl(ModuleContext.TabId, "", False, "")
                 If Not Request.QueryString("BlogId") Is Nothing Then

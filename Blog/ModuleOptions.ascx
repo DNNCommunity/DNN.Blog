@@ -138,7 +138,7 @@
 	</div>
 	<div class="boAdvancedSettings" id="boAdvancedSettings">
 		<div class="boasContent dnnClear">
-			<h2 id="dnnSitePanel-AdvancedSettings" class="dnnFormSectionHead"><%=LocalizeString("tblAdvancedSettings")%></h2>
+			<h2 id="dnnSitePanel-AdvancedSettings" class="dnnFormSectionHead"><%=LocalizeString("secMisc")%></h2>
 			<fieldset>
 				<div class="dnnFormItem">
 					<dnn:label id="lblCatVocabRoot" runat="server" controlname="ddlCatVocabRoot" suffix=":" />

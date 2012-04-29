@@ -374,7 +374,7 @@ About custom images: provide the complete URL to the image (including "http://")
     <value>Tags in Description</value>
   </data>
   <data name="secRSSSettings.Text" xml:space="preserve">
-    <value>RSS Settings</value>
+    <value>RSS</value>
   </data>
   <data name="lblAllowSummaryHtml.Help" xml:space="preserve">
     <value>If checked allows user to enter post summary with markup</value>
@@ -471,5 +471,8 @@ About custom images: provide the complete URL to the image (including "http://")
   </data>
   <data name="BasicSettings.Text" xml:space="preserve">
     <value>Basic Settings</value>
+  </data>
+  <data name="secMisc.Text" xml:space="preserve">
+    <value>Miscellaneous</value>
   </data>
 </root>
