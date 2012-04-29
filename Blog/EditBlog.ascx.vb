@@ -41,7 +41,7 @@ Partial Public Class EditBlog
 
 #Region "Event Handlers"
 
-    Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Protected Overloads Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
         jQuery.RequestUIRegistration()
 
         If Not (Request.Params("BlogID") Is Nothing) Then
@@ -185,12 +185,13 @@ Partial Public Class EditBlog
                 Else
                     hlCancel.NavigateUrl = Request.UrlReferrer.ToString
                 End If
+
+
             End If
         Catch exc As Exception
             ProcessModuleLoadException(Me, exc)
         End Try
     End Sub
-
 
     Protected Sub cmdDelete_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdDelete.Click
         Try
@@ -340,6 +341,9 @@ Partial Public Class EditBlog
                     Else
                         m_oBlogController.UpdateBlog(m_oBlog)
                     End If
+
+
+
                 End With
                 Return True
             End If
@@ -370,6 +374,7 @@ Partial Public Class EditBlog
             End With
         End If
     End Sub
+
 #End Region
 
 End Class

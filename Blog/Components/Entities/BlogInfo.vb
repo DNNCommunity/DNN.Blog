@@ -36,7 +36,8 @@ Namespace Business
         Implements IPropertyAccess
         Implements IXmlSerializable
 
-#Region " local property declarations "
+#Region "Private Members"
+
         Private _ParentBlogID As Integer
         Private _PortalID As Integer
         Private _blogID As Integer
@@ -68,14 +69,19 @@ Namespace Business
         Private _MustApproveTrackbacks As Boolean
         Private _useCaptcha As Boolean
         Private _BlogPostCount As Integer
+        Private _EnableGhostWriter As Boolean = False
+
 #End Region
 
-#Region " Constructors "
+#Region "Constructors"
+
         Public Sub New()
         End Sub
+
 #End Region
 
-#Region " Public Properties "
+#Region "Public Properties"
+
         Public Property PortalID() As Integer
             Get
                 Return _PortalID
@@ -386,10 +392,26 @@ Namespace Business
                 _User = value
             End Set
         End Property
+
+        ''' <summary>
+        ''' Determines if the blog permits ghost writing.
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Property EnableGhostWriter() As Boolean
+            Get
+                Return _EnableGhostWriter
+            End Get
+            Set(ByVal Value As Boolean)
+                _EnableGhostWriter = Value
+            End Set
+        End Property
+
 #End Region
 
-#Region " IHydratable Implementation "
-        ''' -----------------------------------------------------------------------------
+#Region "IHydratable Implementation"
+
         ''' <summary>
         ''' Fill hydrates the object from a Datareader
         ''' </summary>
@@ -398,9 +420,7 @@ Namespace Business
         ''' <history>
         ''' 	[pdonker]	11/07/2010  Created
         ''' </history>
-        ''' -----------------------------------------------------------------------------
         Public Sub Fill(ByVal dr As IDataReader) Implements IHydratable.Fill
-
             AllowAnonymous = Convert.ToBoolean(Null.SetNull(dr.Item("AllowAnonymous"), AllowAnonymous))
             AllowComments = Convert.ToBoolean(Null.SetNull(dr.Item("AllowComments"), AllowComments))
             AllowTrackbacks = Convert.ToBoolean(Null.SetNull(dr.Item("AllowTrackbacks"), AllowTrackbacks))
@@ -428,9 +448,9 @@ Namespace Business
             UseCaptcha = Convert.ToBoolean(Null.SetNull(dr.Item("UseCaptcha"), UseCaptcha))
             BlogPostCount = Convert.ToInt32(Null.SetNull(dr.Item("BlogPostCount"), UserID))
             UserID = Convert.ToInt32(Null.SetNull(dr.Item("UserID"), UserID))
-
+            'EnableGhostWriter = Convert.ToBoolean(Null.SetNull(dr.Item("EnableGhostWriter"), EnableGhostWriter))
         End Sub
-        ''' -----------------------------------------------------------------------------
+
         ''' <summary>
         ''' Gets and sets the Key ID
         ''' </summary>
@@ -439,7 +459,6 @@ Namespace Business
         ''' <history>
         ''' 	[pdonker]	11/07/2010  Created
         ''' </history>
-        ''' -----------------------------------------------------------------------------
         Public Property KeyID() As Integer Implements IHydratable.KeyID
             Get
                 Return BlogID
@@ -448,9 +467,11 @@ Namespace Business
                 BlogID = value
             End Set
         End Property
+
 #End Region
 
-#Region " IPropertyAccess Implementation "
+#Region "IPropertyAccess Implementation"
+
         Public Function GetProperty(ByVal strPropertyName As String, ByVal strFormat As String, ByVal formatProvider As System.Globalization.CultureInfo, ByVal AccessingUser As DotNetNuke.Entities.Users.UserInfo, ByVal AccessLevel As DotNetNuke.Services.Tokens.Scope, ByRef PropertyNotFound As Boolean) As String Implements DotNetNuke.Services.Tokens.IPropertyAccess.GetProperty
             Dim OutputFormat As String = String.Empty
             Dim portalSettings As DotNetNuke.Entities.Portals.PortalSettings = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings()
@@ -512,6 +533,8 @@ Namespace Business
                     Return PropertyAccess.Boolean2LocalizedYesNo(Me.UseCaptcha, formatProvider)
                 Case "userid"
                     Return (Me.UserID.ToString(OutputFormat, formatProvider))
+                Case "enableghostwriter"
+                    Return PropertyAccess.Boolean2LocalizedYesNo(Me.EnableGhostWriter, formatProvider)
                 Case Else
                     PropertyNotFound = True
             End Select
@@ -526,8 +549,8 @@ Namespace Business
         End Property
 #End Region
 
-#Region " IXmlSerializable Implementation "
-        ''' -----------------------------------------------------------------------------
+#Region "IXmlSerializable Implementation"
+
         ''' <summary>
         ''' GetSchema returns the XmlSchema for this class
         ''' </summary>
@@ -535,7 +558,6 @@ Namespace Business
         ''' <history>
         ''' 	[pdonker]	11/07/2010  Created
         ''' </history>
-        ''' -----------------------------------------------------------------------------
         Public Function GetSchema() As XmlSchema Implements IXmlSerializable.GetSchema
             Return Nothing
         End Function
@@ -551,7 +573,6 @@ Namespace Business
             End If
         End Function
 
-        ''' -----------------------------------------------------------------------------
         ''' <summary>
         ''' ReadXml fills the object (de-serializes it) from the XmlReader passed
         ''' </summary>
@@ -560,7 +581,6 @@ Namespace Business
         ''' <history>
         ''' 	[pdonker]	11/07/2010  Created
         ''' </history>
-        ''' -----------------------------------------------------------------------------
         Public Sub ReadXml(ByVal reader As XmlReader) Implements IXmlSerializable.ReadXml
             Try
 
@@ -601,6 +621,7 @@ Namespace Business
                 If Not Int32.TryParse(readElement(reader, "UserID"), UserID) Then
                     UserID = Null.NullInteger
                 End If
+                Boolean.TryParse(readElement(reader, "EnableGhostWriter"), EnableGhostWriter)
             Catch ex As Exception
                 ' log exception as DNN import routine does not do that
                 DotNetNuke.Services.Exceptions.LogException(ex)
@@ -610,7 +631,6 @@ Namespace Business
 
         End Sub
 
-        ''' -----------------------------------------------------------------------------
         ''' <summary>
         ''' WriteXml converts the object to Xml (serializes it) and writes it using the XmlWriter passed
         ''' </summary>
@@ -619,7 +639,6 @@ Namespace Business
         ''' <history>
         ''' 	[pdonker]	11/07/2010  Created
         ''' </history>
-        ''' -----------------------------------------------------------------------------
         Public Sub WriteXml(ByVal writer As XmlWriter) Implements IXmlSerializable.WriteXml
             writer.WriteStartElement("Blog")
             writer.WriteElementString("BlogID", BlogID.ToString())
@@ -648,8 +667,10 @@ Namespace Business
             writer.WriteElementString("Title", Title)
             writer.WriteElementString("UseCaptcha", UseCaptcha.ToString())
             writer.WriteElementString("UserID", UserID.ToString())
+            writer.WriteElementString("EnableGhostWriter", EnableGhostWriter.ToString())
             writer.WriteEndElement()
         End Sub
+
 #End Region
 
     End Class

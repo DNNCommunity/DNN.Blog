@@ -82,6 +82,7 @@ Namespace Settings
 
         Private Const version As String = "03.05.00"
         Private _vocabularyId As Integer = 1
+        Private _enableGhostWriter As Boolean = False
 
 #End Region
 
@@ -219,9 +220,13 @@ Namespace Settings
             Business.Utility.UpdateBlogModuleSetting(_portalId, -1, "AllowMultipleCategories", Me.AllowMultipleCategories.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, -1, "UseWLWExcerpt", Me.UseWLWExcerpt.ToString)
 
+
             ' We save this at 'global' and tab level so its available to WLW as well as normal module usage.
             Business.Utility.UpdateBlogModuleSetting(_portalId, -1, "VocabularyId", Me.VocabularyId.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "VocabularyId", Me.VocabularyId.ToString)
+
+            ' Social Sharing
+
 
             Dim CacheKey As String = "BlogSettings" & _portalId.ToString & "-" & _tabId.ToString
             DotNetNuke.Common.Utilities.DataCache.RemoveCache(CacheKey)

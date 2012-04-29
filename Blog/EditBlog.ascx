@@ -29,6 +29,10 @@
                 </asp:RadioButtonList>
             </div>
             <div class="dnnFormItem">
+                <dnn:Label id="lblEnableGhostWriting" runat="server" controlname="" suffix=":" />
+                <asp:CheckBox ID="chkEnableGhostWriting" runat="server" />
+            </div>
+            <div class="dnnFormItem">
                 <dnn:Label id="lblMetaWebBlog" runat="server" controlname="" suffix=":" />
                 <div>
                     <asp:Label ID="lblMetaWeblogNotAvailable" runat="server" ResourceKey="lblMetaWeblogNotAvailable" Visible="false" />

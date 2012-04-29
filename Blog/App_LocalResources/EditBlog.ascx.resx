@@ -155,7 +155,7 @@
     <value>Culture</value>
   </data>
   <data name="rdoUserName_UserName.Text" xml:space="preserve">
-    <value>User Name</value>
+    <value>Username</value>
   </data>
   <data name="lblUserIdentity.Text" xml:space="preserve">
     <value>Name Format</value>
@@ -167,7 +167,7 @@
     <value>Syndicate Blog</value>
   </data>
   <data name="rdoUserName_FullName.Text" xml:space="preserve">
-    <value>Full Name</value>
+    <value>Display Name</value>
   </data>
   <data name="lblChildBlogs.Text" xml:space="preserve">
     <value>Child Blogs</value>
@@ -189,7 +189,7 @@
     <value>Create new Blog</value>
   </data>
   <data name="lblSyndicationEmail.Help" xml:space="preserve">
-    <value>Use this email for the "ManagingEditor" rss field.</value>
+    <value>Use this email for the "Managing Editor" rss field.</value>
   </data>
   <data name="lblDateTime.Help" xml:space="preserve">
     <value>These options control how date and time are displayed within your blog. This 
@@ -309,5 +309,11 @@
   </data>
   <data name="lblUsersComments.Help" xml:space="preserve">
     <value>These are users who are known to this website and logged in when commenting (members of the community). </value>
+  </data>
+  <data name="lblEnableGhostWriting.Help" xml:space="preserve">
+    <value>If checked, users who are set as ghost writers will be permitted to author this blog as the owner user.</value>
+  </data>
+  <data name="lblEnableGhostWriting.Text" xml:space="preserve">
+    <value>Enable Ghost Writing</value>
   </data>
 </root>
