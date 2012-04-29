@@ -694,7 +694,7 @@ Public Class BlogPost
     End Function
 
     Private Sub InitializeMethodCall(ByVal username As String, ByVal password As String)
-
+        ' NOTE: CP - This method should be updated to support ghost writing, which is a blog level setting and is tied to core permissions (a column in the module permissions grid)
         Try
             Globals.ReadValue(Context.Request.Params, "tabid", _tabId)
             GetPortalSettings()
