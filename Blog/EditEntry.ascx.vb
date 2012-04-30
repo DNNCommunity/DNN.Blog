@@ -499,6 +499,12 @@ Partial Class EditEntry
 
                         jc.Journal_Save(ji, -1)
                     End If
+
+                    ' Clear cache
+                    DataCache.ClearCache(Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + VocabularyId.ToString())
+                    DataCache.ClearCache(Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + "1") ' Tags
+                    DataCache.ClearCache(Constants.ModuleCacheKeyPrefix + Constants.ContentItemTermsCacheKey + .ContentItemId.ToString() + Constants.VocabularySuffixCacheKey + VocabularyId.ToString())
+                    DataCache.ClearCache(Constants.ModuleCacheKeyPrefix + Constants.ContentItemTermsCacheKey + .ContentItemId.ToString() + Constants.VocabularySuffixCacheKey + "1") ' Tags
                 End With
             End If
         Catch exc As Exception    'Module failed to load

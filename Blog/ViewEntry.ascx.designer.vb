@@ -122,42 +122,6 @@ Partial Public Class ViewEntry
     Protected WithEvents lblCopyright As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''lnkTrackBack control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lnkTrackBack As Global.System.Web.UI.WebControls.HyperLink
-
-    '''<summary>
-    '''cmdPrint control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents cmdPrint As Global.System.Web.UI.WebControls.LinkButton
-
-    '''<summary>
-    '''lnkEditEntry control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lnkEditEntry As Global.System.Web.UI.WebControls.HyperLink
-
-    '''<summary>
-    '''lblCategories control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblCategories As Global.System.Web.UI.WebControls.Label
-
-    '''<summary>
     '''rptCategories control.
     '''</summary>
     '''<remarks>
@@ -212,6 +176,15 @@ Partial Public Class ViewEntry
     Protected WithEvents lnkChildBlog As Global.System.Web.UI.WebControls.HyperLink
 
     '''<summary>
+    '''litCategories control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents litCategories As Global.System.Web.UI.WebControls.Literal
+
+    '''<summary>
     '''rptTags control.
     '''</summary>
     '''<remarks>
@@ -219,6 +192,33 @@ Partial Public Class ViewEntry
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents rptTags As Global.System.Web.UI.WebControls.Repeater
+
+    '''<summary>
+    '''lnkTrackBack control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lnkTrackBack As Global.System.Web.UI.WebControls.HyperLink
+
+    '''<summary>
+    '''cmdPrint control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents cmdPrint As Global.System.Web.UI.WebControls.LinkButton
+
+    '''<summary>
+    '''lnkEditEntry control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lnkEditEntry As Global.System.Web.UI.WebControls.HyperLink
 
     '''<summary>
     '''pnlComments control.

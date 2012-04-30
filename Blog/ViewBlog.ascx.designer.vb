@@ -23,40 +23,40 @@ Partial Public Class ViewBlog
     Protected WithEvents pnlBlogInfo As Global.System.Web.UI.WebControls.Panel
 
     '''<summary>
-    '''lblAuthorHeader control.
+    '''imgAuthorLink control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblAuthorHeader As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents imgAuthorLink As Global.System.Web.UI.WebControls.HyperLink
 
     '''<summary>
-    '''lblAuthor control.
+    '''dbiUser control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblAuthor As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents dbiUser As Global.DotNetNuke.Web.UI.WebControls.DnnBinaryImage
 
     '''<summary>
-    '''lblCreatedHeader control.
+    '''hlAuthor control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblCreatedHeader As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents hlAuthor As Global.System.Web.UI.WebControls.HyperLink
 
     '''<summary>
-    '''lblCreated control.
+    '''litBlogDescription control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblCreated As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents litBlogDescription As Global.System.Web.UI.WebControls.Literal
 
     '''<summary>
     '''lnkRSS control.
@@ -75,15 +75,6 @@ Partial Public Class ViewBlog
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Image1 As Global.System.Web.UI.WebControls.Image
-
-    '''<summary>
-    '''litBlogDescription control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents litBlogDescription As Global.System.Web.UI.WebControls.Literal
 
     '''<summary>
     '''pnlBlogRss control.

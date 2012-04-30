@@ -28,7 +28,8 @@ Imports DotNetNuke.Services.Localization
 Partial Public Class ViewBlog
     Inherits BlogModuleBase
 
-#Region " Private Members "
+#Region "Private Members"
+
     Private m_sSearchString As String
     Private m_sSearchType As String = "Keyword"
     Private m_oBlogController As New BlogController
@@ -38,6 +39,13 @@ Partial Public Class ViewBlog
     Private m_bSearchDisplay As Boolean = False
     Private m_PersonalBlogID As Integer
     Private m_SeoFriendlyUrl As Boolean
+
+    Private ReadOnly Property VocabularyId() As Integer
+        Get
+            Return BlogSettings.VocabularyId
+        End Get
+    End Property
+
 #End Region
 
 #Region "Event Handlers"
@@ -146,11 +154,16 @@ Partial Public Class ViewBlog
 
                                 pnlBlogInfo.Visible = True
                                 If m_oBlog.ShowFullName Then
-                                    lblAuthor.Text = m_oBlog.UserFullName
+                                    hlAuthor.Text = m_oBlog.UserFullName
                                 Else
-                                    lblAuthor.Text = m_oBlog.UserName
+                                    hlAuthor.Text = m_oBlog.UserName
                                 End If
-                                lblCreated.Text = Utility.FormatDate(m_oBlog.Created, m_oBlog.Culture, m_oBlog.DateFormat, m_oBlog.TimeZone)
+
+                                Dim objAuthor As Entities.Users.UserInfo = DotNetNuke.Entities.Users.UserController.GetUserById(ModuleContext.PortalId, m_oBlog.UserID)
+                                dbiUser.ImageUrl = objAuthor.Profile.PhotoURL
+                                hlAuthor.NavigateUrl = DotNetNuke.Common.Globals.UserProfileURL(m_oBlog.UserID)
+                                imgAuthorLink.NavigateUrl = DotNetNuke.Common.Globals.UserProfileURL(m_oBlog.UserID)
+
                                 litBlogDescription.Text = m_oBlog.Description
                                 list = objEntries.ListEntriesByBlog(m_oBlog.BlogID, m_dBlogDate, Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId), Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId), BlogSettings.RecentEntriesMax)
 
@@ -235,7 +248,6 @@ Partial Public Class ViewBlog
     End Sub
 
     Protected Sub lstBlogView_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataListItemEventArgs) Handles lstBlogView.ItemDataBound
-
         If e.Item.ItemType = ListItemType.AlternatingItem Or e.Item.ItemType = ListItemType.Item Then
             Dim litAuthor As System.Web.UI.WebControls.Literal = CType(e.Item.FindControl("litAuthor"), System.Web.UI.WebControls.Literal)
             Dim lblDescription As System.Web.UI.WebControls.Literal = CType(e.Item.FindControl("litDescription"), System.Web.UI.WebControls.Literal)
@@ -247,8 +259,8 @@ Partial Public Class ViewBlog
             Dim lnkChildBlog As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkChildBlog"), System.Web.UI.WebControls.HyperLink)
             Dim lnkEntry As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkEntry"), System.Web.UI.WebControls.HyperLink)
             Dim divBlogReadMore As System.Web.UI.HtmlControls.HtmlGenericControl = CType(e.Item.FindControl("divBlogReadMore"), System.Web.UI.HtmlControls.HtmlGenericControl)
+            Dim litCategories As System.Web.UI.WebControls.Literal = CType(e.Item.FindControl("litCategories"), System.Web.UI.WebControls.Literal)
             Dim tagControl As Tags = DirectCast(e.Item.FindControl("dbaTag"), Tags)
-
             Dim oBlog As BlogInfo
 
             If m_oBlog Is Nothing Then
@@ -267,6 +279,7 @@ Partial Public Class ViewBlog
             Dim imgEdit As System.Web.UI.WebControls.Image
             lnkEditEntry = CType(e.Item.FindControl("lnkEditEntry"), HyperLink)
             imgEdit = CType(e.Item.FindControl("imgEdit"), System.Web.UI.WebControls.Image)
+
             If Not m_oEntry Is Nothing Then
                 If Utility.HasBlogPermission(Me.UserId, m_oEntry.UserID, Me.ModuleId) AndAlso Not lnkEditEntry Is Nothing Then
                     lnkEditEntry.Visible = True
@@ -284,6 +297,20 @@ Partial Public Class ViewBlog
                 hlMore.NavigateUrl = DotNetNuke.Modules.Blog.Business.Utility.BlogNavigateURL(TabId, PortalId, m_oEntry.EntryID, m_oEntry.Title, BlogSettings.ShowSeoFriendlyUrl)
                 hlMore.Text = Localization.GetString("lnkReadMore", LocalResourceFile)
                 hlMore.Visible = (m_oEntry.PermaLink <> DotNetNuke.Modules.Blog.Business.Utility.BlogNavigateURL(TabId, PortalId, m_oEntry.EntryID, m_oEntry.Title, BlogSettings.ShowSeoFriendlyUrl))
+
+                Dim Categories As String = ""
+                Dim i As Integer = 0
+                Dim colCategories As List(Of TermInfo) = m_oEntry.EntryTerms(VocabularyId)
+
+                For Each objTerm As TermInfo In colCategories
+                    Categories += "<a href='" + ModuleContext.NavigateUrl(ModuleContext.TabId, "", False, "catid=" + objTerm.TermId.ToString()) + "'>" + objTerm.Name + "</a>"
+                    i += 1
+                    If i <= (colCategories.Count - 1) Then
+                        Categories += ", "
+                    End If
+                Next
+
+                litCategories.Text = Categories
 
                 tagControl.ModContext = ModuleContext
                 tagControl.DataSource = m_oEntry.EntryTerms(1)

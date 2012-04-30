@@ -2,36 +2,25 @@
 <%@ Import Namespace="DotNetNuke.Services.Localization" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls" %>
 <%@ Register TagPrefix="dba" Assembly="DotNetNuke.Modules.Blog" Namespace="DotNetNuke.Modules.Blog" %>
+<%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <div class="dnnClear dnnForm dnnViewBlog">
 	<asp:Panel ID="pnlBlogInfo" Visible="False" runat="server">
-		<table class="BlogInfo" cellspacing="1" cellpadding="1" width="100%" border="0">
-			<tr>
-				<td class="BlogDescriptionHeavy">
-					<asp:Label ID="lblAuthorHeader" runat="server" ResourceKey="lblAuthorHeader" />
-				</td>
-				<td style="white-space: nowrap;">
-					<asp:Label ID="lblAuthor" runat="server" CssClass="BlogDescription" />
-				</td>
-				<td class="BlogDescriptionHeavy">
-					<asp:Label ID="lblCreatedHeader" runat="server" ResourceKey="lblCreatedHeader" />
-				</td>
-				<td>
-					<asp:Label ID="lblCreated" runat="server" CssClass="BlogDescription" />
-				</td>
-				<td>
-					<asp:HyperLink ID="lnkRSS" runat="server" Visible="False" Target="_blank">
-						<asp:Image ID="Image1" runat="server" ImageUrl="~/desktopmodules/Blog/Images/feed-icon-24x24.gif" AlternateText="RssIcon" />
-					</asp:HyperLink>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="5">
-					<div class="BlogDescription">
-						<asp:Literal ID="litBlogDescription" runat="server" />
-					</div>
-				</td>
-			</tr>
-		</table>
+		<div class="vbAuthor dnnClear">
+			<div class="dnnLeft">
+				<asp:HyperLink id="imgAuthorLink" runat="server"><dnnweb:DnnBinaryImage ID="dbiUser" runat="server" Width="40" /></asp:HyperLink>
+			</div>
+			<div class="dnnLeft">
+				<asp:HyperLink ID="hlAuthor" runat="server" />
+				<div class="dnnLeft">
+					<asp:Literal ID="litBlogDescription" runat="server" />
+				</div>
+			</div>
+			<div class="dnnRight">
+				<asp:HyperLink ID="lnkRSS" runat="server" Visible="False" Target="_blank">
+					<asp:Image ID="Image1" runat="server" ImageUrl="~/desktopmodules/Blog/Images/feed-icon-24x24.gif" AlternateText="RssIcon" />
+				</asp:HyperLink>
+			</div>
+		</div>
 	</asp:Panel>
 	<asp:Panel ID="pnlBlogRss" runat="server" Visible="False">
 		<table class="BlogInfo" cellspacing="1" cellpadding="1" width="100%" border="0">
@@ -53,7 +42,7 @@
 					<asp:Literal ID="litAuthor" runat="server" />
 					<asp:Label ID="lblPublishDate" runat="server" />
 				</div>
-				<div class="vbBody">
+				<div class="vbBody dnnClear">
 					<asp:Label ID="lblPublished" runat="server" Visible="False" CssClass="NormalRed" ResourceKey="lblPublished" />
 					<asp:Literal ID="litDescription" runat="server" />
 					<div class="BlogReadMore" runat="server" id="divBlogReadMore">
@@ -69,7 +58,10 @@
 							<asp:Image ID="imgBlogParentSeparator" runat="server" ImageUrl="~/DesktopModules/Blog/images/folder_closed.gif" AlternateText="Parent Separator" />
 							<asp:HyperLink ID="lnkChildBlog" runat="server" />
 						</div>
-						<div class="tags">
+						<div class="BlogCategories">
+							<asp:Literal ID="litCategories" runat="server" />
+						</div>
+						<div class="tags BlogTopics">
 							<div class="tags"><dba:Tags ID="dbaTag" runat="server" EnableViewState="false" /></div>
 						</div>
 					</div>

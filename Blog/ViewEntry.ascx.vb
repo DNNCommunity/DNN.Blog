@@ -43,14 +43,11 @@ Partial Public Class ViewEntry
     Private m_oEntry As EntryInfo
     Private m_oEntryID As Integer = -1
 
-#End Region
-
-#Region "Controls"
-
-    Protected WithEvents imgGravatar As System.Web.UI.WebControls.Image
-    Protected WithEvents lnkCheckGravatar As System.Web.UI.WebControls.LinkButton
-    Protected WithEvents AuthorRow As System.Web.UI.HtmlControls.HtmlTableRow
-    Protected WithEvents cbUseGravatar As System.Web.UI.WebControls.CheckBox
+    Private ReadOnly Property VocabularyId() As Integer
+        Get
+            Return BlogSettings.VocabularyId
+        End Get
+    End Property
 
 #End Region
 
@@ -87,7 +84,6 @@ Partial Public Class ViewEntry
 
                 Dim keyCount As Integer = 1
                 Dim count As Integer = keyCount
-
                 Dim pageTitle As String = m_oEntry.Title
                 Dim keyWords As String = ""
                 Dim pageDescription As String = m_oEntry.Entry
@@ -103,8 +99,6 @@ Partial Public Class ViewEntry
                 Utility.SetPageMetaAndOpenGraph(CType(Page, CDefault), ModuleContext, pageTitle, pageDescription, keyWords, pageUrl)
             End If
         End If
-
-        Me.ModuleConfiguration.SupportedFeatures = 0
     End Sub
 
     Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -217,19 +211,6 @@ Partial Public Class ViewEntry
 
                     litSocialSharing.Text = "<ul class='qaSocialActions'>" + facebookContent + googleContent + twitterContent + linkedInContent + "</ul>"
 
-                    'Antonio Chagoury
-                    'Leave the module title as it should be
-                    'Added a label to display the Blog Entry Title
-                    'Don Worthley - 04/05/2008
-                    'Added back in
-
-                    'If BlogSettings.ShowUniqueTitle Then
-                    '    Try             ' 4.0.1 Bug
-                    '        Me.BasePage.Title = Me.BasePage.Title & " - " & m_oEntry.Title
-                    '    Catch
-                    '    End Try
-                    'End If
-
                     'Rip Rowan 7/5/2008
                     'Put description on page, show / hide based on setting
                     litSummary.Text = Server.HtmlDecode(m_oEntry.Description)
@@ -323,7 +304,6 @@ Partial Public Class ViewEntry
             End If
 
             AddGravatarImagePreview()
-
             txtClientIP.Text = HttpContext.Current.Request.UserHostAddress.ToString
 
             If pnlCaptcha.Visible Then
@@ -331,7 +311,20 @@ Partial Public Class ViewEntry
                 ctlCaptcha.Text = Localization.GetString("CaptchaText", Me.LocalResourceFile)
             End If
 
-            'Dim taglist As ArrayList = TagController.ListTagsByEntry(m_oEntry.EntryID)
+            Dim Categories As String = ""
+            Dim i As Integer = 0
+            Dim colCategories As List(Of TermInfo) = m_oEntry.EntryTerms(VocabularyId)
+
+            For Each objTerm As TermInfo In colCategories
+                Categories += "<a href='" + ModuleContext.NavigateUrl(ModuleContext.TabId, "", False, "catid=" + objTerm.TermId.ToString()) + "'>" + objTerm.Name + "</a>"
+                i += 1
+                If i <= (colCategories.Count - 1) Then
+                    Categories += ", "
+                End If
+            Next
+
+            litCategories.Text = Categories
+
             rptTags.DataSource = m_oEntry.EntryTerms(1)
             rptTags.DataBind()
 
@@ -557,14 +550,6 @@ Partial Public Class ViewEntry
         Dim LoginURL As String
         LoginURL = m_oEntry.PermaLink + "?ctl=login"
         Response.Redirect(LoginURL, True)
-    End Sub
-
-    Protected Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
-        Try
-            Response.Redirect(NavigateURL(), True)
-        Catch exc As Exception    'Module failed to load
-            ProcessModuleLoadException(Me, exc)
-        End Try
     End Sub
 
     Protected Sub cmdPrint_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdPrint.Click
