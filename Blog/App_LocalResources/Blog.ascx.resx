@@ -135,4 +135,10 @@
   <data name="lnkAddEntry.Text" xml:space="preserve">
     <value>Add Blog Entry</value>
   </data>
+  <data name="Hide.Text" xml:space="preserve">
+    <value>hide</value>
+  </data>
+  <data name="Show.Text" xml:space="preserve">
+    <value>show</value>
+  </data>
 </root>

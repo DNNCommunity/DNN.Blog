@@ -4,15 +4,7 @@
 <%@ Import Namespace="DotNetNuke.Services.Localization" %>
 <asp:Label ID="lblTrackback" runat="server" />
 <div class="dnnForm dnnViewEntry dnnClear">
-	<h2 class="dnnFormSectionHead" id="lblBlogTitle" runat="server" />
-	<acronym class="BlogPublished" title="<%= lblDateTime.Text %>">
-		<span class="BlogPubMonth">
-			<asp:Label ID="lblEntryMonth" runat="server" />
-		</span>
-		<span class="BlogPubDate">
-			<asp:Label ID="lblEntryDay" runat="server" />
-		</span>
-	</acronym>
+	<h2 id="lblBlogTitle" runat="server" />
 	<div class="vbHeader dnnClear">
 		<div><%= Localization.GetString("by", LocalResourceFile)%><asp:HyperLink ID="hlAuthor" runat="server" /></div>
 		<asp:Label ID="lblDateTime" CssClass="BlogDate" runat="server" />&nbsp;
@@ -23,14 +15,14 @@
 			<asp:Literal ID="litSocialSharing" runat="server" />
 		</div>
 	</div>
-	<div class="vbBody">
+	<div class="vbBody dnnClear">
 		<asp:Literal ID="litSummary" runat="server" />
 		<asp:Literal ID="litEntry" runat="server" />
 		<p><asp:Label ID="lblCopyright" CssClass="BlogCopyright" runat="server" Visible="False" /></p>
 	</div>
-	<div class="dnnClear">
+	<div class="vbFooter dnnClear">
 		<div class="dnnLeft">
-			<div class="BlogCategories">
+		    <div class="BlogCategories">
 				<label><%= Localization.GetString("lblCategories", LocalResourceFile)%></label>
 				<asp:Repeater ID="rptCategories" runat="server">
 					<ItemTemplate>
@@ -56,7 +48,7 @@
 				</div>
 			</div> 
 		</div>  
-		 <div class="dnnRight">
+		<div class="dnnRight">
 			<asp:HyperLink ID="lnkTrackBack" ResourceKey="lnkTrackBack" CssClass="BlogTrackback" runat="server" />
 			<asp:LinkButton ID="cmdPrint" runat="server" CausesValidation="False" CssClass="BlogPrint" resourcekey="cmdPrint" />
 			<asp:HyperLink ID="lnkEditEntry" ResourceKey="msgEditEntry" CssClass="BlogEditLink" runat="server" />

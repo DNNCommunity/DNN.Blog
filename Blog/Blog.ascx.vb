@@ -22,6 +22,7 @@ Imports System
 Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Services.Exceptions.Exceptions
+Imports DotNetNuke.Framework
 
 Partial Public Class Blog
     Inherits BlogModuleBase
@@ -31,6 +32,8 @@ Partial Public Class Blog
 
     Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
+            jQuery.RequestUIRegistration()
+
             Dim objBlogs As New BlogController
             Dim objBlog As BlogInfo
             Dim m_PersonalBlogID As Integer = BlogSettings.PageBlogs
@@ -68,7 +71,8 @@ Partial Public Class Blog
 
 #End Region
 
-#Region " Private Methods "
+#Region "Private Methods"
+
     Private Sub lnkBlog_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lnkBlog.Click
         Response.Redirect(EditUrl("BlogID", "-1", "Edit_Blog"))
     End Sub

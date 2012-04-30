@@ -33,7 +33,7 @@ Partial Public Class ModuleOptions
 
     Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
-            jQuery.RequestUIRegistration()
+            jQuery.RequestDnnPluginsRegistration()
             'ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js");
 
             If Not Page.IsPostBack Then

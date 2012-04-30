@@ -111,6 +111,7 @@
     <Content Include="BlogFeed.ascx" />
     <Content Include="BlogList.ascx" />
     <Content Include="BlogTerms.asmx" />
+    <Content Include="Archive.css" />
     <Content Include="Documentation\License.txt" />
     <Content Include="Documentation\ReleaseNotes.txt" />
     <Content Include="EditBlog.ascx" />
@@ -200,13 +201,6 @@
     <Compile Include="Components\Rss\StringWriterWithEncoding.vb" />
     <Compile Include="Components\WordPress\IWordPress.vb" />
     <Compile Include="Controls\Tags.vb" />
-    <Compile Include="EditCategories.ascx.designer.vb">
-      <DependentUpon>EditCategories.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="EditCategories.ascx.vb">
-      <DependentUpon>EditCategories.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Components\Business\ArchiveDays.vb" />
     <Compile Include="Components\Business\ArchiveMonths.vb" />
     <Compile Include="Components\BlogModuleBase.vb">
@@ -380,7 +374,6 @@
   <ItemGroup>
     <Content Include="blogpost.ashx" />
     <Content Include="blogpostredirect.aspx" />
-    <Content Include="EditCategories.ascx" />
     <Content Include="include\css\shCoreDefault.css" />
     <Content Include="include\js\syntaxHighlighter.js" />
     <Content Include="MainView.ascx" />
@@ -389,7 +382,6 @@
     <Content Include="js\bookmarks.xml" />
     <Content Include="js\Gravatar.js" />
     <Content Include="js\md5.js" />
-    <Content Include="js\tag.js" />
     <Content Include="RecentComments.ascx" />
     <Content Include="RecentCommentsSettings.ascx" />
     <Content Include="RecentEntries.ascx" />

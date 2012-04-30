@@ -159,4 +159,10 @@
   <data name="Search_Blog.Text" xml:space="preserve">
     <value>Search Blog</value>
   </data>
+  <data name="Hide.Text" xml:space="preserve">
+    <value>hide</value>
+  </data>
+  <data name="Show.Text" xml:space="preserve">
+    <value>show</value>
+  </data>
 </root>

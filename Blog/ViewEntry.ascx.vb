@@ -190,8 +190,8 @@ Partial Public Class ViewEntry
 
                     lblTrackback.Text = Utility.GetTrackbackRDF(NavigateURL(), m_oEntry)
                     lblDateTime.Text = Utility.FormatDate(m_oEntry.AddedDate, m_oBlog.Culture, m_oBlog.DateFormat, m_oBlog.TimeZone)
-                    lblEntryMonth.Text = GetMonth(m_oEntry.AddedDate, m_oBlog.TimeZone)
-                    lblEntryDay.Text = GetDay(m_oEntry.AddedDate, m_oBlog.TimeZone)
+                    'lblEntryMonth.Text = GetMonth(m_oEntry.AddedDate, m_oBlog.TimeZone)
+                    'lblEntryDay.Text = GetDay(m_oEntry.AddedDate, m_oBlog.TimeZone)
 
                     ''Antonio Chagoury - 4/11/2008
                     'If BlogSettings.ShowSocialBookmarks Then

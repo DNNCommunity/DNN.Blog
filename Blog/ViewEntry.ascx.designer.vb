@@ -32,24 +32,6 @@ Partial Public Class ViewEntry
     Protected WithEvents lblBlogTitle As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
     '''<summary>
-    '''lblEntryMonth control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblEntryMonth As Global.System.Web.UI.WebControls.Label
-
-    '''<summary>
-    '''lblEntryDay control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblEntryDay As Global.System.Web.UI.WebControls.Label
-
-    '''<summary>
     '''hlAuthor control.
     '''</summary>
     '''<remarks>

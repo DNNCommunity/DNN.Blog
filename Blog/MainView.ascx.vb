@@ -23,20 +23,24 @@ Imports DotNetNuke.Entities.Modules.Definitions
 Imports DotNetNuke.Entities.Modules.Actions
 Imports DotNetNuke.Services.Localization.Localization
 Imports DotNetNuke.Services.Localization
+Imports DotNetNuke.Framework
 
 Partial Public Class MainView
     Inherits BlogModuleBase
     Implements Entities.Modules.IActionable
 
-#Region " IActionable "
+#Region "IActionable"
+
     Public ReadOnly Property ModuleActions() As DotNetNuke.Entities.Modules.Actions.ModuleActionCollection Implements DotNetNuke.Entities.Modules.IActionable.ModuleActions
         Get
             Return MyActions
         End Get
     End Property
+
 #End Region
 
 #Region "Private Methods"
+
     Private Function resolveParams(ByVal params As System.Collections.Specialized.NameValueCollection) As String
         Dim sRet As String = BlogModuleBase.CONTROL_VIEW_VIEWBLOG
         RssView = RssViews.None
@@ -60,7 +64,6 @@ Partial Public Class MainView
     End Function
 
     Private Function GetModuleDefinitions() As ArrayList
-
         Dim mdc As New ModuleDefinitionController
         Dim definitions As New ArrayList
         For Each mi As ModuleDefinitionInfo In mdc.GetModuleDefinitions(ModuleConfiguration.DesktopModuleID)
@@ -73,14 +76,15 @@ Partial Public Class MainView
             End If
         Next
         Return definitions
-
     End Function
 
 #End Region
 
 #Region "Event Handlers"
 
-    Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Protected Overloads Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        jQuery.RequestUIRegistration()
+
         Dim moduleControl As String
         moduleControl = resolveParams(Request.Params)
         Select Case moduleControl
@@ -149,7 +153,6 @@ Partial Public Class MainView
                 txtTitle.Text = GetString("Title", LocalResourceFile)
             End If
         End If
-
     End Sub
 
     Protected Sub cmdAdd_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdAdd.Click
