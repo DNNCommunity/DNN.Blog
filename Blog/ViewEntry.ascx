@@ -6,11 +6,7 @@
 <div class="dnnForm dnnViewEntry dnnClear">
 	<h2 id="lblBlogTitle" runat="server" />
 	<div class="vbHeader dnnClear">
-		<div><%= Localization.GetString("by", LocalResourceFile)%><asp:HyperLink ID="hlAuthor" runat="server" /></div>
-		<asp:Label ID="lblDateTime" CssClass="BlogDate" runat="server" />&nbsp;
-		<asp:HyperLink ID="lnkRss" runat="server" Target="_blank">
-			<asp:Image ID="lnkRssIcon" runat="server" ImageUrl="~/desktopmodules/Blog/Images/feed-icon-12x12.gif" ResourceKey="lnkRss" />
-		</asp:HyperLink>
+		<%= Localization.GetString("by", LocalResourceFile)%><asp:HyperLink ID="hlAuthor" runat="server" /><%= Localization.GetString("on", LocalResourceFile)%><asp:Label ID="lblDateTime" CssClass="BlogDate" runat="server" />
 		<div class="dnnRight">
 			<asp:Literal ID="litSocialSharing" runat="server" />
 		</div>
@@ -158,13 +154,13 @@
 
 			$("#CommentForm").hide();
 			$("#linkAdd").click(function () {
-				$("#CommentForm").show('highlight', '', 500, '');
+				$("#CommentForm").show('highlight', '', 200, '');
 				$("#linkAdd").hide();
 				$("#ulAddComment").hide();
 				return true;
 			});
 			$("#linkAddComment").click(function () {
-				$("#CommentForm").show('highlight', '', 500, '');
+				$("#CommentForm").show('highlight', '', 200, '');
 				$("#linkAdd").hide();
 				$("#ulAddComment").hide();
 				return true;

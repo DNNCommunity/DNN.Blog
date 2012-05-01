@@ -190,6 +190,7 @@ Partial Public Class ViewEntry
 
                     lblTrackback.Text = Utility.GetTrackbackRDF(NavigateURL(), m_oEntry)
                     lblDateTime.Text = Utility.FormatDate(m_oEntry.AddedDate, m_oBlog.Culture, m_oBlog.DateFormat, m_oBlog.TimeZone)
+
                     'lblEntryMonth.Text = GetMonth(m_oEntry.AddedDate, m_oBlog.TimeZone)
                     'lblEntryDay.Text = GetDay(m_oEntry.AddedDate, m_oBlog.TimeZone)
 
@@ -226,22 +227,22 @@ Partial Public Class ViewEntry
 
                     pnlComments.Visible = (m_oBlog.AllowComments Or m_oEntry.AllowComments)
 
-                    'DW - 06/17/2008
-                    ' Changed to show RSS feed for blog rather than page.  Was rssentryid= & m_oEntry.EntryID.ToSring
-                    ' Also changed Visible code to only show Rss link based on whether the blog is syndicated.
-                    lnkRss.Visible = True
-                    ' DW - 06/25/2008 - Updated to show blog rss only if sydicated independently.  If not, then
-                    ' we show the parent blog if the parent blog is syndicated.
-                    If m_oBlog.SyndicateIndependant Or m_oBlog.ParentBlogID = -1 Then
-                        ' Child blog with SyndicateIndependently or Parent Blog
-                        lnkRss.NavigateUrl = NavigateURL(Me.TabId, "", "rssid=" & m_oEntry.BlogID.ToString)
-                    ElseIf m_oBlog.Syndicated And m_oBlog.ParentBlogID <> -1 Then
-                        ' Child blog that is Syndicated, but not indpenedently - Show parent blog RSS feed
-                        lnkRss.NavigateUrl = NavigateURL(Me.TabId, "", "rssid=" & m_oBlog.ParentBlogID.ToString())
-                    Else
-                        ' If none of the above, then don't show the RSS link.
-                        lnkRss.Visible = False
-                    End If
+                    ''DW - 06/17/2008
+                    '' Changed to show RSS feed for blog rather than page.  Was rssentryid= & m_oEntry.EntryID.ToSring
+                    '' Also changed Visible code to only show Rss link based on whether the blog is syndicated.
+                    'lnkRss.Visible = True
+                    '' DW - 06/25/2008 - Updated to show blog rss only if sydicated independently.  If not, then
+                    '' we show the parent blog if the parent blog is syndicated.
+                    'If m_oBlog.SyndicateIndependant Or m_oBlog.ParentBlogID = -1 Then
+                    '    ' Child blog with SyndicateIndependently or Parent Blog
+                    '    lnkRss.NavigateUrl = NavigateURL(Me.TabId, "", "rssid=" & m_oEntry.BlogID.ToString)
+                    'ElseIf m_oBlog.Syndicated And m_oBlog.ParentBlogID <> -1 Then
+                    '    ' Child blog that is Syndicated, but not indpenedently - Show parent blog RSS feed
+                    '    lnkRss.NavigateUrl = NavigateURL(Me.TabId, "", "rssid=" & m_oBlog.ParentBlogID.ToString())
+                    'Else
+                    '    ' If none of the above, then don't show the RSS link.
+                    '    lnkRss.Visible = False
+                    'End If
 
                     ' 07/12/2008 Rip Rowan
                     ' Cleaned up logic in next 7 lines

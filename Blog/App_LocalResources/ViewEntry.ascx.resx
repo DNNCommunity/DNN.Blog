@@ -152,9 +152,6 @@
   <data name="valCommentTitle.ErrorMessage" xml:space="preserve">
     <value>Title is required</value>
   </data>
-  <data name="lblFormatUserName.Text" xml:space="preserve">
-    <value>By {0} on </value>
-  </data>
   <data name="msgMailBody.Text" xml:space="preserve">
     <value>&lt;p&gt;The following comment has been added in the blog [BLOG]:&lt;/p&gt;&lt;p&gt;[TITLE]&lt;/p&gt;&lt;p&gt;[COMMENT]&lt;/p&gt;&lt;p&gt;By [USER], on [DATE].&lt;/p&gt;&lt;p&gt;&lt;a href="[URL]"&gt;Click to visit&lt;/a&gt;.&lt;/p&gt;</value>
   </data>
@@ -215,9 +212,6 @@
   <data name="lblWebsite.Text" xml:space="preserve">
     <value>Your website:</value>
   </data>
-  <data name="lblFormatUserNameUrl.Text" xml:space="preserve">
-    <value>&lt;a href="{0}" rel="nofollow"&gt;{1}&lt;/a&gt;</value>
-  </data>
   <data name="lblEmailExplanation.Text" xml:space="preserve">
     <value>(Optional) Email used only to show &lt;a href="http://www.gravatar.com" target="_new"&gt;Gravatar&lt;/a&gt;.</value>
   </data>
@@ -247,5 +241,14 @@
   </data>
   <data name="by.Text" xml:space="preserve">
     <value>by </value>
+  </data>
+  <data name="lblFormatUserName.Text" xml:space="preserve">
+    <value>By {0} </value>
+  </data>
+  <data name="lblFormatUserNameUrl.Text" xml:space="preserve">
+    <value>&lt;a href="{0}" rel="nofollow"&gt;{1}&lt;/a&gt;</value>
+  </data>
+  <data name="on.Text" xml:space="preserve">
+    <value> on </value>
   </data>
 </root>

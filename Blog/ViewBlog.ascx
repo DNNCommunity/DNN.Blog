@@ -38,12 +38,13 @@
 		<ItemTemplate>
 			<div class="vbEntry">
 				<h2><asp:HyperLink ID="lnkEntry" runat="server"><%# DataBinder.Eval(Container.DataItem, "Title") %></asp:HyperLink></h2>
-				<div class="vbHeader">
+				<div class="vbHeader dnnClear">
 					<asp:Literal ID="litAuthor" runat="server" />
 					<asp:Label ID="lblPublishDate" runat="server" />
+					<div class="dnnRight"></div>
 				</div>
 				<div class="vbBody dnnClear">
-					<asp:Label ID="lblPublished" runat="server" Visible="False" CssClass="NormalRed" ResourceKey="lblPublished" />
+					<asp:Label ID="lblPublished" runat="server" Visible="False" CssClass="dnnFormMessage dnnFormWarning" ResourceKey="lblPublished" />
 					<asp:Literal ID="litDescription" runat="server" />
 					<div class="BlogReadMore" runat="server" id="divBlogReadMore">
 						<asp:HyperLink ID="hlPermaLink" runat="server" CssClass="dnnSecondaryAction" />
@@ -66,8 +67,8 @@
 						</div>
 					</div>
 					<div class="dnnRight">
-						<asp:HyperLink ID="lnkComments" runat="server" CssClass="dnnSecondaryAction" />
-						<asp:HyperLink ID="lnkEditEntry" ResourceKey="msgEditEntry" CssClass="dnnSecondaryAction" runat="server" />
+						<asp:HyperLink ID="lnkComments" runat="server" CssClass="BlogComments" />
+						<asp:HyperLink ID="lnkEditEntry" ResourceKey="msgEditEntry" CssClass="BlogEditLink" runat="server" />
 					</div>
 				</div>
 			</div>

@@ -402,8 +402,9 @@ Partial Public Class ViewBlog
                 End If
             End If
 
-            If ((oBlog.AllowComments Or CType(e.Item.DataItem, EntryInfo).AllowComments) And CType(IIf(Me.UserId = -1, oBlog.AllowAnonymous, True), Boolean)) Then
-                'If ((oBlog.AllowComments Or CType(e.Item.DataItem, EntryInfo).AllowComments)) Then
+            If ((oBlog.AllowComments Or CType(e.Item.DataItem, EntryInfo).AllowComments)) Then
+                ' CP: Removed from above, we should always show the comment link as long as we allow them (in other words, who cares if they are logged in) - CodePlex = 22459
+                'And CType(IIf(Me.UserId = -1, oBlog.AllowAnonymous, True), Boolean) 
                 lnkComments.Visible = True
                 lnkComments.Text = String.Format(GetString("lnkComments", LocalResourceFile), CType(e.Item.DataItem, EntryInfo).CommentCount)
             Else

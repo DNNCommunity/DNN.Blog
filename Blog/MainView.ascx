@@ -32,7 +32,7 @@
             $("#bmvHide").hide();
 
             $("#bmvShow").click(function () {
-                $("#divbmForm").show('highlight', '', 500, '');
+                $("#divbmForm").show('highlight', '', 200, '');
                 $("#bmvHide").show();
                 $("#bmvShow").hide();              
                 return false;

@@ -50,24 +50,6 @@ Partial Public Class ViewEntry
     Protected WithEvents lblDateTime As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''lnkRss control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lnkRss As Global.System.Web.UI.WebControls.HyperLink
-
-    '''<summary>
-    '''lnkRssIcon control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lnkRssIcon As Global.System.Web.UI.WebControls.Image
-
-    '''<summary>
     '''litSocialSharing control.
     '''</summary>
     '''<remarks>

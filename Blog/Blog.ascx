@@ -23,7 +23,7 @@
             $("#bmHide").hide();
 
             $("#bmShow").click(function () {
-                $("#dnnBlogAuthorActions").show('highlight', '', 500, '');
+                $("#dnnBlogAuthorActions").show('highlight', '', 200, '');
                 $("#bmHide").show();
                 $("#bmShow").hide();
                 return false;

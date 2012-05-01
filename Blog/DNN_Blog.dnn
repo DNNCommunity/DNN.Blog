@@ -42,7 +42,7 @@
 						  <moduleControl>
 							  <controlKey>Edit_Blog</controlKey>
 							  <controlSrc>DesktopModules/Blog/EditBlog.ascx</controlSrc>
-							  <supportsPartialRendering>True</supportsPartialRendering>
+							  <supportsPartialRendering>False</supportsPartialRendering>
 							  <controlTitle>Edit Blog</controlTitle>
 							  <controlType>Edit</controlType>
 							  <iconFile />
@@ -75,7 +75,7 @@
 						  <moduleControl>
 							  <controlKey>Module_Options</controlKey>
 							  <controlSrc>DesktopModules/Blog/ModuleOptions.ascx</controlSrc>
-							  <supportsPartialRendering>True</supportsPartialRendering>
+							  <supportsPartialRendering>False</supportsPartialRendering>
 							  <controlTitle>Blog Options</controlTitle>
 							  <controlType>Admin</controlType>
 							  <iconFile />
@@ -86,7 +86,7 @@
 						  <moduleControl>
 							  <controlKey>View_Entry</controlKey>
 							  <controlSrc>DesktopModules/Blog/ViewEntry.ascx</controlSrc>
-							  <supportsPartialRendering>True</supportsPartialRendering>
+							  <supportsPartialRendering>False</supportsPartialRendering>
 							  <controlTitle>View Entry</controlTitle>
 							  <controlType>View</controlType>
 							  <iconFile />

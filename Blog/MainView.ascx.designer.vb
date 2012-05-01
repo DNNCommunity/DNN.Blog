@@ -29,7 +29,7 @@ Partial Public Class MainView
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblAddModuleDef As Global.System.Web.UI.UserControl
+    Protected WithEvents lblAddModuleDef As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''ddModuleDef control.

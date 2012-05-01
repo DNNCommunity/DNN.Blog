@@ -34,11 +34,10 @@ Partial Public Class ModuleOptions
     Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             jQuery.RequestDnnPluginsRegistration()
-            'ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js");
 
             If Not Page.IsPostBack Then
                 PopulateDropDowns()
-                ' Load settings
+
                 chkForceDescription.Checked = BlogSettings.EntryDescriptionRequired
                 txtSummaryLimit.Text = BlogSettings.SummaryMaxLength.ToString
                 txtSearchLimit.Text = BlogSettings.SearchSummaryMaxLength.ToString
@@ -47,27 +46,16 @@ Partial Public Class ModuleOptions
                 chkShowWebsite.Checked = BlogSettings.ShowWebsite
                 txtGravatarImageWidth.Text = BlogSettings.GravatarImageWidth.ToString
 
-                'DW - 06/06/2008
-                ' Set the visibility of the Gravatar rows based on the ShowGravatars setting
-                pnlGravatarImageWidth.Visible = chkShowGravatars.Checked
-                pnlGravatarRating.Visible = chkShowGravatars.Checked
-                pnlGravatarDefaultImageUrl.Visible = chkShowGravatars.Checked
-                pnlGravatarDefaultImageCustomURL.Visible = chkShowGravatars.Checked
-
                 Dim ratingValue As String = BlogSettings.GravatarRating
                 Dim defaultURL As String = BlogSettings.GravatarDefaultImageUrl
                 rblGravatarRating.SelectedIndex = rblGravatarRating.Items.IndexOf(rblGravatarRating.Items.FindByValue(ratingValue))
                 rblDefaultImage.SelectedIndex = rblDefaultImage.Items.IndexOf(rblDefaultImage.Items.FindByValue(defaultURL))
                 txtGravatarDefaultImageCustomURL.Text = BlogSettings.GravatarCustomUrl
-
                 txtRecentEntriesMax.Text = BlogSettings.RecentEntriesMax.ToString
                 txtRecentRssEntriesMax.Text = BlogSettings.RecentRssEntriesMax.ToString
-                pnlSummary.Visible = Not chkForceDescription.Checked
-                pnlSearchSummary.Visible = Not chkForceDescription.Checked
                 chkUploadOption.Checked = BlogSettings.EnableUploadOption
                 chkShowSummary.Checked = BlogSettings.ShowSummary
                 chkShowCommentTitle.Checked = BlogSettings.ShowCommentTitle
-                'chkShowUniqueTitle.Checked = BlogSettings.ShowUniqueTitle
                 chkShowSeoFriendlyUrl.Checked = BlogSettings.ShowSeoFriendlyUrl
                 'chkEnableBookmarks.Checked = BlogSettings.ShowSocialBookmarks
                 chkEnforceSummaryTruncation.Checked = BlogSettings.EnforceSummaryTruncation
@@ -103,13 +91,6 @@ Partial Public Class ModuleOptions
                     End If
                 Next
 
-
-                chkEnableDNNSearch.Checked = BlogSettings.EnableDNNSearch
-                If cmbPageBlogs.Items.Count > 2 Then
-                    chkEnableDNNSearch.Enabled = (cmbPageBlogs.SelectedIndex = 0)
-                End If
-
-
                 'cmdMigrateChildblogs
 
                 'Load Bookmarks Settings
@@ -127,29 +108,8 @@ Partial Public Class ModuleOptions
         End Try
     End Sub
 
-    Protected Sub cmbPageBlogs_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmbPageBlogs.SelectedIndexChanged
-        If cmbPageBlogs.Items.Count > 2 Then
-            If cmbPageBlogs.SelectedIndex = 0 Then
-                chkEnableDNNSearch.Enabled = True
-            Else
-                chkEnableDNNSearch.Enabled = False
-                chkEnableDNNSearch.Checked = False
-            End If
-        Else
-            chkEnableDNNSearch.Enabled = True
-        End If
-    End Sub
-
-    Protected Sub chkShowGravatars_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowGravatars.CheckedChanged
-        pnlGravatarImageWidth.Visible = chkShowGravatars.Checked
-        pnlGravatarRating.Visible = chkShowGravatars.Checked
-        pnlGravatarDefaultImageUrl.Visible = chkShowGravatars.Checked
-        pnlGravatarDefaultImageCustomURL.Visible = chkShowGravatars.Checked
-    End Sub
-
     Protected Sub cmdUpdateOptions_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdUpdateOptions.Click
         Try
-            ' Update Settings
             With BlogSettings
                 .EntryDescriptionRequired = chkForceDescription.Checked
                 .SummaryMaxLength = CInt(txtSummaryLimit.Text)
@@ -166,7 +126,7 @@ Partial Public Class ModuleOptions
                 '.ShowUniqueTitle = chkShowUniqueTitle.Checked
                 .ShowSeoFriendlyUrl = chkShowSeoFriendlyUrl.Checked
                 .PageBlogs = CInt(cmbPageBlogs.SelectedItem.Value)
-                .EnableDNNSearch = chkEnableDNNSearch.Checked
+                '.EnableDNNSearch = chkEnableDNNSearch.Checked
                 .ShowGravatars = chkShowGravatars.Checked
                 .GravatarImageWidth = CInt(txtGravatarImageWidth.Text)
                 .GravatarRating = rblGravatarRating.SelectedValue
@@ -208,11 +168,6 @@ Partial Public Class ModuleOptions
         Catch exc As Exception 'Module failed to load
             ProcessModuleLoadException(Me, exc)
         End Try
-    End Sub
-
-    Protected Sub chkForceDescription_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkForceDescription.CheckedChanged
-        Me.pnlSummary.Visible = Not chkForceDescription.Checked
-        Me.pnlSearchSummary.Visible = Not chkForceDescription.Checked
     End Sub
 
     Protected Sub cmdGenerateLinks_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdGenerateLinks.Click

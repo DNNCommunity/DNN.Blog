@@ -14,16 +14,16 @@
 			<fieldset>
 				<div class="dnnFormItem">
 					<dnn:label id="lblMandatory" runat="server" controlname="chkForceDescription" suffix=":" />
-					<asp:CheckBox ID="chkForceDescription" runat="server" AutoPostBack="True" />
+					<asp:CheckBox ID="chkForceDescription" runat="server" />
 				</div>
-				<asp:Panel class="dnnFormItem" id="pnlSummary" runat="server">
+				<div class="dnnFormItem" id="divSummary">
 					<dnn:label id="lblSummary" runat="server" controlname="txtSummaryLimit" suffix=":" />
 					<asp:TextBox ID="txtSummaryLimit" runat="server" Text="1024" />
-				</asp:Panel>
-				<asp:Panel class="dnnFormItem" id="pnlSearchSummary" runat="server">
+				</div>
+				<div class="dnnFormItem" id="divSearchSummary">
 					<dnn:label id="lblSearchSummary" runat="server" controlname="txtSearchLimit" suffix=":" />
 					<asp:TextBox ID="txtSearchLimit" runat="server" Text="255" />
-				</asp:Panel>
+				</div>
 				<div class="dnnFormItem">
 					<dnn:label id="lblMaxImageWidth" runat="server" controlname="txtMaxImageWidth" suffix=":" />
 					<asp:TextBox ID="txtMaxImageWidth" runat="server" Text="400" />
@@ -37,13 +37,13 @@
 			<fieldset>
 				<div class="dnnFormItem">
 					<dnn:label id="lblShowGravatars" runat="server" controlname="lblShowGravatars" suffix=":" />
-					<asp:CheckBox ID="chkShowGravatars" runat="server" AutoPostBack="True" />
+					<asp:CheckBox ID="chkShowGravatars" runat="server" />
 				</div>
-				<asp:Panel class="dnnFormItem" id="pnlGravatarImageWidth" runat="server">
+				<div class="dnnFormItem" id="divGravatarImageWidth">
 					<dnn:label id="lblGravatarImageWidth" runat="server" controlname="lblGravatarImageWidth" suffix=":" />
 					<asp:TextBox ID="txtGravatarImageWidth" runat="server" Text="48" />
-				</asp:Panel>
-				<asp:Panel class="dnnFormItem" id="pnlGravatarRating" runat="server">
+				</div>
+				<div class="dnnFormItem" id="divGravatarRating">
 					<dnn:label id="lblGravatarRating" runat="server" controlname="lblGravatarRating" suffix=":" />
 					<asp:RadioButtonList ID="rblGravatarRating" runat="server" CssClass="dnnFormRadioButtons">
 					   <asp:ListItem Value="G" Selected="True" resourceKey="rblGravatarRating_g" />
@@ -51,8 +51,8 @@
 					   <asp:ListItem Value="R" resourceKey="rblGravatarRating_r" />
 					   <asp:ListItem Value="X" resourceKey="rblGravatarRating_x" />
 					  </asp:RadioButtonList>
-				</asp:Panel>
-				<asp:Panel class="dnnFormItem" id="pnlGravatarDefaultImageUrl" runat="server">
+				</div>
+				<div class="dnnFormItem" id="divGravatarDefaultImageUrl">
 					<dnn:label id="lblGravatarDefaultImageUrl" runat="server" controlname="lblGravatarDefaultImageUrl" suffix=":" />
 					<asp:RadioButtonList ID="rblDefaultImage" runat="server" CssClass="dnnFormRadioButtons">
 					   <asp:ListItem Value="" Selected="True" Text="Gray Man" />
@@ -61,11 +61,11 @@
 					   <asp:ListItem Value="monsterid" Text="MonsterID" />
 					   <asp:ListItem Value="custom" Text="Custom" />
 					</asp:RadioButtonList>
-				</asp:Panel>
-				<asp:Panel class="dnnFormItem" id="pnlGravatarDefaultImageCustomURL" runat="server">
+				</div>
+				<div class="dnnFormItem" id="divGravatarDefaultImageCustomURL">
 					<dnn:label id="lblGravatarDefaultImageCustomURL" runat="server" controlname="lblGravatarDefaultImageCustomURL" suffix=":" />
 					<asp:TextBox ID="txtGravatarDefaultImageCustomURL" runat="server" />
-				</asp:Panel>
+				</div>
 				<div class="dnnFormItem">
 					<dnn:label id="lblShowWebsite" runat="server" controlname="lblShowWebsite" suffix=":" />
 					<asp:CheckBox ID="chkShowWebsite" Checked="True" runat="server" />
@@ -154,11 +154,7 @@
 				</div>
 				<div class="dnnFormItem">
 					<dnn:label id="lblPageBlogs" runat="server" controlname="cmbPageBlogs" suffix=":" />
-					<asp:DropDownList ID="cmbPageBlogs" AutoPostBack="True" DataValueField="BlogID" DataTextField="Title" runat="server" />
-				</div>
-				<div class="dnnFormItem">
-					<dnn:label id="lblEnableDNNSearch" runat="server" controlname="chkEnableDNNSearch" suffix=":" />
-					<asp:CheckBox ID="chkEnableDNNSearch" runat="server" />
+					<asp:DropDownList ID="cmbPageBlogs" DataValueField="BlogID" DataTextField="Title" runat="server" />
 				</div>
 				<div class="dnnFormItem">
 					<dnn:label id="lblEnableBookmarks" runat="server" suffix=":" controlname="lblEnableBookmarks" />
@@ -213,18 +209,57 @@
 <script language="javascript" type="text/javascript">
 	/*globals jQuery, window, Sys */
 	(function ($, Sys) {
-		function setupDnnBlogSettings() {
-		    $('#dnnBlogOptions').dnnTabs().dnnPanels();
+	    function setupDnnBlogSettings() {
+	        handleSummaryDisplay();
+	        handleGravatarDisplay();
 
-		    $('#boBasicSettings .dnnFormExpandContent a').dnnExpandAll({ expandText: '<%=Localization.GetSafeJSString("ExpandAll", Localization.SharedResourceFile)%>', collapseText: '<%=Localization.GetSafeJSString("CollapseAll", Localization.SharedResourceFile)%>', targetArea: '#boBasicSettings' });
-		};
+	        $('#dnnBlogOptions').dnnTabs().dnnPanels();
 
-		$(document).ready(function () {
-			setupDnnBlogSettings();
-			Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
-				setupDnnBlogSettings();
-			});
-		});
+
+
+	        $('#<%= chkForceDescription.ClientID  %>').click(function () {
+	            handleSummaryDisplay();
+	            return true;
+	        });
+
+	        $('#<%= chkShowGravatars.ClientID  %>').click(function () {
+	            handleGravatarDisplay();
+	            return true;
+	        });
+
+	        function handleSummaryDisplay() {
+	            if ($('#<%= chkForceDescription.ClientID  %>').prop('checked')) {
+	                $("#divSummary").hide('highlight', '', 200, '');
+	                $("#divSearchSummary").hide('highlight', '', 200, '');
+	            } else {
+	                $("#divSummary").show('highlight', '', 200, '');
+	                $("#divSearchSummary").show('highlight', '', 200, '');
+	            }
+	        }
+
+	        function handleGravatarDisplay() {
+	            if ($('#<%= chkShowGravatars.ClientID  %>').prop('checked')) {
+	                $("#divGravatarImageWidth").show('highlight', '', 200, '');
+	                $("#divGravatarRating").show('highlight', '', 200, '');
+	                $("#divGravatarDefaultImageUrl").show('highlight', '', 200, '');
+	                $("#divGravatarDefaultImageCustomURL").show('highlight', '', 200, '');
+	            } else {
+	                $("#divGravatarImageWidth").hide('highlight', '', 200, '');
+	                $("#divGravatarRating").hide('highlight', '', 200, '');
+	                $("#divGravatarDefaultImageUrl").hide('highlight', '', 200, '');
+	                $("#divGravatarDefaultImageCustomURL").hide('highlight', '', 200, '');
+	            }
+	        }
+
+	        $('#boBasicSettings .dnnFormExpandContent a').dnnExpandAll({ expandText: '<%=Localization.GetSafeJSString("ExpandAll", Localization.SharedResourceFile)%>', collapseText: '<%=Localization.GetSafeJSString("CollapseAll", Localization.SharedResourceFile)%>', targetArea: '#boBasicSettings' });
+	    };
+
+	    $(document).ready(function () {
+	        setupDnnBlogSettings();
+	        Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
+	            setupDnnBlogSettings();
+	        });
+	    });
 
 	} (jQuery, window.Sys));
 </script>   

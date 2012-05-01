@@ -8,10 +8,9 @@
 <div class="License">
 	<h3>About the Core Blog</h3>
 	<p class="Owner">
-		<strong>Version 5.0.0 (Beta)</strong><br /><br />
-		This version of the module requires DotNetNuke Core 6.2 Beta 1 or greater. <br /><br />
+		<strong>Version 5.0.0 (Beta 2)</strong><br /><br />
+		This version of the module requires DotNetNuke Core 6.2 Beta 2 or greater. <br /><br />
 		FYI: Developers should be aware that the module uses Visual Studio 2010 only. <br /><br />
-		Category & Tag migration (for upgrades) is not handled at this time (will be before a final release). <br /><br />
 
 		Release Highlights:
 		<ul>
@@ -23,7 +22,7 @@
 			<li>Converted module to use DNN 6 form pattern (also removed h1, h2 and font-family styling from module.css).</li>
 			<li>Changed all jQuery registration to use proper core methods (now loads jQuery UI too).</li>
 			<li>Offloaded most script and css loading to Client Dependency Framework.</li>
-			<li>20211 - Integrated core taxonomy & folksonomy (NOT DONE: migrated previous categories/tags over).</li>
+			<li>20211 - Integrated core taxonomy & folksonomy.</li>
 			<li>Implemented tagging controls and styling form Q&A module.</li>
 			<li>19321 - Updated Page Meta information in several views, so the title, description and keywords associated with the 'page' are much more accurate than before (before, we used core page info).</li>
 			<li>Added Open Graph Protocol Support to several views.</li>
@@ -33,5 +32,22 @@
 			<li>Added new social sharing option, big 4 only, same as it was done in Q&A.</li>
 			<li>Replaced custom tag cloud with Rad Tag Cloud (and now wired into core folksonomy).</li>
 			<li>21730, 20946 - Changed how blog post counts are calculated (for display in blog list).</li>
+			<li>22459 - Now showing comment link and count to unauthenticated users. - <strong>NEW</strong></li>
+			<li>21252 - Cleaned up HTML and CSS in normal user views (changed from table layout to divs, removed unnecessary styling, moved archive out into its own file). - <strong>NEW</strong></li>
+			<li>Replaced dnn tree view (for category selection) with Telerik Treeview. - <strong>NEW</strong></li>
+			<li>Made admin/author only 'control panels' something that is hidden by default (but can easily be displayed via client-side quickly). <strong>NEW</strong></li>
+			<li>Corrected index problems on category and tag tables (even though they will eventually be removed), to avoid maintenance problems. <strong>NEW</strong></li>
+			<li>20215 - Removed ShareBadge Pro and added option for AddThis (which allows complete customization), in addition to big 4 I already added. (In Progress) <strong>NEW</strong></li>
+			<li>Added user image and profile link to blog description, added author profile section to entry view. (In Progress) - <strong>NEW</strong></li>
+			<li>Corrected TimeZone problems. (In Progress) - <strong>NEW</strong></li>	
+			<li>19021, 20865 - Added support for "Ghost Writers" via a new module permission. (In Progress) - <strong>NEW</strong></li>
+			<li>Disabled partial rendering throught all parts of the module. All previous 'benefits' are now handled client-side (show, hide, etc.) with less overhead and trips to the server. - <strong>NEW</strong></li>
+		</ul>
+
+		Known Issues:
+		<ul>
+			<li>Comments look a bit odd. Awaiting Journal functionality not available in core 6.2 Beta 2.</li>
+			<li>Author images look different from others seen in social.</li>
+			<li></li>
 		</ul>
 </div>
