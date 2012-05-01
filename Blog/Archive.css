@@ -1,0 +1,9 @@
+.BlogArchiveDayHeader {background-color:#CDF;}
+.BlogArchiveDay {background-color:#fff;}
+.BlogArchiveDay a,.BlogArchiveSelectedDay a,.BlogArchiveWeekendDay a,.BlogArchiveTodayDay a {width:100%;}
+.BlogArchiveOtherMonth {background-color:#f4f4f4;}
+.BlogArchiveSelectedDay {border:1px solid #CCC;background-color:#FC0;}
+.BlogArchiveTitle {font-weight:700;}
+.BlogArchiveTodayDay {border:1px solid #CCC;background-color:#FC0;font-weight:700;}
+.BlogArchiveWeekendDay {background-color:#fffff0;}
+.BlogArchiveNextPrev,.BlogArchiveSelector {font-size:11px;}
