@@ -38,38 +38,14 @@ Namespace Business
 
 #Region "Private Members"
 
-        Private _ParentBlogID As Integer
-        Private _PortalID As Integer
-        Private _blogID As Integer
-        Private _userID As Integer
         Private _User As UserInfo
         Private _userName As String
         Private _userFullName As String
-        Private _title As String
-        Private _description As String
-        Private _public As Boolean
-        Private _allowComments As Boolean
-        Private _allowAnonymous As Boolean
-        Private _lastEntry As DateTime
-        Private _created As DateTime
-        Private _ChildBlogCount As Integer = 0
         Private _culture As String
+  Private _cultureFormat As System.Globalization.CultureInfo
         Private _DateFormat As String
-        Private _ShowFullName As Boolean
-        Private _TimeZone As Integer = 0
-        Private _syndicated As Boolean
-        Private _SyndicateIndependant As Boolean = False
-        Private _SyndicationURL As String
-        Private _SyndicationEmail As String
-        Private _EmailNotification As Boolean
-        Private _AllowTrackbacks As Boolean
-        Private _AutoTrackback As Boolean
-        Private _MustApproveComments As Boolean
-        Private _MustApproveAnonymous As Boolean
-        Private _MustApproveTrackbacks As Boolean
-        Private _useCaptcha As Boolean
-        Private _BlogPostCount As Integer
         Private _EnableGhostWriter As Boolean = False
+  Private _timeZoneId As String = ""
 
 #End Region
 
@@ -81,42 +57,32 @@ Namespace Business
 #End Region
 
 #Region "Public Properties"
-
         Public Property PortalID() As Integer
-            Get
-                Return _PortalID
-            End Get
-            Set(ByVal Value As Integer)
-                _PortalID = Value
-            End Set
-        End Property
-
         Public Property BlogID() As Integer
-            Get
-                Return _blogID
-            End Get
-            Set(ByVal Value As Integer)
-                _blogID = Value
-            End Set
-        End Property
-
         Public Property ParentBlogID() As Integer
-            Get
-                Return _ParentBlogID
-            End Get
-            Set(ByVal Value As Integer)
-                _ParentBlogID = Value
-            End Set
-        End Property
-
         Public Property UserID() As Integer
-            Get
-                Return _userID
-            End Get
-            Set(ByVal Value As Integer)
-                _userID = Value
-            End Set
-        End Property
+  Public Property Title() As String
+  Public Property Description() As String
+  Public Property [Public]() As Boolean
+  Public Property AllowComments() As Boolean
+  Public Property AllowAnonymous() As Boolean
+  Public Property LastEntry() As DateTime
+  Public Property Created() As DateTime
+  Public Property ShowFullName() As Boolean
+  Public Property TimeZone() As TimeZoneInfo = TimeZoneInfo.Local
+  Public Property ChildBlogCount() As Integer = 0
+  Public Property Syndicated() As Boolean
+  Public Property SyndicateIndependant() As Boolean
+  Public Property SyndicationURL() As String
+  Public Property SyndicationEmail() As String
+  Public Property EmailNotification() As Boolean
+  Public Property AllowTrackbacks() As Boolean
+  Public Property AutoTrackback() As Boolean
+  Public Property MustApproveComments() As Boolean
+  Public Property MustApproveAnonymous() As Boolean
+  Public Property MustApproveTrackbacks() As Boolean
+  Public Property UseCaptcha() As Boolean
+  Public Property BlogPostCount() As Integer
 
         Public Property UserName() As String
             Get
@@ -145,69 +111,6 @@ Namespace Business
             End Set
         End Property
 
-        Public Property Title() As String
-            Get
-                Return _title
-            End Get
-            Set(ByVal Value As String)
-                _title = Value
-            End Set
-        End Property
-
-        Public Property Description() As String
-            Get
-                Return _description
-            End Get
-            Set(ByVal Value As String)
-                _description = Value
-            End Set
-        End Property
-
-        Public Property [Public]() As Boolean
-            Get
-                Return _public
-            End Get
-            Set(ByVal Value As Boolean)
-                _public = Value
-            End Set
-        End Property
-
-        Public Property AllowComments() As Boolean
-            Get
-                Return _allowComments
-            End Get
-            Set(ByVal Value As Boolean)
-                _allowComments = Value
-            End Set
-        End Property
-
-        Public Property AllowAnonymous() As Boolean
-            Get
-                Return _allowAnonymous
-            End Get
-            Set(ByVal Value As Boolean)
-                _allowAnonymous = Value
-            End Set
-        End Property
-
-        Public Property LastEntry() As DateTime
-            Get
-                Return _lastEntry
-            End Get
-            Set(ByVal Value As DateTime)
-                _lastEntry = Value
-            End Set
-        End Property
-
-        Public Property Created() As DateTime
-            Get
-                Return _created
-            End Get
-            Set(ByVal Value As DateTime)
-                _created = Value
-            End Set
-        End Property
-
         Public Property Culture() As String
             Get
                 If _culture Is Nothing Then
@@ -218,13 +121,23 @@ Namespace Business
                     Else
                         Return _culture
                     End If
-
                 End If
             End Get
             Set(ByVal Value As String)
                 _culture = Value
+    _cultureFormat = New System.Globalization.CultureInfo(Value)
             End Set
         End Property
+
+  Public ReadOnly Property CultureInfo As System.Globalization.CultureInfo
+   Get
+    If _cultureFormat Is Nothing Then
+     _cultureFormat = New System.Globalization.CultureInfo(Culture)
+    End If
+    Return _cultureFormat
+   End Get
+  End Property
+
 
         Public Property DateFormat() As String
             Get
@@ -243,146 +156,11 @@ Namespace Business
             End Set
         End Property
 
-        Public Property ShowFullName() As Boolean
-            Get
-                Return _ShowFullName
-            End Get
-            Set(ByVal Value As Boolean)
-                _ShowFullName = Value
-            End Set
-        End Property
-
-        Public Property TimeZone() As Integer
-            Get
-                Return _TimeZone
-            End Get
-            Set(ByVal Value As Integer)
-                _TimeZone = Value
-            End Set
-        End Property
-
-        Public Property ChildBlogCount() As Integer
-            Get
-                Return _ChildBlogCount
-            End Get
-            Set(ByVal Value As Integer)
-                _ChildBlogCount = Value
-            End Set
-        End Property
-
-        Public Property Syndicated() As Boolean
-            Get
-                Return _syndicated
-            End Get
-            Set(ByVal Value As Boolean)
-                _syndicated = Value
-            End Set
-        End Property
-
-        Public Property SyndicateIndependant() As Boolean
-            Get
-                Return _SyndicateIndependant
-            End Get
-            Set(ByVal Value As Boolean)
-                _SyndicateIndependant = Value
-            End Set
-        End Property
-
-        Public Property SyndicationURL() As String
-            Get
-                Return _SyndicationURL
-            End Get
-            Set(ByVal Value As String)
-                _SyndicationURL = Value
-            End Set
-        End Property
-
-        Public Property SyndicationEmail() As String
-            Get
-                Return _SyndicationEmail
-            End Get
-            Set(ByVal Value As String)
-                _SyndicationEmail = Value
-            End Set
-        End Property
-
-        Public Property EmailNotification() As Boolean
-            Get
-                Return _EmailNotification
-            End Get
-            Set(ByVal Value As Boolean)
-                _EmailNotification = Value
-            End Set
-        End Property
-
-        Public Property AllowTrackbacks() As Boolean
-            Get
-                Return _AllowTrackbacks
-            End Get
-            Set(ByVal Value As Boolean)
-                _AllowTrackbacks = Value
-            End Set
-        End Property
-
-        Public Property AutoTrackback() As Boolean
-            Get
-                Return _AutoTrackback
-            End Get
-            Set(ByVal Value As Boolean)
-                _AutoTrackback = Value
-            End Set
-        End Property
-
-        Public Property MustApproveComments() As Boolean
-            Get
-                Return _MustApproveComments
-            End Get
-            Set(ByVal Value As Boolean)
-                _MustApproveComments = Value
-            End Set
-        End Property
-
-        Public Property MustApproveAnonymous() As Boolean
-            Get
-                Return _MustApproveAnonymous
-            End Get
-            Set(ByVal Value As Boolean)
-                _MustApproveAnonymous = Value
-            End Set
-        End Property
-
-        Public Property MustApproveTrackbacks() As Boolean
-            Get
-                Return _MustApproveTrackbacks
-            End Get
-            Set(ByVal Value As Boolean)
-                _MustApproveTrackbacks = Value
-            End Set
-        End Property
-
-        Public Property UseCaptcha() As Boolean
-            Get
-                Return _useCaptcha
-            End Get
-            Set(ByVal Value As Boolean)
-                _useCaptcha = Value
-            End Set
-        End Property
-
-        Public Property BlogPostCount() As Integer
-            Get
-                Return _BlogPostCount
-            End Get
-            Set(ByVal value As Integer)
-                _BlogPostCount = value
-            End Set
-        End Property
-
         Public Property User() As UserInfo
             Get
                 If _User Is Nothing Then
                     Try
-                        _User = (New UserController).GetUser(_PortalID, _userID)
+      _User = (New UserController).GetUser(_PortalID, _UserID)
                     Catch ex As Exception
                     End Try
                 End If
@@ -443,7 +221,11 @@ Namespace Business
             SyndicateIndependant = Convert.ToBoolean(Null.SetNull(dr.Item("SyndicateIndependant"), SyndicateIndependant))
             SyndicationEmail = Convert.ToString(Null.SetNull(dr.Item("SyndicationEmail"), SyndicationEmail))
             SyndicationURL = Convert.ToString(Null.SetNull(dr.Item("SyndicationURL"), SyndicationURL))
-            TimeZone = Convert.ToInt32(Null.SetNull(dr.Item("TimeZone"), TimeZone))
+   _timeZoneId = Convert.ToString(Null.SetNull(dr.Item("TimeZone"), _timeZoneId))
+   Try
+    TimeZone = TimeZoneInfo.FindSystemTimeZoneById(_timeZoneId)
+   Catch ex As Exception
+   End Try
             Title = Convert.ToString(Null.SetNull(dr.Item("Title"), Title))
             UseCaptcha = Convert.ToBoolean(Null.SetNull(dr.Item("UseCaptcha"), UseCaptcha))
             BlogPostCount = Convert.ToInt32(Null.SetNull(dr.Item("BlogPostCount"), UserID))
@@ -526,7 +308,7 @@ Namespace Business
                 Case "syndicationurl"
                     Return PropertyAccess.FormatString(Me.SyndicationURL, strFormat)
                 Case "timezone"
-                    Return (Me.TimeZone.ToString(OutputFormat, formatProvider))
+     Return PropertyAccess.FormatString(Me.TimeZone.DisplayName, strFormat)
                 Case "title"
                     Return PropertyAccess.FormatString(Me.Title, strFormat)
                 Case "usecaptcha"
@@ -613,9 +395,11 @@ Namespace Business
                 Boolean.TryParse(readElement(reader, "SyndicateIndependant"), SyndicateIndependant)
                 SyndicationEmail = readElement(reader, "SyndicationEmail")
                 SyndicationURL = readElement(reader, "SyndicationURL")
-                If Not Int32.TryParse(readElement(reader, "TimeZone"), TimeZone) Then
-                    TimeZone = Null.NullInteger
-                End If
+    _timeZoneId = readElement(reader, "TimeZone")
+    Try
+     TimeZone = TimeZoneInfo.FindSystemTimeZoneById(_timeZoneId)
+    Catch ex As Exception
+    End Try
                 Title = readElement(reader, "Title")
                 Boolean.TryParse(readElement(reader, "UseCaptcha"), UseCaptcha)
                 If Not Int32.TryParse(readElement(reader, "UserID"), UserID) Then
@@ -663,7 +447,7 @@ Namespace Business
             writer.WriteElementString("SyndicateIndependant", SyndicateIndependant.ToString())
             writer.WriteElementString("SyndicationEmail", SyndicationEmail)
             writer.WriteElementString("SyndicationURL", SyndicationURL)
-            writer.WriteElementString("TimeZone", TimeZone.ToString())
+   writer.WriteElementString("TimeZone", TimeZone.Id)
             writer.WriteElementString("Title", Title)
             writer.WriteElementString("UseCaptcha", UseCaptcha.ToString())
             writer.WriteElementString("UserID", UserID.ToString())

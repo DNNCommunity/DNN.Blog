@@ -85,7 +85,7 @@ Partial Public Class EditBlog
     Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             If Not Page.IsPostBack Then
-                Localization.LoadTimeZoneDropDownList(cboTimeZone, CType(Page, PageBase).PageCulture.Name, PortalSettings.TimeZoneOffset.ToString)
+    'Localization.LoadTimeZoneDropDownList(cboTimeZone, CType(Page, PageBase).PageCulture.Name, PortalSettings.TimeZoneOffset.ToString)
                 Localization.LoadCultureDropDownList(cboCulture, CultureDropDownTypes.NativeName, CType(Page, PageBase).PageCulture.Name)
 
                 lblChildBlogsOff.Visible = (Not BlogSettings.AllowChildBlogs)
@@ -103,6 +103,11 @@ Partial Public Class EditBlog
                     txtTitle.Text = m_oBlog.Title
                     txtDescription.Text = m_oBlog.Description
                     chkPublic.Checked = m_oBlog.Public
+
+     Try
+      ddTimeZone.Items.FindByValue(m_oBlog.TimeZone.Id).Selected = True
+     Catch ex As Exception
+     End Try
 
                     If m_oBlog.AllowComments Then
                         If m_oBlog.MustApproveComments Then
@@ -162,18 +167,18 @@ Partial Public Class EditBlog
                         fsChildBlogs.Visible = False
                     End If
 
-                    BindDateOptions(m_oBlog.TimeZone, m_oBlog.Culture, m_oBlog.DateFormat)
+     BindDateOptions(m_oBlog.Culture, m_oBlog.DateFormat)
                     lblMetaWeblogUrl.Text = "http://" & Request.Url.Host & ControlPath & "blogpost.ashx?tabid=" & TabId
 
                 ElseIf Not m_oParentBlog Is Nothing Then
                     If Not rdoUserName.SelectedItem Is Nothing Then rdoUserName.SelectedItem.Selected = False
                     rdoUserName.Items.FindByValue(m_oParentBlog.ShowFullName.ToString()).Selected = True
-                    BindDateOptions(m_oParentBlog.TimeZone, m_oParentBlog.Culture, m_oParentBlog.DateFormat)
+     BindDateOptions(m_oParentBlog.Culture, m_oParentBlog.DateFormat)
 
                     dnnSitePanelChildBlogs.Visible = False
                     fsChildBlogs.Visible = False
                 Else
-                    BindDateOptions(Now.Subtract(Date.UtcNow).Hours, System.Threading.Thread.CurrentThread.CurrentCulture.Name, "g")
+     BindDateOptions(System.Threading.Thread.CurrentThread.CurrentCulture.Name, "g")
                 End If
 
                 If Not Request.UrlReferrer Is Nothing Then
@@ -204,9 +209,9 @@ Partial Public Class EditBlog
         End Try
     End Sub
 
-    Protected Sub cboTimeZone_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboTimeZone.SelectedIndexChanged
-        BindDateFormats()
-    End Sub
+ 'Protected Sub cboTimeZone_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboTimeZone.SelectedIndexChanged
+ ' BindDateFormats()
+ 'End Sub
 
     Protected Sub cboCulture_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboCulture.SelectedIndexChanged
         BindDateFormats()
@@ -250,13 +255,13 @@ Partial Public Class EditBlog
 #End Region
 
 #Region "Private Methods"
-    Private Sub BindDateOptions(ByVal TimeZone As Integer, ByVal Culture As String, ByVal DateFormat As String)
+ Private Sub BindDateOptions(ByVal Culture As String, ByVal DateFormat As String)
         If Not cboCulture.Items.FindByValue(Culture) Is Nothing Then
             cboCulture.SelectedValue = Culture
         End If
-        If Not cboTimeZone.Items.FindByValue(TimeZone.ToString()) Is Nothing Then
-            cboTimeZone.SelectedValue = TimeZone.ToString
-        End If
+  'If Not cboTimeZone.Items.FindByValue(TimeZone.ToString()) Is Nothing Then
+  ' cboTimeZone.SelectedValue = TimeZone.ToString
+  'End If
         BindDateFormats()
         If Not cboDateFormat.Items.FindByValue(DateFormat) Is Nothing Then
             cboDateFormat.SelectedValue = DateFormat
@@ -285,7 +290,7 @@ Partial Public Class EditBlog
                     .ShowFullName = CType(rdoUserName.SelectedItem.Value, Boolean)
                     .Culture = cboCulture.SelectedItem.Value
                     .DateFormat = cboDateFormat.SelectedItem.Value
-                    .TimeZone = CType(cboTimeZone.SelectedItem.Value, Integer)
+     .TimeZone = TimeZoneInfo.FindSystemTimeZoneById(ddTimeZone.SelectedValue)
                     .Syndicated = chkSyndicate.Checked
                     .SyndicateIndependant = chkSyndicateIndependant.Checked
                     .SyndicationEmail = txtSyndicationEmail.Text
@@ -355,7 +360,8 @@ Partial Public Class EditBlog
 
     Private Sub BindDateFormats()
         If Not cboCulture.SelectedItem Is Nothing Then
-            Dim dt As Date = Date.UtcNow.AddMinutes(Integer.Parse(cboTimeZone.SelectedValue))
+   Dim tzi As TimeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(ddTimeZone.SelectedValue)
+   Dim dt As Date = TimeZoneInfo.ConvertTimeFromUtc(Date.UtcNow, tzi)
             Dim dtf As System.Globalization.DateTimeFormatInfo = New System.Globalization.CultureInfo(cboCulture.SelectedItem.Value, False).DateTimeFormat
             Dim i As Integer = cboDateFormat.SelectedIndex
             With cboDateFormat

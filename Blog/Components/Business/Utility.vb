@@ -341,33 +341,24 @@ Namespace Business
 #End Region
 
 #Region "Dates"
-
-        Public Shared Function FormatDate(ByVal [Date] As DateTime, ByVal Culture As String, ByVal DateFormat As String, ByVal TimeZone As Integer, Optional ByVal ToUniversal As Boolean = False) As String
-            If Culture.Length = 0 Then Culture = System.Threading.Thread.CurrentThread.CurrentCulture.Name
+  Public Shared Function FormatDate(ByVal [Date] As DateTime, Culture As String, ByVal DateFormat As String, ByVal TimeZone As TimeZoneInfo) As String
+   Return FormatDate([Date], Culture, DateFormat, TimeZone, False)
+        End Function
+  Public Shared Function FormatDate(ByVal [Date] As DateTime, Culture As String, ByVal DateFormat As String, ByVal TimeZone As TimeZoneInfo, ByVal ToUniversal As Boolean) As String
+   If String.IsNullOrEmpty(Culture) Then Culture = Threading.Thread.CurrentThread.CurrentCulture.Name
             Dim dtf As System.Globalization.DateTimeFormatInfo = New System.Globalization.CultureInfo(Culture, False).DateTimeFormat
             If ToUniversal = True Then
-                [Date] = [Date].ToUniversalTime().AddMinutes(TimeZone)
+    Dim dto As New DateTimeOffset([Date])
+    Return dto.ToUniversalTime.ToString(DateFormat, dtf)
             Else
-                [Date] = [Date].AddMinutes(TimeZone)
+    Dim dt As Date = AdjustedDate([Date], TimeZone)
+    Return dt.ToString(DateFormat, dtf)
             End If
-            Return [Date].ToString(DateFormat, dtf)
         End Function
 
-        Public Shared Function AdjustedDate(ByVal [Date] As DateTime, ByVal Culture As String, ByVal DateFormat As String, ByVal TimeZone As Integer, Optional ByVal ToUniversal As Boolean = False) As Date
-            If Culture.Length = 0 Then Culture = System.Threading.Thread.CurrentThread.CurrentCulture.Name
-            Dim dtf As System.Globalization.DateTimeFormatInfo = New System.Globalization.CultureInfo(Culture, False).DateTimeFormat
-            If ToUniversal = True Then
-                [Date] = [Date].ToUniversalTime().AddMinutes(TimeZone)
-            Else
-                [Date] = [Date].AddMinutes(TimeZone)
-            End If
-            Return [Date]
-        End Function
-
-        Public Shared Function ToLocalTime(ByVal [Date] As DateTime, ByVal TimeZone As Integer) As DateTime
-            Dim LocalTimeZone As Integer = Now.Subtract(Date.UtcNow).Minutes
-            Dim TimeZoneDiff As Integer = LocalTimeZone - TimeZone
-            Return [Date].AddMinutes(TimeZoneDiff)
+  Public Shared Function AdjustedDate(ByVal [Date] As DateTime, ByVal TimeZone As TimeZoneInfo) As Date
+   Dim dto As New DateTimeOffset([Date])
+   Return TimeZoneInfo.ConvertTime(dto, TimeZone).DateTime
         End Function
 
         Public Shared Function ParseDate(ByVal DateString As String, ByVal Culture As String) As DateTime

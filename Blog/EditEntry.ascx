@@ -8,10 +8,18 @@
 	<fieldset>
 		<div class="dnnFormItem dnnFormHelp dnnClear"><p class="dnnFormRequired"><span><%=LocalizeString("RequiredFields")%></span></p></div>
 		<div class="dnnFormItem">
-			<dnn:Label ID="lblEntryDate" runat="server" controlname="txtEntryDate" suffix=":" />
-			<asp:TextBox ID="txtEntryDate" runat="server" CssClass="dnnFormRequired" />
-			<asp:RequiredFieldValidator ID="valEntryDate" runat="server" ResourceKey="valEntryDate.ErrorMessage" Display="Dynamic" ControlToValidate="txtEntryDate" CssClass="dnnFormError" />
-			<asp:CustomValidator ID="valEntryDateData" EnableClientScript="False" runat="server" ResourceKey="valEntryDateData.ErrorMessage" Display="None" CssClass="dnnFormError" />
+			<dnn:Label ID="lblEntryDate" runat="server" controlname="dpEntryDate" suffix=":" />
+   <dnnweb:DnnDatePicker ID="dpEntryDate" runat="server"/>
+		</div>
+		<div class="dnnFormItem">
+			<dnn:Label ID="lblTimezone" runat="server" controlname="txtEntryTime" suffix=":" />
+   <asp:Label runat="server" ID="lTimeZone" />
+		</div>
+		<div class="dnnFormItem">
+			<dnn:Label ID="lblEntryTime" runat="server" controlname="txtEntryTime" suffix=":" />
+   <asp:TextBox runat="server" ID="txtEntryTime" CssClass="dnnFormRequired" />
+   <asp:RegularExpressionValidator runat="server" ID="valEntryTime" ControlToValidate="txtEntryTime" ValidationExpression="(\d\d?\:\d\d\s?[APap][Mm])|(\d\d?\:\d\d)" resourcekey="valEntryTime.ErrorMessage" Display="Dynamic" CssClass="dnnFormError" />
+			<asp:RequiredFieldValidator ID="reqEntryTime" runat="server" ResourceKey="reqEntryTime.ErrorMessage" Display="Dynamic" ControlToValidate="txtEntryTime" CssClass="dnnFormError" />
 		</div>
 		<div class="dnnFormItem">
 			<dnn:Label ID="lblChildBlog" runat="server" controlname="cboChildBlogs" suffix=":" />

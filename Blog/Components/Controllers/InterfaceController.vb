@@ -96,7 +96,7 @@ Namespace Business
                     strXML += "<syndicateIndependant>" & XmlUtils.XMLEncode(blog.SyndicateIndependant.ToString) & "</syndicateIndependant>"
                     strXML += "<syndicationEmail>" & XmlUtils.XMLEncode(blog.SyndicationEmail) & "</syndicationEmail>"
                     strXML += "<syndicationURL>" & XmlUtils.XMLEncode(blog.SyndicationURL) & "</syndicationURL>"
-                    strXML += "<timeZone>" & XmlUtils.XMLEncode(blog.TimeZone.ToString) & "</timeZone>"
+     strXML += "<timeZone>" & XmlUtils.XMLEncode(blog.TimeZone.Id.ToString) & "</timeZone>"
                     strXML += "<title>" & XmlUtils.XMLEncode(blog.Title) & "</title>"
                     strXML += "<userFullName>" & XmlUtils.XMLEncode(blog.UserFullName) & "</userFullName>"
                     strXML += "<userID>" & XmlUtils.XMLEncode(blog.UserID.ToString) & "</userID>"
@@ -193,7 +193,10 @@ Namespace Business
                             m_Blog.SyndicateIndependant = Boolean.Parse(xmlblog.Item("syndicateIndependant").InnerText)
                             m_Blog.SyndicationEmail = xmlblog.Item("syndicationEmail").InnerText
                             m_Blog.SyndicationURL = xmlblog.Item("syndicationURL").InnerText
-                            m_Blog.TimeZone = Integer.Parse(xmlblog.Item("timeZone").InnerText)
+       Try
+        m_Blog.TimeZone = TimeZoneInfo.FindSystemTimeZoneById(xmlblog.Item("timeZone").InnerText)
+       Catch ex As Exception
+       End Try
                             m_Blog.Title = xmlblog.Item("title").InnerText
                             m_Blog.UserFullName = xmlblog.Item("userFullName").InnerText
                             m_Blog.UserID = Integer.Parse(xmlblog.Item("userID").InnerText)

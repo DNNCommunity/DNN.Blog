@@ -259,4 +259,16 @@
   <data name="AddTags.Text" xml:space="preserve">
     <value>start typing to associate tags</value>
   </data>
+  <data name="lblEntryTime.Text" xml:space="preserve">
+    <value>Post Time (Local)</value>
+  </data>
+  <data name="lblTimezone.Text" xml:space="preserve">
+    <value>Timezone</value>
+  </data>
+  <data name="valEntryTime.ErrorMessage" xml:space="preserve">
+    <value>Please enter a correct time</value>
+  </data>
+  <data name="reqEntryTime.ErrorMessage" xml:space="preserve">
+    <value>A time is required</value>
+  </data>
 </root>

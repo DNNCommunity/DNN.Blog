@@ -37,22 +37,6 @@ Namespace Business
         Implements IXmlSerializable
 
 #Region " Local Variables "
-        Private _UserID As Integer
-        Private _Username As String
-        Private _UserFullName As String
-        Private _EntryID As Integer
-        Private _BlogID As Integer
-        Private _Title As String
-        Private _Description As String
-        Private _Entry As String
-        Private _AddedDate As DateTime
-        Private _Published As Boolean = False
-        Private _AllowComments As Boolean
-        Private _DisplayCopyright As Boolean
-        Private _Copyright As String
-        Private _PermaLink As String
-        Private _CommentCount As Integer
-        Private _SyndicationEmail As String
 #End Region
 
 #Region " Constructors "
@@ -60,7 +44,6 @@ Namespace Business
         End Sub
 
         Public Sub New(ByVal UserID As Integer, ByVal Username As String, ByVal UserFullName As String, ByVal EntryID As Integer, ByVal BlogID As Integer, ByVal Title As String, ByVal Description As String, ByVal Entry As String, ByVal AddedDate As DateTime, ByVal Published As Boolean, ByVal AllowComments As Boolean, ByVal AllowAnonymous As Boolean, ByVal BlogSyndicated As Boolean, ByVal BlogPublic As Boolean, ByVal CategoryID As Integer, ByVal CategoryTitle As String, ByVal CategorySyndicated As Boolean, ByVal CategoryPublic As Boolean, ByVal CommentCount As Integer)
-
             Me.UserID = UserID
             Me.UserName = Username
             Me.UserFullName = UserFullName
@@ -78,158 +61,37 @@ Namespace Business
 #End Region
 
 #Region " Public Properties "
-        Public Property EntryID() As Integer
-            Get
-                Return _EntryID
-            End Get
-            Set(ByVal Value As Integer)
-                _EntryID = Value
-            End Set
-        End Property
-
+  Public Property EntryID() As Integer = -1
         Public Property BlogID() As Integer
-            Get
-                Return _BlogID
-            End Get
-            Set(ByVal Value As Integer)
-                _BlogID = Value
-            End Set
-        End Property
-
         Public Property Title() As String
-            Get
-                Return _Title
-            End Get
-            Set(ByVal Value As String)
-                _Title = Value
-            End Set
-        End Property
-
         Public Property Description() As String
-            Get
-                Return _Description
-            End Get
-            Set(ByVal Value As String)
-                _Description = Value
-            End Set
-        End Property
-
         Public Property Entry() As String
-            Get
-                Return _Entry
-            End Get
-            Set(ByVal Value As String)
-                _Entry = Value
-            End Set
-        End Property
-
         Public Property AddedDate() As DateTime
-            Get
-                Return _AddedDate
-            End Get
-            Set(ByVal Value As DateTime)
-                _AddedDate = Value
-            End Set
-        End Property
-
         Public Property UserID() As Integer
-            Get
-                Return _UserID
-            End Get
-            Set(ByVal Value As Integer)
-                _UserID = Value
-            End Set
-        End Property
-
         Public Property UserName() As String
-            Get
-                Return _Username
-            End Get
-
-            Set(ByVal Value As String)
-                _Username = Value
-            End Set
-        End Property
-
         Public Property UserFullName() As String
-            Get
-                Return _UserFullName
-            End Get
-
-            Set(ByVal Value As String)
-                _UserFullName = Value
-            End Set
-        End Property
-
         Public Property Published() As Boolean
-            Get
-                Return _Published
-            End Get
-            Set(ByVal Value As Boolean)
-                _Published = Value
-            End Set
-        End Property
-
-
         Public Property CommentCount() As Integer
-            Get
-                Return _CommentCount
-            End Get
-            Set(ByVal Value As Integer)
-                _CommentCount = Value
-            End Set
-        End Property
-
         Public Property AllowComments() As Boolean
-            Get
-                Return _AllowComments
-            End Get
-            Set(ByVal Value As Boolean)
-                _AllowComments = Value
-            End Set
-        End Property
-
         Public Property DisplayCopyright() As Boolean
-            Get
-                Return _DisplayCopyright
-            End Get
-            Set(ByVal Value As Boolean)
-                _DisplayCopyright = Value
-            End Set
-        End Property
-
         Public Property Copyright() As String
-            Get
-                Return _Copyright
-            End Get
-            Set(ByVal Value As String)
-                _Copyright = Value
-            End Set
-        End Property
-
         Public Property PermaLink() As String
-            Get
-                Return _PermaLink
-            End Get
-            Set(ByVal Value As String)
-                _PermaLink = Value
-            End Set
-        End Property
-
         Public Property SyndicationEmail() As String
-            Get
-                Return _SyndicationEmail
-            End Get
-            Set(ByVal Value As String)
-                _SyndicationEmail = Value
-            End Set
-        End Property
 #End Region
 
+#Region " Public Methods "
         Public Function EntryTerms(vocabularyId As Integer) As List(Of TermInfo)
             Dim cntTerms As New TermController()
             Return cntTerms.GetTermsByContentItem(ContentItemId, vocabularyId)
         End Function
+
+  Public Function GetLocalAddedTime() As DateTime
+   If BlogID = -1 Then Return AddedDate
+   Dim b As BlogInfo = (New BlogController).GetBlog(BlogID)
+   Return TimeZoneInfo.ConvertTimeFromUtc(AddedDate, b.TimeZone)
+  End Function
+#End Region
+
 
 #Region "IHydratable Implementation"
 

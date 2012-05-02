@@ -191,8 +191,8 @@ Partial Public Class ViewEntry
                     lblTrackback.Text = Utility.GetTrackbackRDF(NavigateURL(), m_oEntry)
                     lblDateTime.Text = Utility.FormatDate(m_oEntry.AddedDate, m_oBlog.Culture, m_oBlog.DateFormat, m_oBlog.TimeZone)
 
-                    'lblEntryMonth.Text = GetMonth(m_oEntry.AddedDate, m_oBlog.TimeZone)
-                    'lblEntryDay.Text = GetDay(m_oEntry.AddedDate, m_oBlog.TimeZone)
+     'lblEntryMonth.Text = GetMonth(m_oEntry.AddedDate, m_oBlog.TimeZone)
+    ' lblEntryDay.Text = GetDay(m_oEntry.AddedDate, m_oBlog.TimeZone)
 
                     ''Antonio Chagoury - 4/11/2008
                     'If BlogSettings.ShowSocialBookmarks Then
@@ -385,7 +385,7 @@ Partial Public Class ViewEntry
         ' Rip Rowan 6/13/2008
         ' Hide comment titles if not enabled in settings
         lblTitle.Visible = BlogSettings.ShowCommentTitle
-        Dim x As Date = Utility.AdjustedDate(commentInfo.AddedDate, m_oBlog.Culture, m_oBlog.DateFormat, m_oBlog.TimeZone)
+  Dim x As Date = Utility.AdjustedDate(commentInfo.AddedDate, m_oBlog.TimeZone)
         lblCommentDate.Text = Utility.CalculateDateForDisplay(x)
         'lblCommentDate.Text = Utility.FormatDate(commentInfo.AddedDate, m_oBlog.Culture, m_oBlog.DateFormat, m_oBlog.TimeZone)
         If Not commentInfo.Approved Then
@@ -746,16 +746,14 @@ Partial Public Class ViewEntry
 
     End Sub
 
-    Private Function GetMonth(ByVal strDate As Date, ByVal TimeZone As Integer) As String
+ Private Function GetMonth(ByVal strDate As Date, ByVal TimeZone As TimeZoneInfo) As String
         Dim oCultureInfo As New CultureInfo(m_oBlog.Culture)
         Dim MonthFormat As DateTimeFormatInfo = oCultureInfo.DateTimeFormat
-
-        Return MonthFormat.AbbreviatedMonthNames(oCultureInfo.Calendar.GetMonth(strDate.AddMinutes(TimeZone)) - 1)
+  Return MonthFormat.AbbreviatedMonthNames(TimeZoneInfo.ConvertTime(strDate, TimeZone).Month - 1)
     End Function
 
-    Private Function GetDay(ByVal strDate As Date, ByVal TimeZone As Integer) As String
-        Dim oCultureInfo As New CultureInfo(m_oBlog.Culture)
-        Return oCultureInfo.Calendar.GetDayOfMonth(strDate.AddMinutes(TimeZone)).ToString
+ Private Function GetDay(ByVal strDate As Date, ByVal TimeZone As TimeZoneInfo) As String
+  Return TimeZoneInfo.ConvertTime(strDate, TimeZone).Day.ToString
     End Function
 
     Private Function GetGravatarUrl(ByVal email As String) As String

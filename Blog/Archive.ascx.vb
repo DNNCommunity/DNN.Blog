@@ -167,7 +167,7 @@ Partial Public Class Archive
         If objBlog Is Nothing Then
             lnkMonthYear.Text = String.Format("{0} ({1})", Convert.ToDateTime(CType(e.Item.DataItem, ArchiveMonths).AddedDate).ToString("y"), CType(e.Item.DataItem, ArchiveMonths).PostCount)
         Else
-            lnkMonthYear.Text = String.Format("{0} ({1})", Utility.FormatDate(CType(e.Item.DataItem, ArchiveMonths).AddedDate, objBlog.Culture, "y", 0), CType(e.Item.DataItem, ArchiveMonths).PostCount)
+   lnkMonthYear.Text = String.Format("{0} ({1})", Utility.FormatDate(CType(e.Item.DataItem, ArchiveMonths).AddedDate, objBlog.Culture, "y", TimeZoneInfo.Local), CType(e.Item.DataItem, ArchiveMonths).PostCount)
         End If
         If Not Request.Params("BlogId") Is Nothing Then
             Dim BlogId As Integer = Int32.Parse(Request.Params("BlogID"))

@@ -1,5 +1,6 @@
 <%@ Control Language="vb" AutoEventWireup="false" CodeBehind="EditBlog.ascx.vb" Inherits="DotNetNuke.Modules.Blog.EditBlog" %>
 <%@ Import Namespace="DotNetNuke.Services.Localization" %>
+<%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <div class="dnnForm dnnEditBlog dnnClear" id="dnnEditBlog">
     <div class="dnnFormExpandContent"><a href=""><%=Localization.GetString("ExpandAll", Localization.SharedResourceFile)%></a></div>
@@ -99,7 +100,7 @@
         <fieldset>            
             <div class="dnnFormItem">
                 <dnn:Label ID="lblTimeZone" runat="server" controlname="cboTimeZone" suffix=":" />
-                <asp:DropDownList ID="cboTimeZone" runat="server" AutoPostBack="True" />
+                <dnnweb:DnnTimeZoneComboBox runat="server" id="ddTimeZone" />
             </div>
             <div class="dnnFormItem">
                 <dnn:Label ID="lblCulture" runat="server" controlname="cboCulture" suffix=":" />

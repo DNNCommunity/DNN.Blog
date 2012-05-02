@@ -338,13 +338,13 @@ Partial Public Class EditBlog
     Protected WithEvents lblTimeZone As Global.System.Web.UI.UserControl
 
     '''<summary>
-    '''cboTimeZone control.
+ '''ddTimeZone control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboTimeZone As Global.System.Web.UI.WebControls.DropDownList
+ Protected WithEvents ddTimeZone As Global.DotNetNuke.Web.UI.WebControls.DnnTimeZoneComboBox
 
     '''<summary>
     '''lblCulture control.
