@@ -104,15 +104,6 @@ Partial Public Class ViewBlog
     Protected WithEvents lnkRecentRssIcon As Global.System.Web.UI.WebControls.Image
 
     '''<summary>
-    '''InfoEntry control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents InfoEntry As Global.System.Web.UI.WebControls.Label
-
-    '''<summary>
     '''lstBlogView control.
     '''</summary>
     '''<remarks>
@@ -129,4 +120,22 @@ Partial Public Class ViewBlog
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lstSearchResults As Global.System.Web.UI.WebControls.DataList
+
+    '''<summary>
+    '''pnlNoRecords control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents pnlNoRecords As Global.System.Web.UI.WebControls.Panel
+
+    '''<summary>
+    '''litNoRecords control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents litNoRecords As Global.System.Web.UI.WebControls.Literal
 End Class

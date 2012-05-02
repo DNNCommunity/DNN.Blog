@@ -106,6 +106,8 @@ Partial Public Class ViewBlog
             End If
 
             If Not Page.IsPostBack Then
+                Dim HasValue As Boolean = False
+
                 If m_bSearchDisplay Then
                     If m_sSearchType = "Phrase" Then
                         If m_oBlog Is Nothing Then
@@ -127,7 +129,7 @@ Partial Public Class ViewBlog
                     lstSearchResults.DataBind()
 
                     ' if no Entries are shown, show the info Entry
-                    InfoEntry.Visible = (lstSearchResults.Items.Count = 0)
+                    HasValue = (lstSearchResults.Items.Count > 0)
                 Else ' not a search display
 
                     Dim pageTitle As String = Me.BasePage.Title
@@ -196,8 +198,8 @@ Partial Public Class ViewBlog
 
                     lstBlogView.DataSource = list
                     lstBlogView.DataBind()
-                    ' if no Entries are shown, show the info Entry
-                    InfoEntry.Visible = (lstBlogView.Items.Count = 0)
+
+                    HasValue = (lstBlogView.Items.Count > 0)
 
                     ' TODO: Page Meta
                     Utility.SetPageMetaAndOpenGraph(BasePage, ModuleContext, pageTitle, pageDescription, keyWords, pageUrl)
@@ -230,16 +232,19 @@ Partial Public Class ViewBlog
                     End If
                 End If
 
-                If (InfoEntry.Visible) Then
+                If (HasValue = False) Then
+                    Dim message As String = GetString("msgNoResult", LocalResourceFile)
+
                     If m_bSearchDisplay Then
-                        InfoEntry.Text = GetString("msgNoSearchResult", LocalResourceFile)
+                        message = GetString("msgNoSearchResult", LocalResourceFile)
                     ElseIf m_dBlogDate <> Date.MinValue Then
-                        InfoEntry.Text = GetString("msgNoPeriodResult", LocalResourceFile)
+                        message = GetString("msgNoPeriodResult", LocalResourceFile)
                     ElseIf Not m_oBlog Is Nothing Then
-                        InfoEntry.Text = GetString("msgNoBlogResult", LocalResourceFile)
-                    Else
-                        InfoEntry.Text = GetString("msgNoResult", LocalResourceFile)
+                        message = GetString("msgNoBlogResult", LocalResourceFile)
                     End If
+
+                    litNoRecords.Text = message
+                    pnlNoRecords.Visible = True
                 End If
             End If
         Catch exc As Exception
@@ -500,7 +505,7 @@ Partial Public Class ViewBlog
         Dim imgBlogParentSeparator As System.Web.UI.WebControls.Image = CType(e.Item.FindControl("imgBlogParentSeparatorSearch"), System.Web.UI.WebControls.Image)
         Dim lnkChildBlog As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkChildBlogSearch"), System.Web.UI.WebControls.HyperLink)
         Dim lnkEntryTitle As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkEntryTitle"), System.Web.UI.WebControls.HyperLink)
-        Dim lblItemSummary As Label = CType(e.Item.FindControl("lblItemSummary"), Label)
+        Dim lblInfoEntrytemSummary As Label = CType(e.Item.FindControl("lblItemSummary"), Label)
 
         Dim oBlog As BlogInfo
 
@@ -558,11 +563,11 @@ Partial Public Class ViewBlog
         SummaryLimit = BlogSettings.SearchSummaryMaxLength
         Dim Summary As String = HttpUtility.HtmlDecode(oSearchResult.Summary)
 
-        If SummaryLimit = 0 OrElse Summary.Length <= SummaryLimit Then
-            lblItemSummary.Text = Summary
-        Else
-            lblItemSummary.Text = Utility.CleanHTML(Summary, SummaryLimit)
-        End If
+        'If SummaryLimit = 0 OrElse Summary.Length <= SummaryLimit Then
+        '    lblItemSummary.Text = Summary
+        'Else
+        '    lblItemSummary.Text = Utility.CleanHTML(Summary, SummaryLimit)
+        'End If
 
     End Sub
 

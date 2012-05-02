@@ -1,48 +1,52 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="MainView.ascx.vb" Inherits="DotNetNuke.Modules.Blog.MainView" %>
-<%@ Import Namespace="DotNetNuke.Services.Localization" %>
-<%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
-<asp:Panel runat="server" ID="pnlAddModuleDefs" Visible="false" CssClass="dnnForm dnnClear blogMainView">
-    <div id="divbmForm">
-        <div class="dnnFormItem">
-            <dnn:label id="lblAddModuleDef" runat="server" controlname="ddModuleDef" suffix=":" />
-            <div class="dnnLeft">
-                <asp:DropDownList runat="server" ID="ddModuleDef" DataTextField="FriendlyName" DataValueField="ModuleDefID" />&nbsp;
-                <asp:DropDownList runat="server" ID="ddPane" />&nbsp;
-                <asp:DropDownList runat="server" ID="ddPosition" />         
-            </div>
-        </div>
-        <div class="dnnFormItem">
-            <label></label>
-            <div class="dnnLeft">
-                <asp:TextBox runat="server" ID="txtTitle" />
-                <asp:LinkButton runat="server" ID="cmdAdd" resourcekey="cmdAdd" CssClass="dnnSecondaryAction" />
-            </div>
-        </div>
-    </div>
+<asp:Panel runat="server" ID="pnlAddModuleDefs" Visible="false" CssClass="dnnClear bloggerMenu">
     <div class="dnnRight">
-        <a href="#" id="bmvShow"><%= Localization.GetString("Show", LocalResourceFile)%></a>
-        <a href="#" id="bmvHide"><%= Localization.GetString("Hide", LocalResourceFile)%></a>
+        <ul class="buttonGroup">
+            <li id="liAddEntry" runat="server"><asp:HyperLink ID="hlAddEntry" runat="server" ResourceKey="lnkAddEntry" CssClass="dnnTertiaryAction" /></li>
+            <li id="liEditBlog" runat="server"><asp:HyperLink ID="hlEditBlog" runat="server" ResourceKey="lnkEditBlog" CssClass="dnnTertiaryAction" /></li>
+            <li id="liView" runat="server"><asp:HyperLink ID="hlView" runat="server" ResourceKey="lnkViewBlog" CssClass="dnnTertiaryAction" /></li>
+            <li id="liCreateBlog" runat="server"><asp:HyperLink ID="hlCreateBlog" runat="server" ResourceKey="lnkBlog" CssClass="dnnTertiaryAction" /></li>
+            <li id="liAddPart" runat="server"><a class="dnnTertiaryAction" id="lnkAddPart" href="#">Add Blog Part</a></li>
+        </ul>
     </div>
 </asp:Panel>
+<div id="divMainViewDialog" style="display:none;" class="dnnDialog divMainViewDialog">
+    <div class="dnnClear">
+        <div class="dnnFormItem" >
+            <label>Blog Part:</label>
+            <asp:DropDownList runat="server" ID="ddModuleDef" DataTextField="FriendlyName" DataValueField="ModuleDefID" />
+        </div>
+        <div class="dnnFormItem">
+            <label>Title:</label>
+            <div class="dnnLeft">
+                <asp:TextBox runat="server" ID="txtTitle" />
+            </div>
+        </div>
+        <div class="dnnFormItem">
+            <label>Pane:</label>
+            <asp:DropDownList runat="server" ID="ddPane" />
+        </div>
+        <div class="dnnFormItem">
+            <label>Insert:</label>
+            <asp:DropDownList runat="server" ID="ddPosition" />    
+        </div>
+        <div class="dnnRight">
+            <asp:LinkButton runat="server" ID="cmdAdd" resourcekey="cmdAdd" CssClass="dnnPrimaryAction" OnClick="cmdAdd_Click" />
+        </div>
+    </div>
+</div>
 <script language="javascript" type="text/javascript">
     /*globals jQuery, window, Sys */
     (function ($, Sys) {
         function setupMainView() {
-            $("#divbmForm").hide();
-            $("#bmvHide").hide();
+            $('#divMainViewDialog').dialog({ autoOpen: false, minWidth: 350, title: 'Add Blog Part to Page'});
 
-            $("#bmvShow").click(function () {
-                $("#divbmForm").show('highlight', '', 200, '');
-                $("#bmvHide").show();
-                $("#bmvShow").hide();              
+            $("#lnkAddPart").click(function () {
+                // show dialog for adding module part.
+                $('#divMainViewDialog').dialog('open');
                 return false;
             });
-            $("#bmvHide").click(function () {
-                $("#bmvShow").show();
-                $("#divbmForm").hide('highlight', '', 200, '');
-                $("#bmvHide").hide();
-                return false;
-            });
+
         }
 
         $(document).ready(function () {

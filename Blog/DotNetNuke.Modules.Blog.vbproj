@@ -107,7 +107,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Archive.ascx" />
-    <Content Include="Blog.ascx" />
     <Content Include="BlogFeed.ascx" />
     <Content Include="BlogList.ascx" />
     <Content Include="BlogTerms.asmx" />
@@ -132,13 +131,6 @@
     </Compile>
     <Compile Include="Archive.ascx.vb">
       <DependentUpon>Archive.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Blog.ascx.designer.vb">
-      <DependentUpon>Blog.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Blog.ascx.vb">
-      <DependentUpon>Blog.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="BlogFeed.ascx.designer.vb">
@@ -255,20 +247,6 @@
     <Compile Include="Components\Rss\BlogRssFeed.vb" />
     <Compile Include="Providers\Data\DataProvider.vb" />
     <Compile Include="Providers\Data\SqlDataProvider\SqlDataProvider.vb" />
-    <Compile Include="RecentComments.ascx.designer.vb">
-      <DependentUpon>RecentComments.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="RecentComments.ascx.vb">
-      <DependentUpon>RecentComments.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="RecentCommentsSettings.ascx.designer.vb">
-      <DependentUpon>RecentCommentsSettings.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="RecentCommentsSettings.ascx.vb">
-      <DependentUpon>RecentCommentsSettings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="RecentEntries.ascx.designer.vb">
       <DependentUpon>RecentEntries.ascx</DependentUpon>
     </Compile>
@@ -346,7 +324,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_LocalResources\Archive.ascx.resx" />
-    <Content Include="App_LocalResources\Blog.ascx.resx" />
     <Content Include="App_LocalResources\BlogImport.ascx.resx" />
     <Content Include="App_LocalResources\BlogList.ascx.resx" />
     <Content Include="App_LocalResources\blogpost.ascx.resx" />
@@ -365,8 +342,6 @@
     <Content Include="App_LocalResources\SharedResources.resx" />
     <Content Include="App_LocalResources\ViewTagsSettings.ascx.resx" />
     <Content Include="App_LocalResources\MassEdit.ascx.resx" />
-    <Content Include="App_LocalResources\RecentComments.ascx.resx" />
-    <Content Include="App_LocalResources\RecentCommentsSettings.ascx.resx" />
     <Content Include="App_LocalResources\RecentEntries.ascx.resx" />
     <Content Include="App_LocalResources\RecentEntriesSettings.ascx.resx" />
     <Content Include="App_LocalResources\BlogTemplates.ascx.resx" />
@@ -382,8 +357,6 @@
     <Content Include="js\bookmarks.xml" />
     <Content Include="js\Gravatar.js" />
     <Content Include="js\md5.js" />
-    <Content Include="RecentComments.ascx" />
-    <Content Include="RecentCommentsSettings.ascx" />
     <Content Include="RecentEntries.ascx" />
     <Content Include="RecentEntriesSettings.ascx" />
     <Content Include="Styles\Blog-FullEnry.xsl" />

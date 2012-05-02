@@ -23,13 +23,85 @@ Partial Public Class MainView
     Protected WithEvents pnlAddModuleDefs As Global.System.Web.UI.WebControls.Panel
 
     '''<summary>
-    '''lblAddModuleDef control.
+    '''liAddEntry control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblAddModuleDef As Global.DotNetNuke.UI.UserControls.LabelControl
+    Protected WithEvents liAddEntry As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''hlAddEntry control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents hlAddEntry As Global.System.Web.UI.WebControls.HyperLink
+
+    '''<summary>
+    '''liEditBlog control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents liEditBlog As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''hlEditBlog control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents hlEditBlog As Global.System.Web.UI.WebControls.HyperLink
+
+    '''<summary>
+    '''liView control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents liView As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''hlView control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents hlView As Global.System.Web.UI.WebControls.HyperLink
+
+    '''<summary>
+    '''liCreateBlog control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents liCreateBlog As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''hlCreateBlog control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents hlCreateBlog As Global.System.Web.UI.WebControls.HyperLink
+
+    '''<summary>
+    '''liAddPart control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents liAddPart As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
     '''<summary>
     '''ddModuleDef control.
@@ -39,6 +111,15 @@ Partial Public Class MainView
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ddModuleDef As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
+    '''txtTitle control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents txtTitle As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
     '''ddPane control.
@@ -57,15 +138,6 @@ Partial Public Class MainView
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ddPosition As Global.System.Web.UI.WebControls.DropDownList
-
-    '''<summary>
-    '''txtTitle control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents txtTitle As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
     '''cmdAdd control.

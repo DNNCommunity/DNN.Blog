@@ -33,7 +33,6 @@
 			</tr>
 		</table>
 	</asp:Panel>
-	<asp:Label ID="InfoEntry" ResourceKey="lblInfoEntry" runat="server" />
 	<asp:DataList ID="lstBlogView" runat="server" Width="100%">
 		<ItemTemplate>
 			<div class="vbEntry">
@@ -114,4 +113,7 @@
 			</table>
 		</ItemTemplate>
 	</asp:DataList>
+	<asp:Panel ID="pnlNoRecords" runat="server" Visible="false" CssClass="dnnFormMessage dnnFormInfo">
+		<asp:Literal ID="litNoRecords" runat="server" />
+	</asp:Panel>
 </div>

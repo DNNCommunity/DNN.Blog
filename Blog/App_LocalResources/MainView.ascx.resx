@@ -130,7 +130,7 @@
     <value>Select ...</value>
   </data>
   <data name="cmdAdd.Text" xml:space="preserve">
-    <value>Add</value>
+    <value>Add Module</value>
   </data>
   <data name="Title.Text" xml:space="preserve">
     <value>Title</value>
@@ -164,5 +164,20 @@
   </data>
   <data name="Show.Text" xml:space="preserve">
     <value>show</value>
+  </data>
+  <data name="lnkAddEntry.Text" xml:space="preserve">
+    <value>Add Blog Entry</value>
+  </data>
+  <data name="lnkBlog.Text" xml:space="preserve">
+    <value>Create My Blog</value>
+  </data>
+  <data name="lnkEditBlog.Text" xml:space="preserve">
+    <value>Blog Settings</value>
+  </data>
+  <data name="lnkViewBlog.Text" xml:space="preserve">
+    <value>View My Blog</value>
+  </data>
+  <data name="BlogPartTitle.Text" xml:space="preserve">
+    <value>Add Blog Part to Page</value>
   </data>
 </root>
