@@ -237,6 +237,18 @@ Partial Class EditEntry
             If Not m_oEntry Is Nothing Then
                 DeleteAllFiles()
                 m_oEntryController.DeleteEntry(m_oEntry.EntryID, m_oEntry.ContentItemId)
+
+                Dim jc As New JournalController
+                Dim objectKey As String = String.Format("{0}:{1}", m_oEntry.BlogID.ToString(), m_oEntry.EntryID.ToString())
+                Dim ji As JournalItem = jc.Journal_GetByKey(PortalId, objectKey)
+                If Not ji Is Nothing Then
+                    jc.Journal_DeleteByKey(PortalId, objectKey)
+                End If
+
+                Content.DeleteContentItem(m_oEntry.ContentItemId)
+
+                ClearEntryCache(m_oEntry.ContentItemId)
+
                 Response.Redirect(Utility.AddTOQueryString(NavigateURL(), "BlogID", m_oEntry.BlogID.ToString()), True)
             Else
                 Response.Redirect(NavigateURL(), True)
@@ -474,10 +486,12 @@ Partial Class EditEntry
                     End If
 
                     ' NOTE: 6.2 Journal Integration
+                    Dim jc As New JournalController
+                    Dim objectKey As String = String.Format("{0}:{1}", m_oEntry.BlogID.ToString(), m_oEntry.EntryID.ToString())
+                    Dim ji As JournalItem = jc.Journal_GetByKey(PortalId, objectKey)
+
+
                     If (publish) Then
-                        Dim jc As New JournalController
-                        Dim objectKey As String = String.Format("{0}:{1}", .BlogID.ToString(), m_oEntry.EntryID.ToString())
-                        Dim ji As JournalItem = jc.Journal_GetByKey(PortalId, objectKey)
                         If Not ji Is Nothing Then
                             jc.Journal_DeleteByKey(PortalId, objectKey)
                         End If
@@ -498,13 +512,14 @@ Partial Class EditEntry
                         ji.SecuritySet = "E,"
 
                         jc.Journal_Save(ji, -1)
+                    Else
+                        If Not ji Is Nothing Then
+                            jc.Journal_DeleteByKey(PortalId, objectKey)
+                        End If
                     End If
 
                     ' Clear cache
-                    DataCache.ClearCache(Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + VocabularyId.ToString())
-                    DataCache.ClearCache(Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + "1") ' Tags
-                    DataCache.ClearCache(Constants.ModuleCacheKeyPrefix + Constants.ContentItemTermsCacheKey + .ContentItemId.ToString() + Constants.VocabularySuffixCacheKey + VocabularyId.ToString())
-                    DataCache.ClearCache(Constants.ModuleCacheKeyPrefix + Constants.ContentItemTermsCacheKey + .ContentItemId.ToString() + Constants.VocabularySuffixCacheKey + "1") ' Tags
+                    ClearEntryCache(.ContentItemId)
                 End With
             End If
         Catch exc As Exception    'Module failed to load
@@ -526,6 +541,13 @@ Partial Class EditEntry
         Else
             pnlCategories.Visible = False
         End If
+    End Sub
+
+    Private Sub ClearEntryCache(ByVal ContentItemId As Integer)
+        DataCache.ClearCache(Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + VocabularyId.ToString())
+        DataCache.ClearCache(Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + "1") ' Tags
+        DataCache.ClearCache(Constants.ModuleCacheKeyPrefix + Constants.ContentItemTermsCacheKey + ContentItemId.ToString() + Constants.VocabularySuffixCacheKey + VocabularyId.ToString())
+        DataCache.ClearCache(Constants.ModuleCacheKeyPrefix + Constants.ContentItemTermsCacheKey + ContentItemId.ToString() + Constants.VocabularySuffixCacheKey + "1") ' Tags
     End Sub
 
 #End Region

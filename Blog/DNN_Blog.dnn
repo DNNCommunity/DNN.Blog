@@ -187,9 +187,6 @@
 							  <viewOrder>0</viewOrder>
 						  </moduleControl>
 					  </moduleControls>
-					  <permissions>
-						  <permission code="DNN_BLOG_MODULE" key="GHOSTWRITER" name="Ghost Writer" />
-					  </permissions>
 				  </moduleDefinition>
 				  <moduleDefinition>
 					  <friendlyName>Search_Blog</friendlyName>
@@ -439,6 +436,10 @@
 			<script type="Install">
 				<name>04.05.00.SqlDataProvider</name>
 				<version>04.05.00</version>
+			</script>
+			<script type="Install">
+				<name>05.00.00.SqlDataProvider</name>
+				<version>05.00.00</version>
 			</script>
 			<script type="Install">
 			  <name>Install.04.00.00.SqlDataProvider</name>

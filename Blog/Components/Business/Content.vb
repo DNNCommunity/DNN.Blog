@@ -101,7 +101,7 @@ Public Class Content
     ''' <summary>
     ''' Deletes a content item from the data store (via core API).
     ''' </summary>
-    ''' <param name="objEntry"></param>
+    ''' <param name="contentItemId"></param>
     Friend Shared Sub DeleteContentItem(ByVal contentItemId As Integer)
         If contentItemId <= Null.NullInteger Then
             Return

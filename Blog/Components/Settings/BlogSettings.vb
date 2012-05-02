@@ -19,6 +19,7 @@
 '
 
 Imports System.Xml
+Imports DotNetNuke.Common.Utilities
 
 Namespace Settings
 
@@ -227,6 +228,10 @@ Namespace Settings
 
             ' Social Sharing
 
+
+            ' Clear cache
+            DataCache.ClearCache(Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + VocabularyId.ToString())
+            DataCache.ClearCache(Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + "1") ' Tags
 
             Dim CacheKey As String = "BlogSettings" & _portalId.ToString & "-" & _tabId.ToString
             DotNetNuke.Common.Utilities.DataCache.RemoveCache(CacheKey)
