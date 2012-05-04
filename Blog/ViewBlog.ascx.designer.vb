@@ -113,15 +113,6 @@ Partial Public Class ViewBlog
     Protected WithEvents lstBlogView As Global.System.Web.UI.WebControls.DataList
 
     '''<summary>
-    '''pnlPager control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents pnlPager As Global.System.Web.UI.WebControls.Panel
-
-    '''<summary>
     '''hlPagerPrev control.
     '''</summary>
     '''<remarks>

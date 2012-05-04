@@ -164,6 +164,7 @@
     <Compile Include="Components\Blogger\IBlogger.vb" />
     <Compile Include="Components\Business\Constants.vb" />
     <Compile Include="Components\Business\Content.vb" />
+    <Compile Include="Components\Business\Links.vb" />
     <Compile Include="Components\Business\Security.vb" />
     <Compile Include="Components\Business\Terms.vb" />
     <Compile Include="Components\Controllers\ArchiveController.vb" />

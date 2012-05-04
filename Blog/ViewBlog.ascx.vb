@@ -130,6 +130,8 @@ Partial Public Class ViewBlog
                 m_sSearchType = Request.Params("SearchType")
             End If
 
+            Dim currentUrl As String = NavigateURL()
+
             If Not Page.IsPostBack Then
                 Dim HasValue As Boolean = False
 
@@ -153,6 +155,9 @@ Partial Public Class ViewBlog
                     lstSearchResults.DataSource = list
                     lstSearchResults.DataBind()
 
+                    ' TODO: Page Meta
+
+
                     ' if no Entries are shown, show the info Entry
                     HasValue = (lstSearchResults.Items.Count > 0)
                 Else ' not a search display
@@ -170,12 +175,15 @@ Partial Public Class ViewBlog
 
                                 'BLG-4154
                                 'Antonio Chagoury 9/1/2007
-                                list = objEntries.ListEntriesByPortal(Me.PortalId, m_dBlogDate, m_dBlogDateType, BlogSettings.RecentRssEntriesMax, CurrentPage, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
+                                list = objEntries.ListEntriesByPortal(Me.PortalId, m_dBlogDate, m_dBlogDateType, BlogSettings.RecentEntriesMax, CurrentPage, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
 
                                 pnlBlogInfo.Visible = False
                                 If Not lnkRecentRss Is Nothing Then
                                     lnkRecentRss.NavigateUrl = NavigateURL(Me.TabId, "", "rssid=0")
                                 End If
+
+                                'currentUrl = 
+                                ' Page Meta (No Reason to do it here, main view of module should default to page)
                             Else
                                 ' Specific blog view , no category/tag specified
 
@@ -230,15 +238,16 @@ Partial Public Class ViewBlog
                         Dim TotalRecords As Integer = list(0).TotalRecords
                         Dim totalPages As Double = Convert.ToDouble(CDbl(TotalRecords) / BlogSettings.RecentEntriesMax)
 
-                        If (totalPages > 1) AndAlso (totalPages > CurrentPage + 1) Then
+                        If (totalPages > 1) AndAlso (totalPages > CurrentPage) Then
                             hlPagerNext.Visible = True
-                            'hlPagerNext.NavigateUrl = CurrentPage + 1
+                            hlPagerNext.NavigateUrl = currentUrl
                         End If
                     End If
 
                     If CurrentPage > 1 And HasValue Then
                         hlPagerPrev.Visible = True
-                        'hlPagerPrev.NavigateUrl = CurrentPage - 1
+                        hlPagerPrev.NavigateUrl = currentUrl
+
                     End If
 
                     ' TODO: Page Meta
