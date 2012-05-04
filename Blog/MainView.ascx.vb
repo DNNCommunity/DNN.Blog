@@ -24,7 +24,6 @@ Imports DotNetNuke.Entities.Modules.Definitions
 Imports DotNetNuke.Entities.Modules.Actions
 Imports DotNetNuke.Services.Localization.Localization
 Imports DotNetNuke.Services.Localization
-Imports DotNetNuke.Framework
 
 Partial Public Class MainView
     Inherits BlogModuleBase
@@ -67,12 +66,15 @@ Partial Public Class MainView
     Private Function GetModuleDefinitions() As ArrayList
         Dim mdc As New ModuleDefinitionController
         Dim definitions As New ArrayList
-        For Each mi As ModuleDefinitionInfo In mdc.GetModuleDefinitions(ModuleConfiguration.DesktopModuleID)
-            If mi.FriendlyName <> "View_Blog" Then
+
+        Dim colDefinitions As Dictionary(Of String, ModuleDefinitionInfo) = ModuleDefinitionController.GetModuleDefinitionsByDesktopModuleID(ModuleConfiguration.DesktopModuleID)
+
+        For Each pair As KeyValuePair(Of String, ModuleDefinitionInfo) In colDefinitions
+            If pair.Key <> "View_Blog" Then
                 Dim mdi As New ModuleDefinitionInfo()
 
-                mdi.FriendlyName = Localization.GetString(mi.FriendlyName, Me.LocalResourceFile)
-                mdi.ModuleDefID = mi.ModuleDefID
+                mdi.FriendlyName = Localization.GetString(pair.Value.FriendlyName, Me.LocalResourceFile)
+                mdi.ModuleDefID = pair.Value.ModuleDefID
                 definitions.Add(mdi)
             End If
         Next
@@ -84,8 +86,6 @@ Partial Public Class MainView
 #Region "Event Handlers"
 
     Protected Overloads Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
-        jQuery.RequestUIRegistration()
-
         Dim moduleControl As String
         moduleControl = resolveParams(Request.Params)
         Select Case moduleControl
@@ -137,7 +137,6 @@ Partial Public Class MainView
 
         If Not Me.IsPostBack Then
             If DotNetNuke.Security.Permissions.TabPermissionController.HasTabPermission("EDIT") Then
-                pnlAddModuleDefs.Visible = ModuleContext.IsEditable
                 ddModuleDef.DataSource = GetModuleDefinitions()
                 ddModuleDef.DataBind()
                 ddModuleDef.Items.Insert(0, New ListItem(GetString("Select", LocalResourceFile), "-1"))
@@ -151,27 +150,66 @@ Partial Public Class MainView
                 ddPosition.Items.Clear()
                 ddPosition.Items.Add(New ListItem(GetString("Top", "admin/controlpanel/App_LocalResources/iconbar"), "0"))
                 ddPosition.Items.Add(New ListItem(GetString("Bottom", "admin/controlpanel/App_LocalResources/iconbar"), "-1"))
-                'txtTitle.Text = GetString("Title", LocalResourceFile)
+                txtTitle.Text = GetString("Title", LocalResourceFile)
             End If
 
             liAddPart.Visible = ModuleContext.IsEditable
+            pnlAddModuleDefs.Visible = ModuleContext.IsEditable
 
-            ' Add OR statement for ghost writer.
-            If ModuleContext.IsEditable Then
+            Dim objSecurity As New Blog.Business.Security
+            Dim hasGhostWriter As Boolean = objSecurity.HasGhostWriterPerms(ModuleContext.PortalSettings.UserId, ModuleContext.ModuleId, ModuleContext.TabId)
+
+            If ModuleContext.IsEditable Or hasGhostWriter Then
                 Dim cntBlog As New BlogController
                 Dim objBlog As BlogInfo
 
                 objBlog = cntBlog.GetBlogByUserID(ModuleContext.PortalId, ModuleContext.PortalSettings.UserId)
 
                 If objBlog Is Nothing Then
-                    liCreateBlog.Visible = ModuleContext.IsEditable
-                    hlCreateBlog.NavigateUrl = EditUrl("BlogID", "-1", "Edit_Blog")
+                    ' need to see if the user is a ghost writer
+                    If hasGhostWriter Then
+                        ' check the url
+                        If Request.QueryString("BlogID") IsNot Nothing Then
+                            Dim blogId As Integer = Convert.ToInt32(Request.QueryString("BlogID"))
+                            objBlog = cntBlog.GetBlog(blogId)
 
-                    liView.Visible = False
-                    liEditBlog.Visible = False
-                    liAddEntry.Visible = False
+                            liCreateBlog.Visible = ModuleContext.IsEditable
+                            hlCreateBlog.NavigateUrl = EditUrl("BlogID", "-1", "Edit_Blog")
+                            liView.Visible = ModuleContext.IsEditable
+                            hlView.NavigateUrl = ModuleContext.NavigateUrl(ModuleContext.TabId, "", False, "BlogID=" & objBlog.BlogID)
+                            liEditBlog.Visible = ModuleContext.IsEditable
+                            hlEditBlog.NavigateUrl = EditUrl("BlogID", objBlog.BlogID.ToString(), "Edit_Blog")
+
+                            If objBlog IsNot Nothing Then
+                                If objBlog.EnableGhostWriter Then
+                                    liAddEntry.Visible = True
+                                    hlAddEntry.NavigateUrl = EditUrl("", "", "Edit_Entry")
+                                    pnlAddModuleDefs.Visible = True
+                                End If
+                            End If
+                        Else
+                            If Request.QueryString("EntryId") IsNot Nothing Then
+                                Dim cntEntry As New EntryController
+                                Dim entryId As Integer = Convert.ToInt32(Request.QueryString("EntryId"))
+                                Dim objEntry As EntryInfo = cntEntry.GetEntry(entryId, PortalId)
+
+                                If objEntry IsNot Nothing Then
+                                    objBlog = cntBlog.GetBlog(objEntry.BlogID)
+                                    If objBlog IsNot Nothing Then
+                                        If objBlog.EnableGhostWriter Then
+                                            liAddEntry.Visible = True
+                                            hlAddEntry.NavigateUrl = EditUrl("", "", "Edit_Entry")
+                                            pnlAddModuleDefs.Visible = True
+                                        End If
+                                    End If
+                                End If
+                            Else
+                                liCreateBlog.Visible = ModuleContext.IsEditable
+                                hlCreateBlog.NavigateUrl = EditUrl("BlogID", "-1", "Edit_Blog")
+                            End If
+                        End If
+                    End If
                 Else
-                    liCreateBlog.Visible = False
                     liView.Visible = True
                     hlView.NavigateUrl = ModuleContext.NavigateUrl(ModuleContext.TabId, "", False, "BlogID=" & objBlog.BlogID)
 
@@ -187,16 +225,9 @@ Partial Public Class MainView
                 If BlogSettings.PageBlogs = -1 Then
                     liCreateBlog.Visible = ModuleContext.IsEditable
                     hlCreateBlog.NavigateUrl = EditUrl("BlogID", "-1", "Edit_Blog")
-                Else
-                    liCreateBlog.Visible = False
                 End If
-
-                liView.Visible = False
-                liEditBlog.Visible = False
-                liAddEntry.Visible = False
             End If
         End If
-
     End Sub
 
     Protected Sub cmdAdd_Click(ByVal sender As Object, ByVal e As System.EventArgs)

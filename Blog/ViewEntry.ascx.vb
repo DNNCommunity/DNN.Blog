@@ -69,12 +69,12 @@ Partial Public Class ViewEntry
             If Not m_oEntry Is Nothing Then
                 m_oBlog = m_oBlogController.GetBlog(m_oEntry.BlogID)
 
-                If Not m_oBlog.Public And Not Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
+                If Not m_oBlog.Public And Not Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
                     Response.Redirect(NavigateURL(), True)
                     Exit Sub
                 End If
 
-                If Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
+                If Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
                     MyActions.Add(GetNextActionID, Localization.GetString("msgEditEntry", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("EntryID", m_oEntry.EntryID.ToString(), "Edit_Entry"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
                     lnkEditEntry.Visible = True
                     lnkEditEntry.NavigateUrl = EditUrl("EntryID", m_oEntry.EntryID.ToString(), "Edit_Entry")
@@ -109,13 +109,13 @@ Partial Public Class ViewEntry
                     Exit Sub
                 End If
 
-                If (Not m_oEntry.Published) AndAlso (Not Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId)) Then
+                If (Not m_oEntry.Published) AndAlso (Not Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId)) Then
                     Response.Redirect(NavigateURL(), False)
                     Exit Sub
                 End If
 
                 If Not m_oBlog Is Nothing Then
-                    If Not Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, ModuleId) Then
+                    If Not Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, ModuleId) Then
                         If UserId = -1 Then
                             If m_oBlog.MustApproveAnonymous Then
                                 cmdAddComment.CssClass = "dnnPrimaryAction dnnBlogAddComment"
@@ -129,15 +129,24 @@ Partial Public Class ViewEntry
 
                     If m_oBlog.ShowFullName Then
                         hlAuthor.Text = m_oEntry.UserFullName
+                        hlAuthorBio.Text = m_oEntry.UserFullName
                     Else
                         hlAuthor.Text = m_oEntry.UserName
+                        hlAuthorBio.Text = m_oEntry.UserName
                     End If
                     hlAuthor.NavigateUrl = DotNetNuke.Common.Globals.UserProfileURL(m_oEntry.UserID)
-
                     pnlComments.Visible = m_oBlog.AllowComments
 
+                    hlAuthorBio.NavigateUrl = DotNetNuke.Common.Globals.UserProfileURL(m_oEntry.UserID)
+                    imgAuthorLink.NavigateUrl = DotNetNuke.Common.Globals.UserProfileURL(m_oEntry.UserID)
+
+                    Dim objAuthor As Entities.Users.UserInfo = DotNetNuke.Entities.Users.UserController.GetUserById(ModuleContext.PortalId, m_oBlog.UserID)
+                    dbiUser.ImageUrl = objAuthor.Profile.PhotoURL
+                    'litBio.Text = "<p>" + objAuthor.DisplayName + "</p>"
+
+
                     'DR-04/20/2009-BLG-6908
-                    If Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
+                    If Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
                         btDeleteAllUnapproved.Visible = True
                         lnkDeleteAllUnapproved.Visible = True
                     Else
@@ -301,7 +310,7 @@ Partial Public Class ViewEntry
                     cntEntry.UpdateEntry(m_oEntry, ModuleContext.TabId, ModuleContext.PortalId)
                 End If
 
-                pnlCaptcha.Visible = (pnlComments.Visible And m_oBlog.UseCaptcha And Not Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, ModuleId))
+                pnlCaptcha.Visible = (pnlComments.Visible And m_oBlog.UseCaptcha And Not Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, ModuleId))
             End If
 
             AddGravatarImagePreview()
@@ -357,9 +366,9 @@ Partial Public Class ViewEntry
         Dim commentInfo As CommentInfo = CType(e.Item.DataItem, CommentInfo)
 
         If m_oBlog.UserID = Me.UserId Then
-            lnkEditComment.Visible = Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId)
+            lnkEditComment.Visible = Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId)
         Else
-            lnkEditComment.Visible = Utility.HasBlogPermission(Me.UserId, commentInfo.UserID, Me.ModuleId)
+            lnkEditComment.Visible = Blog.Business.Security.HasBlogPermission(Me.UserId, commentInfo.UserID, Me.ModuleId)
         End If
         lnkDeleteComment.Visible = lnkEditComment.Visible
         btDeleteComment.Visible = lnkEditComment.Visible
@@ -471,7 +480,7 @@ Partial Public Class ViewEntry
             valComment.Enabled = True
             valSummary.Enabled = True
 
-            If (txtComment.Text.Length > 0) And ((m_oBlog.UseCaptcha And ctlCaptcha.IsValid) Or (Not m_oBlog.UseCaptcha) Or Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, ModuleId)) Then
+            If (txtComment.Text.Length > 0) And ((m_oBlog.UseCaptcha And ctlCaptcha.IsValid) Or (Not m_oBlog.UseCaptcha) Or Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, ModuleId)) Then
                 Dim oComment As New CommentInfo
                 Dim oCommentController As New CommentController
 
@@ -518,7 +527,7 @@ Partial Public Class ViewEntry
                         oComment.Approved = True
                     End If
                 End If
-                If Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, ModuleId) Then
+                If Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, ModuleId) Then
                     oComment.Approved = True
                 End If
                 If oComment.CommentID > -1 Then
@@ -650,65 +659,11 @@ Partial Public Class ViewEntry
         imgGravatarPreview.ImageUrl = GetGravatarUrl(txtEmail.Text)
     End Sub
 
-    'Private Sub AddSocialBookmarks(ByVal EntryTitle As String, ByVal EntryUrl As String)
-    '    'Antonio Chagoury - 5/11/2008
-    '    'Adding social bookmarks
-
-    '    'Initialize the ShareBadge Chicklets Array
-    '    If Not Page.ClientScript.IsClientScriptBlockRegistered("SB_CHICKLETS") Then
-    '        Dim SbChickletsScript As String = "<script language=""javascript1.2"" type=""text/javascript"">" _
-    '        & "var strImagePath = ""http://" & PortalAlias.HTTPAlias _
-    '        & "/DesktopModules/Blog/ShareBadge/"";</script>" _
-    '        & "<script src=""" & ControlPath & "ShareBadge/js/ShareBadgeChicklets.js""" _
-    '        & "language=""javascript1.2"" type=""text/javascript""></script>"
-
-    '        Page.ClientScript.RegisterClientScriptBlock(Me.GetType(), "SB_CHICKLETS", SbChickletsScript)
-
-
-    '    End If
-
-    '    'Initialize the main ShareBadge Script
-    '    If Not Page.ClientScript.IsClientScriptBlockRegistered("SB_PRO") Then
-    '        Dim SbProScript As String = "<script src=""" & ControlPath & "ShareBadge/js/ShareBadgePro.js"" language=""javascript1.2"" type=""text/javascript""></script>"
-    '        Page.ClientScript.RegisterClientScriptBlock(Me.GetType(), "SB_PRO", SbProScript)
-    '    End If
-
-    '    'Initialize the CSS for ShareBadge
-    '    If Not Page.ClientScript.IsClientScriptBlockRegistered("SB_PRO_CSS") Then
-    '        'CType(Me.Page, DotNetNuke.Framework.CDefault).AddStyleSheet("SB_PRO_CSS", ModulePath & "ShareBadge/css/ShareBadge.css", False)
-    '        ClientResourceManager.RegisterStyleSheet(Page, ControlPath & "ShareBadge/css/ShareBadge.css")
-
-
-    '        'Dim SbProCss As String = "<link rel=""stylesheet"" href=""" & ModulePath & "ShareBadge/css/ShareBadge.css"" type=""text/css"" />"
-    '        'Page.ClientScript.RegisterClientScriptBlock(Me.GetType(), "SB_PRO_CSS", SbProCss)
-    '    End If
-
-    '    'Display the Bookmarks Toolbar
-    '    If Not Page.ClientScript.IsStartupScriptRegistered("SB_PRO_TOOLBAR") Then
-    '        Dim SbToolbar As String = "<script type=""text/javascript"">" _
-    '        & "initializeShareBadge(""ShareBadgePRO_Toolbar"",""" & Utility.removeHtmlTags(Replace(EntryTitle, """", "'")) & """, """ & EntryUrl & """);" _
-    '        & "addBadgeItem(7);" _
-    '        & "addBadgeItem(33);" _
-    '        & "addBadgeItem(9);" _
-    '        & "addBadgeItem(14);" _
-    '        & "addBadgeItem(17);" _
-    '        & "addBadgeItem(20);" _
-    '        & "addBadgeItem(27);" _
-    '        & "addBadgeItem(28);" _
-    '        & "addBadgeItem(31);" _
-    '        & "addBadgeItem(32);" _
-    '        & "</script>"
-
-    '        Page.ClientScript.RegisterStartupScript(Me.GetType(), "SB_PRO_TOOLBAR", SbToolbar)
-    '    End If
-
-    'End Sub
-
     Private Sub BindCommentsList()
         Dim objCtlComments As New CommentController
         Dim list As ArrayList
 
-        list = objCtlComments.ListComments(m_oEntry.EntryID, Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId))
+        list = objCtlComments.ListComments(m_oEntry.EntryID, Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId))
         lstComments.DataSource = list
         lstComments.DataBind()
 
@@ -743,17 +698,16 @@ Partial Public Class ViewEntry
                 txtWebsite.Text = ""
             End If
         End If
-
     End Sub
 
- Private Function GetMonth(ByVal strDate As Date, ByVal TimeZone As TimeZoneInfo) As String
+    Private Function GetMonth(ByVal strDate As Date, ByVal TimeZone As TimeZoneInfo) As String
         Dim oCultureInfo As New CultureInfo(m_oBlog.Culture)
         Dim MonthFormat As DateTimeFormatInfo = oCultureInfo.DateTimeFormat
-  Return MonthFormat.AbbreviatedMonthNames(TimeZoneInfo.ConvertTime(strDate, TimeZone).Month - 1)
+        Return MonthFormat.AbbreviatedMonthNames(TimeZoneInfo.ConvertTime(strDate, TimeZone).Month - 1)
     End Function
 
- Private Function GetDay(ByVal strDate As Date, ByVal TimeZone As TimeZoneInfo) As String
-  Return TimeZoneInfo.ConvertTime(strDate, TimeZone).Day.ToString
+    Private Function GetDay(ByVal strDate As Date, ByVal TimeZone As TimeZoneInfo) As String
+        Return TimeZoneInfo.ConvertTime(strDate, TimeZone).Day.ToString
     End Function
 
     Private Function GetGravatarUrl(ByVal email As String) As String
@@ -780,7 +734,6 @@ Partial Public Class ViewEntry
         End If
 
         Return prefix + ".gravatar.com/avatar/"
-
     End Function
 
     Private Function GravatarURLSuffix() As String
@@ -846,9 +799,11 @@ Partial Public Class ViewEntry
 #End Region
 
 #Region "Public Methods"
+
     Public Function FormatUserName(ByVal UserName As String) As String
         FormatUserName = String.Format(Localization.GetString("lblFormatUserName.Text", LocalResourceFile), UserName)
     End Function
+
 #End Region
 
 End Class

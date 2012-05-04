@@ -354,7 +354,7 @@ Public Class BlogPost
             Dim fullFilePathAndName As String = String.Empty
             info.url = ""
 
-            Dim strWhiteList As String = "," & DotNetNuke.Entities.Host.HostSettings.GetHostSetting("FileExtensions").ToLower & ","
+            Dim strWhiteList As String = "," & DotNetNuke.Entities.Host.Host.FileExtensions & ","
             Try
 
                 ' Shorten WindowsLiveWriter and create one file name.

@@ -1,6 +1,7 @@
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls" %>
 <%@ Register TagPrefix="dba" Assembly="DotNetNuke.Modules.Blog" Namespace="DotNetNuke.Modules.Blog" %>
 <%@ Control Language="vb" AutoEventWireup="false" CodeBehind="ViewEntry.ascx.vb" Inherits="DotNetNuke.Modules.Blog.ViewEntry" %>
+<%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Import Namespace="DotNetNuke.Services.Localization" %>
 <asp:Label ID="lblTrackback" runat="server" />
 <div class="dnnForm dnnViewEntry dnnClear">
@@ -50,12 +51,15 @@
 			<asp:HyperLink ID="lnkEditEntry" ResourceKey="msgEditEntry" CssClass="BlogEditLink" runat="server" />
 		</div>
 	</div>
-	<div class="veAuthorBio dnnClear">
-		<div>
-		
+	<div class="vbAuthor dnnClear">
+		<div class="dnnLeft">
+			<asp:HyperLink id="imgAuthorLink" runat="server"><dnnweb:DnnBinaryImage ID="dbiUser" runat="server" Width="40" /></asp:HyperLink>
 		</div>
-		<div>
-			
+		<div class="dnnLeft">
+			<asp:HyperLink ID="hlAuthorBio" runat="server" />
+			<div class="dnnLeft">
+				<asp:Literal ID="litBio" runat="server" />
+			</div>
 		</div>
 	</div>
 	<asp:Panel ID="pnlComments" runat="server" Visible="False">

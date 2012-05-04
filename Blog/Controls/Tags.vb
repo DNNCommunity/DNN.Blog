@@ -193,7 +193,6 @@ Public Class Tags
     ''' This method renders the entire user interface for this control.
     ''' </summary>
     ''' <param name="writer"></param>
-    ''' <returns></returns>
     Protected Overrides Sub RenderContents(writer As HtmlTextWriter)
         If Terms IsNot Nothing Then
             For Each term As TermInfo In Terms
@@ -252,7 +251,7 @@ Public Class Tags
                 ' <span>
                 writer.AddAttribute(HtmlTextWriterAttribute.[Class], "tm-links")
                 writer.RenderBeginTag(HtmlTextWriterTag.Span)
-                '''/ <a />
+
                 'writer.AddAttribute(HtmlTextWriterAttribute.Href, link);
                 'writer.RenderBeginTag(HtmlTextWriterTag.A);
                 'writer.Write(Localization.GetString("browse.Text", SharedResourceFile));
@@ -264,7 +263,7 @@ Public Class Tags
                 'writer.Write(Localization.GetString("about.Text", SharedResourceFile))
                 'writer.RenderEndTag()
 
-                '''/ <a />
+
                 'writer.AddAttribute(HtmlTextWriterAttribute.Href, historylink);
                 'writer.RenderBeginTag(HtmlTextWriterTag.A);
                 'writer.Write(Localization.GetString("history.Text", SharedResourceFile));

@@ -41,24 +41,6 @@ Partial Public Class MainView
     Protected WithEvents hlAddEntry As Global.System.Web.UI.WebControls.HyperLink
 
     '''<summary>
-    '''liEditBlog control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents liEditBlog As Global.System.Web.UI.HtmlControls.HtmlGenericControl
-
-    '''<summary>
-    '''hlEditBlog control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents hlEditBlog As Global.System.Web.UI.WebControls.HyperLink
-
-    '''<summary>
     '''liView control.
     '''</summary>
     '''<remarks>
@@ -75,6 +57,24 @@ Partial Public Class MainView
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents hlView As Global.System.Web.UI.WebControls.HyperLink
+
+    '''<summary>
+    '''liEditBlog control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents liEditBlog As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''hlEditBlog control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents hlEditBlog As Global.System.Web.UI.WebControls.HyperLink
 
     '''<summary>
     '''liCreateBlog control.

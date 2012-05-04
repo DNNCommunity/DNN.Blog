@@ -1,13 +1,13 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="MainView.ascx.vb" Inherits="DotNetNuke.Modules.Blog.MainView" %>
 <asp:Panel runat="server" ID="pnlAddModuleDefs" Visible="false" CssClass="dnnClear bloggerMenu">
-    <div class="dnnRight">
+    <div class="dnnRight divBloggerBar" id="divBloggerBar">
         <ul class="buttonGroup">
-            <li id="liAddEntry" runat="server"><asp:HyperLink ID="hlAddEntry" runat="server" ResourceKey="lnkAddEntry" CssClass="dnnTertiaryAction" /></li>
-            <li id="liEditBlog" runat="server"><asp:HyperLink ID="hlEditBlog" runat="server" ResourceKey="lnkEditBlog" CssClass="dnnTertiaryAction" /></li>
-            <li id="liView" runat="server"><asp:HyperLink ID="hlView" runat="server" ResourceKey="lnkViewBlog" CssClass="dnnTertiaryAction" /></li>
-            <li id="liCreateBlog" runat="server"><asp:HyperLink ID="hlCreateBlog" runat="server" ResourceKey="lnkBlog" CssClass="dnnTertiaryAction" /></li>
-            <li id="liAddPart" runat="server"><a class="dnnTertiaryAction" id="lnkAddPart" href="#">Add Blog Part</a></li>
-        </ul>
+            <li id="liAddEntry" runat="server" visible="false"><asp:HyperLink ID="hlAddEntry" runat="server" ResourceKey="lnkAddEntry" CssClass="dnnTertiaryAction" /></li>
+            <li id="liView" runat="server" visible="false"><asp:HyperLink ID="hlView" runat="server" ResourceKey="lnkViewBlog" CssClass="dnnTertiaryAction" /></li>
+            <li id="liEditBlog" runat="server" visible="false"><asp:HyperLink ID="hlEditBlog" runat="server" ResourceKey="lnkEditBlog" CssClass="dnnTertiaryAction" /></li>
+            <li id="liCreateBlog" runat="server" visible="false"><asp:HyperLink ID="hlCreateBlog" runat="server" ResourceKey="lnkBlog" CssClass="dnnTertiaryAction" /></li>
+            <li id="liAddPart" runat="server" visible="false"><a class="dnnTertiaryAction" id="lnkAddPart" href="#">Add Blog Part</a></li>
+        </ul> 
     </div>
 </asp:Panel>
 <div id="divMainViewDialog" style="display:none;" class="dnnDialog divMainViewDialog">
@@ -39,11 +39,12 @@
     /*globals jQuery, window, Sys */
     (function ($, Sys) {
         function setupMainView() {
-            $('#divMainViewDialog').dialog({ autoOpen: false, minWidth: 350, title: 'Add Blog Part to Page'});
+            $('#divMainViewDialog').dialog({ autoOpen: false, minWidth: 350, title: 'Add Blog Part to Page' });
 
             $("#lnkAddPart").click(function () {
                 // show dialog for adding module part.
                 $('#divMainViewDialog').dialog('open');
+
                 return false;
             });
 

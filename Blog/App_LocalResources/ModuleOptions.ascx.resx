@@ -221,12 +221,6 @@ About Identicon, Wavicon, and MonsterID: Gravatar will be displayed for users wh
   <data name="secBookmarks.Text" xml:space="preserve">
     <value>Social Bookmarks &amp; Netowrks</value>
   </data>
-  <data name="lblBookmarksInfo.Text" xml:space="preserve">
-    <value>Select which Social Bookmark and Network sites you wish to enable for your blogs.</value>
-  </data>
-  <data name="lblBookmarksInfo.Help" xml:space="preserve">
-    <value>Select which Social Bookmark and Network sites you wish to enable for your blogs.&lt;br&gt;We have taken the liberty to select the most common and most popular networks.</value>
-  </data>
   <data name="secCommentSettings.Text" xml:space="preserve">
     <value>Comment</value>
   </data>
@@ -261,12 +255,6 @@ About custom images: provide the complete URL to the image (including "http://")
   </data>
   <data name="lblShowSeoFriendlyUrl.Help" xml:space="preserve">
     <value>If you enable this option, then the URL will be modified to replace default.aspx with the title of the blog entry as follows:  .../Blog-Entry-Title.aspx.  This URL format can help with search engine optimization.  The default is set to true.</value>
-  </data>
-  <data name="lblEnableBookmarks.Text" xml:space="preserve">
-    <value>Enable Social Bookmarks</value>
-  </data>
-  <data name="lblEnableBookmarks.Help" xml:space="preserve">
-    <value>If you enable this option, a social bookmarks toolbar will be added to your blog entry page.</value>
   </data>
   <data name="lblShowWebsite.Text" xml:space="preserve">
     <value>Show Website</value>
@@ -474,5 +462,41 @@ About custom images: provide the complete URL to the image (including "http://")
   </data>
   <data name="secMisc.Text" xml:space="preserve">
     <value>Miscellaneous</value>
+  </data>
+  <data name="lblAddThisId.Help" xml:space="preserve">
+    <value>This is required when using AddThis social sharing to enable analytics.</value>
+  </data>
+  <data name="lblAddThisId.Text" xml:space="preserve">
+    <value>AddThis Publisher ID</value>
+  </data>
+  <data name="lblEnableLinkedIN.Help" xml:space="preserve">
+    <value>If checked, the Linked In share button will be displayed in the blog entry view.</value>
+  </data>
+  <data name="lblEnableLinkedIN.Text" xml:space="preserve">
+    <value>Enable LinkedIn Sharing</value>
+  </data>
+  <data name="lblEnablePlusOne.Help" xml:space="preserve">
+    <value>If checked, the +1 share button will be displayed in the Question view.</value>
+  </data>
+  <data name="lblEnablePlusOne.Text" xml:space="preserve">
+    <value>Enable Google +1 Sharing:</value>
+  </data>
+  <data name="lblEnableTwitter.Help" xml:space="preserve">
+    <value>If checked, the Twitter share button will be displayed in the Question view.</value>
+  </data>
+  <data name="lblEnableTwitter.Text" xml:space="preserve">
+    <value>Enable Twitter Sharing</value>
+  </data>
+  <data name="lblFacebookAppId.Help" xml:space="preserve">
+    <value>To enable Facebook likes, you must enter a Facebook application ID (which can be retrieved while logged into Facebook).</value>
+  </data>
+  <data name="lblFacebookAppId.Text" xml:space="preserve">
+    <value>Facebook App ID</value>
+  </data>
+  <data name="lblSocialSharingMode.Help" xml:space="preserve">
+    <value>Select from one of the available options to see which Social Sharing services you can utilize across all blogs.</value>
+  </data>
+  <data name="lblSocialSharingMode.Text" xml:space="preserve">
+    <value>Social Sharing Mode</value>
   </data>
 </root>

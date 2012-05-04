@@ -125,7 +125,6 @@ Namespace Business
             SyndicationEmail = Convert.ToString(Null.SetNull(dr.Item("SyndicationEmail"), SyndicationEmail))
         End Sub
 
-        ''' -----------------------------------------------------------------------------
         ''' <summary>
         ''' Gets and sets the Key ID
         ''' </summary>
@@ -134,8 +133,7 @@ Namespace Business
         ''' <history>
         ''' 	[pdonker]	11/07/2010  Created
         ''' </history>
-        ''' -----------------------------------------------------------------------------
-        Public Property KeyID() As Integer Implements IHydratable.KeyID
+        Public Overrides Property KeyID() As Integer
             Get
                 Return EntryID
             End Get

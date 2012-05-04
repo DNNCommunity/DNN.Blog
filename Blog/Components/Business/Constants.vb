@@ -57,4 +57,12 @@ Public Class Constants
 
     Public Const ContentItemTermsCacheKey As String = "ContentItem_Terms_"
 
+    Public Enum PermissionKeys
+        ''' <summary>
+        ''' This user is treated like a blog author (ie. content editor)
+        ''' </summary>
+        ''' <remarks></remarks>
+        GHOSTWRITER
+    End Enum
+
 End Class

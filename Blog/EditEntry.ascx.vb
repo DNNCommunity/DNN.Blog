@@ -101,9 +101,9 @@ Partial Class EditEntry
     Me.ModuleConfiguration.ModuleTitle = GetString("msgAddBlogEntry", LocalResourceFile)
    End If
 
-   If Not Utility.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
-    Response.Redirect(NavigateURL())
-   End If
+            If Not Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
+                Response.Redirect(NavigateURL())
+            End If
 
    If m_oBlog.ParentBlogID > -1 Then
     m_oParentBlog = m_oBlogController.GetBlog(m_oBlog.ParentBlogID)
@@ -579,27 +579,27 @@ Partial Class EditEntry
 
   If ((((objPortalController.GetPortalSpaceUsedBytes(PortalId) + objFile.ContentLength) / 1000000) <= Me.PortalSettings.HostSpace) Or Me.PortalSettings.HostSpace = 0) Or (Me.PortalSettings.ActiveTab.ParentId = Me.PortalSettings.SuperTabId) Then
 
-   If (InStr(1, "," & Me.PortalSettings.HostSettings("FileExtensions").ToString.ToUpper, "," & strExtension.ToUpper) <> 0) Or Me.PortalSettings.ActiveTab.ParentId = Me.PortalSettings.SuperTabId Then
-    Try
-     If strFileName <> "" Then
-      If System.IO.File.Exists(strFileName) Then
-       System.IO.File.SetAttributes(strFileName, FileAttributes.Normal)
-       System.IO.File.Delete(strFileName)
-      End If
-      ' DW - 04/16/2008 - Check to make sure the directory exists.
-      FileController.createFileDirectory(strFileName)
-      objFile.SaveAs(strFileName)
-      strMessage = strFileName
-      Me.valUpload.IsValid = True
-     End If
+            If (InStr(1, "," & Entities.Host.Host.FileExtensions.ToUpper, "," & strExtension.ToUpper) <> 0) Or Me.PortalSettings.ActiveTab.ParentId = Me.PortalSettings.SuperTabId Then
+                Try
+                    If strFileName <> "" Then
+                        If System.IO.File.Exists(strFileName) Then
+                            System.IO.File.SetAttributes(strFileName, FileAttributes.Normal)
+                            System.IO.File.Delete(strFileName)
+                        End If
+                        ' DW - 04/16/2008 - Check to make sure the directory exists.
+                        FileController.createFileDirectory(strFileName)
+                        objFile.SaveAs(strFileName)
+                        strMessage = strFileName
+                        Me.valUpload.IsValid = True
+                    End If
 
-    Catch ex As Exception
-     ProcessModuleLoadException(String.Format(GetString("SaveFileError"), strFileName), Me, ex, True)
-    End Try
-   Else
-    Me.valUpload.ErrorMessage = String.Format(GetString("RestrictedFileType"), strFileName, Replace(Me.PortalSettings.HostSettings("FileExtensions").ToString, ",", ", *."))
-    Me.valUpload.IsValid = False
-   End If
+                Catch ex As Exception
+                    ProcessModuleLoadException(String.Format(GetString("SaveFileError"), strFileName), Me, ex, True)
+                End Try
+            Else
+                Me.valUpload.ErrorMessage = String.Format(GetString("RestrictedFileType"), strFileName, Replace(Me.PortalSettings.HostSettings("FileExtensions").ToString, ",", ", *."))
+                Me.valUpload.IsValid = False
+            End If
 
   Else
    Me.valUpload.ErrorMessage = String.Format(GetString("DiskSpaceExceeded"), strFileName)

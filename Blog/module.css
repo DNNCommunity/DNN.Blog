@@ -87,7 +87,7 @@ ul.rlbList {list-style:none;}
 		
 
 /* Button Group Styles */
-.buttonGroup {}		
+		
 	/* Remove corners and add dividers to buttons in button group */
 	.buttonGroup .dnnTertiaryAction{
 		margin:0; -webkit-border-radius:0; -moz-border-radius:0; border-radius:0;
@@ -99,4 +99,10 @@ ul.rlbList {list-style:none;}
 	.buttonGroup .dnnTertiaryAction.disabled:hover{border-left:1px solid #fcfcfc; /*light*/}		
 
 .bloggerMenu{padding-bottom: 6px;}
-	.bloggerMenu ul, .bloggerMenu li{display:block;list-style-type:none;float:left;padding-left: 2px;margin:0;}
+	.bloggerMenu ul, .bloggerMenu li{display:block;list-style-type:none;float:right;padding-left: 2px;margin:0;}
+	
+		.selectDrop {position:relative;z-index:1; width:auto;}
+		 .selectDrop .dnnTertiaryAction span{padding-right:5px;}
+		
+		
+		

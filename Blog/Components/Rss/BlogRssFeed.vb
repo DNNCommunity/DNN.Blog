@@ -103,7 +103,7 @@ Namespace Rss
 
             ' Read environment variables
             _portalSettings = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings
-            _useFriendlyUrls = CBool(DotNetNuke.Entities.Host.HostSettings.GetHostSetting("UseFriendlyUrls") = "Y")
+            _useFriendlyUrls = DotNetNuke.Entities.Host.Host.UseFriendlyUrls
             _userId = DotNetNuke.Entities.Users.UserController.GetCurrentUserInfo.UserID
 
         End Sub
@@ -229,12 +229,12 @@ Namespace Rss
                     dr = Data.DataProvider.Instance().ListEntriesByPortal(_portalSettings.PortalId, Date.UtcNow, Nothing, DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName), DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName), _blogSettings.RecentRssEntriesMax)
                 Case RssViews.BlogEntries
                     If Not _blog Is Nothing Then
-                        dr = DotNetNuke.Modules.Blog.Data.DataProvider.Instance().ListEntriesByBlog(_rssId, Date.UtcNow, Utility.HasBlogPermission(_userId, _blog.UserID, _moduleId), Utility.HasBlogPermission(_userId, _blog.UserID, _moduleId), _blogSettings.RecentRssEntriesMax)
+                        dr = DotNetNuke.Modules.Blog.Data.DataProvider.Instance().ListEntriesByBlog(_rssId, Date.UtcNow, Blog.Business.Security.HasBlogPermission(_userId, _blog.UserID, _moduleId), Blog.Business.Security.HasBlogPermission(_userId, _blog.UserID, _moduleId), _blogSettings.RecentRssEntriesMax)
                     End If
                 Case RssViews.ArchivEntries
                     Dim m_dBlogDate As Date
                     If _blog IsNot Nothing Then
-                        dr = DotNetNuke.Modules.Blog.Data.DataProvider.Instance().ListEntriesByBlog(_rssId, m_dBlogDate.ToUniversalTime, Utility.HasBlogPermission(_userId, _blog.UserID, _moduleId), Utility.HasBlogPermission(_userId, _blog.UserID, _moduleId), _blogSettings.RecentRssEntriesMax)
+                        dr = DotNetNuke.Modules.Blog.Data.DataProvider.Instance().ListEntriesByBlog(_rssId, m_dBlogDate.ToUniversalTime, Blog.Business.Security.HasBlogPermission(_userId, _blog.UserID, _moduleId), Blog.Business.Security.HasBlogPermission(_userId, _blog.UserID, _moduleId), _blogSettings.RecentRssEntriesMax)
                     Else
                         dr = Data.DataProvider.Instance().ListEntriesByPortal(_portalSettings.PortalId, m_dBlogDate.ToUniversalTime, Nothing, DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName), DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName), _blogSettings.RecentRssEntriesMax)
                     End If

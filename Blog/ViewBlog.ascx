@@ -4,7 +4,7 @@
 <%@ Register TagPrefix="dba" Assembly="DotNetNuke.Modules.Blog" Namespace="DotNetNuke.Modules.Blog" %>
 <%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <div class="dnnClear dnnForm dnnViewBlog">
-	<asp:Panel ID="pnlBlogInfo" Visible="False" runat="server">
+	<asp:Panel ID="pnlBlogInfo" Visible="false" runat="server">
 		<div class="vbAuthor dnnClear">
 			<div class="dnnLeft">
 				<asp:HyperLink id="imgAuthorLink" runat="server"><dnnweb:DnnBinaryImage ID="dbiUser" runat="server" Width="40" /></asp:HyperLink>

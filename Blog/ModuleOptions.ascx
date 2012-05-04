@@ -157,8 +157,28 @@
 					<asp:DropDownList ID="cmbPageBlogs" DataValueField="BlogID" DataTextField="Title" runat="server" />
 				</div>
 				<div class="dnnFormItem">
-					<dnn:label id="lblEnableBookmarks" runat="server" suffix=":" controlname="lblEnableBookmarks" />
-					<asp:CheckBox ID="chkEnableBookmarks" runat="server" />
+					<dnn:label id="lblSocialSharingMode" runat="server" suffix=":" controlname="ddlSocialSharingMode" />
+					<asp:DropDownList ID="ddlSocialSharingMode" runat="server" />
+				</div>
+				<div class="dnnFormItem" id="divAddThisId">
+					<dnn:label id="lblAddThisId" runat="server" suffix=":" controlname="txtAddThisId" />
+					<asp:TextBox ID="txtAddThisId" runat="server" />
+				</div>
+				<div class="dnnFormItem" id="divFacebookApp">
+					<dnn:label id="lblFacebookAppId" runat="server" suffix=":" controlname="FacebookAppId" />
+					<asp:TextBox ID="FacebookAppId" runat="server" />
+				</div>
+				<div class="dnnFormItem" id="divPlusOne">
+					<dnn:label id="lblEnablePlusOne" runat="server" suffix=":" controlname="chkEnablePlusOne" />
+					<asp:CheckBox ID="chkEnablePlusOne" runat="server" />
+				</div>
+				<div class="dnnFormItem" id="divTwitter">
+					<dnn:label id="lblEnableTwitter" runat="server" suffix=":" controlname="chkEnableTwitter" />
+					<asp:CheckBox ID="chkEnableTwitter" runat="server" />
+				</div>
+				<div class="dnnFormItem" id="divLinkedIn">
+					<dnn:label id="lblEnableLinkedIN" runat="server" suffix=":" controlname="chkEnableLinkedIN" />
+					<asp:CheckBox ID="chkEnableLinkedIN" runat="server" />
 				</div>
 				<div class="dnnFormItem">
 					<dnn:label id="lblEnforceSummaryTruncation" runat="server" suffix=":" controlname="lblEnforceSummaryTruncation" />
@@ -209,57 +229,57 @@
 <script language="javascript" type="text/javascript">
 	/*globals jQuery, window, Sys */
 	(function ($, Sys) {
-	    function setupDnnBlogSettings() {
-	        handleSummaryDisplay();
-	        handleGravatarDisplay();
+		function setupDnnBlogSettings() {
+			handleSummaryDisplay();
+			handleGravatarDisplay();
 
-	        $('#dnnBlogOptions').dnnTabs().dnnPanels();
+			$('#dnnBlogOptions').dnnTabs().dnnPanels();
 
 
 
-	        $('#<%= chkForceDescription.ClientID  %>').click(function () {
-	            handleSummaryDisplay();
-	            return true;
-	        });
+			$('#<%= chkForceDescription.ClientID  %>').click(function () {
+				handleSummaryDisplay();
+				return true;
+			});
 
-	        $('#<%= chkShowGravatars.ClientID  %>').click(function () {
-	            handleGravatarDisplay();
-	            return true;
-	        });
+			$('#<%= chkShowGravatars.ClientID  %>').click(function () {
+				handleGravatarDisplay();
+				return true;
+			});
 
-	        function handleSummaryDisplay() {
-	            if ($('#<%= chkForceDescription.ClientID  %>').prop('checked')) {
-	                $("#divSummary").hide('highlight', '', 200, '');
-	                $("#divSearchSummary").hide('highlight', '', 200, '');
-	            } else {
-	                $("#divSummary").show('highlight', '', 200, '');
-	                $("#divSearchSummary").show('highlight', '', 200, '');
-	            }
-	        }
+			function handleSummaryDisplay() {
+				if ($('#<%= chkForceDescription.ClientID  %>').prop('checked')) {
+					$("#divSummary").hide('highlight', '', 200, '');
+					$("#divSearchSummary").hide('highlight', '', 200, '');
+				} else {
+					$("#divSummary").show('highlight', '', 200, '');
+					$("#divSearchSummary").show('highlight', '', 200, '');
+				}
+			}
 
-	        function handleGravatarDisplay() {
-	            if ($('#<%= chkShowGravatars.ClientID  %>').prop('checked')) {
-	                $("#divGravatarImageWidth").show('highlight', '', 200, '');
-	                $("#divGravatarRating").show('highlight', '', 200, '');
-	                $("#divGravatarDefaultImageUrl").show('highlight', '', 200, '');
-	                $("#divGravatarDefaultImageCustomURL").show('highlight', '', 200, '');
-	            } else {
-	                $("#divGravatarImageWidth").hide('highlight', '', 200, '');
-	                $("#divGravatarRating").hide('highlight', '', 200, '');
-	                $("#divGravatarDefaultImageUrl").hide('highlight', '', 200, '');
-	                $("#divGravatarDefaultImageCustomURL").hide('highlight', '', 200, '');
-	            }
-	        }
+			function handleGravatarDisplay() {
+				if ($('#<%= chkShowGravatars.ClientID  %>').prop('checked')) {
+					$("#divGravatarImageWidth").show('highlight', '', 200, '');
+					$("#divGravatarRating").show('highlight', '', 200, '');
+					$("#divGravatarDefaultImageUrl").show('highlight', '', 200, '');
+					$("#divGravatarDefaultImageCustomURL").show('highlight', '', 200, '');
+				} else {
+					$("#divGravatarImageWidth").hide('highlight', '', 200, '');
+					$("#divGravatarRating").hide('highlight', '', 200, '');
+					$("#divGravatarDefaultImageUrl").hide('highlight', '', 200, '');
+					$("#divGravatarDefaultImageCustomURL").hide('highlight', '', 200, '');
+				}
+			}
 
-	        $('#boBasicSettings .dnnFormExpandContent a').dnnExpandAll({ expandText: '<%=Localization.GetSafeJSString("ExpandAll", Localization.SharedResourceFile)%>', collapseText: '<%=Localization.GetSafeJSString("CollapseAll", Localization.SharedResourceFile)%>', targetArea: '#boBasicSettings' });
-	    };
+			$('#boBasicSettings .dnnFormExpandContent a').dnnExpandAll({ expandText: '<%=Localization.GetSafeJSString("ExpandAll", Localization.SharedResourceFile)%>', collapseText: '<%=Localization.GetSafeJSString("CollapseAll", Localization.SharedResourceFile)%>', targetArea: '#boBasicSettings' });
+		};
 
-	    $(document).ready(function () {
-	        setupDnnBlogSettings();
-	        Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
-	            setupDnnBlogSettings();
-	        });
-	    });
+		$(document).ready(function () {
+			setupDnnBlogSettings();
+			Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
+				setupDnnBlogSettings();
+			});
+		});
 
 	} (jQuery, window.Sys));
 </script>   

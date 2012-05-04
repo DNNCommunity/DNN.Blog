@@ -38,7 +38,8 @@ Namespace Business
 
     Public Class Utility
 
-#Region " Various "
+#Region "Various"
+
         Public Shared Function AddTOQueryString(ByVal URL As String, ByVal Key As String, ByVal Value As String) As String
             Dim RegExp As New System.Text.RegularExpressions.Regex(Key & "=.*?(&|$)")
             Dim Match As System.Text.RegularExpressions.Match = RegExp.Match(URL)
@@ -51,15 +52,6 @@ Namespace Business
             End If
         End Function
 
-        Public Shared Function HasBlogPermission(ByVal UserID As Integer, ByVal BlogUserID As Integer, ByVal ModuleID As Integer) As Boolean
-            Dim PortalSettings As DotNetNuke.Entities.Portals.PortalSettings = CType(HttpContext.Current.Items("PortalSettings"), DotNetNuke.Entities.Portals.PortalSettings)
-            ' 11/19/2008 Rip Rowan
-            ' Added following 2 lines & replaced deprecated HasEditPermissions function
-            Dim mController As New DotNetNuke.Entities.Modules.ModuleController
-            Dim ModuleConfiguration As DotNetNuke.Entities.Modules.ModuleInfo = mController.GetModule(ModuleID, DotNetNuke.Common.Utilities.Null.NullInteger)
-            Return ((UserID = BlogUserID And DotNetNuke.Security.PortalSecurity.HasNecessaryPermission(SecurityAccessLevel.Edit, PortalSettings, ModuleConfiguration)) Or DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName))
-        End Function
-
         Public Shared Function IsInteger(ByVal strValue As String) As Boolean
             If IsNumeric(strValue) Then
                 If Int(Val(strValue)) = Val(strValue) Then
@@ -70,6 +62,7 @@ Namespace Business
             End If
             Return False
         End Function
+
 #End Region
 
 #Region " HTML "

@@ -518,22 +518,112 @@ Partial Public Class ModuleOptions
     Protected WithEvents cmbPageBlogs As Global.System.Web.UI.WebControls.DropDownList
 
     '''<summary>
-    '''lblEnableBookmarks control.
+    '''lblSocialSharingMode control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblEnableBookmarks As Global.DotNetNuke.UI.UserControls.LabelControl
+    Protected WithEvents lblSocialSharingMode As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
-    '''chkEnableBookmarks control.
+    '''ddlSocialSharingMode control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents chkEnableBookmarks As Global.System.Web.UI.WebControls.CheckBox
+    Protected WithEvents ddlSocialSharingMode As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
+    '''lblAddThisId control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblAddThisId As Global.DotNetNuke.UI.UserControls.LabelControl
+
+    '''<summary>
+    '''txtAddThisId control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents txtAddThisId As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''lblFacebookAppId control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblFacebookAppId As Global.DotNetNuke.UI.UserControls.LabelControl
+
+    '''<summary>
+    '''FacebookAppId control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents FacebookAppId As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''lblEnablePlusOne control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblEnablePlusOne As Global.DotNetNuke.UI.UserControls.LabelControl
+
+    '''<summary>
+    '''chkEnablePlusOne control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents chkEnablePlusOne As Global.System.Web.UI.WebControls.CheckBox
+
+    '''<summary>
+    '''lblEnableTwitter control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblEnableTwitter As Global.DotNetNuke.UI.UserControls.LabelControl
+
+    '''<summary>
+    '''chkEnableTwitter control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents chkEnableTwitter As Global.System.Web.UI.WebControls.CheckBox
+
+    '''<summary>
+    '''lblEnableLinkedIN control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblEnableLinkedIN As Global.DotNetNuke.UI.UserControls.LabelControl
+
+    '''<summary>
+    '''chkEnableLinkedIN control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents chkEnableLinkedIN As Global.System.Web.UI.WebControls.CheckBox
 
     '''<summary>
     '''lblEnforceSummaryTruncation control.

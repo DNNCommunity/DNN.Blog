@@ -3,8 +3,8 @@
 <%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <div class="dnnForm dnnEditBlog dnnClear" id="dnnEditBlog">
-    <div class="dnnFormExpandContent"><a href=""><%=Localization.GetString("ExpandAll", Localization.SharedResourceFile)%></a></div>
-    <div>
+    <div id="ebContent">
+        <div class="dnnFormExpandContent"><a href=""><%=Localization.GetString("ExpandAll", Localization.SharedResourceFile)%></a></div>
         <h2 id="dnnSitePanel-Options" class="dnnFormSectionHead"><a href="" class="dnnSectionExpanded"><%=LocalizeString("lblOptions")%></a></h2>
         <fieldset>
             <div class="dnnFormItem dnnFormHelp dnnClear"><p class="dnnFormRequired"><span><%=LocalizeString("RequiredFields")%></span></p></div>
@@ -153,6 +153,9 @@
                 noText: '<%= Localization.GetString("No.Text", Localization.SharedResourceFile) %>',
                 title: '<%= Localization.GetString("Confirm.Text", Localization.SharedResourceFile) %>'
             });
+
+            $('#ebContent .dnnFormExpandContent a').dnnExpandAll({ expandText: '<%=Localization.GetSafeJSString("ExpandAll", Localization.SharedResourceFile)%>', collapseText: '<%=Localization.GetSafeJSString("CollapseAll", Localization.SharedResourceFile)%>', targetArea: '#ebContent' });
+
         };
 
         $(document).ready(function () {

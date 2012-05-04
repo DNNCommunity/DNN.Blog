@@ -160,7 +160,7 @@ Namespace MetaWeblog
                 Next
 
                 ' Check for any non-image files left behind
-                Dim strWhiteList As String = "," & DotNetNuke.Entities.Host.HostSettings.GetHostSetting("FileExtensions").ToLower & ","
+                Dim strWhiteList As String = "," & DotNetNuke.Entities.Host.Host.FileExtensions & ","
                 For Each tempFile As Match In Regex.Matches(HttpUtility.HtmlDecode(entry.Entry), """([^""]*_temp_images/[^""]*)""")
                     Try
                         Dim moveFromPath As String = HttpContext.Current.Server.MapPath(tempFile.Groups(1).Value)

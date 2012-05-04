@@ -18,25 +18,25 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
+Imports DotNetNuke.Web.Client.ClientResourceManagement
 Imports DotNetNuke.Entities.Modules
 Imports DotNetNuke.Framework
 
 Public Class BlogModuleBase
   Inherits PortalModuleBase
 
-#Region " Public Constants "
-  Public Const RSS_RECENT_ENTRIES As Integer = 0
-  Public Const RSS_BLOG_ENTRIES As Integer = 1
-  Public Const RSS_SINGLE_ENTRY As Integer = 2
-  Public Const RSS_ARCHIV_VIEW As Integer = 3
-  Public Const CONTROL_VIEW_VIEWBLOG As String = "ViewBlog.ascx"
-  Public Const CONTROL_VIEW_VIEWENTRY As String = "ViewEntry.ascx"
-  Public Const CONTROL_VIEW_BLOGFEED As String = "BlogFeed.ascx"
-  Public Const ONLINE_HELP_URL As String = ""
-  Public Const BLOG_TEMPLATES_RESOURCE As String = "/DesktopModules/Blog/App_LocalResources/BlogTemplates.ascx.resx"
-#End Region
+#Region "Public Constants"
 
-#Region " Public Enums "
+    Public Const RSS_RECENT_ENTRIES As Integer = 0
+    Public Const RSS_BLOG_ENTRIES As Integer = 1
+    Public Const RSS_SINGLE_ENTRY As Integer = 2
+    Public Const RSS_ARCHIV_VIEW As Integer = 3
+    Public Const CONTROL_VIEW_VIEWBLOG As String = "ViewBlog.ascx"
+    Public Const CONTROL_VIEW_VIEWENTRY As String = "ViewEntry.ascx"
+    Public Const CONTROL_VIEW_BLOGFEED As String = "BlogFeed.ascx"
+    Public Const ONLINE_HELP_URL As String = ""
+    Public Const BLOG_TEMPLATES_RESOURCE As String = "/DesktopModules/Blog/App_LocalResources/BlogTemplates.ascx.resx"
+
 #End Region
 
 #Region "Public Members"
@@ -115,9 +115,11 @@ Public Class BlogModuleBase
             For Each f As String In BlogSettings.IncludeFiles.Split(";"c)
                 If Not String.IsNullOrEmpty(f) Then
                     If f.ToLower.EndsWith(".js") Then
-                        Page.ClientScript.RegisterClientScriptInclude(f.Replace("[", "").Replace("]", "_").Replace("/", "_"), f.Replace("[P]", PortalSettings.HomeDirectory & "Blog/Include/").Replace("[H]", DotNetNuke.Common.ApplicationPath & "/DesktopModules/Blog/include/"))
+                        Dim path As String = f.Replace("[P]", PortalSettings.HomeDirectory & "Blog/Include/").Replace("[H]", DotNetNuke.Common.ApplicationPath & "/DesktopModules/Blog/include/")
+                        ClientResourceManager.RegisterStyleSheet(Page, path)
                     ElseIf f.ToLower.EndsWith(".css") Then
-                        CType(Me.Page, DotNetNuke.Framework.CDefault).AddStyleSheet(f.Replace("[", "").Replace("]", "_").Replace("/", "_"), f.Replace("[P]", PortalSettings.HomeDirectory & "Blog/Include/").Replace("[H]", DotNetNuke.Common.ApplicationPath & "/DesktopModules/Blog/include/"))
+                        Dim path As String = f.Replace("[P]", PortalSettings.HomeDirectory & "Blog/Include/").Replace("[H]", DotNetNuke.Common.ApplicationPath & "/DesktopModules/Blog/include/")
+                        ClientResourceManager.RegisterStyleSheet(Page, path)
                     End If
                 End If
             Next

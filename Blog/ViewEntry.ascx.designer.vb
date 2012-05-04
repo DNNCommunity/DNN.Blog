@@ -185,6 +185,42 @@ Partial Public Class ViewEntry
     Protected WithEvents lnkEditEntry As Global.System.Web.UI.WebControls.HyperLink
 
     '''<summary>
+    '''imgAuthorLink control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents imgAuthorLink As Global.System.Web.UI.WebControls.HyperLink
+
+    '''<summary>
+    '''dbiUser control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents dbiUser As Global.DotNetNuke.Web.UI.WebControls.DnnBinaryImage
+
+    '''<summary>
+    '''hlAuthorBio control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents hlAuthorBio As Global.System.Web.UI.WebControls.HyperLink
+
+    '''<summary>
+    '''litBio control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents litBio As Global.System.Web.UI.WebControls.Literal
+
+    '''<summary>
     '''pnlComments control.
     '''</summary>
     '''<remarks>

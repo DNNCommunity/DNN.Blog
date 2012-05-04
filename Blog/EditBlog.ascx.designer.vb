@@ -20,7 +20,7 @@ Partial Public Class EditBlog
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblTitle As Global.System.Web.UI.UserControl
+    Protected WithEvents lblTitle As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''txtTitle control.
@@ -47,7 +47,7 @@ Partial Public Class EditBlog
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblDescription As Global.System.Web.UI.UserControl
+    Protected WithEvents lblDescription As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''txtDescription control.
@@ -74,7 +74,7 @@ Partial Public Class EditBlog
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblPublic As Global.System.Web.UI.UserControl
+    Protected WithEvents lblPublic As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''chkPublic control.
@@ -92,7 +92,7 @@ Partial Public Class EditBlog
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblUserIdentity As Global.System.Web.UI.UserControl
+    Protected WithEvents lblUserIdentity As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''rdoUserName control.
@@ -110,7 +110,7 @@ Partial Public Class EditBlog
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblEnableGhostWriting As Global.System.Web.UI.UserControl
+    Protected WithEvents lblEnableGhostWriting As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''chkEnableGhostWriting control.
@@ -128,7 +128,7 @@ Partial Public Class EditBlog
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblMetaWebBlog As Global.System.Web.UI.UserControl
+    Protected WithEvents lblMetaWebBlog As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''lblMetaWeblogNotAvailable control.
@@ -155,7 +155,7 @@ Partial Public Class EditBlog
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblUsersComments As Global.System.Web.UI.UserControl
+    Protected WithEvents lblUsersComments As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''rdoUsersComments control.
@@ -173,7 +173,7 @@ Partial Public Class EditBlog
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblAnonymousComments As Global.System.Web.UI.UserControl
+    Protected WithEvents lblAnonymousComments As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''rdoAnonymousComments control.
@@ -191,7 +191,7 @@ Partial Public Class EditBlog
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblTrackbacks As Global.System.Web.UI.UserControl
+    Protected WithEvents lblTrackbacks As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''rdoTrackbacks control.
@@ -209,7 +209,7 @@ Partial Public Class EditBlog
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblCaptcha As Global.System.Web.UI.UserControl
+    Protected WithEvents lblCaptcha As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''chkCaptcha control.
@@ -227,7 +227,7 @@ Partial Public Class EditBlog
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblAutoTrackbacks As Global.System.Web.UI.UserControl
+    Protected WithEvents lblAutoTrackbacks As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''chkAutoTrackbacks control.
@@ -245,7 +245,7 @@ Partial Public Class EditBlog
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblEmailNotification As Global.System.Web.UI.UserControl
+    Protected WithEvents lblEmailNotification As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''chkEmailNotification control.
@@ -263,7 +263,7 @@ Partial Public Class EditBlog
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblSyndicate As Global.System.Web.UI.UserControl
+    Protected WithEvents lblSyndicate As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''chkSyndicate control.
@@ -281,7 +281,7 @@ Partial Public Class EditBlog
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblSyndicateIndependant As Global.System.Web.UI.UserControl
+    Protected WithEvents lblSyndicateIndependant As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''chkSyndicateIndependant control.
@@ -299,7 +299,7 @@ Partial Public Class EditBlog
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblSyndicationEmail As Global.System.Web.UI.UserControl
+    Protected WithEvents lblSyndicationEmail As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''txtSyndicationEmail control.
@@ -317,7 +317,7 @@ Partial Public Class EditBlog
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblRegenerate As Global.System.Web.UI.UserControl
+    Protected WithEvents lblRegenerate As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''cmdGenerateLinks control.
@@ -335,16 +335,16 @@ Partial Public Class EditBlog
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblTimeZone As Global.System.Web.UI.UserControl
+    Protected WithEvents lblTimeZone As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
- '''ddTimeZone control.
+    '''ddTimeZone control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
- Protected WithEvents ddTimeZone As Global.DotNetNuke.Web.UI.WebControls.DnnTimeZoneComboBox
+    Protected WithEvents ddTimeZone As Global.DotNetNuke.Web.UI.WebControls.DnnTimeZoneComboBox
 
     '''<summary>
     '''lblCulture control.
@@ -353,7 +353,7 @@ Partial Public Class EditBlog
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblCulture As Global.System.Web.UI.UserControl
+    Protected WithEvents lblCulture As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''cboCulture control.
@@ -371,7 +371,7 @@ Partial Public Class EditBlog
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblDateFormat As Global.System.Web.UI.UserControl
+    Protected WithEvents lblDateFormat As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''cboDateFormat control.
