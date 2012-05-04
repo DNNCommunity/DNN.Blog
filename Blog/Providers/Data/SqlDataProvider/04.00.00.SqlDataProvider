@@ -16,7 +16,7 @@ ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs
 GO
 
 ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs
- ALTER COLUMN	[Culture] [nvarchar] (10) COLLATE database_default NULLBlog_Ca
+ ALTER COLUMN	[Culture] [nvarchar] (10) COLLATE database_default NULL
 GO
 
 ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs

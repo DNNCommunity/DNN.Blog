@@ -326,9 +326,9 @@ U.[UserName],
 U.[DisplayName],
 (SELECT Count(BlogID) FROM {databaseOwner}{objectQualifier}Blog_Blogs WHERE ParentBlogID=B.[BlogID]) AS ChildBlogCount
 FROM
-{databaseOwner}{objectQualifier}Blog_Blogs B (nolock)
+{databaseOwner}{objectQualifier}Blog_Blogs B with WITH (nolock)
 INNER JOIN 
-{databaseOwner}{objectQualifier}Users U (nolock) ON B.[UserID] = U.[UserID]
+{databaseOwner}{objectQualifier}Users U with WITH (nolock) ON B.[UserID] = U.[UserID]
 WHERE
 U.UserName = @UserName
 AND B.PortalID=@PortalID 
@@ -596,4 +596,18 @@ WHERE (B.[BlogID] = @BlogID OR B.[ParentBlogID] = @BlogID)
  AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
 ORDER BY E.AddedDate DESC
 
+GO
+
+
+
+/* SQL Azure Fixes - David Rodriguez */
+/* Add a Primary Key Clustered to Blog_MetaWeblogData */
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_MetaWeblogData
+	ADD RowID int NOT NULL IDENTITY (1, 1)
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}Blog_MetaWeblogData] ADD  CONSTRAINT [PK_{objectQualifier}Blog_MetaWeblogData] PRIMARY KEY CLUSTERED 
+(
+	[RowID] ASC
+)
 GO

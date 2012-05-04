@@ -46,7 +46,7 @@ FROM
 WHERE [EntryID] = @EntryID 
 		AND (C.[Approved]=1 OR C.[Approved] <> @ShowNonApproved)
 ORDER BY
-    C.[AddedDate]
+	C.[AddedDate]
 
 GO
 
@@ -1029,9 +1029,9 @@ SELECT
 	B.[UseCaptcha],
 	(SELECT Count(BlogID) FROM {databaseOwner}{objectQualifier}Blog_Blogs WHERE ParentBlogID=B.[BlogID]) AS ChildBlogCount
 FROM
-	{databaseOwner}{objectQualifier}Blog_Blogs B (nolock)
+	{databaseOwner}{objectQualifier}Blog_Blogs B WITH (nolock)
 	INNER JOIN 
-	{databaseOwner}{objectQualifier}Users U (nolock) ON B.[UserID] = U.[UserID]
+	{databaseOwner}{objectQualifier}Users U WITH (nolock) ON B.[UserID] = U.[UserID]
 WHERE
 	U.UserName = @UserName
 	AND B.PortalID=@PortalID 
