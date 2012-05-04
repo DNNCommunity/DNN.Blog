@@ -35,7 +35,7 @@ Partial Public Class RecentEntries
     End Sub
 
     Private Sub LoadRecentEntries()
-        Dim RecentEntries As ArrayList = Nothing
+        Dim RecentEntries As List(Of EntryInfo) = Nothing
         Dim oController As EntryController = Nothing
         Dim strTemplate As String
         Dim strBuilder As StringBuilder = Nothing
@@ -46,7 +46,7 @@ Partial Public Class RecentEntries
             If Request.QueryString("BlogID") IsNot Nothing Then
                 RecentEntries = oController.ListEntriesByBlog(CInt(Request.QueryString("BlogID")), Nothing, PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), _settings.RecentEntriesMax)
             Else
-                RecentEntries = oController.ListEntriesByPortal(PortalId, Nothing, Nothing, PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), _settings.RecentEntriesMax)
+                RecentEntries = oController.ListEntriesByPortal(PortalId, Nothing, Nothing, _settings.RecentEntriesMax, 1, PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
             End If
 
             If RecentEntries IsNot Nothing AndAlso RecentEntries.Count > 0 Then

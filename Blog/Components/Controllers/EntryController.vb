@@ -30,40 +30,34 @@ Namespace Business
             Return CType(CBO.FillObject(DataProvider.Instance().GetEntry(EntryID, PortalId), GetType(EntryInfo)), EntryInfo)
         End Function
 
-        Public Function ListEntries(ByVal PortalID As Integer, ByVal BlogID As Integer, ByVal BlogDate As Date, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As ArrayList
-            Return CBO.FillCollection(DataProvider.Instance().ListEntries(PortalID, BlogID, BlogDate, ShowNonPublic, ShowNonPublished), GetType(EntryInfo))
+        Public Function ListEntries(ByVal PortalID As Integer, ByVal BlogID As Integer, ByVal BlogDate As Date, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As List(Of EntryInfo)
+            Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().ListEntries(PortalID, BlogID, BlogDate, ShowNonPublic, ShowNonPublished))
         End Function
 
-        Public Function ListEntriesByBlog(ByVal BlogID As Integer, ByVal BlogDate As Date, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False, Optional ByVal RecentEntriesMax As Integer = 10) As ArrayList
-            Return CBO.FillCollection(DataProvider.Instance().ListEntriesByBlog(BlogID, BlogDate, ShowNonPublic, ShowNonPublished, RecentEntriesMax), GetType(EntryInfo))
+        Public Function ListEntriesByBlog(ByVal BlogID As Integer, ByVal BlogDate As Date, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False, Optional ByVal RecentEntriesMax As Integer = 10) As List(Of EntryInfo)
+            Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().ListEntriesByBlog(BlogID, BlogDate, ShowNonPublic, ShowNonPublished, RecentEntriesMax))
         End Function
 
-        Public Function ListAllEntriesByBlog(ByVal BlogID As Integer) As ArrayList
-            Return CBO.FillCollection(DataProvider.Instance().ListAllEntriesByBlog(BlogID), GetType(EntryInfo))
+        Public Function ListAllEntriesByBlog(ByVal BlogID As Integer) As List(Of EntryInfo)
+            Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().ListAllEntriesByBlog(BlogID))
         End Function
 
-        Public Function ListEntriesByPortal(ByVal PortalID As Integer, ByVal BlogDate As Date, ByVal BlogDateType As String, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False, Optional ByVal RecentEntriesMax As Integer = 10) As ArrayList
-            Return CBO.FillCollection(DataProvider.Instance().ListEntriesByPortal(PortalID, BlogDate, BlogDateType, ShowNonPublic, ShowNonPublished, RecentEntriesMax), GetType(EntryInfo))
+        Public Function ListEntriesByPortal(ByVal PortalID As Integer, ByVal BlogDate As Date, ByVal BlogDateType As String, ByVal PageSize As Integer, ByVal CurrentPage As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As List(Of EntryInfo)
+            Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().ListEntriesByPortal(PortalID, BlogDate, BlogDateType, PageSize, CurrentPage, ShowNonPublic, ShowNonPublished))
         End Function
 
-        Public Function ListAllEntriesByPortal(ByVal PortalID As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As ArrayList
-            Return CBO.FillCollection(DataProvider.Instance().ListAllEntriesByPortal(PortalID, ShowNonPublic, ShowNonPublished), GetType(EntryInfo))
+        Public Function ListAllEntriesByPortal(ByVal PortalID As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As List(Of EntryInfo)
+            Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().ListAllEntriesByPortal(PortalID, ShowNonPublic, ShowNonPublished))
         End Function
 
-        Public Function ListAllEntriesByCategory(ByVal PortalID As Integer, ByVal CatID As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As ArrayList
-            Return CBO.FillCollection(DataProvider.Instance().ListAllEntriesByCategory(PortalID, CatID, ShowNonPublic, ShowNonPublished), GetType(EntryInfo))
-        End Function
-
-        Public Function ListAllEntriesByTag(ByVal PortalID As Integer, ByVal TagID As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As ArrayList
-            Return CBO.FillCollection(DataProvider.Instance().ListAllEntriesByTag(PortalID, TagID, ShowNonPublic, ShowNonPublished), GetType(EntryInfo))
+        Public Function GetAllEntriesByTerm(ByVal portalId As Integer, ByVal termId As Integer, ByVal pageSize As Integer, ByVal currentPage As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As List(Of EntryInfo)
+            Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().GetAllEntriesByTerm(portalId, termId, pageSize, currentPage, ShowNonPublic, ShowNonPublished))
         End Function
 
         Public Function AddEntry(ByVal objEntry As EntryInfo, ByVal tabId As Integer) As EntryInfo
             objEntry.EntryID = CType(DataProvider.Instance().AddEntry(objEntry.BlogID, objEntry.Title, objEntry.Description, objEntry.Entry, objEntry.Published, objEntry.AllowComments, objEntry.AddedDate, objEntry.DisplayCopyright, objEntry.Copyright, objEntry.PermaLink), Integer)
 
             objEntry.ContentItemId = CompleteEntryCreation(objEntry, tabId)
-
-
 
             Return objEntry
         End Function

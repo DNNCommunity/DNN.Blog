@@ -226,7 +226,7 @@ Namespace Rss
             Select Case _rssView
                 Case RssViews.None ' could not be, but ...
                 Case RssViews.RecentEntries
-                    dr = Data.DataProvider.Instance().ListEntriesByPortal(_portalSettings.PortalId, Date.UtcNow, Nothing, DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName), DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName), _blogSettings.RecentRssEntriesMax)
+                    dr = Data.DataProvider.Instance().ListEntriesByPortal(_portalSettings.PortalId, Date.UtcNow, Nothing, _blogSettings.RecentRssEntriesMax, 1, DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName), DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName))
                 Case RssViews.BlogEntries
                     If Not _blog Is Nothing Then
                         dr = DotNetNuke.Modules.Blog.Data.DataProvider.Instance().ListEntriesByBlog(_rssId, Date.UtcNow, Blog.Business.Security.HasBlogPermission(_userId, _blog.UserID, _moduleId), Blog.Business.Security.HasBlogPermission(_userId, _blog.UserID, _moduleId), _blogSettings.RecentRssEntriesMax)
@@ -236,7 +236,7 @@ Namespace Rss
                     If _blog IsNot Nothing Then
                         dr = DotNetNuke.Modules.Blog.Data.DataProvider.Instance().ListEntriesByBlog(_rssId, m_dBlogDate.ToUniversalTime, Blog.Business.Security.HasBlogPermission(_userId, _blog.UserID, _moduleId), Blog.Business.Security.HasBlogPermission(_userId, _blog.UserID, _moduleId), _blogSettings.RecentRssEntriesMax)
                     Else
-                        dr = Data.DataProvider.Instance().ListEntriesByPortal(_portalSettings.PortalId, m_dBlogDate.ToUniversalTime, Nothing, DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName), DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName), _blogSettings.RecentRssEntriesMax)
+                        dr = Data.DataProvider.Instance().ListEntriesByPortal(_portalSettings.PortalId, m_dBlogDate.ToUniversalTime, Nothing, _blogSettings.RecentRssEntriesMax, 1, DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName), DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName))
                     End If
                 Case RssViews.SingleEntry
                     dr = Data.DataProvider.Instance().GetEntry(_rssEntryId, _portalSettings.PortalId)

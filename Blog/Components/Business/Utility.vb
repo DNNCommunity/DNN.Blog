@@ -696,7 +696,7 @@ Namespace Business
 
         Public Shared Sub CreateAllEntryLinks(ByVal PortalID As Integer, Optional ByVal BlogId As Integer = -1, Optional ByVal TabID As Integer = -1)
             Dim m_EntryController As New EntryController
-            Dim m_Entries As New ArrayList
+            Dim m_Entries As New List(Of EntryInfo)
             Dim TabIdFromPortalId As Integer = -1 'Needed only if TabID isn't passed in and TabID can't be retrieved
             ' from the PermaLink
 

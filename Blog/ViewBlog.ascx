@@ -77,8 +77,8 @@
 		</SeparatorTemplate>
 	</asp:DataList>
 	<asp:Panel ID="pnlPager" runat="server" CssClass="dnnRight">
-		<a href="#" class="dnnPrimaryAction">Prev</a>
-		<a href="#" class="dnnPrimaryAction">Next</a>
+		<asp:HyperLink ID="hlPagerPrev" resourcekey="hlPagerPrev" runat="server" CssClass="dnnPrimaryAction" Visible="false" />
+		<asp:HyperLink ID="hlPagerNext" resourcekey="hlPagerNext" runat="server" CssClass="dnnPrimaryAction" Visible="false" />
 	</asp:Panel>
 	<asp:DataList ID="lstSearchResults" Visible="False" runat="server" Width="100%">
 		<ItemTemplate>

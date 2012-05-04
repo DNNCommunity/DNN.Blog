@@ -64,7 +64,7 @@ Namespace Business
             Dim strXML As String = "<blogs>"
             Dim m_PortalID As Integer
             Dim m_Blogs As ArrayList
-            Dim m_Entries As ArrayList
+            Dim m_Entries As List(Of EntryInfo)
             Dim m_Comments As ArrayList
             Dim m_ModuleController As New ModuleController
             Dim m_ModuleInfo As New ModuleInfo
@@ -335,7 +335,7 @@ Namespace Business
 
             If ModInfo.ControlTitle = "View Blog" And IncludeInSearch Then
                 Dim m_EntryController As New EntryController
-                Dim Entries As ArrayList = m_EntryController.ListAllEntriesByPortal(ModInfo.PortalID, False, False)
+                Dim Entries As List(Of EntryInfo) = m_EntryController.ListAllEntriesByPortal(ModInfo.PortalID, False, False)
                 Dim objEntry As Object
 
                 For Each objEntry In Entries

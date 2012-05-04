@@ -39,11 +39,12 @@ Namespace Business
 #Region " Local Variables "
 #End Region
 
-#Region " Constructors "
+#Region "Constructors"
+
         Public Sub New()
         End Sub
 
-        Public Sub New(ByVal UserID As Integer, ByVal Username As String, ByVal UserFullName As String, ByVal EntryID As Integer, ByVal BlogID As Integer, ByVal Title As String, ByVal Description As String, ByVal Entry As String, ByVal AddedDate As DateTime, ByVal Published As Boolean, ByVal AllowComments As Boolean, ByVal AllowAnonymous As Boolean, ByVal BlogSyndicated As Boolean, ByVal BlogPublic As Boolean, ByVal CategoryID As Integer, ByVal CategoryTitle As String, ByVal CategorySyndicated As Boolean, ByVal CategoryPublic As Boolean, ByVal CommentCount As Integer)
+        Public Sub New(ByVal UserID As Integer, ByVal Username As String, ByVal UserFullName As String, ByVal EntryID As Integer, ByVal BlogID As Integer, ByVal Title As String, ByVal Description As String, ByVal Entry As String, ByVal AddedDate As DateTime, ByVal Published As Boolean, ByVal AllowComments As Boolean, ByVal AllowAnonymous As Boolean, ByVal BlogSyndicated As Boolean, ByVal BlogPublic As Boolean, ByVal CategoryID As Integer, ByVal CategoryTitle As String, ByVal CategorySyndicated As Boolean, ByVal CategoryPublic As Boolean, ByVal CommentCount As Integer, ByVal TotalRecords As Integer)
             Me.UserID = UserID
             Me.UserName = Username
             Me.UserFullName = UserFullName
@@ -57,11 +58,14 @@ Namespace Business
             Me.AllowComments = AllowComments
             Me.CommentCount = CommentCount
             Me.SyndicationEmail = SyndicationEmail
+            Me.TotalRecords = TotalRecords
         End Sub
+
 #End Region
 
-#Region " Public Properties "
-  Public Property EntryID() As Integer = -1
+#Region "Public Properties"
+
+        Public Property EntryID() As Integer = -1
         Public Property BlogID() As Integer
         Public Property Title() As String
         Public Property Description() As String
@@ -77,6 +81,8 @@ Namespace Business
         Public Property Copyright() As String
         Public Property PermaLink() As String
         Public Property SyndicationEmail() As String
+        Public Property TotalRecords() As Integer
+
 #End Region
 
 #Region " Public Methods "
@@ -123,6 +129,7 @@ Namespace Business
             UserFullName = Convert.ToString(Null.SetNull(dr.Item("UserFullName"), UserFullName))
             CommentCount = Convert.ToInt32(Null.SetNull(dr.Item("CommentCount"), CommentCount))
             SyndicationEmail = Convert.ToString(Null.SetNull(dr.Item("SyndicationEmail"), SyndicationEmail))
+            TotalRecords = Convert.ToInt32(Null.SetNull(dr.Item("TotalRecords"), CommentCount))
         End Sub
 
         ''' <summary>
@@ -144,13 +151,13 @@ Namespace Business
 
 #End Region
 
-#Region " IPropertyAccess Methods "
+#Region "IPropertyAccess Methods"
+
         Public ReadOnly Property Cacheability() As Services.Tokens.CacheLevel Implements Services.Tokens.IPropertyAccess.Cacheability
             Get
                 Return CacheLevel.fullyCacheable
             End Get
         End Property
-
         Public Function GetProperty(ByVal strPropertyName As String, ByVal strFormat As String, ByVal formatProvider As System.Globalization.CultureInfo, ByVal AccessingUser As Entities.Users.UserInfo, ByVal AccessLevel As Services.Tokens.Scope, ByRef PropertyNotFound As Boolean) As String Implements Services.Tokens.IPropertyAccess.GetProperty
             Dim OutputFormat As String = String.Empty
             If strFormat = String.Empty Then
@@ -198,17 +205,18 @@ Namespace Business
                     Return (Me.CommentCount.ToString(OutputFormat, formatProvider))
                 Case "syndicationemail"
                     Return PropertyAccess.FormatString(Me.SyndicationEmail, strFormat)
+                Case "totalrecords"
+                    Return (Me.TotalRecords.ToString(OutputFormat, formatProvider))
                 Case Else
                     PropertyNotFound = True
             End Select
             Return Null.NullString
-
         End Function
 
 #End Region
 
-#Region " IXmlSerializable Implementation "
-        ''' -----------------------------------------------------------------------------
+#Region "IXmlSerializable Implementation"
+
         ''' <summary>
         ''' GetSchema returns the XmlSchema for this class
         ''' </summary>
@@ -216,7 +224,6 @@ Namespace Business
         ''' <history>
         ''' 	[pdonker]	11/07/2010  Created
         ''' </history>
-        ''' -----------------------------------------------------------------------------
         Public Function GetSchema() As XmlSchema Implements IXmlSerializable.GetSchema
             Return Nothing
         End Function
@@ -232,7 +239,6 @@ Namespace Business
             End If
         End Function
 
-        ''' -----------------------------------------------------------------------------
         ''' <summary>
         ''' ReadXml fills the object (de-serializes it) from the XmlReader passed
         ''' </summary>
@@ -241,7 +247,6 @@ Namespace Business
         ''' <history>
         ''' 	[pdonker]	11/07/2010  Created
         ''' </history>
-        ''' -----------------------------------------------------------------------------
         Public Sub ReadXml(ByVal reader As XmlReader) Implements IXmlSerializable.ReadXml
             Try
 
@@ -268,7 +273,6 @@ Namespace Business
 
         End Sub
 
-        ''' -----------------------------------------------------------------------------
         ''' <summary>
         ''' WriteXml converts the object to Xml (serializes it) and writes it using the XmlWriter passed
         ''' </summary>
@@ -277,7 +281,6 @@ Namespace Business
         ''' <history>
         ''' 	[pdonker]	11/07/2010  Created
         ''' </history>
-        ''' -----------------------------------------------------------------------------
         Public Sub WriteXml(ByVal writer As XmlWriter) Implements IXmlSerializable.WriteXml
             writer.WriteStartElement("Entry")
             writer.WriteElementString("EntryID", EntryID.ToString())
@@ -293,6 +296,7 @@ Namespace Business
             writer.WriteElementString("Title", Title)
             writer.WriteEndElement()
         End Sub
+
 #End Region
 
     End Class

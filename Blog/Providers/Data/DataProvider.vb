@@ -72,10 +72,9 @@ Namespace Data
         Public MustOverride Sub DeleteEntry(ByVal EntryID As Integer)
         Public MustOverride Function ListEntriesByBlog(ByVal BlogID As Integer, ByVal BlogDate As Date, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False, Optional ByVal RecentEntriesMax As Integer = 10) As IDataReader
         Public MustOverride Function ListAllEntriesByBlog(ByVal BlogID As Integer) As IDataReader
-        Public MustOverride Function ListEntriesByPortal(ByVal PortalID As Integer, ByVal BlogDate As Date, ByVal BlogDateType As String, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False, Optional ByVal RecentEntriesMax As Integer = 10) As IDataReader
+        Public MustOverride Function ListEntriesByPortal(ByVal PortalID As Integer, ByVal BlogDate As Date, ByVal BlogDateType As String, ByVal PageSize As Integer, ByVal CurrentPage As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As IDataReader
         Public MustOverride Function ListAllEntriesByPortal(ByVal PortalID As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As IDataReader
-        Public MustOverride Function ListAllEntriesByCategory(ByVal PortalID As Integer, ByVal CatID As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As IDataReader
-        Public MustOverride Function ListAllEntriesByTag(ByVal PortalID As Integer, ByVal TagID As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As IDataReader
+        Public MustOverride Function GetAllEntriesByTerm(ByVal portalId As Integer, ByVal termId As Integer, ByVal pageSize As Integer, ByVal currentPage As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As IDataReader
 
 #End Region
 

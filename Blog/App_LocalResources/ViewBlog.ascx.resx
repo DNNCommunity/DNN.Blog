@@ -191,4 +191,10 @@
   <data name="lblCategories.Text" xml:space="preserve">
     <value>File Under:</value>
   </data>
+  <data name="hlPagerNext.Text" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="hlPagerPrev.Text" xml:space="preserve">
+    <value>Prev</value>
+  </data>
 </root>

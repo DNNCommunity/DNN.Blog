@@ -213,7 +213,7 @@ Namespace MetaWeblog
             Dim itemArray As Item() = Nothing
             Dim objBlogController As New BlogController
             Dim intBlogID As Integer = objBlogController.GetBlogByUserID(portalSettings.PortalId, userInfo.UserID).BlogID
-            Dim arEntries As ArrayList = New EntryController().ListEntriesByBlog(intBlogID, DateTime.Now.ToUniversalTime(), True, True, 20)
+            Dim arEntries As List(Of EntryInfo) = New EntryController().ListEntriesByBlog(intBlogID, DateTime.Now.ToUniversalTime(), True, True, 20)
 
             ' Find which is the least, numberOfPosts or arEntries.Count
             Dim loopCutOff As Integer = DirectCast(IIf((numberOfItems >= arEntries.Count), arEntries.Count, numberOfItems), Integer)

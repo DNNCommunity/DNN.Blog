@@ -46,6 +46,32 @@ Partial Public Class ViewBlog
         End Get
     End Property
 
+    Private ReadOnly Property CurrentPage() As Integer
+        Get
+            Dim _page As Integer = 1
+            If Request.Params("page") IsNot Nothing Then
+                _page = Convert.ToInt32(Request.Params("page"))
+            End If
+            Return _page
+        End Get
+    End Property
+
+    Private ReadOnly Property Category() As Integer
+        Get
+            Dim _category As Integer = -1
+            If Request.Params("catid") IsNot Nothing Then
+                _category = Convert.ToInt32(Request.Params("catid"))
+            End If
+            Return _category
+        End Get
+    End Property
+
+    'Private ReadOnly Property BlogId() As Integer
+    '    Get
+    '        Return BlogSettings.VocabularyId
+    '    End Get
+    'End Property
+
 #End Region
 
 #Region "Event Handlers"
@@ -90,7 +116,7 @@ Partial Public Class ViewBlog
         Try
             m_SeoFriendlyUrl = BlogSettings.ShowSeoFriendlyUrl
             Dim objEntries As New EntryController
-            Dim list As ArrayList
+            Dim list As List(Of EntryInfo)
             If Not Request.Params("BlogDate") Is Nothing Then
                 m_dBlogDate = CType(Date.Parse(Request.Params("BlogDate")), Date)
                 'BLG-4154
@@ -137,14 +163,14 @@ Partial Public Class ViewBlog
                     Dim pageAuthor As String = Me.BasePage.Author
                     Dim pageUrl As String = NavigateURL()
 
-                    If Request.Params("catid") Is Nothing Then
+                    If Category < 1 Then
                         If Request.Params("tagid") Is Nothing Then
                             If m_oBlog Is Nothing Then
                                 ' most recent approved blog list (default view), no category/tag specified
 
                                 'BLG-4154
                                 'Antonio Chagoury 9/1/2007
-                                list = objEntries.ListEntriesByPortal(Me.PortalId, m_dBlogDate, m_dBlogDateType, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), BlogSettings.RecentEntriesMax)
+                                list = objEntries.ListEntriesByPortal(Me.PortalId, m_dBlogDate, m_dBlogDateType, BlogSettings.RecentRssEntriesMax, CurrentPage, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
 
                                 pnlBlogInfo.Visible = False
                                 If Not lnkRecentRss Is Nothing Then
@@ -175,7 +201,7 @@ Partial Public Class ViewBlog
                                 pageUrl = NavigateURL()
                             End If
                         Else ' we have a tag id
-                            list = objEntries.ListAllEntriesByTag(Me.PortalId, CInt(Request.Params("tagid")), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
+                            list = objEntries.GetAllEntriesByTerm(Me.PortalId, CInt(Request.Params("tagid")), BlogSettings.RecentEntriesMax, CurrentPage, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
                             pnlBlogInfo.Visible = False
                             If Not lnkRecentRss Is Nothing Then
                                 lnkRecentRss.NavigateUrl = NavigateURL(Me.TabId, "", "rssid=0", "tagid=" + Request.Params("tagid"))
@@ -185,10 +211,10 @@ Partial Public Class ViewBlog
 
                         End If
                     Else ' we have a cat id
-                        list = objEntries.ListAllEntriesByCategory(Me.PortalId, CInt(Request.Params("catid")), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
+                        list = objEntries.GetAllEntriesByTerm(Me.PortalId, Category, BlogSettings.RecentEntriesMax, CurrentPage, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
                         pnlBlogInfo.Visible = False
                         If Not lnkRecentRss Is Nothing Then
-                            lnkRecentRss.NavigateUrl = NavigateURL(Me.TabId, "", "rssid=0", "catid=" + Request.Params("catid"))
+                            lnkRecentRss.NavigateUrl = NavigateURL(Me.TabId, "", "rssid=0", "catid=" + Category.ToString())
                         End If
 
                         ' TODO: Page Meta
@@ -199,6 +225,21 @@ Partial Public Class ViewBlog
                     lstBlogView.DataBind()
 
                     HasValue = (lstBlogView.Items.Count > 0)
+
+                    If HasValue Then
+                        Dim TotalRecords As Integer = list(0).TotalRecords
+                        Dim totalPages As Double = Convert.ToDouble(CDbl(TotalRecords) / BlogSettings.RecentEntriesMax)
+
+                        If (totalPages > 1) AndAlso (totalPages > CurrentPage + 1) Then
+                            hlPagerNext.Visible = True
+                            'hlPagerNext.NavigateUrl = CurrentPage + 1
+                        End If
+                    End If
+
+                    If CurrentPage > 1 And HasValue Then
+                        hlPagerPrev.Visible = True
+                        'hlPagerPrev.NavigateUrl = CurrentPage - 1
+                    End If
 
                     ' TODO: Page Meta
                     Utility.SetPageMetaAndOpenGraph(BasePage, ModuleContext, pageTitle, pageDescription, keyWords, pageUrl)

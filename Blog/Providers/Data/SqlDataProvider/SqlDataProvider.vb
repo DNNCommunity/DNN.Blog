@@ -172,7 +172,7 @@ Namespace Data
             Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_ListAllEntriesByBlog", BlogID), IDataReader)
         End Function
 
-        Public Overrides Function ListEntriesByPortal(ByVal PortalID As Integer, ByVal BlogDate As Date, ByVal BlogDateType As String, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False, Optional ByVal RecentEntriesMax As Integer = 10) As System.Data.IDataReader
+        Public Overrides Function ListEntriesByPortal(ByVal PortalID As Integer, ByVal BlogDate As Date, ByVal BlogDateType As String, ByVal PageSize As Integer, ByVal CurrentPage As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As System.Data.IDataReader
 
             Dim sproc As String = ""
             Select Case BlogDateType
@@ -184,7 +184,7 @@ Namespace Data
                     sproc = "Blog_ListEntriesByPortalByMonth"
             End Select
 
-            Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & sproc, PortalID, Null.GetNull(BlogDate, DBNull.Value), ShowNonPublic, ShowNonPublished, RecentEntriesMax), IDataReader)
+            Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & sproc, PortalID, Null.GetNull(BlogDate, DBNull.Value), PageSize, CurrentPage, ShowNonPublic, ShowNonPublished), IDataReader)
         End Function
 
 
@@ -192,12 +192,8 @@ Namespace Data
             Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_ListAllEntriesByPortal", PortalID, ShowNonPublic, ShowNonPublished), IDataReader)
         End Function
 
-        Public Overrides Function ListAllEntriesByCategory(ByVal PortalID As Integer, ByVal CatID As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As System.Data.IDataReader
-            Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_ListAllEntriesByCategory", PortalID, CatID, ShowNonPublic, ShowNonPublished), IDataReader)
-        End Function
-
-        Public Overrides Function ListAllEntriesByTag(ByVal PortalID As Integer, ByVal TagID As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As System.Data.IDataReader
-            Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_ListAllEntriesByTag", PortalID, TagID, ShowNonPublic, ShowNonPublished), IDataReader)
+        Public Overrides Function GetAllEntriesByTerm(ByVal portalId As Integer, ByVal termId As Integer, ByVal pageSize As Integer, ByVal currentPage As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As System.Data.IDataReader
+            Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_Entry_GetByTerm", portalId, termId, pageSize, currentPage, ShowNonPublic, ShowNonPublished), IDataReader)
         End Function
 
         Public Overrides Function AddEntry(ByVal blogID As Integer, ByVal title As String, ByVal description As String, ByVal Entry As String, ByVal Published As Boolean, ByVal AllowComments As Boolean, ByVal AddedDate As DateTime, ByVal DisplayCopyright As Boolean, ByVal Copyright As String, ByVal PermaLink As String) As Integer
@@ -211,6 +207,7 @@ Namespace Data
         Public Overrides Sub DeleteEntry(ByVal EntryID As Integer)
             SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_DeleteEntry", EntryID)
         End Sub
+
 #End Region
 
 #Region "Blog_Comments Methods"

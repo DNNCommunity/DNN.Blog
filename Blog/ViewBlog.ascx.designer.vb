@@ -122,6 +122,24 @@ Partial Public Class ViewBlog
     Protected WithEvents pnlPager As Global.System.Web.UI.WebControls.Panel
 
     '''<summary>
+    '''hlPagerPrev control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents hlPagerPrev As Global.System.Web.UI.WebControls.HyperLink
+
+    '''<summary>
+    '''hlPagerNext control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents hlPagerNext As Global.System.Web.UI.WebControls.HyperLink
+
+    '''<summary>
     '''lstSearchResults control.
     '''</summary>
     '''<remarks>

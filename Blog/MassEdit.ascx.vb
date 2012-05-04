@@ -62,15 +62,15 @@ Partial Class MassEdit
     Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             Dim objEntries As New EntryController
-            Dim list As ArrayList
+            Dim list As List(Of EntryInfo)
             Dim currentpage As Integer
 
             If Not Page.IsPostBack Then
                 If m_oBlog Is Nothing Then
-                    list = objEntries.ListEntriesByPortal(Me.PortalId, m_dBlogDate, m_dBlogDateType, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), 10000)
+                    list = objEntries.ListEntriesByPortal(Me.PortalId, m_dBlogDate, m_dBlogDateType, 100000, 1, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
 
                 Else
-                    list = objEntries.ListEntriesByBlog(m_oBlog.BlogID, m_dBlogDate, Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId), Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId), 10000)
+                    list = objEntries.ListEntriesByBlog(m_oBlog.BlogID, m_dBlogDate, Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId), Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId))
                 End If
 
                 Dim PageSize As Integer = 20 'Display 20 items per page
