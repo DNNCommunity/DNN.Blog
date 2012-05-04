@@ -344,10 +344,6 @@
 			  <version>03.03.00</version>
 			</script>
 			<script type="Install">
-			  <name>03.04.00.SqlDataProvider</name>
-			  <version>03.04.00</version>
-			</script>
-			<script type="Install">
 			  <name>03.04.01.SqlDataProvider</name>
 			  <version>03.04.01</version>
 			</script>

@@ -529,78 +529,7 @@ ORDER BY E.AddedDate DESC
 
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListEntriesByPortalByMonth') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}{objectQualifier}Blog_ListEntriesByPortalByMonth
-
-GO
-
-CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListEntriesByPortalByMonth
-@PortalID int,
-@BlogDate datetime = null,
-@ShowNonPublic bit = 0,
-@ShowNonPublished bit=0,
-@MaxEntries int = 10
-
-AS
-
-If @BlogDate IS NULL SET @BlogDate = GetUTCDate()
-SET rowcount @MaxEntries
-SELECT
-E.*,
-B.[UserID],
-B.[SyndicationEmail],
-U.[UserName],
-U.[DisplayName] AS UserFullName,
-(Select Count(*) FROM {databaseOwner}{objectQualifier}Blog_Comments WHERE EntryID = E.EntryID AND Approved = 1) As CommentCount
-FROM  {databaseOwner}{objectQualifier}Blog_Blogs B INNER JOIN
- {databaseOwner}{objectQualifier}Blog_Entries E ON B.[BlogID] = E.[BlogID] INNER JOIN
- {databaseOwner}{objectQualifier}Users U ON B.[UserID] = U.[UserID]
-WHERE 
-B.PortalID = @PortalID AND
-E.AddedDate BETWEEN DATEADD(month, DATEDIFF(month, 0, @BlogDate), 0)  AND @BlogDate AND E.AddedDate <=  GetUTCDate()
-AND (E.[Published] = 1 OR E.[Published] <> @ShowNonPublished)
-AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
-ORDER BY E.AddedDate DESC
-
-GO
-
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListEntriesByBlog') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}{objectQualifier}Blog_ListEntriesByBlog
-GO
-
-CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListEntriesByBlog
-@BlogID int,
-@BlogDate datetime = null,
-@ShowNonPublic bit = 0,
-@ShowNonPublished bit=0,
-@MaxEntries int =10
-
-AS
-
-If @BlogDate IS NULL SET @BlogDate = GetUTCDate()
-
-SET rowcount @MaxEntries
-SELECT
- E.*,
- B.[UserID],
- B.[SyndicationEmail],
- U.[UserName],
- U.[DisplayName] AS UserFullName,
- (Select Count(*) FROM {databaseOwner}{objectQualifier}Blog_Comments WHERE EntryID = E.EntryID AND Approved = 1) As CommentCount
-FROM   {databaseOwner}{objectQualifier}Blog_Blogs B INNER JOIN
- {databaseOwner}{objectQualifier}Blog_Entries E ON B.[BlogID] = E.[BlogID] INNER JOIN
- {databaseOwner}{objectQualifier}Users U ON B.[UserID] = U.[UserID]
-WHERE (B.[BlogID] = @BlogID OR B.[ParentBlogID] = @BlogID)
- AND E.AddedDate <=@BlogDate
- AND (E.[Published] = 1 OR E.[Published] <> @ShowNonPublished)
- AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
-ORDER BY E.AddedDate DESC
-
-GO
-
-
-
-/* SQL Azure Fixes - David Rodriguez */
+/* SQL Azure Fixes */
 /* Add a Primary Key Clustered to Blog_MetaWeblogData */
 ALTER TABLE {databaseOwner}{objectQualifier}Blog_MetaWeblogData
 	ADD RowID int NOT NULL IDENTITY (1, 1)

@@ -729,54 +729,6 @@ END
 
 GO
 
-
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListAllEntriesByTag') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}{objectQualifier}Blog_ListAllEntriesByTag
-GO
-
-CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListAllEntriesByTag
-	@PortalID int,
-	@TagID int,
-	@ShowNonPublic bit = 0,
-	@ShowNonPublished bit=0
-
-AS
-BEGIN
-	SET NOCOUNT ON;
-	SELECT
-		U.UserID,
-		U.Username,
-		U.FirstName + ' ' + U.LastName AS UserFullName,
-		E.EntryID,
-		E.BlogID, 
-		E.Title,
-		E.Description,
-		E.Entry,
-		E.AddedDate,
-		E.Published,
-		E.Copyright,
-		E.PermaLink,
-		IsNull(E.AllowComments,B.AllowComments) As AllowComments,
-		B.ParentBlogID,
-		B.AllowAnonymous,
-		B.Syndicated AS BlogSyndicated,
-		B.[Public] AS BlogPublic,
-		(Select Count(*) FROM {databaseOwner}{objectQualifier}Blog_Comments WHERE EntryID = E.EntryID AND Approved = 1) As CommentCount
-	FROM   {databaseOwner}{objectQualifier}Blog_Blogs B INNER JOIN
-		{databaseOwner}{objectQualifier}Blog_Entries E ON B.BlogID = E.BlogID INNER JOIN
-		{databaseOwner}{objectQualifier}Users U ON B.UserID = U.UserID
-		INNER JOIN {databaseOwner}{objectQualifier}Blog_Entry_Tags ET on E.EntryID = ET.EntryID 
-	WHERE B.PortalID = @PortalID
-	AND ET.TagID = @TagID
-	AND (E.Published = 1 OR E.Published <> @ShowNonPublished)
-	AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
-	ORDER BY E.AddedDate DESC
-
-END
-
-GO
-
-
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListCategories') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}{objectQualifier}Blog_ListCategories
 GO
