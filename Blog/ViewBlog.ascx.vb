@@ -40,12 +40,6 @@ Partial Public Class ViewBlog
     Private m_PersonalBlogID As Integer
     Private m_SeoFriendlyUrl As Boolean
 
-    Private ReadOnly Property VocabularyId() As Integer
-        Get
-            Return BlogSettings.VocabularyId
-        End Get
-    End Property
-
     Private ReadOnly Property CurrentPage() As Integer
         Get
             Dim _page As Integer = 1
@@ -66,11 +60,15 @@ Partial Public Class ViewBlog
         End Get
     End Property
 
-    'Private ReadOnly Property BlogId() As Integer
-    '    Get
-    '        Return BlogSettings.VocabularyId
-    '    End Get
-    'End Property
+    Private ReadOnly Property Tag() As Integer
+        Get
+            Dim _tag As Integer = -1
+            If Request.Params("tagid") IsNot Nothing Then
+                _tag = Convert.ToInt32(Request.Params("tagid"))
+            End If
+            Return _tag
+        End Get
+    End Property
 
 #End Region
 
@@ -83,7 +81,6 @@ Partial Public Class ViewBlog
         If m_PersonalBlogID <> -1 And m_oBlog Is Nothing Then
             Dim objBlog As New BlogController
             m_oBlog = objBlog.GetBlog(m_PersonalBlogID)
-            'ModuleConfiguration.ModuleTitle = m_oBlog.Title
         End If
         If Not Request.Params("Search") Is Nothing Then
             m_sSearchString = Request.Params("Search")
@@ -95,13 +92,7 @@ Partial Public Class ViewBlog
             End If
 
         Else
-            If m_oBlog Is Nothing Then
-                'Antonio Chagoury 9/1/2007
-                'BLG-6126
-                'ModuleConfiguration.ModuleTitle = GetString("msgMostRecentEntries", LocalResourceFile)
-            Else
-                'BLG-6126
-                'ModuleConfiguration.ModuleTitle = m_oBlog.Title
+            If m_oBlog IsNot Nothing Then
                 If Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
                     MyActions.Add(GetNextActionID, GetString("msgEditBlogSettings", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Blog"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
                     MyActions.Add(GetNextActionID, GetString("msgAddBlogEntry", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Entry"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
@@ -117,11 +108,10 @@ Partial Public Class ViewBlog
             m_SeoFriendlyUrl = BlogSettings.ShowSeoFriendlyUrl
             Dim objEntries As New EntryController
             Dim list As List(Of EntryInfo)
+
             If Not Request.Params("BlogDate") Is Nothing Then
                 m_dBlogDate = CType(Date.Parse(Request.Params("BlogDate")), Date)
-                'BLG-4154
-                'Antonio Chagoury 9/1/2007
-                'm_dBlogDate = m_dBlogDate.AddDays(1)
+
                 If Not Request.Params("DateType") Is Nothing Then
                     m_dBlogDateType = Request.Params("DateType")
                 End If
@@ -130,7 +120,9 @@ Partial Public Class ViewBlog
                 m_sSearchType = Request.Params("SearchType")
             End If
 
-            Dim currentUrl As String = NavigateURL()
+            Dim prevPage As String = NavigateURL()
+            Dim nextPage As String = NavigateURL()
+            Dim pageUrl As String = NavigateURL()
 
             If Not Page.IsPostBack Then
                 Dim HasValue As Boolean = False
@@ -157,19 +149,16 @@ Partial Public Class ViewBlog
 
                     ' TODO: Page Meta
 
-
                     ' if no Entries are shown, show the info Entry
                     HasValue = (lstSearchResults.Items.Count > 0)
-                Else ' not a search display
-
+                Else
                     Dim pageTitle As String = Me.BasePage.Title
                     Dim keyWords As String = Me.BasePage.KeyWords
                     Dim pageDescription As String = Me.BasePage.Description
                     Dim pageAuthor As String = Me.BasePage.Author
-                    Dim pageUrl As String = NavigateURL()
 
                     If Category < 1 Then
-                        If Request.Params("tagid") Is Nothing Then
+                        If Tag < 1 Then
                             If m_oBlog Is Nothing Then
                                 ' most recent approved blog list (default view), no category/tag specified
 
@@ -182,11 +171,13 @@ Partial Public Class ViewBlog
                                     lnkRecentRss.NavigateUrl = NavigateURL(Me.TabId, "", "rssid=0")
                                 End If
 
-                                'currentUrl = 
+                                ' we don't allow paging on the 'home' view of the module, don't set the links
+                                'prevPage = Links.ViewEntriesByBlog(ModuleContext, Tag, CurrentPage - 1)
+                                'nextPage = Links.ViewEntriesByBlog(ModuleContext, Tag, CurrentPage + 1)
+
                                 ' Page Meta (No Reason to do it here, main view of module should default to page)
                             Else
-                                ' Specific blog view , no category/tag specified
-
+                                ' Specific blog view
                                 pnlBlogInfo.Visible = True
                                 If m_oBlog.ShowFullName Then
                                     hlAuthor.Text = m_oBlog.UserFullName
@@ -200,34 +191,44 @@ Partial Public Class ViewBlog
                                 imgAuthorLink.NavigateUrl = DotNetNuke.Common.Globals.UserProfileURL(m_oBlog.UserID)
 
                                 litBlogDescription.Text = m_oBlog.Description
-                                list = objEntries.ListEntriesByBlog(m_oBlog.BlogID, m_dBlogDate, Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId), Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId), BlogSettings.RecentEntriesMax)
+                                list = objEntries.ListEntriesByBlog(m_oBlog.BlogID, m_dBlogDate, BlogSettings.RecentEntriesMax, CurrentPage, Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId), Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId))
+
+                                prevPage = Links.ViewEntriesByBlog(ModuleContext, m_oBlog.BlogID, CurrentPage - 1)
+                                nextPage = Links.ViewEntriesByBlog(ModuleContext, m_oBlog.BlogID, CurrentPage + 1)
+                                pageUrl = Links.ViewEntriesByBlog(ModuleContext, m_oBlog.BlogID, CurrentPage)
 
                                 ' TODO: Page Meta
                                 pageTitle = m_oBlog.Title
                                 pageDescription = m_oBlog.Description
                                 pageAuthor = m_oBlog.UserFullName
-                                pageUrl = NavigateURL()
+
                             End If
-                        Else ' we have a tag id
-                            list = objEntries.GetAllEntriesByTerm(Me.PortalId, CInt(Request.Params("tagid")), BlogSettings.RecentEntriesMax, CurrentPage, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
+                        Else
+                            list = objEntries.GetAllEntriesByTerm(Me.PortalId, Tag, BlogSettings.RecentEntriesMax, CurrentPage, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
                             pnlBlogInfo.Visible = False
                             If Not lnkRecentRss Is Nothing Then
-                                lnkRecentRss.NavigateUrl = NavigateURL(Me.TabId, "", "rssid=0", "tagid=" + Request.Params("tagid"))
+                                lnkRecentRss.NavigateUrl = Links.RssByTag(ModuleContext, Tag)
                             End If
 
+                            prevPage = Links.ViewEntriesByTag(ModuleContext, Tag, CurrentPage - 1)
+                            nextPage = Links.ViewEntriesByTag(ModuleContext, Tag, CurrentPage + 1)
+                            pageUrl = Links.ViewEntriesByTag(ModuleContext, Tag, CurrentPage)
                             ' TODO: Page Meta
 
                         End If
-                    Else ' we have a cat id
+                    Else
                         list = objEntries.GetAllEntriesByTerm(Me.PortalId, Category, BlogSettings.RecentEntriesMax, CurrentPage, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
                         pnlBlogInfo.Visible = False
                         If Not lnkRecentRss Is Nothing Then
-                            lnkRecentRss.NavigateUrl = NavigateURL(Me.TabId, "", "rssid=0", "catid=" + Category.ToString())
+                            lnkRecentRss.NavigateUrl = Links.RssByCategory(ModuleContext, Category)
                         End If
 
+                        prevPage = Links.ViewEntriesByCategory(ModuleContext, Category, CurrentPage - 1)
+                        nextPage = Links.ViewEntriesByCategory(ModuleContext, Category, CurrentPage + 1)
+                        pageUrl = Links.ViewEntriesByCategory(ModuleContext, Category, CurrentPage)
                         ' TODO: Page Meta
 
-                    End If ' no cat id present
+                    End If
 
                     lstBlogView.DataSource = list
                     lstBlogView.DataBind()
@@ -238,16 +239,15 @@ Partial Public Class ViewBlog
                         Dim TotalRecords As Integer = list(0).TotalRecords
                         Dim totalPages As Double = Convert.ToDouble(CDbl(TotalRecords) / BlogSettings.RecentEntriesMax)
 
-                        If (totalPages > 1) AndAlso (totalPages > CurrentPage) Then
+                        If (totalPages > 1) AndAlso (totalPages > CurrentPage) AndAlso (nextPage <> NavigateURL()) Then
                             hlPagerNext.Visible = True
-                            hlPagerNext.NavigateUrl = currentUrl
+                            hlPagerNext.NavigateUrl = nextPage
                         End If
                     End If
 
-                    If CurrentPage > 1 And HasValue Then
+                    If (CurrentPage > 1) AndAlso HasValue AndAlso (prevPage <> NavigateURL()) Then
                         hlPagerPrev.Visible = True
-                        hlPagerPrev.NavigateUrl = currentUrl
-
+                        hlPagerPrev.NavigateUrl = prevPage
                     End If
 
                     ' TODO: Page Meta
@@ -256,7 +256,7 @@ Partial Public Class ViewBlog
 
                 If Not m_oBlog Is Nothing Then
                     If m_oBlog.Syndicated And (m_oBlog.ParentBlogID = -1 Or m_oBlog.SyndicateIndependant) Then
-                        lnkRSS.NavigateUrl = NavigateURL(Me.TabId, "", "rssid=" & m_oBlog.BlogID.ToString)
+                        lnkRSS.NavigateUrl = Links.RSSByBlog(ModuleContext, m_oBlog.BlogID)
                         lnkRSS.Visible = True
                     End If
                 End If
@@ -269,14 +269,14 @@ Partial Public Class ViewBlog
                         objLink.Attributes("title") = "RSS"
                         objLink.Attributes("rel") = "alternate"
                         objLink.Attributes("type") = "application/rss+xml"
-                        objLink.Attributes("href") = NavigateURL(Me.TabId, "", "rssid=0")
+                        objLink.Attributes("href") = Links.RSSAggregated(ModuleContext)
                         ph.Controls.Add(objLink)
                     ElseIf Not m_oBlog Is Nothing AndAlso m_oBlog.Syndicated AndAlso (m_oBlog.ParentBlogID = -1 OrElse m_oBlog.SyndicateIndependant) Then
                         Dim objLink As New HtmlGenericControl("LINK")
                         objLink.Attributes("title") = "RSS"
                         objLink.Attributes("rel") = "alternate"
                         objLink.Attributes("type") = "application/rss+xml"
-                        objLink.Attributes("href") = NavigateURL(Me.TabId, "", "rssid=" & m_oBlog.BlogID.ToString)
+                        objLink.Attributes("href") = Links.RSSByBlog(ModuleContext, m_oBlog.BlogID)
                         ph.Controls.Add(objLink)
                     End If
                 End If
@@ -354,10 +354,10 @@ Partial Public Class ViewBlog
 
                 Dim Categories As String = ""
                 Dim i As Integer = 0
-                Dim colCategories As List(Of TermInfo) = m_oEntry.EntryTerms(VocabularyId)
+                Dim colCategories As List(Of TermInfo) = m_oEntry.EntryTerms(BlogSettings.VocabularyId)
 
                 For Each objTerm As TermInfo In colCategories
-                    Categories += "<a href='" + ModuleContext.NavigateUrl(ModuleContext.TabId, "", False, "catid=" + objTerm.TermId.ToString()) + "'>" + objTerm.Name + "</a>"
+                    Categories += "<a href='" + Links.ViewEntriesByCategory(ModuleContext, objTerm.TermId, 1) + "'>" + objTerm.Name + "</a>"
                     i += 1
                     If i <= (colCategories.Count - 1) Then
                         Categories += ", "
@@ -371,8 +371,6 @@ Partial Public Class ViewBlog
                 tagControl.DataBind()
             End If
 
-            ' 10/28/08 RR Replace all instances of BlogNavigateURL with Permalink
-            'lnkEntry.NavigateUrl = Utility.BlogNavigateURL(Me.TabId, CType(e.Item.DataItem, EntryInfo), m_SeoFriendlyUrl)
             lnkEntry.NavigateUrl = m_oEntry.PermaLink
             lnkComments.NavigateUrl = m_oEntry.PermaLink & "#Comments"
 
@@ -408,10 +406,6 @@ Partial Public Class ViewBlog
                 SummaryLimit = BlogSettings.SummaryMaxLength
             End If
 
-            ' Don Worthley - 04/21/2008 - Updated the following logic to account for both the description
-            '   and the entry text.  Previously, the code was just looking at the entry text when truncation
-            '   was being performed.  The updated code will use the description if one exists and use the 
-            '   entry if no description exists.
             ' DW - Updated again to make the truncation of the summary optional based on the EnforceSummaryTruncation
             '       blog setting.
             Dim ActualSummary As String = Server.HtmlDecode(CType(e.Item.DataItem, EntryInfo).Description)
@@ -477,7 +471,7 @@ Partial Public Class ViewBlog
                 End If
                 If lnkParentBlog.Visible Then
                     lnkParentBlog.Text = oBlog.Title
-                    lnkParentBlog.NavigateUrl = NavigateURL(Me.TabId, "", "&BlogID=" & oBlog.BlogID.ToString())
+                    lnkParentBlog.NavigateUrl = Links.ViewBlog(ModuleContext, oBlog.BlogID)
                 End If
             Else
                 If Not m_oBlog Is Nothing Then
@@ -493,13 +487,13 @@ Partial Public Class ViewBlog
                 If lnkParentBlog.Visible Then
                     Dim oParentBlog As BlogInfo = m_oBlogController.GetBlog(oBlog.ParentBlogID)
                     lnkParentBlog.Text = oParentBlog.Title
-                    lnkParentBlog.NavigateUrl = NavigateURL(Me.TabId, "", "&BlogID=" & oParentBlog.BlogID.ToString())
+                    lnkParentBlog.NavigateUrl = Links.ViewBlog(ModuleContext, oParentBlog.BlogID)
                     imgBlogParentSeparator.Visible = True
                     oParentBlog = Nothing
                 End If
                 If lnkChildBlog.Visible Then
                     lnkChildBlog.Text = oBlog.Title
-                    lnkChildBlog.NavigateUrl = NavigateURL(Me.TabId, "", "&BlogID=" & oBlog.BlogID.ToString() & "&ParentBlogID=" & oBlog.ParentBlogID.ToString())
+                    lnkChildBlog.NavigateUrl = Links.ViewChildBlog(ModuleContext, oBlog.BlogID, oBlog.ParentBlogID)
                     lnkChildBlog.Visible = True
                 End If
             End If

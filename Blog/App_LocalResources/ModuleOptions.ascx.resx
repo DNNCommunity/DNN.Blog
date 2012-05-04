@@ -133,7 +133,7 @@
     <value>Allow Upload Options</value>
   </data>
   <data name="lblRecentEntriesMax.Help" xml:space="preserve">
-    <value>You can limit the number of entries for Most recent entries.</value>
+    <value>The maximum number of blog entries that will be displayed in any given view of the module at a single time.  The initial view of the module does not show paging and will only permit this number of items to be displayed.</value>
   </data>
   <data name="lblRecentRssEntriesMax.Text" xml:space="preserve">
     <value>Limit Recent RSS entries to</value>
@@ -142,7 +142,7 @@
     <value>Limit Search Summary to</value>
   </data>
   <data name="lblRecentEntriesMax.Text" xml:space="preserve">
-    <value>Limit recent entries to</value>
+    <value>Page Size</value>
   </data>
   <data name="lblSummary.Help" xml:space="preserve">
     <value>Enter the desired cutoff in characters for the auto-generated summary of blog entries.  To set no limit, enter a value of 0.  Use the avanced option labeled Enforce Summary Truncation to also truncate entries with summaries.  The default is to only truncate auto-generated summaries.</value>

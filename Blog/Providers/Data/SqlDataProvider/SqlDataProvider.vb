@@ -164,8 +164,11 @@ Namespace Data
             Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_ListEntries", PortalID, BlogID, Null.GetNull(BlogDate, DBNull.Value), ShowNonPublic, ShowNonPublished), IDataReader)
         End Function
 
-        Public Overrides Function ListEntriesByBlog(ByVal BlogID As Integer, ByVal BlogDate As Date, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False, Optional ByVal RecentEntriesMax As Integer = 10) As System.Data.IDataReader
-            Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_ListEntriesByBlog", BlogID, Null.GetNull(BlogDate, DBNull.Value), ShowNonPublic, ShowNonPublished, RecentEntriesMax), IDataReader)
+        Public Overrides Function ListEntriesByBlog(ByVal BlogID As Integer, ByVal BlogDate As Date, ByVal PageSize As Integer, ByVal CurrentPage As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As System.Data.IDataReader
+            Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_Entry_GetByBlog", BlogID, Null.GetNull(BlogDate, DBNull.Value), PageSize, CurrentPage, ShowNonPublic, ShowNonPublished), IDataReader)
+
+
+            'Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_ListEntriesByBlog", BlogID, Null.GetNull(BlogDate, DBNull.Value), PageSize, CurrentPage, ShowNonPublic, ShowNonPublished), IDataReader)
         End Function
 
         Public Overrides Function ListAllEntriesByBlog(ByVal BlogID As Integer) As System.Data.IDataReader
@@ -177,9 +180,9 @@ Namespace Data
             Dim sproc As String = ""
             Select Case BlogDateType
                 Case Nothing
-                    sproc = "Blog_ListEntriesByPortal"
+                    sproc = "Blog_Entry_GetByPortal"
                 Case "day"
-                    sproc = "Blog_ListEntriesByPortalByDay"
+                    sproc = "Blog_Entry_GetByDay"
                 Case "month"
                     sproc = "Blog_ListEntriesByPortalByMonth"
             End Select

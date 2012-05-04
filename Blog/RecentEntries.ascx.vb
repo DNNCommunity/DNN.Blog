@@ -44,7 +44,7 @@ Partial Public Class RecentEntries
             oController = New EntryController
 
             If Request.QueryString("BlogID") IsNot Nothing Then
-                RecentEntries = oController.ListEntriesByBlog(CInt(Request.QueryString("BlogID")), Nothing, PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), _settings.RecentEntriesMax)
+                RecentEntries = oController.ListEntriesByBlog(CInt(Request.QueryString("BlogID")), Nothing, _settings.RecentEntriesMax, 1, PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
             Else
                 RecentEntries = oController.ListEntriesByPortal(PortalId, Nothing, Nothing, _settings.RecentEntriesMax, 1, PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
             End If

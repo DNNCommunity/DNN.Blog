@@ -70,7 +70,7 @@ Partial Class MassEdit
                     list = objEntries.ListEntriesByPortal(Me.PortalId, m_dBlogDate, m_dBlogDateType, 100000, 1, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
 
                 Else
-                    list = objEntries.ListEntriesByBlog(m_oBlog.BlogID, m_dBlogDate, Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId), Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId))
+                    list = objEntries.ListEntriesByBlog(m_oBlog.BlogID, m_dBlogDate, 100000, 1, Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId), Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId))
                 End If
 
                 Dim PageSize As Integer = 20 'Display 20 items per page

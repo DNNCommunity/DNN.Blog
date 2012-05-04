@@ -17,10 +17,67 @@
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 ' DEALINGS IN THE SOFTWARE.
 '
+Imports DotNetNuke.UI.Modules
 
 Namespace Business
 
     Public Class Links
+
+        Public Shared Function ViewBlog(ByVal modContext As ModuleInstanceContext, ByVal blogId As Integer) As String
+            Return modContext.NavigateUrl(modContext.TabId, "", False, "BlogID=" & blogId.ToString())
+        End Function
+
+        Public Shared Function ViewChildBlog(ByVal modContext As ModuleInstanceContext, ByVal blogId As Integer, ByVal parentId As Integer) As String
+            Return modContext.NavigateUrl(modContext.TabId, "", False, "BlogID=" & blogId.ToString(), "ParentBlogID=" & parentId.ToString())
+        End Function
+
+#Region "Entries"
+
+        Public Shared Function ViewEntriesByBlog(ByVal modContext As ModuleInstanceContext, blog As Integer, ByVal page As Integer) As String
+            If page > 1 Then
+                Return modContext.NavigateUrl(modContext.TabId, "", False, "BlogID=" + blog.ToString(), "page=" + page.ToString())
+            Else
+                Return modContext.NavigateUrl(modContext.TabId, "", False, "BlogID=" + blog.ToString())
+            End If
+        End Function
+
+        Public Shared Function ViewEntriesByCategory(ByVal modContext As ModuleInstanceContext, category As Integer, ByVal page As Integer) As String
+            If page > 1 Then
+                Return modContext.NavigateUrl(modContext.TabId, "", False, "catid=" + category.ToString(), "page=" + page.ToString())
+            Else
+                Return modContext.NavigateUrl(modContext.TabId, "", False, "catid=" + category.ToString())
+            End If
+        End Function
+
+        Public Shared Function ViewEntriesByTag(ByVal modContext As ModuleInstanceContext, ByVal tag As Integer, ByVal page As Integer) As String
+            If page > 1 Then
+                Return modContext.NavigateUrl(modContext.TabId, "", False, "tagid=" + tag.ToString(), "page=" + page.ToString())
+            Else
+                Return modContext.NavigateUrl(modContext.TabId, "", False, "tagid=" + tag.ToString())
+            End If
+        End Function
+
+#End Region
+
+#Region "RSS"
+
+        Public Shared Function RSSAggregated(ByVal modContext As ModuleInstanceContext) As String
+            Return modContext.NavigateUrl(modContext.TabId, "", False, "rssid=0")
+        End Function
+
+        Public Shared Function RSSByBlog(ByVal modContext As ModuleInstanceContext, ByVal blogId As Integer) As String
+            Return modContext.NavigateUrl(modContext.TabId, "", False, "rssid=" & blogId.ToString())
+        End Function
+
+        Public Shared Function RssByCategory(ByVal modContext As ModuleInstanceContext, category As Integer) As String
+            Return modContext.NavigateUrl(modContext.TabId, "", False, "rssid=0", "catid=" + category.ToString())
+        End Function
+
+        Public Shared Function RssByTag(ByVal modContext As ModuleInstanceContext, tag As Integer) As String
+            Return modContext.NavigateUrl(modContext.TabId, "", False, "rssid=0", "tagid=" + tag.ToString())
+        End Function
+
+#End Region
 
     End Class
 

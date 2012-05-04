@@ -34,8 +34,8 @@ Namespace Business
             Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().ListEntries(PortalID, BlogID, BlogDate, ShowNonPublic, ShowNonPublished))
         End Function
 
-        Public Function ListEntriesByBlog(ByVal BlogID As Integer, ByVal BlogDate As Date, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False, Optional ByVal RecentEntriesMax As Integer = 10) As List(Of EntryInfo)
-            Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().ListEntriesByBlog(BlogID, BlogDate, ShowNonPublic, ShowNonPublished, RecentEntriesMax))
+        Public Function ListEntriesByBlog(ByVal BlogID As Integer, ByVal BlogDate As Date, ByVal PageSize As Integer, ByVal CurrentPage As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As List(Of EntryInfo)
+            Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().ListEntriesByBlog(BlogID, BlogDate, PageSize, CurrentPage, ShowNonPublic, ShowNonPublished))
         End Function
 
         Public Function ListAllEntriesByBlog(ByVal BlogID As Integer) As List(Of EntryInfo)
