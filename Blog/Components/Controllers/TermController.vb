@@ -37,7 +37,7 @@ Namespace Business
             If colTerms Is Nothing Then
                 Dim timeOut As Integer = 20 * Convert.ToInt32(Host.PerformanceSetting)
 
-                colTerms = CBO.FillCollection(Of TermInfo)(DataProvider.Instance().GetTermsByContentType(portalId, Content.GetContentTypeID(), vocabularyId))
+                colTerms = CBO.FillCollection(Of TermInfo)(DataProvider.Instance().GetTermsByContentType(portalId, Integration.Content.GetContentTypeID(), vocabularyId))
 
                 If timeOut > 0 And colTerms IsNot Nothing Then
                     DataCache.SetCache(Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + vocabularyId.ToString(), colTerms, TimeSpan.FromMinutes(timeOut))

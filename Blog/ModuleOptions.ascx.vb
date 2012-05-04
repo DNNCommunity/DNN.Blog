@@ -232,7 +232,7 @@ Partial Public Class ModuleOptions
         lblChildBlogsStatus.Text = String.Format(GetString("lblChildBlogsStatus", LocalResourceFile), CInt(totalBlogs - parentBlogs))
         DotNetNuke.UI.Utilities.ClientAPI.AddButtonConfirm(cmdMigrateChildblogs, GetString("MigrateConfirm", LocalResourceFile))
 
-        ddlCatVocabRoot.DataSource = Terms.GetPortalVocabularies(ModuleContext.PortalId)
+        ddlCatVocabRoot.DataSource = Integration.Terms.GetPortalVocabularies(ModuleContext.PortalId)
         ddlCatVocabRoot.DataBind()
 
         Dim catli As New ListItem

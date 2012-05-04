@@ -302,7 +302,7 @@ Partial Public Class ViewEntry
                     m_oEntry.TabID = ModuleContext.TabId
 
                     If (m_oEntry.ContentItemId < 1) Then
-                        Dim cntTaxonomy As New Content()
+                        Dim cntTaxonomy As New Integration.Content()
                         Dim objContentItem As ContentItem = cntTaxonomy.CreateContentItem(m_oEntry, ModuleContext.TabId)
                         m_oEntry.ContentItemId = objContentItem.ContentItemId
                     End If

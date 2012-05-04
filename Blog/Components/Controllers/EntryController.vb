@@ -84,7 +84,7 @@ Namespace Business
         ''' <returns></returns>
         ''' <remarks></remarks>
         Private Shared Function CompleteEntryCreation(ByVal objEntry As EntryInfo, ByVal tabId As Integer) As Integer
-            Dim cntTaxonomy As New Content()
+            Dim cntTaxonomy As New Integration.Content()
             Dim objContentItem As ContentItem = cntTaxonomy.CreateContentItem(objEntry, tabId)
 
             Return objContentItem.ContentItemId
@@ -97,12 +97,12 @@ Namespace Business
         ''' <param name="tabId"></param>
         ''' <remarks></remarks>
         Private Shared Sub CompleteEntryUpdate(ByVal objEntry As EntryInfo, ByVal tabId As Integer, ByVal portalId As Integer)
-            Dim cntTaxonomy As New Content()
+            Dim cntTaxonomy As New Integration.Content()
             cntTaxonomy.UpdateContentItem(objEntry, tabId, portalId)
         End Sub
 
         Private Shared Sub CompleteEntryDelete(ByVal contentItemId As Integer)
-            Content.DeleteContentItem(contentItemId)
+            Integration.Content.DeleteContentItem(contentItemId)
         End Sub
 
 #End Region
