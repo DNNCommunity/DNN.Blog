@@ -69,12 +69,12 @@ Partial Public Class ViewEntry
             If Not m_oEntry Is Nothing Then
                 m_oBlog = m_oBlogController.GetBlog(m_oEntry.BlogID)
 
-                If Not m_oBlog.Public And Not Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
+                If Not m_oBlog.Public And Not Blog.Business.ModuleSecurity.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
                     Response.Redirect(NavigateURL(), True)
                     Exit Sub
                 End If
 
-                If Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
+                If Blog.Business.ModuleSecurity.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
                     MyActions.Add(GetNextActionID, Localization.GetString("msgEditEntry", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("EntryID", m_oEntry.EntryID.ToString(), "Edit_Entry"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
                     lnkEditEntry.Visible = True
                     lnkEditEntry.NavigateUrl = EditUrl("EntryID", m_oEntry.EntryID.ToString(), "Edit_Entry")
@@ -109,13 +109,13 @@ Partial Public Class ViewEntry
                     Exit Sub
                 End If
 
-                If (Not m_oEntry.Published) AndAlso (Not Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId)) Then
+                If (Not m_oEntry.Published) AndAlso (Not Blog.Business.ModuleSecurity.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId)) Then
                     Response.Redirect(NavigateURL(), False)
                     Exit Sub
                 End If
 
                 If Not m_oBlog Is Nothing Then
-                    If Not Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, ModuleId) Then
+                    If Not Blog.Business.ModuleSecurity.HasBlogPermission(Me.UserId, m_oBlog.UserID, ModuleId) Then
                         If UserId = -1 Then
                             If m_oBlog.MustApproveAnonymous Then
                                 cmdAddComment.CssClass = "dnnPrimaryAction dnnBlogAddComment"
@@ -146,7 +146,7 @@ Partial Public Class ViewEntry
 
 
                     'DR-04/20/2009-BLG-6908
-                    If Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
+                    If Blog.Business.ModuleSecurity.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
                         btDeleteAllUnapproved.Visible = True
                         lnkDeleteAllUnapproved.Visible = True
                     Else
@@ -310,7 +310,7 @@ Partial Public Class ViewEntry
                     cntEntry.UpdateEntry(m_oEntry, ModuleContext.TabId, ModuleContext.PortalId)
                 End If
 
-                pnlCaptcha.Visible = (pnlComments.Visible And m_oBlog.UseCaptcha And Not Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, ModuleId))
+                pnlCaptcha.Visible = (pnlComments.Visible And m_oBlog.UseCaptcha And Not Blog.Business.ModuleSecurity.HasBlogPermission(Me.UserId, m_oBlog.UserID, ModuleId))
             End If
 
             AddGravatarImagePreview()
@@ -366,9 +366,9 @@ Partial Public Class ViewEntry
         Dim commentInfo As CommentInfo = CType(e.Item.DataItem, CommentInfo)
 
         If m_oBlog.UserID = Me.UserId Then
-            lnkEditComment.Visible = Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId)
+            lnkEditComment.Visible = Blog.Business.ModuleSecurity.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId)
         Else
-            lnkEditComment.Visible = Blog.Business.Security.HasBlogPermission(Me.UserId, commentInfo.UserID, Me.ModuleId)
+            lnkEditComment.Visible = Blog.Business.ModuleSecurity.HasBlogPermission(Me.UserId, commentInfo.UserID, Me.ModuleId)
         End If
         lnkDeleteComment.Visible = lnkEditComment.Visible
         btDeleteComment.Visible = lnkEditComment.Visible
@@ -480,7 +480,7 @@ Partial Public Class ViewEntry
             valComment.Enabled = True
             valSummary.Enabled = True
 
-            If (txtComment.Text.Length > 0) And ((m_oBlog.UseCaptcha And ctlCaptcha.IsValid) Or (Not m_oBlog.UseCaptcha) Or Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, ModuleId)) Then
+            If (txtComment.Text.Length > 0) And ((m_oBlog.UseCaptcha And ctlCaptcha.IsValid) Or (Not m_oBlog.UseCaptcha) Or Blog.Business.ModuleSecurity.HasBlogPermission(Me.UserId, m_oBlog.UserID, ModuleId)) Then
                 Dim oComment As New CommentInfo
                 Dim oCommentController As New CommentController
 
@@ -527,7 +527,7 @@ Partial Public Class ViewEntry
                         oComment.Approved = True
                     End If
                 End If
-                If Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, ModuleId) Then
+                If Blog.Business.ModuleSecurity.HasBlogPermission(Me.UserId, m_oBlog.UserID, ModuleId) Then
                     oComment.Approved = True
                 End If
                 If oComment.CommentID > -1 Then
@@ -663,7 +663,7 @@ Partial Public Class ViewEntry
         Dim objCtlComments As New CommentController
         Dim list As ArrayList
 
-        list = objCtlComments.ListComments(m_oEntry.EntryID, Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId))
+        list = objCtlComments.ListComments(m_oEntry.EntryID, Blog.Business.ModuleSecurity.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId))
         lstComments.DataSource = list
         lstComments.DataBind()
 

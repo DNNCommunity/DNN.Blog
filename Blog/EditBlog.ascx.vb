@@ -47,7 +47,7 @@ Partial Public Class EditBlog
         If Not (Request.Params("BlogID") Is Nothing) Then
             If Int32.Parse(Request.Params("BlogID")) > 0 Then
                 m_oBlog = m_oBlogController.GetBlog(Int32.Parse(Request.Params("BlogID")))
-                If Not Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
+                If Not Blog.Business.ModuleSecurity.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
                     Response.Redirect(NavigateURL())
                 ElseIf m_oBlog.ParentBlogID > -1 Then
                     m_oParentBlog = m_oBlogController.GetBlog(m_oBlog.ParentBlogID)
@@ -62,7 +62,7 @@ Partial Public Class EditBlog
         End If
 
         If Not m_oParentBlog Is Nothing Then
-            If Not Blog.Business.Security.HasBlogPermission(Me.UserId, m_oParentBlog.UserID, Me.ModuleId) Then
+            If Not Blog.Business.ModuleSecurity.HasBlogPermission(Me.UserId, m_oParentBlog.UserID, Me.ModuleId) Then
                 Response.Redirect(NavigateURL())
             Else
                 If m_oBlog Is Nothing Then

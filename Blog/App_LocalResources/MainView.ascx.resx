@@ -175,7 +175,7 @@
     <value>Blog Settings</value>
   </data>
   <data name="lnkViewBlog.Text" xml:space="preserve">
-    <value>View My Blog</value>
+    <value>View Blog</value>
   </data>
   <data name="BlogPartTitle.Text" xml:space="preserve">
     <value>Add Blog Part to Page</value>

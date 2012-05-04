@@ -60,7 +60,7 @@ Partial Public Class RecentEntries
                 Next
 
             Else
-                UI.Skins.Skin.AddModuleMessage(Me, Localization.GetString("MsgNoRecentEntries", LocalResourceFile), UI.Skins.Controls.ModuleMessage.ModuleMessageType.YellowWarning)
+                UI.Skins.Skin.AddModuleMessage(Me, Localization.GetString("MsgNoRecentEntries", LocalResourceFile), UI.Skins.Controls.ModuleMessage.ModuleMessageType.BlueInfo)
             End If
 
             ' assign the content

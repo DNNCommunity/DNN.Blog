@@ -44,7 +44,7 @@
 							  <controlSrc>DesktopModules/Blog/EditBlog.ascx</controlSrc>
 							  <supportsPartialRendering>False</supportsPartialRendering>
 							  <controlTitle>Edit Blog</controlTitle>
-							  <controlType>Edit</controlType>
+							  <controlType>View</controlType>
 							  <iconFile />
 							  <helpUrl />
 							  <supportsPopUps>False</supportsPopUps>
@@ -55,7 +55,7 @@
 							  <controlSrc>DesktopModules/Blog/EditEntry.ascx</controlSrc>
 							  <supportsPartialRendering>False</supportsPartialRendering>
 							  <controlTitle>Edit Entry</controlTitle>
-							  <controlType>Edit</controlType>
+							  <controlType>View</controlType>
 							  <iconFile />
 							  <helpUrl />
 							  <supportsPopUps>False</supportsPopUps>

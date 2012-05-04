@@ -23,6 +23,9 @@ Namespace Business
 
     Public Class Links
 
+        Const ControlKey_EditBlog As String = "Edit_Blog"
+        Const ControlKey_EditEntry As String = "Edit_Entry"
+
         Public Shared Function ViewBlog(ByVal modContext As ModuleInstanceContext, ByVal blogId As Integer) As String
             Return modContext.NavigateUrl(modContext.TabId, "", False, "BlogID=" & blogId.ToString())
         End Function
@@ -31,7 +34,23 @@ Namespace Business
             Return modContext.NavigateUrl(modContext.TabId, "", False, "BlogID=" & blogId.ToString(), "ParentBlogID=" & parentId.ToString())
         End Function
 
+        Public Shared Function EditBlog(ByVal modContext As ModuleInstanceContext, ByVal blogId As Integer) As String
+            If blogId > 0 Then
+                Return modContext.NavigateUrl(modContext.TabId, ControlKey_EditBlog, False, "BlogID=" & blogId.ToString(), "mid=" + modContext.ModuleId.ToString())
+            Else
+                Return modContext.NavigateUrl(modContext.TabId, ControlKey_EditBlog, False, "mid=" + modContext.ModuleId.ToString())
+            End If
+        End Function
+
 #Region "Entries"
+
+        Public Shared Function EditEntry(ByVal modContext As ModuleInstanceContext, ByVal blogId As Integer, ByVal entryId As Integer) As String
+            If entryId > 0 Then
+                Return modContext.NavigateUrl(modContext.TabId, ControlKey_EditEntry, False, "BlogID=" & blogId.ToString(), "mid=" + modContext.ModuleId.ToString())
+            Else
+                Return modContext.NavigateUrl(modContext.TabId, ControlKey_EditEntry, False, "BlogID=" & blogId.ToString(), "mid=" + modContext.ModuleId.ToString(), "EntryId=" + entryId.ToString())
+            End If
+        End Function
 
         Public Shared Function ViewEntriesByBlog(ByVal modContext As ModuleInstanceContext, blog As Integer, ByVal page As Integer) As String
             If page > 1 Then

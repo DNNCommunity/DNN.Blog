@@ -101,9 +101,9 @@ Partial Class EditEntry
                 Me.ModuleConfiguration.ModuleTitle = GetString("msgAddBlogEntry", LocalResourceFile)
             End If
 
-            If Not Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
-                Response.Redirect(NavigateURL())
-            End If
+            'If Not Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
+            '    Response.Redirect(NavigateURL())
+            'End If
 
             If m_oBlog.ParentBlogID > -1 Then
                 m_oParentBlog = m_oBlogController.GetBlog(m_oBlog.ParentBlogID)

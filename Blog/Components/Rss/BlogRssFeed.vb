@@ -229,12 +229,12 @@ Namespace Rss
                     dr = Data.DataProvider.Instance().ListEntriesByPortal(_portalSettings.PortalId, Date.UtcNow, Nothing, _blogSettings.RecentRssEntriesMax, 1, DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName), DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName))
                 Case RssViews.BlogEntries
                     If Not _blog Is Nothing Then
-                        dr = DotNetNuke.Modules.Blog.Data.DataProvider.Instance().ListEntriesByBlog(_rssId, Date.UtcNow, _blogSettings.RecentRssEntriesMax, 1, Blog.Business.Security.HasBlogPermission(_userId, _blog.UserID, _moduleId), Blog.Business.Security.HasBlogPermission(_userId, _blog.UserID, _moduleId))
+                        dr = DotNetNuke.Modules.Blog.Data.DataProvider.Instance().ListEntriesByBlog(_rssId, Date.UtcNow, _blogSettings.RecentRssEntriesMax, 1, Blog.Business.ModuleSecurity.HasBlogPermission(_userId, _blog.UserID, _moduleId), Blog.Business.ModuleSecurity.HasBlogPermission(_userId, _blog.UserID, _moduleId))
                     End If
                 Case RssViews.ArchivEntries
                     Dim m_dBlogDate As Date
                     If _blog IsNot Nothing Then
-                        dr = DotNetNuke.Modules.Blog.Data.DataProvider.Instance().ListEntriesByBlog(_rssId, m_dBlogDate.ToUniversalTime, _blogSettings.RecentRssEntriesMax, 1, Blog.Business.Security.HasBlogPermission(_userId, _blog.UserID, _moduleId), Blog.Business.Security.HasBlogPermission(_userId, _blog.UserID, _moduleId))
+                        dr = DotNetNuke.Modules.Blog.Data.DataProvider.Instance().ListEntriesByBlog(_rssId, m_dBlogDate.ToUniversalTime, _blogSettings.RecentRssEntriesMax, 1, Blog.Business.ModuleSecurity.HasBlogPermission(_userId, _blog.UserID, _moduleId), Blog.Business.ModuleSecurity.HasBlogPermission(_userId, _blog.UserID, _moduleId))
                     Else
                         dr = Data.DataProvider.Instance().ListEntriesByPortal(_portalSettings.PortalId, m_dBlogDate.ToUniversalTime, Nothing, _blogSettings.RecentRssEntriesMax, 1, DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName), DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName))
                     End If

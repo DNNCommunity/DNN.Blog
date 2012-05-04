@@ -22,48 +22,40 @@ Imports DotNetNuke.Security.Permissions
 
 Namespace Business
 
-    Public Class Security
+    Public Class ModuleSecurity
 
-        Private ReadOnly Property ModuleInstance(ByVal moduleId As Integer, ByVal tabId As Integer) As DotNetNuke.Entities.Modules.ModuleInfo
-            Get
-                Dim mc As New DotNetNuke.Entities.Modules.ModuleController
-                Dim objMod As New DotNetNuke.Entities.Modules.ModuleInfo
+        Private ReadOnly HasEdit As Boolean
+        Private ReadOnly HasBlogger As Boolean
+        Private ReadOnly HasGhost As Boolean
 
-                objMod = mc.GetModule(moduleId, tabId, False)
+        Public Sub New(ByVal moduleId As Integer, ByVal tabId As Integer)
+            Dim mc As New DotNetNuke.Entities.Modules.ModuleController
+            Dim objMod As New DotNetNuke.Entities.Modules.ModuleInfo
 
-                Return objMod
-            End Get
-        End Property
+            objMod = mc.GetModule(moduleId, tabId, False)
 
-        Private HasAdmin As Boolean
-        Private HasBlogger As Boolean
-        Private HasGhost As Boolean
-
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' <param name="userId"></param>
-        ''' <param name="moduleId"></param>
-        ''' <param name="tabId"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Function HasGhostWriterPerms(ByVal userId As Integer, ByVal moduleId As Integer, ByVal tabId As Integer) As Boolean
-            If userId > 0 Then
-                Dim mp As ModulePermissionCollection = ModuleInstance(moduleId, tabId).ModulePermissions
-
-                If mp IsNot Nothing Then
-                    For Each objModulePermission As ModulePermissionInfo In mp
-                        If objModulePermission.PermissionKey = (Constants.PermissionKeys.GHOSTWRITER.ToString) Then
-                            Return True
-                        End If
-                    Next
-                End If
+            If objMod Is Nothing Then
+                Return
             End If
 
-            Return False
+            HasEdit = ModulePermissionController.CanEditModuleContent(objMod)
+            HasBlogger = ModulePermissionController.HasModulePermission(objMod.ModulePermissions, Constants.BloggerPermission)
+            HasGhost = ModulePermissionController.HasModulePermission(objMod.ModulePermissions, Constants.GhostWriterPermission)
+        End Sub
+
+        Public Function CanCreateBlog() As Boolean
+            Return HasEdit Or HasBlogger
         End Function
 
+        Public Function CanEditBlog(ByVal IsOwner As Boolean) As Boolean
+            Return HasEdit Or (HasBlogger AndAlso IsOwner)
+        End Function
+
+        Public Function CanAddEntry(ByVal IsOwner As Boolean) As Boolean
+            Return HasEdit Or HasGhost Or (HasBlogger AndAlso IsOwner)
+        End Function
+
+        <Obsolete("This method is deprecated, use specific functions instead (CanCreateBlog, CanEditBlog, CanAddEntry, etc.)")> _
         Public Shared Function HasBlogPermission(ByVal UserID As Integer, ByVal BlogUserID As Integer, ByVal ModuleID As Integer) As Boolean
             Dim PortalSettings As DotNetNuke.Entities.Portals.PortalSettings = CType(HttpContext.Current.Items("PortalSettings"), DotNetNuke.Entities.Portals.PortalSettings)
             ' 11/19/2008 Rip Rowan
