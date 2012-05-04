@@ -159,4 +159,7 @@
   <data name="GHOSTWRITER.Text" xml:space="preserve">
     <value>Ghost Writer</value>
   </data>
+  <data name="BLOGGER.Text" xml:space="preserve">
+    <value>Blogger</value>
+  </data>
 </root>

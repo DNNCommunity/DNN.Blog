@@ -76,6 +76,10 @@
 			<div class="blogSeparator"></div>
 		</SeparatorTemplate>
 	</asp:DataList>
+	<asp:Panel ID="pnlPager" runat="server" CssClass="dnnRight">
+		<a href="#" class="dnnPrimaryAction">Prev</a>
+		<a href="#" class="dnnPrimaryAction">Next</a>
+	</asp:Panel>
 	<asp:DataList ID="lstSearchResults" Visible="False" runat="server" Width="100%">
 		<ItemTemplate>
 			<table>
