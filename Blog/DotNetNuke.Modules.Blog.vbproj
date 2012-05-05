@@ -123,6 +123,7 @@
     <Content Include="Search.ascx" />
     <Content Include="Trackback.aspx" />
     <Content Include="ViewBlog.ascx" />
+    <Content Include="ViewCategories.ascx" />
     <Content Include="ViewEntry.ascx" />
   </ItemGroup>
   <ItemGroup>
@@ -249,20 +250,6 @@
     <Compile Include="Components\Rss\BlogRssFeed.vb" />
     <Compile Include="Providers\Data\DataProvider.vb" />
     <Compile Include="Providers\Data\SqlDataProvider\SqlDataProvider.vb" />
-    <Compile Include="RecentEntries.ascx.designer.vb">
-      <DependentUpon>RecentEntries.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="RecentEntries.ascx.vb">
-      <DependentUpon>RecentEntries.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="RecentEntriesSettings.ascx.designer.vb">
-      <DependentUpon>RecentEntriesSettings.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="RecentEntriesSettings.ascx.vb">
-      <DependentUpon>RecentEntriesSettings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Search.ascx.designer.vb">
       <DependentUpon>Search.ascx</DependentUpon>
     </Compile>
@@ -357,8 +344,6 @@
     <Content Include="js\bookmarks.xml" />
     <Content Include="js\Gravatar.js" />
     <Content Include="js\md5.js" />
-    <Content Include="RecentEntries.ascx" />
-    <Content Include="RecentEntriesSettings.ascx" />
     <Content Include="Styles\Blog-FullEnry.xsl" />
     <Content Include="Styles\Blog-Full_Blue.xsl" />
     <Content Include="Styles\Blog-Full_Grey.xsl" />
@@ -367,7 +352,6 @@
     <None Include="DNN_Blog.dnn">
       <SubType>Designer</SubType>
     </None>
-    <Content Include="ViewCategories.ascx" />
     <Content Include="ViewTags.ascx" />
     <Content Include="ViewTagsSettings.ascx" />
     <Content Include="WLWManifest.aspx" />
@@ -390,7 +374,9 @@
     <None Include="Providers\Data\SqlDataProvider\Install.04.00.00.SqlDataProvider" />
     <None Include="Providers\Data\SqlDataProvider\Uninstall.SqlDataProvider" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Components\Common\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <ProjectExtensions>

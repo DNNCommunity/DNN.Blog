@@ -185,34 +185,6 @@
 					  </moduleControls>
 				  </moduleDefinition>
 				  <moduleDefinition>
-					  <friendlyName>Recent_Entries</friendlyName>
-					  <defaultCacheTime>-1</defaultCacheTime>
-					  <moduleControls>
-						  <moduleControl>
-							  <controlKey />
-							  <controlSrc>DesktopModules/Blog/RecentEntries.ascx</controlSrc>
-							  <supportsPartialRendering>False</supportsPartialRendering>
-							  <controlTitle />
-							  <controlType>View</controlType>
-							  <iconFile />
-							  <helpUrl />
-							  <supportsPopUps>False</supportsPopUps>
-							  <viewOrder>0</viewOrder>
-						  </moduleControl>
-						  <moduleControl>
-							  <controlKey>Settings</controlKey>
-							  <controlSrc>DesktopModules/Blog/RecentEntriesSettings.ascx</controlSrc>
-							  <supportsPartialRendering>False</supportsPartialRendering>
-							  <controlTitle>Recent Blog Entries Settings</controlTitle>
-							  <controlType>Edit</controlType>
-							  <iconFile />
-							  <helpUrl />
-							  <supportsPopUps>False</supportsPopUps>
-							  <viewOrder>0</viewOrder>
-						  </moduleControl>
-					  </moduleControls>
-				  </moduleDefinition>
-				  <moduleDefinition>
 					  <friendlyName>Blog_Categories</friendlyName>
 					  <defaultCacheTime>-1</defaultCacheTime>
 					  <moduleControls>
