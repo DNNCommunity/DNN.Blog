@@ -115,39 +115,6 @@
 							  <supportsPopUps>False</supportsPopUps>
 							  <viewOrder>0</viewOrder>
 						  </moduleControl>
-						  <moduleControl>
-							  <controlKey>Blog_Import</controlKey>
-							  <controlSrc>DesktopModules/Blog/BlogImport.ascx</controlSrc>
-							  <supportsPartialRendering>False</supportsPartialRendering>
-							  <controlTitle>Import Blog</controlTitle>
-							  <controlType>Edit</controlType>
-							  <iconFile />
-							  <helpUrl />
-							  <supportsPopUps>False</supportsPopUps>
-							  <viewOrder>0</viewOrder>
-						  </moduleControl>
-						  <moduleControl>
-							  <controlKey>Edit_Blog</controlKey>
-							  <controlSrc>DesktopModules/Blog/EditBlog.ascx</controlSrc>
-							  <supportsPartialRendering>False</supportsPartialRendering>
-							  <controlTitle>Edit Blog</controlTitle>
-							  <controlType>Edit</controlType>
-							  <iconFile />
-							  <helpUrl />
-							  <supportsPopUps>False</supportsPopUps>
-							  <viewOrder>0</viewOrder>
-						  </moduleControl>
-						  <moduleControl>
-							  <controlKey>Edit_Entry</controlKey>
-							  <controlSrc>DesktopModules/Blog/EditEntry.ascx</controlSrc>
-							  <supportsPartialRendering>False</supportsPartialRendering>
-							  <controlTitle>Edit Entry</controlTitle>
-							  <controlType>Edit</controlType>
-							  <iconFile />
-							  <helpUrl />
-							  <supportsPopUps>False</supportsPopUps>
-							  <viewOrder>0</viewOrder>
-						  </moduleControl>
 					  </moduleControls>
 				  </moduleDefinition>
 				  <moduleDefinition>

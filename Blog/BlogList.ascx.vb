@@ -26,46 +26,48 @@ Imports DotNetNuke.Services.Exceptions.Exceptions
 Imports DotNetNuke.Services.Localization
 
 Partial Class BlogList
- Inherits BlogModuleBase
- Implements Entities.Modules.IActionable
+    Inherits BlogModuleBase
+    Implements Entities.Modules.IActionable
 
 #Region " IActionable "
- Public ReadOnly Property ModuleActions() As DotNetNuke.Entities.Modules.Actions.ModuleActionCollection Implements DotNetNuke.Entities.Modules.IActionable.ModuleActions
-  Get
-   Return MyActions
-  End Get
- End Property
+    Public ReadOnly Property ModuleActions() As DotNetNuke.Entities.Modules.Actions.ModuleActionCollection Implements DotNetNuke.Entities.Modules.IActionable.ModuleActions
+        Get
+            Return MyActions
+        End Get
+    End Property
 #End Region
 
-#Region " Private Members "
- Private m_iSelectedBlogID As Integer = -1
- Private m_iParentBlogID As Integer = -1
- Private m_oBlog As BlogInfo
- Private m_PersonalBlogID As Integer
- Private m_oBlogController As New BlogController
- Private lstBlogChildren As System.Web.UI.WebControls.DataList
- Private lnkBlogIcon As System.Web.UI.WebControls.HyperLink
- Private lnkBlog As System.Web.UI.WebControls.HyperLink
- Private m_BlogTitleStringTemplate As String
- Private lblFooter As System.Web.UI.WebControls.Label
+#Region "Private Members"
+
+    Private m_iSelectedBlogID As Integer = -1
+    Private m_iParentBlogID As Integer = -1
+    Private m_oBlog As BlogInfo
+    Private m_PersonalBlogID As Integer
+    Private m_oBlogController As New BlogController
+    Private lstBlogChildren As System.Web.UI.WebControls.DataList
+    Private lnkBlogIcon As System.Web.UI.WebControls.HyperLink
+    Private lnkBlog As System.Web.UI.WebControls.HyperLink
+    Private m_BlogTitleStringTemplate As String
+    Private lblFooter As System.Web.UI.WebControls.Label
+
 #End Region
 
 #Region "Event Handlers"
 
     Protected Overloads Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
-        ' 11/19/2008 Rip Rowan replaced deprecated code
-        If DotNetNuke.Security.PortalSecurity.HasNecessaryPermission(Security.SecurityAccessLevel.Edit, PortalSettings, ModuleConfiguration) Then
-            m_oBlog = m_oBlogController.GetBlogByUserID(Me.PortalId, Me.UserId)
-            If m_oBlog Is Nothing Then
-                MyActions.Add(GetNextActionID, Localization.GetString("msgCreateBlog", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("", "", "Edit_Blog"), False, DotNetNuke.Security.SecurityAccessLevel.View, True, False)
-            Else
-                MyActions.Add(GetNextActionID, Localization.GetString("msgEditBlogSettings", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Blog"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
-                MyActions.Add(GetNextActionID, Localization.GetString("msgAddBlogEntry", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Entry"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
-            End If
-            If ForumBlog.Utils.isForumBlogInstalled(PortalId, TabId, False) Then
-                MyActions.Add(GetNextActionID, Localization.GetString("msgImportBlog", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("Blog_Import"), False, DotNetNuke.Security.SecurityAccessLevel.Admin, True, False)
-            End If
-        End If
+        '' 11/19/2008 Rip Rowan replaced deprecated code
+        'If DotNetNuke.Security.PortalSecurity.HasNecessaryPermission(Security.SecurityAccessLevel.Edit, PortalSettings, ModuleConfiguration) Then
+        '    m_oBlog = m_oBlogController.GetBlogByUserID(Me.PortalId, Me.UserId)
+        '    If m_oBlog Is Nothing Then
+        '        MyActions.Add(GetNextActionID, Localization.GetString("msgCreateBlog", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("", "", "Edit_Blog"), False, DotNetNuke.Security.SecurityAccessLevel.View, True, False)
+        '    Else
+        '        MyActions.Add(GetNextActionID, Localization.GetString("msgEditBlogSettings", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Blog"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
+        '        MyActions.Add(GetNextActionID, Localization.GetString("msgAddBlogEntry", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Entry"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
+        '    End If
+        '    If ForumBlog.Utils.isForumBlogInstalled(PortalId, TabId, False) Then
+        '        MyActions.Add(GetNextActionID, Localization.GetString("msgImportBlog", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("Blog_Import"), False, DotNetNuke.Security.SecurityAccessLevel.Admin, True, False)
+        '    End If
+        'End If
     End Sub
 
     Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
