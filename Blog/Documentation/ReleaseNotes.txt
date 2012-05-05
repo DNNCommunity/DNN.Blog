@@ -54,5 +54,6 @@
 			<li>Author images look different from others seen in social.</li>
 			<li>Social Sharing module options are not properly wired in.</li>
 			<li>IUpgradeable migration not finished (for taxonomy and entry addeddate conversion to UTC).</li>
+			<li>Needs updates for narrow designs (responsive would be great), as well as some styles  (tags & calendar mostly in dark skins).</li>
 		</ul>
 </div>

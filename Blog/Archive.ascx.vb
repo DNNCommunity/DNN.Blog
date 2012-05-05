@@ -40,8 +40,7 @@ Partial Public Class Archive
 
     Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
-
-            ClientResourceManager.RegisterStyleSheet(Page, TemplateSourceDirectory + "/Archive.css")
+            ClientResourceManager.RegisterStyleSheet(Page, TemplateSourceDirectory + "/Archive.css", Web.Client.FileOrder.Css.ModuleCss)
 
             If Not Request.Params("BlogID") Is Nothing Then
                 m_BlogID = CType(Request.Params("BlogID"), Integer)

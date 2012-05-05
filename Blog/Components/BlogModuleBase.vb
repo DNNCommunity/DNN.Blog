@@ -126,10 +126,10 @@ Public Class BlogModuleBase
                 If Not String.IsNullOrEmpty(f) Then
                     If f.ToLower.EndsWith(".js") Then
                         Dim path As String = f.Replace("[P]", PortalSettings.HomeDirectory & "Blog/Include/").Replace("[H]", DotNetNuke.Common.ApplicationPath & "/DesktopModules/Blog/include/")
-                        ClientResourceManager.RegisterStyleSheet(Page, path)
+                        ClientResourceManager.RegisterScript(Page, path)
                     ElseIf f.ToLower.EndsWith(".css") Then
                         Dim path As String = f.Replace("[P]", PortalSettings.HomeDirectory & "Blog/Include/").Replace("[H]", DotNetNuke.Common.ApplicationPath & "/DesktopModules/Blog/include/")
-                        ClientResourceManager.RegisterStyleSheet(Page, path)
+                        ClientResourceManager.RegisterStyleSheet(Page, path, Web.Client.FileOrder.Css.ModuleCss)
                     End If
                 End If
             Next
