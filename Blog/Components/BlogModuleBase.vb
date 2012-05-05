@@ -87,6 +87,16 @@ Public Class BlogModuleBase
         End Set
     End Property
 
+    Public ReadOnly Property SpecificBlogId() As Integer
+        Get
+            Dim blogId As Integer = -1
+            If Request.QueryString("BlogID") IsNot Nothing Then
+                blogId = Convert.ToInt32(Request.QueryString("BlogID"))
+            End If
+            Return blogId
+        End Get
+    End Property
+
 #End Region
 
 #Region "Private Members"

@@ -78,19 +78,22 @@ Partial Class EditEntry
 
     Protected Overloads Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
         Try
-            jQuery.RequestUIRegistration()
+            jQuery.RequestDnnPluginsRegistration()
             ClientResourceManager.RegisterScript(Page, TemplateSourceDirectory + "/js/jquery.tagify.js")
             ClientResourceManager.RegisterScript(Page, TemplateSourceDirectory + "/js/jquery.qaplaceholder.js")
+
+            Dim cntBlog As New BlogController
+            Dim objSecurity As ModuleSecurity = New ModuleSecurity(ModuleContext.ModuleId, ModuleContext.TabId)
 
             Globals.ReadValue(Me.Request.Params, "EntryID", m_oEntryId)
 
             If m_oEntryId > -1 Then
                 m_oEntry = m_oEntryController.GetEntry(m_oEntryId, PortalId)
-                m_oBlog = m_oBlogController.GetBlog(m_oEntry.BlogID)
-            ElseIf Not (Request.Params("BlogID") Is Nothing) Then
-                m_oBlog = m_oBlogController.GetBlog(Int32.Parse(Request.Params("BlogID")))
+                m_oBlog = cntBlog.GetBlog(m_oEntry.BlogID)
+            ElseIf SpecificBlogId > 0 Then
+                m_oBlog = m_oBlogController.GetBlog(SpecificBlogId)
             Else
-                m_oBlog = m_oBlogController.GetBlogByUserID(Me.PortalId, Me.UserId)
+                m_oBlog = cntBlog.GetBlogByUserID(Me.PortalId, Me.UserId)
             End If
 
             If m_oBlog Is Nothing Then
@@ -101,12 +104,14 @@ Partial Class EditEntry
                 Me.ModuleConfiguration.ModuleTitle = GetString("msgAddBlogEntry", LocalResourceFile)
             End If
 
-            'If Not Blog.Business.Security.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
-            '    Response.Redirect(NavigateURL())
-            'End If
+            Dim isOwner As Boolean = (m_oBlog.UserID = ModuleContext.PortalSettings.UserId)
+
+            If (objSecurity.CanAddEntry(isOwner, m_oBlog.EnableGhostWriter) = False) Then
+                Response.Redirect(NavigateURL("Access Denied"))
+            End If
 
             If m_oBlog.ParentBlogID > -1 Then
-                m_oParentBlog = m_oBlogController.GetBlog(m_oBlog.ParentBlogID)
+                m_oParentBlog = cntBlog.GetBlog(m_oBlog.ParentBlogID)
             Else
                 m_oParentBlog = m_oBlog
             End If

@@ -330,7 +330,6 @@
     <Content Include="App_LocalResources\BlogList.ascx.resx" />
     <Content Include="App_LocalResources\blogpost.ascx.resx" />
     <Content Include="App_LocalResources\EditBlog.ascx.resx" />
-    <Content Include="App_LocalResources\EditCategories.ascx.resx" />
     <Content Include="App_LocalResources\EditEntry.ascx.resx" />
     <Content Include="App_LocalResources\MainView.ascx.resx" />
     <Content Include="App_LocalResources\ModuleOptions.ascx.resx">
@@ -339,7 +338,6 @@
     <Content Include="App_LocalResources\Search.ascx.resx" />
     <Content Include="App_LocalResources\Trackback.aspx.resx" />
     <Content Include="App_LocalResources\ViewBlog.ascx.resx" />
-    <Content Include="App_LocalResources\ViewCategories.ascx.resx" />
     <Content Include="App_LocalResources\ViewEntry.ascx.resx" />
     <Content Include="App_LocalResources\SharedResources.resx" />
     <Content Include="App_LocalResources\ViewTagsSettings.ascx.resx" />

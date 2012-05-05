@@ -57,8 +57,8 @@ Public Class Constants
 
     Public Const ContentItemTermsCacheKey As String = "ContentItem_Terms_"
 
-
     Public Const BloggerPermission As String = "BLOGGER"
+
     Public Const GhostWriterPermission As String = "GHOSTWRITER"
 
 End Class
