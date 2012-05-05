@@ -86,6 +86,10 @@
       <Output TaskParameter="Include" ItemName="PackageTxtFiles" />
     </CreateItem>
 
+	<CreateItem Include="**\Images\blogIcon.png">
+      <Output TaskParameter="Include" ItemName="PackageTxtFiles" />
+    </CreateItem>
+	
     <CreateItem Include="**\*.sqldataprovider" Exclude="**\Tests\TestDatabase\*.SqlDataProvider" >
       <Output TaskParameter="Include" ItemName="SqlDataProviderFiles" />
     </CreateItem>

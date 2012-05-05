@@ -2,7 +2,8 @@
   <packages>
 	<package name="Blog" type="Module" version="05.00.00">
 	  <friendlyName>Blog</friendlyName>
-	  <description>Blog Module for DotNetNuke</description>
+	  <description>The DotNetNuke Blog module is an easy to use content publishing module that is tightly integrated with the core DotNetNuke framework. It can be used in single or mutli-author enviornments and also permits content authoring using off-site tools such as Windows Live Writer.</description>
+		<iconFile>~/DesktopModules/Blog/Images/blogIcon.png</iconFile>
 	  <owner>
 		<name>DotNetNuke</name>
 		<organization>DotNetNuke Corporation</organization>
