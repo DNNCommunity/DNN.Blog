@@ -69,7 +69,7 @@ Namespace Settings
         Private _feedCacheTime As Integer = 10
         Private _AllowChildBlogs As Boolean = False
         Private _allowWLW As Boolean = True
-        Private _EnableArchiveDropDown As Boolean = False
+        Private _EnableArchiveDropDown As Boolean = True
         Private _AllowMultipleCategories As Boolean = True
         Private _useWLWExcerpt As Boolean = False
         Private _includeFiles As String = ""
@@ -124,7 +124,6 @@ Namespace Settings
             Globals.ReadValue(_allSettings, "IncludeTagsInDescription", IncludeTagsInDescription)
             Globals.ReadValue(_allSettings, "GravatarDefaultImageUrl", GravatarDefaultImageUrl)
             Globals.ReadValue(_allSettings, "GravatarCustomUrl", GravatarCustomUrl)
-            'Globals.ReadValue(_allSettings, "ShowSocialBookmarks", ShowSocialBookmarks)
             Globals.ReadValue(_allSettings, "AllowSummaryHtml", AllowSummaryHtml)
             Globals.ReadValue(_allSettings, "FeedCacheTime", FeedCacheTime)
             Globals.ReadValue(_allSettings, "AllowChildBlogs", AllowChildBlogs)
@@ -201,7 +200,6 @@ Namespace Settings
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "IncludeTagsInDescription", Me.IncludeTagsInDescription.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "GravatarDefaultImageUrl", Me.GravatarDefaultImageUrl)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "GravatarCustomUrl", Me.GravatarCustomUrl)
-            'Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "ShowSocialBookmarks", Me.ShowSocialBookmarks.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "AllowSummaryHtml", Me.AllowSummaryHtml.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "FeedCacheTime", Me.FeedCacheTime.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "AllowChildBlogs", Me.AllowChildBlogs.ToString)
@@ -277,15 +275,6 @@ Namespace Settings
                 _PageBlogs = Value
             End Set
         End Property
-
-        'Public Property EnableDNNSearch() As Boolean
-        '    Get
-        '        Return _EnableDNNSearch
-        '    End Get
-        '    Set(ByVal Value As Boolean)
-        '        _EnableDNNSearch = Value
-        '    End Set
-        'End Property
 
         Public Property EntryDescriptionRequired() As Boolean
             Get
@@ -529,15 +518,6 @@ Namespace Settings
                 _GravatarCustomUrl = Value
             End Set
         End Property
-
-        'Public Property ShowSocialBookmarks() As Boolean
-        '    Get
-        '        Return _ShowSocialBookmarks
-        '    End Get
-        '    Set(ByVal Value As Boolean)
-        '        _ShowSocialBookmarks = Value
-        '    End Set
-        'End Property
 
         Public Property AllowSummaryHtml() As Boolean
             Get

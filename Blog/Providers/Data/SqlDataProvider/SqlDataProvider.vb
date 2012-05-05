@@ -166,9 +166,6 @@ Namespace Data
 
         Public Overrides Function ListEntriesByBlog(ByVal BlogID As Integer, ByVal BlogDate As Date, ByVal PageSize As Integer, ByVal CurrentPage As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As System.Data.IDataReader
             Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_Entry_GetByBlog", BlogID, Null.GetNull(BlogDate, DBNull.Value), PageSize, CurrentPage, ShowNonPublic, ShowNonPublished), IDataReader)
-
-
-            'Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_ListEntriesByBlog", BlogID, Null.GetNull(BlogDate, DBNull.Value), PageSize, CurrentPage, ShowNonPublic, ShowNonPublished), IDataReader)
         End Function
 
         Public Overrides Function ListAllEntriesByBlog(ByVal BlogID As Integer) As System.Data.IDataReader
@@ -184,7 +181,7 @@ Namespace Data
                 Case "day"
                     sproc = "Blog_Entry_GetByDay"
                 Case "month"
-                    sproc = "Blog_ListEntriesByPortalByMonth"
+                    sproc = "Blog_Entry_GetByMonth"
             End Select
 
             Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & sproc, PortalID, Null.GetNull(BlogDate, DBNull.Value), PageSize, CurrentPage, ShowNonPublic, ShowNonPublished), IDataReader)

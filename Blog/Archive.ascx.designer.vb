@@ -13,57 +13,39 @@ Option Explicit On
 
 Partial Public Class Archive
 
-	'''<summary>
-	'''lblArchive control.
-	'''</summary>
-	'''<remarks>
-	'''Auto-generated field.
-	'''To modify move field declaration from designer file to code-behind file.
-	'''</remarks>
-	Protected WithEvents lblArchive As Global.System.Web.UI.WebControls.Label
+    '''<summary>
+    '''calMonth control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents calMonth As Global.System.Web.UI.WebControls.Calendar
 
-	'''<summary>
-	'''calMonth control.
-	'''</summary>
-	'''<remarks>
-	'''Auto-generated field.
-	'''To modify move field declaration from designer file to code-behind file.
-	'''</remarks>
-	Protected WithEvents calMonth As Global.System.Web.UI.WebControls.Calendar
+    '''<summary>
+    '''lstArchiveMonths control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lstArchiveMonths As Global.System.Web.UI.WebControls.DataList
 
-	'''<summary>
-	'''lblMonthly control.
-	'''</summary>
-	'''<remarks>
-	'''Auto-generated field.
-	'''To modify move field declaration from designer file to code-behind file.
-	'''</remarks>
-	Protected WithEvents lblMonthly As Global.System.Web.UI.WebControls.Label
+    '''<summary>
+    '''ddlArchiveMonths control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents ddlArchiveMonths As Global.System.Web.UI.WebControls.DropDownList
 
-	'''<summary>
-	'''lstArchiveMonths control.
-	'''</summary>
-	'''<remarks>
-	'''Auto-generated field.
-	'''To modify move field declaration from designer file to code-behind file.
-	'''</remarks>
-	Protected WithEvents lstArchiveMonths As Global.System.Web.UI.WebControls.DataList
-
-	'''<summary>
-	'''ddlArchiveMonths control.
-	'''</summary>
-	'''<remarks>
-	'''Auto-generated field.
-	'''To modify move field declaration from designer file to code-behind file.
-	'''</remarks>
-	Protected WithEvents ddlArchiveMonths As Global.System.Web.UI.WebControls.DropDownList
-
-	'''<summary>
-	'''cmdGo control.
-	'''</summary>
-	'''<remarks>
-	'''Auto-generated field.
-	'''To modify move field declaration from designer file to code-behind file.
-	'''</remarks>
-	Protected WithEvents cmdGo As Global.System.Web.UI.WebControls.LinkButton
+    '''<summary>
+    '''cmdGo control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents cmdGo As Global.System.Web.UI.WebControls.LinkButton
 End Class
