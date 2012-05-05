@@ -14,21 +14,21 @@
     <div class="dnnClear">
         <div class="dnnFormItem" >
             <label>Blog Part:</label>
-            <asp:DropDownList runat="server" ID="ddModuleDef" DataTextField="FriendlyName" DataValueField="ModuleDefID"  EnableViewState="true" />
+            <asp:DropDownList runat="server" ID="ddModuleDef" DataTextField="FriendlyName" DataValueField="ModuleDefID" />
         </div>
         <div class="dnnFormItem">
             <label>Title:</label>
             <div class="dnnLeft">
-                <asp:TextBox runat="server" ID="txtTitle" EnableViewState="true" />
+                <asp:TextBox runat="server" ID="txtTitle" />
             </div>
         </div>
         <div class="dnnFormItem">
             <label>Pane:</label>
-            <asp:DropDownList runat="server" ID="ddPane" EnableViewState="true" />
+            <asp:DropDownList runat="server" ID="ddPane" />
         </div>
         <div class="dnnFormItem">
             <label>Insert:</label>
-            <asp:DropDownList runat="server" ID="ddPosition" EnableViewState="true" />    
+            <asp:DropDownList runat="server" ID="ddPosition" />    
         </div>
         <div class="dnnRight">
             <asp:LinkButton runat="server" ID="cmdAdd" resourcekey="cmdAdd" CssClass="dnnPrimaryAction" />
