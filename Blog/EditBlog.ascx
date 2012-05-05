@@ -124,9 +124,6 @@
                 <li><asp:LinkButton ID="cmdEditChildBlog" CssClass="dnnSecondaryAction" runat="server" Enabled="False" resourceKey="cmdEdit" /></li>
                 <li><asp:LinkButton ID="cmdDeleteChildBlog" CssClass="dnnSecondaryAction dnnChildDelete" runat="server" Enabled="False" resourceKey="cmdDelete" /></li>
             </ul>
-            <div>
-                <asp:Label runat="server" ID="lblChildBlogsOff" resourcekey="lblChildBlogsOff" Visible="true" CssClass="NormalRed" />
-            </div>
         </fieldset>
     </div>
     <ul class="dnnActions">

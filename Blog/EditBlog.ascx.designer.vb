@@ -437,15 +437,6 @@ Partial Public Class EditBlog
     Protected WithEvents cmdDeleteChildBlog As Global.System.Web.UI.WebControls.LinkButton
 
     '''<summary>
-    '''lblChildBlogsOff control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblChildBlogsOff As Global.System.Web.UI.WebControls.Label
-
-    '''<summary>
     '''cmdUpdate control.
     '''</summary>
     '''<remarks>

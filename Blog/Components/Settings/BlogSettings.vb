@@ -37,7 +37,6 @@ Namespace Settings
 
         Private _allSettings As Hashtable
         Private _PageBlogs As Integer = -1
-        Private _EnableDNNSearch As Boolean = False
         Private _EntryDescriptionRequired As Boolean = False
         Private _SummaryMaxLength As Integer = 1024
         Private _SearchSummaryMaxLength As Integer = 255
@@ -48,13 +47,12 @@ Namespace Settings
         Private _SearchBlogComment As Boolean = False
         Private _EnableUploadOption As Boolean = False
         Private _ShowSummary As Boolean = False
-        Private _ShowUniqueTitle As Boolean = True
-        Private _ShowCommentTitle As Boolean = True
+        Private _ShowCommentTitle As Boolean = False
         Private _AllowCommentAnchors As Boolean = True
         Private _AllowCommentImages As Boolean = False
         Private _AllowCommentFormatting As Boolean = True
         Private _ForumBlogInstalled As String = "None"
-        Private _ShowGravatars As Boolean = True
+        Private _ShowGravatars As Boolean = False
         Private _GravatarImageWidth As Integer = 48
         Private _GravatarRating As String = "G"
         Private _ShowWebsite As Boolean = True
@@ -66,17 +64,15 @@ Namespace Settings
         Private _IncludeTagsInDescription As Boolean = True
         Private _GravatarDefaultImageUrl As String = ""
         Private _GravatarCustomUrl As String = ""
-        Private _ShowSocialBookmarks As Boolean = True
         Private _allowSummaryHtml As Boolean = True
         Private _excerptEnabled As Boolean = False
         Private _feedCacheTime As Integer = 10
-        Private _AllowChildBlogs As Boolean = True
+        Private _AllowChildBlogs As Boolean = False
         Private _allowWLW As Boolean = True
         Private _EnableArchiveDropDown As Boolean = False
         Private _AllowMultipleCategories As Boolean = True
         Private _useWLWExcerpt As Boolean = False
         Private _includeFiles As String = ""
-        Private _addJQuery As Boolean = False
 
         Private _portalId As Integer = -1
         Private _tabId As Integer = -1
@@ -101,7 +97,6 @@ Namespace Settings
             dr.Close()
 
             Globals.ReadValue(_allSettings, "PageBlogs", PageBlogs)
-            Globals.ReadValue(_allSettings, "EnableDNNSearch", EnableDNNSearch)
             Globals.ReadValue(_allSettings, "EntryDescriptionRequired", EntryDescriptionRequired)
             Globals.ReadValue(_allSettings, "SummaryMaxLength", SummaryMaxLength)
             Globals.ReadValue(_allSettings, "SearchSummaryMaxLength", SearchSummaryMaxLength)
@@ -112,7 +107,6 @@ Namespace Settings
             Globals.ReadValue(_allSettings, "SearchBlogComment", SearchBlogComment)
             Globals.ReadValue(_allSettings, "EnableUploadOption", EnableUploadOption)
             Globals.ReadValue(_allSettings, "ShowSummary", ShowSummary)
-            'Globals.ReadValue(_allSettings, "ShowUniqueTitle", ShowUniqueTitle)
             Globals.ReadValue(_allSettings, "ShowCommentTitle", ShowCommentTitle)
             Globals.ReadValue(_allSettings, "AllowCommentAnchors", AllowCommentAnchors)
             Globals.ReadValue(_allSettings, "AllowCommentImages", AllowCommentImages)
@@ -180,7 +174,6 @@ Namespace Settings
         Public Overridable Sub UpdateSettings()
             Dim objModules As New DotNetNuke.Entities.Modules.ModuleController
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "PageBlogs", Me.PageBlogs.ToString)
-            Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "EnableDNNSearch", Me.EnableDNNSearch.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "EntryDescriptionRequired", Me.EntryDescriptionRequired.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "SummaryMaxLength", Me.SummaryMaxLength.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "SearchSummaryMaxLength", Me.SearchSummaryMaxLength.ToString)
@@ -191,7 +184,6 @@ Namespace Settings
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "SearchBlogComment", Me.SearchBlogComment.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "EnableUploadOption", Me.EnableUploadOption.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "ShowSummary", Me.ShowSummary.ToString)
-            'Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "ShowUniqueTitle", Me.ShowUniqueTitle.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "ShowCommentTitle", Me.ShowCommentTitle.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "AllowCommentAnchors", Me.AllowCommentAnchors.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "AllowCommentImages", Me.AllowCommentImages.ToString)
@@ -286,14 +278,14 @@ Namespace Settings
             End Set
         End Property
 
-        Public Property EnableDNNSearch() As Boolean
-            Get
-                Return _EnableDNNSearch
-            End Get
-            Set(ByVal Value As Boolean)
-                _EnableDNNSearch = Value
-            End Set
-        End Property
+        'Public Property EnableDNNSearch() As Boolean
+        '    Get
+        '        Return _EnableDNNSearch
+        '    End Get
+        '    Set(ByVal Value As Boolean)
+        '        _EnableDNNSearch = Value
+        '    End Set
+        'End Property
 
         Public Property EntryDescriptionRequired() As Boolean
             Get

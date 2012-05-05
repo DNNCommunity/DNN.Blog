@@ -94,7 +94,8 @@ Partial Public Class EditBlog
             If Not Page.IsPostBack Then
                 Localization.LoadCultureDropDownList(cboCulture, CultureDropDownTypes.NativeName, CType(Page, PageBase).PageCulture.Name)
 
-                lblChildBlogsOff.Visible = (Not BlogSettings.AllowChildBlogs)
+                fsChildBlogs.Visible = BlogSettings.AllowChildBlogs
+                dnnSitePanelChildBlogs.Visible = BlogSettings.AllowChildBlogs
 
                 If Not BlogSettings.AllowWLW Then
                     lblMetaWeblogUrl.Visible = False
@@ -173,7 +174,6 @@ Partial Public Class EditBlog
                         lstChildBlogs.DataBind()
                     Else
                         dnnSitePanelChildBlogs.Visible = False
-                        fsChildBlogs.Visible = False
                     End If
 
                     BindDateOptions(objBlog.Culture, objBlog.DateFormat)
@@ -185,7 +185,6 @@ Partial Public Class EditBlog
                     BindDateOptions(m_oParentBlog.Culture, m_oParentBlog.DateFormat)
 
                     dnnSitePanelChildBlogs.Visible = False
-                    fsChildBlogs.Visible = False
                 Else
                     BindDateOptions(System.Threading.Thread.CurrentThread.CurrentCulture.Name, "g")
                 End If

@@ -326,14 +326,12 @@ Namespace Business
 #End Region
 
 #Region "ISearchable"
+
         Public Function GetSearchItems(ByVal ModInfo As Entities.Modules.ModuleInfo) As Services.Search.SearchItemInfoCollection Implements Entities.Modules.ISearchable.GetSearchItems
             Dim BlogSettings As Settings.BlogSettings = DotNetNuke.Modules.Blog.Settings.BlogSettings.GetBlogSettings(ModInfo.PortalID, ModInfo.TabID)
-            Dim IncludeInSearch As Boolean
+
             Dim SearchItemCollection As New SearchItemInfoCollection
-
-            IncludeInSearch = BlogSettings.EnableDNNSearch
-
-            If ModInfo.ControlTitle = "View Blog" And IncludeInSearch Then
+            If ModInfo.ControlTitle = "View Blog" Then
                 Dim m_EntryController As New EntryController
                 Dim Entries As List(Of EntryInfo) = m_EntryController.ListAllEntriesByPortal(ModInfo.PortalID, False, False)
                 Dim objEntry As Object
@@ -356,8 +354,8 @@ Namespace Business
             End If
 
             Return SearchItemCollection
-
         End Function
+
 #End Region
 
     End Class
