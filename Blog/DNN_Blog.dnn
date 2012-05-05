@@ -80,7 +80,7 @@
 							  <controlType>Admin</controlType>
 							  <iconFile />
 							  <helpUrl />
-							  <supportsPopUps>False</supportsPopUps>
+							  <supportsPopUps>True</supportsPopUps>
 							  <viewOrder>0</viewOrder>
 						  </moduleControl>
 						  <moduleControl>
@@ -199,17 +199,6 @@
 							  <supportsPopUps>False</supportsPopUps>
 							  <viewOrder>0</viewOrder>
 						  </moduleControl>
-						  <moduleControl>
-							  <controlKey>Edit</controlKey>
-							  <controlSrc>DesktopModules/Blog/EditCategories.ascx</controlSrc>
-							  <supportsPartialRendering>False</supportsPartialRendering>
-							  <controlTitle>Edit Categories</controlTitle>
-							  <controlType>Edit</controlType>
-							  <iconFile />
-							  <helpUrl />
-							  <supportsPopUps>False</supportsPopUps>
-							  <viewOrder>0</viewOrder>
-						  </moduleControl>
 					  </moduleControls>
 				  </moduleDefinition>
 				  <moduleDefinition>
@@ -235,7 +224,7 @@
 							  <controlType>Edit</controlType>
 							  <iconFile />
 							  <helpUrl />
-							  <supportsPopUps>False</supportsPopUps>
+							  <supportsPopUps>True</supportsPopUps>
 							  <viewOrder>0</viewOrder>
 						  </moduleControl>
 					  </moduleControls>
@@ -362,7 +351,7 @@
 				</resourceFile>
 			</resourceFiles>
 		</component>
-		<component type="Cleanup" version="04.05.00" >
+		<component type="Cleanup" version="05.00.00" >
 		  <files>
 			<file>
 			  <path>Install\Module</path>
@@ -406,7 +395,7 @@
 			</file>
 		  </files>
 		</component>
-		  <component type="Cleanup" version="05.00.00" fileName="05.00.00.txt" />
+		<component type="Cleanup" version="05.00.00" fileName="05.00.00.txt" />
 	  </components>
 	</package>
   </packages>
