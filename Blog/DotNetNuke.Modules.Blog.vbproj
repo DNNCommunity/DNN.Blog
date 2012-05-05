@@ -164,7 +164,7 @@
     <Compile Include="Components\Blogger\IBlogger.vb" />
     <Compile Include="Components\Business\Constants.vb" />
     <Compile Include="Components\Business\Links.vb" />
-    <Compile Include="Components\Business\Security.vb" />
+    <Compile Include="Components\Business\ModuleSecurity.vb" />
     <Compile Include="Components\Controllers\ArchiveController.vb" />
     <Compile Include="Components\Controllers\BlogController.vb" />
     <Compile Include="Components\Controllers\CategoryController.vb" />

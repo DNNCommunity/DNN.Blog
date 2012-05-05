@@ -399,14 +399,24 @@ Partial Public Class ViewBlog
 
             lblPublished.Visible = Not CType(e.Item.DataItem, EntryInfo).Published
 
-            Dim userCulture As CultureInfo = New System.Globalization.CultureInfo(ModuleContext.PortalSettings.UserInfo.Profile.PreferredLocale)
-            Dim n As DateTime = Utility.AdjustedDate(CType(e.Item.DataItem, EntryInfo).AddedDate, ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone)
+            If ModuleContext.PortalSettings.UserInfo.Profile.PreferredLocale IsNot Nothing Then
+                Dim userCulture As CultureInfo = New System.Globalization.CultureInfo(ModuleContext.PortalSettings.UserInfo.Profile.PreferredLocale)
+                Dim n As DateTime = Utility.AdjustedDate(CType(e.Item.DataItem, EntryInfo).AddedDate, ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone)
+                Dim publishDate As DateTime = n
+                Dim timeOffset As TimeSpan = ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone.BaseUtcOffset
 
-            Dim publishDate As DateTime = n
-            Dim timeOffset As TimeSpan = ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone.BaseUtcOffset
+                publishDate = publishDate.Add(timeOffset)
+                lblPublishDate.Text = publishDate.ToShortDateString + " " + publishDate.ToShortTimeString
+            Else
+                ' Fall back to the portal level settings if not available at user level
+                Dim userCulture As CultureInfo = New System.Globalization.CultureInfo(ModuleContext.PortalSettings.CultureCode)
+                Dim n As DateTime = Utility.AdjustedDate(CType(e.Item.DataItem, EntryInfo).AddedDate, ModuleContext.PortalSettings.TimeZone)
+                Dim publishDate As DateTime = n
+                Dim timeOffset As TimeSpan = ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone.BaseUtcOffset
 
-            publishDate = publishDate.Add(timeOffset)
-            lblPublishDate.Text = publishDate.ToShortDateString + " " + publishDate.ToShortTimeString
+                publishDate = publishDate.Add(timeOffset)
+                lblPublishDate.Text = publishDate.ToShortDateString + " " + publishDate.ToShortTimeString
+            End If
 
             'lblPublishDate.Text = Utility.FormatDate(CType(e.Item.DataItem, EntryInfo).AddedDate, oBlog.Culture, oBlog.DateFormat, oBlog.TimeZone)
 

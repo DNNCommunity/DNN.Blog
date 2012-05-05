@@ -104,14 +104,18 @@ Partial Public Class ViewEntry
     Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             If Not Page.IsPostBack Then
+                Dim objSecurity As ModuleSecurity = New ModuleSecurity(ModuleContext.ModuleId, ModuleContext.TabId)
+
                 If m_oEntry Is Nothing Then
                     Response.Redirect(NavigateURL(), False)
                     Exit Sub
                 End If
 
-                If (Not m_oEntry.Published) AndAlso (Not Blog.Business.ModuleSecurity.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId)) Then
-                    Response.Redirect(NavigateURL(), False)
-                    Exit Sub
+                Dim isOwner As Boolean
+                isOwner = m_oBlog.UserID = ModuleContext.PortalSettings.UserId
+
+                If (m_oEntry.Published = False) AndAlso (objSecurity.CanAddEntry(isOwner, m_oBlog.EnableGhostWriter) = False) Then
+                    Response.Redirect(NavigateURL("Access Denied"), False)
                 End If
 
                 If Not m_oBlog Is Nothing Then
@@ -196,19 +200,27 @@ Partial Public Class ViewEntry
 
                     lblBlogTitle.InnerText = m_oEntry.Title
                     'lblBlogTitle.NavigateUrl = m_oEntry.PermaLink
-
                     lblTrackback.Text = Utility.GetTrackbackRDF(NavigateURL(), m_oEntry)
 
-                    Dim userCulture As CultureInfo = New System.Globalization.CultureInfo(ModuleContext.PortalSettings.UserInfo.Profile.PreferredLocale)
-                    Dim n As DateTime = Utility.AdjustedDate(m_oEntry.AddedDate, ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone)
+                    If ModuleContext.PortalSettings.UserInfo.Profile.PreferredLocale IsNot Nothing Then
+                        Dim userCulture As CultureInfo = New System.Globalization.CultureInfo(ModuleContext.PortalSettings.UserInfo.Profile.PreferredLocale)
+                        Dim n As DateTime = Utility.AdjustedDate(m_oEntry.AddedDate, ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone)
 
-                    Dim publishDate As DateTime = n
-                    Dim timeOffset As TimeSpan = ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone.BaseUtcOffset
+                        Dim publishDate As DateTime = n
+                        Dim timeOffset As TimeSpan = ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone.BaseUtcOffset
 
-                    publishDate = publishDate.Add(timeOffset)
-                    lblDateTime.Text = publishDate.ToShortDateString + " " + publishDate.ToShortTimeString
+                        publishDate = publishDate.Add(timeOffset)
+                        lblDateTime.Text = publishDate.ToShortDateString + " " + publishDate.ToShortTimeString
+                    Else
+                        ' Fall back to the portal level settings if not available at user level
+                        Dim userCulture As CultureInfo = New System.Globalization.CultureInfo(ModuleContext.PortalSettings.CultureCode)
+                        Dim n As DateTime = Utility.AdjustedDate(m_oEntry.AddedDate, ModuleContext.PortalSettings.TimeZone)
+                        Dim publishDate As DateTime = n
+                        Dim timeOffset As TimeSpan = ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone.BaseUtcOffset
 
-                    'lblDateTime.Text = Utility.FormatDate(m_oEntry.AddedDate, m_oBlog.Culture, m_oBlog.DateFormat, m_oBlog.TimeZone)
+                        publishDate = publishDate.Add(timeOffset)
+                        lblDateTime.Text = publishDate.ToShortDateString + " " + publishDate.ToShortTimeString
+                    End If
 
                     ' CP: Social Sharing
                     Dim facebookContent As String = ""
@@ -396,7 +408,7 @@ Partial Public Class ViewEntry
         ' Rip Rowan 6/13/2008
         ' Hide comment titles if not enabled in settings
         lblTitle.Visible = BlogSettings.ShowCommentTitle
-  Dim x As Date = Utility.AdjustedDate(commentInfo.AddedDate, m_oBlog.TimeZone)
+        Dim x As Date = Utility.AdjustedDate(commentInfo.AddedDate, m_oBlog.TimeZone)
         lblCommentDate.Text = Utility.CalculateDateForDisplay(x)
         'lblCommentDate.Text = Utility.FormatDate(commentInfo.AddedDate, m_oBlog.Culture, m_oBlog.DateFormat, m_oBlog.TimeZone)
         If Not commentInfo.Approved Then
