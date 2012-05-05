@@ -82,6 +82,9 @@
       <Output TaskParameter="Include" ItemName="PackageTxtFiles" />
     </CreateItem>
 
+	<CreateItem Include="**\$(Version).txt">
+      <Output TaskParameter="Include" ItemName="PackageTxtFiles" />
+    </CreateItem>
 
     <CreateItem Include="**\*.sqldataprovider" Exclude="**\Tests\TestDatabase\*.SqlDataProvider" >
       <Output TaskParameter="Include" ItemName="SqlDataProviderFiles" />

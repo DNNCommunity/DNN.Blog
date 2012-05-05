@@ -19,6 +19,7 @@
 '
 
 Imports System
+Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Modules.Blog.Data
 Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Entities.Host

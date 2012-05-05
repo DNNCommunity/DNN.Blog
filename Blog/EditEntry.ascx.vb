@@ -20,6 +20,7 @@
 
 Imports System
 Imports System.IO
+Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Web.Client.ClientResourceManagement
 Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Modules.Blog.Business

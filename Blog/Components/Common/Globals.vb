@@ -20,174 +20,178 @@
 
 Imports DotNetNuke.Entities.Modules
 
-Public Enum RssViews
- None = 0
- ArchivEntries = 1
- BlogEntries = 2
- RecentEntries = 3
- SingleEntry = 4
-End Enum
+Namespace Components.Common
 
-Public Class Globals
- Public Const glbSharedResourceFile As String = "DesktopModules/Blog/App_LocalResources/SharedResources"
+    Public Enum RssViews
+        None = 0
+        ArchivEntries = 1
+        BlogEntries = 2
+        RecentEntries = 3
+        SingleEntry = 4
+    End Enum
 
- Public Shared Function RemoveMarkup(ByVal input As String) As String
-  If String.IsNullOrEmpty(input) Then Return ""
-  Return Regex.Replace(input, "<[^>]+>", "")
- End Function
+    Public Class Globals
+        Public Const glbSharedResourceFile As String = "DesktopModules/Blog/App_LocalResources/SharedResources"
+
+        Public Shared Function RemoveMarkup(ByVal input As String) As String
+            If String.IsNullOrEmpty(input) Then Return ""
+            Return Regex.Replace(input, "<[^>]+>", "")
+        End Function
 
 #Region " Value Reading "
- Public Shared Sub ReadValue(ByRef ValueTable As Hashtable, ByVal ValueName As String, ByRef Variable As Integer)
-  If Not ValueTable.Item(ValueName) Is Nothing Then
-   Try
-    Variable = CType(ValueTable.Item(ValueName), Integer)
-   Catch ex As Exception
-   End Try
-  End If
- End Sub
+        Public Shared Sub ReadValue(ByRef ValueTable As Hashtable, ByVal ValueName As String, ByRef Variable As Integer)
+            If Not ValueTable.Item(ValueName) Is Nothing Then
+                Try
+                    Variable = CType(ValueTable.Item(ValueName), Integer)
+                Catch ex As Exception
+                End Try
+            End If
+        End Sub
 
- Public Shared Sub ReadValue(ByRef ValueTable As Hashtable, ByVal ValueName As String, ByRef Variable As Long)
-  If Not ValueTable.Item(ValueName) Is Nothing Then
-   Try
-    Variable = CType(ValueTable.Item(ValueName), Long)
-   Catch ex As Exception
-   End Try
-  End If
- End Sub
+        Public Shared Sub ReadValue(ByRef ValueTable As Hashtable, ByVal ValueName As String, ByRef Variable As Long)
+            If Not ValueTable.Item(ValueName) Is Nothing Then
+                Try
+                    Variable = CType(ValueTable.Item(ValueName), Long)
+                Catch ex As Exception
+                End Try
+            End If
+        End Sub
 
- Public Shared Sub ReadValue(ByRef ValueTable As Hashtable, ByVal ValueName As String, ByRef Variable As String)
-  If Not ValueTable.Item(ValueName) Is Nothing Then
-   Try
-    Variable = CType(ValueTable.Item(ValueName), String)
-   Catch ex As Exception
-   End Try
-  End If
- End Sub
+        Public Shared Sub ReadValue(ByRef ValueTable As Hashtable, ByVal ValueName As String, ByRef Variable As String)
+            If Not ValueTable.Item(ValueName) Is Nothing Then
+                Try
+                    Variable = CType(ValueTable.Item(ValueName), String)
+                Catch ex As Exception
+                End Try
+            End If
+        End Sub
 
- Public Shared Sub ReadValue(ByRef ValueTable As Hashtable, ByVal ValueName As String, ByRef Variable As Boolean)
-  If Not ValueTable.Item(ValueName) Is Nothing Then
-   Try
-    Variable = CType(ValueTable.Item(ValueName), Boolean)
-   Catch ex As Exception
-   End Try
-  End If
- End Sub
+        Public Shared Sub ReadValue(ByRef ValueTable As Hashtable, ByVal ValueName As String, ByRef Variable As Boolean)
+            If Not ValueTable.Item(ValueName) Is Nothing Then
+                Try
+                    Variable = CType(ValueTable.Item(ValueName), Boolean)
+                Catch ex As Exception
+                End Try
+            End If
+        End Sub
 
- Public Shared Sub ReadValue(ByRef ValueTable As Hashtable, ByVal ValueName As String, ByRef Variable As Date)
-  If Not ValueTable.Item(ValueName) Is Nothing Then
-   Try
-    Variable = CType(ValueTable.Item(ValueName), Date)
-   Catch ex As Exception
-   End Try
-  End If
- End Sub
+        Public Shared Sub ReadValue(ByRef ValueTable As Hashtable, ByVal ValueName As String, ByRef Variable As Date)
+            If Not ValueTable.Item(ValueName) Is Nothing Then
+                Try
+                    Variable = CType(ValueTable.Item(ValueName), Date)
+                Catch ex As Exception
+                End Try
+            End If
+        End Sub
 
- Public Shared Sub ReadValue(ByRef ValueTable As Hashtable, ByVal ValueName As String, ByRef Variable As TimeSpan)
-  If Not ValueTable.Item(ValueName) Is Nothing Then
-   Try
-    Variable = TimeSpan.Parse(CType(ValueTable.Item(ValueName), String))
-   Catch ex As Exception
-   End Try
-  End If
- End Sub
+        Public Shared Sub ReadValue(ByRef ValueTable As Hashtable, ByVal ValueName As String, ByRef Variable As TimeSpan)
+            If Not ValueTable.Item(ValueName) Is Nothing Then
+                Try
+                    Variable = TimeSpan.Parse(CType(ValueTable.Item(ValueName), String))
+                Catch ex As Exception
+                End Try
+            End If
+        End Sub
 
- Public Shared Sub ReadValue(ByRef ValueTable As NameValueCollection, ByVal ValueName As String, ByRef Variable As Integer)
-  If Not ValueTable.Item(ValueName) Is Nothing Then
-   Try
-    Variable = CType(ValueTable.Item(ValueName), Integer)
-   Catch ex As Exception
-   End Try
-  End If
- End Sub
+        Public Shared Sub ReadValue(ByRef ValueTable As NameValueCollection, ByVal ValueName As String, ByRef Variable As Integer)
+            If Not ValueTable.Item(ValueName) Is Nothing Then
+                Try
+                    Variable = CType(ValueTable.Item(ValueName), Integer)
+                Catch ex As Exception
+                End Try
+            End If
+        End Sub
 
- Public Shared Sub ReadValue(ByRef ValueTable As NameValueCollection, ByVal ValueName As String, ByRef Variable As Long)
-  If Not ValueTable.Item(ValueName) Is Nothing Then
-   Try
-    Variable = CType(ValueTable.Item(ValueName), Long)
-   Catch ex As Exception
-   End Try
-  End If
- End Sub
+        Public Shared Sub ReadValue(ByRef ValueTable As NameValueCollection, ByVal ValueName As String, ByRef Variable As Long)
+            If Not ValueTable.Item(ValueName) Is Nothing Then
+                Try
+                    Variable = CType(ValueTable.Item(ValueName), Long)
+                Catch ex As Exception
+                End Try
+            End If
+        End Sub
 
- Public Shared Sub ReadValue(ByRef ValueTable As NameValueCollection, ByVal ValueName As String, ByRef Variable As String)
-  If Not ValueTable.Item(ValueName) Is Nothing Then
-   Try
-    Variable = CType(ValueTable.Item(ValueName), String)
-   Catch ex As Exception
-   End Try
-  End If
- End Sub
+        Public Shared Sub ReadValue(ByRef ValueTable As NameValueCollection, ByVal ValueName As String, ByRef Variable As String)
+            If Not ValueTable.Item(ValueName) Is Nothing Then
+                Try
+                    Variable = CType(ValueTable.Item(ValueName), String)
+                Catch ex As Exception
+                End Try
+            End If
+        End Sub
 
- Public Shared Sub ReadValue(ByRef ValueTable As NameValueCollection, ByVal ValueName As String, ByRef Variable As Boolean)
-  If Not ValueTable.Item(ValueName) Is Nothing Then
-   Try
-    Variable = CType(ValueTable.Item(ValueName), Boolean)
-   Catch ex As Exception
-    Select Case ValueTable.Item(ValueName).ToLower
-     Case "on", "yes"
-      Variable = True
-     Case Else
-      Variable = False
-    End Select
-   End Try
-  End If
- End Sub
+        Public Shared Sub ReadValue(ByRef ValueTable As NameValueCollection, ByVal ValueName As String, ByRef Variable As Boolean)
+            If Not ValueTable.Item(ValueName) Is Nothing Then
+                Try
+                    Variable = CType(ValueTable.Item(ValueName), Boolean)
+                Catch ex As Exception
+                    Select Case ValueTable.Item(ValueName).ToLower
+                        Case "on", "yes"
+                            Variable = True
+                        Case Else
+                            Variable = False
+                    End Select
+                End Try
+            End If
+        End Sub
 
- Public Shared Sub ReadValue(ByRef ValueTable As NameValueCollection, ByVal ValueName As String, ByRef Variable As Date)
-  If Not ValueTable.Item(ValueName) Is Nothing Then
-   Try
-    Variable = CType(ValueTable.Item(ValueName), Date)
-   Catch ex As Exception
-   End Try
-  End If
- End Sub
+        Public Shared Sub ReadValue(ByRef ValueTable As NameValueCollection, ByVal ValueName As String, ByRef Variable As Date)
+            If Not ValueTable.Item(ValueName) Is Nothing Then
+                Try
+                    Variable = CType(ValueTable.Item(ValueName), Date)
+                Catch ex As Exception
+                End Try
+            End If
+        End Sub
 
- Public Shared Sub ReadValue(ByRef ValueTable As NameValueCollection, ByVal ValueName As String, ByRef Variable As TimeSpan)
-  If Not ValueTable.Item(ValueName) Is Nothing Then
-   Try
-    Variable = TimeSpan.Parse(CType(ValueTable.Item(ValueName), String))
-   Catch ex As Exception
-   End Try
-  End If
- End Sub
+        Public Shared Sub ReadValue(ByRef ValueTable As NameValueCollection, ByVal ValueName As String, ByRef Variable As TimeSpan)
+            If Not ValueTable.Item(ValueName) Is Nothing Then
+                Try
+                    Variable = TimeSpan.Parse(CType(ValueTable.Item(ValueName), String))
+                Catch ex As Exception
+                End Try
+            End If
+        End Sub
 #End Region
 
 #Region " Other "
- Public Shared Function CYesNo(ByVal value As Boolean) As String
-  If value Then
-   Return "Yes"
-  Else
-   Return "No"
-  End If
- End Function
+        Public Shared Function CYesNo(ByVal value As Boolean) As String
+            If value Then
+                Return "Yes"
+            Else
+                Return "No"
+            End If
+        End Function
 
- Public Shared Sub AddModDef(ByVal PortalSettings As Entities.Portals.PortalSettings, ByVal ModuleDefID As Integer, ByVal TabID As Integer, ByVal paneName As String, ByVal position As Integer, ByVal title As String)
+        Public Shared Sub AddModDef(ByVal PortalSettings As Entities.Portals.PortalSettings, ByVal ModuleDefID As Integer, ByVal TabID As Integer, ByVal paneName As String, ByVal position As Integer, ByVal title As String)
 
-  Dim objModuleDefinition As Definitions.ModuleDefinitionInfo = (New Definitions.ModuleDefinitionController).GetModuleDefinition(ModuleDefID)
-  Dim objTabPermissions As Security.Permissions.TabPermissionCollection = (New Security.Permissions.TabPermissionController).GetTabPermissionsCollectionByTabID(TabID, PortalSettings.PortalId)
-  Dim objModule As New ModuleInfo
-  objModule.Initialize(PortalSettings.PortalId)
-  objModule.PortalID = PortalSettings.PortalId
-  objModule.TabID = PortalSettings.ActiveTab.TabID
-  objModule.ModuleOrder = position
-  If title = "" Then
-   objModule.ModuleTitle = objModuleDefinition.FriendlyName
-  Else
-   objModule.ModuleTitle = title
-  End If
-  objModule.PaneName = paneName
-  objModule.ModuleDefID = objModuleDefinition.ModuleDefID
-  objModule.InheritViewPermissions = True
+            Dim objModuleDefinition As Definitions.ModuleDefinitionInfo = (New Definitions.ModuleDefinitionController).GetModuleDefinition(ModuleDefID)
+            Dim objTabPermissions As Security.Permissions.TabPermissionCollection = (New Security.Permissions.TabPermissionController).GetTabPermissionsCollectionByTabID(TabID, PortalSettings.PortalId)
+            Dim objModule As New ModuleInfo
+            objModule.Initialize(PortalSettings.PortalId)
+            objModule.PortalID = PortalSettings.PortalId
+            objModule.TabID = PortalSettings.ActiveTab.TabID
+            objModule.ModuleOrder = position
+            If title = "" Then
+                objModule.ModuleTitle = objModuleDefinition.FriendlyName
+            Else
+                objModule.ModuleTitle = title
+            End If
+            objModule.PaneName = paneName
+            objModule.ModuleDefID = objModuleDefinition.ModuleDefID
+            objModule.InheritViewPermissions = True
 
-  ' get the default module view permissions
-  Dim arrSystemModuleViewPermissions As ArrayList = (New DotNetNuke.Security.Permissions.PermissionController).GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", "VIEW")
+            ' get the default module view permissions
+            Dim arrSystemModuleViewPermissions As ArrayList = (New DotNetNuke.Security.Permissions.PermissionController).GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", "VIEW")
 
-  objModule.AllTabs = False
-  objModule.Alignment = ""
-  Dim objModules As New ModuleController
-  objModules.AddModule(objModule)
+            objModule.AllTabs = False
+            objModule.Alignment = ""
+            Dim objModules As New ModuleController
+            objModules.AddModule(objModule)
 
- End Sub
+        End Sub
 #End Region
 
-End Class
+    End Class
+
+End Namespace

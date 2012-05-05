@@ -18,47 +18,50 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Public Class Constants
+Namespace Components.Common
 
-    Public Enum TagMode
-        ShowNoUsage = 0
-        ShowDailyUsage = 1
-        ShowWeeklyUsage = 2
-        ShowMonthlyUsage = 3
-        ShowTotalUsage = 4
-    End Enum
+    Public Class Constants
 
-    Public Const ContentTypeName As String = "DNN_Blog_Entry" ' change to DNN_Blog_Entry
+        Public Enum TagMode
+            ShowNoUsage = 0
+            ShowDailyUsage = 1
+            ShowWeeklyUsage = 2
+            ShowMonthlyUsage = 3
+            ShowTotalUsage = 4
+        End Enum
 
-    ''' <summary>
-    ''' A recommended limit for a meta page title for SEO purposes.
-    ''' </summary>
-    Public Const SeoTitleLimit As Integer = 64
+        Public Const ContentTypeName As String = "DNN_Blog_Entry" ' change to DNN_Blog_Entry
 
-    ''' <summary>
-    ''' A recommended limit for a meta page description for SEO purposes.
-    ''' </summary>
-    Public Const SeoDescriptionLimit As Integer = 150
+        ''' <summary>
+        ''' A recommended limit for a meta page title for SEO purposes.
+        ''' </summary>
+        Public Const SeoTitleLimit As Integer = 64
 
-    ''' <summary>
-    ''' A recommended limit for meta page keywords for SEO purposes.
-    ''' </summary>
-    Public Const SeoKeywordsLimit As Integer = 15
+        ''' <summary>
+        ''' A recommended limit for a meta page description for SEO purposes.
+        ''' </summary>
+        Public Const SeoDescriptionLimit As Integer = 150
 
-    Public Const SharedResourceFileName As String = "~/DesktopModules/Blog/App_LocalResources/SharedResources.resx"
+        ''' <summary>
+        ''' A recommended limit for meta page keywords for SEO purposes.
+        ''' </summary>
+        Public Const SeoKeywordsLimit As Integer = 15
 
-    Public Const ModuleCacheKeyPrefix As String = "DNN_Blog_"
+        Public Const SharedResourceFileName As String = "~/DesktopModules/Blog/App_LocalResources/SharedResources.resx"
 
-    Public Const VocabTermsCacheKey As String = "Vocabulary_Terms_"
+        Public Const ModuleCacheKeyPrefix As String = "DNN_Blog_"
 
-    Public Const VocabSuffixCacheKey As String = "Vocabulary_"
+        Public Const VocabTermsCacheKey As String = "Vocabulary_Terms_"
 
-    Public Const VocabularySuffixCacheKey As String = "Vocabulary_"
+        Public Const VocabSuffixCacheKey As String = "Vocabulary_"
 
-    Public Const ContentItemTermsCacheKey As String = "ContentItem_Terms_"
+        Public Const VocabularySuffixCacheKey As String = "Vocabulary_"
 
-    Public Const BloggerPermission As String = "BLOGGER"
+        Public Const ContentItemTermsCacheKey As String = "ContentItem_Terms_"
 
-    Public Const GhostWriterPermission As String = "GHOSTWRITER"
+        Public Const BloggerPermission As String = "BLOGGER"
 
-End Class
+        Public Const GhostWriterPermission As String = "GHOSTWRITER"
+
+    End Class
+End Namespace

@@ -19,6 +19,7 @@
 '
 
 Imports System
+Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.Services.Exceptions

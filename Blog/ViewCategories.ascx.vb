@@ -19,6 +19,7 @@
 '
 
 Imports System.Linq
+Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Entities.Content.Taxonomy
 Imports Telerik.Web.UI
 

@@ -17,18 +17,19 @@
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 ' DEALINGS IN THE SOFTWARE.
 '
+Imports DotNetNuke.Modules.Blog.Components.Common
 
 Namespace Settings
 
- ''' <summary>
- ''' This class abstracts all settings for the module and makes sure they're (a) defaulted and (b) hard typed 
- ''' throughout the application.
- ''' </summary>
- ''' <remarks></remarks>
- ''' <history>
- '''		[pdonker]	12/30/2009	created
- ''' </history>
- Public Class TagViewSettings
+    ''' <summary>
+    ''' This class abstracts all settings for the module and makes sure they're (a) defaulted and (b) hard typed 
+    ''' throughout the application.
+    ''' </summary>
+    ''' <remarks></remarks>
+    ''' <history>
+    '''		[pdonker]	12/30/2009	created
+    ''' </history>
+    Public Class TagViewSettings
 
 #Region "Private Members"
 
@@ -84,6 +85,6 @@ Namespace Settings
 
 #End Region
 
- End Class
+    End Class
 
 End Namespace

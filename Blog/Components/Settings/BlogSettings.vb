@@ -19,6 +19,7 @@
 '
 
 Imports System.Xml
+Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Common.Utilities
 
 Namespace Settings

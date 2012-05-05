@@ -405,7 +405,8 @@
 			  <name>DotNetNuke.Modules.Blog.SqlDataProvider.dll</name>
 			</file>
 		  </files>
-		</component>        
+		</component>
+		  <component type="Cleanup" version="05.00.00" fileName="05.00.00.txt" />
 	  </components>
 	</package>
   </packages>

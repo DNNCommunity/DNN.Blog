@@ -23,6 +23,7 @@ Imports System.Collections.Generic
 Imports System.ComponentModel
 Imports System.Web.UI.WebControls
 Imports System.Web.UI
+Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.UI.Modules
 

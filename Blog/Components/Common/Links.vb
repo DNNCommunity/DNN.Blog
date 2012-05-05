@@ -19,7 +19,7 @@
 '
 Imports DotNetNuke.UI.Modules
 
-Namespace Business
+Namespace Components.Common
 
     Public Class Links
 
@@ -99,5 +99,4 @@ Namespace Business
 #End Region
 
     End Class
-
 End Namespace

@@ -19,6 +19,7 @@
 '
 
 Imports System.Xml
+Imports DotNetNuke.Modules.Blog.Components.Common
 
 Partial Public Class WLWManifest
  Inherits System.Web.UI.Page

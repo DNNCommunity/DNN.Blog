@@ -18,6 +18,7 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
+Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Services.Localization
 
 Namespace Settings

@@ -22,6 +22,7 @@ Imports System
 Imports System.Collections
 Imports System.Reflection
 Imports System.Web
+Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Data
 Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Entities.Users

@@ -19,6 +19,7 @@
 '
 
 Imports System.Xml
+Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.Common
@@ -85,17 +86,17 @@ Namespace Rss
             _includeBody = _blogSettings.IncludeBody
             If _includeBody Then
                 _includeBody = False
-                Globals.ReadValue(Request.Params, "body", _includeBody)
+                Components.Common.Globals.ReadValue(Request.Params, "body", _includeBody)
             End If
             _includeCategoriesInDescription = _blogSettings.IncludeCategoriesInDescription
             _includeTagsInDescription = _blogSettings.IncludeTagsInDescription
 
             ' Read request
             _requestUrl = Request.Url
-            Globals.ReadValue(Request.Params, "rssid", _rssId)
+            Components.Common.Globals.ReadValue(Request.Params, "rssid", _rssId)
             _blog = (New BlogController).GetBlog(_rssId)
-            Globals.ReadValue(Request.Params, "rssentryid", _rssEntryId)
-            Globals.ReadValue(Request.Params, "rssdate", _rssDate)
+            Components.Common.Globals.ReadValue(Request.Params, "rssentryid", _rssEntryId)
+            Components.Common.Globals.ReadValue(Request.Params, "rssdate", _rssDate)
             If _rssDate <> "" Then
                 _rssDateAsDate = CType(_rssDate, Date)
                 _rssDateAsDate = _rssDateAsDate.AddDays(1)
@@ -229,12 +230,12 @@ Namespace Rss
                     dr = Data.DataProvider.Instance().ListEntriesByPortal(_portalSettings.PortalId, Date.UtcNow, Nothing, _blogSettings.RecentRssEntriesMax, 1, DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName), DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName))
                 Case RssViews.BlogEntries
                     If Not _blog Is Nothing Then
-                        dr = DotNetNuke.Modules.Blog.Data.DataProvider.Instance().ListEntriesByBlog(_rssId, Date.UtcNow, _blogSettings.RecentRssEntriesMax, 1, Blog.Business.ModuleSecurity.HasBlogPermission(_userId, _blog.UserID, _moduleId), Blog.Business.ModuleSecurity.HasBlogPermission(_userId, _blog.UserID, _moduleId))
+                        dr = DotNetNuke.Modules.Blog.Data.DataProvider.Instance().ListEntriesByBlog(_rssId, Date.UtcNow, _blogSettings.RecentRssEntriesMax, 1, ModuleSecurity.HasBlogPermission(_userId, _blog.UserID, _moduleId), ModuleSecurity.HasBlogPermission(_userId, _blog.UserID, _moduleId))
                     End If
                 Case RssViews.ArchivEntries
                     Dim m_dBlogDate As Date
                     If _blog IsNot Nothing Then
-                        dr = DotNetNuke.Modules.Blog.Data.DataProvider.Instance().ListEntriesByBlog(_rssId, m_dBlogDate.ToUniversalTime, _blogSettings.RecentRssEntriesMax, 1, Blog.Business.ModuleSecurity.HasBlogPermission(_userId, _blog.UserID, _moduleId), Blog.Business.ModuleSecurity.HasBlogPermission(_userId, _blog.UserID, _moduleId))
+                        dr = DotNetNuke.Modules.Blog.Data.DataProvider.Instance().ListEntriesByBlog(_rssId, m_dBlogDate.ToUniversalTime, _blogSettings.RecentRssEntriesMax, 1, ModuleSecurity.HasBlogPermission(_userId, _blog.UserID, _moduleId), ModuleSecurity.HasBlogPermission(_userId, _blog.UserID, _moduleId))
                     Else
                         dr = Data.DataProvider.Instance().ListEntriesByPortal(_portalSettings.PortalId, m_dBlogDate.ToUniversalTime, Nothing, _blogSettings.RecentRssEntriesMax, 1, DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName), DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName))
                     End If
@@ -277,19 +278,19 @@ Namespace Rss
             writer.WriteElementString("link", PermaLink)
             Dim Description As String = ""
             If ir.Item("Description") Is DBNull.Value Then
-                Description = Utility.RewriteRefs(HttpUtility.HtmlDecode(CStr(ir.Item("Entry")))) & "<br /><a href=" + PermaLink + ">" & Localization.GetString("More", Globals.glbSharedResourceFile) & "</a>"
+                Description = Utility.RewriteRefs(HttpUtility.HtmlDecode(CStr(ir.Item("Entry")))) & "<br /><a href=" + PermaLink + ">" & Localization.GetString("More", Components.Common.Globals.glbSharedResourceFile) & "</a>"
             Else
                 Description = Utility.RewriteRefs(HttpUtility.HtmlDecode(CStr(ir.Item("Description"))))
             End If
             If _includeTagsInDescription Then
                 Dim TagString As String = TagController.GetTagsByEntry(EntryId)
                 If Not TagString = "" Then
-                    Description &= "<div class=""tags"">" & Localization.GetString("Tags", Globals.glbSharedResourceFile) & ": " & TagString & "</div>"
+                    Description &= "<div class=""tags"">" & Localization.GetString("Tags", Components.Common.Globals.glbSharedResourceFile) & ": " & TagString & "</div>"
                 End If
             End If
             If _includeCategoriesInDescription Then
                 For Each c As CategoryInfo In CategoryController.ListCatsByEntry(EntryId)
-                    Description &= "<div class=""category"">" & Localization.GetString("Category", Globals.glbSharedResourceFile) & ": <a href=" & NavigateURL(_tabId, "", "CatID=" & c.CatId.ToString) & ">" & c.Category & "</a></div>"
+                    Description &= "<div class=""category"">" & Localization.GetString("Category", Components.Common.Globals.glbSharedResourceFile) & ": <a href=" & NavigateURL(_tabId, "", "CatID=" & c.CatId.ToString) & ">" & c.Category & "</a></div>"
                 Next
             End If
             writer.WriteElementString("description", Description)

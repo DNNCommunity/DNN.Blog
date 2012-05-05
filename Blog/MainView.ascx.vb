@@ -19,6 +19,7 @@
 '
 
 Imports System
+Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Entities.Modules.Definitions
 Imports DotNetNuke.Entities.Modules.Actions
@@ -155,7 +156,7 @@ Partial Public Class MainView
             Dim isBlogOwner As Boolean = False
             Dim cntBlog As New BlogController
             Dim objBlog As BlogInfo
-            Dim objSecurity As New Blog.Business.ModuleSecurity(ModuleContext.ModuleId, ModuleContext.TabId)
+            Dim objSecurity As New ModuleSecurity(ModuleContext.ModuleId, ModuleContext.TabId)
 
             If SpecificBlogId > 0 Then
                 objBlog = cntBlog.GetBlog(SpecificBlogId)

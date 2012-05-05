@@ -23,6 +23,7 @@ Imports System.Net
 Imports System.IO
 Imports System.Text
 Imports System.Text.RegularExpressions
+Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Security
 Imports DotNetNuke.Data
 Imports DotNetNuke.Common.Globals

@@ -106,6 +106,7 @@
     <Import Include="System.Web.UI.HtmlControls" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="05.00.00.txt" />
     <Content Include="Archive.ascx" />
     <Content Include="BlogFeed.ascx" />
     <Content Include="BlogList.ascx" />
@@ -163,9 +164,13 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Components\Blogger\IBlogger.vb" />
-    <Compile Include="Components\Business\Constants.vb" />
-    <Compile Include="Components\Business\Links.vb" />
-    <Compile Include="Components\Business\ModuleSecurity.vb" />
+    <Compile Include="Components\Common\BlogModuleBase.vb">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Components\Common\Constants.vb" />
+    <Compile Include="Components\Common\Globals.vb" />
+    <Compile Include="Components\Common\Links.vb" />
+    <Compile Include="Components\Common\ModuleSecurity.vb" />
     <Compile Include="Components\Controllers\ArchiveController.vb" />
     <Compile Include="Components\Controllers\BlogController.vb" />
     <Compile Include="Components\Controllers\CategoryController.vb" />
@@ -185,12 +190,7 @@
     <Compile Include="Components\Integration\Terms.vb" />
     <Compile Include="Components\Settings\BlogSettings.vb" />
     <Compile Include="Components\Business\TemplateManager.vb" />
-    <Compile Include="Components\Settings\RecentCommentsSettings.vb">
-    </Compile>
-    <Compile Include="Components\Settings\RecentEntriesSettings.vb">
-    </Compile>
     <Compile Include="Components\Settings\TagViewSettings.vb" />
-    <Compile Include="Components\Globals.vb" />
     <Compile Include="Components\MetaWeblog\IMetaWeblog.vb" />
     <Compile Include="Components\MoveableType\IMoveableType.vb" />
     <Compile Include="Components\Rss\StringWriterWithEncoding.vb" />
@@ -198,9 +198,6 @@
     <Compile Include="Controls\Tags.vb" />
     <Compile Include="Components\Business\ArchiveDays.vb" />
     <Compile Include="Components\Business\ArchiveMonths.vb" />
-    <Compile Include="Components\BlogModuleBase.vb">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Components\File\FileController.vb" />
     <Compile Include="Components\MetaWeblog\BlogModuleProvider.vb" />
     <Compile Include="Components\MetaWeblog\ProviderEnums.vb" />
@@ -313,7 +310,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_LocalResources\Archive.ascx.resx" />
-    <Content Include="App_LocalResources\BlogImport.ascx.resx" />
     <Content Include="App_LocalResources\BlogList.ascx.resx" />
     <Content Include="App_LocalResources\blogpost.ascx.resx" />
     <Content Include="App_LocalResources\EditBlog.ascx.resx" />
@@ -329,8 +325,6 @@
     <Content Include="App_LocalResources\SharedResources.resx" />
     <Content Include="App_LocalResources\ViewTagsSettings.ascx.resx" />
     <Content Include="App_LocalResources\MassEdit.ascx.resx" />
-    <Content Include="App_LocalResources\RecentEntries.ascx.resx" />
-    <Content Include="App_LocalResources\RecentEntriesSettings.ascx.resx" />
     <Content Include="App_LocalResources\BlogTemplates.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
@@ -340,8 +334,6 @@
     <Content Include="include\js\syntaxHighlighter.js" />
     <Content Include="MainView.ascx" />
     <Content Include="MassEdit.ascx" />
-    <Content Include="js\bookmarks.js" />
-    <Content Include="js\bookmarks.xml" />
     <Content Include="js\Gravatar.js" />
     <Content Include="js\md5.js" />
     <Content Include="Styles\Blog-FullEnry.xsl" />
@@ -375,7 +367,7 @@
     <None Include="Providers\Data\SqlDataProvider\Uninstall.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Components\Common\" />
+    <Content Include="App_LocalResources\ViewCategories.ascx.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

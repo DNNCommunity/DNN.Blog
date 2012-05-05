@@ -20,6 +20,7 @@
 Option Strict On
 Option Explicit On
 
+Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Entities.Content
 Imports DotNetNuke.Entities.Content.Common

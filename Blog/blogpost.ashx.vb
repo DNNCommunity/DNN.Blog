@@ -21,6 +21,7 @@
 Imports System
 Imports System.Data
 Imports System.Text.RegularExpressions
+Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Data
 Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Entities.Tabs

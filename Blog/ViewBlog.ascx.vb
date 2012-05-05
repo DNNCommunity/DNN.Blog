@@ -19,6 +19,7 @@
 '
 
 Imports System
+Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Services.Exceptions
@@ -94,7 +95,7 @@ Partial Public Class ViewBlog
 
         Else
             If m_oBlog IsNot Nothing Then
-                If Blog.Business.ModuleSecurity.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
+                If ModuleSecurity.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
                     MyActions.Add(GetNextActionID, GetString("msgEditBlogSettings", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Blog"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
                     MyActions.Add(GetNextActionID, GetString("msgAddBlogEntry", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Entry"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
                     MyActions.Add(GetNextActionID, GetString("msgMassEdit", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Mass_Edit"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
@@ -192,7 +193,7 @@ Partial Public Class ViewBlog
                                 imgAuthorLink.NavigateUrl = DotNetNuke.Common.Globals.UserProfileURL(m_oBlog.UserID)
 
                                 litBlogDescription.Text = m_oBlog.Description
-                                list = objEntries.ListEntriesByBlog(m_oBlog.BlogID, m_dBlogDate, BlogSettings.RecentEntriesMax, CurrentPage, Blog.Business.ModuleSecurity.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId), Blog.Business.ModuleSecurity.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId))
+                                list = objEntries.ListEntriesByBlog(m_oBlog.BlogID, m_dBlogDate, BlogSettings.RecentEntriesMax, CurrentPage, ModuleSecurity.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId), ModuleSecurity.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId))
 
                                 prevPage = Links.ViewEntriesByBlog(ModuleContext, m_oBlog.BlogID, CurrentPage - 1)
                                 nextPage = Links.ViewEntriesByBlog(ModuleContext, m_oBlog.BlogID, CurrentPage + 1)
@@ -336,7 +337,7 @@ Partial Public Class ViewBlog
             imgEdit = CType(e.Item.FindControl("imgEdit"), System.Web.UI.WebControls.Image)
 
             If Not m_oEntry Is Nothing Then
-                If Blog.Business.ModuleSecurity.HasBlogPermission(Me.UserId, m_oEntry.UserID, Me.ModuleId) AndAlso Not lnkEditEntry Is Nothing Then
+                If ModuleSecurity.HasBlogPermission(Me.UserId, m_oEntry.UserID, Me.ModuleId) AndAlso Not lnkEditEntry Is Nothing Then
                     lnkEditEntry.Visible = True
                     lnkEditEntry.NavigateUrl = EditUrl("EntryID", CType(e.Item.DataItem, EntryInfo).EntryID.ToString(), "Edit_Entry")
                 Else

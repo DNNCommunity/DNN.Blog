@@ -20,7 +20,7 @@
 Imports DotNetNuke.Security
 Imports DotNetNuke.Security.Permissions
 
-Namespace Business
+Namespace Components.Common
 
     Public Class ModuleSecurity
 
@@ -71,5 +71,4 @@ Namespace Business
         End Function
 
     End Class
-
 End Namespace

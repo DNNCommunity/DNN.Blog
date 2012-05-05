@@ -19,6 +19,7 @@
 '
 
 Imports System
+Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Services.Exceptions
@@ -50,7 +51,7 @@ Partial Class MassEdit
         End If
         If Not m_oBlog Is Nothing Then
 
-            If Blog.Business.ModuleSecurity.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
+            If ModuleSecurity.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
                 MyActions.Add(GetNextActionID, Localization.GetString("msgEditBlogSettings", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Blog"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
                 MyActions.Add(GetNextActionID, Localization.GetString("msgAddBlogEntry", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Entry"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
                 MyActions.Add(GetNextActionID, Localization.GetString("msgMassEdit", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Mass_Edit"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
@@ -70,7 +71,7 @@ Partial Class MassEdit
                     list = objEntries.ListEntriesByPortal(Me.PortalId, m_dBlogDate, m_dBlogDateType, 100000, 1, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
 
                 Else
-                    list = objEntries.ListEntriesByBlog(m_oBlog.BlogID, m_dBlogDate, 100000, 1, Blog.Business.ModuleSecurity.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId), Blog.Business.ModuleSecurity.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId))
+                    list = objEntries.ListEntriesByBlog(m_oBlog.BlogID, m_dBlogDate, 100000, 1, ModuleSecurity.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId), ModuleSecurity.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId))
                 End If
 
                 Dim PageSize As Integer = 20 'Display 20 items per page

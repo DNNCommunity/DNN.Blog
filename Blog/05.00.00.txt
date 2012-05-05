@@ -1,0 +1,22 @@
+
+DesktopModules\Blog\RecentEntries.ascx
+DesktopModules\Blog\RecentEntries.ascx.designer.vb
+DesktopModules\Blog\RecentEntries.ascx.vb
+DesktopModules\Blog\App_LocalResources\RecentEntries.ascx.resx
+DesktopModules\Blog\RecentEntriesSettings.ascx
+DesktopModules\Blog\RecentEntriesSettings.ascx.designer.vb
+DesktopModules\Blog\RecentEntriesSettings.ascx.vb
+DesktopModules\Blog\App_LocalResources\RecentEntriesSettings.ascx.resx
+DesktopModules\Blog\EditCategories.ascx
+DesktopModules\Blog\EditCategories.ascx.designer.vb
+DesktopModules\Blog\EditCategories.ascx.vb
+DesktopModules\Blog\App_LocalResources\EditCategories.ascx.resx
+DesktopModules\Blog\Blog.ascx
+DesktopModules\Blog\Blog.ascx.designer.vb
+DesktopModules\Blog Blog.ascx.vb
+DesktopModules\Blog\App_LocalResources\Blog.ascx.resx
+DesktopModules\Blog\Components\Settings\RecentEntriesSettings.vb
+DesktopModules\Blog\App_LocalResources\SharedResources.ascx.resx
+DesktopModules\Blog\js\bookmark.js
+DesktopModules\Blog\js\bookmark.xml
+DesktopModules\Blog\js\tag.js
