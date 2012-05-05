@@ -50,8 +50,8 @@ Namespace Business
             Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().ListAllEntriesByPortal(PortalID, ShowNonPublic, ShowNonPublished))
         End Function
 
-        Public Function GetAllEntriesByTerm(ByVal portalId As Integer, ByVal termId As Integer, ByVal pageSize As Integer, ByVal currentPage As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As List(Of EntryInfo)
-            Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().GetAllEntriesByTerm(portalId, termId, pageSize, currentPage, ShowNonPublic, ShowNonPublished))
+        Public Function GetAllEntriesByTerm(ByVal portalId As Integer, ByVal BlogDate As Date, ByVal termId As Integer, ByVal pageSize As Integer, ByVal currentPage As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As List(Of EntryInfo)
+            Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().GetAllEntriesByTerm(portalId, BlogDate, termId, pageSize, currentPage, ShowNonPublic, ShowNonPublished))
         End Function
 
         Public Function AddEntry(ByVal objEntry As EntryInfo, ByVal tabId As Integer) As EntryInfo

@@ -32,6 +32,7 @@ Imports DotNetNuke.Services.Journal
 Imports DotNetNuke.Framework
 Imports System.Linq
 Imports DotNetNuke.Entities.Content.Taxonomy
+Imports System.Globalization
 Imports Telerik.Web.UI
 
 Partial Class EditEntry
@@ -131,6 +132,7 @@ Partial Class EditEntry
             If Not Page.IsPostBack Then
                 PopulateCategories()
 
+                pnlChildBlogs.Visible = BlogSettings.AllowChildBlogs
                 cboChildBlogs.DataSource = m_oBlogController.ListBlogs(Me.PortalId, m_oParentBlog.BlogID, True)
                 cboChildBlogs.DataBind()
                 cboChildBlogs.Items.Insert(0, New ListItem(m_oParentBlog.Title, m_oParentBlog.BlogID.ToString()))
@@ -142,9 +144,6 @@ Partial Class EditEntry
                 Me.lblTrackbackUrl.Visible = Not m_oParentBlog.AutoTrackback
                 Me.txtTrackBackUrl.Visible = Not m_oParentBlog.AutoTrackback
                 ' end change in 3.1.23
-
-                'CategoryController.PopulateTree(treeCategories, PortalId, 0)
-                lTimeZone.Text = m_oBlog.TimeZone.DisplayName
 
                 If BlogSettings.AllowSummaryHtml Then
                     txtDescription.Visible = True
@@ -159,11 +158,23 @@ Partial Class EditEntry
                 'lblPublished.Text = GetString("UnPublished.Status", LocalResourceFile)
 
                 If Not m_oEntry Is Nothing Then
-                    'Load data
-                    'txtEntryDate.Text = Utility.FormatDate(m_oEntry.AddedDate, m_oBlog.Culture, m_oBlog.DateFormat, m_oBlog.TimeZone)
-                    Dim n As Date = Utility.AdjustedDate(m_oEntry.AddedDate, m_oBlog.TimeZone)
-                    dpEntryDate.SelectedDate = n
-                    txtEntryTime.Text = n.ToString("t", m_oBlog.CultureInfo)
+                    Dim userCulture As CultureInfo = New System.Globalization.CultureInfo(ModuleContext.PortalSettings.UserInfo.Profile.PreferredLocale)
+
+                    litTimezone.Text = ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone.DisplayName
+
+                    Dim n As DateTime = Utility.AdjustedDate(m_oEntry.AddedDate, ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone)
+                    Dim publishDate As DateTime = n
+                    Dim timeOffset As TimeSpan = ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone.BaseUtcOffset
+
+                    publishDate = publishDate.Add(timeOffset)
+
+                    dpEntryDate.Culture = userCulture
+                    dpEntryDate.SelectedDate = publishDate
+
+                    'txtEntryTime.Text = n.ToString("t", m_oBlog.CultureInfo)
+                    tpEntryTime.Culture = userCulture
+                    tpEntryTime.SelectedDate = publishDate
+
                     txtTitle.Text = m_oEntry.Title
                     If BlogSettings.AllowSummaryHtml Then
                         txtDescription.Text = m_oEntry.Description
@@ -206,13 +217,23 @@ Partial Class EditEntry
                     End If
 
                 Else
+                    ' New Entry
+                    litTimezone.Text = ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone.DisplayName
+
                     'DR-04/16/2009-BLG-9657
                     chkAllowComments.Checked = m_oBlog.AllowComments
-                    'txtEntryDate.Text = Utility.FormatDate(Date.UtcNow, m_oBlog.Culture, m_oBlog.DateFormat, m_oBlog.TimeZone)
-                    Dim n As Date = Utility.AdjustedDate(Date.UtcNow, m_oBlog.TimeZone)
-                    dpEntryDate.SelectedDate = n
-                    txtEntryTime.Text = n.ToString("t", m_oBlog.CultureInfo)
-                    'chkDoNotTweet.Checked = False
+
+                    Dim userCulture As CultureInfo = New System.Globalization.CultureInfo(ModuleContext.PortalSettings.UserInfo.Profile.PreferredLocale)
+
+                    litTimezone.Text = ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone.DisplayName
+
+                    Dim n As Date = Utility.AdjustedDate(DateTime.Now, ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone)
+                    dpEntryDate.Culture = userCulture
+                    dpEntryDate.SelectedDate = n.Date
+
+                    'txtEntryTime.Text = n.ToString("t", m_oBlog.CultureInfo)
+                    tpEntryTime.Culture = userCulture
+                    tpEntryTime.SelectedDate = Utility.AdjustedDate(DateTime.Now, ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone)
                 End If
 
                 If Not Request.UrlReferrer Is Nothing Then
@@ -261,10 +282,6 @@ Partial Class EditEntry
     Protected Sub valEntry_ServerValidate(ByVal source As Object, ByVal args As System.Web.UI.WebControls.ServerValidateEventArgs) Handles valEntry.ServerValidate
         args.IsValid = teBlogEntry.Text.Length > 0
     End Sub
-
-    'Protected Sub valEntryDateData_ServerValidate(ByVal source As System.Object, ByVal args As System.Web.UI.WebControls.ServerValidateEventArgs) Handles valEntryDateData.ServerValidate
-    ' args.IsValid = Utility.IsValidDate(txtEntryDate.Text, m_oBlog.Culture)
-    'End Sub
 
     Protected Sub chkDisplayCopyright_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkDisplayCopyright.CheckedChanged
         pnlCopyright.Visible = chkDisplayCopyright.Checked
@@ -447,17 +464,22 @@ Partial Class EditEntry
                     End If
 
                     .AddedDate = CDate(dpEntryDate.SelectedDate)
-                    Dim time As Match = Regex.Match(txtEntryTime.Text.Trim, "(?i)((?'hr'\d\d?)\:(?'min'\d\d)\s?(?'apm'[AP]M))|((?'hr'\d\d?)\:(?'min'\d\d))(?-i)")
-                    If time.Success Then
-                        Dim hr As Integer = Integer.Parse(time.Groups("hr").Value)
-                        Dim min As Integer = Integer.Parse(time.Groups("min").Value)
-                        If time.Groups("apm").Success AndAlso time.Groups("apm").Value.ToLower = "pm" Then
-                            hr += 12
-                        End If
-                        .AddedDate = .AddedDate.AddHours(hr)
-                        .AddedDate = .AddedDate.AddMinutes(min)
-                    End If
-                    .AddedDate = TimeZoneInfo.ConvertTimeToUtc(.AddedDate, m_oBlog.TimeZone)
+                    Dim hour As Integer = tpEntryTime.SelectedDate.Value.Hour
+                    Dim minute As Integer = tpEntryTime.SelectedDate.Value.Minute
+                    .AddedDate = .AddedDate.AddHours(hour)
+                    .AddedDate = .AddedDate.AddMinutes(minute)
+
+                    'Dim time As Match = Regex.Match(txtEntryTime.Text.Trim, "(?i)((?'hr'\d\d?)\:(?'min'\d\d)\s?(?'apm'[AP]M))|((?'hr'\d\d?)\:(?'min'\d\d))(?-i)")
+                    'If time.Success Then
+                    'Dim hr As Integer = Integer.Parse(time.Groups("hr").Value)
+                    'Dim min As Integer = Integer.Parse(time.Groups("min").Value)
+                    'If time.Groups("apm").Success AndAlso time.Groups("apm").Value.ToLower = "pm" Then
+                    '    hr += 12
+                    'End If
+                    '.AddedDate = .AddedDate.AddHours(hr)
+                    '.AddedDate = .AddedDate.AddMinutes(min)
+                    'End If
+                    .AddedDate = TimeZoneInfo.ConvertTimeToUtc(.AddedDate, ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone)
 
                     If Null.IsNull(m_oEntry.EntryID) Then
                         .EntryID = m_oEntryController.AddEntry(m_oEntry, ModuleContext.TabId).EntryID
@@ -477,7 +499,6 @@ Partial Class EditEntry
                         End If
                     Next
 
-                    ' TODO: loop through selected categories, addd to term collection prior to save
                     If VocabularyId > 0 Then
                         For Each t As RadTreeNode In dtCategories.CheckedNodes
                             Dim objTerm As Term = Integration.Terms.GetTermById(Convert.ToInt32(t.Value), VocabularyId)

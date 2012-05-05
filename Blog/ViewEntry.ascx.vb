@@ -198,15 +198,17 @@ Partial Public Class ViewEntry
                     'lblBlogTitle.NavigateUrl = m_oEntry.PermaLink
 
                     lblTrackback.Text = Utility.GetTrackbackRDF(NavigateURL(), m_oEntry)
-                    lblDateTime.Text = Utility.FormatDate(m_oEntry.AddedDate, m_oBlog.Culture, m_oBlog.DateFormat, m_oBlog.TimeZone)
 
-     'lblEntryMonth.Text = GetMonth(m_oEntry.AddedDate, m_oBlog.TimeZone)
-    ' lblEntryDay.Text = GetDay(m_oEntry.AddedDate, m_oBlog.TimeZone)
+                    Dim userCulture As CultureInfo = New System.Globalization.CultureInfo(ModuleContext.PortalSettings.UserInfo.Profile.PreferredLocale)
+                    Dim n As DateTime = Utility.AdjustedDate(m_oEntry.AddedDate, ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone)
 
-                    ''Antonio Chagoury - 4/11/2008
-                    'If BlogSettings.ShowSocialBookmarks Then
-                    '    AddSocialBookmarks(m_oEntry.Title, m_oEntry.PermaLink)
-                    'End If
+                    Dim publishDate As DateTime = n
+                    Dim timeOffset As TimeSpan = ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone.BaseUtcOffset
+
+                    publishDate = publishDate.Add(timeOffset)
+                    lblDateTime.Text = publishDate.ToShortDateString + " " + publishDate.ToShortTimeString
+
+                    'lblDateTime.Text = Utility.FormatDate(m_oEntry.AddedDate, m_oBlog.Culture, m_oBlog.DateFormat, m_oBlog.TimeZone)
 
                     ' CP: Social Sharing
                     Dim facebookContent As String = ""

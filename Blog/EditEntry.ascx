@@ -8,32 +8,29 @@
 	<fieldset>
 		<div class="dnnFormItem dnnFormHelp dnnClear"><p class="dnnFormRequired"><span><%=LocalizeString("RequiredFields")%></span></p></div>
 		<div class="dnnFormItem">
-			<dnn:Label ID="lblEntryDate" runat="server" controlname="dpEntryDate" suffix=":" />
-   <dnnweb:DnnDatePicker ID="dpEntryDate" runat="server"/>
-		</div>
-		<div class="dnnFormItem">
-			<dnn:Label ID="lblTimezone" runat="server" controlname="txtEntryTime" suffix=":" />
-   <asp:Label runat="server" ID="lTimeZone" />
-		</div>
-		<div class="dnnFormItem">
-			<dnn:Label ID="lblEntryTime" runat="server" controlname="txtEntryTime" suffix=":" />
-   <asp:TextBox runat="server" ID="txtEntryTime" CssClass="dnnFormRequired" />
-   <asp:RegularExpressionValidator runat="server" ID="valEntryTime" ControlToValidate="txtEntryTime" ValidationExpression="(\d\d?\:\d\d\s?[APap][Mm])|(\d\d?\:\d\d)" resourcekey="valEntryTime.ErrorMessage" Display="Dynamic" CssClass="dnnFormError" />
-			<asp:RequiredFieldValidator ID="reqEntryTime" runat="server" ResourceKey="reqEntryTime.ErrorMessage" Display="Dynamic" ControlToValidate="txtEntryTime" CssClass="dnnFormError" />
-		</div>
-		<div class="dnnFormItem">
-			<dnn:Label ID="lblChildBlog" runat="server" controlname="cboChildBlogs" suffix=":" />
-			<asp:DropDownList ID="cboChildBlogs" runat="server" ResourceKey="cboChildBlogs.DataTextField" DataValueField="BlogID" DataTextField="Title" /> 
-		</div>
-		<div class="dnnFormItem">
 			<dnn:Label ID="lblTitle" runat="server" controlname="treeCategories" suffix=":" />
 			<asp:TextBox ID="txtTitle" runat="server" CssClass="dnnFormRequired" />
 			<asp:RequiredFieldValidator ID="valTitle" runat="server" ResourceKey="valTitle.ErrorMessage" Display="Dynamic" ControlToValidate="txtTitle" CssClass="dnnFormError" />
 		</div>
 		<div class="dnnFormItem">
+			<dnn:Label ID="lblPublishDate" runat="server" ControlName="dpEntryDate" Suffix=":" />
+			<dnnweb:DnnDatePicker ID="dpEntryDate" runat="server" />
+			<dnnweb:DnnTimePicker ID="tpEntryTime" runat="server" TimeView-Columns="4" ShowPopupOnFocus="true" />
+		</div>
+		<div class="dnnFormItem">
+			<label></label>
+			<div class="dnnLeft">
+				<em><%= Localization.GetString("PublishTimeZoneNote", LocalResourceFile)%><br /><asp:Literal runat="server" ID="litTimezone" /></em>
+			</div>
+		</div>
+		<asp:Panel class="dnnFormItem" id="pnlChildBlogs" runat="server">
+			<dnn:Label ID="lblChildBlog" runat="server" controlname="cboChildBlogs" suffix=":" />
+			<asp:DropDownList ID="cboChildBlogs" runat="server" ResourceKey="cboChildBlogs.DataTextField" DataValueField="BlogID" DataTextField="Title" /> 
+		</asp:Panel>
+		<div class="dnnFormItem">
 			<dnn:Label ID="lblSummary" runat="server" controlname="txtDescription" suffix=":" />
 			<div class="dnnLeft">
-				<dnn:texteditor id="txtDescription" runat="server" width="550" height="300" />
+				<dnn:texteditor id="txtDescription" runat="server" width="450" height="300" />
 				<asp:TextBox runat="server" ID="txtDescriptionText" Width="450" Height="200" TextMode="MultiLine" Visible="false" />
 				<asp:RequiredFieldValidator ID="valDescription" runat="server" ResourceKey="valDescription.ErrorMessage" Display="Dynamic" ControlToValidate="txtDescription" CssClass="dnnFormError" />  
 			</div>
@@ -44,7 +41,7 @@
 		<div class="dnnFormItem">
 			<dnn:Label ID="lblDescription" ResourceKey="lblDescription" runat="server" controlname="teBlogEntry" suffix=":" />
 			<div class="dnnLeft">
-				<dnn:texteditor id="teBlogEntry" runat="server" width="550" height="400" />
+				<dnn:texteditor id="teBlogEntry" runat="server" width="450" height="400" />
 			</div>
 		</div>
 		<asp:Panel ID="pnlCategories" runat="server" class="dnnFormItem">
@@ -55,8 +52,9 @@
 		</asp:Panel>
 		<div class="dnnFormItem">
 			<dnn:Label ID="lblTags" runat="server" controlname="txtTags" suffix=":" />
-			<asp:TextBox ID="txtTags" runat="server" />	
-			<asp:CustomValidator ID="valtxtTags" runat="server" ClientValidationFunction="serializeTags" ControlToValidate="txtTags" ValidateOnEmpty="true" />
+			<div class="dnnClear">
+				<asp:TextBox ID="txtTags" runat="server" />	
+			</div>
 		</div>
 	</fieldset>			
 	<asp:Panel ID="pnlUploads" runat="server" Visible="true">

@@ -271,4 +271,10 @@
   <data name="reqEntryTime.ErrorMessage" xml:space="preserve">
     <value>A time is required</value>
   </data>
+  <data name="lblPublishDate.Text" xml:space="preserve">
+    <value>Publish Date</value>
+  </data>
+  <data name="PublishTimeZoneNote.Text" xml:space="preserve">
+    <value>The publish date is based on your profile timezone of: </value>
+  </data>
 </root>

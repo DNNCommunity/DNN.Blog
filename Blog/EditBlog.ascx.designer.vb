@@ -329,60 +329,6 @@ Partial Public Class EditBlog
     Protected WithEvents cmdGenerateLinks As Global.System.Web.UI.WebControls.LinkButton
 
     '''<summary>
-    '''lblTimeZone control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblTimeZone As Global.DotNetNuke.UI.UserControls.LabelControl
-
-    '''<summary>
-    '''ddTimeZone control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents ddTimeZone As Global.DotNetNuke.Web.UI.WebControls.DnnTimeZoneComboBox
-
-    '''<summary>
-    '''lblCulture control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblCulture As Global.DotNetNuke.UI.UserControls.LabelControl
-
-    '''<summary>
-    '''cboCulture control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents cboCulture As Global.System.Web.UI.WebControls.DropDownList
-
-    '''<summary>
-    '''lblDateFormat control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblDateFormat As Global.DotNetNuke.UI.UserControls.LabelControl
-
-    '''<summary>
-    '''cboDateFormat control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents cboDateFormat As Global.System.Web.UI.WebControls.DropDownList
-
-    '''<summary>
     '''dnnSitePanelChildBlogs control.
     '''</summary>
     '''<remarks>

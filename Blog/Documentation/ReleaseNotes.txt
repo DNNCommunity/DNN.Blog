@@ -39,10 +39,10 @@
 			<li>Corrected index problems on category and tag tables (even though they will eventually be removed), to avoid maintenance problems.</li>
 			<li>20215 - Removed ShareBadge Pro and added option for AddThis (which allows complete customization), in addition to big 4 I already added.</li>
 			<li>Added user image and profile link to blog description, added author profile section to entry view.</li>
-			<li>Corrected TimeZone problems. (In Progress)</li>	
+			<li>Corrected TimeZone problems.</li>	
 			<li>19021, 20865 - Added support for "Ghost Writer" via a new module permission as well as "Blogger" permissions.</li>
 			<li>Disabled partial rendering throught all parts of the module. All previous 'benefits' are now handled client-side (show, hide, etc.) with less overhead and trips to the server.</li>
-			<li>Reduced the number of module definitions and exposed the same functionality through existing pieces.</li>
+			<li>Reduced the number of module definitions and exposed the same functionality through existing pieces, also took a similar approach and simplified per blog (and module level) settings.</li>
 			<li>Added paging support to the module (initial 'home' view doesn't display any paging, by design).</li>
 			<li>Corrected problems found in SQL Azure installs.</li>
 		</ul>
@@ -53,6 +53,6 @@
 			<li>Recent comments missing (this is related to the item above).</li>
 			<li>Author images look different from others seen in social.</li>
 			<li>Social Sharing module options are not properly wired in.</li>
-			<li>IUpgradeable migration not finished (for taxonomy).</li>
+			<li>IUpgradeable migration not finished (for taxonomy and entry addeddate conversion to UTC).</li>
 		</ul>
 </div>

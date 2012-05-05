@@ -24,6 +24,7 @@ Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Services.Localization.Localization
 Imports DotNetNuke.Services.Localization
+Imports System.Globalization
 
 Partial Public Class ViewBlog
     Inherits BlogModuleBase
@@ -204,7 +205,7 @@ Partial Public Class ViewBlog
 
                             End If
                         Else
-                            list = objEntries.GetAllEntriesByTerm(Me.PortalId, Tag, BlogSettings.RecentEntriesMax, CurrentPage, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
+                            list = objEntries.GetAllEntriesByTerm(Me.PortalId, m_dBlogDate, Tag, BlogSettings.RecentEntriesMax, CurrentPage, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
                             pnlBlogInfo.Visible = False
                             If Not lnkRecentRss Is Nothing Then
                                 lnkRecentRss.NavigateUrl = Links.RssByTag(ModuleContext, Tag)
@@ -217,7 +218,7 @@ Partial Public Class ViewBlog
 
                         End If
                     Else
-                        list = objEntries.GetAllEntriesByTerm(Me.PortalId, Category, BlogSettings.RecentEntriesMax, CurrentPage, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
+                        list = objEntries.GetAllEntriesByTerm(Me.PortalId, m_dBlogDate, Category, BlogSettings.RecentEntriesMax, CurrentPage, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
                         pnlBlogInfo.Visible = False
                         If Not lnkRecentRss Is Nothing Then
                             lnkRecentRss.NavigateUrl = Links.RssByCategory(ModuleContext, Category)
@@ -397,7 +398,17 @@ Partial Public Class ViewBlog
             End If
 
             lblPublished.Visible = Not CType(e.Item.DataItem, EntryInfo).Published
-            lblPublishDate.Text = Utility.FormatDate(CType(e.Item.DataItem, EntryInfo).AddedDate, oBlog.Culture, oBlog.DateFormat, oBlog.TimeZone)
+
+            Dim userCulture As CultureInfo = New System.Globalization.CultureInfo(ModuleContext.PortalSettings.UserInfo.Profile.PreferredLocale)
+            Dim n As DateTime = Utility.AdjustedDate(CType(e.Item.DataItem, EntryInfo).AddedDate, ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone)
+
+            Dim publishDate As DateTime = n
+            Dim timeOffset As TimeSpan = ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone.BaseUtcOffset
+
+            publishDate = publishDate.Add(timeOffset)
+            lblPublishDate.Text = publishDate.ToShortDateString + " " + publishDate.ToShortTimeString
+
+            'lblPublishDate.Text = Utility.FormatDate(CType(e.Item.DataItem, EntryInfo).AddedDate, oBlog.Culture, oBlog.DateFormat, oBlog.TimeZone)
 
             Dim SummaryLimit As Integer = 0
             If m_bSearchDisplay Then

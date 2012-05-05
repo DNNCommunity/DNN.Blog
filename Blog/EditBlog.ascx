@@ -96,21 +96,6 @@
                 <asp:LinkButton ID="cmdGenerateLinks" runat="server" CausesValidation="False" resourceKey="cmdGenerateLinks" CssClass="dnnSecondaryAction" />
             </div>
         </fieldset>
-        <h2 id="dnnSitePanel-TimeOptions" class="dnnFormSectionHead"><a href="" class=""><%=LocalizeString("lblTimeOptions")%></a></h2>
-        <fieldset>            
-            <div class="dnnFormItem">
-                <dnn:Label ID="lblTimeZone" runat="server" controlname="cboTimeZone" suffix=":" />
-                <dnnweb:DnnTimeZoneComboBox runat="server" id="ddTimeZone" />
-            </div>
-            <div class="dnnFormItem">
-                <dnn:Label ID="lblCulture" runat="server" controlname="cboCulture" suffix=":" />
-                <asp:DropDownList ID="cboCulture" runat="server" AutoPostBack="True" />
-            </div>
-            <div class="dnnFormItem">
-                <dnn:Label ID="lblDateFormat" runat="server" controlname="cboDateFormat" suffix=":" />
-                <asp:DropDownList ID="cboDateFormat" runat="server" />
-            </div>
-        </fieldset>
         <h2 id="dnnSitePanelChildBlogs" class="dnnFormSectionHead" runat="server"><a href="" class=""><%=LocalizeString("lblChildBlogs")%></a></h2>
         <fieldset runat="server" id="fsChildBlogs">
             <div>
