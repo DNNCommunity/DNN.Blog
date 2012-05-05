@@ -10,28 +10,28 @@
         </ul> 
     </div>
 </div>
-<div id="divMainViewDialog" style="display:none;" class="dnnDialog divMainViewDialog">
+<div id="divMainViewDialog" class="divMainViewDialog">
     <div class="dnnClear">
         <div class="dnnFormItem" >
             <label>Blog Part:</label>
-            <asp:DropDownList runat="server" ID="ddModuleDef" DataTextField="FriendlyName" DataValueField="ModuleDefID" />
+            <asp:DropDownList runat="server" ID="ddModuleDef" DataTextField="FriendlyName" DataValueField="ModuleDefID"  EnableViewState="true" />
         </div>
         <div class="dnnFormItem">
             <label>Title:</label>
             <div class="dnnLeft">
-                <asp:TextBox runat="server" ID="txtTitle" />
+                <asp:TextBox runat="server" ID="txtTitle" EnableViewState="true" />
             </div>
         </div>
         <div class="dnnFormItem">
             <label>Pane:</label>
-            <asp:DropDownList runat="server" ID="ddPane" />
+            <asp:DropDownList runat="server" ID="ddPane" EnableViewState="true" />
         </div>
         <div class="dnnFormItem">
             <label>Insert:</label>
-            <asp:DropDownList runat="server" ID="ddPosition" />    
+            <asp:DropDownList runat="server" ID="ddPosition" EnableViewState="true" />    
         </div>
         <div class="dnnRight">
-            <asp:LinkButton runat="server" ID="cmdAdd" resourcekey="cmdAdd" CssClass="dnnPrimaryAction" OnClick="cmdAdd_Click" />
+            <asp:LinkButton runat="server" ID="cmdAdd" resourcekey="cmdAdd" CssClass="dnnPrimaryAction" />
         </div>
     </div>
 </div>
@@ -48,13 +48,11 @@
                 return false;
             });
 
+            $("#divMainViewDialog").parent().appendTo($("form:first"));
         }
 
         $(document).ready(function () {
             setupMainView();
-            Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
-                setupMainView();
-            });
         });
 
     } (jQuery, window.Sys));

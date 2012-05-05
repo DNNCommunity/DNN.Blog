@@ -233,6 +233,10 @@ Partial Public Class MainView
     End Sub
 
     Protected Sub cmdAdd_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdAdd.Click
+        Dim x As String = txtTitle.Text
+        Dim y As String = ddModuleDef.SelectedItem.Value
+
+
         If (Convert.ToInt32(ddModuleDef.SelectedValue) = -1) Then Exit Sub
         Globals.AddModDef(PortalSettings, CInt(ddModuleDef.SelectedValue), TabId, ddPane.SelectedValue, CInt(ddPosition.SelectedValue), txtTitle.Text.Trim)
         Me.Response.Redirect(DotNetNuke.Common.NavigateURL(), False)
