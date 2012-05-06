@@ -219,6 +219,7 @@
       <DependentUpon>ArchiveSettings.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Providers\Sitemap\EntrySitemap.vb" />
     <Compile Include="ViewCategoriesSettings.ascx.designer.vb">
       <DependentUpon>ViewCategoriesSettings.ascx</DependentUpon>
     </Compile>
