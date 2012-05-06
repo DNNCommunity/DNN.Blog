@@ -81,190 +81,111 @@ ALTER TABLE {databaseOwner}{objectQualifier}Blog_Settings
 GO
 
 /*************** TABLES ************************/
-
-if not exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_Categories') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
-BEGIN
-
-	CREATE TABLE {databaseOwner}{objectQualifier}Blog_Categories(
-		CatID int IDENTITY(1,1) NOT NULL,
-		Category nvarchar(255) NOT NULL,
-		Slug nvarchar(255) NOT NULL,
-		ParentID int NULL,
-		PortalID int NOT NULL,
-	 CONSTRAINT {objectQualifier}PK_Blog_Categories PRIMARY KEY CLUSTERED 
-	(
-		CatID ASC
-	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-	) ON [PRIMARY]
-END
-
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_Categories') and OBJECTPROPERTY(id, N'IsTable') = 1)
+	DROP TABLE {databaseOwner}{objectQualifier}Blog_Categories
 GO
 
-if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Blog_Categories_Portals') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE {databaseOwner}{objectQualifier}Blog_Categories ADD CONSTRAINT
-	FK_{objectQualifier}Blog_Categories_Portals FOREIGN KEY
-	(
-	PortalID
-	) REFERENCES {databaseOwner}{objectQualifier}Portals
-	(
-	PortalID
-	) ON DELETE CASCADE
-	 NOT FOR REPLICATION
-
+CREATE TABLE {databaseOwner}[{objectQualifier}Blog_Categories]
+(
+	[CatID] [int] IDENTITY(1,1) NOT NULL,
+	[Category] [nvarchar](255) NOT NULL,
+	[Slug] [nvarchar](255) NOT NULL,
+	[ParentID] [int] NULL,
+	[PortalID] [int] NOT NULL,
+)
+ON  [PRIMARY]
 GO
 
-if not exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_Tags') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
-BEGIN
-
-	CREATE TABLE {databaseOwner}{objectQualifier}Blog_Tags(
-		TagID int IDENTITY(1,1) NOT NULL,
-		Tag nvarchar(255) NOT NULL,
-		Slug nvarchar(255) NOT NULL,
-		Active bit NOT NULL,
-		PortalID int NOT NULL,
-	 CONSTRAINT PK_{objectQualifier}Blog_Tags PRIMARY KEY CLUSTERED 
-	(
-		TagID ASC
-	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-	) ON [PRIMARY]
-	
-	CREATE NONCLUSTERED INDEX IX_{objectQualifier}Blog_Tags_PortalID ON {databaseOwner}{objectQualifier}Blog_Tags 
-	(
-		PortalID ASC
-	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, 
-	ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = OFF) ON [PRIMARY]
-
-END
-
+ALTER TABLE {databaseOwner}[{objectQualifier}Blog_Categories]  
+		WITH NOCHECK
+	ADD CONSTRAINT PK_{objectQualifier}Blog_Categories PRIMARY KEY CLUSTERED ( [CatID] )
+		ON [PRIMARY] 
 GO
 
-if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Blog_Tags_Portals') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE {databaseOwner}{objectQualifier}Blog_Tags ADD CONSTRAINT
-	FK_{objectQualifier}Blog_Tags_Portals FOREIGN KEY
-	(
-	PortalID
-	) REFERENCES {databaseOwner}{objectQualifier}Portals
-	(
-	PortalID
-	) ON DELETE CASCADE
-	 NOT FOR REPLICATION
-
+ALTER TABLE {databaseOwner}[{objectQualifier}Blog_Categories]  
+	ADD  CONSTRAINT FK_{objectQualifier}Blog_Categories_Portals FOREIGN KEY ( [PortalId] ) REFERENCES {databaseOwner}{objectQualifier}Portals ( [PortalID] ) 
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
 GO
 
-
-if not exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_Entry_Categories') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
-BEGIN
-	CREATE TABLE {databaseOwner}{objectQualifier}Blog_Entry_Categories(
-		EntryCatID int IDENTITY(1,1) NOT NULL,
-		EntryID int NULL,
-		CatID int NULL,
-	 CONSTRAINT PK_{objectQualifier}Blog_Entry_Categories PRIMARY KEY CLUSTERED 
-	(
-		EntryCatID ASC
-	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-	) ON [PRIMARY]
-	
-	CREATE NONCLUSTERED INDEX IX_{objectQualifier}Blog_Entry_Categories_EntryID ON {databaseOwner}{objectQualifier}Blog_Entry_Categories 
-	(
-		EntryID ASC
-	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, 
-	ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = OFF) ON [PRIMARY]
-	
-	
-	CREATE NONCLUSTERED INDEX IX_{objectQualifier}Blog_Entry_Categories_CatID ON {databaseOwner}{objectQualifier}Blog_Entry_Categories 
-	(
-		CatID ASC
-	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, 
-	ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = OFF) ON [PRIMARY]
-
-END
-
+CREATE TABLE {databaseOwner}[{objectQualifier}Blog_Tags]
+(
+	[TagID] [int] IDENTITY(1,1) NOT NULL,
+	[Tag] [nvarchar](255) NOT NULL,
+	[Slug] [nvarchar](255) NOT NULL,
+	[Active] [bit] NOT NULL,
+	[PortalID] [int] NOT NULL,
+)
+ON  [PRIMARY]
 GO
 
-if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Blog_Entry_Categories_Entries') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE {databaseOwner}{objectQualifier}Blog_Entry_Categories ADD CONSTRAINT
-	FK_{objectQualifier}Blog_Entry_Categories_Entries FOREIGN KEY
-	(
-	EntryID
-	) REFERENCES {databaseOwner}{objectQualifier}Blog_Entries
-	(
-	EntryID
-	) ON DELETE CASCADE
-	 NOT FOR REPLICATION
-
+ALTER TABLE {databaseOwner}[{objectQualifier}Blog_Tags]  
+		WITH NOCHECK
+	ADD CONSTRAINT PK_{objectQualifier}Blog_Tags PRIMARY KEY CLUSTERED ( [TagID] )
+		ON [PRIMARY] 
 GO
 
-if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Blog_Entry_Categories_Categories') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE {databaseOwner}{objectQualifier}Blog_Entry_Categories ADD CONSTRAINT
-	FK_{objectQualifier}Blog_Entry_Categories_Categories FOREIGN KEY
-	(
-	CatID
-	) REFERENCES {databaseOwner}{objectQualifier}Blog_Categories
-	(
-	CatID
-	) ON DELETE CASCADE
-	 NOT FOR REPLICATION
-
+ALTER TABLE {databaseOwner}[{objectQualifier}Blog_Tags]  
+	ADD  CONSTRAINT FK_{objectQualifier}Blog_Tags_Portals FOREIGN KEY ( [PortalId] ) REFERENCES {databaseOwner}{objectQualifier}Portals ( [PortalID] ) 
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
 GO
 
-
-if not exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_Entry_Tags') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
-BEGIN
-
-	CREATE TABLE {databaseOwner}{objectQualifier}Blog_Entry_Tags(
-		EntryTagID int IDENTITY(1,1) NOT NULL,
-		EntryID int NOT NULL,
-		TagID int NOT NULL,
-	 CONSTRAINT PK_{objectQualifier}Blog_Entry_Tags PRIMARY KEY CLUSTERED 
-	(
-		EntryTagID ASC
-	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-	) ON [PRIMARY]
-	
-	CREATE NONCLUSTERED INDEX IX_{objectQualifier}Blog_Entry_Tags_EntryID ON {databaseOwner}{objectQualifier}Blog_Entry_Tags 
-	(
-		EntryID ASC
-	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, 
-	ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = OFF) ON [PRIMARY]
-	
-	CREATE NONCLUSTERED INDEX IX_{objectQualifier}Blog_Entry_Tags_TagID ON {databaseOwner}{objectQualifier}Blog_Entry_Tags 
-	(
-		TagID ASC
-	)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, 
-	ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = OFF) ON [PRIMARY]
-
-END
-
+CREATE TABLE {databaseOwner}[{objectQualifier}Blog_Entry_Categories]
+(
+	[EntryCatID] [int] IDENTITY(1,1) NOT NULL,
+	[EntryID] [int] NULL,
+	[CatID] [int] NULL,
+)
+ON  [PRIMARY]
 GO
 
-if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Blog_Entry_Tags_Entries') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE {databaseOwner}{objectQualifier}Blog_Entry_Tags ADD CONSTRAINT
-	FK_{objectQualifier}Blog_Entry_Tags_Entries FOREIGN KEY
-	(
-	EntryID
-	) REFERENCES {databaseOwner}{objectQualifier}Blog_Entries
-	(
-	EntryID
-	) ON DELETE CASCADE
-	 NOT FOR REPLICATION
-
+ALTER TABLE {databaseOwner}[{objectQualifier}Blog_Entry_Categories]  
+		WITH NOCHECK
+	ADD CONSTRAINT PK_{objectQualifier}Blog_Entry_Categories PRIMARY KEY CLUSTERED ( [EntryCatID] )
+		ON [PRIMARY] 
 GO
 
-if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Blog_Entry_Tags_Tags') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE {databaseOwner}{objectQualifier}Blog_Entry_Tags ADD CONSTRAINT
-	FK_{objectQualifier}Blog_Entry_Tags_Tags FOREIGN KEY
-	(
-	TagID
-	) REFERENCES {databaseOwner}{objectQualifier}Blog_Tags
-	(
-	TagID
-	) ON DELETE CASCADE
-	 NOT FOR REPLICATION
+ALTER TABLE {databaseOwner}[{objectQualifier}Blog_Entry_Categories]  
+	ADD  CONSTRAINT FK_{objectQualifier}Blog_Entry_Categories_Entries FOREIGN KEY ( [EntryID] ) REFERENCES {databaseOwner}{objectQualifier}Blog_Entries ( [EntryID] ) 
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
+GO
 
+ALTER TABLE {databaseOwner}[{objectQualifier}Blog_Entry_Categories]  
+	ADD  CONSTRAINT FK_{objectQualifier}Blog_Entry_Categories_Categories FOREIGN KEY ( [CatID] ) REFERENCES {databaseOwner}{objectQualifier}Blog_Categories ( [CatID] ) 
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
+GO
+
+CREATE TABLE {databaseOwner}[{objectQualifier}Blog_Entry_Tags]
+(
+	[EntryTagID] [int] IDENTITY(1,1) NOT NULL,
+	[EntryID] [int] NOT NULL,
+	[TagID] [int] NOT NULL,
+)
+ON  [PRIMARY]
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}Blog_Entry_Tags]  
+		WITH NOCHECK
+	ADD CONSTRAINT PK_{objectQualifier}Blog_Entry_Tags PRIMARY KEY CLUSTERED ( [EntryTagID] )
+		ON [PRIMARY] 
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}Blog_Entry_Tags]  
+	ADD  CONSTRAINT FK_{objectQualifier}Blog_Entry_Tags_Entries FOREIGN KEY ( [EntryID] ) REFERENCES {databaseOwner}{objectQualifier}Blog_Entries ( [EntryID] ) 
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}Blog_Entry_Tags]  
+	ADD  CONSTRAINT FK_{objectQualifier}Blog_Entry_Tags_Tags FOREIGN KEY ( [TagID] ) REFERENCES {databaseOwner}{objectQualifier}Blog_Tags ( [TagID] ) 
+		ON DELETE CASCADEWITH (ALLOW_PAGE_LOCKS=OFF)
+		ON UPDATE CASCADE
 GO
 
 /*************** REPAIR MISSING SETTINGS FK ************************/
-
 DELETE FROM {databaseOwner}{objectQualifier}Blog_Settings
 WHERE NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}Portals p WHERE p.PortalID = {databaseOwner}{objectQualifier}Blog_Settings.PortalID)
 GO
@@ -278,13 +199,11 @@ ALTER TABLE {databaseOwner}{objectQualifier}Blog_Settings ADD CONSTRAINT
 	(
 	PortalID
 	) ON DELETE CASCADE
-	 NOT FOR REPLICATION
 
 GO
 
 
 /*************** PROCEDURES ************************/
-
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_GetBlogMonths') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}{objectQualifier}Blog_GetBlogMonths
 GO
@@ -327,8 +246,6 @@ BEGIN
 	group by DATEPART(m, E.AddedDate), DATEPART(yy, E.AddedDate)
 	order by AddedYear DESC, AddedMonth DESC
 END
-
-
 GO
 
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListBlogs') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
@@ -608,10 +525,8 @@ BEGIN
 
 	INSERT INTO {databaseOwner}{objectQualifier}Blog_Entry_Tags (EntryID, TagID) VALUES (@entryid, @tagid)
 
-	RETURN @@IDENTITY
-		
+	RETURN @@IDENTITY	
 END
-
 GO
 
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_DeleteCategory') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
@@ -627,7 +542,6 @@ BEGIN
 	DELETE FROM {databaseOwner}{objectQualifier}Blog_Categories WHERE CatID = @CatID
 
 END
-
 GO
 
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_DeleteEntryCategories') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
@@ -643,7 +557,6 @@ BEGIN
 	DELETE FROM {databaseOwner}{objectQualifier}Blog_Entry_Categories WHERE EntryID = @EntryID and CatID = @CatID
 
 END
-
 GO
 
 

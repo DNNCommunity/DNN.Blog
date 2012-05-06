@@ -77,7 +77,7 @@
 							  <controlKey>Module_Options</controlKey>
 							  <controlSrc>DesktopModules/Blog/ModuleOptions.ascx</controlSrc>
 							  <supportsPartialRendering>False</supportsPartialRendering>
-							  <controlTitle>Blog Options</controlTitle>
+							  <controlTitle>Options</controlTitle>
 							  <controlType>Admin</controlType>
 							  <iconFile />
 							  <helpUrl />
@@ -88,7 +88,7 @@
 							  <controlKey>View_Entry</controlKey>
 							  <controlSrc>DesktopModules/Blog/ViewEntry.ascx</controlSrc>
 							  <supportsPartialRendering>False</supportsPartialRendering>
-							  <controlTitle>View Entry</controlTitle>
+							  <controlTitle>Entry</controlTitle>
 							  <controlType>View</controlType>
 							  <iconFile />
 							  <helpUrl />
@@ -109,7 +109,7 @@
 							  <controlKey />
 							  <controlSrc>DesktopModules/Blog/BlogList.ascx</controlSrc>
 							  <supportsPartialRendering>False</supportsPartialRendering>
-							  <controlTitle>Blog List</controlTitle>
+							  <controlTitle>Blogs</controlTitle>
 							  <controlType>View</controlType>
 							  <iconFile />
 							  <helpUrl />
@@ -126,7 +126,7 @@
 							  <controlKey />
 							  <controlSrc>DesktopModules/Blog/Search.ascx</controlSrc>
 							  <supportsPartialRendering>False</supportsPartialRendering>
-							  <controlTitle>Search Blog</controlTitle>
+							  <controlTitle>Search</controlTitle>
 							  <controlType>View</controlType>
 							  <iconFile />
 							  <helpUrl />
@@ -150,6 +150,17 @@
 							  <supportsPopUps>False</supportsPopUps>
 							  <viewOrder>0</viewOrder>
 						  </moduleControl>
+						  <moduleControl>
+							  <controlKey>Settings</controlKey>
+							  <controlSrc>DesktopModules/Blog/ArchiveSettings.ascx</controlSrc>
+							  <supportsPartialRendering>True</supportsPartialRendering>
+							  <controlTitle />
+							  <controlType>Edit</controlType>
+							  <iconFile />
+							  <helpUrl />
+							  <supportsPopUps>True</supportsPopUps>
+							  <viewOrder>0</viewOrder>
+						  </moduleControl>
 					  </moduleControls>
 				  </moduleDefinition>
 				  <moduleDefinition>
@@ -160,7 +171,7 @@
 							  <controlKey />
 							  <controlSrc>DesktopModules/Blog/ViewCategories.ascx</controlSrc>
 							  <supportsPartialRendering>False</supportsPartialRendering>
-							  <controlTitle>View Categories</controlTitle>
+							  <controlTitle>Categories</controlTitle>
 							  <controlType>View</controlType>
 							  <iconFile />
 							  <helpUrl />
@@ -177,7 +188,7 @@
 							  <controlKey />
 							  <controlSrc>DesktopModules/Blog/ViewTags.ascx</controlSrc>
 							  <supportsPartialRendering>False</supportsPartialRendering>
-							  <controlTitle>View Tags</controlTitle>
+							  <controlTitle>Tags</controlTitle>
 							  <controlType>View</controlType>
 							  <iconFile />
 							  <helpUrl />
@@ -187,8 +198,8 @@
 						  <moduleControl>
 							  <controlKey>Settings</controlKey>
 							  <controlSrc>DesktopModules/Blog/ViewTagsSettings.ascx</controlSrc>
-							  <supportsPartialRendering>False</supportsPartialRendering>
-							  <controlTitle>Tags Settings</controlTitle>
+							  <supportsPartialRendering>True</supportsPartialRendering>
+							  <controlTitle />
 							  <controlType>Edit</controlType>
 							  <iconFile />
 							  <helpUrl />

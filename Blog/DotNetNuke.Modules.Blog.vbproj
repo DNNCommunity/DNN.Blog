@@ -112,6 +112,7 @@
     <Content Include="BlogList.ascx" />
     <Content Include="BlogTerms.asmx" />
     <Content Include="Archive.css" />
+    <Content Include="ArchiveSettings.ascx" />
     <Content Include="Documentation\License.txt" />
     <Content Include="Documentation\ReleaseNotes.txt" />
     <Content Include="EditBlog.ascx" />
@@ -208,6 +209,13 @@
     <Compile Include="Components\Business\PingBackService.vb" />
     <Compile Include="Components\Business\SearchResult.vb" />
     <Compile Include="Components\Business\Utility.vb" />
+    <Compile Include="ArchiveSettings.ascx.designer.vb">
+      <DependentUpon>ArchiveSettings.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ArchiveSettings.ascx.vb">
+      <DependentUpon>ArchiveSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="EditBlog.ascx.designer.vb">
       <DependentUpon>EditBlog.ascx</DependentUpon>
     </Compile>
@@ -368,6 +376,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_LocalResources\ViewCategories.ascx.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\ArchiveSettings.ascx.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

@@ -21,7 +21,7 @@
 Imports DotNetNuke.Services.Exceptions
 
 Partial Public Class ViewTagsSettings
- Inherits Entities.Modules.ModuleSettingsBase
+    Inherits Entities.Modules.ModuleSettingsBase
 
 #Region "Private Members"
 
@@ -31,7 +31,7 @@ Partial Public Class ViewTagsSettings
 
 #Region "Event Handlers"
 
-    Private Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Init
+    Protected Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Init
         _settings = DotNetNuke.Modules.Blog.Settings.TagViewSettings.GetTagViewSettings(TabModuleId)
     End Sub
 
@@ -46,7 +46,7 @@ Partial Public Class ViewTagsSettings
                 rblTagDisplayMode.SelectedValue = _settings.TagDisplayMode
 
             End If
-        Catch exc As Exception           'Module failed to load
+        Catch exc As Exception
             ProcessModuleLoadException(Me, exc)
         End Try
     End Sub
@@ -57,11 +57,11 @@ Partial Public Class ViewTagsSettings
             _settings.TagDisplayMode = rblTagDisplayMode.SelectedValue
             _settings.UpdateSettings()
 
-        Catch exc As Exception           'Module failed to load
+        Catch exc As Exception
             ProcessModuleLoadException(Me, exc)
         End Try
     End Sub
 
 #End Region
- 
+
 End Class
