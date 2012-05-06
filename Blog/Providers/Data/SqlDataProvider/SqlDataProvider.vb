@@ -17,13 +17,12 @@
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 ' DEALINGS IN THE SOFTWARE.
 '
-
 Imports System
 Imports System.Data
 Imports Microsoft.ApplicationBlocks.Data
 Imports DotNetNuke.Common.Utilities
 
-Namespace Data
+Namespace Providers.Data
 
     Public Class SqlDataProvider
 
@@ -445,5 +444,4 @@ Namespace Data
 #End Region
 
     End Class
-
 End Namespace

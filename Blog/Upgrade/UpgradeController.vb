@@ -18,7 +18,7 @@
 ' DEALINGS IN THE SOFTWARE.
 '-------------------------------------------------------------------------
 Imports System
-Imports DotNetNuke.Modules.Blog.Data
+Imports DotNetNuke.Modules.Blog.Providers.Data
 Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Modules.Blog.Components.Entities
 

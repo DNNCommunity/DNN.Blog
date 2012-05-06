@@ -18,6 +18,7 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 Imports System.Xml
+Imports DotNetNuke.Modules.Blog.Providers.Data
 Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Common.Utilities
 
@@ -91,7 +92,7 @@ Namespace Components.Settings
             _tabId = TabID
             Dim mc As New DotNetNuke.Entities.Modules.ModuleController
             _allSettings = New Hashtable
-            Dim dr As IDataReader = DotNetNuke.Modules.Blog.Data.DataProvider.Instance().GetBlogModuleSettings(PortalID, TabID)
+            Dim dr As IDataReader = DataProvider.Instance().GetBlogModuleSettings(PortalID, TabID)
             While dr.Read()
                 _allSettings(dr.GetString(0)) = dr.GetValue(1)
             End While

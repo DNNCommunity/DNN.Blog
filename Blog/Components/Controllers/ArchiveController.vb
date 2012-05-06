@@ -17,9 +17,9 @@
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 ' DEALINGS IN THE SOFTWARE.
 '
+Imports DotNetNuke.Modules.Blog.Providers.Data
 Imports DotNetNuke.Modules.Blog.Components.Business
 Imports DotNetNuke.Modules.Blog.Business
-Imports DotNetNuke.Modules.Blog.Data
 Imports DotNetNuke.Common.Utilities
 
 Namespace Components.Controllers

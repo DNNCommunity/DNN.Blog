@@ -17,8 +17,8 @@
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 ' DEALINGS IN THE SOFTWARE.
 '
+Imports DotNetNuke.Modules.Blog.Providers.Data
 Imports DotNetNuke.Modules.Blog.Components.Business
-Imports DotNetNuke.Modules.Blog.Data
 Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Modules.Blog.Components.Entities
 
@@ -109,7 +109,7 @@ Namespace Components.Controllers
 
         Public Shared Sub AddEntryTag(ByVal EntryId As Integer, ByVal Tag As String, ByVal Slug As String)
 
-            Data.DataProvider.Instance().AddEntryTag(EntryId, Tag, Slug)
+            DataProvider.Instance().AddEntryTag(EntryId, Tag, Slug)
 
         End Sub
 

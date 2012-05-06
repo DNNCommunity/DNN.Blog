@@ -18,6 +18,7 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 Imports System.Xml
+Imports DotNetNuke.Modules.Blog.Providers.Data
 Imports DotNetNuke.Modules.Blog.Components.Business
 Imports DotNetNuke.Modules.Blog.Components.Controllers
 Imports DotNetNuke.Modules.Blog.Components.Common
@@ -239,20 +240,20 @@ Namespace Components.Rss
             Select Case _rssView
                 Case RssViews.None ' could not be, but ...
                 Case RssViews.RecentEntries
-                    dr = Data.DataProvider.Instance().ListEntriesByPortal(_portalSettings.PortalId, Date.UtcNow, Nothing, _blogSettings.RecentRssEntriesMax, 1, DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName), DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName))
+                    dr = DataProvider.Instance().ListEntriesByPortal(_portalSettings.PortalId, Date.UtcNow, Nothing, _blogSettings.RecentRssEntriesMax, 1, DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName), DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName))
                 Case RssViews.BlogEntries
                     If Not _blog Is Nothing Then
-                        dr = DotNetNuke.Modules.Blog.Data.DataProvider.Instance().ListEntriesByBlog(_rssId, Date.UtcNow, _blogSettings.RecentRssEntriesMax, 1, ModuleSecurity.HasBlogPermission(_userId, _blog.UserID, _moduleId), ModuleSecurity.HasBlogPermission(_userId, _blog.UserID, _moduleId))
+                        dr = DataProvider.Instance().ListEntriesByBlog(_rssId, Date.UtcNow, _blogSettings.RecentRssEntriesMax, 1, ModuleSecurity.HasBlogPermission(_userId, _blog.UserID, _moduleId), ModuleSecurity.HasBlogPermission(_userId, _blog.UserID, _moduleId))
                     End If
                 Case RssViews.ArchivEntries
                     Dim m_dBlogDate As Date
                     If _blog IsNot Nothing Then
-                        dr = DotNetNuke.Modules.Blog.Data.DataProvider.Instance().ListEntriesByBlog(_rssId, m_dBlogDate.ToUniversalTime, _blogSettings.RecentRssEntriesMax, 1, ModuleSecurity.HasBlogPermission(_userId, _blog.UserID, _moduleId), ModuleSecurity.HasBlogPermission(_userId, _blog.UserID, _moduleId))
+                        dr = DataProvider.Instance().ListEntriesByBlog(_rssId, m_dBlogDate.ToUniversalTime, _blogSettings.RecentRssEntriesMax, 1, ModuleSecurity.HasBlogPermission(_userId, _blog.UserID, _moduleId), ModuleSecurity.HasBlogPermission(_userId, _blog.UserID, _moduleId))
                     Else
-                        dr = Data.DataProvider.Instance().ListEntriesByPortal(_portalSettings.PortalId, m_dBlogDate.ToUniversalTime, Nothing, _blogSettings.RecentRssEntriesMax, 1, DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName), DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName))
+                        dr = DataProvider.Instance().ListEntriesByPortal(_portalSettings.PortalId, m_dBlogDate.ToUniversalTime, Nothing, _blogSettings.RecentRssEntriesMax, 1, DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName), DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName))
                     End If
                 Case RssViews.SingleEntry
-                    dr = Data.DataProvider.Instance().GetEntry(_rssEntryId, _portalSettings.PortalId)
+                    dr = DataProvider.Instance().GetEntry(_rssEntryId, _portalSettings.PortalId)
             End Select
 
             ' Now that we should shave a reader let's fill the feed with the contents

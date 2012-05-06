@@ -20,8 +20,8 @@
 
 Imports System
 Imports System.Data
+Imports DotNetNuke.Modules.Blog.Providers.Data
 Imports DotNetNuke.Framework
-Imports DotNetNuke.Modules.Blog.Data
 Imports DotNetNuke.Common.Utilities
 
 Namespace Business

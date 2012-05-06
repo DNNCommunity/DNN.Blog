@@ -20,7 +20,7 @@
 
 Imports System
 
-Namespace Data
+Namespace Providers.Data
 
     Public MustInherit Class DataProvider
 
@@ -36,7 +36,7 @@ Namespace Data
 
         ' dynamically create provider
         Private Shared Sub CreateProvider()
-            objProvider = CType(Framework.Reflection.CreateObject("data", "DotNetNuke.Modules.Blog.Data", ""), DataProvider)
+            objProvider = CType(Framework.Reflection.CreateObject("data", "DotNetNuke.Modules.Blog.Providers.Data", ""), DataProvider)
         End Sub
 
         ' return the provider
@@ -212,5 +212,4 @@ Namespace Data
 #End Region
 
     End Class
-
 End Namespace

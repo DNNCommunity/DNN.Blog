@@ -389,7 +389,7 @@ Namespace Components.Business
         End Sub
 
         Public Shared Sub UpdateBlogModuleSetting(ByVal PortalID As Integer, ByVal TabID As Integer, ByVal Key As String, ByVal Value As String)
-            DotNetNuke.Modules.Blog.Data.DataProvider.Instance().UpdateBlogModuleSetting(PortalID, TabID, Key, Value)
+            Providers.Data.DataProvider.Instance().UpdateBlogModuleSetting(PortalID, TabID, Key, Value)
         End Sub
 
         Public Shared Function GetTabIDByPortalID(ByVal PortalID As String) As Integer

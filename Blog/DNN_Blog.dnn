@@ -20,7 +20,7 @@
 		  <desktopModule>
 			<moduleName>Blog</moduleName>
 			<foldername>Blog</foldername>
-			<businessControllerClass>DotNetNuke.Modules.Blog.Business.InterfaceController, DotNetNuke.Modules.Blog</businessControllerClass>
+			<businessControllerClass>DotNetNuke.Modules.Blog.Components.Controllers.InterfaceController, DotNetNuke.Modules.Blog</businessControllerClass>
 			<supportedFeatures>
 			  <supportedFeature type="Upgradable" />
 			</supportedFeatures>
