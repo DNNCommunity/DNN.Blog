@@ -1,5 +1,6 @@
 <%@ Control Language="vb" AutoEventWireup="false" CodeBehind="ViewBlog.ascx.vb" Inherits="DotNetNuke.Modules.Blog.ViewBlog" %>
 <%@ Import Namespace="DotNetNuke.Services.Localization" %>
+<%@ Import Namespace="DotNetNuke.Modules.Blog.Components.Business" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls" %>
 <%@ Register TagPrefix="dba" Assembly="DotNetNuke.Modules.Blog" Namespace="DotNetNuke.Modules.Blog" %>
 <%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
@@ -110,8 +111,8 @@
 				</tr>
 				<tr>
 					<td colspan="2">
-						<asp:HyperLink runat="server" ID="hlPermaLinkSearch" NavigateUrl='<%# DataBinder.Eval(Container.DataItem, "PermaLink") %>' ResourceKey="lnkPermaLink" CssClass="dnnSecondaryAction" Visible='<%# CBool(CStr(DataBinder.Eval(Container.DataItem, "PermaLink")) <> DotNetNuke.Modules.Blog.Business.Utility.BlogNavigateURL(TabID, PortalId, DataBinder.Eval(Container.DataItem, "EntryID"), DataBinder.Eval(Container.DataItem, "EntryTitle"), BlogSettings.ShowSeoFriendlyUrl)) %>' />
-						<asp:HyperLink runat="server" ID="hlMoreSearch" NavigateUrl='<%# DotNetNuke.Modules.Blog.Business.Utility.BlogNavigateURL(TabID, PortalId, DataBinder.Eval(Container.DataItem, "EntryID"), DataBinder.Eval(Container.DataItem, "EntryTitle"), BlogSettings.ShowSeoFriendlyUrl) %>' ResourceKey="lnkReadMore" CssClass="dnnSecondaryAction" />
+						<asp:HyperLink runat="server" ID="hlPermaLinkSearch" NavigateUrl='<%# DataBinder.Eval(Container.DataItem, "PermaLink") %>' ResourceKey="lnkPermaLink" CssClass="dnnSecondaryAction" Visible='<%# CBool(CStr(DataBinder.Eval(Container.DataItem, "PermaLink")) <> Utility.BlogNavigateURL(TabID, PortalId, DataBinder.Eval(Container.DataItem, "EntryID"), DataBinder.Eval(Container.DataItem, "EntryTitle"), BlogSettings.ShowSeoFriendlyUrl)) %>' />
+						<asp:HyperLink runat="server" ID="hlMoreSearch" NavigateUrl='<%# Utility.BlogNavigateURL(TabID, PortalId, DataBinder.Eval(Container.DataItem, "EntryID"), DataBinder.Eval(Container.DataItem, "EntryTitle"), BlogSettings.ShowSeoFriendlyUrl) %>' ResourceKey="lnkReadMore" CssClass="dnnSecondaryAction" />
 					</td>
 				</tr>
 			</table>

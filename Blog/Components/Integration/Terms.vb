@@ -17,17 +17,16 @@
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 ' DEALINGS IN THE SOFTWARE.
 '
-
 Option Strict On
 Option Explicit On
 
-Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Entities.Content
 Imports DotNetNuke.Entities.Content.Common
 Imports DotNetNuke.Entities.Content.Taxonomy
 Imports System.Linq
+Imports DotNetNuke.Modules.Blog.Components.Entities
 
-Namespace Integration
+Namespace Components.Integration
 
     ''' <summary>
     ''' This class is used for managing taxonomy/folksonomy related terms via integration with the core.
@@ -44,7 +43,7 @@ Namespace Integration
         Friend Sub ManageEntryTerms(ByVal objThread As EntryInfo, ByVal objContent As ContentItem)
             RemoveEntryTerms(objContent)
 
-            For Each term As Entities.Content.Taxonomy.Term In objThread.Terms
+            For Each term As DotNetNuke.Entities.Content.Taxonomy.Term In objThread.Terms
                 Util.GetTermController().AddTermToContent(term, objContent)
             Next
         End Sub
@@ -73,12 +72,12 @@ Namespace Integration
             End If
 
             Dim termId As Integer = termController.AddTerm(New Term(vocabularyId) With { _
-             .Name = name _
-            })
+                                                              .Name = name _
+                                                              })
             Return New Term() With { _
-             .Name = name, _
-             .TermId = termId _
-            }
+                .Name = name, _
+                .TermId = termId _
+                }
         End Function
 
         ''' <summary>

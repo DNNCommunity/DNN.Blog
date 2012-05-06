@@ -19,11 +19,14 @@
 '
 
 Imports System
+Imports DotNetNuke.Modules.Blog.Components.Business
+Imports DotNetNuke.Modules.Blog.Components.Controllers
 Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Common.Globals
+Imports DotNetNuke.Modules.Blog.Components.Entities
 
 Partial Class Search
     Inherits BlogModuleBase

@@ -17,19 +17,25 @@
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 ' DEALINGS IN THE SOFTWARE.
 '
-
 Imports System
 Imports System.Collections
 Imports System.Reflection
 Imports System.Web
+Imports DotNetNuke.Modules.Blog.Components.Business
+Imports DotNetNuke.Modules.Blog.Components.Controllers
 Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Data
 Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Entities.Users
 Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Entities.Content.Taxonomy
+Imports DotNetNuke.Modules.Blog.Components.Settings
+Imports DotNetNuke.Modules.Blog.MetaWeblog
+Imports DotNetNuke.Modules.Blog.Components.Entities
+Imports Globals = DotNetNuke.Common.Globals
 
-Namespace MetaWeblog
+Namespace Components.MetaWeblog
+
 
     Public Class BlogModuleProvider
         Implements IPublishable, ILinkable
@@ -58,7 +64,7 @@ Namespace MetaWeblog
 
         Public ReadOnly Property RootBlogPath() As String
             Get
-                Dim ps As PortalSettings = Common.GetPortalSettings
+                Dim ps As PortalSettings = DotNetNuke.Common.GetPortalSettings
                 Return ps.HomeDirectoryMapPath + ProviderKey
             End Get
         End Property
@@ -125,7 +131,7 @@ Namespace MetaWeblog
 
 #Region "IPublishable Members"
 
-        Public Function GetModulesForUser(ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal providerKey As String) As ModuleInfoStruct() Implements IPublishable.GetModulesForUser
+        Public Function GetModulesForUser(ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal providerKey As String) As ModuleInfoStruct() Implements IPublishable.GetModulesForUser
             Dim infoArrayList As ArrayList = New ArrayList
             Dim blogController As New BlogController
             Dim blogTabId As Integer = -1
@@ -156,7 +162,7 @@ Namespace MetaWeblog
 
 #Region "Item Related Procedures"
 
-        Public Function GetItem(ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal itemType As ItemType) As Item Implements IPublishable.GetItem
+        Public Function GetItem(ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal itemType As ItemType) As Item Implements IPublishable.GetItem
             Dim entryController As New EntryController
             Dim item As New Item
 
@@ -211,7 +217,7 @@ Namespace MetaWeblog
             Return item
         End Function
 
-        Public Function GetRecentItems(ByVal blogId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal numberOfItems As Integer, ByVal requestType As RecentItemsRequestType, ByVal providerKey As String) As Item() Implements IPublishable.GetRecentItems
+        Public Function GetRecentItems(ByVal blogId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal numberOfItems As Integer, ByVal requestType As RecentItemsRequestType, ByVal providerKey As String) As Item() Implements IPublishable.GetRecentItems
 
             'Authorize User
             BlogPostServices.AuthorizeUser(blogId, GetModulesForUser(userInfo, portalSettings, blogSettings, providerKey))
@@ -247,7 +253,7 @@ Namespace MetaWeblog
             Return itemArray
         End Function
 
-        Public Function NewItem(ByVal blogId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal item As Item) As String Implements IPublishable.NewItem
+        Public Function NewItem(ByVal blogId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal item As Item) As String Implements IPublishable.NewItem
             BlogPostServices.AuthorizeUser(blogId, GetModulesForUser(userInfo, portalSettings, blogSettings, ProviderKey))
 
             ExtractSummaryFromExtendedContent(item)
@@ -288,7 +294,7 @@ Namespace MetaWeblog
             If blogSettings.AllowSummaryHtml Then
                 objEntry.Description = item.Summary
             Else
-                objEntry.Description = Globals.RemoveMarkup(item.Summary)
+                objEntry.Description = Common.Globals.RemoveMarkup(item.Summary)
             End If
             objEntry.DisplayCopyright = False
             objEntry.Copyright = ""
@@ -324,7 +330,7 @@ Namespace MetaWeblog
             Return objEntry.EntryID.ToString()
         End Function
 
-        Public Function EditItem(ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal item As Item) As Boolean Implements IPublishable.EditItem
+        Public Function EditItem(ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal item As Item) As Boolean Implements IPublishable.EditItem
             Dim objEntryController As New EntryController
             ' Need to use reflection to get the right procedure since 
             ' the signature changed in release 03.04.00
@@ -356,7 +362,7 @@ Namespace MetaWeblog
             If blogSettings.AllowSummaryHtml Then
                 objEntry.Description = item.Summary
             Else
-                objEntry.Description = Globals.RemoveMarkup(item.Summary)
+                objEntry.Description = Common.Globals.RemoveMarkup(item.Summary)
             End If
             objEntry.AllowComments = DirectCast(IIf((item.AllowComments = -1 OrElse item.AllowComments = 1), True, False), Boolean)
             If item.DateCreated.Year > 1 Then
@@ -393,7 +399,7 @@ Namespace MetaWeblog
             Return True
         End Function
 
-        Public Function DeleteItem(ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal itemType As ItemType) As Boolean Implements IPublishable.DeleteItem
+        Public Function DeleteItem(ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal itemType As ItemType) As Boolean Implements IPublishable.DeleteItem
             'Authorize User
             Dim objEntry As EntryInfo = GetEntry(itemId, portalSettings.PortalId)
             Dim blogId As String = GetBlogIdFromEntry(objEntry)
@@ -410,8 +416,8 @@ Namespace MetaWeblog
 
 #Region "Category Related Procedures"
 
-        Public Function GetCategories(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings) As ItemCategoryInfo() Implements IPublishable.GetCategories
-            Dim cntTerm As New Business.TermController
+        Public Function GetCategories(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings) As ItemCategoryInfo() Implements IPublishable.GetCategories
+            Dim cntTerm As New Components.Controllers.TermController
             Dim colCategories As List(Of TermInfo) = cntTerm.GetTermsByContentType(portalSettings.PortalId, blogSettings.VocabularyId)
 
             Dim categories As ItemCategoryInfo() = Nothing
@@ -434,7 +440,7 @@ Namespace MetaWeblog
             Return categories
         End Function
 
-        Public Function NewCategory(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings) As Integer Implements IPublishable.NewCategory
+        Public Function NewCategory(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings) As Integer Implements IPublishable.NewCategory
             Throw New BlogPostException("FeatureNotImplemented", "This feature is currently not implemented.")
         End Function
 
@@ -575,5 +581,4 @@ Namespace MetaWeblog
 #End Region
 
     End Class
-
 End Namespace

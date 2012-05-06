@@ -21,52 +21,53 @@
 Imports System
 Imports DotNetNuke.Entities.Modules
 Imports DotNetNuke.Modules.Blog.Business
+Imports DotNetNuke.Modules.Blog.Components.Settings
 
 Namespace ForumBlog
 
- Public Class Utils
+    Public Class Utils
 
 #Region "public shared methods"
-  Public Shared Function isForumBlogInstalled(ByVal PortalID As Integer, ByVal TabID As Integer, ByVal checkNew As Boolean) As Boolean
+        Public Shared Function isForumBlogInstalled(ByVal PortalID As Integer, ByVal TabID As Integer, ByVal checkNew As Boolean) As Boolean
 
-   Dim m_BlogSettings As Settings.BlogSettings = DotNetNuke.Modules.Blog.Settings.BlogSettings.GetBlogSettings(PortalID, TabID)
-   If Not checkNew Then
-    If m_BlogSettings.ForumBlogInstalled = "Installed" Then
-     Return True
-    ElseIf m_BlogSettings.ForumBlogInstalled = "NotInstalled" Then
-     Return False
-    End If
-   End If
-   Dim m_desktopModuleController As New DesktopModuleController
-   Dim DNN_BlogModuleID As Integer
+            Dim m_BlogSettings As BlogSettings = BlogSettings.GetBlogSettings(PortalID, TabID)
+            If Not checkNew Then
+                If m_BlogSettings.ForumBlogInstalled = "Installed" Then
+                    Return True
+                ElseIf m_BlogSettings.ForumBlogInstalled = "NotInstalled" Then
+                    Return False
+                End If
+            End If
+            Dim m_desktopModuleController As New DesktopModuleController
+            Dim DNN_BlogModuleID As Integer
 
-   ' if module is not installed on the portal, return false
-   If IsNothing(m_desktopModuleController.GetDesktopModuleByModuleName("DNN_Blog")) Then
-    m_BlogSettings.ForumBlogInstalled = "NotInstalled"
-    m_BlogSettings.UpdateSettings()
-    'Utility.UpdateBlogModuleSetting(PortalID, TabID, "ForumBlogInstalled", "NotInstalled")
-    Return False
-   Else
-    DNN_BlogModuleID = m_desktopModuleController.GetDesktopModuleByModuleName("DNN_Blog").DesktopModuleID
-   End If
+            ' if module is not installed on the portal, return false
+            If IsNothing(m_desktopModuleController.GetDesktopModuleByModuleName("DNN_Blog")) Then
+                m_BlogSettings.ForumBlogInstalled = "NotInstalled"
+                m_BlogSettings.UpdateSettings()
+                'Utility.UpdateBlogModuleSetting(PortalID, TabID, "ForumBlogInstalled", "NotInstalled")
+                Return False
+            Else
+                DNN_BlogModuleID = m_desktopModuleController.GetDesktopModuleByModuleName("DNN_Blog").DesktopModuleID
+            End If
 
-   Dim list As New ArrayList
-   Dim m_Forum_GroupsController As New Forum_GroupsController
-   list = m_Forum_GroupsController.List(PortalID)
-   If list.Count > 0 Then              ' there are instances installed
-    m_BlogSettings.ForumBlogInstalled = "Installed"
-    m_BlogSettings.UpdateSettings()
-    'Utility.UpdateBlogModuleSetting(PortalID, TabID, "ForumBlogInstalled", "Installed")
-    Return True
-   Else
-    m_BlogSettings.ForumBlogInstalled = "NotInstalled"
-    m_BlogSettings.UpdateSettings()
-    'Utility.UpdateBlogModuleSetting(PortalID, TabID, "ForumBlogInstalled", "NotInstalled")
-    Return False
-   End If
-  End Function
+            Dim list As New ArrayList
+            Dim m_Forum_GroupsController As New Forum_GroupsController
+            list = m_Forum_GroupsController.List(PortalID)
+            If list.Count > 0 Then              ' there are instances installed
+                m_BlogSettings.ForumBlogInstalled = "Installed"
+                m_BlogSettings.UpdateSettings()
+                'Utility.UpdateBlogModuleSetting(PortalID, TabID, "ForumBlogInstalled", "Installed")
+                Return True
+            Else
+                m_BlogSettings.ForumBlogInstalled = "NotInstalled"
+                m_BlogSettings.UpdateSettings()
+                'Utility.UpdateBlogModuleSetting(PortalID, TabID, "ForumBlogInstalled", "NotInstalled")
+                Return False
+            End If
+        End Function
 #End Region
 
- End Class
+    End Class
 
 End Namespace

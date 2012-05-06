@@ -19,20 +19,21 @@
 '
 
 Imports DotNetNuke.Services.Exceptions
+Imports DotNetNuke.Modules.Blog.Components.Settings
 
 Partial Public Class ViewTagsSettings
     Inherits Entities.Modules.ModuleSettingsBase
 
 #Region "Private Members"
 
-    Private _settings As Settings.TagViewSettings
+    Private _settings As TagViewSettings
 
 #End Region
 
 #Region "Event Handlers"
 
     Protected Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Init
-        _settings = DotNetNuke.Modules.Blog.Settings.TagViewSettings.GetTagViewSettings(TabModuleId)
+        _settings = TagViewSettings.GetTagViewSettings(TabModuleId)
     End Sub
 
 #End Region

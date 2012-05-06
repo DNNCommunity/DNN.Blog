@@ -17,21 +17,25 @@
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 ' DEALINGS IN THE SOFTWARE.
 '
-
 Imports System.Xml
+Imports DotNetNuke.Modules.Blog.Components.Business
+Imports DotNetNuke.Modules.Blog.Components.Controllers
 Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.Common
-Imports System.Globalization
+Imports DotNetNuke.Modules.Blog.Components.Settings
+Imports DotNetNuke.Modules.Blog.Components.Entities
 
-Namespace Rss
+Namespace Components.Rss
+
+
     ''' <summary>
     ''' This class will produce a RSS 2.0 compliant feed for the Blog module
     ''' </summary>
     ''' <remarks>
     ''' This replaces the old mechanism that passed through an elaborate construction of objects. This
-    ''' method will allow us to pass additional info with the feed and remain RSS compliant. Note you
+    ''' method will allow us to pass additional info with the feed and remain RSS compliant. You
     ''' can obtain the full post contents if the admin allows this and you include 'body=true' in the
     ''' querystring.
     ''' </remarks>
@@ -55,7 +59,7 @@ Namespace Rss
         Private _locale As String = Threading.Thread.CurrentThread.CurrentCulture.Name
         Private _portalSettings As DotNetNuke.Entities.Portals.PortalSettings
         Private _useFriendlyUrls As Boolean = False
-        Private _blogSettings As Settings.BlogSettings = Nothing
+        Private _blogSettings As BlogSettings = Nothing
         Private _userId As Integer = -1
         Private _moduleId As Integer = -1
         Private _tabId As Integer = -1
@@ -80,7 +84,7 @@ Namespace Rss
         Public Sub New(ByVal ModuleConfiguration As DotNetNuke.Entities.Modules.ModuleInfo, ByVal Request As HttpRequest, ByVal RssView As RssViews)
 
             ' Set variables
-            _blogSettings = Settings.BlogSettings.GetBlogSettings(ModuleConfiguration.PortalID, ModuleConfiguration.TabID)
+            _blogSettings = BlogSettings.GetBlogSettings(ModuleConfiguration.PortalID, ModuleConfiguration.TabID)
             _moduleId = ModuleConfiguration.ModuleID
             _tabId = ModuleConfiguration.TabID
             _rssView = RssView
@@ -364,5 +368,4 @@ Namespace Rss
 #End Region
 
     End Class
-
 End Namespace

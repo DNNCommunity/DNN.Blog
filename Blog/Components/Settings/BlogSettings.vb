@@ -17,12 +17,12 @@
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 ' DEALINGS IN THE SOFTWARE.
 '
-
 Imports System.Xml
 Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Common.Utilities
 
-Namespace Settings
+Namespace Components.Settings
+
 
     ''' <summary>
     ''' This class abstracts all settings for the module and makes sure they're (a) defaulted and (b) hard typed 
@@ -622,5 +622,4 @@ Namespace Settings
 #End Region
 
     End Class
-
 End Namespace

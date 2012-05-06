@@ -17,63 +17,64 @@
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 ' DEALINGS IN THE SOFTWARE.
 '
-
+Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Modules.Blog.Data
 Imports DotNetNuke.Common.Utilities
+Imports DotNetNuke.Modules.Blog.Components.Entities
 
-Namespace Business
-
-  Public Class CommentController
-
-    Public Function GetComment(ByVal commentID As Integer) As CommentInfo
-
-      Return CType(CBO.FillObject(DataProvider.Instance().GetComment(commentID), GetType(CommentInfo)), CommentInfo)
-
-    End Function
-
-    Public Function ListComments(ByVal EntryID As Integer, ByVal ShowNonApproved As Boolean) As ArrayList
-
-      Return CBO.FillCollection(DataProvider.Instance().ListComments(EntryID, ShowNonApproved), GetType(CommentInfo))
-
-    End Function
-
-    Public Function ListCommentsByBlog(ByVal BlogID As Integer, ByVal ShowNonApproved As Boolean, ByVal MaximumComments As Integer) As List(Of CommentInfo)
-
-      Return CBO.FillCollection(Of CommentInfo)(DataProvider.Instance().ListCommentsByBlog(BlogID, ShowNonApproved, MaximumComments))
-
-    End Function
-
-    Public Function ListCommentsByPortal(ByVal PortalID As Integer, ByVal ShowNonApproved As Boolean, ByVal MaximumComments As Integer) As List(Of CommentInfo)
-
-      Return CBO.FillCollection(Of CommentInfo)(DataProvider.Instance().ListCommentsByPortal(PortalID, ShowNonApproved, MaximumComments))
-
-    End Function
-
-    Public Function AddComment(ByVal objComment As CommentInfo) As Integer
-
-      Return CType(DataProvider.Instance().AddComment(objComment.EntryID, objComment.UserID, objComment.Title, objComment.Comment, objComment.Author, objComment.Approved, objComment.Website, objComment.Email, objComment.AddedDate), Integer)
-
-    End Function
-
-    Public Sub UpdateComment(ByVal objComment As CommentInfo)
-
-      DataProvider.Instance().UpdateComment(objComment.CommentID, objComment.EntryID, objComment.UserID, objComment.Title, objComment.Comment, objComment.Author, objComment.Approved, objComment.Website, objComment.Email, objComment.AddedDate)
-
-    End Sub
-
-    Public Sub DeleteComment(ByVal commentID As Integer)
-
-      DataProvider.Instance().DeleteComment(commentID)
-
-    End Sub
-
-    Public Sub DeleteAllUnapproved(ByVal EntryID As Integer)
-
-      DataProvider.Instance().DeleteAllUnapproved(EntryID)
-
-    End Sub
+Namespace Components.Controllers
 
 
-  End Class
+    Public Class CommentController
 
+        Public Function GetComment(ByVal commentID As Integer) As CommentInfo
+
+            Return CType(CBO.FillObject(DataProvider.Instance().GetComment(commentID), GetType(CommentInfo)), CommentInfo)
+
+        End Function
+
+        Public Function ListComments(ByVal EntryID As Integer, ByVal ShowNonApproved As Boolean) As ArrayList
+
+            Return CBO.FillCollection(DataProvider.Instance().ListComments(EntryID, ShowNonApproved), GetType(CommentInfo))
+
+        End Function
+
+        Public Function ListCommentsByBlog(ByVal BlogID As Integer, ByVal ShowNonApproved As Boolean, ByVal MaximumComments As Integer) As List(Of CommentInfo)
+
+            Return CBO.FillCollection(Of CommentInfo)(DataProvider.Instance().ListCommentsByBlog(BlogID, ShowNonApproved, MaximumComments))
+
+        End Function
+
+        Public Function ListCommentsByPortal(ByVal PortalID As Integer, ByVal ShowNonApproved As Boolean, ByVal MaximumComments As Integer) As List(Of CommentInfo)
+
+            Return CBO.FillCollection(Of CommentInfo)(DataProvider.Instance().ListCommentsByPortal(PortalID, ShowNonApproved, MaximumComments))
+
+        End Function
+
+        Public Function AddComment(ByVal objComment As CommentInfo) As Integer
+
+            Return CType(DataProvider.Instance().AddComment(objComment.EntryID, objComment.UserID, objComment.Title, objComment.Comment, objComment.Author, objComment.Approved, objComment.Website, objComment.Email, objComment.AddedDate), Integer)
+
+        End Function
+
+        Public Sub UpdateComment(ByVal objComment As CommentInfo)
+
+            DataProvider.Instance().UpdateComment(objComment.CommentID, objComment.EntryID, objComment.UserID, objComment.Title, objComment.Comment, objComment.Author, objComment.Approved, objComment.Website, objComment.Email, objComment.AddedDate)
+
+        End Sub
+
+        Public Sub DeleteComment(ByVal commentID As Integer)
+
+            DataProvider.Instance().DeleteComment(commentID)
+
+        End Sub
+
+        Public Sub DeleteAllUnapproved(ByVal EntryID As Integer)
+
+            DataProvider.Instance().DeleteAllUnapproved(EntryID)
+
+        End Sub
+
+
+    End Class
 End Namespace

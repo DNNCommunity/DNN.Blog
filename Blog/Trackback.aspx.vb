@@ -20,9 +20,12 @@
 
 Imports System
 Imports System.Xml
+Imports DotNetNuke.Modules.Blog.Components.Business
+Imports DotNetNuke.Modules.Blog.Components.Controllers
 Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.Entities.Users
+Imports DotNetNuke.Modules.Blog.Components.Entities
 
 #Region "Class Trackback"
 Partial Class Trackback

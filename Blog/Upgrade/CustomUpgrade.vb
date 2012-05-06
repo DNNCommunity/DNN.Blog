@@ -19,11 +19,14 @@
 '
 
 Imports System.IO
+Imports DotNetNuke.Modules.Blog.Components.Business
+Imports DotNetNuke.Modules.Blog.Components.Controllers
 Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Entities.Modules
 Imports DotNetNuke.Entities.Modules.Definitions
 Imports DotNetNuke.Services.Exceptions
+Imports DotNetNuke.Modules.Blog.Components.Entities
 
 Public Class CustomUpgrade
 

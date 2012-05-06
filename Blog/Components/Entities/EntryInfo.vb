@@ -17,17 +17,20 @@
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 ' DEALINGS IN THE SOFTWARE.
 '
-
 Imports System
 Imports System.Data
 Imports System.Xml
 Imports System.Xml.Schema
 Imports System.Xml.Serialization
+Imports DotNetNuke.Modules.Blog.Components.Controllers
+Imports DotNetNuke.Modules.Blog.Components.Business
 Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Entities.Modules
 Imports DotNetNuke.Services.Tokens
+Imports DotNetNuke.Entities.Users
 
-Namespace Business
+Namespace Components.Entities
+
 
     <Serializable(), XmlRoot("Entry")> _
     Public Class EntryInfo
@@ -154,7 +157,7 @@ Namespace Business
                 Return CacheLevel.fullyCacheable
             End Get
         End Property
-        Public Function GetProperty(ByVal strPropertyName As String, ByVal strFormat As String, ByVal formatProvider As System.Globalization.CultureInfo, ByVal AccessingUser As Entities.Users.UserInfo, ByVal AccessLevel As Services.Tokens.Scope, ByRef PropertyNotFound As Boolean) As String Implements Services.Tokens.IPropertyAccess.GetProperty
+        Public Function GetProperty(ByVal strPropertyName As String, ByVal strFormat As String, ByVal formatProvider As System.Globalization.CultureInfo, ByVal AccessingUser As UserInfo, ByVal AccessLevel As Services.Tokens.Scope, ByRef PropertyNotFound As Boolean) As String Implements Services.Tokens.IPropertyAccess.GetProperty
             Dim OutputFormat As String = String.Empty
             If strFormat = String.Empty Then
                 OutputFormat = "D"
@@ -296,5 +299,4 @@ Namespace Business
 #End Region
 
     End Class
-
 End Namespace

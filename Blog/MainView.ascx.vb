@@ -19,12 +19,14 @@
 '
 
 Imports System
+Imports DotNetNuke.Modules.Blog.Components.Controllers
 Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Entities.Modules.Definitions
 Imports DotNetNuke.Entities.Modules.Actions
 Imports DotNetNuke.Services.Localization.Localization
 Imports DotNetNuke.Services.Localization
+Imports DotNetNuke.Modules.Blog.Components.Entities
 
 Partial Public Class MainView
     Inherits BlogModuleBase

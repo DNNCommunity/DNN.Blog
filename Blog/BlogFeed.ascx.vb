@@ -20,7 +20,7 @@
 
 Imports System
 Imports DotNetNuke.Modules.Blog.Components.Common
-Imports DotNetNuke.Modules.Blog.Rss
+Imports DotNetNuke.Modules.Blog.Components.Rss
 
 Partial Public Class BlogFeed
  Inherits BlogModuleBase

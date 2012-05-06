@@ -20,7 +20,7 @@
 
 Imports System
 
-Namespace MetaWeblog
+Namespace Components.MetaWeblog
 
     Public Class BlogPostException
         Inherits Exception
@@ -41,5 +41,4 @@ Namespace MetaWeblog
         End Property
 
     End Class
-
 End Namespace

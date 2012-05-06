@@ -21,6 +21,8 @@
 Imports System
 Imports System.Data
 Imports System.Text.RegularExpressions
+Imports DotNetNuke.Modules.Blog.Components.Controllers
+Imports DotNetNuke.Modules.Blog.Components.Blogger
 Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Data
 Imports DotNetNuke.Entities.Portals
@@ -35,6 +37,11 @@ Imports System.Web
 Imports DotNetNuke.Modules.Blog.MetaWeblog
 Imports DotNetNuke.Entities.Content.Taxonomy
 Imports System.Linq
+Imports DotNetNuke.Modules.Blog.Components.Settings
+Imports DotNetNuke.Modules.Blog.Components.WordPress
+Imports DotNetNuke.Modules.Blog.Components.MoveableType
+Imports DotNetNuke.Modules.Blog.Components.MetaWeblog
+Imports DotNetNuke.Modules.Blog.Components.Entities
 
 ''' <summary>
 ''' Implements the MetaBlog API.
@@ -45,28 +52,28 @@ Imports System.Linq
 Public Class BlogPost
     Inherits XmlRpcService
     Implements IMetaWeblog
-    Implements WordPress.IWordPress
-    Implements Blogger.IBlogger
-    Implements MoveableType.IMoveableType
+    Implements IWordPress
+    Implements IBlogger
+    Implements IMoveableType
 
     Private _portalSettings As PortalSettings = Nothing
-    Private _blogSettings As Settings.BlogSettings = Nothing
+    Private _blogSettings As BlogSettings = Nothing
     Private _moduleName As String = String.Empty
     Private _expanderScript As String = String.Empty
     Private _userInfo As UserInfo = Nothing
     Private _provider As IPublishable = Nothing
     Private _tabId As Integer = -1
 
-    Public Function getUsersBlogs(ByVal appKey As String, ByVal username As String, ByVal password As String) As Blogger.BlogInfoStruct() Implements Blogger.IBlogger.getUsersBlogs
+    Public Function getUsersBlogs(ByVal appKey As String, ByVal username As String, ByVal password As String) As BlogInfoStruct() Implements IBlogger.getUsersBlogs
         InitializeMethodCall(username, password)
 
-        Dim infoArray As Blogger.BlogInfoStruct()
+        Dim infoArray As BlogInfoStruct()
         Try
 
             Dim misArray As ModuleInfoStruct() = _provider.GetModulesForUser(_userInfo, _portalSettings, _blogSettings, "Blog")
 
             ' Translate this to a BlogInfoStruct
-            infoArray = New Blogger.BlogInfoStruct(misArray.Length - 1) {}
+            infoArray = New BlogInfoStruct(misArray.Length - 1) {}
             Dim i As Integer = 0
             While i < misArray.Length
                 infoArray(i).blogid = misArray(i).BlogID
@@ -122,12 +129,12 @@ Public Class BlogPost
         Return post
     End Function
 
-    Public Function getCategories_WordPress(ByVal blogid As String, ByVal username As String, ByVal password As String) As WordPress.CategoryInfo() Implements WordPress.IWordPress.getCategories
+    Public Function getCategories_WordPress(ByVal blogid As String, ByVal username As String, ByVal password As String) As Components.WordPress.CategoryInfo() Implements IWordPress.getCategories
         InitializeMethodCall(username, password)
 
         Dim termController As ITermController = DotNetNuke.Entities.Content.Common.Util.GetTermController()
         Dim colCategories As IQueryable(Of Term) = termController.GetTermsByVocabulary(_blogSettings.VocabularyId)
-        Dim res(colCategories.Count - 1) As WordPress.CategoryInfo
+        Dim res(colCategories.Count - 1) As Components.WordPress.CategoryInfo
         Dim i As Integer = 0
 
         For Each objTerm As Term In colCategories
@@ -145,7 +152,7 @@ Public Class BlogPost
         Return res
     End Function
 
-    Public Function getPostCategories(ByVal postid As String, ByVal username As String, ByVal password As String) As MoveableType.Category() Implements MoveableType.IMoveableType.getPostCategories
+    Public Function getPostCategories(ByVal postid As String, ByVal username As String, ByVal password As String) As Category() Implements IMoveableType.getPostCategories
         InitializeMethodCall(username, password)
 
         Dim cntEntry As New EntryController
@@ -154,7 +161,7 @@ Public Class BlogPost
         Dim colCategories As List(Of Term)
         colCategories = objEntry.Terms
 
-        Dim res(colCategories.Count - 1) As MoveableType.Category
+        Dim res(colCategories.Count - 1) As Category
         Dim i As Integer = 0
 
         For Each objTerm As TermInfo In colCategories
@@ -162,22 +169,22 @@ Public Class BlogPost
                 res(i).categoryId = objTerm.TermId.ToString()
                 res(i).categoryName = objTerm.Name
             End If
-     
+
             i += 1
         Next
 
         Return res
     End Function
 
-    Public Function setPostCategories(ByVal postid As String, ByVal username As String, ByVal password As String, ByVal categories As MoveableType.Category()) As Boolean Implements MoveableType.IMoveableType.setPostCategories
+    Public Function setPostCategories(ByVal postid As String, ByVal username As String, ByVal password As String, ByVal categories As Category()) As Boolean Implements IMoveableType.setPostCategories
         InitializeMethodCall(username, password)
 
         Dim cntEntry As New EntryController
         Dim objEntry As EntryInfo = cntEntry.GetEntry(Convert.ToInt32(postid), _portalSettings.PortalId)
         Dim terms As New List(Of Term)
 
-        For Each t As MoveableType.Category In categories
-            Dim objTerm As Term = Integration.Terms.GetTermById(Convert.ToInt32(t.categoryId), _blogSettings.VocabularyId)
+        For Each t As Category In categories
+            Dim objTerm As Term = Components.Integration.Terms.GetTermById(Convert.ToInt32(t.categoryId), _blogSettings.VocabularyId)
             terms.Add(objTerm)
         Next
 
@@ -303,7 +310,7 @@ Public Class BlogPost
         Return success
     End Function
 
-    Public Function deletePost(ByVal appKey As String, ByVal postid As String, ByVal username As String, ByVal password As String, <XmlRpcParameter(Description:="Where applicable, this specifies whether the blog should be republished after the post has been deleted.")> ByVal publish As Boolean) As Boolean Implements Blogger.IBlogger.deletePost
+    Public Function deletePost(ByVal appKey As String, ByVal postid As String, ByVal username As String, ByVal password As String, <XmlRpcParameter(Description:="Where applicable, this specifies whether the blog should be republished after the post has been deleted.")> ByVal publish As Boolean) As Boolean Implements IBlogger.deletePost
 
         InitializeMethodCall(username, password)
 
@@ -323,10 +330,10 @@ Public Class BlogPost
         Return success
     End Function
 
-    Public Function getWPCategories(ByVal blog_id As String, ByVal username As String, ByVal password As String) As MetaWeblog.CategoryInfo()
+    Public Function getWPCategories(ByVal blog_id As String, ByVal username As String, ByVal password As String) As Components.MetaWeblog.CategoryInfo()
         InitializeMethodCall(username, password)
 
-        Dim categories As MetaWeblog.CategoryInfo()
+        Dim categories As Components.MetaWeblog.CategoryInfo()
         Try
             categories = getCategoryInfosFromItemCategoryInfos(_provider.GetCategories(blog_id.ToString(), _userInfo, _portalSettings, _blogSettings))
         Catch ex As BlogPostException
@@ -341,7 +348,7 @@ Public Class BlogPost
         End Try
         'Check to make sure we're not returning Nothing, which throws WLW for a loop.
         If categories Is Nothing Then
-            categories = New MetaWeblog.CategoryInfo(-1) {}
+            categories = New Components.MetaWeblog.CategoryInfo(-1) {}
         End If
 
         Return categories
@@ -633,8 +640,8 @@ Public Class BlogPost
         Return pages
     End Function
 
-    Private Function getCategoryInfoFromItemCategoryInfo(ByVal ici As ItemCategoryInfo) As MetaWeblog.CategoryInfo
-        Dim ci As New MetaWeblog.CategoryInfo
+    Private Function getCategoryInfoFromItemCategoryInfo(ByVal ici As ItemCategoryInfo) As Components.MetaWeblog.CategoryInfo
+        Dim ci As New Components.MetaWeblog.CategoryInfo
         ci.categoryId = ici.CategoryId.ToString()
         ci.categoryName = ici.CategoryName
         ci.description = ici.Description
@@ -644,10 +651,10 @@ Public Class BlogPost
         Return ci
     End Function
 
-    Private Function getCategoryInfosFromItemCategoryInfos(ByVal ici As ItemCategoryInfo()) As MetaWeblog.CategoryInfo()
-        Dim ci As MetaWeblog.CategoryInfo() = Nothing
+    Private Function getCategoryInfosFromItemCategoryInfos(ByVal ici As ItemCategoryInfo()) As Components.MetaWeblog.CategoryInfo()
+        Dim ci As Components.MetaWeblog.CategoryInfo() = Nothing
         If Not ici Is Nothing Then
-            ci = New MetaWeblog.CategoryInfo(ici.Length - 1) {}
+            ci = New Components.MetaWeblog.CategoryInfo(ici.Length - 1) {}
             Dim i As Integer = 0
             While i < ici.Length
                 ci(i) = getCategoryInfoFromItemCategoryInfo(ici(i))
@@ -657,7 +664,7 @@ Public Class BlogPost
         Return ci
     End Function
 
-    Private Function getMetaWebLogCategoryInfosFromItemCategoryInfo(ByVal ci As MetaWeblog.CategoryInfo) As MetaWebLogCategoryInfo
+    Private Function getMetaWebLogCategoryInfosFromItemCategoryInfo(ByVal ci As Components.MetaWeblog.CategoryInfo) As MetaWebLogCategoryInfo
         Dim mwci As New MetaWebLogCategoryInfo
         mwci.description = ci.description
         mwci.htmlUrl = ci.htmlUrl
@@ -665,7 +672,7 @@ Public Class BlogPost
         Return mwci
     End Function
 
-    Private Function getMetaWebLogCategoryInfosFromCateogryInfos(ByVal ci As MetaWeblog.CategoryInfo()) As MetaWebLogCategoryInfo()
+    Private Function getMetaWebLogCategoryInfosFromCateogryInfos(ByVal ci As Components.MetaWeblog.CategoryInfo()) As MetaWebLogCategoryInfo()
         Dim mwci As MetaWebLogCategoryInfo() = New MetaWebLogCategoryInfo(ci.Length - 1) {}
         Dim i As Integer = 0
         While i < ci.Length
@@ -681,7 +688,7 @@ Public Class BlogPost
             Globals.ReadValue(Context.Request.Params, "tabid", _tabId)
             GetPortalSettings()
             getProvider()
-            _blogSettings = Settings.BlogSettings.GetBlogSettings(_portalSettings.PortalId, _tabId)
+            _blogSettings = BlogSettings.GetBlogSettings(_portalSettings.PortalId, _tabId)
             If Not _blogSettings.AllowWLW Then
                 Throw New XmlRpcFaultException(0, GetString("Access Denied", "Access to the module through this API has been denied. Please contact the Portal Administrator."))
             Else

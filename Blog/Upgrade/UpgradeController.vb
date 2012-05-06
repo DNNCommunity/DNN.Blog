@@ -20,6 +20,7 @@
 Imports System
 Imports DotNetNuke.Modules.Blog.Data
 Imports DotNetNuke.Common.Utilities
+Imports DotNetNuke.Modules.Blog.Components.Entities
 
 Namespace Business
 

@@ -17,78 +17,79 @@
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 ' DEALINGS IN THE SOFTWARE.
 '
-
 Imports System
+Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Modules.Blog.Data
 Imports DotNetNuke.Common.Utilities
+Imports DotNetNuke.Modules.Blog.Components.Entities
 
-Namespace Business
+Namespace Components.Controllers
 
- Public Class BlogController
+    Public Class BlogController
 
-  Public Function GetBlog(ByVal blogID As Integer) As BlogInfo
-   Return CType(CBO.FillObject(DataProvider.Instance().GetBlog(blogID), GetType(BlogInfo)), BlogInfo)
-  End Function
+        Public Function GetBlog(ByVal blogID As Integer) As BlogInfo
+            Return CType(CBO.FillObject(DataProvider.Instance().GetBlog(blogID), GetType(BlogInfo)), BlogInfo)
+        End Function
 
-  Public Function GetBlogByUserID(ByVal PortalID As Integer, ByVal UserID As Integer) As BlogInfo
-   Return CType(CBO.FillObject(DataProvider.Instance().GetBlogByUserID(PortalID, UserID), GetType(BlogInfo)), BlogInfo)
-  End Function
+        Public Function GetBlogByUserID(ByVal PortalID As Integer, ByVal UserID As Integer) As BlogInfo
+            Return CType(CBO.FillObject(DataProvider.Instance().GetBlogByUserID(PortalID, UserID), GetType(BlogInfo)), BlogInfo)
+        End Function
 
-  Public Function GetBlogByUserName(ByVal PortalID As Integer, ByVal UserName As String) As BlogInfo
-   Return CType(CBO.FillObject(DataProvider.Instance().GetBlogByUserName(PortalID, UserName), GetType(BlogInfo)), BlogInfo)
-  End Function
+        Public Function GetBlogByUserName(ByVal PortalID As Integer, ByVal UserName As String) As BlogInfo
+            Return CType(CBO.FillObject(DataProvider.Instance().GetBlogByUserName(PortalID, UserName), GetType(BlogInfo)), BlogInfo)
+        End Function
 
         Public Function GetBlogsByUserName(ByVal PortalID As Integer, ByVal UserName As String) As List(Of BlogInfo)
             Return CBO.FillCollection(Of BlogInfo)(DataProvider.Instance().GetBlogsByUserName(PortalID, UserName))
         End Function
 
-  Public Function ListBlogs(ByVal PortalID As Integer, ByVal ParentBlogID As Integer, ByVal ShowNonPublic As Boolean) As ArrayList
-   Return CBO.FillCollection(DataProvider.Instance().ListBlogs(PortalID, ParentBlogID, ShowNonPublic), GetType(BlogInfo))
-  End Function
+        Public Function ListBlogs(ByVal PortalID As Integer, ByVal ParentBlogID As Integer, ByVal ShowNonPublic As Boolean) As ArrayList
+            Return CBO.FillCollection(DataProvider.Instance().ListBlogs(PortalID, ParentBlogID, ShowNonPublic), GetType(BlogInfo))
+        End Function
 
-  Public Function ListBlogsByPortal(ByVal PortalID As Integer, ByVal ShowNonPublic As Boolean) As ArrayList
-   Return CBO.FillCollection(DataProvider.Instance().ListBlogsByPortal(PortalID, ShowNonPublic), GetType(BlogInfo))
-  End Function
+        Public Function ListBlogsByPortal(ByVal PortalID As Integer, ByVal ShowNonPublic As Boolean) As ArrayList
+            Return CBO.FillCollection(DataProvider.Instance().ListBlogsByPortal(PortalID, ShowNonPublic), GetType(BlogInfo))
+        End Function
 
-  Public Function ListBlogsRootByPortal(ByVal PortalID As Integer) As ArrayList
-   Return CBO.FillCollection(DataProvider.Instance().ListBlogsRootByPortal(PortalID), GetType(BlogInfo))
-  End Function
+        Public Function ListBlogsRootByPortal(ByVal PortalID As Integer) As ArrayList
+            Return CBO.FillCollection(DataProvider.Instance().ListBlogsRootByPortal(PortalID), GetType(BlogInfo))
+        End Function
 
-  Public Function AddBlog(ByVal objBlog As BlogInfo) As Integer
-   With objBlog
+        Public Function AddBlog(ByVal objBlog As BlogInfo) As Integer
+            With objBlog
                 Return CType(DataProvider.Instance().AddBlog(.PortalID, .ParentBlogID, .UserID, .Title, .Description, .Public, .AllowComments, .AllowAnonymous, .ShowFullName, .Syndicated, .SyndicateIndependant, .SyndicationURL, .SyndicationEmail, .EmailNotification, .AllowTrackbacks, .AutoTrackback, .MustApproveComments, .MustApproveAnonymous, .MustApproveTrackbacks, .UseCaptcha, .EnableGhostWriter), Integer)
-   End With
-  End Function
+            End With
+        End Function
 
-  Public Sub UpdateBlog(ByVal objBlog As BlogInfo)
-   With objBlog
+        Public Sub UpdateBlog(ByVal objBlog As BlogInfo)
+            With objBlog
                 DataProvider.Instance().UpdateBlog(.PortalID, .BlogID, .ParentBlogID, .UserID, .Title, .Description, .Public, .AllowComments, .AllowAnonymous, .ShowFullName, .Syndicated, .SyndicateIndependant, .SyndicationURL, .SyndicationEmail, .EmailNotification, .AllowTrackbacks, .AutoTrackback, .MustApproveComments, .MustApproveAnonymous, .MustApproveTrackbacks, .UseCaptcha, .EnableGhostWriter)
-   End With
-  End Sub
+            End With
+        End Sub
 
-  Public Sub DeleteBlog(ByVal blogID As Integer)
-   DataProvider.Instance().DeleteBlog(blogID)
-  End Sub
+        Public Sub DeleteBlog(ByVal blogID As Integer)
+            DataProvider.Instance().DeleteBlog(blogID)
+        End Sub
 
-  Public Function GetBlogFromContext() As BlogInfo
-   Dim ReturnBlog As BlogInfo = Nothing
-   Dim Request As HttpRequest = HttpContext.Current.Request
-   Dim PortalSettings As DotNetNuke.Entities.Portals.PortalSettings = CType(HttpContext.Current.Items("PortalSettings"), DotNetNuke.Entities.Portals.PortalSettings)
+        Public Function GetBlogFromContext() As BlogInfo
+            Dim ReturnBlog As BlogInfo = Nothing
+            Dim Request As HttpRequest = HttpContext.Current.Request
+            Dim PortalSettings As DotNetNuke.Entities.Portals.PortalSettings = CType(HttpContext.Current.Items("PortalSettings"), DotNetNuke.Entities.Portals.PortalSettings)
 
-   If Not (Request.Params("BlogID") Is Nothing) Then
-    ReturnBlog = GetBlog(Int32.Parse(Request.Params("BlogID")))
-   ElseIf Not Request.Params("Blog") Is Nothing Then
-    ReturnBlog = GetBlogByUserName(PortalSettings.PortalId, Request.Params("Blog"))
-   End If
+            If Not (Request.Params("BlogID") Is Nothing) Then
+                ReturnBlog = GetBlog(Int32.Parse(Request.Params("BlogID")))
+            ElseIf Not Request.Params("Blog") Is Nothing Then
+                ReturnBlog = GetBlogByUserName(PortalSettings.PortalId, Request.Params("Blog"))
+            End If
 
-   If ReturnBlog IsNot Nothing Then
-    If ReturnBlog.PortalID <> PortalSettings.PortalId Then
-     ReturnBlog = Nothing
-    End If
-   End If
+            If ReturnBlog IsNot Nothing Then
+                If ReturnBlog.PortalID <> PortalSettings.PortalId Then
+                    ReturnBlog = Nothing
+                End If
+            End If
 
-   Return ReturnBlog
-  End Function
+            Return ReturnBlog
+        End Function
 
 #Region " 4.5.0 Upgrade"
 
@@ -101,6 +102,5 @@ Namespace Business
 
 #End Region
 
- End Class
-
+    End Class
 End Namespace

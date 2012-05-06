@@ -19,12 +19,15 @@
 '
 
 Imports System
+Imports DotNetNuke.Modules.Blog.Components.Business
+Imports DotNetNuke.Modules.Blog.Components.Controllers
 Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Web.Client.ClientResourceManagement
 Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Services.Exceptions.Exceptions
 Imports System.Globalization
+Imports DotNetNuke.Modules.Blog.Components.Entities
 
 Partial Public Class Archive
     Inherits BlogModuleBase

@@ -18,16 +18,18 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
+Imports DotNetNuke.Modules.Blog.Components.Controllers
 Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Web.Client.ClientResourceManagement
-Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Framework
+Imports DotNetNuke.Modules.Blog.Components.Settings
+Imports DotNetNuke.Modules.Blog.Components.Entities
 Imports Telerik.Web.UI
 
 Partial Public Class ViewTags
     Inherits DotNetNuke.Entities.Modules.PortalModuleBase
 
-    Private _settings As Settings.TagViewSettings
+    Private _settings As TagViewSettings
     Protected WithEvents rtcTags As DotNetNuke.Web.UI.WebControls.DnnTagCloud
 
 #Region "Event Handlers"
@@ -37,7 +39,7 @@ Partial Public Class ViewTags
         ClientResourceManager.RegisterScript(Page, TemplateSourceDirectory + "/js/jquery.qatooltip.js")
         ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js")
 
-        _settings = DotNetNuke.Modules.Blog.Settings.TagViewSettings.GetTagViewSettings(TabModuleId)
+        _settings = TagViewSettings.GetTagViewSettings(TabModuleId)
     End Sub
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load

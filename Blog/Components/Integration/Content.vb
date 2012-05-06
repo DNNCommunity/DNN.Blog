@@ -20,14 +20,15 @@
 Option Strict On
 Option Explicit On
 
+Imports DotNetNuke.Modules.Blog.Components.Controllers
 Imports DotNetNuke.Modules.Blog.Components.Common
-Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Entities.Content
 Imports DotNetNuke.Entities.Content.Common
 Imports System.Linq
 Imports DotNetNuke.Common.Utilities
+Imports DotNetNuke.Modules.Blog.Components.Entities
 
-Namespace Integration
+Namespace Components.Integration
 
     ''' <summary>
     ''' This class handles all core content item integration methods. This is abstracted to create a centralized spot within the module to manage it's own content items.

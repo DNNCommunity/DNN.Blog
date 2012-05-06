@@ -17,7 +17,6 @@
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 ' DEALINGS IN THE SOFTWARE.
 '
-
 Imports System
 Imports System.Data
 Imports System.Xml
@@ -28,7 +27,8 @@ Imports DotNetNuke.Entities.Modules
 Imports DotNetNuke.Services.Tokens
 Imports DotNetNuke.Entities.Users
 
-Namespace Business
+Namespace Components.Entities
+
 
     <Serializable(), XmlRoot("Blog")> _
     Public Class BlogInfo
@@ -414,5 +414,4 @@ Namespace Business
 #End Region
 
     End Class
-
 End Namespace

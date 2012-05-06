@@ -163,7 +163,7 @@ Namespace Components.Common
             End If
         End Function
 
-        Public Shared Sub AddModDef(ByVal PortalSettings As Entities.Portals.PortalSettings, ByVal ModuleDefID As Integer, ByVal TabID As Integer, ByVal paneName As String, ByVal position As Integer, ByVal title As String)
+        Public Shared Sub AddModDef(ByVal PortalSettings As DotNetNuke.Entities.Portals.PortalSettings, ByVal ModuleDefID As Integer, ByVal TabID As Integer, ByVal paneName As String, ByVal position As Integer, ByVal title As String)
 
             Dim objModuleDefinition As Definitions.ModuleDefinitionInfo = (New Definitions.ModuleDefinitionController).GetModuleDefinition(ModuleDefID)
             Dim objTabPermissions As Security.Permissions.TabPermissionCollection = (New Security.Permissions.TabPermissionController).GetTabPermissionsCollectionByTabID(TabID, PortalSettings.PortalId)

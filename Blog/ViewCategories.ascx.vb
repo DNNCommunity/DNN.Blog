@@ -21,23 +21,26 @@
 Imports System.Linq
 Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Entities.Content.Taxonomy
+Imports DotNetNuke.Modules.Blog.Components.Settings
+Imports DotNetNuke.Modules.Blog.Components.Entities
 Imports Telerik.Web.UI
+Imports TermController = DotNetNuke.Modules.Blog.Components.Controllers.TermController
 
 Partial Class ViewCategories
     Inherits DotNetNuke.Entities.Modules.PortalModuleBase
 
 #Region "Private Members"
 
-    Private _blogSettings As Settings.BlogSettings
+    Private _blogSettings As BlogSettings
 
-    Private Property BlogSettings() As Settings.BlogSettings
+    Private Property BlogSettings() As BlogSettings
         Get
             If _blogSettings Is Nothing Then
-                _blogSettings = DotNetNuke.Modules.Blog.Settings.BlogSettings.GetBlogSettings(PortalId, -1)
+                _blogSettings = Components.Settings.BlogSettings.GetBlogSettings(PortalId, -1)
             End If
             Return _blogSettings
         End Get
-        Set(ByVal value As Settings.BlogSettings)
+        Set(ByVal value As BlogSettings)
             _blogSettings = value
         End Set
     End Property
@@ -51,7 +54,7 @@ Partial Class ViewCategories
     Private ReadOnly Property BlogCategories() As List(Of TermInfo)
         Get
             If (VocabularyId > 0) Then
-                Dim cntTerm As New Business.TermController
+                Dim cntTerm As New TermController
                 Return cntTerm.GetTermsByContentType(ModuleContext.PortalId, VocabularyId)
             Else
                 Return Nothing

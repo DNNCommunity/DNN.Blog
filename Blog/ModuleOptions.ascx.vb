@@ -19,6 +19,8 @@
 '
 
 Imports System
+Imports DotNetNuke.Modules.Blog.Components.Business
+Imports DotNetNuke.Modules.Blog.Components.Controllers
 Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Modules.Blog.Business
@@ -26,6 +28,8 @@ Imports DotNetNuke.Services.Exceptions.Exceptions
 Imports DotNetNuke.Services.Localization.Localization
 Imports DotNetNuke.Framework
 Imports DotNetNuke.Services.Localization
+Imports DotNetNuke.Modules.Blog.Components.Integration
+Imports DotNetNuke.Modules.Blog.Components.Entities
 
 Partial Public Class ModuleOptions
     Inherits BlogModuleBase
@@ -233,7 +237,7 @@ Partial Public Class ModuleOptions
         lblChildBlogsStatus.Text = String.Format(GetString("lblChildBlogsStatus", LocalResourceFile), CInt(totalBlogs - parentBlogs))
         DotNetNuke.UI.Utilities.ClientAPI.AddButtonConfirm(cmdMigrateChildblogs, GetString("MigrateConfirm", LocalResourceFile))
 
-        ddlCatVocabRoot.DataSource = Integration.Terms.GetPortalVocabularies(ModuleContext.PortalId)
+        ddlCatVocabRoot.DataSource = Terms.GetPortalVocabularies(ModuleContext.PortalId)
         ddlCatVocabRoot.DataBind()
 
         Dim catli As New ListItem

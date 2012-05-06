@@ -20,11 +20,12 @@
 
 Imports System
 Imports System.IO
+Imports DotNetNuke.Modules.Blog.Components.Business
+Imports DotNetNuke.Modules.Blog.Components.Controllers
 Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Web.Client.ClientResourceManagement
 Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Modules.Blog.Business
-Imports DotNetNuke.Modules.Blog.File
 Imports DotNetNuke.Services.Localization.Localization
 Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Common.Utilities
@@ -34,6 +35,8 @@ Imports DotNetNuke.Framework
 Imports System.Linq
 Imports DotNetNuke.Entities.Content.Taxonomy
 Imports System.Globalization
+Imports DotNetNuke.Modules.Blog.Components.File
+Imports DotNetNuke.Modules.Blog.Components.Entities
 Imports Telerik.Web.UI
 
 Partial Class EditEntry
@@ -57,8 +60,8 @@ Partial Class EditEntry
     Private m_oParentBlog As BlogInfo
     Private m_oBlog As BlogInfo
     Private m_oTags As ArrayList
-    Private m_oCats As List(Of Business.CategoryInfo)
-    Private m_oEntryCats As List(Of Business.CategoryInfo)
+    Private m_oCats As List(Of CategoryInfo)
+    Private m_oEntryCats As List(Of CategoryInfo)
     Private m_oEntryId As Integer = -1
 
     Private ReadOnly Property VocabularyId() As Integer
@@ -477,14 +480,14 @@ Partial Class EditEntry
                             'If (ContainsSpecialCharacters) Then
                             '    UI.Skins.Skin.AddModuleMessage(control, msg, ModuleMessage.ModuleMessageType.RedError);
                             'End If
-                            Dim newTerm As Term = Integration.Terms.CreateAndReturnTerm(s, 1)
+                            Dim newTerm As Term = Components.Integration.Terms.CreateAndReturnTerm(s, 1)
                             terms.Add(newTerm)
                         End If
                     Next
 
                     If VocabularyId > 0 Then
                         For Each t As RadTreeNode In dtCategories.CheckedNodes
-                            Dim objTerm As Term = Integration.Terms.GetTermById(Convert.ToInt32(t.Value), VocabularyId)
+                            Dim objTerm As Term = Components.Integration.Terms.GetTermById(Convert.ToInt32(t.Value), VocabularyId)
                             terms.Add(objTerm)
                         Next
                     End If

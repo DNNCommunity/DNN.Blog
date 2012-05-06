@@ -17,12 +17,14 @@
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 ' DEALINGS IN THE SOFTWARE.
 '
-
 Imports DotNetNuke.Entities.Content
 Imports DotNetNuke.Modules.Blog.Data
 Imports DotNetNuke.Common.Utilities
+Imports DotNetNuke.Modules.Blog.Components.Integration
+Imports DotNetNuke.Modules.Blog.Components.Entities
 
-Namespace Business
+Namespace Components.Controllers
+
 
     Public Class EntryController
 
@@ -84,7 +86,7 @@ Namespace Business
         ''' <returns></returns>
         ''' <remarks></remarks>
         Private Shared Function CompleteEntryCreation(ByVal objEntry As EntryInfo, ByVal tabId As Integer) As Integer
-            Dim cntTaxonomy As New Integration.Content()
+            Dim cntTaxonomy As New Content()
             Dim objContentItem As ContentItem = cntTaxonomy.CreateContentItem(objEntry, tabId)
 
             Return objContentItem.ContentItemId
@@ -97,17 +99,16 @@ Namespace Business
         ''' <param name="tabId"></param>
         ''' <remarks></remarks>
         Private Shared Sub CompleteEntryUpdate(ByVal objEntry As EntryInfo, ByVal tabId As Integer, ByVal portalId As Integer)
-            Dim cntTaxonomy As New Integration.Content()
+            Dim cntTaxonomy As New Content()
             cntTaxonomy.UpdateContentItem(objEntry, tabId, portalId)
         End Sub
 
         Private Shared Sub CompleteEntryDelete(ByVal contentItemId As Integer)
-            Integration.Content.DeleteContentItem(contentItemId)
+            Content.DeleteContentItem(contentItemId)
             'TODO: Remove from Journal?
         End Sub
 
 #End Region
 
     End Class
-
 End Namespace

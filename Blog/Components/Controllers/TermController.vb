@@ -17,15 +17,15 @@
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 ' DEALINGS IN THE SOFTWARE.
 '
-
 Imports System
 Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Modules.Blog.Data
 Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Entities.Host
+Imports DotNetNuke.Modules.Blog.Components.Integration
+Imports DotNetNuke.Modules.Blog.Components.Entities
 
-
-Namespace Business
+Namespace Components.Controllers
 
     Public Class TermController
 
@@ -38,7 +38,7 @@ Namespace Business
             If colTerms Is Nothing Then
                 Dim timeOut As Integer = 20 * Convert.ToInt32(Host.PerformanceSetting)
 
-                colTerms = CBO.FillCollection(Of TermInfo)(DataProvider.Instance().GetTermsByContentType(portalId, Integration.Content.GetContentTypeID(), vocabularyId))
+                colTerms = CBO.FillCollection(Of TermInfo)(DataProvider.Instance().GetTermsByContentType(portalId, Content.GetContentTypeID(), vocabularyId))
 
                 If timeOut > 0 And colTerms IsNot Nothing Then
                     DataCache.SetCache(Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + vocabularyId.ToString(), colTerms, TimeSpan.FromMinutes(timeOut))

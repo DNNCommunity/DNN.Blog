@@ -26,6 +26,7 @@ Imports System.Web.UI
 Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.UI.Modules
+Imports DotNetNuke.Modules.Blog.Components.Entities
 
 ''' <summary>
 ''' 

@@ -17,16 +17,17 @@
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 ' DEALINGS IN THE SOFTWARE.
 '
-
 Imports System
 Imports System.Net
 Imports System.IO
 Imports System.Text
 Imports System.Text.RegularExpressions
+Imports DotNetNuke.Common
+Imports DotNetNuke.Modules.Blog.Business
+Imports DotNetNuke.Modules.Blog.Components.Controllers
 Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Security
 Imports DotNetNuke.Data
-Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Services.Log.EventLog
@@ -34,8 +35,10 @@ Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Framework
 Imports DotNetNuke.UI.Modules
 Imports DotNetNuke.Services.Localization
+Imports DotNetNuke.Modules.Blog.Components.Settings
+Imports DotNetNuke.Modules.Blog.Components.Entities
 
-Namespace Business
+Namespace Components.Business
 
     Public Class Utility
 
@@ -249,7 +252,7 @@ Namespace Business
         End Function
 
         Private Shared Sub EscapeInput(ByRef input As String, ByVal allowScripts As Boolean, ByVal allowFormatTags As Boolean, _
-            ByVal allowAnchors As Boolean, ByVal allowImages As Boolean)
+                                       ByVal allowAnchors As Boolean, ByVal allowImages As Boolean)
 
             ' Create the Regex expressions we'll be using
             Dim regParEnd As String = "(<\s*/\s*p\s*>|<\s*/\s*div\s*>)"
@@ -335,24 +338,24 @@ Namespace Business
 #End Region
 
 #Region "Dates"
-  Public Shared Function FormatDate(ByVal [Date] As DateTime, Culture As String, ByVal DateFormat As String, ByVal TimeZone As TimeZoneInfo) As String
-   Return FormatDate([Date], Culture, DateFormat, TimeZone, False)
+        Public Shared Function FormatDate(ByVal [Date] As DateTime, Culture As String, ByVal DateFormat As String, ByVal TimeZone As TimeZoneInfo) As String
+            Return FormatDate([Date], Culture, DateFormat, TimeZone, False)
         End Function
-  Public Shared Function FormatDate(ByVal [Date] As DateTime, Culture As String, ByVal DateFormat As String, ByVal TimeZone As TimeZoneInfo, ByVal ToUniversal As Boolean) As String
-   If String.IsNullOrEmpty(Culture) Then Culture = Threading.Thread.CurrentThread.CurrentCulture.Name
+        Public Shared Function FormatDate(ByVal [Date] As DateTime, Culture As String, ByVal DateFormat As String, ByVal TimeZone As TimeZoneInfo, ByVal ToUniversal As Boolean) As String
+            If String.IsNullOrEmpty(Culture) Then Culture = Threading.Thread.CurrentThread.CurrentCulture.Name
             Dim dtf As System.Globalization.DateTimeFormatInfo = New System.Globalization.CultureInfo(Culture, False).DateTimeFormat
             If ToUniversal = True Then
-    Dim dto As New DateTimeOffset([Date])
-    Return dto.ToUniversalTime.ToString(DateFormat, dtf)
+                Dim dto As New DateTimeOffset([Date])
+                Return dto.ToUniversalTime.ToString(DateFormat, dtf)
             Else
-    Dim dt As Date = AdjustedDate([Date], TimeZone)
-    Return dt.ToString(DateFormat, dtf)
+                Dim dt As Date = AdjustedDate([Date], TimeZone)
+                Return dt.ToString(DateFormat, dtf)
             End If
         End Function
 
-  Public Shared Function AdjustedDate(ByVal [Date] As DateTime, ByVal TimeZone As TimeZoneInfo) As Date
-   Dim dto As New DateTimeOffset([Date])
-   Return TimeZoneInfo.ConvertTime(dto, TimeZone).DateTime
+        Public Shared Function AdjustedDate(ByVal [Date] As DateTime, ByVal TimeZone As TimeZoneInfo) As Date
+            Dim dto As New DateTimeOffset([Date])
+            Return TimeZoneInfo.ConvertTime(dto, TimeZone).DateTime
         End Function
 
         Public Shared Function ParseDate(ByVal DateString As String, ByVal Culture As String) As DateTime
@@ -606,7 +609,7 @@ Namespace Business
 #Region "Urls"
 
         Public Shared Function GetSEOLink(ByVal PortalId As Integer, ByVal TabID As Integer, ByVal ControlKey As String, ByVal Title As String, ByVal ParamArray AdditionalParameters() As String) As String
-            If Settings.BlogSettings.GetBlogSettings(PortalId, TabID).ShowSeoFriendlyUrl Then
+            If BlogSettings.GetBlogSettings(PortalId, TabID).ShowSeoFriendlyUrl Then
                 Dim TabInfo As DotNetNuke.Entities.Tabs.TabInfo = (New DotNetNuke.Entities.Tabs.TabController).GetTab(TabID, PortalId, False)
                 Dim Path As String = "~/default.aspx?tabid=" & TabInfo.TabID
                 For Each p As String In AdditionalParameters
@@ -632,7 +635,7 @@ Namespace Business
             End If
 
             ' Get Blog Module Settings
-            Dim BlogModuleSettings As Settings.BlogSettings = DotNetNuke.Modules.Blog.Settings.BlogSettings.GetBlogSettings(PortalID, TabID)
+            Dim BlogModuleSettings As BlogSettings = BlogSettings.GetBlogSettings(PortalID, TabID)
             Dim SeoFriendlyUrl As Boolean = BlogModuleSettings.ShowSeoFriendlyUrl
 
             'Set the title to Default if there is no Title
@@ -704,9 +707,9 @@ Namespace Business
             m_Entries = m_EntryController.ListAllEntriesByPortal(PortalID, True)
             For Each entry As EntryInfo In m_Entries
                 If (BlogId = entry.BlogID Or BlogId = -1) And (TabID = -1 _
-                    Or entry.PermaLink Is Nothing Or entry.PermaLink = String.Empty _
-                    Or entry.PermaLink.ToLower().IndexOf("tabid=" & TabID) > 0 _
-                    Or entry.PermaLink.ToLower().IndexOf("tabid/" & TabID) > 0) Then
+                                                               Or entry.PermaLink Is Nothing Or entry.PermaLink = String.Empty _
+                                                               Or entry.PermaLink.ToLower().IndexOf("tabid=" & TabID) > 0 _
+                                                               Or entry.PermaLink.ToLower().IndexOf("tabid/" & TabID) > 0) Then
 
                     Dim CurrentTabId As Integer
                     If TabID = -1 Then

@@ -19,11 +19,13 @@
 '
 
 Imports System
+Imports DotNetNuke.Modules.Blog.Components.Controllers
 Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Services.Localization
+Imports DotNetNuke.Modules.Blog.Components.Entities
 
 Partial Class MassEdit
     Inherits BlogModuleBase
@@ -141,8 +143,8 @@ Partial Class MassEdit
             tbTags.Text = ti
             tbTags.Visible = False
 
-            Dim ci As List(Of Business.CategoryInfo) = CategoryController.ListCatsByEntry(eid)
-            Dim cl As List(Of Business.CategoryInfo) = CategoryController.ListCategoriesSorted(PortalId)
+            Dim ci As List(Of CategoryInfo) = CategoryController.ListCatsByEntry(eid)
+            Dim cl As List(Of CategoryInfo) = CategoryController.ListCategoriesSorted(PortalId)
 
             Dim dlCat As DropDownList = CType(e.Item.FindControl("ddlCat"), DropDownList)
 

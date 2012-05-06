@@ -19,6 +19,8 @@
 '
 
 Imports System
+Imports DotNetNuke.Modules.Blog.Components.Business
+Imports DotNetNuke.Modules.Blog.Components.Controllers
 Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Common.Globals
@@ -26,6 +28,7 @@ Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Services.Localization.Localization
 Imports DotNetNuke.Services.Localization
 Imports System.Globalization
+Imports DotNetNuke.Modules.Blog.Components.Entities
 
 Partial Public Class ViewBlog
     Inherits BlogModuleBase
@@ -132,15 +135,15 @@ Partial Public Class ViewBlog
                 If m_bSearchDisplay Then
                     If m_sSearchType = "Phrase" Then
                         If m_oBlog Is Nothing Then
-                            list = New DotNetNuke.Modules.Blog.Business.SearchController().SearchByPhraseByPortal(Me.PortalId, m_sSearchString, DotNetNuke.Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString()))
+                            list = New SearchController().SearchByPhraseByPortal(Me.PortalId, m_sSearchString, DotNetNuke.Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString()))
                         Else
-                            list = New DotNetNuke.Modules.Blog.Business.SearchController().SearchByPhraseByBlog(m_oBlog.BlogID, m_sSearchString, DotNetNuke.Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString()))
+                            list = New SearchController().SearchByPhraseByBlog(m_oBlog.BlogID, m_sSearchString, DotNetNuke.Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString()))
                         End If
                     Else
                         If m_oBlog Is Nothing Then
-                            list = New DotNetNuke.Modules.Blog.Business.SearchController().SearchByKeywordByPortal(Me.PortalId, m_sSearchString, DotNetNuke.Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString()))
+                            list = New SearchController().SearchByKeywordByPortal(Me.PortalId, m_sSearchString, DotNetNuke.Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString()))
                         Else
-                            list = New DotNetNuke.Modules.Blog.Business.SearchController().SearchByKeywordByBlog(m_oBlog.BlogID, m_sSearchString, DotNetNuke.Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString()))
+                            list = New SearchController().SearchByKeywordByBlog(m_oBlog.BlogID, m_sSearchString, DotNetNuke.Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString()))
                         End If
                     End If
                     lstSearchResults.Visible = True
@@ -347,12 +350,12 @@ Partial Public Class ViewBlog
                 Dim hlPermaLink As HyperLink = CType(e.Item.FindControl("hlPermaLink"), HyperLink)
                 hlPermaLink.NavigateUrl = m_oEntry.PermaLink
                 hlPermaLink.Text = Localization.GetString("lnkPermaLink", LocalResourceFile)
-                hlPermaLink.Visible = (m_oEntry.PermaLink <> DotNetNuke.Modules.Blog.Business.Utility.BlogNavigateURL(TabId, PortalId, m_oEntry.EntryID, m_oEntry.Title, BlogSettings.ShowSeoFriendlyUrl))
+                hlPermaLink.Visible = (m_oEntry.PermaLink <> Utility.BlogNavigateURL(TabId, PortalId, m_oEntry.EntryID, m_oEntry.Title, BlogSettings.ShowSeoFriendlyUrl))
 
                 Dim hlMore As HyperLink = CType(e.Item.FindControl("hlMore"), HyperLink)
-                hlMore.NavigateUrl = DotNetNuke.Modules.Blog.Business.Utility.BlogNavigateURL(TabId, PortalId, m_oEntry.EntryID, m_oEntry.Title, BlogSettings.ShowSeoFriendlyUrl)
+                hlMore.NavigateUrl = Utility.BlogNavigateURL(TabId, PortalId, m_oEntry.EntryID, m_oEntry.Title, BlogSettings.ShowSeoFriendlyUrl)
                 hlMore.Text = Localization.GetString("lnkReadMore", LocalResourceFile)
-                hlMore.Visible = (m_oEntry.PermaLink <> DotNetNuke.Modules.Blog.Business.Utility.BlogNavigateURL(TabId, PortalId, m_oEntry.EntryID, m_oEntry.Title, BlogSettings.ShowSeoFriendlyUrl))
+                hlMore.Visible = (m_oEntry.PermaLink <> Utility.BlogNavigateURL(TabId, PortalId, m_oEntry.EntryID, m_oEntry.Title, BlogSettings.ShowSeoFriendlyUrl))
 
                 Dim Categories As String = ""
                 Dim i As Integer = 0

@@ -17,16 +17,15 @@
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 ' DEALINGS IN THE SOFTWARE.
 '
-
 Imports System
 Imports System.IO
 Imports System.Text.RegularExpressions
 Imports System.Web
 Imports DotNetNuke.Data
-Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Services.Localization
+Imports DotNetNuke.Modules.Blog.Components.Entities
 
-Namespace MetaWeblog
+Namespace Components.MetaWeblog
 
     Public Class BlogPostServices
 
@@ -260,5 +259,4 @@ Namespace MetaWeblog
         End Function
 
     End Class
-
 End Namespace

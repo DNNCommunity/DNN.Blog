@@ -17,28 +17,30 @@
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 ' DEALINGS IN THE SOFTWARE.
 '
-
 Imports System
 Imports System.Xml
+Imports DotNetNuke.Modules.Blog.Components.Business
+Imports DotNetNuke.Common
 Imports DotNetNuke.Services.Search
 Imports DotNetNuke.Entities.Modules
 Imports DotNetNuke.Entities.Modules.Definitions
 Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Common.Utilities
-Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Entities.Users
+Imports DotNetNuke.Modules.Blog.Components.Settings
+Imports DotNetNuke.Modules.Blog.Components.Entities
 
-Namespace Business
+Namespace Components.Controllers
 
     Public Class InterfaceController
-        Implements Entities.Modules.IUpgradeable
-        Implements Entities.Modules.IPortable
-        Implements Entities.Modules.ISearchable
+        Implements DotNetNuke.Entities.Modules.IUpgradeable
+        Implements DotNetNuke.Entities.Modules.IPortable
+        Implements DotNetNuke.Entities.Modules.ISearchable
 
 #Region "IUpgradeable"
 
-        Public Function UpgradeModule(ByVal Version As String) As String Implements Entities.Modules.IUpgradeable.UpgradeModule
+        Public Function UpgradeModule(ByVal Version As String) As String Implements DotNetNuke.Entities.Modules.IUpgradeable.UpgradeModule
             Dim message As String = ""
 
             Select Case Version
@@ -60,7 +62,7 @@ Namespace Business
 
 #Region "IPortable"
 
-        Public Function ExportModule(ByVal ModuleID As Integer) As String Implements Entities.Modules.IPortable.ExportModule
+        Public Function ExportModule(ByVal ModuleID As Integer) As String Implements DotNetNuke.Entities.Modules.IPortable.ExportModule
             Dim strXML As String = "<blogs>"
             Dim m_PortalID As Integer
             Dim m_Blogs As ArrayList
@@ -152,7 +154,7 @@ Namespace Business
 
         End Function
 
-        Public Sub ImportModule(ByVal ModuleID As Integer, ByVal Content As String, ByVal Version As String, ByVal UserID As Integer) Implements Entities.Modules.IPortable.ImportModule
+        Public Sub ImportModule(ByVal ModuleID As Integer, ByVal Content As String, ByVal Version As String, ByVal UserID As Integer) Implements DotNetNuke.Entities.Modules.IPortable.ImportModule
             Try
                 Dim BlogID As Integer = -1
                 Dim EntryID As Integer = -1
@@ -318,8 +320,8 @@ Namespace Business
 
 #Region "ISearchable"
 
-        Public Function GetSearchItems(ByVal ModInfo As Entities.Modules.ModuleInfo) As Services.Search.SearchItemInfoCollection Implements Entities.Modules.ISearchable.GetSearchItems
-            Dim BlogSettings As Settings.BlogSettings = DotNetNuke.Modules.Blog.Settings.BlogSettings.GetBlogSettings(ModInfo.PortalID, ModInfo.TabID)
+        Public Function GetSearchItems(ByVal ModInfo As DotNetNuke.Entities.Modules.ModuleInfo) As Services.Search.SearchItemInfoCollection Implements DotNetNuke.Entities.Modules.ISearchable.GetSearchItems
+            Dim BlogSettings As BlogSettings = Components.Settings.BlogSettings.GetBlogSettings(ModInfo.PortalID, ModInfo.TabID)
 
             Dim SearchItemCollection As New SearchItemInfoCollection
             If ModInfo.ControlTitle = "View Blog" Then
@@ -350,5 +352,4 @@ Namespace Business
 #End Region
 
     End Class
-
 End Namespace

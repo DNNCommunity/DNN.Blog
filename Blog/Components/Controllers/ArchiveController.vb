@@ -17,29 +17,30 @@
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 ' DEALINGS IN THE SOFTWARE.
 '
-
+Imports DotNetNuke.Modules.Blog.Components.Business
+Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Modules.Blog.Data
 Imports DotNetNuke.Common.Utilities
 
-Namespace Business
+Namespace Components.Controllers
 
- Public Class ArchiveController
+    Public Class ArchiveController
 
-		''' <summary>
-		''' 
-		''' </summary>
-		''' <param name="PortalID"></param>
-		''' <param name="BlogID"></param>
-		''' <returns></returns>
-		''' <remarks>CP: Changed to generic lists instead of ArrayList</remarks>
-		Public Function GetBlogMonths(ByVal PortalID As Integer, ByVal BlogID As Integer) As List(Of ArchiveMonths)
-			Return CBO.FillCollection(Of ArchiveMonths)(DataProvider.Instance().GetBlogMonths(PortalID, BlogID))
-		End Function
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="PortalID"></param>
+        ''' <param name="BlogID"></param>
+        ''' <returns></returns>
+        ''' <remarks>CP: Changed to generic lists instead of ArrayList</remarks>
+        Public Function GetBlogMonths(ByVal PortalID As Integer, ByVal BlogID As Integer) As List(Of ArchiveMonths)
+            Return CBO.FillCollection(Of ArchiveMonths)(DataProvider.Instance().GetBlogMonths(PortalID, BlogID))
+        End Function
 
-  Public Function GetBlogDaysForMonth(ByVal PortalID As Integer, ByVal BlogID As Integer, ByVal BlogDate As Date) As ArrayList
-   Return CBO.FillCollection(DataProvider.Instance().GetBlogDaysForMonth(PortalID, BlogID, BlogDate), GetType(ArchiveDays))
-  End Function
+        Public Function GetBlogDaysForMonth(ByVal PortalID As Integer, ByVal BlogID As Integer, ByVal BlogDate As Date) As ArrayList
+            Return CBO.FillCollection(DataProvider.Instance().GetBlogDaysForMonth(PortalID, BlogID, BlogDate), GetType(ArchiveDays))
+        End Function
 
- End Class
+    End Class
 
 End Namespace

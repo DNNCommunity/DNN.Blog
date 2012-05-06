@@ -19,6 +19,8 @@
 '
 
 Imports System
+Imports DotNetNuke.Modules.Blog.Components.Business
+Imports DotNetNuke.Modules.Blog.Components.Controllers
 Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Entities.Content
 Imports DotNetNuke.Web.Client.ClientResourceManagement
@@ -31,6 +33,8 @@ Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Entities.Users
 Imports DotNetNuke.Framework
+Imports DotNetNuke.Modules.Blog.Components.Integration
+Imports DotNetNuke.Modules.Blog.Components.Entities
 
 Partial Public Class ViewEntry
     Inherits BlogModuleBase
@@ -317,7 +321,7 @@ Partial Public Class ViewEntry
                     m_oEntry.TabID = ModuleContext.TabId
 
                     If (m_oEntry.ContentItemId < 1) Then
-                        Dim cntTaxonomy As New Integration.Content()
+                        Dim cntTaxonomy As New Content()
                         Dim objContentItem As ContentItem = cntTaxonomy.CreateContentItem(m_oEntry, ModuleContext.TabId)
                         m_oEntry.ContentItemId = objContentItem.ContentItemId
                     End If

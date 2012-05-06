@@ -17,13 +17,14 @@
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 ' DEALINGS IN THE SOFTWARE.
 '
-
+Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Modules.Blog.Data
 Imports DotNetNuke.Common.Utilities
+Imports DotNetNuke.Modules.Blog.Components.Entities
 
-Namespace Business
+Namespace Components.Controllers
 
- Public Class SearchController
+    Public Class SearchController
 
         Public Function SearchByKeywordByPortal(ByVal PortalID As Integer, ByVal SearchString As String, ByVal ShowNonPublic As Boolean, ByVal ShowNonPublished As Boolean) As List(Of EntryInfo)
             Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().SearchByKeyWordByPortal(PortalID, SearchString, ShowNonPublic, ShowNonPublished))
@@ -41,6 +42,6 @@ Namespace Business
             Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().SearchByPhraseByBlog(BlogID, SearchString, ShowNonPublic, ShowNonPublished))
         End Function
 
- End Class
+    End Class
 
 End Namespace

@@ -18,9 +18,12 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
+Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Services.Tokens
+Imports DotNetNuke.Modules.Blog.Components.Entities
 
-Namespace Business
+Namespace Components.Business
+
 
     Public Class TemplateManager
         Inherits TokenReplace
@@ -46,5 +49,4 @@ Namespace Business
         End Function
 
     End Class
-
 End Namespace

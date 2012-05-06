@@ -42,14 +42,14 @@ Namespace Components.Common
 
 #Region "Public Members"
 
-        Public MyActions As New Entities.Modules.Actions.ModuleActionCollection
+        Public MyActions As New DotNetNuke.Entities.Modules.Actions.ModuleActionCollection
         Public Shared RssView As RssViews
 
 #End Region
 
 #Region "Public Methods"
 
-        Public Sub SetModuleConfiguration(ByVal config As Entities.Modules.ModuleInfo)
+        Public Sub SetModuleConfiguration(ByVal config As DotNetNuke.Entities.Modules.ModuleInfo)
             ModuleConfiguration = config
         End Sub
 
@@ -67,10 +67,10 @@ Namespace Components.Common
             End Get
         End Property
 
-        Public Property BlogSettings() As Settings.BlogSettings
+        Public Property BlogSettings() As Components.Settings.BlogSettings
             Get
                 If _blogSettings Is Nothing Then
-                    _blogSettings = DotNetNuke.Modules.Blog.Settings.BlogSettings.GetBlogSettings(PortalId, TabId)
+                    _blogSettings = Components.Settings.BlogSettings.GetBlogSettings(PortalId, TabId)
                 End If
                 Return _blogSettings
             End Get

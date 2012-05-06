@@ -17,14 +17,15 @@
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 ' DEALINGS IN THE SOFTWARE.
 '
-
 Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Entities.Users
+Imports DotNetNuke.Modules.Blog.Components.Settings
+Imports DotNetNuke.Modules.Blog.MetaWeblog
 
-Namespace MetaWeblog
+Namespace Components.MetaWeblog
 
- ' IPublishable contains the core properties and methods needed for the offline 
- ' publishing of content to DotNetNuke modules
+    ' IPublishable contains the core properties and methods needed for the offline 
+    ' publishing of content to DotNetNuke modules
     Public Interface IPublishable
 
 #Region "Properties"
@@ -74,14 +75,14 @@ Namespace MetaWeblog
         ''' <param name="portalSettings"></param>
         ''' <returns></returns>
         ''' <param name="providerKey"></param>
-        Function GetModulesForUser(ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal providerKey As String) As ModuleInfoStruct()
+        Function GetModulesForUser(ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal providerKey As String) As ModuleInfoStruct()
 
         ' Note in the blog module, blogId and ItemId corresponded to BlogId and EntryId
-        Function GetRecentItems(ByVal blogId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal numberOfItems As Integer, ByVal requestType As RecentItemsRequestType, ByVal providerKey As String) As Item()
+        Function GetRecentItems(ByVal blogId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal numberOfItems As Integer, ByVal requestType As RecentItemsRequestType, ByVal providerKey As String) As Item()
 
-        Function GetItem(ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal itemType As ItemType) As Item
+        Function GetItem(ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal itemType As ItemType) As Item
 
-        Function EditItem(ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal item As Item) As Boolean
+        Function EditItem(ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal item As Item) As Boolean
 
         ' 11/19/2008 Rip Rowan -  XML Comments removed since extraneous
         '''' <param name="publish">Bool - specifies whether the user clicked publish or save as draft.</param>
@@ -97,43 +98,42 @@ Namespace MetaWeblog
         ''' <param name="portalSettings">DotNetNuke PortaSettings object for the portal to which the entry is being posted.</param>
         ''' <param name="item">Custom Struct - The item struct contains a list of fields related to an entry.</param>
         ''' <returns></returns>
-        Function NewItem(ByVal blogId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal item As Item) As String
+        Function NewItem(ByVal blogId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal item As Item) As String
 
-        Function DeleteItem(ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal itemType As ItemType) As Boolean
+        Function DeleteItem(ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal itemType As ItemType) As Boolean
 
-        Function GetCategories(ByVal blogId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings) As ItemCategoryInfo()
+        Function GetCategories(ByVal blogId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings) As ItemCategoryInfo()
 
-        Function NewCategory(ByVal blogId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings) As Integer
+        Function NewCategory(ByVal blogId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings) As Integer
 
 #End Region
 
     End Interface
 
- ' ILinkable contains the core methods needed for enabling Trackback and Pingback
- ' and for making use of core services that may be provided in the publishing adapter
- ' used to integrate with your publishing interfaces.  The blog module currently hanldes
- ' its own trackback capability
- Public Interface ILinkable
-  Function GetModuleName(ByVal blogId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings) As String
+    ' ILinkable contains the core methods needed for enabling Trackback and Pingback
+    ' and for making use of core services that may be provided in the publishing adapter
+    ' used to integrate with your publishing interfaces.  The blog module currently hanldes
+    ' its own trackback capability
+    Public Interface ILinkable
+        Function GetModuleName(ByVal blogId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings) As String
 
-  Function GetPermaLink(ByVal blogId As String, ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings) As String
+        Function GetPermaLink(ByVal blogId As String, ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings) As String
 
-  Function GetPingbackSettings(ByVal blogId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings) As TrackbackAndPingSettings
+        Function GetPingbackSettings(ByVal blogId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings) As TrackbackAndPingSettings
+    End Interface
 
- End Interface
-
- ' IWrappable contains methods needed by publishing adapters which are written to use 
- ' IPublishable and which allow for Header and Footer content to be written into each
- ' post.  The current version of the blog module does not support headers and footers.
- Public Interface IWrappable
-  ''' <summary>
-  ''' HeaderContent is not used by the blog module.  
-  ''' </summary>
-  ReadOnly Property HeaderContent() As String
-  ''' <summary>
-  ''' FooterContent is not used by the blog module.  
-  ''' </summary>
-  ReadOnly Property FooterContent() As String
- End Interface
+    ' IWrappable contains methods needed by publishing adapters which are written to use 
+    ' IPublishable and which allow for Header and Footer content to be written into each
+    ' post.  The current version of the blog module does not support headers and footers.
+    Public Interface IWrappable
+        ''' <summary>
+        ''' HeaderContent is not used by the blog module.  
+        ''' </summary>
+        ReadOnly Property HeaderContent() As String
+        ''' <summary>
+        ''' FooterContent is not used by the blog module.  
+        ''' </summary>
+        ReadOnly Property FooterContent() As String
+    End Interface
 
 End Namespace

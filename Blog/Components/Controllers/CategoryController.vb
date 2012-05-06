@@ -18,10 +18,14 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 '
+Imports DotNetNuke.Modules.Blog.Components.Business
+Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Modules.Blog.Data
 Imports DotNetNuke.Common.Utilities
+Imports DotNetNuke.Modules.Blog.Components.Entities
 
-Namespace Business
+Namespace Components.Controllers
+
 
     Public Class CategoryController
 
@@ -204,5 +208,4 @@ Namespace Business
         End Sub
 
     End Class
-
 End Namespace

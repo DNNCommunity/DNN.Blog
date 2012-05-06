@@ -19,6 +19,7 @@
 '
 
 Imports DotNetNuke.Data
+Imports DotNetNuke.Modules.Blog.Components.MetaWeblog
 
 Namespace MetaWeblog
 

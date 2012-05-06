@@ -63,5 +63,13 @@ Namespace Components.Common
 
         Public Const GhostWriterPermission As String = "GHOSTWRITER"
 
+#Region "Module Settings"
+
+        Public Const TagModuleTagDisplayMode As String = "TagDisplayMode"
+        Public Const TagModuleCloudSkin As String = "TagCloudSkin"
+
+#End Region
+
     End Class
+
 End Namespace
