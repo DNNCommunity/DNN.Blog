@@ -178,6 +178,17 @@
 							  <supportsPopUps>False</supportsPopUps>
 							  <viewOrder>0</viewOrder>
 						  </moduleControl>
+						  <moduleControl>
+							  <controlKey>Settings</controlKey>
+							  <controlSrc>DesktopModules/Blog/ViewCategoriesSettings.ascx</controlSrc>
+							  <supportsPartialRendering>True</supportsPartialRendering>
+							  <controlTitle />
+							  <controlType>Edit</controlType>
+							  <iconFile />
+							  <helpUrl />
+							  <supportsPopUps>True</supportsPopUps>
+							  <viewOrder>0</viewOrder>
+						  </moduleControl>
 					  </moduleControls>
 				  </moduleDefinition>
 				  <moduleDefinition>

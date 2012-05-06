@@ -23,7 +23,6 @@ Imports DotNetNuke.Modules.Blog.Components.Business
 Imports DotNetNuke.Modules.Blog.Components.Controllers
 Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Common.Globals
-Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Services.Exceptions.Exceptions
 Imports DotNetNuke.Services.Localization.Localization
 Imports DotNetNuke.Framework
