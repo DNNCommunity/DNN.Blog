@@ -191,6 +191,12 @@ Partial Public Class MainView
                                 isBlogOwner = True
                             End If
 
+                            liView.Visible = objSecurity.CanAddEntry(isBlogOwner, objBlog.EnableGhostWriter)
+                            hlView.NavigateUrl = Links.ViewBlog(ModuleContext, objBlog.BlogID)
+
+                            liEditBlog.Visible = objSecurity.CanEditBlog(isBlogOwner)
+                            hlEditBlog.NavigateUrl = Links.EditBlog(ModuleContext, objBlog.BlogID)
+
                             liAddEntry.Visible = objSecurity.CanAddEntry(isBlogOwner, objBlog.EnableGhostWriter)
                             hlAddEntry.NavigateUrl = Links.EditEntry(ModuleContext, objBlog.BlogID, -1)
                         End If
