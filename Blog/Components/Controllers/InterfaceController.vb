@@ -83,8 +83,6 @@ Namespace Business
                     strXML += "<blogID>" & XmlUtils.XMLEncode(blog.BlogID.ToString) & "</blogID>"
                     strXML += "<childBlogCount>" & XmlUtils.XMLEncode(blog.ChildBlogCount.ToString) & "</childBlogCount>"
                     strXML += "<created>" & XmlUtils.XMLEncode(blog.Created.ToString) & "</created>"
-                    strXML += "<culture>" & XmlUtils.XMLEncode(blog.Culture) & "</culture>"
-                    strXML += "<dateFormat>" & XmlUtils.XMLEncode(blog.DateFormat) & "</dateFormat>"
                     strXML += "<description>" & XmlUtils.XMLEncode(blog.Description) & "</description>"
                     strXML += "<emailNotification>" & XmlUtils.XMLEncode(blog.EmailNotification.ToString) & "</emailNotification>"
                     strXML += "<lastEntry>" & XmlUtils.XMLEncode(blog.LastEntry.ToString) & "</lastEntry>"
@@ -96,7 +94,6 @@ Namespace Business
                     strXML += "<syndicateIndependant>" & XmlUtils.XMLEncode(blog.SyndicateIndependant.ToString) & "</syndicateIndependant>"
                     strXML += "<syndicationEmail>" & XmlUtils.XMLEncode(blog.SyndicationEmail) & "</syndicationEmail>"
                     strXML += "<syndicationURL>" & XmlUtils.XMLEncode(blog.SyndicationURL) & "</syndicationURL>"
-     strXML += "<timeZone>" & XmlUtils.XMLEncode(blog.TimeZone.Id.ToString) & "</timeZone>"
                     strXML += "<title>" & XmlUtils.XMLEncode(blog.Title) & "</title>"
                     strXML += "<userFullName>" & XmlUtils.XMLEncode(blog.UserFullName) & "</userFullName>"
                     strXML += "<userID>" & XmlUtils.XMLEncode(blog.UserID.ToString) & "</userID>"
@@ -180,8 +177,6 @@ Namespace Business
                             m_Blog.BlogID = Integer.Parse(xmlblog.Item("blogID").InnerText)
                             m_Blog.ChildBlogCount = Integer.Parse(xmlblog.Item("childBlogCount").InnerText)
                             m_Blog.Created = Date.Parse(xmlblog.Item("created").InnerText)
-                            m_Blog.Culture = xmlblog.Item("culture").InnerText
-                            m_Blog.DateFormat = xmlblog.Item("dateFormat").InnerText
                             m_Blog.Description = xmlblog.Item("description").InnerText
                             m_Blog.EmailNotification = Boolean.Parse(xmlblog.Item("emailNotification").InnerText)
                             m_Blog.LastEntry = Date.Parse(xmlblog.Item("lastEntry").InnerText)
@@ -193,10 +188,6 @@ Namespace Business
                             m_Blog.SyndicateIndependant = Boolean.Parse(xmlblog.Item("syndicateIndependant").InnerText)
                             m_Blog.SyndicationEmail = xmlblog.Item("syndicationEmail").InnerText
                             m_Blog.SyndicationURL = xmlblog.Item("syndicationURL").InnerText
-       Try
-        m_Blog.TimeZone = TimeZoneInfo.FindSystemTimeZoneById(xmlblog.Item("timeZone").InnerText)
-       Catch ex As Exception
-       End Try
                             m_Blog.Title = xmlblog.Item("title").InnerText
                             m_Blog.UserFullName = xmlblog.Item("userFullName").InnerText
                             m_Blog.UserID = Integer.Parse(xmlblog.Item("userID").InnerText)

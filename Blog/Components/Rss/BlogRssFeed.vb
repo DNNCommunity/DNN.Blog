@@ -23,6 +23,7 @@ Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.Common
+Imports System.Globalization
 
 Namespace Rss
     ''' <summary>
@@ -177,7 +178,14 @@ Namespace Rss
                         Description = _portalSettings.Description
                     End If
                     If _rssId = -1 Then
-                        Language = _blog.Culture
+                        'Dim userCulture As CultureInfo = New System.Globalization.CultureInfo(ModuleContext.PortalSettings.CultureCode)
+                        'Dim n As DateTime = Utility.AdjustedDate(CType(e.Item.DataItem, ArchiveMonths).AddedDate, ModuleContext.PortalSettings.TimeZone)
+                        'Dim publishDate As DateTime = n
+                        'Dim timeOffset As TimeSpan = ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone.BaseUtcOffset
+
+                        'publishDate = publishDate.Add(timeOffset)
+
+                        'Language = _blog.Culture
                         If _useFriendlyUrls Then
                             Link = New Uri(Utility.checkUriFormat(NavigateURL(_tabId, "", "BlogId=" & _blog.BlogID.ToString()) & "?BlogDate=" & _rssDate))
                         Else
@@ -206,7 +214,7 @@ Namespace Rss
                 Case RssViews.SingleEntry, RssViews.BlogEntries
 
                     Link = New Uri(Utility.checkUriFormat(NavigateURL(_tabId, "", "BlogId=" & _blog.BlogID)))
-                    Language = _blog.Culture
+                    'Language = _blog.Culture
 
             End Select
 
@@ -214,7 +222,7 @@ Namespace Rss
             output.WriteElementString("title", Title)
             output.WriteElementString("description", Description)
             output.WriteElementString("link", Link.ToString)
-            output.WriteElementString("language", Language)
+            'output.WriteElementString("language", Language)
             output.WriteElementString("webMaster", ManagingEditor)
             output.WriteElementString("pubDate", Now.ToString(DateTimeFormatString))
             output.WriteElementString("lastBuildDate", Now.ToString(DateTimeFormatString))

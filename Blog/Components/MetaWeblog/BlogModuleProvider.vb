@@ -122,15 +122,13 @@ Namespace MetaWeblog
 
 #End Region
 
-#Region " IPublishable Members "
+#Region "IPublishable Members"
+
         Public Function GetModulesForUser(ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal providerKey As String) As ModuleInfoStruct() Implements IPublishable.GetModulesForUser
-
             Dim infoArrayList As ArrayList = New ArrayList
-
             Dim blogController As New BlogController
-
-
             Dim blogTabId As Integer = -1
+
             If Not HttpContext.Current.Request("tabid") Is Nothing AndAlso HttpContext.Current.Request("tabid").ToString() <> String.Empty Then
                 blogTabId = Convert.ToInt32(HttpContext.Current.Request("tabid"))
             Else
@@ -153,10 +151,13 @@ Namespace MetaWeblog
             End If
 
             Return CType(infoArrayList.ToArray(GetType(ModuleInfoStruct)), ModuleInfoStruct())
-
         End Function
 
-#Region " Item Related Procedures "
+#Region "Item Related Procedures"
+
+        Public Function GetLocalAddedTime(ByVal AddedDate As DateTime, ByVal PortalId As Integer, ByVal user As UserInfo) As DateTime
+            Return TimeZoneInfo.ConvertTimeToUtc(AddedDate, user.Profile.PreferredTimeZone)
+        End Function
 
         Public Function GetItem(ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal itemType As ItemType) As Item Implements IPublishable.GetItem
             Dim entryController As New EntryController
@@ -186,7 +187,10 @@ Namespace MetaWeblog
             item.Link = entryInfo.PermaLink
             item.Content = HttpUtility.HtmlDecode(entryInfo.Entry)
             item.Summary = HttpUtility.HtmlDecode(entryInfo.Description)
-   item.DateCreated = entryInfo.GetLocalAddedTime
+
+
+
+            item.DateCreated = GetLocalAddedTime(entryInfo.AddedDate, portalSettings.PortalId, userInfo)
             item.StartDate = entryInfo.AddedDate
             item.ItemId = entryInfo.EntryID.ToString()
             item.Title = entryInfo.Title
@@ -227,7 +231,7 @@ Namespace MetaWeblog
                 item.Link = entry.PermaLink
                 item.Content = HttpUtility.HtmlDecode(entry.Entry)
                 item.Summary = HttpUtility.HtmlDecode(entry.Description)
-    item.DateCreated = entry.GetLocalAddedTime
+                item.DateCreated = GetLocalAddedTime(entry.AddedDate, portalSettings.PortalId, userInfo)
                 item.ItemId = entry.EntryID.ToString()
                 item.Title = entry.Title
                 item.Publish = entry.Published
@@ -298,11 +302,14 @@ Namespace MetaWeblog
 
             BlogPostServices.ProcessItemImages(objEntry, RootBlogPath)
 
+            ' handle categories/tags
+            'TagController.UpdateTagsByEntry(entryId, item.Keywords)
+            'CategoryController.UpdateCategoriesByEntry(objEntry.EntryID, item.Categories)
+
+
             objEntryController.UpdateEntry(objEntry, objEntry.TabID, PortalID)
 
-            'TagController.UpdateTagsByEntry(entryId, item.Keywords)
 
-   CategoryController.UpdateCategoriesByEntry(objEntry.EntryID, item.Categories)
 
             ' If this is a style detection post, then we write to the Blog_MetaWeblogData table to note
             ' that this post is a new post.  We're just using the DAL+ here to manage this feature.
@@ -313,7 +320,7 @@ Namespace MetaWeblog
                 DataProvider.Instance.ExecuteSQL(sSQL)
             End If
 
-   Return objEntry.EntryID.ToString()
+            Return objEntry.EntryID.ToString()
         End Function
 
         Public Function EditItem(ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal item As Item) As Boolean Implements IPublishable.EditItem
@@ -334,9 +341,9 @@ Namespace MetaWeblog
                 methodParams.SetValue(portalSettings.PortalId, 1)
                 objEntry = DirectCast(miGetEntry.Invoke(objEntryController, methodParams), EntryInfo)
             End If
-   If objEntry Is Nothing Then
-    objEntry = GetEntry(item.ItemId.ToString(), portalSettings.PortalId)
-   End If
+            If objEntry Is Nothing Then
+                objEntry = GetEntry(item.ItemId.ToString(), portalSettings.PortalId)
+            End If
 
             ' Check user's authorization to edit post
             BlogPostServices.AuthorizeUser(objEntry.BlogID.ToString, GetModulesForUser(userInfo, portalSettings, blogSettings, ProviderKey))
@@ -377,10 +384,10 @@ Namespace MetaWeblog
 
             BlogPostServices.ProcessItemImages(objEntry, RootBlogPath)
 
-            objEntryController.UpdateEntry(objEntry, objEntry.ContentItemId, portalSettings.PortalId)
+            'TagController.UpdateTagsByEntry(objEntry.EntryID, item.Keywords)
+            'CategoryController.UpdateCategoriesByEntry(objEntry.EntryID, item.Categories)
 
-            TagController.UpdateTagsByEntry(objEntry.EntryID, item.Keywords)
-            CategoryController.UpdateCategoriesByEntry(objEntry.EntryID, item.Categories)
+            objEntryController.UpdateEntry(objEntry, objEntry.ContentItemId, portalSettings.PortalId)
 
             Return True
         End Function
@@ -546,11 +553,11 @@ Namespace MetaWeblog
             Return objEntry
         End Function
 
-  'Private Function GetTimeZoneOffset(ByVal blogId As Integer) As Integer
-  ' Dim blogController As New BlogController
-  ' Dim blog As BlogInfo = blogController.GetBlog(blogId)
-  ' Return CInt(blog.TimeZone.GetUtcOffset(Date.Now).TotalMinutes)
-  'End Function
+        'Private Function GetTimeZoneOffset(ByVal blogId As Integer) As Integer
+        ' Dim blogController As New BlogController
+        ' Dim blog As BlogInfo = blogController.GetBlog(blogId)
+        ' Return CInt(blog.TimeZone.GetUtcOffset(Date.Now).TotalMinutes)
+        'End Function
 
         Private Sub ExtractSummaryFromExtendedContent(ByRef item As Item)
             If Not BlogPostServices.IsNullOrEmpty(item.ExtendedContent) Then

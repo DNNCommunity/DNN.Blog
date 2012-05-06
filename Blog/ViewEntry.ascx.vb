@@ -409,9 +409,26 @@ Partial Public Class ViewEntry
         ' Rip Rowan 6/13/2008
         ' Hide comment titles if not enabled in settings
         lblTitle.Visible = BlogSettings.ShowCommentTitle
-        Dim x As Date = Utility.AdjustedDate(commentInfo.AddedDate, m_oBlog.TimeZone)
-        lblCommentDate.Text = Utility.CalculateDateForDisplay(x)
-        'lblCommentDate.Text = Utility.FormatDate(commentInfo.AddedDate, m_oBlog.Culture, m_oBlog.DateFormat, m_oBlog.TimeZone)
+
+        If ModuleContext.PortalSettings.UserInfo.Profile.PreferredLocale IsNot Nothing Then
+            Dim userCulture As CultureInfo = New System.Globalization.CultureInfo(ModuleContext.PortalSettings.UserInfo.Profile.PreferredLocale)
+            Dim n As DateTime = Utility.AdjustedDate(CType(e.Item.DataItem, SearchResult).AddedDate, ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone)
+            Dim publishDate As DateTime = n
+            Dim timeOffset As TimeSpan = ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone.BaseUtcOffset
+
+            publishDate = publishDate.Add(timeOffset)
+            lblCommentDate.Text = Utility.CalculateDateForDisplay(publishDate)
+        Else
+            ' Fall back to the portal level settings if not available at user level
+            Dim userCulture As CultureInfo = New System.Globalization.CultureInfo(ModuleContext.PortalSettings.CultureCode)
+            Dim n As DateTime = Utility.AdjustedDate(CType(e.Item.DataItem, SearchResult).AddedDate, ModuleContext.PortalSettings.TimeZone)
+            Dim publishDate As DateTime = n
+            Dim timeOffset As TimeSpan = ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone.BaseUtcOffset
+
+            publishDate = publishDate.Add(timeOffset)
+            lblCommentDate.Text = Utility.CalculateDateForDisplay(publishDate)
+        End If
+
         If Not commentInfo.Approved Then
             lnkApproveComment.Visible = True
         Else
@@ -716,9 +733,16 @@ Partial Public Class ViewEntry
     End Sub
 
     Private Function GetMonth(ByVal strDate As Date, ByVal TimeZone As TimeZoneInfo) As String
-        Dim oCultureInfo As New CultureInfo(m_oBlog.Culture)
-        Dim MonthFormat As DateTimeFormatInfo = oCultureInfo.DateTimeFormat
-        Return MonthFormat.AbbreviatedMonthNames(TimeZoneInfo.ConvertTime(strDate, TimeZone).Month - 1)
+        If ModuleContext.PortalSettings.UserInfo.Profile.PreferredLocale IsNot Nothing Then
+            Dim userCulture As CultureInfo = New System.Globalization.CultureInfo(ModuleContext.PortalSettings.UserInfo.Profile.PreferredLocale)
+            Dim MonthFormat As DateTimeFormatInfo = userCulture.DateTimeFormat
+            Return MonthFormat.AbbreviatedMonthNames(TimeZoneInfo.ConvertTime(strDate, TimeZone).Month - 1)
+        Else
+            ' Fall back to the portal level settings if not available at user level
+            Dim userCulture As CultureInfo = New System.Globalization.CultureInfo(ModuleContext.PortalSettings.CultureCode)
+            Dim MonthFormat As DateTimeFormatInfo = userCulture.DateTimeFormat
+            Return MonthFormat.AbbreviatedMonthNames(TimeZoneInfo.ConvertTime(strDate, TimeZone).Month - 1)
+        End If
     End Function
 
     Private Function GetDay(ByVal strDate As Date, ByVal TimeZone As TimeZoneInfo) As String

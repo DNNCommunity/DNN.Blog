@@ -165,7 +165,7 @@ Partial Class Trackback
           w.WriteCData(Utility.RewriteRefs(Utility.removeHtmlTags(description & " ...")))
           w.WriteEndElement()
 
-          w.WriteElementString("language", m_oBlog.Culture)
+                    'w.WriteElementString("language", m_oBlog.Culture)
           w.WriteEndElement()
           w.WriteEndElement()
           w.WriteEndElement()

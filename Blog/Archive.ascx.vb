@@ -24,6 +24,7 @@ Imports DotNetNuke.Web.Client.ClientResourceManagement
 Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Services.Exceptions.Exceptions
+Imports System.Globalization
 
 Partial Public Class Archive
     Inherits BlogModuleBase
@@ -68,11 +69,23 @@ Partial Public Class Archive
 
                 calMonth.SelectedDates.Clear()
                 For Each objArchiveDay In objArchiveDays
-                    objBlog = objCtlBlog.GetBlog(objArchiveDay.BlogID)
-                    If Not objBlog Is Nothing Then
-                        Dim strDate As String = Utility.FormatDate(objArchiveDay.AddedDate, objBlog.Culture, objBlog.DateFormat, objBlog.TimeZone)
-                        Dim dDate As Date = Utility.ParseDate(strDate, objBlog.Culture)
-                        calMonth.SelectedDates.Add(dDate)
+                    If ModuleContext.PortalSettings.UserInfo.Profile.PreferredLocale IsNot Nothing Then
+                        Dim userCulture As CultureInfo = New System.Globalization.CultureInfo(ModuleContext.PortalSettings.UserInfo.Profile.PreferredLocale)
+                        Dim n As DateTime = Utility.AdjustedDate(objArchiveDay.AddedDate, ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone)
+                        Dim publishDate As DateTime = n
+                        Dim timeOffset As TimeSpan = ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone.BaseUtcOffset
+
+                        publishDate = publishDate.Add(timeOffset)
+                        calMonth.SelectedDates.Add(publishDate)
+                    Else
+                        ' Fall back to the portal level settings if not available at user level
+                        Dim userCulture As CultureInfo = New System.Globalization.CultureInfo(ModuleContext.PortalSettings.CultureCode)
+                        Dim n As DateTime = Utility.AdjustedDate(objArchiveDay.AddedDate, ModuleContext.PortalSettings.TimeZone)
+                        Dim publishDate As DateTime = n
+                        Dim timeOffset As TimeSpan = ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone.BaseUtcOffset
+
+                        publishDate = publishDate.Add(timeOffset)
+                        calMonth.SelectedDates.Add(publishDate)
                     End If
                 Next
                 calMonth.VisibleDate = BlogDate
@@ -142,11 +155,27 @@ Partial Public Class Archive
             lnkBlogRSS.Visible = False
         End If
         'DR-04/17/2009-BLG-9749
-        If objBlog Is Nothing Then
-            lnkMonthYear.Text = String.Format("{0} ({1})", Convert.ToDateTime(CType(e.Item.DataItem, ArchiveMonths).AddedDate).ToString("y"), CType(e.Item.DataItem, ArchiveMonths).PostCount)
+
+        If ModuleContext.PortalSettings.UserInfo.Profile.PreferredLocale IsNot Nothing Then
+            Dim userCulture As CultureInfo = New System.Globalization.CultureInfo(ModuleContext.PortalSettings.UserInfo.Profile.PreferredLocale)
+            Dim n As DateTime = Utility.AdjustedDate(CType(e.Item.DataItem, ArchiveMonths).AddedDate, ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone)
+            Dim publishDate As DateTime = n
+            Dim timeOffset As TimeSpan = ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone.BaseUtcOffset
+
+            publishDate = publishDate.Add(timeOffset)
+            lnkMonthYear.Text = String.Format("{0} ({1})", publishDate.ToString("y"), CType(e.Item.DataItem, ArchiveMonths).PostCount)
+
         Else
-            lnkMonthYear.Text = String.Format("{0} ({1})", Utility.FormatDate(CType(e.Item.DataItem, ArchiveMonths).AddedDate, objBlog.Culture, "y", TimeZoneInfo.Local), CType(e.Item.DataItem, ArchiveMonths).PostCount)
+            ' Fall back to the portal level settings if not available at user level
+            Dim userCulture As CultureInfo = New System.Globalization.CultureInfo(ModuleContext.PortalSettings.CultureCode)
+            Dim n As DateTime = Utility.AdjustedDate(CType(e.Item.DataItem, ArchiveMonths).AddedDate, ModuleContext.PortalSettings.TimeZone)
+            Dim publishDate As DateTime = n
+            Dim timeOffset As TimeSpan = ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone.BaseUtcOffset
+
+            publishDate = publishDate.Add(timeOffset)
+            lnkMonthYear.Text = String.Format("{0} ({1})", publishDate.ToString("y"), CType(e.Item.DataItem, ArchiveMonths).PostCount)
         End If
+
         If Not Request.Params("BlogId") Is Nothing Then
             Dim BlogId As Integer = Int32.Parse(Request.Params("BlogID"))
             ' BLG-4154

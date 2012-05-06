@@ -85,17 +85,13 @@ Namespace Business
 
 #End Region
 
-#Region " Public Methods "
+#Region "Public Methods"
+
         Public Function EntryTerms(vocabularyId As Integer) As List(Of TermInfo)
             Dim cntTerms As New TermController()
             Return cntTerms.GetTermsByContentItem(ContentItemId, vocabularyId)
         End Function
 
-  Public Function GetLocalAddedTime() As DateTime
-   If BlogID = -1 Then Return AddedDate
-   Dim b As BlogInfo = (New BlogController).GetBlog(BlogID)
-   Return TimeZoneInfo.ConvertTimeFromUtc(AddedDate, b.TimeZone)
-  End Function
 #End Region
 
 

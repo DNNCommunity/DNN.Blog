@@ -41,11 +41,7 @@ Namespace Business
         Private _User As UserInfo
         Private _userName As String
         Private _userFullName As String
-        Private _culture As String
-        Private _cultureFormat As System.Globalization.CultureInfo
-        Private _DateFormat As String
         Private _EnableGhostWriter As Boolean = False
-        Private _timeZoneId As String = ""
 
 #End Region
 
@@ -70,7 +66,6 @@ Namespace Business
         Public Property LastEntry() As DateTime
         Public Property Created() As DateTime
         Public Property ShowFullName() As Boolean
-        Public Property TimeZone() As TimeZoneInfo = TimeZoneInfo.Local
         Public Property ChildBlogCount() As Integer = 0
         Public Property Syndicated() As Boolean
         Public Property SyndicateIndependant() As Boolean
@@ -83,7 +78,6 @@ Namespace Business
         Public Property MustApproveAnonymous() As Boolean
         Public Property MustApproveTrackbacks() As Boolean
         Public Property UseCaptcha() As Boolean
-
         Public Property BlogPostCount() As Integer
 
         Public Property UserName() As String
@@ -91,9 +85,14 @@ Namespace Business
                 If _userName <> String.Empty Then
                     Return _userName
                 Else
-                    Return DotNetNuke.Entities.Users.UserController.GetUserById(PortalID, UserID).Username
-                End If
+                    Dim objUser As UserInfo = DotNetNuke.Entities.Users.UserController.GetUserById(PortalID, UserID)
 
+                    If objUser IsNot Nothing Then
+                        Return objUser.Username
+                    Else
+                        Return "Anonymous"
+                    End If
+                End If
             End Get
             Set(ByVal Value As String)
                 _userName = Value
@@ -105,7 +104,13 @@ Namespace Business
                 If _userFullName <> String.Empty Then
                     Return _userFullName
                 Else
-                    Return DotNetNuke.Entities.Users.UserController.GetUserById(PortalID, UserID).DisplayName
+                    Dim objUser As UserInfo = DotNetNuke.Entities.Users.UserController.GetUserById(PortalID, UserID)
+
+                    If objUser IsNot Nothing Then
+                        Return objUser.DisplayName
+                    Else
+                        Return "Anonymous User"
+                    End If
                 End If
             End Get
             Set(ByVal Value As String)
@@ -113,49 +118,22 @@ Namespace Business
             End Set
         End Property
 
-        Public Property Culture() As String
-            Get
-                If _culture Is Nothing Then
-                    Return "en-US"
-                Else
-                    If _culture.Length = 0 Then
-                        Return "en-US"
-                    Else
-                        Return _culture
-                    End If
-                End If
-            End Get
-            Set(ByVal Value As String)
-                _culture = Value
-                _cultureFormat = New System.Globalization.CultureInfo(Value)
-            End Set
-        End Property
-
-        Public ReadOnly Property CultureInfo As System.Globalization.CultureInfo
-            Get
-                If _cultureFormat Is Nothing Then
-                    _cultureFormat = New System.Globalization.CultureInfo(Culture)
-                End If
-                Return _cultureFormat
-            End Get
-        End Property
-
-        Public Property DateFormat() As String
-            Get
-                If _DateFormat Is Nothing Then
-                    Return "g"
-                Else
-                    If _DateFormat.Length = 0 Then
-                        Return "g"
-                    Else
-                        Return _DateFormat
-                    End If
-                End If
-            End Get
-            Set(ByVal Value As String)
-                _DateFormat = Value
-            End Set
-        End Property
+        'Public Property DateFormat() As String
+        '    Get
+        '        If _DateFormat Is Nothing Then
+        '            Return "g"
+        '        Else
+        '            If _DateFormat.Length = 0 Then
+        '                Return "g"
+        '            Else
+        '                Return _DateFormat
+        '            End If
+        '        End If
+        '    End Get
+        '    Set(ByVal Value As String)
+        '        _DateFormat = Value
+        '    End Set
+        'End Property
 
         Public Property User() As UserInfo
             Get
@@ -171,9 +149,6 @@ Namespace Business
                 _User = value
             End Set
         End Property
-
-
-
 
         ''' <summary>
         ''' Determines if the blog permits ghost writing.
@@ -209,8 +184,6 @@ Namespace Business
             AutoTrackback = Convert.ToBoolean(Null.SetNull(dr.Item("AutoTrackback"), AutoTrackback))
             BlogID = Convert.ToInt32(Null.SetNull(dr.Item("BlogID"), BlogID))
             Created = Convert.ToDateTime(Null.SetNull(dr.Item("Created"), Created))
-            Culture = Convert.ToString(Null.SetNull(dr.Item("Culture"), Culture))
-            DateFormat = Convert.ToString(Null.SetNull(dr.Item("DateFormat"), DateFormat))
             Description = Convert.ToString(Null.SetNull(dr.Item("Description"), Description))
             EmailNotification = Convert.ToBoolean(Null.SetNull(dr.Item("EmailNotification"), EmailNotification))
             LastEntry = Convert.ToDateTime(Null.SetNull(dr.Item("LastEntry"), LastEntry))
@@ -225,11 +198,6 @@ Namespace Business
             SyndicateIndependant = Convert.ToBoolean(Null.SetNull(dr.Item("SyndicateIndependant"), SyndicateIndependant))
             SyndicationEmail = Convert.ToString(Null.SetNull(dr.Item("SyndicationEmail"), SyndicationEmail))
             SyndicationURL = Convert.ToString(Null.SetNull(dr.Item("SyndicationURL"), SyndicationURL))
-            _timeZoneId = Convert.ToString(Null.SetNull(dr.Item("TimeZone"), _timeZoneId))
-            Try
-                TimeZone = TimeZoneInfo.FindSystemTimeZoneById(_timeZoneId)
-            Catch ex As Exception
-            End Try
             Title = Convert.ToString(Null.SetNull(dr.Item("Title"), Title))
             UseCaptcha = Convert.ToBoolean(Null.SetNull(dr.Item("UseCaptcha"), UseCaptcha))
             BlogPostCount = Convert.ToInt32(Null.SetNull(dr.Item("BlogPostCount"), UserID))
@@ -279,10 +247,6 @@ Namespace Business
                     Return (Me.BlogID.ToString(OutputFormat, formatProvider))
                 Case "created"
                     Return (Me.Created.ToString(OutputFormat, formatProvider))
-                Case "culture"
-                    Return PropertyAccess.FormatString(Me.Culture, strFormat)
-                Case "dateformat"
-                    Return PropertyAccess.FormatString(Me.DateFormat, strFormat)
                 Case "description"
                     Return PropertyAccess.FormatString(Me.Description, strFormat)
                 Case "emailnotification"
@@ -311,8 +275,6 @@ Namespace Business
                     Return PropertyAccess.FormatString(Me.SyndicationEmail, strFormat)
                 Case "syndicationurl"
                     Return PropertyAccess.FormatString(Me.SyndicationURL, strFormat)
-                Case "timezone"
-                    Return PropertyAccess.FormatString(Me.TimeZone.DisplayName, strFormat)
                 Case "title"
                     Return PropertyAccess.FormatString(Me.Title, strFormat)
                 Case "usecaptcha"
@@ -377,8 +339,6 @@ Namespace Business
                 If Not DateTime.TryParse(readElement(reader, "Created"), Created) Then
                     Created = DateTime.MinValue
                 End If
-                Culture = readElement(reader, "Culture")
-                DateFormat = readElement(reader, "DateFormat")
                 Description = readElement(reader, "Description")
                 Boolean.TryParse(readElement(reader, "EmailNotification"), EmailNotification)
                 If Not DateTime.TryParse(readElement(reader, "LastEntry"), LastEntry) Then
@@ -399,11 +359,6 @@ Namespace Business
                 Boolean.TryParse(readElement(reader, "SyndicateIndependant"), SyndicateIndependant)
                 SyndicationEmail = readElement(reader, "SyndicationEmail")
                 SyndicationURL = readElement(reader, "SyndicationURL")
-                _timeZoneId = readElement(reader, "TimeZone")
-                Try
-                    TimeZone = TimeZoneInfo.FindSystemTimeZoneById(_timeZoneId)
-                Catch ex As Exception
-                End Try
                 Title = readElement(reader, "Title")
                 Boolean.TryParse(readElement(reader, "UseCaptcha"), UseCaptcha)
                 If Not Int32.TryParse(readElement(reader, "UserID"), UserID) Then
@@ -435,8 +390,6 @@ Namespace Business
             writer.WriteElementString("AllowTrackbacks", AllowTrackbacks.ToString())
             writer.WriteElementString("AutoTrackback", AutoTrackback.ToString())
             writer.WriteElementString("Created", Created.ToString())
-            writer.WriteElementString("Culture", Culture)
-            writer.WriteElementString("DateFormat", DateFormat)
             writer.WriteElementString("Description", Description)
             writer.WriteElementString("EmailNotification", EmailNotification.ToString())
             writer.WriteElementString("LastEntry", LastEntry.ToString())
@@ -451,7 +404,6 @@ Namespace Business
             writer.WriteElementString("SyndicateIndependant", SyndicateIndependant.ToString())
             writer.WriteElementString("SyndicationEmail", SyndicationEmail)
             writer.WriteElementString("SyndicationURL", SyndicationURL)
-            writer.WriteElementString("TimeZone", TimeZone.Id)
             writer.WriteElementString("Title", Title)
             writer.WriteElementString("UseCaptcha", UseCaptcha.ToString())
             writer.WriteElementString("UserID", UserID.ToString())

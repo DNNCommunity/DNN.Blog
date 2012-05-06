@@ -469,17 +469,6 @@ Partial Class EditEntry
                     Dim minute As Integer = tpEntryTime.SelectedDate.Value.Minute
                     .AddedDate = .AddedDate.AddHours(hour)
                     .AddedDate = .AddedDate.AddMinutes(minute)
-
-                    'Dim time As Match = Regex.Match(txtEntryTime.Text.Trim, "(?i)((?'hr'\d\d?)\:(?'min'\d\d)\s?(?'apm'[AP]M))|((?'hr'\d\d?)\:(?'min'\d\d))(?-i)")
-                    'If time.Success Then
-                    'Dim hr As Integer = Integer.Parse(time.Groups("hr").Value)
-                    'Dim min As Integer = Integer.Parse(time.Groups("min").Value)
-                    'If time.Groups("apm").Success AndAlso time.Groups("apm").Value.ToLower = "pm" Then
-                    '    hr += 12
-                    'End If
-                    '.AddedDate = .AddedDate.AddHours(hr)
-                    '.AddedDate = .AddedDate.AddMinutes(min)
-                    'End If
                     .AddedDate = TimeZoneInfo.ConvertTimeToUtc(.AddedDate, ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone)
 
                     If Null.IsNull(m_oEntry.EntryID) Then

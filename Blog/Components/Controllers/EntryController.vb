@@ -103,6 +103,7 @@ Namespace Business
 
         Private Shared Sub CompleteEntryDelete(ByVal contentItemId As Integer)
             Integration.Content.DeleteContentItem(contentItemId)
+            'TODO: Remove from Journal?
         End Sub
 
 #End Region
