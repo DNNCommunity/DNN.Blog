@@ -316,7 +316,7 @@ Namespace Data
 
 #Region "Settings Methods"
         Public Overrides Function GetBlogModuleSettings(ByVal PortalID As Integer, ByVal TabID As Integer) As IDataReader
-            Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_GetSettings", PortalID, TabID), IDataReader)
+            Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_Settings_Get", PortalID, TabID), IDataReader)
         End Function
 
         Public Overrides Sub UpdateBlogModuleSetting(ByVal PortalID As Integer, ByVal TabID As Integer, ByVal Key As String, ByVal Value As String)
