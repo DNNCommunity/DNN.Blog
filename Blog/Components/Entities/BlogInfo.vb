@@ -200,7 +200,7 @@ Namespace Business
             SyndicationURL = Convert.ToString(Null.SetNull(dr.Item("SyndicationURL"), SyndicationURL))
             Title = Convert.ToString(Null.SetNull(dr.Item("Title"), Title))
             UseCaptcha = Convert.ToBoolean(Null.SetNull(dr.Item("UseCaptcha"), UseCaptcha))
-            BlogPostCount = Convert.ToInt32(Null.SetNull(dr.Item("BlogPostCount"), UserID))
+            BlogPostCount = Convert.ToInt32(Null.SetNull(dr.Item("BlogPostCount"), BlogPostCount))
             UserID = Convert.ToInt32(Null.SetNull(dr.Item("UserID"), UserID))
             EnableGhostWriter = Convert.ToBoolean(Null.SetNull(dr.Item("EnableGhostWriter"), EnableGhostWriter))
         End Sub

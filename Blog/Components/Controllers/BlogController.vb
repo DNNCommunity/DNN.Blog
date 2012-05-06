@@ -38,9 +38,9 @@ Namespace Business
    Return CType(CBO.FillObject(DataProvider.Instance().GetBlogByUserName(PortalID, UserName), GetType(BlogInfo)), BlogInfo)
   End Function
 
-  Public Function GetBlogsByUserName(ByVal PortalID As Integer, ByVal UserName As String) As ArrayList
-   Return CBO.FillCollection(DataProvider.Instance().GetBlogsByUserName(PortalID, UserName), GetType(BlogInfo))
-  End Function
+        Public Function GetBlogsByUserName(ByVal PortalID As Integer, ByVal UserName As String) As List(Of BlogInfo)
+            Return CBO.FillCollection(Of BlogInfo)(DataProvider.Instance().GetBlogsByUserName(PortalID, UserName))
+        End Function
 
   Public Function ListBlogs(ByVal PortalID As Integer, ByVal ParentBlogID As Integer, ByVal ShowNonPublic As Boolean) As ArrayList
    Return CBO.FillCollection(DataProvider.Instance().ListBlogs(PortalID, ParentBlogID, ShowNonPublic), GetType(BlogInfo))

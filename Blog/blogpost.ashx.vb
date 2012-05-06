@@ -33,6 +33,8 @@ Imports DotNetNuke.Security.Membership
 Imports System.IO
 Imports System.Web
 Imports DotNetNuke.Modules.Blog.MetaWeblog
+Imports DotNetNuke.Entities.Content.Taxonomy
+Imports System.Linq
 
 ''' <summary>
 ''' Implements the MetaBlog API.
@@ -59,7 +61,6 @@ Public Class BlogPost
         InitializeMethodCall(username, password)
 
         Dim infoArray As Blogger.BlogInfoStruct()
-
         Try
 
             Dim misArray As ModuleInfoStruct() = _provider.GetModulesForUser(_userInfo, _portalSettings, _blogSettings, "Blog")
@@ -124,61 +125,68 @@ Public Class BlogPost
     Public Function getCategories_WordPress(ByVal blogid As String, ByVal username As String, ByVal password As String) As WordPress.CategoryInfo() Implements WordPress.IWordPress.getCategories
         InitializeMethodCall(username, password)
 
-
-
-
-        Dim list As List(Of Business.CategoryInfo) = CategoryController.ListCategoriesSorted(_portalSettings.PortalId)
-        Dim res(list.Count - 1) As WordPress.CategoryInfo
+        Dim termController As ITermController = DotNetNuke.Entities.Content.Common.Util.GetTermController()
+        Dim colCategories As IQueryable(Of Term) = termController.GetTermsByVocabulary(_blogSettings.VocabularyId)
+        Dim res(colCategories.Count - 1) As WordPress.CategoryInfo
         Dim i As Integer = 0
-        For Each c As DotNetNuke.Modules.Blog.Business.CategoryInfo In list
-            With res(i)
-                .categoryId = c.CatId
-                .parentId = c.ParentId
-                .categoryName = c.Category
-                .description = c.Category
-                .htmlUrl = "http://www.dummy.com/html" & c.CatId.ToString
-                .rssUrl = "http://www.dummy.com/rss" & c.CatId.ToString
-            End With
+
+        For Each objTerm As Term In colCategories
+            res(i).categoryId = objTerm.TermId
+            'NOTE: Why is ParentTermId an Integer? (the ? is included in the type, not grammatical syntax, which comes after this footnote)?
+            'res(i).parentId = objTerm.ParentTermId
+            res(i).categoryName = objTerm.Name
+            res(i).description = objTerm.Description
+            res(i).htmlUrl = "http://google.com"
+            res(i).rssUrl = "http://google.com"
+
             i += 1
         Next
+
         Return res
     End Function
 
     Public Function getPostCategories(ByVal postid As String, ByVal username As String, ByVal password As String) As MoveableType.Category() Implements MoveableType.IMoveableType.getPostCategories
         InitializeMethodCall(username, password)
 
+        Dim cntEntry As New EntryController
+        Dim objEntry As EntryInfo = cntEntry.GetEntry(Convert.ToInt32(postid), _portalSettings.PortalId)
 
+        Dim colCategories As List(Of Term)
+        colCategories = objEntry.Terms
 
-
-
-        Dim list As List(Of Business.CategoryInfo) = CategoryController.ListCatsByEntry(CInt(postid))
-        Dim res(list.Count - 1) As MoveableType.Category
+        Dim res(colCategories.Count - 1) As MoveableType.Category
         Dim i As Integer = 0
-        For Each c As DotNetNuke.Modules.Blog.Business.CategoryInfo In list
-            With res(i)
-                .categoryId = c.CatId.ToString
-                .categoryName = c.Category
-            End With
+
+        For Each objTerm As TermInfo In colCategories
+            If objTerm.VocabularyId > 1 Then
+                res(i).categoryId = objTerm.TermId.ToString()
+                res(i).categoryName = objTerm.Name
+            End If
+     
             i += 1
         Next
+
         Return res
     End Function
 
     Public Function setPostCategories(ByVal postid As String, ByVal username As String, ByVal password As String, ByVal categories As MoveableType.Category()) As Boolean Implements MoveableType.IMoveableType.setPostCategories
         InitializeMethodCall(username, password)
 
+        Dim cntEntry As New EntryController
+        Dim objEntry As EntryInfo = cntEntry.GetEntry(Convert.ToInt32(postid), _portalSettings.PortalId)
+        Dim terms As New List(Of Term)
 
-
-
-        Dim catIds As New List(Of Integer)
-        Dim i As Integer = 0
-        For Each c As MoveableType.Category In categories
-            catIds.Add(CInt(c.categoryId))
-            i += 1
+        For Each t As MoveableType.Category In categories
+            Dim objTerm As Term = Integration.Terms.GetTermById(Convert.ToInt32(t.categoryId), _blogSettings.VocabularyId)
+            terms.Add(objTerm)
         Next
-        CategoryController.UpdateCategoriesByEntry(Integer.Parse(postid), catIds)
-        Return True
 
+        objEntry.Terms.Clear()
+        objEntry.Terms.AddRange(terms)
+
+        cntEntry.UpdateEntry(objEntry, _tabId, _portalSettings.PortalId)
+
+        Return True
     End Function
 
     Public Function getRecentPosts(ByVal blogid As String, ByVal username As String, ByVal password As String, ByVal numberOfPosts As Integer) As Post() Implements IMetaWeblog.getRecentPosts
@@ -402,8 +410,8 @@ Public Class BlogPost
     End Function
 
 #Region "Private Procedures"
-    Private Function ValidateUser(ByVal username As String, ByVal password As String, ByVal ipAddress As String) As UserInfo
 
+    Private Function ValidateUser(ByVal username As String, ByVal password As String, ByVal ipAddress As String) As UserInfo
         Dim userInfo As UserInfo = Nothing
         Try
 
@@ -428,11 +436,9 @@ Public Class BlogPost
         End Try
 
         Return userInfo
-
     End Function
 
     Private Function GetRolesByUser(ByVal userId As Integer, ByVal portalId As Integer) As String()
-
         Dim userRoles As String()
         Dim roles As New ArrayList
 
@@ -446,11 +452,9 @@ Public Class BlogPost
         userRoles = CType(roles.ToArray(GetType(String)), String())
 
         Return userRoles
-
     End Function
 
     Private Sub GetPortalSettings()
-
         Dim portalID As Integer = -1
         Try
             Dim Request As HttpRequest = Me.Context.Request
@@ -480,11 +484,9 @@ Public Class BlogPost
         Catch generatedExceptionName As Exception
             Throw New XmlRpcFaultException(0, GetString("PortalLoadError", "Please check your URL to make sure you entered the correct URL for your blog.  The blog posting URL is available through the blog settings for your blog.")) ' & "Error:" & generatedExceptionName.ToString() & " PortalId: " & portalID.ToString()
         End Try
-
     End Sub
 
     Private Function GetPortalIDFromAlias(ByVal portalAlias As String) As Integer
-
         'Get the PortalAlias based on the Request object
         Dim pc As New PortalController
         Dim portalID As Integer = -1
@@ -499,21 +501,17 @@ Public Class BlogPost
             ' will throw an error in the calling procedure.
         End Try
         Return portalID
-
     End Function
 
     Private Function CreateFoldersForFilePath(ByVal folderPath As String) As String
-
         Dim path As String = folderPath.Substring(0, folderPath.LastIndexOf("\"))
         If Not Directory.Exists(path) Then
             Directory.CreateDirectory(path)
         End If
         Return folderPath
-
     End Function
 
     Private Sub MakeImagesRelative(ByRef post As Post)
-
         ' Make the images relative
 
         ' Check first to see if we're running on a port other than port 80
@@ -537,7 +535,6 @@ Public Class BlogPost
         If Not BlogPostServices.IsNullOrEmpty(post.mt_text_more) Then
             post.mt_text_more = Regex.Replace(post.mt_text_more, expression, "$1", options)
         End If
-
     End Sub
 
     Private Sub getProvider()
@@ -573,7 +570,6 @@ Public Class BlogPost
     End Function
 
     Private Function getPostFromItem(ByVal item As Item) As Post
-
         Dim post As New Post
 
         post.mt_allow_comments = item.AllowComments
@@ -600,11 +596,9 @@ Public Class BlogPost
         post.publish = item.Publish
 
         Return post
-
     End Function
 
     Private Function getPageFromItem(ByVal item As Item) As Page
-
         Dim page As New Page
 
         page.page_id = item.ItemId
@@ -617,11 +611,9 @@ Public Class BlogPost
         page.dateCreated = item.DateCreated
 
         Return page
-
     End Function
 
     Private Function getPostsFromItems(ByVal items As Item()) As Post()
-
         Dim posts As Post() = New Post(items.Length - 1) {}
         Dim i As Integer = 0
         While i < items.Length
@@ -629,11 +621,9 @@ Public Class BlogPost
             i = i + 1
         End While
         Return posts
-
     End Function
 
     Private Function getPagesFromItems(ByVal items As Item()) As Page()
-
         Dim pages As Page() = New Page(items.Length - 1) {}
         Dim i As Integer = 0
         While i < items.Length
@@ -641,11 +631,9 @@ Public Class BlogPost
             i = i + 1
         End While
         Return pages
-
     End Function
 
     Private Function getCategoryInfoFromItemCategoryInfo(ByVal ici As ItemCategoryInfo) As MetaWeblog.CategoryInfo
-
         Dim ci As New MetaWeblog.CategoryInfo
         ci.categoryId = ici.CategoryId.ToString()
         ci.categoryName = ici.CategoryName
@@ -654,11 +642,9 @@ Public Class BlogPost
         ci.parentId = ici.ParentId.ToString()
         ci.rssUrl = ici.RssUrl
         Return ci
-
     End Function
 
     Private Function getCategoryInfosFromItemCategoryInfos(ByVal ici As ItemCategoryInfo()) As MetaWeblog.CategoryInfo()
-
         Dim ci As MetaWeblog.CategoryInfo() = Nothing
         If Not ici Is Nothing Then
             ci = New MetaWeblog.CategoryInfo(ici.Length - 1) {}
@@ -669,21 +655,17 @@ Public Class BlogPost
             End While
         End If
         Return ci
-
     End Function
 
     Private Function getMetaWebLogCategoryInfosFromItemCategoryInfo(ByVal ci As MetaWeblog.CategoryInfo) As MetaWebLogCategoryInfo
-
         Dim mwci As New MetaWebLogCategoryInfo
         mwci.description = ci.description
         mwci.htmlUrl = ci.htmlUrl
         mwci.rssUrl = ci.rssUrl
         Return mwci
-
     End Function
 
     Private Function getMetaWebLogCategoryInfosFromCateogryInfos(ByVal ci As MetaWeblog.CategoryInfo()) As MetaWebLogCategoryInfo()
-
         Dim mwci As MetaWebLogCategoryInfo() = New MetaWebLogCategoryInfo(ci.Length - 1) {}
         Dim i As Integer = 0
         While i < ci.Length
@@ -691,7 +673,6 @@ Public Class BlogPost
             i = i + 1
         End While
         Return mwci
-
     End Function
 
     Private Sub InitializeMethodCall(ByVal username As String, ByVal password As String)
@@ -710,11 +691,9 @@ Public Class BlogPost
             LogException(ex)
             Throw
         End Try
-
     End Sub
 
     Private Function GetSummary(ByRef content As Post) As String
-
         Dim summary As String = String.Empty
 
         If Not BlogPostServices.IsNullOrEmpty(content.mt_excerpt) Then
@@ -724,11 +703,9 @@ Public Class BlogPost
         End If
 
         Return summary
-
     End Function
 
     Private Function GetPostText(ByRef content As Post) As String
-
         Dim postContent As String = String.Empty
         If BlogPostServices.IsNullOrEmpty(content.mt_excerpt) AndAlso Not BlogPostServices.IsNullOrEmpty(content.mt_text_more) AndAlso Not BlogPostServices.IsNullOrEmpty(content.description) Then
             postContent = content.mt_text_more
@@ -736,11 +713,9 @@ Public Class BlogPost
             postContent = content.description
         End If
         Return postContent
-
     End Function
 
     Private Sub HandleTrackbacksOrPings(ByVal moduleLevelId As String, ByVal itemId As String, ByRef content As Post, ByVal publish As Boolean, ByVal provider As IPublishable, ByVal autoDiscovery As Boolean)
-
         ' Send Pings or Trackbacks if publishing this page and there are trackbacks
         If publish Then
             ' Retrieve the Blog Name
@@ -752,7 +727,6 @@ Public Class BlogPost
             'TrackingService.TrackbackOrPing(content.mt_tb_ping_urls, content.title, permaLink, blogName, GetSummary(content), GetPostText(content), _
             'autoDiscovery)
         End If
-
     End Sub
 
     Private Function GetString(ByVal localizationKey As String, ByVal defaultValue As String) As String

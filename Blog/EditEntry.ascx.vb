@@ -171,8 +171,6 @@ Partial Class EditEntry
 
                     dpEntryDate.Culture = userCulture
                     dpEntryDate.SelectedDate = publishDate
-
-                    'txtEntryTime.Text = n.ToString("t", m_oBlog.CultureInfo)
                     tpEntryTime.Culture = userCulture
                     tpEntryTime.SelectedDate = publishDate
 
@@ -216,7 +214,6 @@ Partial Class EditEntry
                         cmdPublish.Text = GetString("Save", LocalResourceFile)
                         'lblPublished.Text = GetString("Published.Status", LocalResourceFile)
                     End If
-
                 Else
                     ' New Entry
                     litTimezone.Text = ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone.DisplayName
@@ -225,14 +222,10 @@ Partial Class EditEntry
                     chkAllowComments.Checked = m_oBlog.AllowComments
 
                     Dim userCulture As CultureInfo = New System.Globalization.CultureInfo(ModuleContext.PortalSettings.UserInfo.Profile.PreferredLocale)
-
                     litTimezone.Text = ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone.DisplayName
-
                     Dim n As Date = Utility.AdjustedDate(DateTime.Now, ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone)
                     dpEntryDate.Culture = userCulture
                     dpEntryDate.SelectedDate = n.Date
-
-                    'txtEntryTime.Text = n.ToString("t", m_oBlog.CultureInfo)
                     tpEntryTime.Culture = userCulture
                     tpEntryTime.SelectedDate = Utility.AdjustedDate(DateTime.Now, ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone)
                 End If

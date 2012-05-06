@@ -27,6 +27,7 @@ Imports DotNetNuke.Data
 Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Entities.Users
 Imports DotNetNuke.Modules.Blog.Business
+Imports DotNetNuke.Entities.Content.Taxonomy
 
 Namespace MetaWeblog
 
@@ -136,7 +137,7 @@ Namespace MetaWeblog
             End If
 
             ' Retrieve the blogs if there are any
-            Dim blogsList As ArrayList = blogController.GetBlogsByUserName(userInfo.PortalID, userInfo.Username)
+            Dim blogsList As List(Of BlogInfo) = blogController.GetBlogsByUserName(userInfo.PortalID, userInfo.Username)
 
             If Not blogsList Is Nothing Then
                 For Each blog As BlogInfo In blogsList
@@ -154,10 +155,6 @@ Namespace MetaWeblog
         End Function
 
 #Region "Item Related Procedures"
-
-        Public Function GetLocalAddedTime(ByVal AddedDate As DateTime, ByVal PortalId As Integer, ByVal user As UserInfo) As DateTime
-            Return TimeZoneInfo.ConvertTimeToUtc(AddedDate, user.Profile.PreferredTimeZone)
-        End Function
 
         Public Function GetItem(ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings, ByVal itemType As ItemType) As Item Implements IPublishable.GetItem
             Dim entryController As New EntryController
@@ -188,8 +185,6 @@ Namespace MetaWeblog
             item.Content = HttpUtility.HtmlDecode(entryInfo.Entry)
             item.Summary = HttpUtility.HtmlDecode(entryInfo.Description)
 
-
-
             item.DateCreated = GetLocalAddedTime(entryInfo.AddedDate, portalSettings.PortalId, userInfo)
             item.StartDate = entryInfo.AddedDate
             item.ItemId = entryInfo.EntryID.ToString()
@@ -198,10 +193,16 @@ Namespace MetaWeblog
             item.AllowComments = DirectCast(IIf((entryInfo.AllowComments), 1, 0), Integer)
             item.Publish = entryInfo.Published
 
-            Dim TagController As New TagController
-            item.Keywords = TagController.GetTagsByEntry(entryInfo.EntryID)
+            Dim i As Integer = 0
 
-            item.Categories = CategoryController.StringListCatsByEntry(entryInfo.EntryID)
+            For Each t As Term In entryInfo.Terms
+                If t.VocabularyId = 1 Then
+                    item.Keywords += "," + t.Name
+                Else
+                    item.Categories(i) = t.Name
+                    i += 1
+                End If
+            Next
 
             If itemType = itemType.Post And Not blogSettings.ExcerptEnabled Then
                 FindAndPlaceSummary(item)
@@ -407,33 +408,30 @@ Namespace MetaWeblog
 
 #End Region
 
-#Region " Category Related Procedures "
+#Region "Category Related Procedures"
 
         Public Function GetCategories(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings) As ItemCategoryInfo() Implements IPublishable.GetCategories
-
-            Dim BlogController As New BlogController
-
-            Dim CatList As IDictionary(Of Integer, Business.CategoryInfo) = CategoryController.ListCategories(portalSettings.PortalId)
+            Dim cntTerm As New Business.TermController
+            Dim colCategories As List(Of TermInfo) = cntTerm.GetTermsByContentType(portalSettings.PortalId, blogSettings.VocabularyId)
 
             Dim categories As ItemCategoryInfo() = Nothing
-            categories = New ItemCategoryInfo(CatList.Count - 1) {}
+            categories = New ItemCategoryInfo(colCategories.Count - 1) {}
 
             Dim category As New ItemCategoryInfo
 
             Dim i As Integer = 0
-            For Each c As Business.CategoryInfo In CatList.Values
-                category.CategoryId = c.CatId
-                category.CategoryName = c.FullCat
-                category.Description = c.FullCat
+            For Each objTerm As TermInfo In colCategories
+                category.CategoryId = objTerm.TermId
+                category.CategoryName = objTerm.Name
+                category.Description = objTerm.Description
                 category.HtmlUrl = "http://google.com"
                 category.RssUrl = "http://google.com"
-                ' category.ParentId = CatList(i).ParentId
+                category.ParentId = CInt(objTerm.ParentTermId)
                 categories(i) = category
                 i += 1
             Next
 
             Return categories
-
         End Function
 
         Public Function NewCategory(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As Settings.BlogSettings) As Integer Implements IPublishable.NewCategory
@@ -442,7 +440,7 @@ Namespace MetaWeblog
 
 #End Region
 
-#Region " Optional Procedures (See Comments For Details) "
+#Region "Optional Procedures (See Comments For Details)"
 
         ''' <summary>
         ''' ModuleName is used when sending Trackbacks and Pings.  If these are not used by your 
@@ -453,7 +451,6 @@ Namespace MetaWeblog
         ''' <param name="portalSettings"></param>
         ''' <returns></returns>
         Public Function GetModuleName(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings) As String Implements ILinkable.GetModuleName
-
             Dim blogId As Integer
 
             blogId = Convert.ToInt32(moduleLevelId)
@@ -517,7 +514,12 @@ Namespace MetaWeblog
 
 #End Region
 
-#Region " Private Procedures Specific to Blog Module "
+#Region "Private Procedures Specific to Blog Module"
+
+        Public Function GetLocalAddedTime(ByVal AddedDate As DateTime, ByVal PortalId As Integer, ByVal user As UserInfo) As DateTime
+            Return TimeZoneInfo.ConvertTimeToUtc(AddedDate, user.Profile.PreferredTimeZone)
+        End Function
+
         Private Function GetBlogIdFromEntry(ByVal entryInfo As EntryInfo) As String
             Dim blogId As String
             ' Make sure we have the parent blog
@@ -553,12 +555,6 @@ Namespace MetaWeblog
             Return objEntry
         End Function
 
-        'Private Function GetTimeZoneOffset(ByVal blogId As Integer) As Integer
-        ' Dim blogController As New BlogController
-        ' Dim blog As BlogInfo = blogController.GetBlog(blogId)
-        ' Return CInt(blog.TimeZone.GetUtcOffset(Date.Now).TotalMinutes)
-        'End Function
-
         Private Sub ExtractSummaryFromExtendedContent(ByRef item As Item)
             If Not BlogPostServices.IsNullOrEmpty(item.ExtendedContent) Then
                 ' Extract the summary from the excerpt
@@ -568,13 +564,12 @@ Namespace MetaWeblog
         End Sub
 
         Private Sub FindAndPlaceSummary(ByRef item As Item)
-
             If BlogPostServices.ContainsHtml(item.Summary) Then
                 ' We have HTML, so put the HTML in the content above a <!--more--> tag
                 item.Content = item.Summary + "<!--more-->" + item.Content
             End If
-
         End Sub
+
 #End Region
 
 #End Region
