@@ -318,8 +318,8 @@
 				<name>05.00.00.SqlDataProvider</name>
 				<version>05.00.00</version>
 			</script>
-			<script type="Install">
-			  <name>Install.04.00.00.SqlDataProvider</name>
+			<script>
+			  <name>Install.SqlDataProvider</name>
 			  <version>04.00.00</version>
 			</script>
 			<script type="UnInstall">

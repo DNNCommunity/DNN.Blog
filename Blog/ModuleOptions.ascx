@@ -229,57 +229,58 @@
 <script language="javascript" type="text/javascript">
 	/*globals jQuery, window, Sys */
 	(function ($, Sys) {
-		function setupDnnBlogSettings() {
-			handleSummaryDisplay();
-			handleGravatarDisplay();
+	    function setupDnnBlogSettings() {
+	        handleSummaryDisplay();
+	        handleGravatarDisplay();
 
-			$('#dnnBlogOptions').dnnTabs().dnnPanels();
+	        $('#dnnBlogOptions').dnnTabs();
+	        $('#boBasicSettings').dnnPanels();
 
 
 
-			$('#<%= chkForceDescription.ClientID  %>').click(function () {
-				handleSummaryDisplay();
-				return true;
-			});
+	        $('#<%= chkForceDescription.ClientID  %>').click(function () {
+	            handleSummaryDisplay();
+	            return true;
+	        });
 
-			$('#<%= chkShowGravatars.ClientID  %>').click(function () {
-				handleGravatarDisplay();
-				return true;
-			});
+	        $('#<%= chkShowGravatars.ClientID  %>').click(function () {
+	            handleGravatarDisplay();
+	            return true;
+	        });
 
-			function handleSummaryDisplay() {
-				if ($('#<%= chkForceDescription.ClientID  %>').prop('checked')) {
-					$("#divSummary").hide('highlight', '', 200, '');
-					$("#divSearchSummary").hide('highlight', '', 200, '');
-				} else {
-					$("#divSummary").show('highlight', '', 200, '');
-					$("#divSearchSummary").show('highlight', '', 200, '');
-				}
-			}
+	        function handleSummaryDisplay() {
+	            if ($('#<%= chkForceDescription.ClientID  %>').prop('checked')) {
+	                $("#divSummary").hide('highlight', '', 200, '');
+	                $("#divSearchSummary").hide('highlight', '', 200, '');
+	            } else {
+	                $("#divSummary").show('highlight', '', 200, '');
+	                $("#divSearchSummary").show('highlight', '', 200, '');
+	            }
+	        }
 
-			function handleGravatarDisplay() {
-				if ($('#<%= chkShowGravatars.ClientID  %>').prop('checked')) {
-					$("#divGravatarImageWidth").show('highlight', '', 200, '');
-					$("#divGravatarRating").show('highlight', '', 200, '');
-					$("#divGravatarDefaultImageUrl").show('highlight', '', 200, '');
-					$("#divGravatarDefaultImageCustomURL").show('highlight', '', 200, '');
-				} else {
-					$("#divGravatarImageWidth").hide('highlight', '', 200, '');
-					$("#divGravatarRating").hide('highlight', '', 200, '');
-					$("#divGravatarDefaultImageUrl").hide('highlight', '', 200, '');
-					$("#divGravatarDefaultImageCustomURL").hide('highlight', '', 200, '');
-				}
-			}
+	        function handleGravatarDisplay() {
+	            if ($('#<%= chkShowGravatars.ClientID  %>').prop('checked')) {
+	                $("#divGravatarImageWidth").show('highlight', '', 200, '');
+	                $("#divGravatarRating").show('highlight', '', 200, '');
+	                $("#divGravatarDefaultImageUrl").show('highlight', '', 200, '');
+	                $("#divGravatarDefaultImageCustomURL").show('highlight', '', 200, '');
+	            } else {
+	                $("#divGravatarImageWidth").hide('highlight', '', 200, '');
+	                $("#divGravatarRating").hide('highlight', '', 200, '');
+	                $("#divGravatarDefaultImageUrl").hide('highlight', '', 200, '');
+	                $("#divGravatarDefaultImageCustomURL").hide('highlight', '', 200, '');
+	            }
+	        }
 
-			$('#boBasicSettings .dnnFormExpandContent a').dnnExpandAll({ expandText: '<%=Localization.GetSafeJSString("ExpandAll", Localization.SharedResourceFile)%>', collapseText: '<%=Localization.GetSafeJSString("CollapseAll", Localization.SharedResourceFile)%>', targetArea: '#boBasicSettings' });
-		};
+	        $('#boBasicSettings .dnnFormExpandContent a').dnnExpandAll({ expandText: '<%=Localization.GetSafeJSString("ExpandAll", Localization.SharedResourceFile)%>', collapseText: '<%=Localization.GetSafeJSString("CollapseAll", Localization.SharedResourceFile)%>', targetArea: '#boBasicSettings' });
+	    };
 
-		$(document).ready(function () {
-			setupDnnBlogSettings();
-			Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
-				setupDnnBlogSettings();
-			});
-		});
+	    $(document).ready(function () {
+	        setupDnnBlogSettings();
+	        Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
+	            setupDnnBlogSettings();
+	        });
+	    });
 
 	} (jQuery, window.Sys));
 </script>   
