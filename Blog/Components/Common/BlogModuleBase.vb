@@ -23,122 +23,135 @@ Imports DotNetNuke.Framework
 
 Namespace Components.Common
 
-    Public Class BlogModuleBase
-        Inherits PortalModuleBase
+ Public Class BlogModuleBase
+  Inherits PortalModuleBase
 
 #Region "Public Constants"
 
-        Public Const RSS_RECENT_ENTRIES As Integer = 0
-        Public Const RSS_BLOG_ENTRIES As Integer = 1
-        Public Const RSS_SINGLE_ENTRY As Integer = 2
-        Public Const RSS_ARCHIV_VIEW As Integer = 3
-        Public Const CONTROL_VIEW_VIEWBLOG As String = "ViewBlog.ascx"
-        Public Const CONTROL_VIEW_VIEWENTRY As String = "ViewEntry.ascx"
-        Public Const CONTROL_VIEW_BLOGFEED As String = "BlogFeed.ascx"
-        Public Const ONLINE_HELP_URL As String = ""
-        Public Const BLOG_TEMPLATES_RESOURCE As String = "/DesktopModules/Blog/App_LocalResources/BlogTemplates.ascx.resx"
+  Public Const RSS_RECENT_ENTRIES As Integer = 0
+  Public Const RSS_BLOG_ENTRIES As Integer = 1
+  Public Const RSS_SINGLE_ENTRY As Integer = 2
+  Public Const RSS_ARCHIV_VIEW As Integer = 3
+  Public Const CONTROL_VIEW_VIEWBLOG As String = "ViewBlog.ascx"
+  Public Const CONTROL_VIEW_VIEWENTRY As String = "ViewEntry.ascx"
+  Public Const CONTROL_VIEW_BLOGFEED As String = "BlogFeed.ascx"
+  Public Const ONLINE_HELP_URL As String = ""
+  Public Const BLOG_TEMPLATES_RESOURCE As String = "/DesktopModules/Blog/App_LocalResources/BlogTemplates.ascx.resx"
 
 #End Region
 
 #Region "Public Members"
 
-        Public MyActions As New DotNetNuke.Entities.Modules.Actions.ModuleActionCollection
-        Public Shared RssView As RssViews
+  Public MyActions As New DotNetNuke.Entities.Modules.Actions.ModuleActionCollection
+  Public Shared RssView As RssViews
 
 #End Region
 
 #Region "Public Methods"
 
-        Public Sub SetModuleConfiguration(ByVal config As DotNetNuke.Entities.Modules.ModuleInfo)
-            ModuleConfiguration = config
-        End Sub
+  Public Sub SetModuleConfiguration(ByVal config As DotNetNuke.Entities.Modules.ModuleInfo)
+   ModuleConfiguration = config
+  End Sub
 
 #End Region
 
 #Region "Public Properties"
 
-        Public ReadOnly Property BasePage() As DotNetNuke.Framework.CDefault
-            Get
-                Try
-                    Return CType(Me.Page, DotNetNuke.Framework.CDefault)
-                Catch
-                    Return Nothing
-                End Try
-            End Get
-        End Property
+  Public ReadOnly Property BasePage() As DotNetNuke.Framework.CDefault
+   Get
+    Try
+     Return CType(Me.Page, DotNetNuke.Framework.CDefault)
+    Catch
+     Return Nothing
+    End Try
+   End Get
+  End Property
 
-        Public Property BlogSettings() As Components.Settings.BlogSettings
-            Get
-                If _blogSettings Is Nothing Then
-                    _blogSettings = Components.Settings.BlogSettings.GetBlogSettings(PortalId, TabId)
-                End If
-                Return _blogSettings
-            End Get
-            Set(ByVal value As Settings.BlogSettings)
-                _blogSettings = value
-            End Set
-        End Property
+  Public Property BlogSettings() As Components.Settings.BlogSettings
+   Get
+    If _blogSettings Is Nothing Then
+     _blogSettings = Components.Settings.BlogSettings.GetBlogSettings(PortalId, TabId)
+    End If
+    Return _blogSettings
+   End Get
+   Set(ByVal value As Settings.BlogSettings)
+    _blogSettings = value
+   End Set
+  End Property
 
-        Public Property OutputAdditionalFiles() As Boolean
-            Get
-                Return _outputAdditionalFiles
-            End Get
-            Set(ByVal value As Boolean)
-                _outputAdditionalFiles = value
-            End Set
-        End Property
+  Public Property OutputAdditionalFiles() As Boolean
+   Get
+    Return _outputAdditionalFiles
+   End Get
+   Set(ByVal value As Boolean)
+    _outputAdditionalFiles = value
+   End Set
+  End Property
 
-        Public ReadOnly Property SpecificBlogId() As Integer
-            Get
-                Dim blogId As Integer = -1
-                If Request.QueryString("BlogID") IsNot Nothing Then
-                    blogId = Convert.ToInt32(Request.QueryString("BlogID"))
-                End If
-                Return blogId
-            End Get
-        End Property
+  Public ReadOnly Property SpecificBlogId() As Integer
+   Get
+    Dim blogId As Integer = -1
+    If Request.QueryString("BlogID") IsNot Nothing Then
+     blogId = Convert.ToInt32(Request.QueryString("BlogID"))
+    End If
+    Return blogId
+   End Get
+  End Property
+
+  Public ReadOnly Property UITimeZone As TimeZoneInfo
+   Get
+    If _uiTimezone Is Nothing Then
+     _uiTimezone = ModuleContext.PortalSettings.TimeZone
+     If UserInfo.Profile.PreferredLocale IsNot Nothing Then
+      _uiTimezone = UserInfo.Profile.PreferredTimeZone
+     End If
+    End If
+    Return _uiTimezone
+   End Get
+  End Property
 
 #End Region
 
 #Region "Private Members"
 
-        Private _blogSettings As Settings.BlogSettings
-        Private _outputAdditionalFiles As Boolean = False
+  Private _blogSettings As Settings.BlogSettings
+  Private _outputAdditionalFiles As Boolean = False
+  Private _uiTimezone As TimeZoneInfo = Nothing
 
 #End Region
 
 #Region "Event Handlers"
 
-        Protected Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Init
-            jQuery.RequestUIRegistration()
+  Protected Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Init
+   jQuery.RequestUIRegistration()
 
-            Dim script As New StringBuilder
-            script.AppendLine("<script type=""text/javascript"">")
-            script.AppendLine("//<![CDATA[")
-            script.AppendLine(String.Format("var appPath='{0}'", DotNetNuke.Common.ApplicationPath))
-            script.AppendLine("//]]>")
-            script.AppendLine("</script>")
-            UI.Utilities.ClientAPI.RegisterClientScriptBlock(Page, "blogAppPath", script.ToString)
-        End Sub
+   Dim script As New StringBuilder
+   script.AppendLine("<script type=""text/javascript"">")
+   script.AppendLine("//<![CDATA[")
+   script.AppendLine(String.Format("var appPath='{0}'", DotNetNuke.Common.ApplicationPath))
+   script.AppendLine("//]]>")
+   script.AppendLine("</script>")
+   UI.Utilities.ClientAPI.RegisterClientScriptBlock(Page, "blogAppPath", script.ToString)
+  End Sub
 
-        Protected Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.PreRender
-            If OutputAdditionalFiles Then
-                For Each f As String In BlogSettings.IncludeFiles.Split(";"c)
-                    If Not String.IsNullOrEmpty(f) Then
-                        If f.ToLower.EndsWith(".js") Then
-                            Dim path As String = f.Replace("[P]", PortalSettings.HomeDirectory & "Blog/Include/").Replace("[H]", DotNetNuke.Common.ApplicationPath & "/DesktopModules/Blog/include/")
-                            ClientResourceManager.RegisterScript(Page, path)
-                        ElseIf f.ToLower.EndsWith(".css") Then
-                            Dim path As String = f.Replace("[P]", PortalSettings.HomeDirectory & "Blog/Include/").Replace("[H]", DotNetNuke.Common.ApplicationPath & "/DesktopModules/Blog/include/")
-                            ClientResourceManager.RegisterStyleSheet(Page, path, Web.Client.FileOrder.Css.ModuleCss)
-                        End If
-                    End If
-                Next
-            End If
-        End Sub
+  Protected Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.PreRender
+   If OutputAdditionalFiles Then
+    For Each f As String In BlogSettings.IncludeFiles.Split(";"c)
+     If Not String.IsNullOrEmpty(f) Then
+      If f.ToLower.EndsWith(".js") Then
+       Dim path As String = f.Replace("[P]", PortalSettings.HomeDirectory & "Blog/Include/").Replace("[H]", DotNetNuke.Common.ApplicationPath & "/DesktopModules/Blog/include/")
+       ClientResourceManager.RegisterScript(Page, path)
+      ElseIf f.ToLower.EndsWith(".css") Then
+       Dim path As String = f.Replace("[P]", PortalSettings.HomeDirectory & "Blog/Include/").Replace("[H]", DotNetNuke.Common.ApplicationPath & "/DesktopModules/Blog/include/")
+       ClientResourceManager.RegisterStyleSheet(Page, path, Web.Client.FileOrder.Css.ModuleCss)
+      End If
+     End If
+    Next
+   End If
+  End Sub
 
 #End Region
 
-    End Class
+ End Class
 
 End Namespace
