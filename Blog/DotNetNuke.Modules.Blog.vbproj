@@ -380,7 +380,6 @@
     <None Include="Providers\Data\SqlDataProvider\03.05.01.SqlDataProvider" />
     <None Include="Providers\Data\SqlDataProvider\04.00.00.SqlDataProvider" />
     <None Include="Providers\Data\SqlDataProvider\04.01.00.SqlDataProvider" />
-    <None Include="Providers\Data\SqlDataProvider\04.05.00.SqlDataProvider" />
     <None Include="Providers\Data\SqlDataProvider\05.00.00.SqlDataProvider" />
     <None Include="Providers\Data\SqlDataProvider\Install.04.00.00.SqlDataProvider" />
     <None Include="Providers\Data\SqlDataProvider\Uninstall.SqlDataProvider" />
