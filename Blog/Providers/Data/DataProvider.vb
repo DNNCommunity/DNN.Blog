@@ -93,20 +93,11 @@ Namespace Providers.Data
 
 #Region "Blog_Tags / Blog_Cats Methods"
 
-        Public MustOverride Function GetTag(ByVal TagID As Integer) As IDataReader
         Public MustOverride Function ListTagsByEntry(ByVal EntryID As Integer) As IDataReader
-        Public MustOverride Sub AddEntryTag(ByVal EntryID As Integer, ByVal Tag As String, ByVal Slug As String)
-        Public MustOverride Sub DeleteEntryTag(ByVal EntryID As Integer, ByVal Tag As String)
-        Public MustOverride Function ListTagsAlpha(ByVal PortalID As Integer) As IDataReader
-        Public MustOverride Function ListTagsCnt(ByVal PortalID As Integer) As IDataReader
-        Public MustOverride Function ListCategories(ByVal PortalID As Integer) As IDataReader
-        Public MustOverride Function GetCategory(ByVal CatID As Integer) As IDataReader
-        Public MustOverride Function AddCategory(ByVal Category As String, ByVal ParentId As Int32, ByVal PortalId As Int32, ByVal Slug As String) As Integer
-        Public MustOverride Sub DeleteCategory(ByVal CatID As Integer)
-        Public MustOverride Sub UpdateCategory(ByVal CatId As Int32, ByVal Category As String, ByVal ParentId As Int32, ByVal Slug As String)
         Public MustOverride Function ListEntryCategories(ByVal EntryID As Integer) As IDataReader
-        Public MustOverride Sub DeleteEntryCategories(ByVal EntryID As Integer, ByVal CatID As Integer)
-        Public MustOverride Sub AddEntryCategories(ByVal EntryID As Integer, ByVal CatID As Integer)
+        Public MustOverride Function GetAllTagsForUpgrade() As IDataReader
+        Public MustOverride Function GetAllCategoriesForUpgrade() As IDataReader
+        Public MustOverride Function RetrieveTaxonomyRelatedPosts() As IDataReader
 
 #End Region
 

@@ -318,4 +318,44 @@ Namespace Components.Entities
 #End Region
 
     End Class
+
+    Public Class MigrateCategoryInfo
+        Inherits CategoryInfo
+
+        Public Sub New()
+        End Sub
+
+        Private _NewTermId As Int32 = -1
+        'Private _NewParentTermId As Int32 = -1
+        'Private _NewVocabularyId As Int32 = -1
+
+        Public Property NewTermId() As Int32
+            Get
+                Return _NewTermId
+            End Get
+            Set(ByVal Value As Int32)
+                _NewTermId = Value
+            End Set
+        End Property
+
+        'Public Property NewParentTermId() As Int32
+        '    Get
+        '        Return _NewParentTermId
+        '    End Get
+        '    Set(ByVal Value As Int32)
+        '        _NewParentTermId = Value
+        '    End Set
+        'End Property
+
+        'Public Property NewVocabularyId() As Int32
+        '    Get
+        '        Return _NewVocabularyId
+        '    End Get
+        '    Set(ByVal Value As Int32)
+        '        _NewVocabularyId = Value
+        '    End Set
+        'End Property
+
+    End Class
+
 End Namespace

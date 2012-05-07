@@ -108,6 +108,14 @@ Namespace Components.Controllers
             'TODO: Remove from Journal?
         End Sub
 
+#Region "5.0 Taxonomy Migration"
+
+        Public Function RetrieveTaxonomyRelatedPosts() As List(Of EntryInfo)
+            Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().RetrieveTaxonomyRelatedPosts())
+        End Function
+
+#End Region
+
 #End Region
 
     End Class

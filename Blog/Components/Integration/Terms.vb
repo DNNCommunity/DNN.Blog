@@ -64,7 +64,7 @@ Namespace Components.Integration
         ''' <param name="vocabularyId"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Shared Function CreateAndReturnTerm(name As String, vocabularyId As Integer) As Term
+        Friend Shared Function CreateAndReturnTerm(ByVal name As String, ByVal vocabularyId As Integer) As Term
             Dim termController As ITermController = DotNetNuke.Entities.Content.Common.Util.GetTermController()
             Dim existantTerm As Term = termController.GetTermsByVocabulary(vocabularyId).Where(Function(t) t.Name.ToLower() = name.ToLower()).FirstOrDefault()
             If existantTerm IsNot Nothing Then
@@ -77,6 +77,23 @@ Namespace Components.Integration
             Return New Term() With { _
                 .Name = name, _
                 .TermId = termId _
+                }
+        End Function
+
+        Friend Shared Function CreateAndReturnTerm(ByVal name As String, ByVal vocabularyId As Integer, ByVal parentId As Integer) As Term
+            Dim termController As ITermController = DotNetNuke.Entities.Content.Common.Util.GetTermController()
+            Dim existantTerm As Term = termController.GetTermsByVocabulary(vocabularyId).Where(Function(t) t.Name.ToLower() = name.ToLower()).FirstOrDefault()
+            If existantTerm IsNot Nothing Then
+                Return existantTerm
+            End If
+
+            Dim termId As Integer = termController.AddTerm(New Term(vocabularyId) With { _
+                                                              .Name = name, .ParentTermId = parentId _
+                                                              })
+            Return New Term() With { _
+                .Name = name, _
+                .TermId = termId, _
+                .ParentTermId = parentId _
                 }
         End Function
 

@@ -22,7 +22,6 @@ Imports DotNetNuke.Modules.Blog.Providers.Data
 Imports DotNetNuke.Modules.Blog.Components.Business
 Imports DotNetNuke.Modules.Blog.Components.Controllers
 Imports DotNetNuke.Modules.Blog.Components.Common
-Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.Common
 Imports DotNetNuke.Modules.Blog.Components.Settings
@@ -295,12 +294,13 @@ Namespace Components.Rss
             Else
                 Description = Utility.RewriteRefs(HttpUtility.HtmlDecode(CStr(ir.Item("Description"))))
             End If
-            If _includeTagsInDescription Then
-                Dim TagString As String = TagController.GetTagsByEntry(EntryId)
-                If Not TagString = "" Then
-                    Description &= "<div class=""tags"">" & Localization.GetString("Tags", Components.Common.Globals.glbSharedResourceFile) & ": " & TagString & "</div>"
-                End If
-            End If
+            'TODO: CP
+            'If _includeTagsInDescription Then
+            '    Dim TagString As String = TagController.GetTagsByEntry(EntryId)
+            '    If Not TagString = "" Then
+            '        Description &= "<div class=""tags"">" & Localization.GetString("Tags", Components.Common.Globals.glbSharedResourceFile) & ": " & TagString & "</div>"
+            '    End If
+            'End If
             If _includeCategoriesInDescription Then
                 For Each c As CategoryInfo In CategoryController.ListCatsByEntry(EntryId)
                     Description &= "<div class=""category"">" & Localization.GetString("Category", Components.Common.Globals.glbSharedResourceFile) & ": <a href=" & NavigateURL(_tabId, "", "CatID=" & c.CatId.ToString) & ">" & c.Category & "</a></div>"
@@ -329,15 +329,15 @@ Namespace Components.Rss
             writer.WriteEndElement()
             writer.WriteElementString("pubDate", XmlConvert.ToString(CDate(ir.Item("AddedDate")), DateTimeFormatString))
             writer.WriteElementString(nsTrackbackPre, "ping", Nothing, HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) & ModulePath & "Trackback.aspx?id=" & EntryId.ToString)
-
+            'TODO: CP
             ' Write Blog specific data
             ' Write tags
-            For Each t As TagInfo In TagController.ListTagsByEntry(EntryId)
-                writer.WriteStartElement(nsBlogPre, "tag", nsBlogFull)
-                writer.WriteAttributeString(nsBlogPre, "url", Nothing, NavigateURL(_tabId, "", "TagID=" & t.TagId.ToString))
-                writer.WriteString(t.Tag)
-                writer.WriteEndElement()
-            Next
+            'For Each t As TagInfo In TagController.ListTagsByEntry(EntryId)
+            '    writer.WriteStartElement(nsBlogPre, "tag", nsBlogFull)
+            '    writer.WriteAttributeString(nsBlogPre, "url", Nothing, NavigateURL(_tabId, "", "TagID=" & t.TagId.ToString))
+            '    writer.WriteString(t.Tag)
+            '    writer.WriteEndElement()
+            'Next
             If _includeBody Then
                 writer.WriteElementString(nsBlogPre, "body", Nothing, Utility.RewriteRefs(HttpUtility.HtmlDecode(CStr(ir.Item("Entry")))))
             End If

@@ -139,8 +139,14 @@ Public Class BlogPost
 
         For Each objTerm As Term In colCategories
             res(i).categoryId = objTerm.TermId
-            'NOTE: Why is ParentTermId an Integer? (the ? is included in the type, not grammatical syntax, which comes after this footnote)?
-            'res(i).parentId = objTerm.ParentTermId
+
+            If objTerm.ParentTermId = DotNetNuke.Common.Utilities.Null.NullInteger Then
+                ' the way vocabs are setup for categories, this shouldn't happen
+                res(i).parentId = 0
+            Else
+                res(i).parentId = Convert.ToInt32(objTerm.ParentTermId)
+            End If
+
             res(i).categoryName = objTerm.Name
             res(i).description = objTerm.Description
             res(i).htmlUrl = "http://google.com"

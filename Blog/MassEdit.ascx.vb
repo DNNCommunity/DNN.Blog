@@ -136,31 +136,32 @@ Partial Class MassEdit
 
             Dim ti As String
             Dim eid As Integer = CType(CType(e.Item.DataItem, EntryInfo).EntryID, Integer)
-            ti = TagController.GetTagsByEntry(eid)
-            Dim litTags As Literal = CType(e.Item.FindControl("litTags"), Literal)
-            Dim tbTags As TextBox = CType(e.Item.FindControl("tbTags"), TextBox)
-            litTags.Text = ti
-            tbTags.Text = ti
-            tbTags.Visible = False
+            'TODO: CP
+            'ti = TagController.GetTagsByEntry(eid)
+            'Dim litTags As Literal = CType(e.Item.FindControl("litTags"), Literal)
+            'Dim tbTags As TextBox = CType(e.Item.FindControl("tbTags"), TextBox)
+            'litTags.Text = ti
+            'tbTags.Text = ti
+            'tbTags.Visible = False
 
-            Dim ci As List(Of CategoryInfo) = CategoryController.ListCatsByEntry(eid)
-            Dim cl As List(Of CategoryInfo) = CategoryController.ListCategoriesSorted(PortalId)
+            'Dim ci As List(Of CategoryInfo) = CategoryController.ListCatsByEntry(eid)
+            'Dim cl As List(Of CategoryInfo) = CategoryController.ListCategoriesSorted(PortalId)
 
-            Dim dlCat As DropDownList = CType(e.Item.FindControl("ddlCat"), DropDownList)
+            'Dim dlCat As DropDownList = CType(e.Item.FindControl("ddlCat"), DropDownList)
 
-            dlCat.DataSource = cl
+            'dlCat.DataSource = cl
 
-            dlCat.DataBind()
-            dlCat.Items.Insert(0, New ListItem(" - Uncategorized - ", "-1"))
+            'dlCat.DataBind()
+            'dlCat.Items.Insert(0, New ListItem(" - Uncategorized - ", "-1"))
 
-            Dim litCat As Literal = CType(e.Item.FindControl("litCat"), Literal)
-            If ci.Count > 0 Then
-                litCat.Text = ci(0).Category
-                If Not dlCat.Items.FindByValue(ci(0).CatId.ToString) Is Nothing Then
-                    dlCat.Items.FindByValue(ci(0).CatId.ToString).Selected = True
-                End If
-            End If
-            dlCat.Visible = False
+            'Dim litCat As Literal = CType(e.Item.FindControl("litCat"), Literal)
+            'If ci.Count > 0 Then
+            '    litCat.Text = ci(0).Category
+            '    If Not dlCat.Items.FindByValue(ci(0).CatId.ToString) Is Nothing Then
+            '        dlCat.Items.FindByValue(ci(0).CatId.ToString).Selected = True
+            '    End If
+            'End If
+            'dlCat.Visible = False
 
             Dim litTitle As Literal = CType(e.Item.FindControl("litTitle"), Literal)
             If litTitle.Text.Length > 30 Then litTitle.Text = Left(litTitle.Text, 30) + "..."
@@ -184,12 +185,12 @@ Partial Class MassEdit
         Dim cbPub As CheckBox = CType(item.FindControl("cbPublished"), CheckBox)
         Dim cbComments As CheckBox = CType(item.FindControl("cbComments"), CheckBox)
 
-        TagController.UpdateTagsByEntry(CInt(e.CommandArgument), tbTags.Text)
+        'TagController.UpdateTagsByEntry(CInt(e.CommandArgument), tbTags.Text)
 
         Dim litTags As Literal = CType(item.FindControl("litTags"), Literal)
         litTags.Text = tbTags.Text
 
-        CategoryController.UpdateCategoriesByEntry(CInt(e.CommandArgument), CInt(dlCat.SelectedValue))
+        'CategoryController.UpdateCategoriesByEntry(CInt(e.CommandArgument), CInt(dlCat.SelectedValue))
 
         Dim litCat As Literal = CType(item.FindControl("litCat"), Literal)
         litCat.Text = dlCat.SelectedItem.Text

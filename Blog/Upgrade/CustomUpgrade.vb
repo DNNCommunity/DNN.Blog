@@ -19,6 +19,8 @@
 '
 
 Imports System.IO
+Imports DotNetNuke.Modules.Blog.Providers.Data
+Imports DotNetNuke.Entities.Content
 Imports DotNetNuke.Modules.Blog.Components.Business
 Imports DotNetNuke.Modules.Blog.Components.Controllers
 Imports DotNetNuke.Modules.Blog.Business
@@ -28,6 +30,9 @@ Imports DotNetNuke.Entities.Modules.Definitions
 Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Modules.Blog.Components.Entities
 Imports DotNetNuke.Entities.Content.Taxonomy
+Imports DotNetNuke.Modules.Blog.Components.Integration
+Imports System.Linq
+Imports DotNetNuke.Common.Utilities
 
 Public Class CustomUpgrade
 
@@ -295,64 +300,154 @@ Public Class CustomUpgrade
 
     Public Function MigrateTaxonomyFolksonomy() As String
         Try
-
-            Dim _portalSettings As PortalSettings = CType(HttpContext.Current.Items("PortalSettings"), PortalSettings)
-
+            Dim message As String = ""
             Dim countContentItems As Integer = 0
             Dim countCategories As Integer = 0
             Dim countTags As Integer = 0
 
-            ' create a portal level vocabulary. KEEP the id
-            Dim cnVocabulary As New VocabularyController
+            Dim cntEntry As New EntryController
+            Dim colEntries As New List(Of EntryInfo)
+            colEntries = cntEntry.RetrieveTaxonomyRelatedPosts()
 
-            '' First, check to see if the vocab exists
-            'cDim colVocabs As nVocabulary.GetVocabularies()
+            If colEntries.Count > 0 Then
+                ' loop through tags (old system), create in core (vocab = 1). KEEP collection of new tags available to query by name later
+                Dim colOldTags As List(Of MigrateTagInfo)
+                colOldTags = TagController.GetAllTagsForUpgrade()
 
+                Dim colNewTerms As New List(Of Term)
 
-            Dim objVocab As New Vocabulary
-            objVocab.Name = "Blog"
-            objVocab.IsSystem = False
-            objVocab.Weight = 0
-            objVocab.Description = "Automatically generated for blog module."
-            objVocab.ScopeId = _portalSettings.PortalId
-            objVocab.ScopeTypeId = 2 ' Portal
-            objVocab.VocabularyId = cnVocabulary.AddVocabulary(objVocab)
+                If colOldTags IsNot Nothing Then
+                    For Each objTag As MigrateTagInfo In colOldTags
+                        Dim objTerm As New Term
+                        objTerm = Terms.CreateAndReturnTerm(objTag.Tag, 1)
+                        colNewTerms.Add(objTerm)
 
+                        ' update
+                        objTag.NewTermId = objTerm.TermId
 
+                        countTags += 1
+                    Next
+                End If
+                message = "Migrated " + countTags.ToString() + " tags. " & vbCrLf & vbCrLf
 
+                ' loop through categories (old system), from table ordered by portal id, create under new vocabulary. KEEP both collections available
+                Dim colOldCategories As List(Of MigrateCategoryInfo)
+                colOldCategories = CategoryController.GetAllCategoriesForUpgrade()
 
-            ' loop through categories (old system), create under new vocabulary. KEEP both collections available
+                Dim cntVocabulary As New VocabularyController
 
-            ' loop through tags (old system), create in core (vocab = 1). KEEP both collections available
+                Dim currentPortalId As Integer = -1
+                Dim currentVocabId As Integer = -1
+                Dim currentParentId As Integer = -1
 
-            '' Get all blog entries for the current portal that have a tag or category associated with them (in the old system)
-            'Dim cntBlogs As New BlogController
-            'Dim colAllPortalBlogEntries As List(Of EntryInfo) = cntBlogs.GetAllPublishedPortalBlogEntries(_portalSettings.PortalId)
+                If colOldCategories IsNot Nothing Then
+                    For Each objCategory As MigrateCategoryInfo In colOldCategories
+                        If Not (objCategory.PortalId = currentPortalId) Then
+                            Dim cntScope As New ScopeTypeController
+                            Dim objScope As ScopeType = cntScope.GetScopeTypes().Where(Function(s) s.ScopeType = "Portal").SingleOrDefault()
+                            Dim objVocab As New Vocabulary
 
-            'If colAllPortalBlogEntries IsNot Nothing Then
-            '    ' loop through each blog entry, create content item
+                            objVocab.Name = "Blog"
+                            objVocab.IsSystem = False
+                            objVocab.Weight = 0
+                            objVocab.Description = "Automatically generated for blog module."
+                            objVocab.ScopeId = objCategory.PortalId
+                            objVocab.ScopeTypeId = objScope.ScopeTypeId
+                            objVocab.VocabularyId = cntVocabulary.AddVocabulary(objVocab)
 
-            '    ' see if we can use blog entry id against saved collections to assign terms after content item creation.
-            '    ' pass content item id to sproc that uses category/tag names against taxonomy terms to insert into contentitem_terms
+                            currentVocabId = objVocab.VocabularyId
+                        End If
 
+                        If objCategory.ParentId > 0 Then
+                            If Not (objCategory.ParentId = currentParentId) Then
+                                Dim tempParentId As Integer = objCategory.ParentId
+                                Dim objParentCategory As MigrateCategoryInfo = colOldCategories.Where(Function(t) t.CatId = tempParentId).FirstOrDefault
+                                Dim termController As ITermController = DotNetNuke.Entities.Content.Common.Util.GetTermController()
+                                Dim objParentTerm As Term = termController.GetTermsByVocabulary(currentVocabId).Where(Function(t) t.Name.ToLower = objParentCategory.Category.ToLower).FirstOrDefault
 
+                                If objParentTerm IsNot Nothing Then
+                                    currentParentId = objParentTerm.TermId
+                                End If
+                            End If
+                        End If
 
+                        Dim objTerm As New Term
+                        objTerm = Terms.CreateAndReturnTerm(objCategory.Category, currentVocabId, currentParentId)
+                        colNewTerms.Add(objTerm)
 
+                        ' update 
+                        objCategory.NewTermId = objTerm.TermId
+                        'objCategory.NewParentTermId = currentParentId
+                        'objCategory.NewVocabularyId = currentVocabId
 
+                        countCategories += 1
+                    Next
+                End If
+                message += "Migrated " + countCategories.ToString() + " categories. " & vbCrLf & vbCrLf
 
-            '    countContentItems += 1
-            'End If
+                ' At this point we have all categories and tags created in the core and also have the old categories/tags in collections associated w/ the new corresponding term id's
 
-            'Dim _desktopModuleController As New DesktopModuleController
+                ' loop through all entries that have a category or tag associated with them
+                For Each objEntry As EntryInfo In colEntries
+                    Dim portalId As Integer = -1
 
+                    If objEntry.ContentItemId < 1 Then
+                        Dim cntTaxonomy As New Content()
+                        Dim objContentItem As ContentItem = cntTaxonomy.CreateContentItem(objEntry, objEntry.TabID)
+                        objEntry.ContentItemId = objContentItem.ContentItemId
 
+                        countContentItems += 1
+                    End If
 
+                    Dim entryTerms As New List(Of Term)
 
+                    ' handle tags
+                    Dim colTags As List(Of TagInfo) = CBO.FillCollection(Of TagInfo)(DataProvider.Instance().ListTagsByEntry(objEntry.EntryID))
+                    For Each objOldTag As TagInfo In colTags
+                        Dim tagid As Integer = objOldTag.TagId
+                        Dim objMatchedTag As MigrateTagInfo = colOldTags.Where(Function(t) t.TagId = tagid).FirstOrDefault
 
-            ' Handle Time adjustments (to UTC for AddedDate in Entries table)
+                        If objMatchedTag IsNot Nothing Then
+                            Dim objMatchedTerm As Term
+                            objMatchedTerm = Terms.GetTermById(objMatchedTag.NewTermId, 1)
 
+                            If objMatchedTerm IsNot Nothing Then
+                                entryTerms.Add(objMatchedTerm)
+                            End If
 
-            Return "Added the following number of content items: " + countContentItems.ToString() & vbCrLf & vbCrLf
+                            portalId = objMatchedTag.PortalId
+                        End If
+                    Next
+
+                    ' handle categories
+                    Dim colCats As List(Of CategoryInfo) = CategoryController.ListCatsByEntry(objEntry.EntryID)
+                    For Each objOldCat As CategoryInfo In colCats
+                        Dim catid As Integer = objOldCat.CatId
+                        Dim objMatchedCategory As MigrateCategoryInfo = colOldCategories.Where(Function(t) t.CatId = catid).FirstOrDefault
+
+                        If objMatchedCategory IsNot Nothing Then
+                            Dim objMatchedTerm As Term
+                            objMatchedTerm = Terms.GetTermById(objMatchedCategory.NewTermId, 1)
+
+                            If objMatchedTerm IsNot Nothing Then
+                                entryTerms.Add(objMatchedTerm)
+                            End If
+
+                            portalId = objMatchedCategory.PortalId
+                        End If
+                    Next
+
+                    If portalId > -1 Then
+                        ' update content item
+                        objEntry.Terms.Clear()
+                        objEntry.Terms.AddRange(entryTerms)
+                        cntEntry.UpdateEntry(objEntry, objEntry.TabID, portalId)
+                    End If
+                Next
+                message += "Migrated " + countContentItems.ToString() + " content items. " & vbCrLf & vbCrLf
+            End If
+
+            Return message
         Catch ex As Exception
             LogException(ex)
             Return ex.Message.ToString()

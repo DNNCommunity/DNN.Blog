@@ -24,7 +24,6 @@ Imports DotNetNuke.Modules.Blog.Components.Controllers
 Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Entities.Content
 Imports DotNetNuke.Web.Client.ClientResourceManagement
-Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Security
 Imports DotNetNuke.Common.Globals
 Imports System.Globalization

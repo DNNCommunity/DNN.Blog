@@ -192,10 +192,11 @@ Partial Public Class ModuleOptions
         ' run the script
         Dim res As String = DotNetNuke.Data.DataProvider.Instance().ExecuteScript(sql, False)
 
-        ' run through all categories to make sure the slug is correctly set
-        For Each c As CategoryInfo In CategoryController.ListCategories(PortalId).Values
-            CategoryController.UpdateCategory(c.CatId, c.Category, c.ParentId)
-        Next
+        'TODO: CP
+        '' run through all categories to make sure the slug is correctly set
+        'For Each c As CategoryInfo In CategoryController.ListCategories(PortalId).Values
+        '    CategoryController.UpdateCategory(c.CatId, c.Category, c.ParentId)
+        'Next
 
         ' recalculate child blogs
         Dim totalBlogs As Integer = (New BlogController).ListBlogsByPortal(PortalId, True).Count
