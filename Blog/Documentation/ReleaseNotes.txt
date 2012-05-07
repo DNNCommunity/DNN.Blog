@@ -44,8 +44,9 @@
 			<li>Disabled partial rendering throught all parts of the module (minus settings, core standard). All previous 'benefits' are now handled client-side (show, hide, etc.) with less overhead and trips to the server.</li>
 			<li>Reduced the number of module definitions and exposed the same functionality through existing pieces, also took a similar approach and simplified per blog (and module level) settings.</li>
 			<li>Added paging support to the module (initial 'home' view doesn't display any paging, by design).</li>
-			<li>Corrected problems found in SQL Azure installs.</li>
-			<li>Removed 'recent entries' module definition. The same functionality (even more advanced than what was available) is provided today using the Journal and Journal type filters.</li>
+			<li>Corrected problems found in Azure installs, also tested module's basic usage in Azure.</li>
+			<li>Removed 'recent entries' module definition. The same functionality (even more advanced than what was available) is provided today using the Journal and Journal type filters (a similar approach is being taken with comments).</li>
+			<li>Added sitemap provider, not added to web.config on install though.</li>
 		</ul>
 
 		Known Issues:
@@ -55,6 +56,7 @@
 			<li>Author images look different from others seen in social.</li>
 			<li>Social Sharing module options are not properly wired in.</li>
 			<li>IUpgradeable migration not finished (for taxonomy and entry addeddate conversion to UTC).</li>
+			<li>Archive, Category settings not fully operational.</li>
 			<li>Needs updates for narrow designs (responsive would be great), as well as some styles  (tags & calendar mostly in dark skins).</li>
 		</ul>
 </div>

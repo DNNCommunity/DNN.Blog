@@ -27,6 +27,7 @@ Imports DotNetNuke.Entities.Modules
 Imports DotNetNuke.Entities.Modules.Definitions
 Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Modules.Blog.Components.Entities
+Imports DotNetNuke.Entities.Content.Taxonomy
 
 Public Class CustomUpgrade
 
@@ -293,28 +294,69 @@ Public Class CustomUpgrade
 #Region "Category/Tag Migration"
 
     Public Function MigrateTaxonomyFolksonomy() As String
-        Dim _portalSettings As PortalSettings = CType(HttpContext.Current.Items("PortalSettings"), PortalSettings)
+        Try
+
+            Dim _portalSettings As PortalSettings = CType(HttpContext.Current.Items("PortalSettings"), PortalSettings)
+
+            Dim countContentItems As Integer = 0
+            Dim countCategories As Integer = 0
+            Dim countTags As Integer = 0
+
+            ' create a portal level vocabulary. KEEP the id
+            Dim cnVocabulary As New VocabularyController
+
+            '' First, check to see if the vocab exists
+            'cDim colVocabs As nVocabulary.GetVocabularies()
 
 
-        ' We need to get all categories associated w/ the portal (in the blog), ' We need to get all tags associated w/ the portal (in the blog), ' We need to create content items
-
-        '' OR
-
-        '' Get all blog entries for the portal. Go through each one, add a content item, then migrate any categories/tags
-        Dim cntBlogs As New BlogController
-        Dim colAllPortalBlogEntries As List(Of EntryInfo) = cntBlogs.GetAllPublishedPortalBlogEntries(_portalSettings.PortalId)
-
-        If colAllPortalBlogEntries IsNot Nothing Then
-            ' we have some published blog entries for this portal
-
-            ' we need to go through each entry, create a content item, then migrate any categories/tags
+            Dim objVocab As New Vocabulary
+            objVocab.Name = "Blog"
+            objVocab.IsSystem = False
+            objVocab.Weight = 0
+            objVocab.Description = "Automatically generated for blog module."
+            objVocab.ScopeId = _portalSettings.PortalId
+            objVocab.ScopeTypeId = 2 ' Portal
+            objVocab.VocabularyId = cnVocabulary.AddVocabulary(objVocab)
 
 
-        End If
 
-        'Dim _desktopModuleController As New DesktopModuleController
 
-        Return ""
+            ' loop through categories (old system), create under new vocabulary. KEEP both collections available
+
+            ' loop through tags (old system), create in core (vocab = 1). KEEP both collections available
+
+            '' Get all blog entries for the current portal that have a tag or category associated with them (in the old system)
+            'Dim cntBlogs As New BlogController
+            'Dim colAllPortalBlogEntries As List(Of EntryInfo) = cntBlogs.GetAllPublishedPortalBlogEntries(_portalSettings.PortalId)
+
+            'If colAllPortalBlogEntries IsNot Nothing Then
+            '    ' loop through each blog entry, create content item
+
+            '    ' see if we can use blog entry id against saved collections to assign terms after content item creation.
+            '    ' pass content item id to sproc that uses category/tag names against taxonomy terms to insert into contentitem_terms
+
+
+
+
+
+
+            '    countContentItems += 1
+            'End If
+
+            'Dim _desktopModuleController As New DesktopModuleController
+
+
+
+
+
+            ' Handle Time adjustments (to UTC for AddedDate in Entries table)
+
+
+            Return "Added the following number of content items: " + countContentItems.ToString() & vbCrLf & vbCrLf
+        Catch ex As Exception
+            LogException(ex)
+            Return ex.Message.ToString()
+        End Try
     End Function
 
 #End Region

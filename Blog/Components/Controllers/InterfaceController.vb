@@ -49,10 +49,10 @@ Namespace Components.Controllers
                     Dim _CustomUpgrade As New CustomUpgrade
                     message += _CustomUpgrade.UpgradeNewBlog()
                     message += " - " & _CustomUpgrade.UpgradeForumBlog()
-                Case "04.05.00"
-                    message = message & " Migrating taxonomy/folksonomy in " & Version & " - "
+                Case "05.00.00"
+                    message = message & " Migrating taxonomy/folksonomy to core in " & Version & " :" & vbCrLf & vbCrLf
                     Dim _CustomUpgrade As New CustomUpgrade
-                    'message += _CustomUpgrade.MigrateTaxonomyFolksonomy()
+                    message += _CustomUpgrade.MigrateTaxonomyFolksonomy()
             End Select
             Return message
 
