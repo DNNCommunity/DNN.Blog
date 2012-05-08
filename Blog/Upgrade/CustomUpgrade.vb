@@ -335,6 +335,7 @@ Public Class CustomUpgrade
                 colOldCategories = CategoryController.GetAllCategoriesForUpgrade()
 
                 Dim cntVocabulary As New VocabularyController
+                Dim colVocabs As IQueryable(Of Vocabulary) = cntVocabulary.GetVocabularies()
 
                 Dim currentPortalId As Integer = -1
                 Dim currentVocabId As Integer = -1
@@ -343,19 +344,28 @@ Public Class CustomUpgrade
                 If colOldCategories IsNot Nothing Then
                     For Each objCategory As MigrateCategoryInfo In colOldCategories
                         If Not (objCategory.PortalId = currentPortalId) Then
-                            Dim cntScope As New ScopeTypeController
-                            Dim objScope As ScopeType = cntScope.GetScopeTypes().Where(Function(s) s.ScopeType = "Portal").SingleOrDefault()
-                            Dim objVocab As New Vocabulary
+                            currentPortalId = objCategory.PortalId
+                            ' let's first see if there is an existing blog vocabulary for this portal
+                            Dim objTempVocab As Vocabulary = colVocabs.Where(Function(s) s.ScopeId = currentPortalId And s.Name = "Blog").SingleOrDefault()
 
-                            objVocab.Name = "Blog"
-                            objVocab.IsSystem = False
-                            objVocab.Weight = 0
-                            objVocab.Description = "Automatically generated for blog module."
-                            objVocab.ScopeId = objCategory.PortalId
-                            objVocab.ScopeTypeId = objScope.ScopeTypeId
-                            objVocab.VocabularyId = cntVocabulary.AddVocabulary(objVocab)
+                            If objTempVocab IsNot Nothing Then
+                                currentVocabId = objTempVocab.VocabularyId
+                            Else
+                                Dim cntScope As New ScopeTypeController
+                                Dim objScope As ScopeType = cntScope.GetScopeTypes().Where(Function(s) s.ScopeType = "Portal").SingleOrDefault()
+                                Dim objVocab As New Vocabulary
 
-                            currentVocabId = objVocab.VocabularyId
+                                objVocab.Name = "Blog"
+                                objVocab.IsSystem = False
+                                objVocab.Weight = 0
+                                objVocab.Description = "Automatically generated for blog module."
+                                objVocab.ScopeId = objCategory.PortalId
+                                objVocab.ScopeTypeId = objScope.ScopeTypeId
+                                objVocab.Type = VocabularyType.Hierarchy
+                                objVocab.VocabularyId = cntVocabulary.AddVocabulary(objVocab)
+
+                                currentVocabId = objVocab.VocabularyId
+                            End If
                         End If
 
                         If objCategory.ParentId > 0 Then
