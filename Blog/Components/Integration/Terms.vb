@@ -82,20 +82,28 @@ Namespace Components.Integration
 
         Friend Shared Function CreateAndReturnTerm(ByVal name As String, ByVal vocabularyId As Integer, ByVal parentId As Integer) As Term
             Dim termController As ITermController = DotNetNuke.Entities.Content.Common.Util.GetTermController()
-            Dim existantTerm As Term = termController.GetTermsByVocabulary(vocabularyId).Where(Function(t) t.Name.ToLower() = name.ToLower()).FirstOrDefault()
-            If existantTerm IsNot Nothing Then
-                Return existantTerm
+            Dim colTerms As IQueryable(Of Term) = termController.GetTermsByVocabulary(vocabularyId).Where(Function(t) t.Name.ToLower() = name.ToLower())
+            Dim existingTerm As Term = colTerms.Where(Function(s) s.VocabularyId = vocabularyId).SingleOrDefault
+
+            If existingTerm IsNot Nothing Then
+                If existingTerm.TermId > 0 Then
+                    If existingTerm.ParentTermId = parentId Then
+                        Return (existingTerm)
+                    End If
+                End If
             End If
 
             Dim termId As Integer = termController.AddTerm(New Term(vocabularyId) With { _
-                                                              .Name = name, .ParentTermId = parentId _
+                                                              .Name = name, _
+                                                              .ParentTermId = parentId _
                                                               })
             Return New Term() With { _
                 .Name = name, _
-                .TermId = termId, _
-                .ParentTermId = parentId _
+                .ParentTermId = parentId, _
+                .TermId = termId _
                 }
         End Function
+
 
         ''' <summary>
         ''' This method checks to see if a term exists under a specific vocabulary and returns it (if available)

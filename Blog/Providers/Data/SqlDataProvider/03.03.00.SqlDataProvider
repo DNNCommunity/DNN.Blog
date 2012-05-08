@@ -243,52 +243,6 @@ WHERE B.[PortalID] = @PortalID AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPubl
 
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListBlogsRootByPortal') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}{objectQualifier}Blog_ListBlogsRootByPortal
-GO
-
-CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListBlogsRootByPortal
-@PortalID int
-AS
-
-SELECT
-	B.[PortalID],
-	B.[BlogID],
-	B.[ParentBlogID],
-	B.[UserID],
-	U.[UserName],
-	U.[DisplayName] AS UserFullName,
-	B.[Title],
-	B.[Description],
-	B.[Public],
-	B.[AllowComments],
-	B.[AllowAnonymous],
-	B.[LastEntry],
-	B.[Created],
-	B.[Culture],
-	B.[ShowFullname],
-	B.[DateFormat],
-	IsNull(B.[TimeZone],0) AS TimeZone,
-	B.[Syndicated],
-	IsNull(B.[SyndicateIndependant], 0) As SyndicateIndependant,
-	B.[SyndicationURL],
-	B.[SyndicationEmail],
-	B.[EmailNotification],
-	B.[AllowTrackbacks],
-	B.[AutoTrackback],
-	B.[MustApproveComments],
-	B.[MustApproveAnonymous],
-	B.[MustApproveTrackbacks],	
-	B.[UseCaptcha],
-	(SELECT Count(BlogID) FROM {databaseOwner}{objectQualifier}Blog_Blogs WHERE ParentBlogID=B.[BlogID]) AS ChildBlogCount
-FROM
-	{databaseOwner}{objectQualifier}Blog_Blogs B
-	INNER JOIN 
-	{databaseOwner}{objectQualifier}Users U ON B.[UserID] = U.[UserID]
-WHERE B.[PortalID] = @PortalID AND ParentBlogID = -1
-
-GO
-
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_UpdateBlog') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}{objectQualifier}Blog_UpdateBlog
 GO

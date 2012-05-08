@@ -345,27 +345,30 @@ Public Class CustomUpgrade
                     For Each objCategory As MigrateCategoryInfo In colOldCategories
                         If Not (objCategory.PortalId = currentPortalId) Then
                             currentPortalId = objCategory.PortalId
-                            ' let's first see if there is an existing blog vocabulary for this portal
-                            Dim objTempVocab As Vocabulary = colVocabs.Where(Function(s) s.ScopeId = currentPortalId And s.Name = "Blog").SingleOrDefault()
+                            '' let's first see if there is an existing blog vocabulary for this portal
+                            'Dim objTempVocab As Vocabulary = colVocabs.Where(Function(s) s.ScopeId = currentPortalId And s.Name = "Blog").SingleOrDefault()
 
-                            If objTempVocab IsNot Nothing Then
-                                currentVocabId = objTempVocab.VocabularyId
-                            Else
-                                Dim cntScope As New ScopeTypeController
-                                Dim objScope As ScopeType = cntScope.GetScopeTypes().Where(Function(s) s.ScopeType = "Portal").SingleOrDefault()
-                                Dim objVocab As New Vocabulary
+                            'If objTempVocab IsNot Nothing Then
+                            '    currentVocabId = objTempVocab.VocabularyId
+                            'Else
+                            Dim cntScope As New ScopeTypeController
+                            Dim objScope As ScopeType = cntScope.GetScopeTypes().Where(Function(s) s.ScopeType = "Portal").SingleOrDefault()
+                            Dim objVocab As New Vocabulary
 
-                                objVocab.Name = "Blog"
-                                objVocab.IsSystem = False
-                                objVocab.Weight = 0
-                                objVocab.Description = "Automatically generated for blog module."
-                                objVocab.ScopeId = objCategory.PortalId
-                                objVocab.ScopeTypeId = objScope.ScopeTypeId
-                                objVocab.Type = VocabularyType.Hierarchy
-                                objVocab.VocabularyId = cntVocabulary.AddVocabulary(objVocab)
+                            objVocab.Name = "Blog Topics"
+                            objVocab.IsSystem = False
+                            objVocab.Weight = 0
+                            objVocab.Description = "Automatically generated for blog module."
+                            objVocab.ScopeId = currentPortalId
+                            objVocab.ScopeTypeId = objScope.ScopeTypeId
+                            'NOTE: CP - THis should be hierarchy, having a problem getting it to work.
+                            objVocab.Type = VocabularyType.Simple
+                            objVocab.VocabularyId = cntVocabulary.AddVocabulary(objVocab)
 
-                                currentVocabId = objVocab.VocabularyId
-                            End If
+                            currentVocabId = objVocab.VocabularyId
+
+                            DotNetNuke.Modules.Blog.Components.Business.Utility.UpdateBlogModuleSetting(currentPortalId, -1, "VocabularyId", currentVocabId.ToString)
+                            'End If
                         End If
 
                         If objCategory.ParentId > 0 Then
@@ -381,14 +384,18 @@ Public Class CustomUpgrade
                             End If
                         End If
 
+                        'Dim termController As ITermController = DotNetNuke.Entities.Content.Common.Util.GetTermController()
+                        'Dim existantTerm As Term
+                        'existantTerm = termController.GetTermsByVocabulary(currentVocabId).Where(Function(t) t.TermId = id).FirstOrDefault()
+
+
+
                         Dim objTerm As New Term
                         objTerm = Terms.CreateAndReturnTerm(objCategory.Category, currentVocabId, currentParentId)
                         colNewTerms.Add(objTerm)
 
                         ' update 
                         objCategory.NewTermId = objTerm.TermId
-                        'objCategory.NewParentTermId = currentParentId
-                        'objCategory.NewVocabularyId = currentVocabId
 
                         countCategories += 1
                     Next
