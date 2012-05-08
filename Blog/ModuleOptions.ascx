@@ -197,10 +197,6 @@
 					<asp:CheckBox ID="chkAllowChildBlogs" runat="server" />
 				</div>
 				<div class="dnnFormItem">
-					<dnn:label id="lblEnableArchiveDropDown" runat="server" controlname="chkEnableArchiveDropDown" suffix=":" />
-					<asp:CheckBox ID="chkEnableArchiveDropDown" runat="server" />
-				</div>
-				<div class="dnnFormItem">
 					<dnn:label id="lblMigrateChildblogs" runat="server" suffix=":" controlname="cmdMigrateChildblogs" />
 					<asp:Label runat="server" ID="lblChildBlogsStatus" />
 					<div class="dnnRight">

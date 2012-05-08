@@ -14,6 +14,24 @@ Option Explicit On
 Partial Public Class ArchiveSettings
 
     '''<summary>
+    '''lblEnableArchiveDropDown control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblEnableArchiveDropDown As Global.DotNetNuke.UI.UserControls.LabelControl
+
+    '''<summary>
+    '''chkEnableArchiveDropDown control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents chkEnableArchiveDropDown As Global.System.Web.UI.WebControls.CheckBox
+
+    '''<summary>
     '''lblLoadCss control.
     '''</summary>
     '''<remarks>

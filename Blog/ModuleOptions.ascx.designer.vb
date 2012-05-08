@@ -20,7 +20,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblMandatory As Global.System.Web.UI.UserControl
+    Protected WithEvents lblMandatory As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''chkForceDescription control.
@@ -38,7 +38,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblSummary As Global.System.Web.UI.UserControl
+    Protected WithEvents lblSummary As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''txtSummaryLimit control.
@@ -56,7 +56,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblSearchSummary As Global.System.Web.UI.UserControl
+    Protected WithEvents lblSearchSummary As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''txtSearchLimit control.
@@ -74,7 +74,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblMaxImageWidth As Global.System.Web.UI.UserControl
+    Protected WithEvents lblMaxImageWidth As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''txtMaxImageWidth control.
@@ -92,7 +92,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblRecentEntriesMax As Global.System.Web.UI.UserControl
+    Protected WithEvents lblRecentEntriesMax As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''txtRecentEntriesMax control.
@@ -110,7 +110,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblShowGravatars As Global.System.Web.UI.UserControl
+    Protected WithEvents lblShowGravatars As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''chkShowGravatars control.
@@ -128,7 +128,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblGravatarImageWidth As Global.System.Web.UI.UserControl
+    Protected WithEvents lblGravatarImageWidth As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''txtGravatarImageWidth control.
@@ -146,7 +146,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblGravatarRating As Global.System.Web.UI.UserControl
+    Protected WithEvents lblGravatarRating As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''rblGravatarRating control.
@@ -164,7 +164,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblGravatarDefaultImageUrl As Global.System.Web.UI.UserControl
+    Protected WithEvents lblGravatarDefaultImageUrl As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''rblDefaultImage control.
@@ -182,7 +182,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblGravatarDefaultImageCustomURL As Global.System.Web.UI.UserControl
+    Protected WithEvents lblGravatarDefaultImageCustomURL As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''txtGravatarDefaultImageCustomURL control.
@@ -200,7 +200,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblShowWebsite As Global.System.Web.UI.UserControl
+    Protected WithEvents lblShowWebsite As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''chkShowWebsite control.
@@ -218,7 +218,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblShowTitle As Global.System.Web.UI.UserControl
+    Protected WithEvents lblShowTitle As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''chkShowCommentTitle control.
@@ -236,7 +236,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblAllowCommentAnchors As Global.System.Web.UI.UserControl
+    Protected WithEvents lblAllowCommentAnchors As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''chkAllowCommentAnchors control.
@@ -254,7 +254,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblAllowCommentImages As Global.System.Web.UI.UserControl
+    Protected WithEvents lblAllowCommentImages As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''chkAllowCommentImages control.
@@ -272,7 +272,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblAllowCommentFormatting As Global.System.Web.UI.UserControl
+    Protected WithEvents lblAllowCommentFormatting As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''chkAllowCommentFormatting control.
@@ -290,7 +290,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblShowSeoFriendlyUrl As Global.System.Web.UI.UserControl
+    Protected WithEvents lblShowSeoFriendlyUrl As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''chkShowSeoFriendlyUrl control.
@@ -308,7 +308,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblRegenerateLinks As Global.System.Web.UI.UserControl
+    Protected WithEvents lblRegenerateLinks As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''cmdGenerateLinks control.
@@ -326,7 +326,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblIncludeBody As Global.System.Web.UI.UserControl
+    Protected WithEvents lblIncludeBody As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''chkIncludeBody control.
@@ -344,7 +344,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblIncludeCategoriesInDescription As Global.System.Web.UI.UserControl
+    Protected WithEvents lblIncludeCategoriesInDescription As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''chkIncludeCategoriesInDescription control.
@@ -362,7 +362,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblIncludeTagsInDescription As Global.System.Web.UI.UserControl
+    Protected WithEvents lblIncludeTagsInDescription As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''chkIncludeTagsInDescription control.
@@ -380,7 +380,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblFeedCacheTime As Global.System.Web.UI.UserControl
+    Protected WithEvents lblFeedCacheTime As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''txtFeedCacheTime control.
@@ -398,7 +398,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblRecentRssEntriesMax As Global.System.Web.UI.UserControl
+    Protected WithEvents lblRecentRssEntriesMax As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''txtRecentRssEntriesMax control.
@@ -416,7 +416,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblAllowWLW As Global.System.Web.UI.UserControl
+    Protected WithEvents lblAllowWLW As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''chkAllowWLW control.
@@ -434,7 +434,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblUseWLWExcerpt As Global.System.Web.UI.UserControl
+    Protected WithEvents lblUseWLWExcerpt As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''chkUseWLWExcerpt control.
@@ -452,7 +452,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblCatVocabRoot As Global.System.Web.UI.UserControl
+    Protected WithEvents lblCatVocabRoot As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''ddlCatVocabRoot control.
@@ -470,7 +470,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblAllowMultipleCategories As Global.System.Web.UI.UserControl
+    Protected WithEvents lblAllowMultipleCategories As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''chkAllowMultipleCategories control.
@@ -488,7 +488,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblUploadOption As Global.System.Web.UI.UserControl
+    Protected WithEvents lblUploadOption As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''chkUploadOption control.
@@ -506,7 +506,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblPageBlogs As Global.System.Web.UI.UserControl
+    Protected WithEvents lblPageBlogs As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''cmbPageBlogs control.
@@ -524,7 +524,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblSocialSharingMode As Global.System.Web.UI.UserControl
+    Protected WithEvents lblSocialSharingMode As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''ddlSocialSharingMode control.
@@ -542,7 +542,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblAddThisId As Global.System.Web.UI.UserControl
+    Protected WithEvents lblAddThisId As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''txtAddThisId control.
@@ -560,7 +560,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblFacebookAppId As Global.System.Web.UI.UserControl
+    Protected WithEvents lblFacebookAppId As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''FacebookAppId control.
@@ -578,7 +578,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblEnablePlusOne As Global.System.Web.UI.UserControl
+    Protected WithEvents lblEnablePlusOne As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''chkEnablePlusOne control.
@@ -596,7 +596,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblEnableTwitter As Global.System.Web.UI.UserControl
+    Protected WithEvents lblEnableTwitter As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''chkEnableTwitter control.
@@ -614,7 +614,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblEnableLinkedIN As Global.System.Web.UI.UserControl
+    Protected WithEvents lblEnableLinkedIN As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''chkEnableLinkedIN control.
@@ -632,7 +632,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblEnforceSummaryTruncation As Global.System.Web.UI.UserControl
+    Protected WithEvents lblEnforceSummaryTruncation As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''chkEnforceSummaryTruncation control.
@@ -650,7 +650,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblShowSummary As Global.System.Web.UI.UserControl
+    Protected WithEvents lblShowSummary As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''chkShowSummary control.
@@ -668,7 +668,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblAllowSummaryHtml As Global.System.Web.UI.UserControl
+    Protected WithEvents lblAllowSummaryHtml As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''chkAllowSummaryHtml control.
@@ -686,7 +686,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblAllowChildBlogs As Global.System.Web.UI.UserControl
+    Protected WithEvents lblAllowChildBlogs As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''chkAllowChildBlogs control.
@@ -698,31 +698,13 @@ Partial Public Class ModuleOptions
     Protected WithEvents chkAllowChildBlogs As Global.System.Web.UI.WebControls.CheckBox
 
     '''<summary>
-    '''lblEnableArchiveDropDown control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblEnableArchiveDropDown As Global.System.Web.UI.UserControl
-
-    '''<summary>
-    '''chkEnableArchiveDropDown control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents chkEnableArchiveDropDown As Global.System.Web.UI.WebControls.CheckBox
-
-    '''<summary>
     '''lblMigrateChildblogs control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblMigrateChildblogs As Global.System.Web.UI.UserControl
+    Protected WithEvents lblMigrateChildblogs As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''lblChildBlogsStatus control.
@@ -749,7 +731,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblHostFiles As Global.System.Web.UI.UserControl
+    Protected WithEvents lblHostFiles As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''cblHostFiles control.
@@ -767,7 +749,7 @@ Partial Public Class ModuleOptions
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblPortalFiles As Global.System.Web.UI.UserControl
+    Protected WithEvents lblPortalFiles As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''cblPortalFiles control.

@@ -28,7 +28,6 @@ Imports DotNetNuke.Services.Localization.Localization
 Imports DotNetNuke.Framework
 Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.Modules.Blog.Components.Integration
-Imports DotNetNuke.Modules.Blog.Components.Entities
 
 Partial Public Class ModuleOptions
     Inherits BlogModuleBase
@@ -61,7 +60,6 @@ Partial Public Class ModuleOptions
                 chkShowSummary.Checked = BlogSettings.ShowSummary
                 chkShowCommentTitle.Checked = BlogSettings.ShowCommentTitle
                 chkShowSeoFriendlyUrl.Checked = BlogSettings.ShowSeoFriendlyUrl
-                'chkEnableBookmarks.Checked = BlogSettings.ShowSocialBookmarks
                 chkEnforceSummaryTruncation.Checked = BlogSettings.EnforceSummaryTruncation
                 chkAllowCommentAnchors.Checked = BlogSettings.AllowCommentAnchors
                 chkAllowCommentImages.Checked = BlogSettings.AllowCommentImages
@@ -75,7 +73,7 @@ Partial Public Class ModuleOptions
 
                 txtFeedCacheTime.Text = BlogSettings.FeedCacheTime.ToString
                 chkAllowChildBlogs.Checked = BlogSettings.AllowChildBlogs
-                chkEnableArchiveDropDown.Checked = BlogSettings.EnableArchiveDropDown
+
                 chkAllowMultipleCategories.Checked = BlogSettings.AllowMultipleCategories
                 chkUseWLWExcerpt.Checked = BlogSettings.UseWLWExcerpt
                 ddlCatVocabRoot.SelectedValue = BlogSettings.VocabularyId.ToString()
@@ -145,7 +143,6 @@ Partial Public Class ModuleOptions
                 .AllowSummaryHtml = chkAllowSummaryHtml.Checked
                 .FeedCacheTime = CInt(txtFeedCacheTime.Text.Trim)
                 .AllowChildBlogs = chkAllowChildBlogs.Checked
-                .EnableArchiveDropDown = chkEnableArchiveDropDown.Checked
                 .AllowWLW = chkAllowWLW.Checked
                 .AllowMultipleCategories = chkAllowMultipleCategories.Checked
                 .UseWLWExcerpt = chkUseWLWExcerpt.Checked

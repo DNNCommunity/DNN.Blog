@@ -20,16 +20,23 @@
 
 Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Entities.Modules
+Imports DotNetNuke.Modules.Blog.Components.Settings
 
 Partial Public Class ArchiveSettings
     Inherits Entities.Modules.ModuleSettingsBase
+
+#Region "Private Members"
+
+    Private _settings As ArchiveViewSettings
+
+#End Region
 
 #Region "Base Methods"
 
     Public Overrides Sub LoadSettings()
         Try
             If (Page.IsPostBack = False) Then
-
+                'chkEnableArchiveDropDown.Checked = _settings.EnableArchiveDropDown
                 'rblLoadCss.SelectedValue = _settings.TagDisplayMode
 
             End If
@@ -42,7 +49,8 @@ Partial Public Class ArchiveSettings
         Try
             Dim objModule As ModuleController = New ModuleController
 
-            objModule.UpdateTabModuleSetting(ModuleContext.TabModuleId, "SettingName", rblLoadCss.SelectedValue)
+            'objModule.UpdateTabModuleSetting(ModuleContext.TabModuleId, "SettingName", chkEnableArchiveDropDown.Checked.ToString())
+            'objModule.UpdateTabModuleSetting(ModuleContext.TabModuleId, "SettingName", rblLoadCss.SelectedValue)
 
         Catch exc As Exception
             ProcessModuleLoadException(Me, exc)

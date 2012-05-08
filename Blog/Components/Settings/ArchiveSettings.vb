@@ -21,7 +21,7 @@ Imports DotNetNuke.Modules.Blog.Components.Common
 
 Namespace Components.Settings
 
-    Public Class ArchiveSettings
+    Public Class ArchiveViewSettings
 
 #Region "Private Members"
 

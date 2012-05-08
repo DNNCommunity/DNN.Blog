@@ -46,7 +46,7 @@
 			<li>Added paging support to the module (initial 'home' view doesn't display any paging, by design).</li>
 			<li>Corrected problems found in Azure installs, also tested module's basic usage in Azure.</li>
 			<li>Removed 'recent entries' module definition. The same functionality (even more advanced than what was available) is provided today using the Journal and Journal type filters (a similar approach is being taken with comments).</li>
-			<li>Added sitemap provider, not added to web.config on install though or properly tested yet.</li>
+			<li>Added sitemap provider (not available for use in beta out of box).</li>
 		</ul>
 
 		Known Issues:
@@ -57,6 +57,5 @@
 			<li>Social Sharing module options are not properly wired in.</li>
 			<li>IUpgradeable migration functioning, not completed (for taxonomy, conversion to UTC and comments).</li>
 			<li>Archive, Category settings not fully operational.</li>
-			<li>Needs updates for narrow designs (responsive would be great), as well as some styles  (tags & calendar mostly in dark skins).</li>
 		</ul>
 </div>
