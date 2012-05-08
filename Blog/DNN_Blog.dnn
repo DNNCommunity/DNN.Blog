@@ -319,12 +319,12 @@
 				<version>05.00.00</version>
 			</script>
 			<script type="Install">
-			  <name>Install.SqlDataProvider</name>
+			  <name>Install.04.00.00.SqlDataProvider</name>
 			  <version>04.00.00</version>
 			</script>
 			<script type="UnInstall">
 			  <name>Uninstall.SqlDataProvider</name>
-			  <version>04.05.00</version>
+			  <version>05.00.00</version>
 			</script>
 		  </scripts>
 		</component>
