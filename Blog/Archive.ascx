@@ -1,16 +1,15 @@
 <%@ Control Language="vb" AutoEventWireup="false" CodeBehind="Archive.ascx.vb" Inherits="DotNetNuke.Modules.Blog.Archive" %>
+<%@ Import Namespace="DotNetNuke.Services.Localization" %>
 <div class="dnnClear dnnArchive" id="blogArchive">
-	<div>
-		<h3>Archive</h3>
+	<asp:Panel ID="pnlCalendar" runat="server" Visible="false">
 		<asp:Calendar ID="calMonth" runat="server" CssClass="socialEvent-calendar" TitleStyle-CssClass="socialEvent-calendarTitle" 
 		DayHeaderStyle-CssClass="socialEvent-calendarDayHeader" DayStyle-CssClass="socialEvent-calendarDay" 
 		NextPrevStyle-CssClass="socialEvent-calendarNextPrev" OtherMonthDayStyle-CssClass="socialEvent-calendarOtherMonth" 
 		SelectedDayStyle-CssClass="socialEvent-calendarSelectedDay" SelectorStyle-CssClass="socialEvent-calendarSelector" 
 		TodayDayStyle-CssClass="socialEvent-calendarToday" WeekendDayStyle-CssClass="socialEvent-calendarWeekend" 
 		TitleStyle-BackColor="transparent" NextMonthText="&gt;&gt;" PrevMonthText="&lt;&lt;" />
-	</div>
-	<div>
-		<h3>Monthly</h3>
+	</asp:Panel>
+	<asp:Panel ID="pnlList" runat="server" Visible="false">
 		<asp:DataList ID="lstArchiveMonths" runat="server">
 			<HeaderTemplate>
 				<ul class="qaRecentTags">
@@ -29,8 +28,8 @@
 				</ul>
 			</FooterTemplate>
 		</asp:DataList>
-	</div>
+	</asp:Panel>
 	<div class="dnnFormItem">
-		<asp:DropDownList ID="ddlArchiveMonths" runat="server" Visible="false" /><asp:LinkButton ID="cmdGo" runat="server" resourcekey="cmdGo" CssClass="dnnSecondaryAction" Visible="false" />
+		<asp:DropDownList ID="ddlArchiveMonths" runat="server" Visible="false" />&nbsp;&nbsp;<asp:LinkButton ID="cmdGo" runat="server" resourcekey="cmdGo" CssClass="dnnPrimaryAction" Visible="false" />
 	</div>
 </div>

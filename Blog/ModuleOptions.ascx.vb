@@ -54,7 +54,7 @@ Partial Public Class ModuleOptions
                 rblGravatarRating.SelectedIndex = rblGravatarRating.Items.IndexOf(rblGravatarRating.Items.FindByValue(ratingValue))
                 rblDefaultImage.SelectedIndex = rblDefaultImage.Items.IndexOf(rblDefaultImage.Items.FindByValue(defaultURL))
                 txtGravatarDefaultImageCustomURL.Text = BlogSettings.GravatarCustomUrl
-                txtRecentEntriesMax.Text = BlogSettings.RecentEntriesMax.ToString
+                dntxtbxRecentEntriesMax.Value = BlogSettings.RecentEntriesMax
                 txtRecentRssEntriesMax.Text = BlogSettings.RecentRssEntriesMax.ToString
                 chkUploadOption.Checked = BlogSettings.EnableUploadOption
                 chkShowSummary.Checked = BlogSettings.ShowSummary
@@ -66,17 +66,20 @@ Partial Public Class ModuleOptions
                 chkAllowCommentFormatting.Checked = BlogSettings.AllowCommentFormatting
                 chkAllowSummaryHtml.Checked = BlogSettings.AllowSummaryHtml
                 chkAllowWLW.Checked = BlogSettings.AllowWLW
-
                 chkIncludeBody.Checked = BlogSettings.IncludeBody
                 chkIncludeCategoriesInDescription.Checked = BlogSettings.IncludeCategoriesInDescription
                 chkIncludeTagsInDescription.Checked = BlogSettings.IncludeTagsInDescription
-
                 txtFeedCacheTime.Text = BlogSettings.FeedCacheTime.ToString
                 chkAllowChildBlogs.Checked = BlogSettings.AllowChildBlogs
-
                 chkAllowMultipleCategories.Checked = BlogSettings.AllowMultipleCategories
                 chkUseWLWExcerpt.Checked = BlogSettings.UseWLWExcerpt
                 ddlCatVocabRoot.SelectedValue = BlogSettings.VocabularyId.ToString()
+                ddlSocialSharingMode.SelectedValue = BlogSettings.SocialSharingMode
+                txtAddThisId.Text = BlogSettings.AddThisId
+                txtFacebookAppId.Text = BlogSettings.FacebookAppId
+                chkEnablePlusOne.Checked = BlogSettings.EnablePlusOne
+                chkEnableTwitter.Checked = BlogSettings.EnableTwitter
+                chkEnableLinkedIN.Checked = BlogSettings.EnableLinkedIn
 
                 ' Additional files to load
                 Dim fileList As String = ";" & BlogSettings.IncludeFiles
@@ -93,13 +96,9 @@ Partial Public Class ModuleOptions
                     End If
                 Next
 
-                'cmdMigrateChildblogs
-
-                'Load Bookmarks Settings
-                'Dim oBookmarks As New DataSet
-                'oBookmarks.ReadXml(MapPath(ModulePath & "js/bookmarks.xml"))
-                'dlBookmarks.DataSource = oBookmarks
-                'dlBookmarks.DataBind()
+                If cblPortalFiles.Items.Count < 1 Then
+                    pnlPortalFiles.Visible = False
+                End If
 
                 ForumBlog.Utils.isForumBlogInstalled(PortalId, TabId, True)
 
@@ -117,7 +116,7 @@ Partial Public Class ModuleOptions
                 .SummaryMaxLength = CInt(txtSummaryLimit.Text)
                 .SearchSummaryMaxLength = CInt(txtSearchLimit.Text)
                 .MaxImageWidth = CInt(txtMaxImageWidth.Text)
-                .RecentEntriesMax = CInt(txtRecentEntriesMax.Text)
+                .RecentEntriesMax = CInt(dntxtbxRecentEntriesMax.Value)
                 .RecentRssEntriesMax = CInt(txtRecentRssEntriesMax.Text)
                 .EnableUploadOption = chkUploadOption.Checked
                 .ShowSummary = chkShowSummary.Checked
@@ -125,17 +124,14 @@ Partial Public Class ModuleOptions
                 .AllowCommentAnchors = chkAllowCommentAnchors.Checked
                 .AllowCommentImages = chkAllowCommentImages.Checked
                 .AllowCommentFormatting = chkAllowCommentFormatting.Checked
-                '.ShowUniqueTitle = chkShowUniqueTitle.Checked
                 .ShowSeoFriendlyUrl = chkShowSeoFriendlyUrl.Checked
                 .PageBlogs = CInt(cmbPageBlogs.SelectedItem.Value)
-                '.EnableDNNSearch = chkEnableDNNSearch.Checked
                 .ShowGravatars = chkShowGravatars.Checked
                 .GravatarImageWidth = CInt(txtGravatarImageWidth.Text)
                 .GravatarRating = rblGravatarRating.SelectedValue
                 .GravatarDefaultImageUrl = rblDefaultImage.SelectedValue
                 .GravatarCustomUrl = txtGravatarDefaultImageCustomURL.Text
                 .ShowWebsite = chkShowWebsite.Checked()
-                '.ShowSocialBookmarks = chkEnableBookmarks.Checked
                 .EnforceSummaryTruncation = chkEnforceSummaryTruncation.Checked
                 .IncludeBody = chkIncludeBody.Checked
                 .IncludeCategoriesInDescription = chkIncludeCategoriesInDescription.Checked
@@ -147,6 +143,12 @@ Partial Public Class ModuleOptions
                 .AllowMultipleCategories = chkAllowMultipleCategories.Checked
                 .UseWLWExcerpt = chkUseWLWExcerpt.Checked
                 .VocabularyId = Convert.ToInt32(ddlCatVocabRoot.SelectedValue)
+                .SocialSharingMode = ddlSocialSharingMode.SelectedItem.Value
+                .AddThisId = txtAddThisId.Text
+                .FacebookAppId = txtFacebookAppId.Text
+                .EnablePlusOne = chkEnablePlusOne.Checked
+                .EnableTwitter = chkEnableTwitter.Checked
+                .EnableLinkedIn = chkEnableLinkedIN.Checked
 
                 ' additional files
                 Dim fileList As String = ""
@@ -199,7 +201,6 @@ Partial Public Class ModuleOptions
         Dim totalBlogs As Integer = (New BlogController).ListBlogsByPortal(PortalId, True).Count
         Dim parentBlogs As Integer = (New BlogController).ListBlogsRootByPortal(PortalId).Count
         lblChildBlogsStatus.Text = String.Format(GetString("lblChildBlogsStatus", LocalResourceFile), CInt(totalBlogs - parentBlogs))
-
     End Sub
 
 #End Region
@@ -207,9 +208,6 @@ Partial Public Class ModuleOptions
 #Region "Private Methods"
 
     Private Sub PopulateDropDowns()
-        ' 6/14/2008
-        ' Add icons to radiobutton
-        ' have to do localization manually, otherwise, built-in localizer will overwrite the changes made here
         Dim li As ListItem
         For Each li In rblDefaultImage.Items
             If li.Value = "" Then li.Text = "<img src=""" + ControlPath + "images/grayman.png"" alt=""" & GetString("liGrayMan.Text", LocalResourceFile) & """ align=""middle""/> " & GetString("liGrayMan.Text", LocalResourceFile)
@@ -231,8 +229,16 @@ Partial Public Class ModuleOptions
         ' calculate child blogs
         Dim totalBlogs As Integer = objBlog.ListBlogsByPortal(PortalId, True).Count
         Dim parentBlogs As Integer = objBlog.ListBlogsRootByPortal(PortalId).Count
-        lblChildBlogsStatus.Text = String.Format(GetString("lblChildBlogsStatus", LocalResourceFile), CInt(totalBlogs - parentBlogs))
-        DotNetNuke.UI.Utilities.ClientAPI.AddButtonConfirm(cmdMigrateChildblogs, GetString("MigrateConfirm", LocalResourceFile))
+        Dim childBlogs As Integer = CInt(totalBlogs - parentBlogs)
+
+        If childBlogs < 1 Then
+            ' prevent those without child blogs from adding them (we want to remove in the future)
+            pnlAllowChildBlogs.Visible = False
+            chkAllowChildBlogs.Checked = False
+            pnlMigrateChildBlogs.Visible = False
+        Else
+            lblChildBlogsStatus.Text = String.Format(GetString("lblChildBlogsStatus", LocalResourceFile), childBlogs)
+        End If
 
         ddlCatVocabRoot.DataSource = Terms.GetPortalVocabularies(ModuleContext.PortalId)
         ddlCatVocabRoot.DataBind()

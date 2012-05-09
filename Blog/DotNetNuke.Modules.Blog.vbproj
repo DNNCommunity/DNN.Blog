@@ -190,9 +190,9 @@
     <Compile Include="Components\Entities\TermInfo.vb" />
     <Compile Include="Components\Integration\Content.vb" />
     <Compile Include="Components\Integration\Terms.vb" />
+    <Compile Include="Components\Settings\ArchiveViewSettings.vb" />
     <Compile Include="Components\Settings\BlogSettings.vb" />
     <Compile Include="Components\Business\TemplateManager.vb" />
-    <Compile Include="Components\Settings\ArchiveSettings.vb" />
     <Compile Include="Components\Settings\CategoryViewSettings.vb" />
     <Compile Include="Components\Settings\TagViewSettings.vb" />
     <Compile Include="Components\MetaWeblog\IMetaWeblog.vb" />

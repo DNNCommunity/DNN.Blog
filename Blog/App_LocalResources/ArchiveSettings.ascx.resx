@@ -117,19 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Calendar.Text" xml:space="preserve">
+    <value>Calendar</value>
+  </data>
   <data name="ControlTitle_settings.Text" xml:space="preserve">
-    <value>Blog Tag Settings</value>
+    <value>Archive Settings</value>
+  </data>
+  <data name="DropDown.Text" xml:space="preserve">
+    <value>Single Dropdown</value>
   </data>
   <data name="lblDisplayMode.Help" xml:space="preserve">
-    <value>Determine how the tag list will be displayed.</value>
+    <value>The module can display either a single month calendar view or a list of months containing published entries (Month, Year (Count) format).</value>
   </data>
   <data name="lblDisplayMode.Text" xml:space="preserve">
     <value>Display Mode</value>
   </data>
-  <data name="optTagCloud.Text" xml:space="preserve">
-    <value>Tag Cloud</value>
+  <data name="lblListMode.Help" xml:space="preserve">
+    <value>The way the output of list will be rendered. It can either be displayed as a drop down list with a 'go' button or as an unordered list of html links all displayed at once on the page. In both scenarios, Month, Year (Count) are shown newest (top) to oldest.</value>
   </data>
-  <data name="optTagList.Text" xml:space="preserve">
-    <value>Tag List</value>
+  <data name="lblListMode.Text" xml:space="preserve">
+    <value>List Mode</value>
+  </data>
+  <data name="lblLoadCss.Help" xml:space="preserve">
+    <value>By default, the calendar's css file should be loaded (archive.css). However, you can disable this and override the settings at the skin or portal level if so desired.</value>
+  </data>
+  <data name="lblLoadCss.Text" xml:space="preserve">
+    <value>Load Calendar's CSS</value>
+  </data>
+  <data name="List.Text" xml:space="preserve">
+    <value>List</value>
+  </data>
+  <data name="No.Text" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="UL.Text" xml:space="preserve">
+    <value>Unordered List</value>
+  </data>
+  <data name="Yes.Text" xml:space="preserve">
+    <value>Yes</value>
   </data>
 </root>

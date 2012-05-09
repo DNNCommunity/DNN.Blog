@@ -27,25 +27,31 @@ Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Services.Exceptions.Exceptions
 Imports System.Globalization
 Imports DotNetNuke.Modules.Blog.Components.Entities
+Imports DotNetNuke.Modules.Blog.Components.Settings
 
 Partial Public Class Archive
     Inherits BlogModuleBase
 
-#Region " Private Members "
+#Region "Private Members"
+
+    Private _settings As ArchiveViewSettings
     Private objBlog As BlogInfo
     Private objCtlBlog As New BlogController
     Private m_Culture As String
     Private m_BlogID As Integer = -1
     Private BlogDate As Date = Date.UtcNow
     Private m_PersonalBlogID As Integer
+
 #End Region
 
 #Region "Event Handlers"
 
+    Protected Overloads Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        _settings = ArchiveViewSettings.GetArchiveViewSettings(TabModuleId)
+    End Sub
+
     Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
-            ClientResourceManager.RegisterStyleSheet(Page, TemplateSourceDirectory + "/Archive.css", Web.Client.FileOrder.Css.ModuleCss)
-
             If Not Request.Params("BlogID") Is Nothing Then
                 m_BlogID = CType(Request.Params("BlogID"), Integer)
             End If
@@ -54,8 +60,8 @@ Partial Public Class Archive
             End If
 
             If Not Page.IsPostBack Then
-
                 objBlog = objCtlBlog.GetBlogFromContext()
+
                 If BlogSettings.PageBlogs <> -1 Then
                     m_PersonalBlogID = BlogSettings.PageBlogs
                     m_BlogID = m_PersonalBlogID
@@ -69,50 +75,59 @@ Partial Public Class Archive
                 Dim objArchiveMonths As List(Of ArchiveMonths)
                 objArchiveDays = objCtlArchive.GetBlogDaysForMonth(Me.PortalId, m_BlogID, BlogDate)
 
-                calMonth.SelectedDates.Clear()
-                For Each objArchiveDay In objArchiveDays
-                    If ModuleContext.PortalSettings.UserInfo.Profile.PreferredLocale IsNot Nothing Then
-                        Dim userCulture As CultureInfo = New System.Globalization.CultureInfo(ModuleContext.PortalSettings.UserInfo.Profile.PreferredLocale)
-                        Dim n As DateTime = Utility.AdjustedDate(objArchiveDay.AddedDate, ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone)
-                        Dim publishDate As DateTime = n
-                        Dim timeOffset As TimeSpan = ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone.BaseUtcOffset
+                If _settings.ArchiveDisplayMode = "List" Then
+                    objArchiveMonths = objCtlArchive.GetBlogMonths(Me.PortalId, m_BlogID)
 
-                        publishDate = publishDate.Add(timeOffset)
-                        calMonth.SelectedDates.Add(publishDate)
-                    Else
-                        ' Fall back to the portal level settings if not available at user level
-                        Dim userCulture As CultureInfo = New System.Globalization.CultureInfo(ModuleContext.PortalSettings.CultureCode)
-                        Dim n As DateTime = Utility.AdjustedDate(objArchiveDay.AddedDate, ModuleContext.PortalSettings.TimeZone)
-                        Dim publishDate As DateTime = n
-                        Dim timeOffset As TimeSpan = ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone.BaseUtcOffset
-
-                        publishDate = publishDate.Add(timeOffset)
-                        calMonth.SelectedDates.Add(publishDate)
+                    If objArchiveMonths.Count > 0 Then
+                        If _settings.ListDisplayMode = "DropDown" Then
+                            BindArchiveDropDown(objArchiveMonths)
+                            ddlArchiveMonths.Visible = True
+                            cmdGo.Visible = True
+                            lstArchiveMonths.Visible = False
+                        Else
+                            lstArchiveMonths.DataSource = objArchiveMonths
+                            lstArchiveMonths.DataBind()
+                        End If
                     End If
-                Next
-                calMonth.VisibleDate = BlogDate
-                objArchiveMonths = objCtlArchive.GetBlogMonths(Me.PortalId, m_BlogID)
 
-                If objArchiveMonths.Count > 0 Then
-                    If BlogSettings.EnableArchiveDropDown Then
-                        BindArchiveDropDown(objArchiveMonths)
-                        ddlArchiveMonths.Visible = True
-                        cmdGo.Visible = True
-                        lstArchiveMonths.Visible = False
-                    Else
-                        lstArchiveMonths.DataSource = objArchiveMonths
-                        lstArchiveMonths.DataBind()
+                    pnlList.Visible = True
+                Else
+                    If _settings.EnableArchiveCss Then
+                        ClientResourceManager.RegisterStyleSheet(Page, TemplateSourceDirectory + "/Archive.css", Web.Client.FileOrder.Css.ModuleCss)
                     End If
+
+                    calMonth.SelectedDates.Clear()
+                    For Each objArchiveDay In objArchiveDays
+                        If ModuleContext.PortalSettings.UserInfo.Profile.PreferredLocale IsNot Nothing Then
+                            Dim userCulture As CultureInfo = New System.Globalization.CultureInfo(ModuleContext.PortalSettings.UserInfo.Profile.PreferredLocale)
+                            Dim n As DateTime = Utility.AdjustedDate(objArchiveDay.AddedDate, ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone)
+                            Dim publishDate As DateTime = n
+                            Dim timeOffset As TimeSpan = ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone.BaseUtcOffset
+
+                            publishDate = publishDate.Add(timeOffset)
+                            calMonth.SelectedDates.Add(publishDate)
+                        Else
+                            ' Fall back to the portal level settings if not available at user level
+                            Dim userCulture As CultureInfo = New System.Globalization.CultureInfo(ModuleContext.PortalSettings.CultureCode)
+                            Dim n As DateTime = Utility.AdjustedDate(objArchiveDay.AddedDate, ModuleContext.PortalSettings.TimeZone)
+                            Dim publishDate As DateTime = n
+                            Dim timeOffset As TimeSpan = ModuleContext.PortalSettings.UserInfo.Profile.PreferredTimeZone.BaseUtcOffset
+
+                            publishDate = publishDate.Add(timeOffset)
+                            calMonth.SelectedDates.Add(publishDate)
+                        End If
+                    Next
+                    calMonth.VisibleDate = BlogDate
+
+                    pnlCalendar.Visible = True
                 End If
             Else
-
                 '<BLG-7444 date="04/29/2008" by="dw">
                 ' Since we are setting the SelectedDates above, if we have only one selected
                 ' date, then this interferes with the ability for SelectionChanged to fire 
                 ' properly.  To work around this, we clear the SelectedDate for postbackss.
                 calMonth.SelectedDate = Nothing
                 '</BLG-7444>
-
             End If
 
         Catch exc As Exception
@@ -120,12 +135,6 @@ Partial Public Class Archive
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks>CP: Added</remarks>
     Protected Sub cmdGo_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdGo.Click
         Response.Redirect(ddlArchiveMonths.SelectedValue, True)
     End Sub
@@ -135,13 +144,8 @@ Partial Public Class Archive
         ' This is kind of a hack to reset the culture back to the System Culture
         ' Utility.SetCulture(CType(Me.Page, PageBase).PageCulture.Name)
 
-        ' BLG-4154
-        ' Antonio Chagoury 9/1/2007
-        ' Changed the way the URL is being constructed to support standard DNN NavigateURL
-        ' Also added a URL parameter to specify the type of calendar search is requested
         Dim newDate As String = calMonth.SelectedDate.ToString("yyyy-MM-dd")
-        Response.Redirect(NavigateURL(TabId, "", "BlogDate=" & newDate, "DateType=" & "day"))
-        'Response.Redirect(Utility.AddTOQueryString(Utility.AddTOQueryString(Request.Url.ToString, "BlogDate", newDate), "DateType", "day"), True)
+        Response.Redirect(Links.ViewBlogsByDate(ModuleContext, newDate, "day"), False)
     End Sub
 
     Protected Sub lstArchiveMonths_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataListItemEventArgs) Handles lstArchiveMonths.ItemDataBound
@@ -203,24 +207,13 @@ Partial Public Class Archive
 
     Protected Sub calMonth_VisibleMonthChanged(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.MonthChangedEventArgs) Handles calMonth.VisibleMonthChanged
         'Utility.SetCulture(CType(Me.Page, PageBase).PageCulture.Name)
-        ' BLG-4154
-        ' Antonio Chagoury 9/1/2007
-        ' Changed the way the URL is being constructed to support standard DNN NavigateURL
-        ' Also added a URL parameter to specify the type of calendar search is requested
+
         Try
             Dim newDate As String = (New Date(e.NewDate.Year, e.NewDate.Month, Date.DaysInMonth(e.NewDate.Year, e.NewDate.Month))).ToString("yyyy-MM-dd")
-            Response.Redirect(NavigateURL(TabId, "", "BlogDate=" & newDate, "DateType=" & "month"))
-            'Response.Redirect(Utility.AddTOQueryString(Request.Url.ToString, "BlogDate", newDate), True)
+            Response.Redirect(Links.ViewBlogsByDate(ModuleContext, newDate, "month"), False)
         Catch ex As Exception
             ProcessModuleLoadException(Me, ex)
         End Try
-    End Sub
-
-    Protected Sub calMonth_Unload(ByVal sender As Object, ByVal e As System.EventArgs) Handles calMonth.Unload
-        '<BLG-1809 Date="08/22/05" User="HP" Comment="">
-        'Utility.SetCulture(CType(Me.Page, PageBase).PageCulture.Name)
-        'Utility.SetCulture("")
-        '</BLG-1809>
     End Sub
 
 #End Region

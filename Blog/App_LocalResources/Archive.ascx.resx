@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="lblMonthly.Text" xml:space="preserve">
-    <value>Monthly</value>
+  <data name="MonthlyTitle.Text" xml:space="preserve">
+    <value />
   </data>
   <data name="ModuleHelp.Text" xml:space="preserve">
     <value>&lt;h1&gt;Blog - Archive&lt;/h1&gt;&lt;p&gt;Here users can review the dates when the blog entries were posted. By selecting a particular date, they can also display the entries in that period.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Day View&lt;/b&gt;&lt;br /&gt;Clicking on a day on a calendar, users can read entries posted on that date.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Monthly View&lt;/b&gt;&lt;br /&gt;Clicking on a month in the month list below the calendar, users can display entries posted during the selected month.&lt;/p&gt;</value>
@@ -128,5 +128,8 @@
   </data>
   <data name="cmdGo.Text" xml:space="preserve">
     <value>Go</value>
+  </data>
+  <data name="CalendarTitle.Text" xml:space="preserve">
+    <value />
   </data>
 </root>

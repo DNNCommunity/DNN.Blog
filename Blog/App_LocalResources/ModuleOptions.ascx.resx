@@ -126,8 +126,8 @@
   <data name="lblRecentRssEntriesMax.Help" xml:space="preserve">
     <value>You can limit the number of RSS entries for Most recent entries.</value>
   </data>
-  <data name="secGeneralSettings.Text" xml:space="preserve">
-    <value>General</value>
+  <data name="EntrySummary.Text" xml:space="preserve">
+    <value>Summary</value>
   </data>
   <data name="lblUploadOption.Text" xml:space="preserve">
     <value>Allow Upload Options</value>
@@ -222,7 +222,7 @@ About Identicon, Wavicon, and MonsterID: Gravatar will be displayed for users wh
     <value>Social Bookmarks &amp; Netowrks</value>
   </data>
   <data name="secCommentSettings.Text" xml:space="preserve">
-    <value>Comment</value>
+    <value>Comments</value>
   </data>
   <data name="lblShowGravatars.Text" xml:space="preserve">
     <value>Show Avatars</value>
@@ -436,12 +436,6 @@ About custom images: provide the complete URL to the image (including "http://")
   <data name="lblPortalFiles.Text" xml:space="preserve">
     <value>Files on portal</value>
   </data>
-  <data name="secLoadFiles.Help" xml:space="preserve">
-    <value>You can opt to load additional files to the client when the blog is rendered. This allows for things like syntax highlighting. The blog module includes Alex Gorbatchev's syntax highlighter.</value>
-  </data>
-  <data name="secLoadFiles.Text" xml:space="preserve">
-    <value>Additional Files</value>
-  </data>
   <data name="lblAddJQuery.Help" xml:space="preserve">
     <value>If selected jQuery will be added</value>
   </data>
@@ -461,7 +455,7 @@ About custom images: provide the complete URL to the image (including "http://")
     <value>Basic Settings</value>
   </data>
   <data name="secMisc.Text" xml:space="preserve">
-    <value>Miscellaneous</value>
+    <value>General</value>
   </data>
   <data name="lblAddThisId.Help" xml:space="preserve">
     <value>This is required when using AddThis social sharing to enable analytics.</value>
@@ -498,5 +492,17 @@ About custom images: provide the complete URL to the image (including "http://")
   </data>
   <data name="lblSocialSharingMode.Text" xml:space="preserve">
     <value>Social Sharing Mode</value>
+  </data>
+  <data name="AddThis.Text" xml:space="preserve">
+    <value>AddThis</value>
+  </data>
+  <data name="Default.Text" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="None.Text" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="FileManagement.Text" xml:space="preserve">
+    <value>File Management</value>
   </data>
 </root>

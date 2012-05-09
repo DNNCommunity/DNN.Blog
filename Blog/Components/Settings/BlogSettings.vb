@@ -24,7 +24,6 @@ Imports DotNetNuke.Common.Utilities
 
 Namespace Components.Settings
 
-
     ''' <summary>
     ''' This class abstracts all settings for the module and makes sure they're (a) defaulted and (b) hard typed 
     ''' throughout the application.
@@ -71,7 +70,6 @@ Namespace Components.Settings
         Private _feedCacheTime As Integer = 10
         Private _AllowChildBlogs As Boolean = False
         Private _allowWLW As Boolean = True
-        Private _EnableArchiveDropDown As Boolean = True
         Private _AllowMultipleCategories As Boolean = True
         Private _useWLWExcerpt As Boolean = False
         Private _includeFiles As String = ""
@@ -80,8 +78,14 @@ Namespace Components.Settings
         Private _tabId As Integer = -1
 
         Private Const version As String = "03.05.00"
-        Private _vocabularyId As Integer = 1
-        Private _enableGhostWriter As Boolean = False
+
+        Private _VocabularyId As Integer = 1
+        Private _SocialSharingMode As String = "Default"
+        Private _AddThisId As String = ""
+        Private _FacebookAppId As String = ""
+        Private _EnablePlusOne As Boolean = True
+        Private _EnableTwitter As Boolean = True
+        Private _EnableLinkedIn As Boolean = True
 
 #End Region
 
@@ -130,8 +134,13 @@ Namespace Components.Settings
             Globals.ReadValue(_allSettings, "FeedCacheTime", FeedCacheTime)
             Globals.ReadValue(_allSettings, "AllowChildBlogs", AllowChildBlogs)
             Globals.ReadValue(_allSettings, "AllowWLW", AllowWLW)
-            Globals.ReadValue(_allSettings, "EnableArchiveDropDown", EnableArchiveDropDown)
             Globals.ReadValue(_allSettings, "IncludeFiles", IncludeFiles)
+            Globals.ReadValue(_allSettings, "SocialSharingMode", SocialSharingMode)
+            Globals.ReadValue(_allSettings, "AddThisId", AddThisId)
+            Globals.ReadValue(_allSettings, "FacebookAppId", FacebookAppId)
+            Globals.ReadValue(_allSettings, "EnablePlusOne", EnablePlusOne)
+            Globals.ReadValue(_allSettings, "EnableTwitter", EnableTwitter)
+            Globals.ReadValue(_allSettings, "EnableLinkedIn", EnableLinkedIn)
 
             ' WLW implementation parameters
             Globals.ReadValue(_allSettings, "AllowMultipleCategories", AllowMultipleCategories)
@@ -206,8 +215,14 @@ Namespace Components.Settings
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "FeedCacheTime", Me.FeedCacheTime.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "AllowChildBlogs", Me.AllowChildBlogs.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "AllowWLW", Me.AllowWLW.ToString)
-            Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "EnableArchiveDropDown", Me.EnableArchiveDropDown.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "IncludeFiles", Me.IncludeFiles)
+
+            Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "SocialSharingMode", Me.SocialSharingMode)
+            Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "AddThisId", Me.AddThisId)
+            Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "FacebookAppId", Me.FacebookAppId)
+            Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "EnablePlusOne", Me.EnablePlusOne.ToString)
+            Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "EnableTwitter", Me.EnableTwitter.ToString)
+            Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "EnableLinkedIn", Me.EnableLinkedIn.ToString)
 
             ' WLW implementation parameters
             Business.Utility.UpdateBlogModuleSetting(_portalId, -1, "AllowMultipleCategories", Me.AllowMultipleCategories.ToString)
@@ -563,21 +578,6 @@ Namespace Components.Settings
             End Set
         End Property
 
-        ''' <summary>
-        ''' Used to determine if the archive list should display as a data list of links (default) or as a drop down list.
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks>CP: Added</remarks>
-        Public Property EnableArchiveDropDown() As Boolean
-            Get
-                Return _EnableArchiveDropDown
-            End Get
-            Set(ByVal value As Boolean)
-                _EnableArchiveDropDown = value
-            End Set
-        End Property
-
         Public Property AllowMultipleCategories() As Boolean
             Get
                 Return _AllowMultipleCategories
@@ -613,10 +613,64 @@ Namespace Components.Settings
         ''' <remarks></remarks>
         Public Property VocabularyId() As Integer
             Get
-                Return _vocabularyId
+                Return _VocabularyId
             End Get
             Set(value As Integer)
-                _vocabularyId = value
+                _VocabularyId = value
+            End Set
+        End Property
+
+        Public Property SocialSharingMode() As String
+            Get
+                Return _SocialSharingMode
+            End Get
+            Set(ByVal Value As String)
+                _SocialSharingMode = Value
+            End Set
+        End Property
+
+        Public Property AddThisId() As String
+            Get
+                Return _AddThisId
+            End Get
+            Set(ByVal Value As String)
+                _AddThisId = Value
+            End Set
+        End Property
+
+        Public Property FacebookAppId() As String
+            Get
+                Return _FacebookAppId
+            End Get
+            Set(ByVal Value As String)
+                _FacebookAppId = Value
+            End Set
+        End Property
+
+        Public Property EnablePlusOne() As Boolean
+            Get
+                Return _EnablePlusOne
+            End Get
+            Set(ByVal value As Boolean)
+                _EnablePlusOne = value
+            End Set
+        End Property
+
+        Public Property EnableTwitter() As Boolean
+            Get
+                Return _EnableTwitter
+            End Get
+            Set(ByVal value As Boolean)
+                _EnableTwitter = value
+            End Set
+        End Property
+
+        Public Property EnableLinkedIn() As Boolean
+            Get
+                Return _EnableLinkedIn
+            End Get
+            Set(ByVal value As Boolean)
+                _EnableLinkedIn = value
             End Set
         End Property
 

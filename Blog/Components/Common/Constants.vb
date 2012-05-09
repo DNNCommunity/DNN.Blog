@@ -30,43 +30,35 @@ Namespace Components.Common
             ShowTotalUsage = 4
         End Enum
 
-        Public Const ContentTypeName As String = "DNN_Blog_Entry" ' change to DNN_Blog_Entry
-
-        ''' <summary>
-        ''' A recommended limit for a meta page title for SEO purposes.
-        ''' </summary>
-        Public Const SeoTitleLimit As Integer = 64
-
-        ''' <summary>
-        ''' A recommended limit for a meta page description for SEO purposes.
-        ''' </summary>
-        Public Const SeoDescriptionLimit As Integer = 150
-
-        ''' <summary>
-        ''' A recommended limit for meta page keywords for SEO purposes.
-        ''' </summary>
-        Public Const SeoKeywordsLimit As Integer = 15
-
+        Public Const ContentTypeName As String = "DNN_Blog_Entry"
         Public Const SharedResourceFileName As String = "~/DesktopModules/Blog/App_LocalResources/SharedResources.resx"
 
-        Public Const ModuleCacheKeyPrefix As String = "DNN_Blog_"
-
-        Public Const VocabTermsCacheKey As String = "Vocabulary_Terms_"
-
-        Public Const VocabSuffixCacheKey As String = "Vocabulary_"
-
-        Public Const VocabularySuffixCacheKey As String = "Vocabulary_"
-
-        Public Const ContentItemTermsCacheKey As String = "ContentItem_Terms_"
+        Public Const SeoTitleLimit As Integer = 64
+        Public Const SeoDescriptionLimit As Integer = 150
+        Public Const SeoKeywordsLimit As Integer = 15
 
         Public Const BloggerPermission As String = "BLOGGER"
-
         Public Const GhostWriterPermission As String = "GHOSTWRITER"
+
+#Region "Caching"
+
+        Public Const ModuleCacheKeyPrefix As String = "DNN_Blog_"
+        Public Const VocabTermsCacheKey As String = "Vocabulary_Terms_"
+        Public Const VocabSuffixCacheKey As String = "Vocabulary_"
+        Public Const VocabularySuffixCacheKey As String = "Vocabulary_"
+        Public Const ContentItemTermsCacheKey As String = "ContentItem_Terms_"
+        Public Const ArchiveSettingsCacheKey As String = "ArchiveViewSettings_"
+
+#End Region
 
 #Region "Module Settings"
 
         Public Const TagModuleTagDisplayMode As String = "TagDisplayMode"
         Public Const TagModuleCloudSkin As String = "TagCloudSkin"
+
+        Public Const SettingArchiveDisplayMode As String = "BLOG_ARCHIVE_DISPLAYMODE"
+        Public Const SettingListDisplayMode As String = "BLOG_ARCHIVE_LISTMODE"
+        Public Const SettingEnableArchiveCss As String = "BLOG_ARCHVE_ENABLECSS"
 
 #End Region
 

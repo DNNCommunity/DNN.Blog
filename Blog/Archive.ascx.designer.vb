@@ -14,6 +14,15 @@ Option Explicit On
 Partial Public Class Archive
 
     '''<summary>
+    '''pnlCalendar control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents pnlCalendar As Global.System.Web.UI.WebControls.Panel
+
+    '''<summary>
     '''calMonth control.
     '''</summary>
     '''<remarks>
@@ -21,6 +30,15 @@ Partial Public Class Archive
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents calMonth As Global.System.Web.UI.WebControls.Calendar
+
+    '''<summary>
+    '''pnlList control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents pnlList As Global.System.Web.UI.WebControls.Panel
 
     '''<summary>
     '''lstArchiveMonths control.

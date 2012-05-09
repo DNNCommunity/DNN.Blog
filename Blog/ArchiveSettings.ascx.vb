@@ -31,14 +31,22 @@ Partial Public Class ArchiveSettings
 
 #End Region
 
+#Region "Event Handlers"
+
+    Protected Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Init
+        _settings = ArchiveViewSettings.GetArchiveViewSettings(TabModuleId)
+    End Sub
+
+#End Region
+
 #Region "Base Methods"
 
     Public Overrides Sub LoadSettings()
         Try
             If (Page.IsPostBack = False) Then
-                'chkEnableArchiveDropDown.Checked = _settings.EnableArchiveDropDown
-                'rblLoadCss.SelectedValue = _settings.TagDisplayMode
-
+                ddlDisplayMode.SelectedValue = _settings.ArchiveDisplayMode
+                rblLoadCss.SelectedValue = _settings.EnableArchiveCss.ToString()
+                ddlListMode.SelectedValue = _settings.ListDisplayMode
             End If
         Catch exc As Exception
             ProcessModuleLoadException(Me, exc)
@@ -49,8 +57,11 @@ Partial Public Class ArchiveSettings
         Try
             Dim objModule As ModuleController = New ModuleController
 
-            'objModule.UpdateTabModuleSetting(ModuleContext.TabModuleId, "SettingName", chkEnableArchiveDropDown.Checked.ToString())
-            'objModule.UpdateTabModuleSetting(ModuleContext.TabModuleId, "SettingName", rblLoadCss.SelectedValue)
+            _settings.ArchiveDisplayMode = ddlDisplayMode.SelectedItem.Value
+            _settings.EnableArchiveCss = Convert.ToBoolean(rblLoadCss.SelectedItem.Value)
+            _settings.ListDisplayMode = ddlListMode.SelectedItem.Value
+
+            _settings.UpdateSettings()
 
         Catch exc As Exception
             ProcessModuleLoadException(Me, exc)

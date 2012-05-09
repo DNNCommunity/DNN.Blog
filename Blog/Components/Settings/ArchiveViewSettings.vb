@@ -27,8 +27,13 @@ Namespace Components.Settings
 
         Private _allSettings As Hashtable
         Private _tabModuleId As Integer = -1
-        Private _TagDisplayMode As String = "Cloud"
-        Private _cloudSkin As String = "Default"
+        Private _ArchiveDisplayMode As String = "List"
+        Private _ListDisplayMode As String = "DropDown"
+        Private _EnableArchiveCss As Boolean = True
+
+        ' Not part of Beta 2
+        Private _CalendarMode As String = "ASPNET"
+        Private _CalendarSkin As String = "Default"
 
 #End Region
 
@@ -37,14 +42,18 @@ Namespace Components.Settings
         Public Sub New(ByVal TabModuleId As Integer)
             _tabModuleId = TabModuleId
             _allSettings = (New DotNetNuke.Entities.Modules.ModuleController).GetTabModuleSettings(_tabModuleId)
-            Globals.ReadValue(_allSettings, "TagDisplayMode", TagDisplayMode)
+            Globals.ReadValue(_allSettings, Constants.SettingArchiveDisplayMode, ArchiveDisplayMode)
+            Globals.ReadValue(_allSettings, Constants.SettingListDisplayMode, ListDisplayMode)
+            Globals.ReadValue(_allSettings, Constants.SettingEnableArchiveCss, EnableArchiveCss)
+            Globals.ReadValue(_allSettings, Constants.SettingEnableArchiveCss, EnableArchiveCss)
+            Globals.ReadValue(_allSettings, Constants.SettingEnableArchiveCss, EnableArchiveCss)
         End Sub
 
-        Public Shared Function GetTagViewSettings(ByVal TabModuleId As Integer) As TagViewSettings
-            Dim CacheKey As String = "TagViewSettings" & TabModuleId.ToString
-            Dim bs As TagViewSettings = CType(DotNetNuke.Common.Utilities.DataCache.GetCache(CacheKey), TagViewSettings)
+        Public Shared Function GetArchiveViewSettings(ByVal TabModuleId As Integer) As ArchiveViewSettings
+            Dim CacheKey As String = Constants.ArchiveSettingsCacheKey & TabModuleId.ToString
+            Dim bs As ArchiveViewSettings = CType(DotNetNuke.Common.Utilities.DataCache.GetCache(CacheKey), ArchiveViewSettings)
             If bs Is Nothing Then
-                bs = New TagViewSettings(TabModuleId)
+                bs = New ArchiveViewSettings(TabModuleId)
                 DotNetNuke.Common.Utilities.DataCache.SetCache(CacheKey, bs)
             End If
             Return bs
@@ -57,9 +66,11 @@ Namespace Components.Settings
         Public Overridable Sub UpdateSettings()
             Dim objModules As New DotNetNuke.Entities.Modules.ModuleController
             With objModules
-                .UpdateTabModuleSetting(_tabModuleId, Constants.TagModuleTagDisplayMode, TagDisplayMode)
+                .UpdateTabModuleSetting(_tabModuleId, Constants.SettingArchiveDisplayMode, ArchiveDisplayMode)
+                .UpdateTabModuleSetting(_tabModuleId, Constants.SettingListDisplayMode, ListDisplayMode)
+                .UpdateTabModuleSetting(_tabModuleId, Constants.SettingEnableArchiveCss, EnableArchiveCss.ToString)
             End With
-            Dim CacheKey As String = "TagViewSettings" & _tabModuleId.ToString
+            Dim CacheKey As String = Constants.ArchiveSettingsCacheKey & _tabModuleId.ToString
             DotNetNuke.Common.Utilities.DataCache.RemoveCache(CacheKey)
         End Sub
 
@@ -67,21 +78,48 @@ Namespace Components.Settings
 
 #Region "Properties"
 
-        Public Property TagDisplayMode() As String
+        Public Property ArchiveDisplayMode() As String
             Get
-                Return _TagDisplayMode
+                Return _ArchiveDisplayMode
             End Get
             Set(ByVal Value As String)
-                _TagDisplayMode = Value
+                _ArchiveDisplayMode = Value
             End Set
         End Property
 
-        Public Property CloudSkin() As String
+        Public Property ListDisplayMode() As String
             Get
-                Return _cloudSkin
+                Return _ListDisplayMode
             End Get
-            Set(ByVal Value As String)
-                _cloudSkin = Value
+            Set(ByVal value As String)
+                _ListDisplayMode = value
+            End Set
+        End Property
+
+        Public Property EnableArchiveCss() As Boolean
+            Get
+                Return _EnableArchiveCss
+            End Get
+            Set(ByVal value As Boolean)
+                _EnableArchiveCss = value
+            End Set
+        End Property
+
+        Public Property CalendarMode() As String
+            Get
+                Return _CalendarMode
+            End Get
+            Set(ByVal value As String)
+                _CalendarMode = value
+            End Set
+        End Property
+
+        Public Property CalendarSkin() As String
+            Get
+                Return _CalendarSkin
+            End Get
+            Set(ByVal value As String)
+                _CalendarSkin = value
             End Set
         End Property
 

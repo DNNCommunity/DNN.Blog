@@ -42,6 +42,10 @@ Namespace Components.Common
             End If
         End Function
 
+        Public Shared Function ViewBlogsByDate(ByVal modContext As ModuleInstanceContext, ByVal newDate As String, ByVal dateType As String) As String
+            Return modContext.NavigateUrl(modContext.TabId, "", False, "BlogDate=" & newDate, "DateType=" & dateType)
+        End Function
+
 #Region "Entries"
 
         Public Shared Function EditEntry(ByVal modContext As ModuleInstanceContext, ByVal blogId As Integer, ByVal entryId As Integer) As String

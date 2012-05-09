@@ -14,22 +14,40 @@ Option Explicit On
 Partial Public Class ArchiveSettings
 
     '''<summary>
-    '''lblEnableArchiveDropDown control.
+    '''lblDisplayMode control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblEnableArchiveDropDown As Global.DotNetNuke.UI.UserControls.LabelControl
+    Protected WithEvents lblDisplayMode As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
-    '''chkEnableArchiveDropDown control.
+    '''ddlDisplayMode control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents chkEnableArchiveDropDown As Global.System.Web.UI.WebControls.CheckBox
+    Protected WithEvents ddlDisplayMode As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
+    '''lblListMode control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblListMode As Global.DotNetNuke.UI.UserControls.LabelControl
+
+    '''<summary>
+    '''ddlListMode control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents ddlListMode As Global.System.Web.UI.WebControls.DropDownList
 
     '''<summary>
     '''lblLoadCss control.
