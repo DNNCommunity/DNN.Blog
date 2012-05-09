@@ -194,6 +194,7 @@
     <Compile Include="Components\Settings\BlogSettings.vb" />
     <Compile Include="Components\Business\TemplateManager.vb" />
     <Compile Include="Components\Settings\CategoryViewSettings.vb" />
+    <Compile Include="Components\Settings\RosterSettings.vb" />
     <Compile Include="Components\Settings\TagViewSettings.vb" />
     <Compile Include="Components\MetaWeblog\IMetaWeblog.vb" />
     <Compile Include="Components\MoveableType\IMoveableType.vb" />
@@ -389,6 +390,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_LocalResources\ArchiveSettings.ascx.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\ViewCategoriesSettings.ascx.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\RosterSettings.ascx.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

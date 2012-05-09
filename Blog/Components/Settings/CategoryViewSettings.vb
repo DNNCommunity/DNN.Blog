@@ -21,22 +21,15 @@ Imports DotNetNuke.Modules.Blog.Components.Common
 
 Namespace Components.Settings
 
-    ''' <summary>
-    ''' This class abstracts all settings for the module and makes sure they're (a) defaulted and (b) hard typed 
-    ''' throughout the application.
-    ''' </summary>
-    ''' <remarks></remarks>
-    ''' <history>
-    '''		[pdonker]	12/30/2009	created
-    ''' </history>
     Public Class CategoryViewSettings
 
 #Region "Private Members"
 
         Private _allSettings As Hashtable
         Private _tabModuleId As Integer = -1
-        Private _TagDisplayMode As String = "Cloud"
-        Private _cloudSkin As String = "Default"
+
+        Private _CategoryDisplayMode As String = "Tree"
+        Private _TreeSkin As String = "Default"
 
 #End Region
 
@@ -45,14 +38,16 @@ Namespace Components.Settings
         Public Sub New(ByVal TabModuleId As Integer)
             _tabModuleId = TabModuleId
             _allSettings = (New DotNetNuke.Entities.Modules.ModuleController).GetTabModuleSettings(_tabModuleId)
-            Globals.ReadValue(_allSettings, "TagDisplayMode", TagDisplayMode)
+
+            Globals.ReadValue(_allSettings, Constants.SettingCategoryDisplayMode, CategoryDisplayMode)
+            Globals.ReadValue(_allSettings, Constants.SettingCategoryTreeSkin, TreeSkin)
         End Sub
 
-        Public Shared Function GetTagViewSettings(ByVal TabModuleId As Integer) As TagViewSettings
-            Dim CacheKey As String = "TagViewSettings" & TabModuleId.ToString
-            Dim bs As TagViewSettings = CType(DotNetNuke.Common.Utilities.DataCache.GetCache(CacheKey), TagViewSettings)
+        Public Shared Function GetCategoryViewSettings(ByVal TabModuleId As Integer) As CategoryViewSettings
+            Dim CacheKey As String = Constants.CategorySettingsCacheKey & TabModuleId.ToString
+            Dim bs As CategoryViewSettings = CType(DotNetNuke.Common.Utilities.DataCache.GetCache(CacheKey), CategoryViewSettings)
             If bs Is Nothing Then
-                bs = New TagViewSettings(TabModuleId)
+                bs = New CategoryViewSettings(TabModuleId)
                 DotNetNuke.Common.Utilities.DataCache.SetCache(CacheKey, bs)
             End If
             Return bs
@@ -65,9 +60,10 @@ Namespace Components.Settings
         Public Overridable Sub UpdateSettings()
             Dim objModules As New DotNetNuke.Entities.Modules.ModuleController
             With objModules
-                .UpdateTabModuleSetting(_tabModuleId, Constants.TagModuleTagDisplayMode, TagDisplayMode)
+                .UpdateTabModuleSetting(_tabModuleId, Constants.SettingCategoryDisplayMode, CategoryDisplayMode)
+                .UpdateTabModuleSetting(_tabModuleId, Constants.SettingCategoryTreeSkin, TreeSkin)
             End With
-            Dim CacheKey As String = "TagViewSettings" & _tabModuleId.ToString
+            Dim CacheKey As String = Constants.CategorySettingsCacheKey & _tabModuleId.ToString
             DotNetNuke.Common.Utilities.DataCache.RemoveCache(CacheKey)
         End Sub
 
@@ -75,21 +71,21 @@ Namespace Components.Settings
 
 #Region "Properties"
 
-        Public Property TagDisplayMode() As String
+        Public Property CategoryDisplayMode() As String
             Get
-                Return _TagDisplayMode
+                Return _CategoryDisplayMode
             End Get
             Set(ByVal Value As String)
-                _TagDisplayMode = Value
+                _CategoryDisplayMode = Value
             End Set
         End Property
 
-        Public Property CloudSkin() As String
+        Public Property TreeSkin() As String
             Get
-                Return _cloudSkin
+                Return _TreeSkin
             End Get
             Set(ByVal Value As String)
-                _cloudSkin = Value
+                _TreeSkin = Value
             End Set
         End Property
 

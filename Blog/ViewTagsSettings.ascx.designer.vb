@@ -20,14 +20,32 @@ Partial Public Class ViewTagsSettings
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblDisplayMode As Global.System.Web.UI.UserControl
+    Protected WithEvents lblDisplayMode As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
-    '''rblTagDisplayMode control.
+    '''ddlDisplayMode control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents rblTagDisplayMode As Global.System.Web.UI.WebControls.RadioButtonList
+    Protected WithEvents ddlDisplayMode As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
+    '''lblTelerikSkin control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblTelerikSkin As Global.DotNetNuke.UI.UserControls.LabelControl
+
+    '''<summary>
+    '''ddlTelerikSkin control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents ddlTelerikSkin As Global.System.Web.UI.WebControls.DropDownList
 End Class

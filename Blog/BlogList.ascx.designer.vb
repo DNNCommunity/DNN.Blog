@@ -21,4 +21,13 @@ Partial Public Class BlogList
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lstBlogs As Global.System.Web.UI.WebControls.DataList
+
+    '''<summary>
+    '''rptBlogs control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents rptBlogs As Global.System.Web.UI.WebControls.Repeater
 End Class

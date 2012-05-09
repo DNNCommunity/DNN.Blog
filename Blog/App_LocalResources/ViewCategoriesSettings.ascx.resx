@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ControlTitle_settings.Text" xml:space="preserve">
-    <value>Tag Settings</value>
+    <value>Category List</value>
   </data>
   <data name="lblDisplayMode.Help" xml:space="preserve">
-    <value>Determines how the tag list will be displayed.</value>
+    <value />
   </data>
   <data name="lblDisplayMode.Text" xml:space="preserve">
     <value>Display Mode</value>
@@ -130,12 +130,12 @@
     <value />
   </data>
   <data name="lblTelerikSkin.Text" xml:space="preserve">
-    <value>Cloud Skin</value>
+    <value>Tree Skin</value>
   </data>
-  <data name="optTagCloud.Text" xml:space="preserve">
-    <value>Cloud</value>
-  </data>
-  <data name="optTagList.Text" xml:space="preserve">
+  <data name="List.Text" xml:space="preserve">
     <value>List</value>
+  </data>
+  <data name="Tree.Text" xml:space="preserve">
+    <value>Tree</value>
   </data>
 </root>

@@ -72,4 +72,11 @@
       </asp:Table>
      </ItemTemplate>
     </asp:DataList>
+    <ul style="display:none;">
+        <asp:Repeater ID="rptBlogs" runat="server">
+            <ItemTemplate>
+                <li></li>
+            </ItemTemplate>
+        </asp:Repeater>
+    </ul>
 </div>

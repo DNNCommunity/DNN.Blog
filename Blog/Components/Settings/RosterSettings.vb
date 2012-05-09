@@ -21,15 +21,14 @@ Imports DotNetNuke.Modules.Blog.Components.Common
 
 Namespace Components.Settings
 
-    Public Class TagViewSettings
+    Public Class RosterSettings
 
 #Region "Private Members"
 
         Private _allSettings As Hashtable
         Private _tabModuleId As Integer = -1
 
-        Private _TagDisplayMode As String = "Cloud"
-        Private _CloudSkin As String = "Default"
+        Private _RosterDisplayMode As String = "List"
 
 #End Region
 
@@ -39,15 +38,14 @@ Namespace Components.Settings
             _tabModuleId = TabModuleId
             _allSettings = (New DotNetNuke.Entities.Modules.ModuleController).GetTabModuleSettings(_tabModuleId)
 
-            Globals.ReadValue(_allSettings, Constants.SettingTagDisplayMode, TagDisplayMode)
-            Globals.ReadValue(_allSettings, Constants.SettingCloudSkin, CloudSkin)
+            Globals.ReadValue(_allSettings, Constants.SettingRosterDisplayMode, RosterDisplayMode)
         End Sub
 
-        Public Shared Function GetTagViewSettings(ByVal TabModuleId As Integer) As TagViewSettings
-            Dim CacheKey As String = Constants.TagSettingsCacheKey & TabModuleId.ToString
-            Dim bs As TagViewSettings = CType(DotNetNuke.Common.Utilities.DataCache.GetCache(CacheKey), TagViewSettings)
+        Public Shared Function GetRosterViewSettings(ByVal TabModuleId As Integer) As RosterSettings
+            Dim CacheKey As String = Constants.RosterSettingsCacheKey & TabModuleId.ToString
+            Dim bs As RosterSettings = CType(DotNetNuke.Common.Utilities.DataCache.GetCache(CacheKey), RosterSettings)
             If bs Is Nothing Then
-                bs = New TagViewSettings(TabModuleId)
+                bs = New RosterSettings(TabModuleId)
                 DotNetNuke.Common.Utilities.DataCache.SetCache(CacheKey, bs)
             End If
             Return bs
@@ -60,10 +58,9 @@ Namespace Components.Settings
         Public Overridable Sub UpdateSettings()
             Dim objModules As New DotNetNuke.Entities.Modules.ModuleController
             With objModules
-                .UpdateTabModuleSetting(_tabModuleId, Constants.SettingTagDisplayMode, TagDisplayMode)
-                .UpdateTabModuleSetting(_tabModuleId, Constants.SettingCloudSkin, CloudSkin)
+                .UpdateTabModuleSetting(_tabModuleId, Constants.SettingRosterDisplayMode, RosterDisplayMode)
             End With
-            Dim CacheKey As String = Constants.TagSettingsCacheKey & _tabModuleId.ToString
+            Dim CacheKey As String = Constants.RosterSettingsCacheKey & _tabModuleId.ToString
             DotNetNuke.Common.Utilities.DataCache.RemoveCache(CacheKey)
         End Sub
 
@@ -71,21 +68,12 @@ Namespace Components.Settings
 
 #Region "Properties"
 
-        Public Property TagDisplayMode() As String
+        Public Property RosterDisplayMode() As String
             Get
-                Return _TagDisplayMode
+                Return _RosterDisplayMode
             End Get
             Set(ByVal Value As String)
-                _TagDisplayMode = Value
-            End Set
-        End Property
-
-        Public Property CloudSkin() As String
-            Get
-                Return _CloudSkin
-            End Get
-            Set(ByVal Value As String)
-                _CloudSkin = Value
+                _RosterDisplayMode = Value
             End Set
         End Property
 

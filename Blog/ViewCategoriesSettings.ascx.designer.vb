@@ -14,20 +14,38 @@ Option Explicit On
 Partial Public Class ViewCategoriesSettings
 
     '''<summary>
-    '''lblLoadCss control.
+    '''lblDisplayMode control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblLoadCss As Global.System.Web.UI.UserControl
+    Protected WithEvents lblDisplayMode As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
-    '''rblLoadCss control.
+    '''ddlDisplayMode control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents rblLoadCss As Global.System.Web.UI.WebControls.RadioButtonList
+    Protected WithEvents ddlDisplayMode As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
+    '''lblTelerikSkin control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblTelerikSkin As Global.DotNetNuke.UI.UserControls.LabelControl
+
+    '''<summary>
+    '''ddlTelerikSkin control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents ddlTelerikSkin As Global.System.Web.UI.WebControls.DropDownList
 End Class

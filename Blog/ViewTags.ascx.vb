@@ -43,22 +43,21 @@ Partial Public Class ViewTags
     End Sub
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Dim TagDisplayMode As String
-        TagDisplayMode = _settings.TagDisplayMode
-
         Dim cntTerm As New TermController
         Dim colTags As List(Of TermInfo)
         colTags = cntTerm.GetTermsByContentType(ModuleContext.PortalId, 1) ' the 1 ensures tags only
 
-        If TagDisplayMode = "List" Then
+        If _settings.TagDisplayMode = "List" Then
             rptTags.DataSource = colTags
             rptTags.DataBind()
+
             pnlTagList.Visible = True
-            pnlTagCloud.Visible = False
         Else
+            rtcTags.Skin = _settings.CloudSkin
+
             rtcTags.DataSource = colTags
             rtcTags.DataBind()
-            pnlTagList.Visible = False
+
             pnlTagCloud.Visible = True
         End If
     End Sub

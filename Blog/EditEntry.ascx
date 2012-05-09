@@ -35,9 +35,6 @@
 				<asp:RequiredFieldValidator ID="valDescription" runat="server" ResourceKey="valDescription.ErrorMessage" Display="Dynamic" ControlToValidate="txtDescription" CssClass="dnnFormError" />  
 			</div>
 		</div>
-		<asp:Panel CssClass="dnnFormItem dnnFormMessage" ID="pnlDescOpt" runat="server">
-			<p><%= LocalizeString("txtDescriptionText")%></p>  
-		</asp:Panel>
 		<div class="dnnFormItem">
 			<dnn:Label ID="lblDescription" ResourceKey="lblDescription" runat="server" controlname="teBlogEntry" suffix=":" />
 			<div class="dnnLeft">

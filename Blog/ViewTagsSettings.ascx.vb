@@ -43,9 +43,10 @@ Partial Public Class ViewTagsSettings
     Public Overrides Sub LoadSettings()
         Try
             If (Page.IsPostBack = False) Then
+                BindTelerikSkins()
 
-                rblTagDisplayMode.SelectedValue = _settings.TagDisplayMode
-
+                ddlDisplayMode.SelectedValue = _settings.TagDisplayMode
+                ddlTelerikSkin.SelectedValue = _settings.CloudSkin
             End If
         Catch exc As Exception
             ProcessModuleLoadException(Me, exc)
@@ -54,13 +55,40 @@ Partial Public Class ViewTagsSettings
 
     Public Overrides Sub UpdateSettings()
         Try
+            _settings.TagDisplayMode = ddlDisplayMode.SelectedValue
+            _settings.CloudSkin = ddlTelerikSkin.SelectedValue
 
-            _settings.TagDisplayMode = rblTagDisplayMode.SelectedValue
             _settings.UpdateSettings()
 
         Catch exc As Exception
             ProcessModuleLoadException(Me, exc)
         End Try
+    End Sub
+
+#End Region
+
+#Region "Private Methods"
+
+    Private Sub BindTelerikSkins()
+        ddlTelerikSkin.Items.Insert(0, New ListItem("Default", "Default"))
+        ddlTelerikSkin.Items.Insert(1, New ListItem("Black", "Black"))
+        ddlTelerikSkin.Items.Insert(2, New ListItem("Forest", "Forest"))
+        ddlTelerikSkin.Items.Insert(3, New ListItem("Hay", "Hay"))
+        ddlTelerikSkin.Items.Insert(4, New ListItem("Metro", "Metro"))
+        ddlTelerikSkin.Items.Insert(5, New ListItem("Office2007", "Office2007"))
+        ddlTelerikSkin.Items.Insert(6, New ListItem("Office2010Black", "Office2010Black"))
+        ddlTelerikSkin.Items.Insert(7, New ListItem("Office2010Blue", "Office2010Blue"))
+        ddlTelerikSkin.Items.Insert(8, New ListItem("Office2010Silver", "Office2010Silver"))
+        ddlTelerikSkin.Items.Insert(9, New ListItem("Outlook", "Outlook"))
+        ddlTelerikSkin.Items.Insert(10, New ListItem("Simple", "Simple"))
+        ddlTelerikSkin.Items.Insert(11, New ListItem("Sitefinity", "Sitefinity"))
+        ddlTelerikSkin.Items.Insert(12, New ListItem("Sunset", "Sunset"))
+        ddlTelerikSkin.Items.Insert(13, New ListItem("Telerik", "Telerik"))
+        ddlTelerikSkin.Items.Insert(14, New ListItem("Transparent", "Transparent"))
+        ddlTelerikSkin.Items.Insert(15, New ListItem("Vista", "Vista"))
+        ddlTelerikSkin.Items.Insert(16, New ListItem("Web20", "Web20"))
+        ddlTelerikSkin.Items.Insert(17, New ListItem("WebBlue", "WebBlue"))
+        ddlTelerikSkin.Items.Insert(18, New ListItem("Windows7", "Windows7"))
     End Sub
 
 #End Region

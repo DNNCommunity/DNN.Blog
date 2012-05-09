@@ -19,19 +19,34 @@
 '
 
 Imports DotNetNuke.Services.Exceptions
-Imports DotNetNuke.Entities.Modules
+Imports DotNetNuke.Modules.Blog.Components.Settings
 
 Partial Public Class ViewCategoriesSettings
     Inherits Entities.Modules.ModuleSettingsBase
+
+#Region "Private Members"
+
+    Private _settings As CategoryViewSettings
+
+#End Region
+
+#Region "Event Handlers"
+
+    Protected Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Init
+        _settings = CategoryViewSettings.GetCategoryViewSettings(TabModuleId)
+    End Sub
+
+#End Region
 
 #Region "Base Methods"
 
     Public Overrides Sub LoadSettings()
         Try
             If (Page.IsPostBack = False) Then
+                BindTelerikSkins()
 
-                'rblLoadCss.SelectedValue = _settings.TagDisplayMode
-
+                ddlDisplayMode.SelectedValue = _settings.CategoryDisplayMode
+                ddlTelerikSkin.SelectedValue = _settings.TreeSkin
             End If
         Catch exc As Exception
             ProcessModuleLoadException(Me, exc)
@@ -40,13 +55,39 @@ Partial Public Class ViewCategoriesSettings
 
     Public Overrides Sub UpdateSettings()
         Try
-            Dim objModule As ModuleController = New ModuleController
+            _settings.CategoryDisplayMode = ddlDisplayMode.SelectedItem.Value
+            _settings.TreeSkin = ddlTelerikSkin.SelectedItem.Value
 
-            objModule.UpdateTabModuleSetting(ModuleContext.TabModuleId, "SettingName", rblLoadCss.SelectedValue)
-
+            _settings.UpdateSettings()
         Catch exc As Exception
             ProcessModuleLoadException(Me, exc)
         End Try
+    End Sub
+
+#End Region
+
+#Region "Private Methods"
+
+    Private Sub BindTelerikSkins()
+        ddlTelerikSkin.Items.Insert(0, New ListItem("Default", "Default"))
+        ddlTelerikSkin.Items.Insert(1, New ListItem("Black", "Black"))
+        ddlTelerikSkin.Items.Insert(2, New ListItem("Forest", "Forest"))
+        ddlTelerikSkin.Items.Insert(3, New ListItem("Hay", "Hay"))
+        ddlTelerikSkin.Items.Insert(4, New ListItem("Metro", "Metro"))
+        ddlTelerikSkin.Items.Insert(5, New ListItem("Office2007", "Office2007"))
+        ddlTelerikSkin.Items.Insert(6, New ListItem("Office2010Black", "Office2010Black"))
+        ddlTelerikSkin.Items.Insert(7, New ListItem("Office2010Blue", "Office2010Blue"))
+        ddlTelerikSkin.Items.Insert(8, New ListItem("Office2010Silver", "Office2010Silver"))
+        ddlTelerikSkin.Items.Insert(9, New ListItem("Outlook", "Outlook"))
+        ddlTelerikSkin.Items.Insert(10, New ListItem("Simple", "Simple"))
+        ddlTelerikSkin.Items.Insert(11, New ListItem("Sitefinity", "Sitefinity"))
+        ddlTelerikSkin.Items.Insert(12, New ListItem("Sunset", "Sunset"))
+        ddlTelerikSkin.Items.Insert(13, New ListItem("Telerik", "Telerik"))
+        ddlTelerikSkin.Items.Insert(14, New ListItem("Transparent", "Transparent"))
+        ddlTelerikSkin.Items.Insert(15, New ListItem("Vista", "Vista"))
+        ddlTelerikSkin.Items.Insert(16, New ListItem("Web20", "Web20"))
+        ddlTelerikSkin.Items.Insert(17, New ListItem("WebBlue", "WebBlue"))
+        ddlTelerikSkin.Items.Insert(18, New ListItem("Windows7", "Windows7"))
     End Sub
 
 #End Region

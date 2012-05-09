@@ -1,4 +1,5 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="MainView.ascx.vb" Inherits="DotNetNuke.Modules.Blog.MainView" %>
+<%@ Import Namespace="DotNetNuke.Services.Localization" %>
 <div class="dnnClear bloggerMenu">
     <div class="dnnRight divBloggerBar" id="divBloggerBar">
         <ul class="buttonGroup">
@@ -6,7 +7,7 @@
             <li id="liView" runat="server" visible="false"><asp:HyperLink ID="hlView" runat="server" ResourceKey="lnkViewBlog" CssClass="dnnTertiaryAction" /></li>
             <li id="liEditBlog" runat="server" visible="false"><asp:HyperLink ID="hlEditBlog" runat="server" ResourceKey="lnkEditBlog" CssClass="dnnTertiaryAction" /></li>
             <li id="liCreateBlog" runat="server" visible="false"><asp:HyperLink ID="hlCreateBlog" runat="server" ResourceKey="lnkBlog" CssClass="dnnTertiaryAction" /></li>
-            <li id="liAddPart" runat="server" visible="false"><a class="dnnTertiaryAction" id="lnkAddPart" href="#">Add Blog Part</a></li>
+            <li id="liAddPart" runat="server" visible="false"><a class="dnnTertiaryAction" id="lnkAddPart" href="#"><%= Localization.GetString("AddPart", LocalResourceFile)%></a></li>
         </ul> 
     </div>
 </div>

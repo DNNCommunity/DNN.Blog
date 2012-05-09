@@ -22,22 +22,12 @@ Imports System
 Imports DotNetNuke.Modules.Blog.Components.Controllers
 Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Common.Globals
-Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Services.Exceptions.Exceptions
 Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.Modules.Blog.Components.Entities
 
 Partial Class BlogList
     Inherits BlogModuleBase
-    Implements Entities.Modules.IActionable
-
-#Region " IActionable "
-    Public ReadOnly Property ModuleActions() As DotNetNuke.Entities.Modules.Actions.ModuleActionCollection Implements DotNetNuke.Entities.Modules.IActionable.ModuleActions
-        Get
-            Return MyActions
-        End Get
-    End Property
-#End Region
 
 #Region "Private Members"
 
@@ -56,22 +46,6 @@ Partial Class BlogList
 
 #Region "Event Handlers"
 
-    Protected Overloads Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
-        '' 11/19/2008 Rip Rowan replaced deprecated code
-        'If DotNetNuke.Security.PortalSecurity.HasNecessaryPermission(Security.SecurityAccessLevel.Edit, PortalSettings, ModuleConfiguration) Then
-        '    m_oBlog = m_oBlogController.GetBlogByUserID(Me.PortalId, Me.UserId)
-        '    If m_oBlog Is Nothing Then
-        '        MyActions.Add(GetNextActionID, Localization.GetString("msgCreateBlog", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("", "", "Edit_Blog"), False, DotNetNuke.Security.SecurityAccessLevel.View, True, False)
-        '    Else
-        '        MyActions.Add(GetNextActionID, Localization.GetString("msgEditBlogSettings", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Blog"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
-        '        MyActions.Add(GetNextActionID, Localization.GetString("msgAddBlogEntry", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Entry"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
-        '    End If
-        '    If ForumBlog.Utils.isForumBlogInstalled(PortalId, TabId, False) Then
-        '        MyActions.Add(GetNextActionID, Localization.GetString("msgImportBlog", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("Blog_Import"), False, DotNetNuke.Security.SecurityAccessLevel.Admin, True, False)
-        '    End If
-        'End If
-    End Sub
-
     Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             Dim list As ArrayList
@@ -88,6 +62,8 @@ Partial Class BlogList
             m_PersonalBlogID = BlogSettings.PageBlogs
 
             If Not Page.IsPostBack Then
+                ' new settings to determine view mode (display)
+
                 list = m_oBlogController.ListBlogs(PortalId, m_PersonalBlogID, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
                 lstBlogs.DataSource = list
                 lstBlogs.DataBind()

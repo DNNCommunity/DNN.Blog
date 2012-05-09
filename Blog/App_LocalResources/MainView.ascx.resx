@@ -180,4 +180,7 @@
   <data name="BlogPartTitle.Text" xml:space="preserve">
     <value>Add Blog Part to Page</value>
   </data>
+  <data name="AddPart.Text" xml:space="preserve">
+    <value>Add Blog Part</value>
+  </data>
 </root>

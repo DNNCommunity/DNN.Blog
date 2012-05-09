@@ -194,7 +194,7 @@
     <value>Picture</value>
   </data>
   <data name="secEntryOptions.Text" xml:space="preserve">
-    <value>Entry Options</value>
+    <value>Options</value>
   </data>
   <data name="lblEntryOptions.Text" xml:space="preserve">
     <value>Entry Options</value>
@@ -248,7 +248,7 @@
     <value>Save as draft</value>
   </data>
   <data name="BlogContent.Text" xml:space="preserve">
-    <value>Entry Content</value>
+    <value>Content</value>
   </data>
   <data name="lblAllowComments.Text" xml:space="preserve">
     <value>Enable Comments</value>
@@ -276,5 +276,14 @@
   </data>
   <data name="PublishTimeZoneNote.Text" xml:space="preserve">
     <value>The publish date is based on your profile timezone of: </value>
+  </data>
+  <data name="cmdDraft.Text" xml:space="preserve">
+    <value>Save Draft</value>
+  </data>
+  <data name="cmdPublish.Text" xml:space="preserve">
+    <value>Publish</value>
+  </data>
+  <data name="ControlTitle_edit_entry.Text" xml:space="preserve">
+    <value>Entry Editing</value>
   </data>
 </root>

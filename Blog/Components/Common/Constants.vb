@@ -47,18 +47,23 @@ Namespace Components.Common
         Public Const VocabSuffixCacheKey As String = "Vocabulary_"
         Public Const VocabularySuffixCacheKey As String = "Vocabulary_"
         Public Const ContentItemTermsCacheKey As String = "ContentItem_Terms_"
-        Public Const ArchiveSettingsCacheKey As String = "ArchiveViewSettings_"
+        Public Const ArchiveSettingsCacheKey As String = "ArchiveSettings_"
+        Public Const CategorySettingsCacheKey As String = "CategorySettings_"
+        Public Const TagSettingsCacheKey As String = "TagSettings_"
+        Public Const RosterSettingsCacheKey As String = "RosterSettings_"
 
 #End Region
 
 #Region "Module Settings"
 
-        Public Const TagModuleTagDisplayMode As String = "TagDisplayMode"
-        Public Const TagModuleCloudSkin As String = "TagCloudSkin"
-
         Public Const SettingArchiveDisplayMode As String = "BLOG_ARCHIVE_DISPLAYMODE"
         Public Const SettingListDisplayMode As String = "BLOG_ARCHIVE_LISTMODE"
         Public Const SettingEnableArchiveCss As String = "BLOG_ARCHVE_ENABLECSS"
+        Public Const SettingCategoryDisplayMode As String = "BLOG_CATEGORY_DISPLAYMODE"
+        Public Const SettingCategoryTreeSkin As String = "BLOG_CATEGORY_TREESKIN"
+        Public Const SettingTagDisplayMode As String = "TagDisplayMode"
+        Public Const SettingCloudSkin As String = "BLOG_TAG_CLOUDSKIN"
+        Public Const SettingRosterDisplayMode As String = "BLOG_ROSTER_DISPLAYMODE"
 
 #End Region
 

@@ -27,11 +27,10 @@ Namespace Components.Settings
 
         Private _allSettings As Hashtable
         Private _tabModuleId As Integer = -1
+
         Private _ArchiveDisplayMode As String = "List"
         Private _ListDisplayMode As String = "DropDown"
         Private _EnableArchiveCss As Boolean = True
-
-        ' Not part of Beta 2
         Private _CalendarMode As String = "ASPNET"
         Private _CalendarSkin As String = "Default"
 
@@ -42,6 +41,7 @@ Namespace Components.Settings
         Public Sub New(ByVal TabModuleId As Integer)
             _tabModuleId = TabModuleId
             _allSettings = (New DotNetNuke.Entities.Modules.ModuleController).GetTabModuleSettings(_tabModuleId)
+
             Globals.ReadValue(_allSettings, Constants.SettingArchiveDisplayMode, ArchiveDisplayMode)
             Globals.ReadValue(_allSettings, Constants.SettingListDisplayMode, ListDisplayMode)
             Globals.ReadValue(_allSettings, Constants.SettingEnableArchiveCss, EnableArchiveCss)

@@ -131,15 +131,6 @@ Partial Public Class EditEntry
     Protected WithEvents valDescription As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
     '''<summary>
-    '''pnlDescOpt control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents pnlDescOpt As Global.System.Web.UI.WebControls.Panel
-
-    '''<summary>
     '''lblDescription control.
     '''</summary>
     '''<remarks>
