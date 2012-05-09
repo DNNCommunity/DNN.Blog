@@ -55,6 +55,6 @@
 			<li>Comments look a bit odd. Awaiting Journal functionality not available in core 6.2 Beta 2.</li>
 			<li>Recent comments missing (this is related to the item above).</li>
 			<li>Author images look different from others seen in social.</li>
-			<li>IUpgradeable migration functioning, not completed (for taxonomy, conversion to UTC and comments).</li>
+			<li>IUpgradeable migration functioning, not completed (used for taxonomy, conversion to UTC and comments).</li>
 		</ul>
 </div>
