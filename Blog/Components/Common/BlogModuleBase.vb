@@ -98,11 +98,17 @@ Namespace Components.Common
    End Get
   End Property
 
+  Public ReadOnly Property UICulture As Globalization.CultureInfo
+   Get
+    Return Threading.Thread.CurrentThread.CurrentCulture
+   End Get
+  End Property
+
   Public ReadOnly Property UITimeZone As TimeZoneInfo
    Get
     If _uiTimezone Is Nothing Then
      _uiTimezone = ModuleContext.PortalSettings.TimeZone
-     If UserInfo.Profile.PreferredLocale IsNot Nothing Then
+     If UserInfo.Profile.PreferredTimeZone IsNot Nothing Then
       _uiTimezone = UserInfo.Profile.PreferredTimeZone
      End If
     End If
