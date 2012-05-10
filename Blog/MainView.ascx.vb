@@ -168,13 +168,13 @@ Partial Public Class MainView
                         isBlogOwner = True
                     End If
 
-                    liView.Visible = objSecurity.CanAddEntry(isBlogOwner, objBlog.EnableGhostWriter)
+                    liView.Visible = objSecurity.CanAddEntry(isBlogOwner, objBlog.AuthorMode)
                     hlView.NavigateUrl = Links.ViewBlog(ModuleContext, SpecificBlogId)
 
                     liEditBlog.Visible = objSecurity.CanEditBlog(isBlogOwner)
                     hlEditBlog.NavigateUrl = Links.EditBlog(ModuleContext, SpecificBlogId)
 
-                    liAddEntry.Visible = objSecurity.CanAddEntry(isBlogOwner, objBlog.EnableGhostWriter)
+                    liAddEntry.Visible = objSecurity.CanAddEntry(isBlogOwner, objBlog.AuthorMode)
                     hlAddEntry.NavigateUrl = Links.EditEntry(ModuleContext, objBlog.BlogID, -1)
                 End If
             Else
@@ -191,20 +191,20 @@ Partial Public Class MainView
                                 isBlogOwner = True
                             End If
 
-                            liView.Visible = objSecurity.CanAddEntry(isBlogOwner, objBlog.EnableGhostWriter)
+                            liView.Visible = objSecurity.CanAddEntry(isBlogOwner, objBlog.AuthorMode)
                             hlView.NavigateUrl = Links.ViewBlog(ModuleContext, objBlog.BlogID)
 
                             liEditBlog.Visible = objSecurity.CanEditBlog(isBlogOwner)
                             hlEditBlog.NavigateUrl = Links.EditBlog(ModuleContext, objBlog.BlogID)
 
-                            liAddEntry.Visible = objSecurity.CanAddEntry(isBlogOwner, objBlog.EnableGhostWriter)
+                            liAddEntry.Visible = objSecurity.CanAddEntry(isBlogOwner, objBlog.AuthorMode)
                             hlAddEntry.NavigateUrl = Links.EditEntry(ModuleContext, objBlog.BlogID, -1)
                         End If
                     End If
                 Else
                     ' no blogid, entryid in url (see if the user has a blog)
                     Dim userHasBlog As Boolean
-                    objBlog = cntBlog.GetBlogByUserID(ModuleContext.PortalId, ModuleContext.PortalSettings.UserId)
+                    objBlog = cntBlog.GetUsersParentBlogById(ModuleContext.PortalId, ModuleContext.PortalSettings.UserId)
 
                     If objBlog IsNot Nothing Then
                         userHasBlog = True

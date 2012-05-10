@@ -41,7 +41,7 @@ Namespace Components.Entities
         Private _User As UserInfo
         Private _userName As String
         Private _userFullName As String
-        Private _EnableGhostWriter As Boolean = False
+        Private _AuthorMode As Integer = 0
 
 #End Region
 
@@ -118,23 +118,6 @@ Namespace Components.Entities
             End Set
         End Property
 
-        'Public Property DateFormat() As String
-        '    Get
-        '        If _DateFormat Is Nothing Then
-        '            Return "g"
-        '        Else
-        '            If _DateFormat.Length = 0 Then
-        '                Return "g"
-        '            Else
-        '                Return _DateFormat
-        '            End If
-        '        End If
-        '    End Get
-        '    Set(ByVal Value As String)
-        '        _DateFormat = Value
-        '    End Set
-        'End Property
-
         Public Property User() As UserInfo
             Get
                 If _User Is Nothing Then
@@ -151,17 +134,17 @@ Namespace Components.Entities
         End Property
 
         ''' <summary>
-        ''' Determines if the blog permits ghost writing.
+        ''' Determines how the blog will permit and credit entries posted under this blog.
         ''' </summary>
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Property EnableGhostWriter() As Boolean
+        Public Property AuthorMode() As Integer
             Get
-                Return _EnableGhostWriter
+                Return _AuthorMode
             End Get
-            Set(ByVal Value As Boolean)
-                _EnableGhostWriter = Value
+            Set(ByVal Value As Integer)
+                _AuthorMode = Value
             End Set
         End Property
 
@@ -202,7 +185,7 @@ Namespace Components.Entities
             UseCaptcha = Convert.ToBoolean(Null.SetNull(dr.Item("UseCaptcha"), UseCaptcha))
             BlogPostCount = Convert.ToInt32(Null.SetNull(dr.Item("BlogPostCount"), BlogPostCount))
             UserID = Convert.ToInt32(Null.SetNull(dr.Item("UserID"), UserID))
-            EnableGhostWriter = Convert.ToBoolean(Null.SetNull(dr.Item("EnableGhostWriter"), EnableGhostWriter))
+            AuthorMode = Convert.ToInt32(Null.SetNull(dr.Item("AuthorMode"), AuthorMode))
         End Sub
 
         ''' <summary>
@@ -281,8 +264,8 @@ Namespace Components.Entities
                     Return PropertyAccess.Boolean2LocalizedYesNo(Me.UseCaptcha, formatProvider)
                 Case "userid"
                     Return (Me.UserID.ToString(OutputFormat, formatProvider))
-                Case "enableghostwriter"
-                    Return PropertyAccess.Boolean2LocalizedYesNo(Me.EnableGhostWriter, formatProvider)
+                Case "authormode"
+                    Return (Me.AuthorMode.ToString(OutputFormat, formatProvider))
                 Case Else
                     PropertyNotFound = True
             End Select
@@ -295,6 +278,7 @@ Namespace Components.Entities
                 Return CacheLevel.fullyCacheable
             End Get
         End Property
+
 #End Region
 
 #Region "IXmlSerializable Implementation"
@@ -364,7 +348,9 @@ Namespace Components.Entities
                 If Not Int32.TryParse(readElement(reader, "UserID"), UserID) Then
                     UserID = Null.NullInteger
                 End If
-                Boolean.TryParse(readElement(reader, "EnableGhostWriter"), EnableGhostWriter)
+                If Not Int32.TryParse(readElement(reader, "AuthorMode"), AuthorMode) Then
+                    AuthorMode = 0
+                End If
             Catch ex As Exception
                 ' log exception as DNN import routine does not do that
                 DotNetNuke.Services.Exceptions.LogException(ex)
@@ -407,11 +393,12 @@ Namespace Components.Entities
             writer.WriteElementString("Title", Title)
             writer.WriteElementString("UseCaptcha", UseCaptcha.ToString())
             writer.WriteElementString("UserID", UserID.ToString())
-            writer.WriteElementString("EnableGhostWriter", EnableGhostWriter.ToString())
+            writer.WriteElementString("AuthorMode", AuthorMode.ToString())
             writer.WriteEndElement()
         End Sub
 
 #End Region
 
     End Class
+
 End Namespace

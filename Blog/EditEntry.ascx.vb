@@ -97,7 +97,7 @@ Partial Class EditEntry
    ElseIf SpecificBlogId > 0 Then
     m_oBlog = m_oBlogController.GetBlog(SpecificBlogId)
    Else
-    m_oBlog = cntBlog.GetBlogByUserID(Me.PortalId, Me.UserId)
+                m_oBlog = cntBlog.GetUsersParentBlogById(Me.PortalId, Me.UserId)
    End If
 
    If m_oBlog Is Nothing Then
@@ -110,9 +110,9 @@ Partial Class EditEntry
 
    Dim isOwner As Boolean = (m_oBlog.UserID = ModuleContext.PortalSettings.UserId)
 
-   If (objSecurity.CanAddEntry(isOwner, m_oBlog.EnableGhostWriter) = False) Then
-    Response.Redirect(NavigateURL("Access Denied"))
-   End If
+            If (objSecurity.CanAddEntry(isOwner, m_oBlog.AuthorMode) = False) Then
+                Response.Redirect(NavigateURL("Access Denied"))
+            End If
 
    If m_oBlog.ParentBlogID > -1 Then
     m_oParentBlog = cntBlog.GetBlog(m_oBlog.ParentBlogID)
@@ -134,7 +134,7 @@ Partial Class EditEntry
    If Not Page.IsPostBack Then
     PopulateCategories()
 
-    Dim colBlogs As ArrayList = m_oBlogController.ListBlogs(Me.PortalId, m_oParentBlog.BlogID, True)
+                Dim colBlogs As List(Of BlogInfo) = m_oBlogController.GetParentsChildBlogs(Me.PortalId, m_oParentBlog.BlogID, True)
 
     cboChildBlogs.DataSource = colBlogs
     cboChildBlogs.DataBind()

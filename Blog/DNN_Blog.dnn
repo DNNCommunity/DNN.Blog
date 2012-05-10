@@ -236,7 +236,7 @@
 			<assembly>
 			  <name>DotNetNuke.Modules.Blog.dll</name>
 			  <sourceFileName>DotNetNuke.Modules.Blog.dll</sourceFileName>
-			  <version>04.05.00</version>
+			  <version>05.00.00</version>
 			</assembly>
 			<assembly>
 			  <name>CookComputing.XmlRpcV2.dll</name>
@@ -319,8 +319,8 @@
 				<version>05.00.00</version>
 			</script>
 			<script type="Install">
-			  <name>Install.04.00.00.SqlDataProvider</name>
-			  <version>04.00.00</version>
+			  <name>Install.05.00.00.SqlDataProvider</name>
+			  <version>05.00.00</version>
 			</script>
 			<script type="UnInstall">
 			  <name>Uninstall.SqlDataProvider</name>

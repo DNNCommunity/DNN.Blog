@@ -19,56 +19,74 @@
 '
 Imports System
 Imports DotNetNuke.Modules.Blog.Providers.Data
-Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Modules.Blog.Components.Entities
+Imports System.Linq
 
 Namespace Components.Controllers
 
     Public Class BlogController
 
-        Public Function GetBlog(ByVal blogID As Integer) As BlogInfo
-            Return CType(CBO.FillObject(DataProvider.Instance().GetBlog(blogID), GetType(BlogInfo)), BlogInfo)
+#Region "linq"
+
+        Public Function GetUsersParentBlogByName(ByVal portalId As Integer, ByVal username As String) As BlogInfo
+            Dim colPortalBlogs As List(Of BlogInfo) = GetAllPortalBlogs(portalId)
+            Return colPortalBlogs.Where(Function(t) t.UserName = username AndAlso t.ParentBlogID < 1).FirstOrDefault
         End Function
 
-        Public Function GetBlogByUserID(ByVal PortalID As Integer, ByVal UserID As Integer) As BlogInfo
-            Return CType(CBO.FillObject(DataProvider.Instance().GetBlogByUserID(PortalID, UserID), GetType(BlogInfo)), BlogInfo)
+        Public Function GetUsersParentBlogById(ByVal portalId As Integer, ByVal userId As Integer) As BlogInfo
+            Dim colPortalBlogs As List(Of BlogInfo) = GetAllPortalBlogs(portalId)
+            Return colPortalBlogs.Where(Function(t) t.UserID = userId AndAlso t.ParentBlogID < 1).FirstOrDefault
         End Function
 
-        Public Function GetBlogByUserName(ByVal PortalID As Integer, ByVal UserName As String) As BlogInfo
-            Return CType(CBO.FillObject(DataProvider.Instance().GetBlogByUserName(PortalID, UserName), GetType(BlogInfo)), BlogInfo)
+        Public Function GetUsersBlogs(ByVal portalId As Integer, ByVal username As String) As List(Of BlogInfo)
+            Dim colPortalBlogs As List(Of BlogInfo) = GetAllPortalBlogs(portalId)
+            Return colPortalBlogs.Where(Function(t) t.UserName = username).ToList
         End Function
 
-        Public Function GetBlogsByUserName(ByVal PortalID As Integer, ByVal UserName As String) As List(Of BlogInfo)
-            Return CBO.FillCollection(Of BlogInfo)(DataProvider.Instance().GetBlogsByUserName(PortalID, UserName))
+        Public Function GetParentsChildBlogs(ByVal portalId As Integer, ByVal parentBlogId As Integer, ByVal ShowNonPublic As Boolean) As List(Of BlogInfo)
+            Dim colPortalBlogs As List(Of BlogInfo) = GetAllPortalBlogs(portalId)
+            If ShowNonPublic Then
+                Return colPortalBlogs.Where(Function(t) t.PortalID = portalId AndAlso t.ParentBlogID = parentBlogId).ToList
+            Else
+                Return colPortalBlogs.Where(Function(t) t.PortalID = portalId AndAlso t.ParentBlogID = parentBlogId AndAlso t.Public = True).ToList
+            End If
         End Function
 
-        Public Function ListBlogs(ByVal PortalID As Integer, ByVal ParentBlogID As Integer, ByVal ShowNonPublic As Boolean) As ArrayList
-            Return CBO.FillCollection(DataProvider.Instance().ListBlogs(PortalID, ParentBlogID, ShowNonPublic), GetType(BlogInfo))
+        Public Function GetPortalBlogs(ByVal portalId As Integer, ByVal ShowNonPublic As Boolean) As List(Of BlogInfo)
+            Dim colPortalBlogs As List(Of BlogInfo) = GetAllPortalBlogs(portalId)
+            If ShowNonPublic Then
+                Return colPortalBlogs
+            Else
+                Return colPortalBlogs.Where(Function(t) t.PortalID = portalId AndAlso t.Public = True).ToList
+            End If
         End Function
 
-        Public Function ListBlogsByPortal(ByVal PortalID As Integer, ByVal ShowNonPublic As Boolean) As ArrayList
-            Return CBO.FillCollection(DataProvider.Instance().ListBlogsByPortal(PortalID, ShowNonPublic), GetType(BlogInfo))
+        Public Function GetPortalParentBlogs(ByVal portalId As Integer) As List(Of BlogInfo)
+            Dim colPortalBlogs As List(Of BlogInfo) = GetAllPortalBlogs(portalId)
+            Return colPortalBlogs.Where(Function(t) t.ParentBlogID = -1).ToList
         End Function
 
-        Public Function ListBlogsRootByPortal(ByVal PortalID As Integer) As ArrayList
-            Return CBO.FillCollection(DataProvider.Instance().ListBlogsRootByPortal(PortalID), GetType(BlogInfo))
+#End Region
+
+        Public Function GetBlog(ByVal blogId As Integer) As BlogInfo
+            Return CType(CBO.FillObject(DataProvider.Instance().GetBlog(blogId), GetType(BlogInfo)), BlogInfo)
         End Function
 
         Public Function AddBlog(ByVal objBlog As BlogInfo) As Integer
             With objBlog
-                Return CType(DataProvider.Instance().AddBlog(.PortalID, .ParentBlogID, .UserID, .Title, .Description, .Public, .AllowComments, .AllowAnonymous, .ShowFullName, .Syndicated, .SyndicateIndependant, .SyndicationURL, .SyndicationEmail, .EmailNotification, .AllowTrackbacks, .AutoTrackback, .MustApproveComments, .MustApproveAnonymous, .MustApproveTrackbacks, .UseCaptcha, .EnableGhostWriter), Integer)
+                Return CType(DataProvider.Instance().AddBlog(.PortalID, .ParentBlogID, .UserID, .Title, .Description, .Public, .AllowComments, .AllowAnonymous, .ShowFullName, .Syndicated, .SyndicateIndependant, .SyndicationURL, .SyndicationEmail, .EmailNotification, .AllowTrackbacks, .AutoTrackback, .MustApproveComments, .MustApproveAnonymous, .MustApproveTrackbacks, .UseCaptcha, .AuthorMode), Integer)
             End With
         End Function
 
         Public Sub UpdateBlog(ByVal objBlog As BlogInfo)
             With objBlog
-                DataProvider.Instance().UpdateBlog(.PortalID, .BlogID, .ParentBlogID, .UserID, .Title, .Description, .Public, .AllowComments, .AllowAnonymous, .ShowFullName, .Syndicated, .SyndicateIndependant, .SyndicationURL, .SyndicationEmail, .EmailNotification, .AllowTrackbacks, .AutoTrackback, .MustApproveComments, .MustApproveAnonymous, .MustApproveTrackbacks, .UseCaptcha, .EnableGhostWriter)
+                DataProvider.Instance().UpdateBlog(.PortalID, .BlogID, .ParentBlogID, .UserID, .Title, .Description, .Public, .AllowComments, .AllowAnonymous, .ShowFullName, .Syndicated, .SyndicateIndependant, .SyndicationURL, .SyndicationEmail, .EmailNotification, .AllowTrackbacks, .AutoTrackback, .MustApproveComments, .MustApproveAnonymous, .MustApproveTrackbacks, .UseCaptcha, .AuthorMode)
             End With
         End Sub
 
-        Public Sub DeleteBlog(ByVal blogID As Integer)
-            DataProvider.Instance().DeleteBlog(blogID)
+        Public Sub DeleteBlog(ByVal blogID As Integer, ByVal portalId As Integer)
+            DataProvider.Instance().DeleteBlog(blogID, portalId)
         End Sub
 
         Public Function GetBlogFromContext() As BlogInfo
@@ -79,7 +97,7 @@ Namespace Components.Controllers
             If Not (Request.Params("BlogID") Is Nothing) Then
                 ReturnBlog = GetBlog(Int32.Parse(Request.Params("BlogID")))
             ElseIf Not Request.Params("Blog") Is Nothing Then
-                ReturnBlog = GetBlogByUserName(PortalSettings.PortalId, Request.Params("Blog"))
+                ReturnBlog = GetUsersParentBlogByName(PortalSettings.PortalId, Request.Params("Blog"))
             End If
 
             If ReturnBlog IsNot Nothing Then
@@ -90,6 +108,33 @@ Namespace Components.Controllers
 
             Return ReturnBlog
         End Function
+
+#Region "Private Methods"
+
+        ''' <summary>
+        ''' Returns a list of all blogs in a portal.
+        ''' </summary>
+        ''' <param name="portalId"></param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Private Function GetAllPortalBlogs(ByVal portalId As Integer) As List(Of BlogInfo)
+            Dim strCacheKey As String = Common.Constants.ModuleCacheKeyPrefix + Common.Constants.PortalBlogsCacheKey & CStr(portalId)
+            Dim colBlogs As List(Of BlogInfo) = CType(DataCache.GetCache(strCacheKey), List(Of BlogInfo))
+
+            If colBlogs Is Nothing Then
+                Dim timeOut As Int32 = Common.Constants.CACHE_TIMEOUT * Convert.ToInt32(DotNetNuke.Entities.Host.Host.PerformanceSetting)
+
+                colBlogs = CBO.FillCollection(Of BlogInfo)(DataProvider.Instance().GetPortalBlogs(portalId))
+
+                'Cache Forum if timeout > 0 and Forum is not null
+                If timeOut > 0 And colBlogs IsNot Nothing Then
+                    DataCache.SetCache(strCacheKey, colBlogs, TimeSpan.FromMinutes(timeOut))
+                End If
+            End If
+            Return colBlogs
+        End Function
+
+#End Region
 
 #Region " 4.5.0 Upgrade"
 
@@ -103,4 +148,5 @@ Namespace Components.Controllers
 #End Region
 
     End Class
+
 End Namespace

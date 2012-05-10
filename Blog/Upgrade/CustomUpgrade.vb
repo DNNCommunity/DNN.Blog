@@ -222,7 +222,7 @@ Public Class CustomUpgrade
                 For Each bi As BlogInfo In _blogs
                     oldBlogId = bi.BlogID
 
-                    _blogInfo = _BlogController.GetBlogByUserName(bi.PortalID, bi.UserName)
+                    _blogInfo = _BlogController.GetUsersParentBlogByName(bi.PortalID, bi.UserName)
                     If Not IsNothing(_blogInfo) Then           ' blog for this user already exsits
                         bi.ParentBlogID = _blogInfo.BlogID
                         bi.AllowTrackbacks = True

@@ -150,7 +150,7 @@ Partial Public Class EditBlog
                     chkEmailNotification.Checked = objBlog.EmailNotification
                     chkAutoTrackbacks.Checked = objBlog.AutoTrackback
                     chkCaptcha.Checked = objBlog.UseCaptcha
-                    chkEnableGhostWriting.Checked = objBlog.EnableGhostWriter
+                    ddlAuthorMode.SelectedValue = objBlog.AuthorMode.ToString
 
                     chkSyndicate.Checked = objBlog.Syndicated
                     If objBlog.ParentBlogID = -1 Then
@@ -174,7 +174,7 @@ Partial Public Class EditBlog
 
                         lstChildBlogs.DataTextField = "Title"
                         lstChildBlogs.DataValueField = "BlogID"
-                        lstChildBlogs.DataSource = cntBlog.ListBlogs(Me.PortalId, objBlog.BlogID, True)
+                        lstChildBlogs.DataSource = cntBlog.GetParentsChildBlogs(Me.PortalId, objBlog.BlogID, True)
                         lstChildBlogs.DataBind()
                     Else
                         dnnSitePanelChildBlogs.Visible = False
@@ -212,7 +212,7 @@ Partial Public Class EditBlog
         Try
             If Not objBlog Is Nothing Then
                 Dim cntBlog As New BlogController
-                cntBlog.DeleteBlog(objBlog.BlogID)
+                cntBlog.DeleteBlog(objBlog.BlogID, ModuleContext.PortalId)
             End If
             Response.Redirect(NavigateURL(), True)
         Catch exc As Exception    'Module failed to load
@@ -252,7 +252,7 @@ Partial Public Class EditBlog
         If Not lstChildBlogs.SelectedItem Is Nothing Then
             Dim cntBlog As New BlogController
 
-            cntBlog.DeleteBlog(CType(lstChildBlogs.SelectedValue, Integer))
+            cntBlog.DeleteBlog(CType(lstChildBlogs.SelectedValue, Integer), ModuleContext.PortalId)
             lstChildBlogs.Items.Remove(lstChildBlogs.SelectedItem)
         End If
     End Sub
@@ -293,21 +293,17 @@ Partial Public Class EditBlog
                     End With
                 End If
                 With objBlog
-                    'bind text values to object
                     .Title = txtTitle.Text
                     .Description = txtDescription.Text
                     .Public = chkPublic.Checked
                     .ShowFullName = CType(rdoUserName.SelectedItem.Value, Boolean)
-                    '.Culture = cboCulture.SelectedItem.Value
-                    '.DateFormat = cboDateFormat.SelectedItem.Value
-                    '.TimeZone = TimeZoneInfo.FindSystemTimeZoneById(ddTimeZone.SelectedValue)
                     .Syndicated = chkSyndicate.Checked
                     .SyndicateIndependant = chkSyndicateIndependant.Checked
                     .SyndicationEmail = txtSyndicationEmail.Text
                     .EmailNotification = chkEmailNotification.Checked
                     .AutoTrackback = chkAutoTrackbacks.Checked
                     .UseCaptcha = chkCaptcha.Checked
-                    .EnableGhostWriter = chkEnableGhostWriting.Checked
+                    .AuthorMode = Convert.ToInt32(ddlAuthorMode.SelectedItem.Value)
 
                     Select Case rdoUsersComments.SelectedItem.Value
                         Case "Allow"

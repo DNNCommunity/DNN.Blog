@@ -47,7 +47,7 @@ Partial Class Search
             End If
             If Not Page.IsPostBack Then
                 Dim objBlogs As New BlogController
-                Dim list As ArrayList
+                Dim list As List(Of BlogInfo)
 
                 m_PersonalBlogID = BlogSettings.PageBlogs
                 If m_PersonalBlogID <> -1 Then
@@ -56,10 +56,10 @@ Partial Class Search
                 If m_PersonalBlogID <> -1 Then
                     Dim m_oBlog As New BlogInfo
                     m_oBlog = objBlogs.GetBlog(m_PersonalBlogID)
-                    list = New ArrayList
+                    list = New List(Of BlogInfo)
                     list.Add(m_oBlog)
                 Else
-                    list = objBlogs.ListBlogs(PortalId, -1, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
+                    list = objBlogs.GetParentsChildBlogs(PortalId, -1, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
                 End If
 
                 If list.Count < 2 Then

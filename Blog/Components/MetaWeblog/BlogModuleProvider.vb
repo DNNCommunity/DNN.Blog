@@ -143,7 +143,7 @@ Namespace Components.MetaWeblog
             End If
 
             ' Retrieve the blogs if there are any
-            Dim blogsList As List(Of BlogInfo) = blogController.GetBlogsByUserName(userInfo.PortalID, userInfo.Username)
+            Dim blogsList As List(Of BlogInfo) = blogController.GetUsersBlogs(userInfo.PortalID, userInfo.Username)
 
             If Not blogsList Is Nothing Then
                 For Each blog As BlogInfo In blogsList
@@ -224,7 +224,7 @@ Namespace Components.MetaWeblog
 
             Dim itemArray As Item() = Nothing
             Dim objBlogController As New BlogController
-            Dim intBlogID As Integer = objBlogController.GetBlogByUserID(portalSettings.PortalId, userInfo.UserID).BlogID
+            Dim intBlogID As Integer = objBlogController.GetUsersParentBlogById(portalSettings.PortalId, userInfo.UserID).BlogID
             Dim arEntries As List(Of EntryInfo) = New EntryController().ListEntriesByBlog(intBlogID, DateTime.Now.ToUniversalTime(), blogSettings.RecentEntriesMax, 1, True, True)
 
             ' Find which is the least, numberOfPosts or arEntries.Count

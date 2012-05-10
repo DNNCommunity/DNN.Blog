@@ -51,8 +51,8 @@ Namespace Components.Common
             Return HasEdit Or (HasBlogger AndAlso IsOwner)
         End Function
 
-        Public Function CanAddEntry(ByVal IsOwner As Boolean, ByVal BlogPermitsGhost As Boolean) As Boolean
-            Return HasEdit Or (HasGhost AndAlso BlogPermitsGhost) Or (HasBlogger AndAlso IsOwner)
+        Public Function CanAddEntry(ByVal IsOwner As Boolean, ByVal BlogAuthorMode As Integer) As Boolean
+            Return HasEdit Or (HasGhost AndAlso BlogAuthorMode = 1) Or (HasBlogger AndAlso IsOwner) Or (HasBlogger AndAlso BlogAuthorMode = 2)
         End Function
 
         <Obsolete("This method is deprecated, use specific functions instead (CanCreateBlog, CanEditBlog, CanAddEntry, etc.)")> _

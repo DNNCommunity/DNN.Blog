@@ -48,7 +48,7 @@ Partial Class BlogList
 
     Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
-            Dim list As ArrayList
+            Dim list As List(Of BlogInfo)
             'DR-04/17/2009-BLG-9754
             m_BlogTitleStringTemplate = Localization.GetString("BlogTitleStringTemplate", LocalResourceFile)
 
@@ -64,7 +64,7 @@ Partial Class BlogList
             If Not Page.IsPostBack Then
                 ' new settings to determine view mode (display)
 
-                list = m_oBlogController.ListBlogs(PortalId, m_PersonalBlogID, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
+                list = m_oBlogController.GetParentsChildBlogs(PortalId, m_PersonalBlogID, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
                 lstBlogs.DataSource = list
                 lstBlogs.DataBind()
 
@@ -114,7 +114,7 @@ Partial Class BlogList
                 Dim tdBlogChildren As System.Web.UI.WebControls.TableCell = CType(e.Item.FindControl("tdBlogChildren"), System.Web.UI.WebControls.TableCell)
                 lstBlogChildren = CType(e.Item.FindControl("lstBlogChildren"), System.Web.UI.WebControls.DataList)
                 AddHandler lstBlogChildren.ItemDataBound, AddressOf lstBlogChildren_ItemDataBound
-                lstBlogChildren.DataSource = m_oBlogController.ListBlogs(Me.PortalId, CType(e.Item.DataItem, BlogInfo).BlogID, (CType(e.Item.DataItem, BlogInfo).UserID = Me.UserId Or DotNetNuke.Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString())))
+                lstBlogChildren.DataSource = m_oBlogController.GetParentsChildBlogs(Me.PortalId, CType(e.Item.DataItem, BlogInfo).BlogID, (CType(e.Item.DataItem, BlogInfo).UserID = Me.UserId Or DotNetNuke.Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString())))
                 lstBlogChildren.DataBind()
                 If lstBlogChildren.Items.Count > 0 Then
                     trBlogChildren.Visible = True

@@ -53,7 +53,7 @@ FROM
 WHERE [EntryID] = @EntryID 
 		AND (C.[Approved]=1 OR C.[Approved] <> @ShowNonApproved)
 ORDER BY
-    C.[AddedDate]
+	C.[AddedDate]
 
 GO
 
@@ -174,25 +174,6 @@ If NOT @PermaLink IS NULL
 	UPDATE {databaseOwner}{objectQualifier}Blog_Entries SET PermaLink=@PermaLink + convert(nvarchar(10),EntryID) WHERE BlogID=@BlogID AND PermaLink IS NULL
 
 SELECT @EntryID
-
-GO
-
-/**************************************************************
-* Update Blog_GetBlogByUserID to alleviate an issue that arrises 
-* When there is more than one blog associated with a user account.
-* Instead of failing, we'll just return the Min BlogId
-**************************************************************/
-
-ALTER PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlogByUserID 
-@PortalID int,
-@UserID int
-
-AS
-
-DECLARE @BlogID int
-
-SELECT @BlogID = (SELECT Min(BlogID) FROM {databaseOwner}{objectQualifier}Blog_Blogs WHERE UserID=@UserID AND PortalID=@PortalID AND (ParentBlogID IS NULL OR ParentBlogID=-1))
-EXEC {databaseOwner}{objectQualifier}Blog_GetBlog @BlogID
 
 GO
 

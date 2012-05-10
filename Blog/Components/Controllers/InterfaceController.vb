@@ -65,7 +65,7 @@ Namespace Components.Controllers
         Public Function ExportModule(ByVal ModuleID As Integer) As String Implements DotNetNuke.Entities.Modules.IPortable.ExportModule
             Dim strXML As String = "<blogs>"
             Dim m_PortalID As Integer
-            Dim m_Blogs As ArrayList
+            Dim m_Blogs As List(Of BlogInfo)
             Dim m_Entries As List(Of EntryInfo)
             Dim m_Comments As ArrayList
             Dim m_ModuleController As New ModuleController
@@ -77,7 +77,7 @@ Namespace Components.Controllers
                 Dim m_BlogController As New BlogController
                 Dim m_EntryController As New EntryController
                 Dim m_CommentController As New CommentController
-                m_Blogs = m_BlogController.ListBlogsByPortal(m_PortalID, True)
+                m_Blogs = m_BlogController.GetPortalBlogs(m_PortalID, True)
                 For Each blog As BlogInfo In m_Blogs
                     strXML += "<blog>"
                     strXML += "<allowAnonymous>" & XmlUtils.XMLEncode(blog.AllowAnonymous.ToString) & "</allowAnonymous>"
@@ -275,7 +275,7 @@ Namespace Components.Controllers
             End If
             Dim m_BlogController As New BlogController
             Dim m_BlogInfo As New BlogInfo
-            m_BlogInfo = m_BlogController.GetBlogByUserName(m_PortalSettings.PortalId, blog.UserName)
+            m_BlogInfo = m_BlogController.GetUsersParentBlogByName(m_PortalSettings.PortalId, blog.UserName)
             If Not IsNothing(m_BlogInfo) Then           ' blog for this user already exsits
                 blog.ParentBlogID = m_BlogInfo.BlogID
                 retVal = m_BlogController.AddBlog(blog)

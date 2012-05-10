@@ -112,44 +112,24 @@ Namespace Providers.Data
 #Region "Blog_Blogs Methods"
 
   Public Overrides Function GetBlog(ByVal blogID As Integer) As IDataReader
-   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_GetBlog", blogID), IDataReader)
+            Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_Blog_Get", blogID), IDataReader)
   End Function
 
-  Public Overrides Function GetBlogByUserName(ByVal PortalID As Integer, ByVal UserName As String) As IDataReader
-   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_GetBlogByUserName", PortalID, UserName), IDataReader)
-  End Function
+        Public Overrides Function GetPortalBlogs(ByVal portalId As Integer) As IDataReader
+            Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_Blog_GetPortal", portalId), IDataReader)
+        End Function
 
-  Public Overrides Function GetBlogsByUserName(ByVal PortalID As Integer, ByVal UserName As String) As IDataReader
-   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_GetBlogsByUserName", PortalID, UserName), IDataReader)
-  End Function
+        Public Overrides Function AddBlog(ByVal PortalID As Integer, ByVal ParentBlogID As Integer, ByVal userID As Integer, ByVal title As String, ByVal description As String, ByVal [Public] As Boolean, ByVal allowComments As Boolean, ByVal allowAnonymous As Boolean, ByVal ShowFullName As Boolean, ByVal syndicated As Boolean, ByVal SyndicateIndependant As Boolean, ByVal SyndicationURL As String, ByVal SyndicationEmail As String, ByVal EmailNotification As Boolean, ByVal AllowTrackbacks As Boolean, ByVal AutoTrackback As Boolean, ByVal MustApproveComments As Boolean, ByVal MustApproveAnonymous As Boolean, ByVal MustApproveTrackbacks As Boolean, ByVal UseCaptcha As Boolean, ByVal EnableGhostWriter As Integer) As Integer
+            Return CType(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_Blog_Add", PortalID, ParentBlogID, userID, title, Null.GetNull(description, DBNull.Value), [Public], allowComments, allowAnonymous, ShowFullName, syndicated, SyndicateIndependant, SyndicationURL, SyndicationEmail, EmailNotification, AllowTrackbacks, AutoTrackback, MustApproveComments, MustApproveAnonymous, MustApproveTrackbacks, UseCaptcha, EnableGhostWriter), Integer)
+        End Function
 
-  Public Overrides Function GetBlogByUserID(ByVal PortalID As Integer, ByVal UserID As Integer) As IDataReader
-   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_GetBlogByUserID", PortalID, UserID), IDataReader)
-  End Function
+        Public Overrides Sub UpdateBlog(ByVal PortalID As Integer, ByVal blogID As Integer, ByVal ParentBlogID As Integer, ByVal userID As Integer, ByVal title As String, ByVal description As String, ByVal [Public] As Boolean, ByVal allowComments As Boolean, ByVal allowAnonymous As Boolean, ByVal ShowFullName As Boolean, ByVal syndicated As Boolean, ByVal SyndicateIndependant As Boolean, ByVal SyndicationURL As String, ByVal SyndicationEmail As String, ByVal EmailNotification As Boolean, ByVal AllowTrackbacks As Boolean, ByVal AutoTrackback As Boolean, ByVal MustApproveComments As Boolean, ByVal MustApproveAnonymous As Boolean, ByVal MustApproveTrackbacks As Boolean, ByVal UseCaptcha As Boolean, ByVal EnableGhostWriter As Integer)
+            SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_Blog_Update", PortalID, blogID, ParentBlogID, userID, title, Null.GetNull(description, DBNull.Value), [Public], allowComments, allowAnonymous, ShowFullName, syndicated, SyndicateIndependant, SyndicationURL, SyndicationEmail, EmailNotification, AllowTrackbacks, AutoTrackback, MustApproveComments, MustApproveAnonymous, MustApproveTrackbacks, UseCaptcha, EnableGhostWriter)
+        End Sub
 
-  Public Overrides Function ListBlogs(ByVal PortalID As Integer, ByVal ParentBlogID As Integer, ByVal ShowNonPublic As Boolean) As IDataReader
-   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_ListBlogs", PortalID, ParentBlogID, ShowNonPublic), IDataReader)
-  End Function
-
-  Public Overrides Function ListBlogsByPortal(ByVal PortalID As Integer, ByVal ShowNonPublic As Boolean) As IDataReader
-   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_ListBlogsByPortal", PortalID, ShowNonPublic), IDataReader)
-  End Function
-
-  Public Overrides Function ListBlogsRootByPortal(ByVal PortalID As Integer) As IDataReader
-   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_ListBlogsRootByPortal", PortalID), IDataReader)
-  End Function
-
-  Public Overrides Function AddBlog(ByVal PortalID As Integer, ByVal ParentBlogID As Integer, ByVal userID As Integer, ByVal title As String, ByVal description As String, ByVal [Public] As Boolean, ByVal allowComments As Boolean, ByVal allowAnonymous As Boolean, ByVal ShowFullName As Boolean, ByVal syndicated As Boolean, ByVal SyndicateIndependant As Boolean, ByVal SyndicationURL As String, ByVal SyndicationEmail As String, ByVal EmailNotification As Boolean, ByVal AllowTrackbacks As Boolean, ByVal AutoTrackback As Boolean, ByVal MustApproveComments As Boolean, ByVal MustApproveAnonymous As Boolean, ByVal MustApproveTrackbacks As Boolean, ByVal UseCaptcha As Boolean, ByVal EnableGhostWriter As Boolean) As Integer
-   Return CType(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_AddBlog", PortalID, ParentBlogID, userID, title, Null.GetNull(description, DBNull.Value), [Public], allowComments, allowAnonymous, ShowFullName, syndicated, SyndicateIndependant, SyndicationURL, SyndicationEmail, EmailNotification, AllowTrackbacks, AutoTrackback, MustApproveComments, MustApproveAnonymous, MustApproveTrackbacks, UseCaptcha, EnableGhostWriter), Integer)
-  End Function
-
-  Public Overrides Sub UpdateBlog(ByVal PortalID As Integer, ByVal blogID As Integer, ByVal ParentBlogID As Integer, ByVal userID As Integer, ByVal title As String, ByVal description As String, ByVal [Public] As Boolean, ByVal allowComments As Boolean, ByVal allowAnonymous As Boolean, ByVal ShowFullName As Boolean, ByVal syndicated As Boolean, ByVal SyndicateIndependant As Boolean, ByVal SyndicationURL As String, ByVal SyndicationEmail As String, ByVal EmailNotification As Boolean, ByVal AllowTrackbacks As Boolean, ByVal AutoTrackback As Boolean, ByVal MustApproveComments As Boolean, ByVal MustApproveAnonymous As Boolean, ByVal MustApproveTrackbacks As Boolean, ByVal UseCaptcha As Boolean, ByVal EnableGhostWriter As Boolean)
-   SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_UpdateBlog", PortalID, blogID, ParentBlogID, userID, title, Null.GetNull(description, DBNull.Value), [Public], allowComments, allowAnonymous, ShowFullName, syndicated, SyndicateIndependant, SyndicationURL, SyndicationEmail, EmailNotification, AllowTrackbacks, AutoTrackback, MustApproveComments, MustApproveAnonymous, MustApproveTrackbacks, UseCaptcha, EnableGhostWriter)
-  End Sub
-
-  Public Overrides Sub DeleteBlog(ByVal blogID As Integer)
-   SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_DeleteBlog", blogID)
-  End Sub
+        Public Overrides Sub DeleteBlog(ByVal blogID As Integer, ByVal portalId As Integer)
+            SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_Blog_Delete", blogID, portalId)
+        End Sub
 
 #End Region
 

@@ -42,6 +42,11 @@ Namespace Components.Common
 
 #Region "Caching"
 
+        ''' <summary>
+        ''' The number of minutes used to calculate cache timeout.
+        ''' </summary>
+        ''' <remarks></remarks>
+        Public Const CACHE_TIMEOUT As Integer = 20
         Public Const ModuleCacheKeyPrefix As String = "DNN_Blog_"
         Public Const VocabTermsCacheKey As String = "Vocabulary_Terms_"
         Public Const VocabSuffixCacheKey As String = "Vocabulary_"
@@ -51,6 +56,7 @@ Namespace Components.Common
         Public Const CategorySettingsCacheKey As String = "CategorySettings_"
         Public Const TagSettingsCacheKey As String = "TagSettings_"
         Public Const RosterSettingsCacheKey As String = "RosterSettings_"
+        Public Const PortalBlogsCacheKey As String = "PortalBlogs_"
 
 #End Region
 

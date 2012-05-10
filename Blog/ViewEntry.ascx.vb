@@ -118,9 +118,9 @@ Partial Public Class ViewEntry
     Dim isOwner As Boolean
     isOwner = m_oBlog.UserID = ModuleContext.PortalSettings.UserId
 
-    If (m_oEntry.Published = False) AndAlso (objSecurity.CanAddEntry(isOwner, m_oBlog.EnableGhostWriter) = False) Then
-     Response.Redirect(NavigateURL("Access Denied"), False)
-    End If
+                If (m_oEntry.Published = False) AndAlso (objSecurity.CanAddEntry(isOwner, m_oBlog.AuthorMode) = False) Then
+                    Response.Redirect(NavigateURL("Access Denied"), False)
+                End If
 
     If Not m_oBlog Is Nothing Then
      If Not ModuleSecurity.HasBlogPermission(Me.UserId, m_oBlog.UserID, ModuleId) Then

@@ -104,22 +104,22 @@ Partial Public Class EditBlog
     Protected WithEvents rdoUserName As Global.System.Web.UI.WebControls.RadioButtonList
 
     '''<summary>
-    '''lblEnableGhostWriting control.
+    '''lblAuthorMode control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblEnableGhostWriting As Global.DotNetNuke.UI.UserControls.LabelControl
+    Protected WithEvents lblAuthorMode As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
-    '''chkEnableGhostWriting control.
+    '''ddlAuthorMode control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents chkEnableGhostWriting As Global.System.Web.UI.WebControls.CheckBox
+    Protected WithEvents ddlAuthorMode As Global.System.Web.UI.WebControls.DropDownList
 
     '''<summary>
     '''lblMetaWebBlog control.

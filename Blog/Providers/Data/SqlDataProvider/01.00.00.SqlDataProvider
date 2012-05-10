@@ -169,87 +169,6 @@ ALTER TABLE {databaseOwner}{objectQualifier}Blog_Comments ADD
 GO
 
 
-
-/****** Objekt:  Gespeicherte Prozedur dbo.Blog_AddBlog    Skriptdatum: 01.03.2005 17:09:59 ******/
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_AddBlog') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}{objectQualifier}Blog_AddBlog
-GO
-
-SET QUOTED_IDENTIFIER ON 
-GO
-SET ANSI_NULLS ON 
-GO
-
-
-
-CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_AddBlog
-	@PortalID int,
-	@ParentBlogID int = -1,
-	@UserID int,
-	@Title nvarchar(512),
-	@Description nvarchar(1024),
-	@Public bit,
-	@AllowComments bit,
-	@AllowAnonymous bit,
-	@ShowFullName bit,
-	@Culture nvarchar(10),
-	@DateFormat nvarchar(50),
-	@TimeZone int,
-	@Syndicated bit,
-	@SyndicateIndependant bit,
-	@SyndicationURL nvarchar(1024),
-	@SyndicationEmail nvarchar(255)
-AS
-
-INSERT INTO {databaseOwner}{objectQualifier}Blog_Blogs (
-	[PortalID],
-	[ParentBlogID],
-	[UserID],
-	[Title],
-	[Description],
-	[Public],
-	[AllowComments],
-	[AllowAnonymous],
-	[ShowFullName],
-	[Culture],
-	[DateFormat],
-	[TimeZone],
-	[Created],
-	[Syndicated],
-	[SyndicateIndependant],
-	[SyndicationURL],
-	[SyndicationEmail]
-
-) VALUES (
-	@PortalID,
-	@ParentBlogID,
-	@UserID,
-	@Title,
-	@Description,
-	@Public,
-	@AllowComments,
-	@AllowAnonymous,
-	@ShowFullName,
-	@Culture,
-	@DateFormat,
-	@TimeZone,
-	GetUTCDate(),
-	@Syndicated,
-	@SyndicateIndependant,
-	@SyndicationURL,
-	@SyndicationEmail
-
-)
-
-select SCOPE_IDENTITY()
-
-GO
-SET QUOTED_IDENTIFIER OFF 
-GO
-SET ANSI_NULLS ON 
-GO
-
-
 /****** Objekt:  Gespeicherte Prozedur dbo.Blog_AddComment    Skriptdatum: 01.03.2005 17:11:18 ******/
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_AddComment') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}{objectQualifier}Blog_AddComment
@@ -387,30 +306,6 @@ GO
 SET ANSI_NULLS ON 
 GO
 
-/****** Objekt:  Gespeicherte Prozedur dbo.Blog_DeleteBlog    Skriptdatum: 01.03.2005 17:18:18 ******/
-
-CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_DeleteBlog
-	@BlogID int
-AS
-
-DELETE FROM {databaseOwner}{objectQualifier}Blog_Blogs
-WHERE
-	([BlogID] = @BlogID OR [ParentBlogID] = @BlogID)
-
-
-
-GO
-
-SET QUOTED_IDENTIFIER OFF 
-GO
-SET ANSI_NULLS ON 
-GO
-
-SET QUOTED_IDENTIFIER ON 
-GO
-SET ANSI_NULLS ON 
-GO
-
 /****** Objekt:  Gespeicherte Prozedur dbo.Blog_DeleteComment    Skriptdatum: 01.03.2005 17:18:18 ******/
 
 CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_DeleteComment
@@ -451,22 +346,6 @@ GO
 SET ANSI_NULLS ON 
 GO
 
-
-/****** Objekt:  Gespeicherte Prozedur dbo.Blog_GetBlog    Skriptdatum: 01.03.2005 17:23:45 ******/
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_GetBlog') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}{objectQualifier}Blog_GetBlog
-GO
-
-/****** Objekt:  Gespeicherte Prozedur dbo.Blog_GetBlogByUserID    Skriptdatum: 01.03.2005 17:23:45 ******/
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_GetBlogByUserID') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}{objectQualifier}Blog_GetBlogByUserID
-GO
-
-/****** Objekt:  Gespeicherte Prozedur dbo.Blog_GetBlogByUserName    Skriptdatum: 01.03.2005 17:23:45 ******/
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_GetBlogByUserName') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}{objectQualifier}Blog_GetBlogByUserName
-GO
-
 /****** Objekt:  Gespeicherte Prozedur dbo.Blog_GetBlogDaysForMonth    Skriptdatum: 01.03.2005 17:23:45 ******/
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_GetBlogDaysForMonth') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}{objectQualifier}Blog_GetBlogDaysForMonth
@@ -495,159 +374,6 @@ GO
 /****** Objekt:  Gespeicherte Prozedur dbo.Blog_GetSettings    Skriptdatum: 01.03.2005 17:23:45 ******/
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_GetSettings') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}{objectQualifier}Blog_GetSettings
-GO
-
-SET QUOTED_IDENTIFIER ON 
-GO
-SET ANSI_NULLS ON 
-GO
-
-/****** Objekt:  Gespeicherte Prozedur dbo.Blog_GetBlog    Skriptdatum: 01.03.2005 17:23:45 ******/
-
-CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlog
-	@BlogID int
-	
-AS
-
-SELECT
-	B.[ParentBlogID],
-	B.[PortalID],
-	B.[BlogID],
-	B.[UserID],
-	U.[UserName],
-	U.[DisplayName] AS UserFullName,
-	B.[Title],
-	B.[Description],
-	B.[Public],
-	B.[AllowComments],
-	B.[AllowAnonymous],
-	B.[LastEntry],
-	B.[Created],
-	B.[Culture],
-	B.[ShowFullname],
-	B.[DateFormat],
-	IsNull(B.[TimeZone],0) AS TimeZone,
-	B.[Syndicated],
-	IsNull(B.[SyndicateIndependant], 0) As SyndicateIndependant,
-	B.[SyndicationURL],
-	B.[SyndicationEmail],
-	(SELECT Count(BlogID) FROM {databaseOwner}{objectQualifier}Blog_Blogs WHERE ParentBlogID=B.[BlogID]) AS ChildBlogCount
-FROM
-	{databaseOwner}{objectQualifier}Blog_Blogs B
-	INNER JOIN 
-	{databaseOwner}{objectQualifier}Users U ON B.[UserID] = U.[UserID]
-WHERE
-	[BlogID] = @BlogID
-
-GO
-
-SET QUOTED_IDENTIFIER OFF 
-GO
-SET ANSI_NULLS ON 
-GO
-
-SET QUOTED_IDENTIFIER ON 
-GO
-SET ANSI_NULLS ON 
-GO
-
-/****** Objekt:  Gespeicherte Prozedur dbo.Blog_GetBlogByUserID    Skriptdatum: 01.03.2005 17:23:45 ******/
-
-CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlogByUserID 
-@PortalID int,
-@UserID int
-
-AS
-
-DECLARE @BlogID int
-
-SELECT @BlogID = (SELECT BlogID FROM {databaseOwner}{objectQualifier}Blog_Blogs WHERE UserID=@UserID AND PortalID=@PortalID AND (ParentBlogID IS NULL OR ParentBlogID=-1))
-EXEC {databaseOwner}{objectQualifier}Blog_GetBlog @BlogID
-
-/*
-SELECT   
-	B.[ParentBlogID],
-	B.[PortalID],
-	B.[BlogID],
-	B.[UserID],
-	U.[UserName],
-	U.[DisplayName] AS UserFullName,
-	B.[Title],
-	B.[Description],
-	B.[Public],
-	B.[AllowComments],
-	B.[AllowAnonymous],
-	B.[Syndicated],
-	B.[LastEntry],
-	B.[Created],
-	B.[Culture],
-	B.[ShowFullname],
-	B.[DateFormat],
-	IsNull(B.[TimeZone],0) AS TimeZone,
-	(SELECT Count(BlogID) FROM {databaseOwner}{objectQualifier}Blog_Blogs WHERE ParentBlogID=B.[BlogID]) AS ChildBlogCount
-FROM        {databaseOwner}{objectQualifier}Users U INNER JOIN
-                  {databaseOwner}{objectQualifier}Blog_Blogs B ON 
-	U.UserID = B.UserID
-WHERE U.UserID = @UserID AND B.PortalID = @PortalID AND (B.[ParentBlogID] = -1 OR B.[ParentBlogID] IS NULL)
-*/
-
-GO
-
-SET QUOTED_IDENTIFIER OFF 
-GO
-SET ANSI_NULLS ON 
-GO
-
-SET QUOTED_IDENTIFIER ON 
-GO
-SET ANSI_NULLS ON 
-GO
-
-/****** Objekt:  Gespeicherte Prozedur dbo.Blog_GetBlogByUserName    Skriptdatum: 01.03.2005 17:23:45 ******/
-
-CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlogByUserName 
-@PortalID int,
-@UserName nvarchar(100)
-
-AS
-
-DECLARE @BlogID int
-
-SELECT @BlogID = (SELECT BlogID FROM {databaseOwner}{objectQualifier}Blog_Blogs B JOIN {databaseOwner}{objectQualifier}Users U ON B.UserID = U.UserID  WHERE U.UserName=@UserName AND B.PortalID=@PortalID AND (B.ParentBlogID IS NULL OR B.ParentBlogID=-1))
-EXEC {databaseOwner}{objectQualifier}Blog_GetBlog @BlogID
-
-/*
-SELECT     
-	B.[ParentBlogID],
-	B.[PortalID],
-	B.[BlogID],
-	B.[UserID],
-	U.[UserName],
-	U.[DisplayName] AS UserFullName,
-	B.[Title],
-	B.[Description],
-	B.[Public],
-	B.[AllowComments],
-	B.[AllowAnonymous],
-	B.[Syndicated],
-	B.[LastEntry],
-	B.[Created],
-	B.[Culture],
-	B.[ShowFullname],
-	B.[DateFormat],
-	IsNull(B.[TimeZone],0) AS TimeZone,
-	(SELECT Count(BlogID) FROM {databaseOwner}{objectQualifier}Blog_Blogs WHERE ParentBlogID=B.[BlogID]) AS ChildBlogCount
-FROM        {databaseOwner}{objectQualifier}Users U INNER JOIN
-                  {databaseOwner}{objectQualifier}Blog_Blogs B ON 
-	U.UserID = B.UserID
-WHERE U.UserName = @UserName AND B.PortalID = @PortalID AND (B.[ParentBlogID] = -1 OR B.[ParentBlogID] IS NULL)
-*/
-
-GO
-
-SET QUOTED_IDENTIFIER OFF 
-GO
-SET ANSI_NULLS ON 
 GO
 
 SET QUOTED_IDENTIFIER ON 
@@ -743,8 +469,8 @@ AS
 If @BlogID > -1
 BEGIN
 	SELECT
-	     DATEPART(mm, E.AddedDate) as AddedMonth,
-	     DATEPART(yy, E.AddedDate) as AddedYear
+		 DATEPART(mm, E.AddedDate) as AddedMonth,
+		 DATEPART(yy, E.AddedDate) as AddedYear
 	
 	FROM {databaseOwner}{objectQualifier}Blog_Entries E INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs B ON
 		B.[BlogID] = E.[BlogID]
@@ -758,8 +484,8 @@ END
 ELSE
 BEGIN
 	SELECT
-	     DATEPART(mm, E.AddedDate) as AddedMonth,
-	     DATEPART(yy, E.AddedDate) as AddedYear
+		 DATEPART(mm, E.AddedDate) as AddedMonth,
+		 DATEPART(yy, E.AddedDate) as AddedYear
 	
 	FROM {databaseOwner}{objectQualifier}Blog_Entries E INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs B ON
 		B.[BlogID] = E.[BlogID]
@@ -899,13 +625,6 @@ GO
 SET ANSI_NULLS ON 
 GO
 
-
-
-/****** Objekt:  Gespeicherte Prozedur dbo.Blog_ListBlogs    Skriptdatum: 01.03.2005 17:37:10 ******/
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListBlogs') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}{objectQualifier}Blog_ListBlogs
-GO
-
 /****** Objekt:  Gespeicherte Prozedur dbo.Blog_ListComments    Skriptdatum: 01.03.2005 17:37:10 ******/
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListComments') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}{objectQualifier}Blog_ListComments
@@ -919,55 +638,6 @@ GO
 /****** Objekt:  Gespeicherte Prozedur dbo.Blog_ListEntriesByPortal    Skriptdatum: 01.03.2005 17:37:10 ******/
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListEntriesByPortal') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}{objectQualifier}Blog_ListEntriesByPortal
-GO
-
-SET QUOTED_IDENTIFIER ON 
-GO
-SET ANSI_NULLS ON 
-GO
-
-/****** Objekt:  Gespeicherte Prozedur dbo.Blog_ListBlogs    Skriptdatum: 01.03.2005 17:37:10 ******/
-
-CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListBlogs
-@PortalID int,
-@ParentBlogID int,
-@ShowNonPublic bit
-AS
-
-SELECT
-	B.[PortalID],
-	B.[BlogID],
-	B.[ParentBlogID],
-	B.[UserID],
-	U.[UserName],
-	U.[DisplayName] AS UserFullName,
-	B.[Title],
-	B.[Description],
-	B.[Public],
-	B.[AllowComments],
-	B.[AllowAnonymous],
-	B.[LastEntry],
-	B.[Created],
-	B.[Culture],
-	B.[ShowFullname],
-	B.[DateFormat],
-	IsNull(B.[TimeZone],0) AS TimeZone,
-	B.[Syndicated],
-	IsNull(B.[SyndicateIndependant], 0) As SyndicateIndependant,
-	B.[SyndicationURL],
-	B.[SyndicationEmail],
-	(SELECT Count(BlogID) FROM {databaseOwner}{objectQualifier}Blog_Blogs WHERE ParentBlogID=B.[BlogID]) AS ChildBlogCount
-FROM
-	{databaseOwner}{objectQualifier}Blog_Blogs B
-	INNER JOIN 
-	{databaseOwner}{objectQualifier}Users U ON B.[UserID] = U.[UserID]
-WHERE B.[PortalID] = @PortalID AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic) AND (B.[ParentBlogID] = @ParentBlogID)
-
-GO
-
-SET QUOTED_IDENTIFIER OFF 
-GO
-SET ANSI_NULLS ON 
 GO
 
 SET QUOTED_IDENTIFIER ON 
@@ -1866,12 +1536,6 @@ GO
 SET ANSI_NULLS ON 
 GO
 
-
-/****** Objekt:  Gespeicherte Prozedur dbo.Blog_UpdateBlog    Skriptdatum: 01.03.2005 17:59:08 ******/
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_UpdateBlog') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}{objectQualifier}Blog_UpdateBlog
-GO
-
 /****** Objekt:  Gespeicherte Prozedur dbo.Blog_UpdateComment    Skriptdatum: 01.03.2005 17:59:08 ******/
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_UpdateComment') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}{objectQualifier}Blog_UpdateComment
@@ -1885,61 +1549,6 @@ GO
 /****** Objekt:  Gespeicherte Prozedur dbo.Blog_UpdateSetting    Skriptdatum: 01.03.2005 17:59:08 ******/
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_UpdateSetting') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}{objectQualifier}Blog_UpdateSetting
-GO
-
-SET QUOTED_IDENTIFIER ON 
-GO
-SET ANSI_NULLS ON 
-GO
-
-/****** Objekt:  Gespeicherte Prozedur dbo.Blog_UpdateBlog    Skriptdatum: 01.03.2005 17:59:08 ******/
-
-CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdateBlog
-	@PortalID int,
-	@BlogID int, 
-	@ParentBlogID int = -1,
-	@UserID int, 
-	@Title nvarchar(512), 
-	@Description nvarchar(1024), 
-	@Public bit, 
-	@AllowComments bit, 
-	@AllowAnonymous bit,
-	@ShowFullName bit,
-	@Culture nvarchar(10),
-	@DateFormat nvarchar(50),
-	@TimeZone int,
-	@Syndicated bit,
-	@SyndicateIndependant bit,
-	@SyndicationURL nvarchar(1024),
-	@SyndicationEmail nvarchar(255)
-AS
-
-UPDATE {databaseOwner}{objectQualifier}Blog_Blogs SET
-	[PortalID] = @PortalID,
-	[ParentBlogID] = @ParentBlogID,
-	[UserID] = @UserID,
-	[Title] = @Title,
-	[Description] = @Description,
-	[Public] = @Public,
-	[AllowComments] = @AllowComments,
-	[AllowAnonymous] = @AllowAnonymous,
-	[ShowFullName] = @ShowFullName,
-	[Culture] = @Culture,
-	[DateFormat] = @DateFormat,
-	[TimeZone] = @TimeZone,
-	[Syndicated] = @Syndicated,
-	[SyndicateIndependant] = @SyndicateIndependant,
-	[SyndicationURL] = @SyndicationURL,
-	[SyndicationEmail] = @SyndicationEmail
-
-WHERE
-	[BlogID] = @BlogID
-
-GO
-
-SET QUOTED_IDENTIFIER OFF 
-GO
-SET ANSI_NULLS ON 
 GO
 
 SET QUOTED_IDENTIFIER ON 

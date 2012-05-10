@@ -198,8 +198,8 @@ Partial Public Class ModuleOptions
         'Next
 
         ' recalculate child blogs
-        Dim totalBlogs As Integer = (New BlogController).ListBlogsByPortal(PortalId, True).Count
-        Dim parentBlogs As Integer = (New BlogController).ListBlogsRootByPortal(PortalId).Count
+        Dim totalBlogs As Integer = (New BlogController).GetPortalBlogs(PortalId, True).Count
+        Dim parentBlogs As Integer = (New BlogController).GetPortalParentBlogs(PortalId).Count
         lblChildBlogsStatus.Text = String.Format(GetString("lblChildBlogsStatus", LocalResourceFile), CInt(totalBlogs - parentBlogs))
     End Sub
 
@@ -218,7 +218,7 @@ Partial Public Class ModuleOptions
         Next
 
         Dim objBlog As New BlogController
-        cmbPageBlogs.DataSource = objBlog.ListBlogs(PortalId, -1, False)
+        cmbPageBlogs.DataSource = objBlog.GetParentsChildBlogs(PortalId, -1, False)
         cmbPageBlogs.DataBind()
         cmbPageBlogs.Items.Insert(0, New ListItem("<" & GetString("Not_Specified", SharedResourceFile) & ">", "-1"))
         Try
@@ -227,8 +227,8 @@ Partial Public Class ModuleOptions
         End Try
 
         ' calculate child blogs
-        Dim totalBlogs As Integer = objBlog.ListBlogsByPortal(PortalId, True).Count
-        Dim parentBlogs As Integer = objBlog.ListBlogsRootByPortal(PortalId).Count
+        Dim totalBlogs As Integer = objBlog.GetPortalBlogs(PortalId, True).Count
+        Dim parentBlogs As Integer = objBlog.GetPortalParentBlogs(PortalId).Count
         Dim childBlogs As Integer = CInt(totalBlogs - parentBlogs)
 
         If childBlogs < 1 Then

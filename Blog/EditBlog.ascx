@@ -30,8 +30,8 @@
                 </asp:RadioButtonList>
             </div>
             <div class="dnnFormItem">
-                <dnn:Label id="lblEnableGhostWriting" runat="server" controlname="" suffix=":" />
-                <asp:CheckBox ID="chkEnableGhostWriting" runat="server" />
+                <dnn:Label id="lblAuthorMode" runat="server" controlname="ddlAuthorMode" suffix=":" />
+                <asp:DropDownList ID="ddlAuthorMode" runat="server" />
             </div>
             <div class="dnnFormItem">
                 <dnn:Label id="lblMetaWebBlog" runat="server" controlname="" suffix=":" />

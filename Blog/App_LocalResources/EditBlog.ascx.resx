@@ -310,10 +310,10 @@
   <data name="lblUsersComments.Help" xml:space="preserve">
     <value>These are users who are known to this website and logged in when commenting (members of the community). </value>
   </data>
-  <data name="lblEnableGhostWriting.Help" xml:space="preserve">
-    <value>If checked, users who are set as ghost writers will be permitted to author this blog as the owner user.</value>
+  <data name="lblAuthorMode.Help" xml:space="preserve">
+    <value>Personal (default) - Grants only the blog owner permission to post to this blog, Ghost Writer - Enables the owner and ghost writers the ability to post but all posts will appear to be authored by the blog owner, 3 - All Bloggers - All bloggers (not ghost writers) are permitted to post to this blog and will be credited as the entry authors.</value>
   </data>
-  <data name="lblEnableGhostWriting.Text" xml:space="preserve">
-    <value>Enable Ghost Writing</value>
+  <data name="lblAuthorMode.Text" xml:space="preserve">
+    <value>Authoring Mode:</value>
   </data>
 </root>

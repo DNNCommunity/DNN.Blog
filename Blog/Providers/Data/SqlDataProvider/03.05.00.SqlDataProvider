@@ -179,30 +179,6 @@ SELECT @EntryID
 GO
 
 /**************************************************************
-* Update Blog_GetBlogByUserID to alleviate an issue that arrises 
-* When there is more than one blog associated with a user account.
-* Instead of failing, we'll just return the Min BlogId
-**************************************************************/
-
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_GetBlogByUserID') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}{objectQualifier}Blog_GetBlogByUserID
-GO
-
-CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlogByUserID 
-@PortalID int,
-@UserID int
-
-AS
-
-DECLARE @BlogID int
-
-SELECT @BlogID = (SELECT Min(BlogID) FROM {databaseOwner}{objectQualifier}Blog_Blogs WHERE UserID=@UserID AND PortalID=@PortalID AND (ParentBlogID IS NULL OR ParentBlogID=-1))
-EXEC {databaseOwner}{objectQualifier}Blog_GetBlog @BlogID
-
-GO
-
-
-/**************************************************************
 * Modify Comments table
 **************************************************************/
 IF NOT EXISTS (SELECT * FROM dbo.syscolumns c JOIN dbo.sysobjects o ON c.id = o.id WHERE c.name = 'Website' AND o.name like '%Blog_Comments')
@@ -979,67 +955,6 @@ Order by S.Rank DESC, E.AddedDate DESC, E.PermaLink DESC
 set nocount off
 
 GO
-
-/**************************************************************
-* Create a new sproc to enabled more than one blog to be retrieved
-* for a username.  This is needed for future support of multi-author blogs
-**************************************************************/
-
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_GetBlogsByUserName') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}{objectQualifier}Blog_GetBlogsByUserName
-GO
-
-CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlogsByUserName 
-@PortalID int,
-@UserName nvarchar(100)
-
-AS
-
-DECLARE @BlogID int
-
-
-SELECT
-	B.[ParentBlogID],
-	B.[PortalID],
-	B.[BlogID],
-	B.[UserID],
-	U.[UserName],
-	U.[FirstName] + ' ' + U.[LastName] AS UserFullName,
-	B.[Title],
-	B.[Description],
-	B.[Public],
-	B.[AllowComments],
-	B.[AllowAnonymous],
-	B.[LastEntry],
-	B.[Created],
-	B.[Culture],
-	B.[ShowFullname],
-	B.[DateFormat],
-	IsNull(B.[TimeZone],0) AS TimeZone,
-	B.[Syndicated],
-	IsNull(B.[SyndicateIndependant], 0) As SyndicateIndependant,
-	B.[SyndicationURL],
-	B.[SyndicationEmail],
-	B.[EmailNotification],
-	B.[AllowTrackbacks],
-	B.[AutoTrackback],
-	B.[MustApproveComments],
-	B.[MustApproveAnonymous],
-	B.[MustApproveTrackbacks],	
-	B.[UseCaptcha],
-	(SELECT Count(BlogID) FROM {databaseOwner}{objectQualifier}Blog_Blogs WHERE ParentBlogID=B.[BlogID]) AS ChildBlogCount
-FROM
-	{databaseOwner}{objectQualifier}Blog_Blogs B WITH (nolock)
-	INNER JOIN 
-	{databaseOwner}{objectQualifier}Users U WITH (nolock) ON B.[UserID] = U.[UserID]
-WHERE
-	U.UserName = @UserName
-	AND B.PortalID=@PortalID 
-	--AND (B.ParentBlogID IS NULL OR B.ParentBlogID=-1)
-ORDER BY B.[Title]
-
-GO
-
 
 /**************************************************************
 * Add SyndicationEmail to the returned results
