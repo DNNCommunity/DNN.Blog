@@ -168,11 +168,16 @@ Namespace Components.Settings
         End Sub
 
         Public Shared Function GetBlogSettings(ByVal PortalId As Integer, ByVal TabId As Integer) As BlogSettings
-            Dim CacheKey As String = "BlogSettings" & PortalId.ToString & "-" & TabId.ToString
+            Dim CacheKey As String = Constants.ModuleCacheKeyPrefix & Constants.ModuleSettingsCacheKey & PortalId.ToString & "-" & TabId.ToString
             Dim bs As BlogSettings = CType(DotNetNuke.Common.Utilities.DataCache.GetCache(CacheKey), BlogSettings)
             If bs Is Nothing Then
+                Dim timeOut As Int32 = Common.Constants.CACHE_TIMEOUT * Convert.ToInt32(DotNetNuke.Entities.Host.Host.PerformanceSetting)
                 bs = New BlogSettings(PortalId, TabId)
-                DotNetNuke.Common.Utilities.DataCache.SetCache(CacheKey, bs)
+
+                'Cache if timeout > 0 and settings are not null
+                If timeOut > 0 And bs IsNot Nothing Then
+                    DotNetNuke.Common.Utilities.DataCache.SetCache(CacheKey, bs, TimeSpan.FromMinutes(timeOut))
+                End If
             End If
             Return bs
         End Function
@@ -216,7 +221,6 @@ Namespace Components.Settings
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "AllowChildBlogs", Me.AllowChildBlogs.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "AllowWLW", Me.AllowWLW.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "IncludeFiles", Me.IncludeFiles)
-
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "SocialSharingMode", Me.SocialSharingMode)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "AddThisId", Me.AddThisId)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "FacebookAppId", Me.FacebookAppId)
@@ -227,7 +231,6 @@ Namespace Components.Settings
             ' WLW implementation parameters
             Business.Utility.UpdateBlogModuleSetting(_portalId, -1, "AllowMultipleCategories", Me.AllowMultipleCategories.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, -1, "UseWLWExcerpt", Me.UseWLWExcerpt.ToString)
-
 
             ' We save this at 'global' and tab level so its available to WLW as well as normal module usage.
             Business.Utility.UpdateBlogModuleSetting(_portalId, -1, "VocabularyId", Me.VocabularyId.ToString)
@@ -240,7 +243,7 @@ Namespace Components.Settings
             DataCache.ClearCache(Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + VocabularyId.ToString())
             DataCache.ClearCache(Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + "1") ' Tags
 
-            Dim CacheKey As String = "BlogSettings" & _portalId.ToString & "-" & _tabId.ToString
+            Dim CacheKey As String = Constants.ModuleCacheKeyPrefix & Constants.ModuleSettingsCacheKey & _portalId.ToString & "-" & _tabId.ToString
             DotNetNuke.Common.Utilities.DataCache.RemoveCache(CacheKey)
         End Sub
 

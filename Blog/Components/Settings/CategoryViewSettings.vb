@@ -44,11 +44,17 @@ Namespace Components.Settings
         End Sub
 
         Public Shared Function GetCategoryViewSettings(ByVal TabModuleId As Integer) As CategoryViewSettings
-            Dim CacheKey As String = Constants.CategorySettingsCacheKey & TabModuleId.ToString
+            Dim CacheKey As String = Constants.ModuleCacheKeyPrefix & Constants.CategorySettingsCacheKey & TabModuleId.ToString
             Dim bs As CategoryViewSettings = CType(DotNetNuke.Common.Utilities.DataCache.GetCache(CacheKey), CategoryViewSettings)
+
             If bs Is Nothing Then
+                Dim timeOut As Int32 = Common.Constants.CACHE_TIMEOUT * Convert.ToInt32(DotNetNuke.Entities.Host.Host.PerformanceSetting)
                 bs = New CategoryViewSettings(TabModuleId)
-                DotNetNuke.Common.Utilities.DataCache.SetCache(CacheKey, bs)
+
+                'Cache if timeout > 0 and settings are not null
+                If timeOut > 0 And bs IsNot Nothing Then
+                    DotNetNuke.Common.Utilities.DataCache.SetCache(CacheKey, bs, TimeSpan.FromMinutes(timeOut))
+                End If
             End If
             Return bs
         End Function
@@ -63,7 +69,7 @@ Namespace Components.Settings
                 .UpdateTabModuleSetting(_tabModuleId, Constants.SettingCategoryDisplayMode, CategoryDisplayMode)
                 .UpdateTabModuleSetting(_tabModuleId, Constants.SettingCategoryTreeSkin, TreeSkin)
             End With
-            Dim CacheKey As String = Constants.CategorySettingsCacheKey & _tabModuleId.ToString
+            Dim CacheKey As String = Constants.ModuleCacheKeyPrefix & Constants.CategorySettingsCacheKey & _tabModuleId.ToString
             DotNetNuke.Common.Utilities.DataCache.RemoveCache(CacheKey)
         End Sub
 

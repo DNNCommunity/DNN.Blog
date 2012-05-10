@@ -88,8 +88,8 @@ Namespace Providers.Data
 
 #Region "Blog_Tags / Blog_Cats Methods"
 
-        Public MustOverride Function ListTagsByEntry(ByVal EntryID As Integer) As IDataReader
-        Public MustOverride Function ListEntryCategories(ByVal EntryID As Integer) As IDataReader
+        Public MustOverride Function GetEntryTagsForUpgrade(ByVal EntryID As Integer) As IDataReader
+        Public MustOverride Function GetEntryCategoriesForUpgrade(ByVal EntryID As Integer) As IDataReader
         Public MustOverride Function GetAllTagsForUpgrade() As IDataReader
         Public MustOverride Function GetAllCategoriesForUpgrade() As IDataReader
         Public MustOverride Function RetrieveTaxonomyRelatedPosts() As IDataReader

@@ -33,7 +33,6 @@ Imports DotNetNuke.Services.Journal
 Imports DotNetNuke.Framework
 Imports System.Linq
 Imports DotNetNuke.Entities.Content.Taxonomy
-Imports System.Globalization
 Imports DotNetNuke.Modules.Blog.Components.File
 Imports DotNetNuke.Modules.Blog.Components.Entities
 Imports Telerik.Web.UI
@@ -59,9 +58,7 @@ Partial Class EditEntry
  Private m_oParentBlog As BlogInfo
  Private m_oBlog As BlogInfo
  Private m_oTags As ArrayList
- Private m_oCats As List(Of CategoryInfo)
- Private m_oEntryCats As List(Of CategoryInfo)
- Private m_oEntryId As Integer = -1
+    Private m_oEntryId As Integer = -1
 
  Private ReadOnly Property VocabularyId() As Integer
   Get

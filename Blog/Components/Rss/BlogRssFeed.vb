@@ -26,6 +26,7 @@ Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.Common
 Imports DotNetNuke.Modules.Blog.Components.Settings
 Imports DotNetNuke.Modules.Blog.Components.Entities
+Imports DotNetNuke.Entities.Content.Taxonomy
 
 Namespace Components.Rss
 
@@ -294,27 +295,27 @@ Namespace Components.Rss
    Else
     Description = Utility.RewriteRefs(HttpUtility.HtmlDecode(CStr(ir.Item("Description"))))
    End If
-   'TODO: CP
-   'If _includeTagsInDescription Then
-   '    Dim TagString As String = TagController.GetTagsByEntry(EntryId)
-   '    If Not TagString = "" Then
-   '        Description &= "<div class=""tags"">" & Localization.GetString("Tags", Components.Common.Globals.glbSharedResourceFile) & ": " & TagString & "</div>"
-   '    End If
-   'End If
-   If _includeCategoriesInDescription Then
-    For Each c As CategoryInfo In CategoryController.ListCatsByEntry(EntryId)
-     Description &= "<div class=""category"">" & Localization.GetString("Category", Components.Common.Globals.glbSharedResourceFile) & ": <a href=" & NavigateURL(_tabId, "", "CatID=" & c.CatId.ToString) & ">" & c.Category & "</a></div>"
-    Next
-   End If
-   writer.WriteElementString("description", Description)
-   WriteElement(writer, "author", ir, "SyndicationEmail", False)
-   ' categories
-   For Each c As CategoryInfo In CategoryController.ListCatsByEntry(EntryId)
-    writer.WriteStartElement("category")
-    writer.WriteAttributeString("domain", NavigateURL(_tabId, "", "CatID=" & CType(c.CatId, String)))
-    writer.WriteString(c.Category)
-    writer.WriteEndElement()
-   Next
+            'TODO: CP - COMEBACK to tie in terms to replace categories/tags
+            ''If _includeTagsInDescription Then
+            ''    Dim TagString As String = TagController.GetTagsByEntry(EntryId)
+            ''    If Not TagString = "" Then
+            ''        Description &= "<div class=""tags"">" & Localization.GetString("Tags", Components.Common.Globals.glbSharedResourceFile) & ": " & TagString & "</div>"
+            ''    End If
+            ''End If
+            'If _includeCategoriesInDescription Then
+            ' For Each c As CategoryInfo In CategoryController.ListCatsByEntry(EntryId)
+            '  Description &= "<div class=""category"">" & Localization.GetString("Category", Components.Common.Globals.glbSharedResourceFile) & ": <a href=" & NavigateURL(_tabId, "", "CatID=" & c.CatId.ToString) & ">" & c.Category & "</a></div>"
+            ' Next
+            'End If
+            'writer.WriteElementString("description", Description)
+            'WriteElement(writer, "author", ir, "SyndicationEmail", False)
+            '' categories
+            '         For Each c As Term In CategoryController.ListCatsByEntry(EntryId)
+            '             writer.WriteStartElement("category")
+            '             writer.WriteAttributeString("domain", NavigateURL(_tabId, "", "CatID=" & CType(c.CatId, String)))
+            '             writer.WriteString(c.Category)
+            '             writer.WriteEndElement()
+            '         Next
    If CBool(ir.Item("AllowComments")) Then
     If _useFriendlyUrls Then
      writer.WriteElementString("comments", Utility.checkUriFormat(PermaLink & "#Comments"))

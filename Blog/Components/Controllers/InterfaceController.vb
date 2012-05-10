@@ -30,6 +30,7 @@ Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Entities.Users
 Imports DotNetNuke.Modules.Blog.Components.Settings
 Imports DotNetNuke.Modules.Blog.Components.Entities
+Imports DotNetNuke.Modules.Blog.Components.Upgrade
 
 Namespace Components.Controllers
 
@@ -44,15 +45,15 @@ Namespace Components.Controllers
             Dim message As String = ""
 
             Select Case Version
-                Case "03.01.20"         ' first version as DotNetNuke sub project
-                    message = message & " In Custom Upgrade Version " & Version & " - "
-                    Dim _CustomUpgrade As New CustomUpgrade
-                    message += _CustomUpgrade.UpgradeNewBlog()
-                    message += " - " & _CustomUpgrade.UpgradeForumBlog()
+                'Case "03.01.20"         ' first version as DotNetNuke sub project
+                '    message = message & " In Custom Upgrade Version " & Version & " - "
+                '    Dim _CustomUpgrade As New CustomUpgrade
+                '    message += _CustomUpgrade.UpgradeNewBlog()
+                '    message += " - " & _CustomUpgrade.UpgradeForumBlog()
                 Case "05.00.00"
                     message = message & " Migrating taxonomy/folksonomy to core in " & Version & " :" & vbCrLf & vbCrLf
-                    Dim _CustomUpgrade As New CustomUpgrade
-                    message += _CustomUpgrade.MigrateTaxonomyFolksonomy()
+                    Dim modUpgrade As New ModuleUpgrade
+                    message += modUpgrade.MigrateTaxonomyFolksonomy()
             End Select
             Return message
 

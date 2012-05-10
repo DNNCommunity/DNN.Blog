@@ -100,7 +100,7 @@ Partial Public Class ModuleOptions
                     pnlPortalFiles.Visible = False
                 End If
 
-                ForumBlog.Utils.isForumBlogInstalled(PortalId, TabId, True)
+                'ForumBlog.Utils.isForumBlogInstalled(PortalId, TabId, True)
 
                 hlCancelOptions.NavigateUrl = ModuleContext.NavigateUrl(ModuleContext.TabId, "", False, "")
             End If

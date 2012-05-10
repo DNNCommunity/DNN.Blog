@@ -70,7 +70,7 @@ Partial Public Class Archive
     End If
 
     Dim objCtlArchive As New ArchiveController
-    Dim objArchiveDays As ArrayList
+                Dim objArchiveDays As List(Of ArchiveDays)
     Dim objArchiveDay As ArchiveDays
     Dim objArchiveMonths As List(Of ArchiveMonths)
     objArchiveDays = objCtlArchive.GetBlogDaysForMonth(Me.PortalId, m_BlogID, BlogDate)

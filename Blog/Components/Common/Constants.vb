@@ -56,6 +56,7 @@ Namespace Components.Common
         Public Const CategorySettingsCacheKey As String = "CategorySettings_"
         Public Const TagSettingsCacheKey As String = "TagSettings_"
         Public Const RosterSettingsCacheKey As String = "RosterSettings_"
+        Public Const ModuleSettingsCacheKey As String = "ModuleSettings_"
         Public Const PortalBlogsCacheKey As String = "PortalBlogs_"
 
 #End Region

@@ -354,7 +354,7 @@ Partial Public Class ViewEntry
    rptTags.DataSource = m_oEntry.EntryTerms(1)
    rptTags.DataBind()
 
-   rptCategories.DataSource = CategoryController.ListCatsByEntry(m_oEntry.EntryID)
+            rptCategories.DataSource = m_oEntry.EntryTerms(BlogSettings.VocabularyId)
    rptCategories.DataBind()
   Catch exc As Exception
    ProcessModuleLoadException(Me, exc)

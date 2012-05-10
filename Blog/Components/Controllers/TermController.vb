@@ -21,7 +21,6 @@ Imports System
 Imports DotNetNuke.Modules.Blog.Providers.Data
 Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Common.Utilities
-Imports DotNetNuke.Entities.Host
 Imports DotNetNuke.Modules.Blog.Components.Integration
 Imports DotNetNuke.Modules.Blog.Components.Entities
 
@@ -36,7 +35,7 @@ Namespace Components.Controllers
             Dim colTerms As List(Of TermInfo) = DirectCast(DataCache.GetCache(Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + vocabularyId.ToString()), List(Of TermInfo))
 
             If colTerms Is Nothing Then
-                Dim timeOut As Integer = 20 * Convert.ToInt32(Host.PerformanceSetting)
+                Dim timeOut As Int32 = Common.Constants.CACHE_TIMEOUT * Convert.ToInt32(DotNetNuke.Entities.Host.Host.PerformanceSetting)
 
                 colTerms = CBO.FillCollection(Of TermInfo)(DataProvider.Instance().GetTermsByContentType(portalId, Content.GetContentTypeID(), vocabularyId))
 
@@ -53,7 +52,7 @@ Namespace Components.Controllers
             Dim colTerms As List(Of TermInfo) = DirectCast(DataCache.GetCache(Constants.ModuleCacheKeyPrefix + Constants.ContentItemTermsCacheKey + contentItemId.ToString() + Constants.VocabularySuffixCacheKey + vocabularyId.ToString()), List(Of TermInfo))
 
             If colTerms Is Nothing Then
-                Dim timeOut As Integer = 20 * Convert.ToInt32(Host.PerformanceSetting)
+                Dim timeOut As Int32 = Common.Constants.CACHE_TIMEOUT * Convert.ToInt32(DotNetNuke.Entities.Host.Host.PerformanceSetting)
 
                 colTerms = CBO.FillCollection(Of TermInfo)(DataProvider.Instance().GetTermsByContentItem(contentItemId, vocabularyId))
 

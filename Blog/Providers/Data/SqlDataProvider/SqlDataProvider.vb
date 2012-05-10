@@ -224,27 +224,27 @@ Namespace Providers.Data
 
 #End Region
 
-#Region "Blog_Tags / Blog_Cats Methods"
+#Region "5.0.0"
 
-  Public Overrides Function ListTagsByEntry(ByVal EntryID As Integer) As System.Data.IDataReader
-   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_ListTagsByEntry", EntryID), IDataReader)
-  End Function
+        Public Overrides Function GetEntryTagsForUpgrade(ByVal EntryID As Integer) As System.Data.IDataReader
+            Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_Upgrade_GetEntryTags", EntryID), IDataReader)
+        End Function
 
-  Public Overrides Function ListEntryCategories(ByVal EntryID As Integer) As System.Data.IDataReader
-   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_ListEntryCategories", EntryID), IDataReader)
-  End Function
+        Public Overrides Function GetEntryCategoriesForUpgrade(ByVal EntryID As Integer) As System.Data.IDataReader
+            Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_Upgrade_GetEntryCategories", EntryID), IDataReader)
+        End Function
 
-  Public Overrides Function GetAllTagsForUpgrade() As System.Data.IDataReader
-   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_Upgrade_TagsGet"), IDataReader)
-  End Function
+        Public Overrides Function GetAllTagsForUpgrade() As System.Data.IDataReader
+            Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_Upgrade_TagsGet"), IDataReader)
+        End Function
 
-  Public Overrides Function GetAllCategoriesForUpgrade() As System.Data.IDataReader
-   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_Upgrade_CategoriesGet"), IDataReader)
-  End Function
+        Public Overrides Function GetAllCategoriesForUpgrade() As System.Data.IDataReader
+            Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_Upgrade_CategoriesGet"), IDataReader)
+        End Function
 
-  Public Overrides Function RetrieveTaxonomyRelatedPosts() As System.Data.IDataReader
-   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_Upgrade_RetrieveTaxonomyEntries"), IDataReader)
-  End Function
+        Public Overrides Function RetrieveTaxonomyRelatedPosts() As System.Data.IDataReader
+            Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Blog_Upgrade_RetrieveTaxonomyEntries"), IDataReader)
+        End Function
 
 #End Region
 

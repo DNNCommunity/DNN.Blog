@@ -44,11 +44,17 @@ Namespace Components.Settings
         End Sub
 
         Public Shared Function GetTagViewSettings(ByVal TabModuleId As Integer) As TagViewSettings
-            Dim CacheKey As String = Constants.TagSettingsCacheKey & TabModuleId.ToString
+            Dim CacheKey As String = Constants.ModuleCacheKeyPrefix & Constants.TagSettingsCacheKey & TabModuleId.ToString
             Dim bs As TagViewSettings = CType(DotNetNuke.Common.Utilities.DataCache.GetCache(CacheKey), TagViewSettings)
+
             If bs Is Nothing Then
+                Dim timeOut As Int32 = Common.Constants.CACHE_TIMEOUT * Convert.ToInt32(DotNetNuke.Entities.Host.Host.PerformanceSetting)
                 bs = New TagViewSettings(TabModuleId)
-                DotNetNuke.Common.Utilities.DataCache.SetCache(CacheKey, bs)
+
+                'Cache if timeout > 0 and settings are not null
+                If timeOut > 0 And bs IsNot Nothing Then
+                    DotNetNuke.Common.Utilities.DataCache.SetCache(CacheKey, bs, TimeSpan.FromMinutes(timeOut))
+                End If
             End If
             Return bs
         End Function
@@ -63,7 +69,7 @@ Namespace Components.Settings
                 .UpdateTabModuleSetting(_tabModuleId, Constants.SettingTagDisplayMode, TagDisplayMode)
                 .UpdateTabModuleSetting(_tabModuleId, Constants.SettingCloudSkin, CloudSkin)
             End With
-            Dim CacheKey As String = Constants.TagSettingsCacheKey & _tabModuleId.ToString
+            Dim CacheKey As String = Constants.ModuleCacheKeyPrefix & Constants.TagSettingsCacheKey & _tabModuleId.ToString
             DotNetNuke.Common.Utilities.DataCache.RemoveCache(CacheKey)
         End Sub
 

@@ -19,7 +19,6 @@
 '
 Imports DotNetNuke.Modules.Blog.Providers.Data
 Imports DotNetNuke.Modules.Blog.Components.Business
-Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Common.Utilities
 
 Namespace Components.Controllers
@@ -37,8 +36,8 @@ Namespace Components.Controllers
             Return CBO.FillCollection(Of ArchiveMonths)(DataProvider.Instance().GetBlogMonths(PortalID, BlogID))
         End Function
 
-        Public Function GetBlogDaysForMonth(ByVal PortalID As Integer, ByVal BlogID As Integer, ByVal BlogDate As Date) As ArrayList
-            Return CBO.FillCollection(DataProvider.Instance().GetBlogDaysForMonth(PortalID, BlogID, BlogDate), GetType(ArchiveDays))
+        Public Function GetBlogDaysForMonth(ByVal PortalID As Integer, ByVal BlogID As Integer, ByVal BlogDate As Date) As List(Of ArchiveDays)
+            Return CBO.FillCollection(Of ArchiveDays)(DataProvider.Instance().GetBlogDaysForMonth(PortalID, BlogID, BlogDate))
         End Function
 
     End Class

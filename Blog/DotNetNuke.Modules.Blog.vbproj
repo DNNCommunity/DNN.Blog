@@ -175,18 +175,14 @@
     <Compile Include="Components\Common\ModuleSecurity.vb" />
     <Compile Include="Components\Controllers\ArchiveController.vb" />
     <Compile Include="Components\Controllers\BlogController.vb" />
-    <Compile Include="Components\Controllers\CategoryController.vb" />
     <Compile Include="Components\Controllers\CommentController.vb" />
     <Compile Include="Components\Controllers\TermController.vb" />
     <Compile Include="Components\Controllers\EntryController.vb" />
     <Compile Include="Components\Controllers\InterfaceController.vb" />
     <Compile Include="Components\Controllers\SearchController.vb" />
-    <Compile Include="Components\Controllers\TagController.vb" />
     <Compile Include="Components\Entities\BlogInfo.vb" />
-    <Compile Include="Components\Entities\CategoryInfo.vb" />
     <Compile Include="Components\Entities\CommentInfo.vb" />
     <Compile Include="Components\Entities\EntryInfo.vb" />
-    <Compile Include="Components\Entities\TagInfo.vb" />
     <Compile Include="Components\Entities\TermInfo.vb" />
     <Compile Include="Components\Integration\Content.vb" />
     <Compile Include="Components\Integration\Journal.vb" />
@@ -200,6 +196,8 @@
     <Compile Include="Components\MetaWeblog\IMetaWeblog.vb" />
     <Compile Include="Components\MoveableType\IMoveableType.vb" />
     <Compile Include="Components\Rss\StringWriterWithEncoding.vb" />
+    <Compile Include="Components\Upgrade\ModuleUpgrade.vb" />
+    <Compile Include="Components\Upgrade\Utils.vb" />
     <Compile Include="Components\WordPress\IWordPress.vb" />
     <Compile Include="Controls\Tags.vb" />
     <Compile Include="Components\Business\ArchiveDays.vb" />
@@ -282,10 +280,6 @@
       <DependentUpon>Trackback.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Upgrade\CustomUpgrade.vb" />
-    <Compile Include="Upgrade\ForumBlogUpgrade.vb" />
-    <Compile Include="Upgrade\UpgradeController.vb" />
-    <Compile Include="Upgrade\Utils.vb" />
     <Compile Include="ViewBlog.ascx.designer.vb">
       <DependentUpon>ViewBlog.ascx</DependentUpon>
     </Compile>
@@ -398,6 +392,7 @@
   <ItemGroup>
     <Content Include="App_LocalResources\RosterSettings.ascx.resx" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <ProjectExtensions>
