@@ -394,7 +394,7 @@ Namespace Components.Business
   End Sub
 
   Public Shared Sub UpdateBlogModuleSetting(ByVal PortalID As Integer, ByVal TabID As Integer, ByVal Key As String, ByVal Value As String)
-   Providers.Data.DataProvider.Instance().UpdateBlogModuleSetting(PortalID, TabID, Key, Value)
+   Providers.Data.DataProvider.Instance().UpdateSetting(PortalID, TabID, Key, Value)
   End Sub
 
   Public Shared Function GetTabIDByPortalID(ByVal PortalID As String) As Integer
@@ -709,7 +709,7 @@ Namespace Components.Business
    Dim TabIdFromPortalId As Integer = -1 'Needed only if TabID isn't passed in and TabID can't be retrieved
    ' from the PermaLink
 
-   m_Entries = m_EntryController.ListAllEntriesByPortal(PortalID, True)
+   m_Entries = m_EntryController.GetAllEntriesByPortal(PortalID, True)
    For Each entry As EntryInfo In m_Entries
     If (BlogId = entry.BlogID Or BlogId = -1) And (TabID = -1 _
                                                    Or entry.PermaLink Is Nothing Or entry.PermaLink = String.Empty _
