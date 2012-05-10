@@ -35,19 +35,19 @@ Namespace Components.Controllers
 
         Public Function ListComments(ByVal EntryID As Integer, ByVal ShowNonApproved As Boolean) As ArrayList
 
-            Return CBO.FillCollection(DataProvider.Instance().ListComments(EntryID, ShowNonApproved), GetType(CommentInfo))
+   Return CBO.FillCollection(DataProvider.Instance().GetCommentsByEntry(EntryID, ShowNonApproved), GetType(CommentInfo))
 
         End Function
 
         Public Function ListCommentsByBlog(ByVal BlogID As Integer, ByVal ShowNonApproved As Boolean, ByVal MaximumComments As Integer) As List(Of CommentInfo)
 
-            Return CBO.FillCollection(Of CommentInfo)(DataProvider.Instance().ListCommentsByBlog(BlogID, ShowNonApproved, MaximumComments))
+   Return CBO.FillCollection(Of CommentInfo)(DataProvider.Instance().GetCommentsByBlog(BlogID, ShowNonApproved, MaximumComments))
 
         End Function
 
         Public Function ListCommentsByPortal(ByVal PortalID As Integer, ByVal ShowNonApproved As Boolean, ByVal MaximumComments As Integer) As List(Of CommentInfo)
 
-            Return CBO.FillCollection(Of CommentInfo)(DataProvider.Instance().ListCommentsByPortal(PortalID, ShowNonApproved, MaximumComments))
+   Return CBO.FillCollection(Of CommentInfo)(DataProvider.Instance().GetCommentsByPortal(PortalID, ShowNonApproved, MaximumComments))
 
         End Function
 

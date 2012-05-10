@@ -124,7 +124,7 @@ Namespace Components.Controllers
             If colBlogs Is Nothing Then
                 Dim timeOut As Int32 = Common.Constants.CACHE_TIMEOUT * Convert.ToInt32(DotNetNuke.Entities.Host.Host.PerformanceSetting)
 
-                colBlogs = CBO.FillCollection(Of BlogInfo)(DataProvider.Instance().GetPortalBlogs(portalId))
+    colBlogs = CBO.FillCollection(Of BlogInfo)(DataProvider.Instance().GetBlogsByPortal(portalId))
 
                 'Cache Forum if timeout > 0 and Forum is not null
                 If timeOut > 0 And colBlogs IsNot Nothing Then

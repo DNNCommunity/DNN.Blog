@@ -26,97 +26,97 @@ Imports DotNetNuke.Modules.Blog.Components.Entities
 Namespace Components.Controllers
 
 
-    Public Class EntryController
+ Public Class EntryController
 
-        Public Function GetEntry(ByVal EntryID As Integer, ByVal PortalId As Integer) As EntryInfo
-            Return CType(CBO.FillObject(DataProvider.Instance().GetEntry(EntryID, PortalId), GetType(EntryInfo)), EntryInfo)
-        End Function
+  Public Function GetEntry(ByVal EntryID As Integer, ByVal PortalId As Integer) As EntryInfo
+   Return CType(CBO.FillObject(DataProvider.Instance().GetEntry(EntryID, PortalId), GetType(EntryInfo)), EntryInfo)
+  End Function
 
-        Public Function ListEntries(ByVal PortalID As Integer, ByVal BlogID As Integer, ByVal BlogDate As Date, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As List(Of EntryInfo)
-            Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().ListEntries(PortalID, BlogID, BlogDate, ShowNonPublic, ShowNonPublished))
-        End Function
+  Public Function GetEntries(ByVal PortalID As Integer, ByVal BlogID As Integer, ByVal BlogDate As Date, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As List(Of EntryInfo)
+   Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().GetEntries(PortalID, BlogID, BlogDate, ShowNonPublic, ShowNonPublished))
+  End Function
 
-        Public Function ListEntriesByBlog(ByVal BlogID As Integer, ByVal BlogDate As Date, ByVal PageSize As Integer, ByVal CurrentPage As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As List(Of EntryInfo)
-            Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().ListEntriesByBlog(BlogID, BlogDate, PageSize, CurrentPage, ShowNonPublic, ShowNonPublished))
-        End Function
+  Public Function GetEntriesByBlog(ByVal BlogID As Integer, ByVal BlogDate As Date, ByVal PageSize As Integer, ByVal CurrentPage As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As List(Of EntryInfo)
+   Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().GetEntriesByBlog(BlogID, BlogDate, PageSize, CurrentPage, ShowNonPublic, ShowNonPublished))
+  End Function
 
-        Public Function ListAllEntriesByBlog(ByVal BlogID As Integer) As List(Of EntryInfo)
-            Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().ListAllEntriesByBlog(BlogID))
-        End Function
+  Public Function GetAllEntriesByBlog(ByVal BlogID As Integer) As List(Of EntryInfo)
+   Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().GetAllEntriesByBlog(BlogID))
+  End Function
 
-        Public Function ListEntriesByPortal(ByVal PortalID As Integer, ByVal BlogDate As Date, ByVal BlogDateType As String, ByVal PageSize As Integer, ByVal CurrentPage As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As List(Of EntryInfo)
-            Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().ListEntriesByPortal(PortalID, BlogDate, BlogDateType, PageSize, CurrentPage, ShowNonPublic, ShowNonPublished))
-        End Function
+  Public Function GetEntriesByPortal(ByVal PortalID As Integer, ByVal BlogDate As Date, ByVal BlogDateType As String, ByVal PageSize As Integer, ByVal CurrentPage As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As List(Of EntryInfo)
+   Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().GetEntriesByPortal(PortalID, BlogDate, BlogDateType, PageSize, CurrentPage, ShowNonPublic, ShowNonPublished))
+  End Function
 
-        Public Function ListAllEntriesByPortal(ByVal PortalID As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As List(Of EntryInfo)
-            Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().ListAllEntriesByPortal(PortalID, ShowNonPublic, ShowNonPublished))
-        End Function
+  Public Function GetAllEntriesByPortal(ByVal PortalID As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As List(Of EntryInfo)
+   Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().GetAllEntriesByPortal(PortalID, ShowNonPublic, ShowNonPublished))
+  End Function
 
-        Public Function GetAllEntriesByTerm(ByVal portalId As Integer, ByVal BlogDate As Date, ByVal termId As Integer, ByVal pageSize As Integer, ByVal currentPage As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As List(Of EntryInfo)
-            Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().GetAllEntriesByTerm(portalId, BlogDate, termId, pageSize, currentPage, ShowNonPublic, ShowNonPublished))
-        End Function
+  Public Function GetEntriesByTerm(ByVal portalId As Integer, ByVal BlogDate As Date, ByVal termId As Integer, ByVal pageSize As Integer, ByVal currentPage As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As List(Of EntryInfo)
+   Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().GetEntriesByTerm(portalId, BlogDate, termId, pageSize, currentPage, ShowNonPublic, ShowNonPublished))
+  End Function
 
-        Public Function AddEntry(ByVal objEntry As EntryInfo, ByVal tabId As Integer) As EntryInfo
-            objEntry.EntryID = CType(DataProvider.Instance().AddEntry(objEntry.BlogID, objEntry.Title, objEntry.Description, objEntry.Entry, objEntry.Published, objEntry.AllowComments, objEntry.AddedDate, objEntry.DisplayCopyright, objEntry.Copyright, objEntry.PermaLink), Integer)
+  Public Function AddEntry(ByVal objEntry As EntryInfo, ByVal tabId As Integer) As EntryInfo
+   objEntry.EntryID = CType(DataProvider.Instance().AddEntry(objEntry.BlogID, objEntry.Title, objEntry.Description, objEntry.Entry, objEntry.Published, objEntry.AllowComments, objEntry.AddedDate, objEntry.DisplayCopyright, objEntry.Copyright, objEntry.PermaLink), Integer)
 
-            objEntry.ContentItemId = CompleteEntryCreation(objEntry, tabId)
+   objEntry.ContentItemId = CompleteEntryCreation(objEntry, tabId)
 
-            Return objEntry
-        End Function
+   Return objEntry
+  End Function
 
-        Public Sub UpdateEntry(ByVal objEntry As EntryInfo, ByVal tabId As Integer, ByVal portalId As Integer)
-            DataProvider.Instance().UpdateEntry(objEntry.BlogID, objEntry.EntryID, objEntry.Title, objEntry.Description, objEntry.Entry, objEntry.Published, objEntry.AllowComments, objEntry.AddedDate, objEntry.DisplayCopyright, objEntry.Copyright, objEntry.PermaLink, objEntry.ContentItemId)
+  Public Sub UpdateEntry(ByVal objEntry As EntryInfo, ByVal tabId As Integer, ByVal portalId As Integer)
+   DataProvider.Instance().UpdateEntry(objEntry.BlogID, objEntry.EntryID, objEntry.Title, objEntry.Description, objEntry.Entry, objEntry.Published, objEntry.AllowComments, objEntry.AddedDate, objEntry.DisplayCopyright, objEntry.Copyright, objEntry.PermaLink, objEntry.ContentItemId)
 
-            CompleteEntryUpdate(objEntry, tabId, portalId)
-        End Sub
+   CompleteEntryUpdate(objEntry, tabId, portalId)
+  End Sub
 
-        Public Sub DeleteEntry(ByVal EntryID As Integer, ByVal contentItemId As Integer)
-            DataProvider.Instance().DeleteEntry(EntryID)
+  Public Sub DeleteEntry(ByVal EntryID As Integer, ByVal contentItemId As Integer)
+   DataProvider.Instance().DeleteEntry(EntryID)
 
-            CompleteEntryDelete(contentItemId)
-        End Sub
+   CompleteEntryDelete(contentItemId)
+  End Sub
 
 #Region "Private Methods"
 
-        ''' <summary>
-        ''' This completes the things necessary for creating a content item in the data store.
-        ''' </summary>
-        ''' <param name="objEntry"></param>
-        ''' <param name="tabId"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Private Shared Function CompleteEntryCreation(ByVal objEntry As EntryInfo, ByVal tabId As Integer) As Integer
-            Dim cntTaxonomy As New Content()
-            Dim objContentItem As ContentItem = cntTaxonomy.CreateContentItem(objEntry, tabId)
+  ''' <summary>
+  ''' This completes the things necessary for creating a content item in the data store.
+  ''' </summary>
+  ''' <param name="objEntry"></param>
+  ''' <param name="tabId"></param>
+  ''' <returns></returns>
+  ''' <remarks></remarks>
+  Private Shared Function CompleteEntryCreation(ByVal objEntry As EntryInfo, ByVal tabId As Integer) As Integer
+   Dim cntTaxonomy As New Content()
+   Dim objContentItem As ContentItem = cntTaxonomy.CreateContentItem(objEntry, tabId)
 
-            Return objContentItem.ContentItemId
-        End Function
+   Return objContentItem.ContentItemId
+  End Function
 
-        ''' <summary>
-        ''' Handles any content item/taxonomy updates, then deals w/ cache clearing (if applicable)
-        ''' </summary>
-        ''' <param name="objEntry"></param>
-        ''' <param name="tabId"></param>
-        ''' <remarks></remarks>
-        Private Shared Sub CompleteEntryUpdate(ByVal objEntry As EntryInfo, ByVal tabId As Integer, ByVal portalId As Integer)
-            Dim cntTaxonomy As New Content()
-            cntTaxonomy.UpdateContentItem(objEntry, tabId, portalId)
-        End Sub
+  ''' <summary>
+  ''' Handles any content item/taxonomy updates, then deals w/ cache clearing (if applicable)
+  ''' </summary>
+  ''' <param name="objEntry"></param>
+  ''' <param name="tabId"></param>
+  ''' <remarks></remarks>
+  Private Shared Sub CompleteEntryUpdate(ByVal objEntry As EntryInfo, ByVal tabId As Integer, ByVal portalId As Integer)
+   Dim cntTaxonomy As New Content()
+   cntTaxonomy.UpdateContentItem(objEntry, tabId, portalId)
+  End Sub
 
-        Private Shared Sub CompleteEntryDelete(ByVal contentItemId As Integer)
-            Content.DeleteContentItem(contentItemId)
-            'TODO: Remove from Journal?
-        End Sub
+  Private Shared Sub CompleteEntryDelete(ByVal contentItemId As Integer)
+   Content.DeleteContentItem(contentItemId)
+   'TODO: Remove from Journal?
+  End Sub
 
 #Region "5.0 Taxonomy Migration"
 
-        Public Function RetrieveTaxonomyRelatedPosts() As List(Of EntryInfo)
-            Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().RetrieveTaxonomyRelatedPosts())
-        End Function
+  Public Function RetrieveTaxonomyRelatedPosts() As List(Of EntryInfo)
+   Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().RetrieveTaxonomyRelatedPosts())
+  End Function
 
 #End Region
 
 #End Region
 
-    End Class
+ End Class
 End Namespace
