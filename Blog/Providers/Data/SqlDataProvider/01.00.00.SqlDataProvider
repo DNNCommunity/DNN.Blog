@@ -371,11 +371,6 @@ if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{o
 drop procedure {databaseOwner}{objectQualifier}Blog_GetEntry
 GO
 
-/****** Objekt:  Gespeicherte Prozedur dbo.Blog_GetSettings    Skriptdatum: 01.03.2005 17:23:45 ******/
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_GetSettings') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}{objectQualifier}Blog_GetSettings
-GO
-
 SET QUOTED_IDENTIFIER ON 
 GO
 SET ANSI_NULLS ON 
@@ -595,27 +590,6 @@ FROM
 	{databaseOwner}{objectQualifier}Blog_Entries E JOIN {databaseOwner}{objectQualifier}Blog_Blogs B ON B.BlogID = E.BlogID 
 WHERE
 	E.[EntryID] = @EntryID
-
-
-GO
-
-SET QUOTED_IDENTIFIER OFF 
-GO
-SET ANSI_NULLS ON 
-GO
-
-SET QUOTED_IDENTIFIER ON 
-GO
-SET ANSI_NULLS ON 
-GO
-
-/****** Objekt:  Gespeicherte Prozedur dbo.Blog_GetSettings    Skriptdatum: 01.03.2005 17:23:45 ******/
-
-CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetSettings
-	@PortalID int
- AS
-
-SELECT [Key], [Value] From {databaseOwner}{objectQualifier}Blog_Settings WHERE PortalID=@PortalID
 
 
 GO
