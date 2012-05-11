@@ -23,7 +23,6 @@ Imports System.IO
 Imports System.Text
 Imports System.Text.RegularExpressions
 Imports DotNetNuke.Common
-Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Modules.Blog.Components.Controllers
 Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Security
@@ -516,14 +515,15 @@ Namespace Components.Business
    meta.Attributes.Add("content", "article")
    defaultPage.Header.Controls.Add(meta)
 
-   If keyWords.Length > 0 Then
-    defaultPage.KeyWords = keyWords
+            If keyWords.Length > 0 Then
+                ' CP - As per discussion w/ Titan, these will be cleared out.
+                defaultPage.KeyWords = ""
 
-    meta = New HtmlMeta()
-    meta.Attributes.Add("property", "article:tag")
-    meta.Attributes.Add("content", keyWords)
-    defaultPage.Header.Controls.Add(meta)
-   End If
+                meta = New HtmlMeta()
+                meta.Attributes.Add("property", "article:tag")
+                meta.Attributes.Add("content", keyWords)
+                defaultPage.Header.Controls.Add(meta)
+            End If
 
    meta = New HtmlMeta()
    meta.Attributes.Add("property", "og:url")

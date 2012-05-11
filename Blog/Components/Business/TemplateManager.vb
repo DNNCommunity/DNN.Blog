@@ -18,7 +18,6 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Services.Tokens
 Imports DotNetNuke.Modules.Blog.Components.Entities
 

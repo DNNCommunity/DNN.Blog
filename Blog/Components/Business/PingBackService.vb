@@ -22,7 +22,6 @@ Imports System.Net
 Imports System.IO
 Imports System.Text
 Imports System.Text.RegularExpressions
-Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Modules.Blog.Components.Entities
 
 Namespace Components.Business
