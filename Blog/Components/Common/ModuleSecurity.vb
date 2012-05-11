@@ -52,7 +52,7 @@ Namespace Components.Common
         End Function
 
         Public Function CanAddEntry(ByVal IsOwner As Boolean, ByVal BlogAuthorMode As Integer) As Boolean
-            Return HasEdit Or (HasGhost AndAlso BlogAuthorMode = 1) Or (HasBlogger AndAlso IsOwner) Or (HasBlogger AndAlso BlogAuthorMode = 2)
+            Return HasEdit Or (HasGhost AndAlso BlogAuthorMode = Constants.AuthorMode.GhostMode) Or (HasBlogger AndAlso IsOwner) Or (HasBlogger AndAlso BlogAuthorMode = Constants.AuthorMode.BloggerMode)
         End Function
 
         <Obsolete("This method is deprecated, use specific functions instead (CanCreateBlog, CanEditBlog, CanAddEntry, etc.)")> _

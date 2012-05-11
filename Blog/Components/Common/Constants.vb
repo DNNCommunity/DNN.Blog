@@ -30,6 +30,12 @@ Namespace Components.Common
             ShowTotalUsage = 4
         End Enum
 
+        Public Enum AuthorMode
+            PersonalMode = 0
+            GhostMode = 1
+            BloggerMode = 2
+        End Enum
+
         Public Const ContentTypeName As String = "DNN_Blog_Entry"
         Public Const SharedResourceFileName As String = "~/DesktopModules/Blog/App_LocalResources/SharedResources.resx"
 
