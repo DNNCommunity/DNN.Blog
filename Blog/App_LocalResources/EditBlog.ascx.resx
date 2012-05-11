@@ -314,6 +314,18 @@
     <value>Personal (default) - Grants only the blog owner permission to post to this blog, Ghost Writer - Enables the owner and ghost writers the ability to post but all posts will appear to be authored by the blog owner, 3 - All Bloggers - All bloggers (not ghost writers) are permitted to post to this blog and will be credited as the entry authors.</value>
   </data>
   <data name="lblAuthorMode.Text" xml:space="preserve">
-    <value>Authoring Mode:</value>
+    <value>Authoring Mode</value>
+  </data>
+  <data name="BloggerMode.Text" xml:space="preserve">
+    <value>All Bloggers</value>
+  </data>
+  <data name="ControlTitle_edit_blog.Text" xml:space="preserve">
+    <value>Individual Blog Settings</value>
+  </data>
+  <data name="GhostMode.Text" xml:space="preserve">
+    <value>Ghost Writer</value>
+  </data>
+  <data name="PersonalMode.Text" xml:space="preserve">
+    <value>Personal</value>
   </data>
 </root>

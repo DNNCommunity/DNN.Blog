@@ -31,7 +31,11 @@
             </div>
             <div class="dnnFormItem">
                 <dnn:Label id="lblAuthorMode" runat="server" controlname="ddlAuthorMode" suffix=":" />
-                <asp:DropDownList ID="ddlAuthorMode" runat="server" />
+                <asp:DropDownList ID="ddlAuthorMode" runat="server">
+                    <asp:ListItem Value="0" ResourceKey="PersonalMode" />
+                    <asp:ListItem Value="1" ResourceKey="GhostMode" />
+                    <asp:ListItem Value="2" ResourceKey="BloggerMode" />
+                </asp:DropDownList>
             </div>
             <div class="dnnFormItem">
                 <dnn:Label id="lblMetaWebBlog" runat="server" controlname="" suffix=":" />
