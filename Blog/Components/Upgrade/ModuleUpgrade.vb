@@ -24,8 +24,6 @@ Imports DotNetNuke.Modules.Blog.Components.Controllers
 Imports DotNetNuke.Entities.Content.Taxonomy
 Imports DotNetNuke.Modules.Blog.Components.Integration
 Imports System.Linq
-Imports DotNetNuke.Common.Utilities
-Imports DotNetNuke.Modules.Blog.Providers.Data
 Imports DotNetNuke.Entities.Content
 Imports DotNetNuke.Modules.Blog.Components.Entities
 Imports DotNetNuke.Services.Exceptions

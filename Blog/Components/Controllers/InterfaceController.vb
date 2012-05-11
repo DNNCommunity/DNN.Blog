@@ -44,14 +44,14 @@ Namespace Components.Controllers
    Dim message As String = ""
 
    Select Case Version
-    Case "03.01.20"         ' first version as DotNetNuke sub project
-     message = message & " In Custom Upgrade Version " & Version & " - "
-     Dim _CustomUpgrade As New Upgrade.CustomUpgrade
-     message += _CustomUpgrade.UpgradeNewBlog()
-     message += " - " & _CustomUpgrade.UpgradeForumBlog()
+                'Case "03.01.20"         ' first version as DotNetNuke sub project
+                ' message = message & " In Custom Upgrade Version " & Version & " - "
+                ' Dim _CustomUpgrade As New Upgrade.CustomUpgrade
+                ' message += _CustomUpgrade.UpgradeNewBlog()
+                ' message += " - " & _CustomUpgrade.UpgradeForumBlog()
     Case "05.00.00"
      message = message & " Migrating taxonomy/folksonomy to core in " & Version & " :" & vbCrLf & vbCrLf
-     Dim _CustomUpgrade As New Upgrade.CustomUpgrade
+                    Dim _CustomUpgrade As New Upgrade.ModuleUpgrade
      message += _CustomUpgrade.MigrateTaxonomyFolksonomy()
    End Select
    Return message

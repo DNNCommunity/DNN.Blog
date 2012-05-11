@@ -211,13 +211,13 @@ Namespace Components.Upgrade
 
         Public Shared Function GetEntryCategoriesForUpgrade(ByVal EntryID As Integer) As List(Of MigrateCategoryInfo)
             Dim colCategories As List(Of MigrateCategoryInfo)
-            colCategories = CBO.FillCollection(Of MigrateCategoryInfo)(DataProvider.Instance().GetEntryCategoriesForUpgrade(EntryID))
+            colCategories = CBO.FillCollection(Of MigrateCategoryInfo)(DataProvider.Instance().GetCategoriesByEntry(EntryID))
             Return colCategories
         End Function
 
         Public Shared Function GetEntryTagsForUpgrade(ByVal EntryID As Integer) As List(Of MigrateTagInfo)
             Dim colTags As List(Of MigrateTagInfo)
-            colTags = CBO.FillCollection(Of MigrateTagInfo)(DataProvider.Instance().GetEntryTagsForUpgrade(EntryID))
+            colTags = CBO.FillCollection(Of MigrateTagInfo)(DataProvider.Instance().GetTagsByEntry(EntryID))
             Return colTags
         End Function
 
