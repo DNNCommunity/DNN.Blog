@@ -28,7 +28,7 @@ Namespace Components.Settings
         Private _allSettings As Hashtable
         Private _tabModuleId As Integer = -1
 
-        Private _ArchiveDisplayMode As String = "List"
+        Private _ArchiveDisplayMode As String = "Calendar"
         Private _ListDisplayMode As String = "DropDown"
         Private _EnableArchiveCss As Boolean = True
         Private _CalendarMode As String = "ASPNET"
