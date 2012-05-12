@@ -186,6 +186,7 @@
     <Compile Include="Components\Entities\TermInfo.vb" />
     <Compile Include="Components\Integration\Content.vb" />
     <Compile Include="Components\Integration\Journal.vb" />
+    <Compile Include="Components\Integration\Notifications.vb" />
     <Compile Include="Components\Integration\Terms.vb" />
     <Compile Include="Components\Settings\ArchiveViewSettings.vb" />
     <Compile Include="Components\Settings\BlogSettings.vb" />

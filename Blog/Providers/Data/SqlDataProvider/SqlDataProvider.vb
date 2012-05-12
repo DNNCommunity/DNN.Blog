@@ -181,6 +181,10 @@ Namespace Providers.Data
    SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "UpdateEntry", BlogID, EntryID, Title, Null.GetNull(Description, DBNull.Value), Entry, Published, AllowComments, AddedDate, DisplayCopyright, Null.GetNull(Copyright, DBNull.Value), Null.GetNull(PermaLink, DBNull.Value), Null.GetNull(contentItemId, DBNull.Value))
   End Sub
 
+        Public Overrides Sub UpdateEntryViewCount(ByVal EntryId As Integer)
+            SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "UpdateEntryViewCount", EntryId)
+        End Sub
+
   Public Overrides Sub DeleteEntry(ByVal EntryID As Integer)
    SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "DeleteEntry", EntryID)
   End Sub

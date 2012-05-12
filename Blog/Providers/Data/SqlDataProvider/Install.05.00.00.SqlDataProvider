@@ -2066,3 +2066,10 @@ AS
 ' 
 END
 GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateEntryViewCount] @EntryID INT
+AS 
+	UPDATE  {databaseOwner}{objectQualifier}Blog_Entries
+	SET     ViewCount = ViewCount + 1
+	WHERE   EntryID = @EntryID
+GO
