@@ -27,14 +27,12 @@ Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Data
 Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Entities.Tabs
-Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Entities.Users
 Imports System.Collections
 Imports CookComputing.XmlRpc
 Imports DotNetNuke.Security.Membership
 Imports System.IO
 Imports System.Web
-Imports DotNetNuke.Modules.Blog.MetaWeblog
 Imports DotNetNuke.Entities.Content.Taxonomy
 Imports System.Linq
 Imports DotNetNuke.Modules.Blog.Components.Settings
@@ -262,6 +260,7 @@ Public Class BlogPost
             item.StyleDetectionPost = styleDetectionPost
             item.StyleId = styleId
             item.ItemType = ItemType.Post
+            item.AuthorId = _userInfo.UserID.ToString()
 
             pageId = _provider.NewItem(blogId.ToString(), _userInfo, _portalSettings, _blogSettings, item)
 

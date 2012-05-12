@@ -31,16 +31,12 @@ Imports DotNetNuke.Entities.Users
 
 Namespace Components.Entities
 
-
     <Serializable(), XmlRoot("Entry")> _
     Public Class EntryInfo
         Inherits DotNetNuke.Entities.Content.ContentItem
         Implements IHydratable
         Implements IPropertyAccess
         Implements IXmlSerializable
-
-#Region " Local Variables "
-#End Region
 
 #Region "Constructors"
 
@@ -84,6 +80,8 @@ Namespace Components.Entities
         Public Property Copyright() As String
         Public Property PermaLink() As String
         Public Property SyndicationEmail() As String
+        Public Property CreatedUserId() As Integer
+        Public Property ViewCount() As Integer
         Public Property TotalRecords() As Integer
 
 #End Region
@@ -96,7 +94,6 @@ Namespace Components.Entities
         End Function
 
 #End Region
-
 
 #Region "IHydratable Implementation"
 
@@ -128,6 +125,8 @@ Namespace Components.Entities
             UserFullName = Convert.ToString(Null.SetNull(dr.Item("UserFullName"), UserFullName))
             CommentCount = Convert.ToInt32(Null.SetNull(dr.Item("CommentCount"), CommentCount))
             SyndicationEmail = Convert.ToString(Null.SetNull(dr.Item("SyndicationEmail"), SyndicationEmail))
+            CreatedUserId = Convert.ToInt32(Null.SetNull(dr.Item("CreatedUserId"), CreatedUserId))
+            ViewCount = Convert.ToInt32(Null.SetNull(dr.Item("ViewCount"), ViewCount))
             TotalRecords = Convert.ToInt32(Null.SetNull(dr.Item("TotalRecords"), CommentCount))
         End Sub
 
@@ -157,6 +156,7 @@ Namespace Components.Entities
                 Return CacheLevel.fullyCacheable
             End Get
         End Property
+
         Public Function GetProperty(ByVal strPropertyName As String, ByVal strFormat As String, ByVal formatProvider As System.Globalization.CultureInfo, ByVal AccessingUser As UserInfo, ByVal AccessLevel As Services.Tokens.Scope, ByRef PropertyNotFound As Boolean) As String Implements Services.Tokens.IPropertyAccess.GetProperty
             Dim OutputFormat As String = String.Empty
             If strFormat = String.Empty Then
@@ -189,7 +189,6 @@ Namespace Components.Entities
                     Return PropertyAccess.FormatString(HttpUtility.HtmlDecode(Me.Entry), strFormat)
                 Case "addeddate"
                     Return (Me.AddedDate.ToString(OutputFormat, formatProvider))
-                    'Return PropertyAccess.FormatString(Me.AddedDate.ToString, strFormat)
                 Case "published"
                     Return PropertyAccess.Boolean2LocalizedYesNo(Me.Published, formatProvider)
                 Case "allowcomments"
@@ -204,6 +203,10 @@ Namespace Components.Entities
                     Return (Me.CommentCount.ToString(OutputFormat, formatProvider))
                 Case "syndicationemail"
                     Return PropertyAccess.FormatString(Me.SyndicationEmail, strFormat)
+                Case "createduserid"
+                    Return (Me.CreatedUserId.ToString(OutputFormat, formatProvider))
+                Case "viewcount"
+                    Return (Me.ViewCount.ToString(OutputFormat, formatProvider))
                 Case "totalrecords"
                     Return (Me.TotalRecords.ToString(OutputFormat, formatProvider))
                 Case Else
@@ -248,7 +251,6 @@ Namespace Components.Entities
         ''' </history>
         Public Sub ReadXml(ByVal reader As XmlReader) Implements IXmlSerializable.ReadXml
             Try
-
                 If Not DateTime.TryParse(readElement(reader, "AddedDate"), AddedDate) Then
                     AddedDate = DateTime.MinValue
                 End If
@@ -263,13 +265,18 @@ Namespace Components.Entities
                 PermaLink = readElement(reader, "PermaLink")
                 Boolean.TryParse(readElement(reader, "Published"), Published)
                 Title = readElement(reader, "Title")
+                If Not Int32.TryParse(readElement(reader, "CreatedUserId"), CreatedUserId) Then
+                    CreatedUserId = Null.NullInteger
+                End If
+                If Not Int32.TryParse(readElement(reader, "ViewCount"), ViewCount) Then
+                    ViewCount = 0
+                End If
             Catch ex As Exception
                 ' log exception as DNN import routine does not do that
                 DotNetNuke.Services.Exceptions.LogException(ex)
                 ' re-raise exception to make sure import routine displays a visible error to the user
                 Throw New Exception("An error occured during import of an Entry", ex)
             End Try
-
         End Sub
 
         ''' <summary>
@@ -293,6 +300,8 @@ Namespace Components.Entities
             writer.WriteElementString("PermaLink", PermaLink)
             writer.WriteElementString("Published", Published.ToString())
             writer.WriteElementString("Title", Title)
+            writer.WriteElementString("CreatedUserId", CreatedUserId.ToString())
+            writer.WriteElementString("ViewCount", ViewCount.ToString())
             writer.WriteEndElement()
         End Sub
 

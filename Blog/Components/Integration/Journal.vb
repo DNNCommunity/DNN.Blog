@@ -20,11 +20,40 @@
 Option Strict On
 Option Explicit On
 
+Imports DotNetNuke.Modules.Blog.Components.Entities
+Imports DotNetNuke.Services.Journal
+
 Namespace Components.Integration
 
     Public Class Journal
 
         ' get journal type id
+
+        Public Sub AddItemToJournal(ByVal objEntry As EntryInfo, ByVal portalId As Integer, ByVal journalUserId As Integer, ByVal url As String)
+            Dim jc As New JournalController
+            Dim objectKey As String = Components.Common.Constants.ContentTypeName + String.Format("{0}:{1}", objEntry.BlogID.ToString(), objEntry.EntryID.ToString())
+            Dim ji As JournalItem = jc.Journal_GetByKey(portalId, objectKey)
+            If Not ji Is Nothing Then
+                jc.Journal_DeleteByKey(portalId, objectKey)
+            End If
+
+            ji = New JournalItem
+
+            ji.PortalId = portalId
+            ji.ProfileId = journalUserId
+            ji.UserId = journalUserId
+            ji.ContentItemId = objEntry.ContentItemId
+            ji.Title = objEntry.Title
+            ji.ItemData = New ItemData()
+            ji.ItemData.Url = url
+            ji.Summary = objEntry.Description
+            ji.Body = Nothing
+            ji.JournalTypeId = 7 ' NOTE: CP - COMEBACK (Get by name, like content type)
+            ji.ObjectKey = objectKey
+            ji.SecuritySet = "E,"
+
+            jc.Journal_Save(ji, -1)
+        End Sub
 
     End Class
 

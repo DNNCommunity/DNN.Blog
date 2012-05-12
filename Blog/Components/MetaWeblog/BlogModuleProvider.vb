@@ -23,16 +23,12 @@ Imports System.Reflection
 Imports System.Web
 Imports DotNetNuke.Modules.Blog.Components.Business
 Imports DotNetNuke.Modules.Blog.Components.Controllers
-Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Data
 Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Entities.Users
-Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Entities.Content.Taxonomy
 Imports DotNetNuke.Modules.Blog.Components.Settings
-Imports DotNetNuke.Modules.Blog.MetaWeblog
 Imports DotNetNuke.Modules.Blog.Components.Entities
-Imports Globals = DotNetNuke.Common.Globals
 
 Namespace Components.MetaWeblog
 
@@ -198,6 +194,7 @@ Namespace Components.MetaWeblog
             item.Permalink = entryInfo.PermaLink
             item.AllowComments = DirectCast(IIf((entryInfo.AllowComments), 1, 0), Integer)
             item.Publish = entryInfo.Published
+            item.AuthorId = entryInfo.CreatedUserId.ToString()
 
             Dim i As Integer = 0
 
@@ -243,6 +240,7 @@ Namespace Components.MetaWeblog
                 item.Title = entry.Title
                 item.Publish = entry.Published
                 item.Permalink = entry.PermaLink
+                item.AuthorId = entry.CreatedUserId.ToString()
                 itemArray(i) = item
                 i = i + 1
                 If i >= loopCutOff Then
@@ -298,6 +296,7 @@ Namespace Components.MetaWeblog
             End If
             objEntry.DisplayCopyright = False
             objEntry.Copyright = ""
+            objEntry.CreatedUserId = Convert.ToInt32(item.AuthorId)
             objEntry.BlogID = tempBlogID
             objEntry.ModuleID = -1
             objEntry.EntryID = objEntryController.AddEntry(objEntry, blogTabID).EntryID
@@ -306,17 +305,48 @@ Namespace Components.MetaWeblog
             'True in the last parameter just specifies that we want the SEO Friendly URL to be saved
             ' in the permalink field which is used by WLW to redirect to post after entry is made.
             objEntry.PermaLink = Utility.BlogNavigateURL(blogTabID, PortalID, objEntry, True)
-
             BlogPostServices.ProcessItemImages(objEntry, RootBlogPath)
 
-            ' handle categories/tags
-            'TagController.UpdateTagsByEntry(entryId, item.Keywords)
-            'CategoryController.UpdateCategoriesByEntry(objEntry.EntryID, item.Categories)
+            ' NOTE: CP - COMEBACK
+            Dim userEnteredTerms As Array = item.Categories
+            Dim terms As New List(Of Term)
 
+            ' Tags?
+
+            If blogSettings.VocabularyId > 0 Then
+                For Each s As String In userEnteredTerms
+                    If s.Length > 0 Then
+                        'If (ContainsSpecialCharacters) Then
+                        '    UI.Skins.Skin.AddModuleMessage(control, msg, ModuleMessage.ModuleMessageType.RedError);
+                        'End If
+                        Dim newTerm As Term = Components.Integration.Terms.CreateAndReturnTerm(s, 1)
+                        terms.Add(newTerm)
+                    End If
+                Next
+            End If
+
+            objEntry.Terms.Clear()
+            objEntry.Terms.AddRange(terms)
 
             objEntryController.UpdateEntry(objEntry, objEntry.TabID, PortalID)
 
+            If (objEntry.Published) Then
+                Dim objBlog As BlogInfo
+                Dim cntBlog As New BlogController
+                objBlog = cntBlog.GetBlog(tempBlogID)
 
+                Dim cntIntegration As New Components.Integration.Journal()
+                Dim journalUserId As Integer
+
+                Select Case objBlog.AuthorMode
+                    Case Common.Constants.AuthorMode.GhostMode
+                        journalUserId = objBlog.UserID
+                    Case Else
+                        journalUserId = userInfo.UserID
+                End Select
+
+                cntIntegration.AddItemToJournal(objEntry, PortalID, journalUserId, objEntry.PermaLink)
+            End If
 
             ' If this is a style detection post, then we write to the Blog_MetaWeblogData table to note
             ' that this post is a new post.  We're just using the DAL+ here to manage this feature.
@@ -370,6 +400,8 @@ Namespace Components.MetaWeblog
                 objEntry.AddedDate = item.DateCreated
             End If
 
+            objEntry.CreatedUserId = Convert.ToInt32(item.AuthorId)
+
             ' HtmlEncode the entry
             objEntry.Entry = HttpUtility.HtmlEncode(objEntry.Entry)
 
@@ -391,10 +423,46 @@ Namespace Components.MetaWeblog
 
             BlogPostServices.ProcessItemImages(objEntry, RootBlogPath)
 
-            'TagController.UpdateTagsByEntry(objEntry.EntryID, item.Keywords)
-            'CategoryController.UpdateCategoriesByEntry(objEntry.EntryID, item.Categories)
+            ' NOTE: CP - COMEBACK
+            Dim userEnteredTerms As Array = item.Categories
+            Dim terms As New List(Of Term)
+
+            ' Tags?
+
+            If blogSettings.VocabularyId > 0 Then
+                For Each s As String In userEnteredTerms
+                    If s.Length > 0 Then
+                        'If (ContainsSpecialCharacters) Then
+                        '    UI.Skins.Skin.AddModuleMessage(control, msg, ModuleMessage.ModuleMessageType.RedError);
+                        'End If
+                        Dim newTerm As Term = Components.Integration.Terms.CreateAndReturnTerm(s, 1)
+                        terms.Add(newTerm)
+                    End If
+                Next
+            End If
+
+            objEntry.Terms.Clear()
+            objEntry.Terms.AddRange(terms)
 
             objEntryController.UpdateEntry(objEntry, objEntry.ContentItemId, portalSettings.PortalId)
+
+            If (objEntry.Published) Then
+                Dim objBlog As BlogInfo
+                Dim cntBlog As New BlogController
+                objBlog = cntBlog.GetBlog(objEntry.BlogID)
+
+                Dim cntIntegration As New Components.Integration.Journal()
+                Dim journalUserId As Integer
+
+                Select Case objBlog.AuthorMode
+                    Case Common.Constants.AuthorMode.GhostMode
+                        journalUserId = objBlog.UserID
+                    Case Else
+                        journalUserId = userInfo.UserID
+                End Select
+
+                cntIntegration.AddItemToJournal(objEntry, portalSettings.PortalId, journalUserId, objEntry.PermaLink)
+            End If
 
             Return True
         End Function

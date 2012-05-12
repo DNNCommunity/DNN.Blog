@@ -173,9 +173,9 @@ Namespace Providers.Data
    Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "GetEntriesByTerm", portalId, BlogDate, termId, pageSize, currentPage, ShowNonPublic, ShowNonPublished), IDataReader)
   End Function
 
-  Public Overrides Function AddEntry(ByVal blogID As Integer, ByVal title As String, ByVal description As String, ByVal Entry As String, ByVal Published As Boolean, ByVal AllowComments As Boolean, ByVal AddedDate As DateTime, ByVal DisplayCopyright As Boolean, ByVal Copyright As String, ByVal PermaLink As String) As Integer
-   Return CType(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "AddEntry", blogID, title, Null.GetNull(description, DBNull.Value), Null.GetNull(Entry, DBNull.Value), Published, AllowComments, AddedDate, DisplayCopyright, Null.GetNull(Copyright, DBNull.Value), Null.GetNull(PermaLink, DBNull.Value)), Integer)
-  End Function
+        Public Overrides Function AddEntry(ByVal blogID As Integer, ByVal title As String, ByVal description As String, ByVal Entry As String, ByVal Published As Boolean, ByVal AllowComments As Boolean, ByVal AddedDate As DateTime, ByVal DisplayCopyright As Boolean, ByVal Copyright As String, ByVal PermaLink As String, ByVal CreatedUserId As Integer) As Integer
+            Return CType(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "AddEntry", blogID, title, Null.GetNull(description, DBNull.Value), Null.GetNull(Entry, DBNull.Value), Published, AllowComments, AddedDate, DisplayCopyright, Null.GetNull(Copyright, DBNull.Value), Null.GetNull(PermaLink, DBNull.Value), CreatedUserId), Integer)
+        End Function
 
   Public Overrides Sub UpdateEntry(ByVal BlogID As Integer, ByVal EntryID As Integer, ByVal Title As String, ByVal Description As String, ByVal Entry As String, ByVal Published As Boolean, ByVal AllowComments As Boolean, ByVal AddedDate As DateTime, ByVal DisplayCopyright As Boolean, ByVal Copyright As String, ByVal PermaLink As String, ByVal contentItemId As Integer)
    SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "UpdateEntry", BlogID, EntryID, Title, Null.GetNull(Description, DBNull.Value), Entry, Published, AllowComments, AddedDate, DisplayCopyright, Null.GetNull(Copyright, DBNull.Value), Null.GetNull(PermaLink, DBNull.Value), Null.GetNull(contentItemId, DBNull.Value))
