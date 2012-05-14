@@ -155,6 +155,10 @@ if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{o
 	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_GetEntryCategories
 GO
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}UpdateEntryViewCount') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateEntryViewCount
+GO
+
 /******* VIEWS *******/
 IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}vw_Blog_Terms'))
 DROP VIEW {databaseOwner}{objectQualifier}vw_Blog_Terms

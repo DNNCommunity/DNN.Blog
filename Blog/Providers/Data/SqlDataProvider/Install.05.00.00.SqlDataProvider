@@ -27,7 +27,7 @@ CREATE TABLE {databaseOwner}{objectQualifier}Blog_Blogs(
 	[MustApproveAnonymous] [bit] NULL,
 	[MustApproveTrackbacks] [bit] NULL,
 	[UseCaptcha] [bit] NULL,
-	[EnableGhostWriter] [bit] NULL,
+	[AuthorMode] [int] NULL,
  CONSTRAINT PK_{objectQualifier}Blog_Blogs_BlogID PRIMARY KEY CLUSTERED 
 (
 	[BlogID] ASC
@@ -2065,6 +2065,11 @@ AS
 			AND RowNumber <= @RowEnd 
 ' 
 END
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}UpdateEntryViewCount') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateEntryViewCount
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateEntryViewCount] @EntryID INT
