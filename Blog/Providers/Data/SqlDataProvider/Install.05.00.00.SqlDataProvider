@@ -2165,3 +2165,46 @@ AS
 ' 
 END
 GO
+
+
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Upgrade_RetrieveTaxonomyEntries') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
+CREATE PROCEDURE {objectQualifier}Blog_Upgrade_RetrieveTaxonomyEntries
+AS 
+	BEGIN
+		SELECT  E.* ,
+				B.[UserID] ,
+				B.[SyndicationEmail] ,
+				U.[UserName] ,
+				U.[DisplayName] AS UserFullName ,
+				( SELECT    1
+				) AS CommentCount,
+				CI.CreatedByUserID ,
+				CI.CreatedOnDate ,
+				CI.ContentKey ,
+				CI.Indexed ,
+				CI.Content ,
+				CI.LastModifiedByUserID ,
+				CI.LastModifiedOnDate ,
+				CI.ModuleID ,
+				CI.TabID ,
+				CI.ContentTypeID ,
+				( SELECT    1
+				) AS TotalRecords
+		FROM    {objectQualifier}Blog_Blogs B
+				INNER JOIN {objectQualifier}Blog_Entries E ON B.[BlogID] = E.[BlogID]
+				INNER JOIN {objectQualifier}{objectQualifier}Users U ON B.[UserID] = U.[UserID]
+				LEFT OUTER JOIN {objectQualifier}{objectQualifier}ContentItems CI ON E.ContentItemId = CI.ContentItemID
+		WHERE   EntryID IN ( SELECT EntryID
+							 FROM   {objectQualifier}Blog_Entry_Categories C
+							 WHERE  C.EntryID = EntryID )
+				OR EntryID IN ( SELECT  EntryID
+								FROM    {objectQualifier}Blog_Entry_Tags T
+								WHERE   T.EntryID = EntryID )
+	END
+' 
+END
+GO
