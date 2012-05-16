@@ -1670,7 +1670,7 @@ EXEC {databaseOwner}sp_executesql @statement = N'CREATE PROCEDURE {databaseOwner
 	@MustApproveAnonymous BIT ,
 	@MustApproveTrackbacks BIT ,
 	@UseCaptcha BIT ,
-	@EnableGhostWriter BIT
+	@AuthorMode INT 
 AS 
 	UPDATE  {databaseOwner}{objectQualifier}Blog_Blogs
 	SET     [PortalID] = @PortalID ,
@@ -1693,7 +1693,7 @@ AS
 			[MustApproveAnonymous] = @MustApproveAnonymous ,
 			[MustApproveTrackbacks] = @MustApproveTrackbacks ,
 			[UseCaptcha] = @UseCaptcha ,
-			[EnableGhostWriter] = @EnableGhostWriter
+			[AuthorMode] = @AuthorMode
 	WHERE   [BlogID] = @BlogID' 
 END
 GO
@@ -2077,4 +2077,91 @@ AS
 	UPDATE  {databaseOwner}{objectQualifier}Blog_Entries
 	SET     ViewCount = ViewCount + 1
 	WHERE   EntryID = @EntryID
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetEntriesByBlog') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetEntriesByBlog
+GO
+
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetEntriesByBlog') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
+CREATE PROCEDURE {objectQualifier}Blog_GetEntriesByBlog
+	@BlogID INT ,
+	@BlogDate DATETIME = NULL ,
+	@PageSize INT ,
+	@CurrentPage INT ,
+	@ShowNonPublic BIT = 0 ,
+	@ShowNonPublished BIT = 0
+AS 
+	IF @BlogDate IS NULL 
+		BEGIN
+			SET @BlogDate = GETUTCDATE()
+		END
+	DECLARE @RowStart INT 
+	DECLARE @RowEnd INT 
+		
+	SET @RowStart = @PageSize * ( @CurrentPage - 1 )
+	SET @RowEnd = @RowStart + @PageSize
+	
+	SELECT  *
+	FROM    ( SELECT    E.* ,
+						B.[UserID] ,
+						B.[SyndicationEmail] ,
+						U.[UserName] ,
+						U.[DisplayName] AS UserFullName ,
+						( SELECT    COUNT(*)
+						  FROM      {objectQualifier}Blog_Comments
+						  WHERE     EntryID = E.EntryID
+									AND Approved = 1
+						) AS CommentCount ,
+						CI.CreatedByUserID ,
+						CI.CreatedOnDate ,
+						CI.ContentKey ,
+						CI.Indexed ,
+						CI.Content ,
+						CI.LastModifiedByUserID ,
+						CI.LastModifiedOnDate ,
+						CI.ModuleID ,
+						CI.TabID ,
+						CI.ContentTypeID ,
+						( SELECT    COUNT(BE.ContentItemID)
+						  FROM      {objectQualifier}Blog_Blogs BB
+									INNER JOIN {objectQualifier}Blog_Entries BE ON BB.[BlogID] = BE.[BlogID]
+									INNER JOIN {objectQualifier}{objectQualifier}Users BU ON BB.[UserID] = BU.[UserID]
+									LEFT OUTER JOIN {objectQualifier}{objectQualifier}ContentItems BCI ON BE.ContentItemId = BCI.ContentItemID
+						  WHERE     ( BB.[BlogID] = @BlogID
+									  OR BB.[ParentBlogID] = @BlogID
+									)
+									AND BE.AddedDate <= @BlogDate
+									AND ( BE.[Published] = 1
+										  OR BE.[Published] <> @ShowNonPublished
+										)
+									AND ( BB.[Public] = 1
+										  OR BB.[Public] <> @ShowNonPublic
+										)
+						) AS TotalRecords ,
+						ROW_NUMBER() OVER ( ORDER BY E.AddedDate DESC ) AS RowNumber
+			  FROM      {objectQualifier}Blog_Blogs B
+						INNER JOIN {objectQualifier}Blog_Entries E ON B.[BlogID] = E.[BlogID]
+						INNER JOIN {objectQualifier}{objectQualifier}Users U ON B.[UserID] = U.[UserID]
+						LEFT OUTER JOIN {objectQualifier}{objectQualifier}ContentItems CI ON E.ContentItemId = CI.ContentItemID
+			  WHERE     ( B.[BlogID] = @BlogID
+						  OR B.[ParentBlogID] = @BlogID
+						)
+						AND E.AddedDate <= @BlogDate
+						AND ( E.[Published] = 1
+							  OR E.[Published] <> @ShowNonPublished
+							)
+						AND ( B.[Public] = 1
+							  OR B.[Public] <> @ShowNonPublic
+							)
+			) AS EntryInfo
+	WHERE   RowNumber >= @RowStart
+			AND RowNumber <= @RowEnd 
+' 
+END
 GO

@@ -159,6 +159,178 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwn
 	DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateEntryViewCount
 GO
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetAllEntriesByBlog') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetAllEntriesByBlog
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetAllEntriesByPortal') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetAllEntriesByPortal
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_AddBlog') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_AddBlog
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_DeleteBlog') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_DeleteBlog
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetBlogByUserID') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlogByUserID
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetBlogByUserName') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlogByUserName
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetBlogsByUserName') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlogsByUserName
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetBlogsByPortal') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlogsByPortal
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetCommentsByEntry') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetCommentsByEntry
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetCommentsByBlog') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetCommentsByBlog
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetCommentsByPortal') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetCommentsByPortal
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetEntriesByBlog') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetEntriesByBlog
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetEntriesByDay') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetEntriesByDay
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetEntriesByMonth') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetEntriesByMonth
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetEntriesByPortal') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetEntriesByPortal
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetEntriesByTerm') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetEntriesByTerm
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetEntry') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetEntry
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetSettings') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetSettings
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetTermsByContentItem') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetTermsByContentItem
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetTermsByContentType') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetTermsByContentType
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_ListBlogs') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_ListBlogs
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_ListBlogsByPortal') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_ListBlogsByPortal
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_ListBlogsRootByPortal') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_ListBlogsRootByPortal
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_SearchByKeyWordAndBlog') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_SearchByKeyWordAndBlog
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_SearchByKeyWordAndPortal') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_SearchByKeyWordAndPortal
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_SearchByPhraseAndBlog') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_SearchByPhraseAndBlog
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_SearchByPhraseAndPortal') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_SearchByPhraseAndPortal
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Settings_Get') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_Settings_Get
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_UpdateBlog') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdateBlog
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_UpdateEntryViewCount') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdateEntryViewCount
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Upgrade_CategoriesGet') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_CategoriesGet
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Upgrade_DeleteBlog') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_DeleteBlog
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Upgrade_DeleteComment') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_DeleteComment
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Upgrade_DeleteEntry') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_DeleteEntry
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Upgrade_GetCategoriesByEntry') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_GetCategoriesByEntry
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Upgrade_GetSettings') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_GetSettings
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Upgrade_GetTagsByEntry') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_GetTagsByEntry
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Upgrade_ListBlogs') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_ListBlogs
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Upgrade_ListComments') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_ListComments
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Upgrade_ListEntriesByBlog') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_ListEntriesByBlog
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Upgrade_RetrieveTaxonomyEntries') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_RetrieveTaxonomyEntries
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Upgrade_TagsGet') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_TagsGet
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Upgrade_UpdateModuleDefId') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_UpdateModuleDefId
+GO
+	
 /******* VIEWS *******/
 IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}vw_Blog_Terms'))
 DROP VIEW {databaseOwner}{objectQualifier}vw_Blog_Terms
