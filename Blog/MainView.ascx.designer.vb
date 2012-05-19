@@ -95,6 +95,15 @@ Partial Public Class MainView
     Protected WithEvents liAddPart As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
     '''<summary>
+    '''lblBlogPart control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblBlogPart As Global.DotNetNuke.UI.UserControls.LabelControl
+
+    '''<summary>
     '''ddModuleDef control.
     '''</summary>
     '''<remarks>
@@ -102,6 +111,15 @@ Partial Public Class MainView
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ddModuleDef As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
+    '''lblTitle control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblTitle As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''txtTitle control.
@@ -113,6 +131,15 @@ Partial Public Class MainView
     Protected WithEvents txtTitle As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
+    '''lblPane control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblPane As Global.DotNetNuke.UI.UserControls.LabelControl
+
+    '''<summary>
     '''ddPane control.
     '''</summary>
     '''<remarks>
@@ -120,6 +147,15 @@ Partial Public Class MainView
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ddPane As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
+    '''lblInsert control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblInsert As Global.DotNetNuke.UI.UserControls.LabelControl
 
     '''<summary>
     '''ddPosition control.
@@ -138,4 +174,13 @@ Partial Public Class MainView
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cmdAdd As Global.System.Web.UI.WebControls.LinkButton
+
+    '''<summary>
+    '''dcbQuestions control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents dcbQuestions As Global.DotNetNuke.Web.UI.WebControls.DnnCodeBlock
 End Class

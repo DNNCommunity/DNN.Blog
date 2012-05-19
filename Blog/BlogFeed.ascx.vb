@@ -34,21 +34,18 @@ Partial Public Class BlogFeed
 
   Dim feed As New BlogRssFeed(Me.ModuleConfiguration, Me.Request, RssView)
   Dim xmlfeed As String = Nothing
-  If Me.BlogSettings.FeedCacheTime > 0 Then
-   Try
-    xmlfeed = CStr(DotNetNuke.Common.Utilities.DataCache.GetCache(feed.CacheKey))
-   Catch
-   End Try
-   If xmlfeed Is Nothing Then
-    xmlfeed = feed.WriteRssToString()
-    DotNetNuke.Common.Utilities.DataCache.SetCache(feed.CacheKey, xmlfeed, TimeSpan.FromMinutes(Me.BlogSettings.FeedCacheTime))
-   End If
-  Else
-   xmlfeed = feed.WriteRssToString()
-  End If
-  Response.Write(xmlfeed)
+        Try
+            xmlfeed = CStr(DotNetNuke.Common.Utilities.DataCache.GetCache(feed.CacheKey))
+        Catch
+        End Try
+        If xmlfeed Is Nothing Then
+            xmlfeed = feed.WriteRssToString()
+            DotNetNuke.Common.Utilities.DataCache.SetCache(feed.CacheKey, xmlfeed, TimeSpan.FromMinutes(DotNetNuke.Entities.Host.Host.PerformanceSetting * 20))
+        End If
 
-  Response.End()
+        Response.Write(xmlfeed)
+
+        Response.End()
 
  End Sub
 #End Region

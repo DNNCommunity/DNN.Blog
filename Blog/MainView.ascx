@@ -1,4 +1,6 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="MainView.ascx.vb" Inherits="DotNetNuke.Modules.Blog.MainView" %>
+<%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
+<%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Import Namespace="DotNetNuke.Services.Localization" %>
 <div class="dnnClear bloggerMenu">
     <div class="dnnRight divBloggerBar" id="divBloggerBar">
@@ -14,21 +16,21 @@
 <div id="divMainViewDialog" class="divMainViewDialog">
     <div class="dnnClear">
         <div class="dnnFormItem" >
-            <label>Blog Part:</label>
+            <dnn:Label ID="lblBlogPart" runat="server" Suffix=":" />
             <asp:DropDownList runat="server" ID="ddModuleDef" DataTextField="FriendlyName" DataValueField="ModuleDefID" />
         </div>
         <div class="dnnFormItem">
-            <label>Title:</label>
+            <dnn:Label ID="lblTitle" runat="server" Suffix=":" />
             <div class="dnnLeft">
                 <asp:TextBox runat="server" ID="txtTitle" />
             </div>
         </div>
         <div class="dnnFormItem">
-            <label>Pane:</label>
+            <dnn:Label ID="lblPane" runat="server" Suffix=":" />
             <asp:DropDownList runat="server" ID="ddPane" />
         </div>
         <div class="dnnFormItem">
-            <label>Insert:</label>
+            <dnn:Label ID="lblInsert" runat="server" Suffix=":" />
             <asp:DropDownList runat="server" ID="ddPosition" />    
         </div>
         <div class="dnnRight">
@@ -36,25 +38,27 @@
         </div>
     </div>
 </div>
-<script language="javascript" type="text/javascript">
-    /*globals jQuery, window, Sys */
-    (function ($, Sys) {
-        function setupMainView() {
-            $('#divMainViewDialog').dialog({ autoOpen: false, minWidth: 350, title: 'Add Blog Part to Page' });
+<dnnweb:DnnCodeBlock ID="dcbQuestions" runat="server" >
+    <script language="javascript" type="text/javascript">
+        /*globals jQuery, window, Sys */
+        (function ($, Sys) {
+            function setupMainView() {
+                $('#divMainViewDialog').dialog({ autoOpen: false, minWidth: 350, title: '<%= Localization.GetString("DialogTitle", LocalResourceFile) %>' });
 
-            $("#lnkAddPart").click(function () {
-                // show dialog for adding module part.
-                $('#divMainViewDialog').dialog('open');
+                $("#lnkAddPart").click(function () {
+                    // show dialog for adding module part.
+                    $('#divMainViewDialog').dialog('open');
 
-                return false;
+                    return false;
+                });
+
+                $("#divMainViewDialog").parent().appendTo($("form:first"));
+            }
+
+            $(document).ready(function () {
+                setupMainView();
             });
 
-            $("#divMainViewDialog").parent().appendTo($("form:first"));
-        }
-
-        $(document).ready(function () {
-            setupMainView();
-        });
-
-    } (jQuery, window.Sys));
-</script>  
+        } (jQuery, window.Sys));
+    </script>  
+</dnnweb:DnnCodeBlock>

@@ -43,33 +43,18 @@ Partial Public Class ModuleOptions
 
                 chkForceDescription.Checked = BlogSettings.EntryDescriptionRequired
                 txtSummaryLimit.Text = BlogSettings.SummaryMaxLength.ToString
-                txtSearchLimit.Text = BlogSettings.SearchSummaryMaxLength.ToString
                 txtMaxImageWidth.Text = BlogSettings.MaxImageWidth.ToString
-                chkShowGravatars.Checked = BlogSettings.ShowGravatars
-                chkShowWebsite.Checked = BlogSettings.ShowWebsite
-                txtGravatarImageWidth.Text = BlogSettings.GravatarImageWidth.ToString
-
-                Dim ratingValue As String = BlogSettings.GravatarRating
-                Dim defaultURL As String = BlogSettings.GravatarDefaultImageUrl
-                rblGravatarRating.SelectedIndex = rblGravatarRating.Items.IndexOf(rblGravatarRating.Items.FindByValue(ratingValue))
-                rblDefaultImage.SelectedIndex = rblDefaultImage.Items.IndexOf(rblDefaultImage.Items.FindByValue(defaultURL))
-                txtGravatarDefaultImageCustomURL.Text = BlogSettings.GravatarCustomUrl
                 dntxtbxRecentEntriesMax.Value = BlogSettings.RecentEntriesMax
                 txtRecentRssEntriesMax.Text = BlogSettings.RecentRssEntriesMax.ToString
                 chkUploadOption.Checked = BlogSettings.EnableUploadOption
                 chkShowSummary.Checked = BlogSettings.ShowSummary
-                chkShowCommentTitle.Checked = BlogSettings.ShowCommentTitle
                 chkShowSeoFriendlyUrl.Checked = BlogSettings.ShowSeoFriendlyUrl
                 chkEnforceSummaryTruncation.Checked = BlogSettings.EnforceSummaryTruncation
-                chkAllowCommentAnchors.Checked = BlogSettings.AllowCommentAnchors
-                chkAllowCommentImages.Checked = BlogSettings.AllowCommentImages
-                chkAllowCommentFormatting.Checked = BlogSettings.AllowCommentFormatting
                 chkAllowSummaryHtml.Checked = BlogSettings.AllowSummaryHtml
                 chkAllowWLW.Checked = BlogSettings.AllowWLW
                 chkIncludeBody.Checked = BlogSettings.IncludeBody
                 chkIncludeCategoriesInDescription.Checked = BlogSettings.IncludeCategoriesInDescription
                 chkIncludeTagsInDescription.Checked = BlogSettings.IncludeTagsInDescription
-                txtFeedCacheTime.Text = BlogSettings.FeedCacheTime.ToString
                 chkAllowChildBlogs.Checked = BlogSettings.AllowChildBlogs
                 chkAllowMultipleCategories.Checked = BlogSettings.AllowMultipleCategories
                 chkUseWLWExcerpt.Checked = BlogSettings.UseWLWExcerpt
@@ -114,30 +99,18 @@ Partial Public Class ModuleOptions
             With BlogSettings
                 .EntryDescriptionRequired = chkForceDescription.Checked
                 .SummaryMaxLength = CInt(txtSummaryLimit.Text)
-                .SearchSummaryMaxLength = CInt(txtSearchLimit.Text)
                 .MaxImageWidth = CInt(txtMaxImageWidth.Text)
                 .RecentEntriesMax = CInt(dntxtbxRecentEntriesMax.Value)
                 .RecentRssEntriesMax = CInt(txtRecentRssEntriesMax.Text)
                 .EnableUploadOption = chkUploadOption.Checked
                 .ShowSummary = chkShowSummary.Checked
-                .ShowCommentTitle = chkShowCommentTitle.Checked
-                .AllowCommentAnchors = chkAllowCommentAnchors.Checked
-                .AllowCommentImages = chkAllowCommentImages.Checked
-                .AllowCommentFormatting = chkAllowCommentFormatting.Checked
                 .ShowSeoFriendlyUrl = chkShowSeoFriendlyUrl.Checked
                 .PageBlogs = CInt(cmbPageBlogs.SelectedItem.Value)
-                .ShowGravatars = chkShowGravatars.Checked
-                .GravatarImageWidth = CInt(txtGravatarImageWidth.Text)
-                .GravatarRating = rblGravatarRating.SelectedValue
-                .GravatarDefaultImageUrl = rblDefaultImage.SelectedValue
-                .GravatarCustomUrl = txtGravatarDefaultImageCustomURL.Text
-                .ShowWebsite = chkShowWebsite.Checked()
                 .EnforceSummaryTruncation = chkEnforceSummaryTruncation.Checked
                 .IncludeBody = chkIncludeBody.Checked
                 .IncludeCategoriesInDescription = chkIncludeCategoriesInDescription.Checked
                 .IncludeTagsInDescription = chkIncludeTagsInDescription.Checked
                 .AllowSummaryHtml = chkAllowSummaryHtml.Checked
-                .FeedCacheTime = CInt(txtFeedCacheTime.Text.Trim)
                 .AllowChildBlogs = chkAllowChildBlogs.Checked
                 .AllowWLW = chkAllowWLW.Checked
                 .AllowMultipleCategories = chkAllowMultipleCategories.Checked
@@ -191,12 +164,6 @@ Partial Public Class ModuleOptions
         ' run the script
         Dim res As String = DotNetNuke.Data.DataProvider.Instance().ExecuteScript(sql, False)
 
-        'TODO: CP
-        '' run through all categories to make sure the slug is correctly set
-        'For Each c As CategoryInfo In CategoryController.ListCategories(PortalId).Values
-        '    CategoryController.UpdateCategory(c.CatId, c.Category, c.ParentId)
-        'Next
-
         ' recalculate child blogs
         Dim totalBlogs As Integer = (New BlogController).GetPortalBlogs(PortalId, True).Count
         Dim parentBlogs As Integer = (New BlogController).GetPortalParentBlogs(PortalId).Count
@@ -208,15 +175,6 @@ Partial Public Class ModuleOptions
 #Region "Private Methods"
 
     Private Sub PopulateDropDowns()
-        Dim li As ListItem
-        For Each li In rblDefaultImage.Items
-            If li.Value = "" Then li.Text = "<img src=""" + ControlPath + "images/grayman.png"" alt=""" & GetString("liGrayMan.Text", LocalResourceFile) & """ align=""middle""/> " & GetString("liGrayMan.Text", LocalResourceFile)
-            If li.Value = "identicon" Then li.Text = "<img src=""" + ControlPath + "images/identicon.png"" alt=""" & GetString("liIdenticon.Text", LocalResourceFile) & """ align=""middle""/> " & GetString("liIdenticon.Text", LocalResourceFile)
-            If li.Value = "wavatar" Then li.Text = "<img src=""" + ControlPath + "images/wavatar.png"" alt=""" & GetString("liWavatar.Text", LocalResourceFile) & """ align=""middle""/> " & GetString("liWavatar.Text", LocalResourceFile)
-            If li.Value = "monsterid" Then li.Text = "<img src=""" + ControlPath + "images/monsterid.png"" alt=""" & GetString("liMonsterID.Text", LocalResourceFile) & """ align=""middle""/> " & GetString("liMonsterID.Text", LocalResourceFile)
-            If li.Value = "custom" Then li.Text = "<img src=""" + ControlPath + "images/yourimagehere.png"" alt=""" & GetString("liCustom.Text", LocalResourceFile) & """ align=""middle""/> " & GetString("liCustom.Text", LocalResourceFile)
-        Next
-
         Dim objBlog As New BlogController
         cmbPageBlogs.DataSource = objBlog.GetParentsChildBlogs(PortalId, -1, False)
         cmbPageBlogs.DataBind()

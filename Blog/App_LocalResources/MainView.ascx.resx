@@ -183,4 +183,19 @@
   <data name="AddPart.Text" xml:space="preserve">
     <value>Add Blog Part</value>
   </data>
+  <data name="DialogTitle.Text" xml:space="preserve">
+    <value>Add Blog Part to Page</value>
+  </data>
+  <data name="lblBlogPart.Text" xml:space="preserve">
+    <value>Blog Part</value>
+  </data>
+  <data name="lblInsert.Text" xml:space="preserve">
+    <value>Insert</value>
+  </data>
+  <data name="lblPane.Text" xml:space="preserve">
+    <value>Pane</value>
+  </data>
+  <data name="lblTitle.Text" xml:space="preserve">
+    <value>Title</value>
+  </data>
 </root>

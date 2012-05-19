@@ -117,12 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="lblSearchBlogComment.Text" xml:space="preserve">
-    <value>Include Blog Comment</value>
-  </data>
-  <data name="Listitem2.Text" xml:space="preserve">
-    <value>Single Blog</value>
-  </data>
   <data name="lblRecentRssEntriesMax.Help" xml:space="preserve">
     <value>You can limit the number of RSS entries for Most recent entries.</value>
   </data>
@@ -138,23 +132,14 @@
   <data name="lblRecentRssEntriesMax.Text" xml:space="preserve">
     <value>Limit Recent RSS entries to</value>
   </data>
-  <data name="lblSearchSummary.Text" xml:space="preserve">
-    <value>Limit Search Summary to</value>
-  </data>
   <data name="lblRecentEntriesMax.Text" xml:space="preserve">
     <value>Page Size</value>
   </data>
   <data name="lblSummary.Help" xml:space="preserve">
     <value>Enter the desired cutoff in characters for the auto-generated summary of blog entries.  To set no limit, enter a value of 0.  Use the avanced option labeled Enforce Summary Truncation to also truncate entries with summaries.  The default is to only truncate auto-generated summaries.</value>
   </data>
-  <data name="Listitem1.Text" xml:space="preserve">
-    <value>Multiple Bloggers</value>
-  </data>
   <data name="lblSummary.Text" xml:space="preserve">
     <value>Limit Auto-Generated Entry Summary to</value>
-  </data>
-  <data name="lblPortalSearchOption.Help" xml:space="preserve">
-    <value>For use the global Portal Search Options for Blog Content you can control it with the options below</value>
   </data>
   <data name="lblMandatory.Text" xml:space="preserve">
     <value>Make Entry Summary Mandatory</value>
@@ -165,20 +150,11 @@
   <data name="lblMandatory.Help" xml:space="preserve">
     <value>When entering a blog entry, this setting forces the user to enter a summary of their blog entry.</value>
   </data>
-  <data name="lblSearchSummary.Help" xml:space="preserve">
-    <value>It is strongly suggested that during search operations you limit the length of the entry returned so that results can be scanned quickly.</value>
-  </data>
   <data name="lblShowSummary.Text" xml:space="preserve">
     <value>Include Summary in Entry</value>
   </data>
   <data name="lblShowSummary.Help" xml:space="preserve">
     <value>If this option is enabled, the summary (if available) will be shown on the top of the single entry view.</value>
-  </data>
-  <data name="lblPortalSearchOption.Text" xml:space="preserve">
-    <value>Portal Search Options</value>
-  </data>
-  <data name="lblSearchBlogContent.Text" xml:space="preserve">
-    <value>Include Blog Content</value>
   </data>
   <data name="secAdvancedSeetings.Text" xml:space="preserve">
     <value>Advanced Settings</value>
@@ -200,12 +176,6 @@ About Identicon, Wavicon, and MonsterID: Gravatar will be displayed for users wh
   <data name="lblPageBlogs.Help" xml:space="preserve">
     <value>Select the blog which should be used on this tab. For a general Blog page please don't select a specific Blog</value>
   </data>
-  <data name="lblEnableDNNSearch.Text" xml:space="preserve">
-    <value>Enable DNN Search</value>
-  </data>
-  <data name="lblEnableDNNSearch.Help" xml:space="preserve">
-    <value>If you enabled this option the content of that module will be indexed by the DNN search, please take care of that you only enbable this option for one module (your main blog page), if you enable this option for more then one module you will get duplicated search results</value>
-  </data>
   <data name="lblShowUniqueTitle.Text" xml:space="preserve">
     <value>Show unique title</value>
   </data>
@@ -222,33 +192,7 @@ About Identicon, Wavicon, and MonsterID: Gravatar will be displayed for users wh
     <value>Social Bookmarks &amp; Netowrks</value>
   </data>
   <data name="secCommentSettings.Text" xml:space="preserve">
-    <value>Comments</value>
-  </data>
-  <data name="lblShowGravatars.Text" xml:space="preserve">
-    <value>Show Avatars</value>
-  </data>
-  <data name="lblShowGravatars.Help" xml:space="preserve">
-    <value>Check to show Gravatar images next to comments.</value>
-  </data>
-  <data name="lblGravatarImageWidth.Text" xml:space="preserve">
-    <value>Image Width</value>
-  </data>
-  <data name="lblGravatarImageWidth.Help" xml:space="preserve">
-    <value>Enter the width of the Gravatar image.  The default width (48) matches the default style of the comments</value>
-  </data>
-  <data name="lblGravatarRating.Text" xml:space="preserve">
-    <value>Image Rating</value>
-  </data>
-  <data name="lblGravatarRating.Help" xml:space="preserve">
-    <value>Gravatar images are rated based on the content.  G rated images are appropriate for all audiences while PG, R and X rated images may contain inappropriate for some audiences.</value>
-  </data>
-  <data name="lblGravatarDefaultImageUrl.Text" xml:space="preserve">
-    <value>Default Image URL</value>
-  </data>
-  <data name="lblGravatarDefaultImageUrl.Help" xml:space="preserve">
-    <value>These images will be used for comments left by users without a Gravatar.&lt;br/&gt;
-About Identicon, Wavicon, and MonsterID: Gravatar will be displayed for users who have one, otherwise, a unique identifying image will be created for them based on the IP address of their computer, or on their email address if provided.&lt;br/&gt;
-About custom images: provide the complete URL to the image (including "http://")</value>
+    <value>Commenting &amp; Social</value>
   </data>
   <data name="lblShowSeoFriendlyUrl.Text" xml:space="preserve">
     <value>Show SEO Friendly URL</value>
@@ -262,38 +206,11 @@ About custom images: provide the complete URL to the image (including "http://")
   <data name="lblShowWebsite.Help" xml:space="preserve">
     <value>Check to allow website to be included with comment.</value>
   </data>
-  <data name="lblGravatarDefaultImageCustomURL.Help" xml:space="preserve">
-    <value>URL to custom avatar image (including "http://").  Used only if "Custom" is selected above.</value>
-  </data>
-  <data name="lblGravatarDefaultImageCustomURL.Text" xml:space="preserve">
-    <value>Custom Image URL</value>
-  </data>
   <data name="lblShowTitle.Help" xml:space="preserve">
     <value>Check to allow users to create unique titles for entry comments</value>
   </data>
   <data name="lblShowTitle.Text" xml:space="preserve">
     <value>Show Title</value>
-  </data>
-  <data name="liCustom.Text" xml:space="preserve">
-    <value>Custom</value>
-  </data>
-  <data name="liGrayMan.Text" xml:space="preserve">
-    <value>Gray Man</value>
-  </data>
-  <data name="liIdenticon.Text" xml:space="preserve">
-    <value>Identicon</value>
-  </data>
-  <data name="liMonsterID.Text" xml:space="preserve">
-    <value>MonsterID</value>
-  </data>
-  <data name="liShowGravatars1.Text" xml:space="preserve">
-    <value>Show Avatars</value>
-  </data>
-  <data name="liShowGravatars2.Text" xml:space="preserve">
-    <value>Don't Show Avatars</value>
-  </data>
-  <data name="liWavatar.Text" xml:space="preserve">
-    <value>Wavatar</value>
   </data>
   <data name="lblRegenerateLinks.Help" xml:space="preserve">
     <value>Regenerate the permalink saved for the entries shown in this module.  This is useful mainly for regenerating the permalinks after a change has been made to the URL format for a site.</value>
@@ -307,41 +224,11 @@ About custom images: provide the complete URL to the image (including "http://")
   <data name="lblRegenerateLinks.Text" xml:space="preserve">
     <value>Manage Entry Links</value>
   </data>
-  <data name="lblAllowCommentAnchors.Text" xml:space="preserve">
-    <value>Allow Hyperlinks in Comments</value>
-  </data>
-  <data name="lblAllowCommentAnchors.Help" xml:space="preserve">
-    <value>Check to allow hyperlinks to be entered in comments.</value>
-  </data>
-  <data name="lblAllowCommentImages.Text" xml:space="preserve">
-    <value>Allow Images in Comments</value>
-  </data>
-  <data name="lblAllowCommentImages.Help" xml:space="preserve">
-    <value>Check to allow images to be included in comments.</value>
-  </data>
-  <data name="lblAllowCommentFormatting.Text" xml:space="preserve">
-    <value>Allow Basic Formatting in Comments</value>
-  </data>
-  <data name="lblAllowCommentFormatting.Help" xml:space="preserve">
-    <value>Check to allow basic formatting in comments (b or strong, i or em, u and blockquote)</value>
-  </data>
   <data name="lblEnforceSummaryTruncation.Text" xml:space="preserve">
     <value>Enforce Entry Summary Limit</value>
   </data>
   <data name="lblEnforceSummaryTruncation.Help" xml:space="preserve">
     <value>Checking this option will cause both auto-generated and actual entry summaries to be truncated based on the value entered in the 'Limit Entry Summary To' setting above.</value>
-  </data>
-  <data name="rblGravatarRating_g.Text" xml:space="preserve">
-    <value>G - Suitable for all audiences</value>
-  </data>
-  <data name="rblGravatarRating_pg.Text" xml:space="preserve">
-    <value>PG - Possibly offensive, typically suitable for audiences 13 and above</value>
-  </data>
-  <data name="rblGravatarRating_r.Text" xml:space="preserve">
-    <value>R - Intended for audiences 17 and above</value>
-  </data>
-  <data name="rblGravatarRating_x.Text" xml:space="preserve">
-    <value>X - Even more mature than R</value>
   </data>
   <data name="lblIncludeBody.Help" xml:space="preserve">
     <value>Include body of post if requested through body=true</value>
@@ -369,12 +256,6 @@ About custom images: provide the complete URL to the image (including "http://")
   </data>
   <data name="lblAllowSummaryHtml.Text" xml:space="preserve">
     <value>Allow Summary HTML</value>
-  </data>
-  <data name="lblFeedCacheTime.Help" xml:space="preserve">
-    <value>Feeds can be cached. Set your preferred time for refreshing them here (in minutes). Default is 10.</value>
-  </data>
-  <data name="lblFeedCacheTime.Text" xml:space="preserve">
-    <value>RSS Cache Time</value>
   </data>
   <data name="lblAllowChildBlogs.Help" xml:space="preserve">
     <value>Users can create child blogs. Child blogs are superceded by categories from version 4 onward.</value>
@@ -435,12 +316,6 @@ About custom images: provide the complete URL to the image (including "http://")
   </data>
   <data name="lblPortalFiles.Text" xml:space="preserve">
     <value>Files on portal</value>
-  </data>
-  <data name="lblAddJQuery.Help" xml:space="preserve">
-    <value>If selected jQuery will be added</value>
-  </data>
-  <data name="lblAddJQuery.Text" xml:space="preserve">
-    <value>Add jQuery</value>
   </data>
   <data name="lblCatVocabRoot.Help" xml:space="preserve">
     <value>A portal level vocabulary root must be specified in order for categories to be available to bloggers for selection.</value>
@@ -504,5 +379,14 @@ About custom images: provide the complete URL to the image (including "http://")
   </data>
   <data name="FileManagement.Text" xml:space="preserve">
     <value>File Management</value>
+  </data>
+  <data name="Disqus.Text" xml:space="preserve">
+    <value>Disqus</value>
+  </data>
+  <data name="lblCommentMode.Help" xml:space="preserve">
+    <value>Choose one of three modes for commenting.</value>
+  </data>
+  <data name="lblCommentMode.Text" xml:space="preserve">
+    <value>Comment Mode</value>
   </data>
 </root>

@@ -304,9 +304,9 @@ Partial Public Class ViewEntry
                     'title and description for trackbacks
                     lnkTrackBack.NavigateUrl = HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) & Me.ControlPath & "Trackback.aspx?id=" & m_oEntry.EntryID & "&blogid=" & m_oEntry.BlogID
 
-                    pnlWebsite.Visible = BlogSettings.ShowWebsite
-                    pnlCommentTitle.Visible = BlogSettings.ShowCommentTitle
-                    pnlGravatar.Visible = BlogSettings.ShowGravatars
+                    'pnlWebsite.Visible = BlogSettings.ShowWebsite
+                    'pnlCommentTitle.Visible = BlogSettings.ShowCommentTitle
+                    'pnlGravatar.Visible = BlogSettings.ShowGravatars
                 End If
 
                 ' Make sure content item and moduleid are proper here (because we integrated content items years after module was built)
@@ -330,7 +330,7 @@ Partial Public Class ViewEntry
                 m_oEntryController.UpdateEntryViewCount(m_oEntry.EntryID)
             End If
 
-            AddGravatarImagePreview()
+            'AddGravatarImagePreview()
             txtClientIP.Text = HttpContext.Current.Request.UserHostAddress.ToString
 
             If pnlCaptcha.Visible Then
@@ -406,9 +406,9 @@ Partial Public Class ViewEntry
             End If
         End If
 
-        ' Rip Rowan 6/13/2008
-        ' Hide comment titles if not enabled in settings
-        lblTitle.Visible = BlogSettings.ShowCommentTitle
+        '' Rip Rowan 6/13/2008
+        '' Hide comment titles if not enabled in settings
+        'lblTitle.Visible = BlogSettings.ShowCommentTitle
 
         Dim n As DateTime = Utility.AdjustedDate(CType(e.Item.DataItem, SearchResult).AddedDate, UITimeZone)
         Dim publishDate As DateTime = n
@@ -433,10 +433,10 @@ Partial Public Class ViewEntry
             tmpName = commentInfo.UserName
         End If
 
-        ' Make into a hyperlink if a website was entered.
-        If commentInfo.Website <> String.Empty AndAlso BlogSettings.ShowWebsite Then
-            tmpName = String.Format(Localization.GetString("lblFormatUserNameUrl.Text", LocalResourceFile), commentInfo.Website, tmpName)
-        End If
+        '' Make into a hyperlink if a website was entered.
+        'If commentInfo.Website <> String.Empty AndAlso BlogSettings.ShowWebsite Then
+        '    tmpName = String.Format(Localization.GetString("lblFormatUserNameUrl.Text", LocalResourceFile), commentInfo.Website, tmpName)
+        'End If
 
         lblUserName.Text = String.Format(Localization.GetString("lblFormatUserName.Text", LocalResourceFile), tmpName)
 
@@ -445,16 +445,16 @@ Partial Public Class ViewEntry
         ' prevents lots of spurious (and wrong) avatars from pre-3.4.1 comments
         ' going forward, the email field automatically populates with the IP address if left blank
 
-        If BlogSettings.ShowGravatars And commentInfo.Email.Length > 5 Then
-            imgGravatar.ImageUrl = GetGravatarUrl(commentInfo.Email)
-            imgGravatar.Width = New Unit(BlogSettings.GravatarImageWidth)
-            imgGravatarPreview.Width = New Unit(BlogSettings.GravatarImageWidth)
-            'imgGravatar.Visible = True
-            divBlogGravatar.Visible = True
-        Else
-            'imgGravatar.Visible = False
-            divBlogGravatar.Visible = False
-        End If
+        'If BlogSettings.ShowGravatars And commentInfo.Email.Length > 5 Then
+        '    imgGravatar.ImageUrl = GetGravatarUrl(commentInfo.Email)
+        '    imgGravatar.Width = New Unit(BlogSettings.GravatarImageWidth)
+        '    imgGravatarPreview.Width = New Unit(BlogSettings.GravatarImageWidth)
+        '    'imgGravatar.Visible = True
+        '    divBlogGravatar.Visible = True
+        'Else
+        '    'imgGravatar.Visible = False
+        '    divBlogGravatar.Visible = False
+        'End If
     End Sub
 
     Protected Sub lstComments_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataListCommandEventArgs) Handles lstComments.ItemCommand
@@ -515,7 +515,7 @@ Partial Public Class ViewEntry
                 oComment.Title = objSec.InputFilter(txtCommentTitle.Text, PortalSecurity.FilterFlag.NoMarkup Or PortalSecurity.FilterFlag.NoScripting)
                 'DW - 06/06/2008 - Added code to use Regex to add rel="nofollow" to any hyperlinks 
                 ' added in the comment.  This check is done in CleanLinksInHtml
-                oComment.Comment = objSec.InputFilter(Utility.FormatHTML(Utility.CleanCommentHtml(txtComment.Text, BlogSettings.AllowCommentAnchors, BlogSettings.AllowCommentImages, BlogSettings.AllowCommentFormatting)), PortalSecurity.FilterFlag.NoMarkup Or PortalSecurity.FilterFlag.NoScripting)
+                'oComment.Comment = objSec.InputFilter(Utility.FormatHTML(Utility.CleanCommentHtml(txtComment.Text, BlogSettings.AllowCommentAnchors, BlogSettings.AllowCommentImages, BlogSettings.AllowCommentFormatting)), PortalSecurity.FilterFlag.NoMarkup Or PortalSecurity.FilterFlag.NoScripting)
                 oComment.Author = objSec.InputFilter(txtAuthor.Text, PortalSecurity.FilterFlag.NoMarkup Or PortalSecurity.FilterFlag.NoScripting)
 
                 If txtEmail.Text <> String.Empty Then
@@ -654,29 +654,29 @@ Partial Public Class ViewEntry
 
 #Region "Private Methods"
 
-    Private Sub AddGravatarImagePreview()
-        ' Rip Rowan -- 5/29/2008
-        ' Set up MD5 script block for gravatar image preview swapping
+    'Private Sub AddGravatarImagePreview()
+    '    ' Rip Rowan -- 5/29/2008
+    '    ' Set up MD5 script block for gravatar image preview swapping
 
-        If Not Page.ClientScript.IsClientScriptBlockRegistered("GR_MD5") Then
-            Dim GrMD5Script As String = "<script src=""" & ControlPath & "js/MD5.js"" type=""text/javascript""></script>"
-            Page.ClientScript.RegisterClientScriptBlock(Me.GetType(), "SB_MD5", GrMD5Script)
-        End If
+    '    If Not Page.ClientScript.IsClientScriptBlockRegistered("GR_MD5") Then
+    '        Dim GrMD5Script As String = "<script src=""" & ControlPath & "js/MD5.js"" type=""text/javascript""></script>"
+    '        Page.ClientScript.RegisterClientScriptBlock(Me.GetType(), "SB_MD5", GrMD5Script)
+    '    End If
 
 
-        ' Rip Rowan -- 6/12/2008
-        ' Set up image swap javascript
+    '    ' Rip Rowan -- 6/12/2008
+    '    ' Set up image swap javascript
 
-        Dim strOnchangeEmail As String = "'" + GravatarURLPrefix() + "' + hex_md5(" + txtEmail.ClientID + ".value) + '" + GravatarURLSuffix() + "'"
-        Dim strOnchangeNoEmail As String = "'" + GravatarURLPrefix() + "' + hex_md5(" + txtClientIP.ClientID + ".value) + '" + GravatarURLSuffix() + "'"
+    '    Dim strOnchangeEmail As String = "'" + GravatarURLPrefix() + "' + hex_md5(" + txtEmail.ClientID + ".value) + '" + GravatarURLSuffix() + "'"
+    '    Dim strOnchangeNoEmail As String = "'" + GravatarURLPrefix() + "' + hex_md5(" + txtClientIP.ClientID + ".value) + '" + GravatarURLSuffix() + "'"
 
-        Dim strDefault As String = "'" + GravatarURLPrefix() + "b6267c6fe44b457964aed2218e3ef8fe" + GravatarURLSuffix() + "'"
+    '    Dim strDefault As String = "'" + GravatarURLPrefix() + "b6267c6fe44b457964aed2218e3ef8fe" + GravatarURLSuffix() + "'"
 
-        txtEmail.Attributes.Add("onchange", "javascript:if(" + txtEmail.ClientID + ".value.length > 5) {" + imgGravatarPreview.ClientID + ".src=" + strOnchangeEmail _
-                                 + ";}else{" + imgGravatarPreview.ClientID + ".src=" + strOnchangeNoEmail + ";}")
+    '    txtEmail.Attributes.Add("onchange", "javascript:if(" + txtEmail.ClientID + ".value.length > 5) {" + imgGravatarPreview.ClientID + ".src=" + strOnchangeEmail _
+    '                             + ";}else{" + imgGravatarPreview.ClientID + ".src=" + strOnchangeNoEmail + ";}")
 
-        imgGravatarPreview.ImageUrl = GetGravatarUrl(txtEmail.Text)
-    End Sub
+    '    imgGravatarPreview.ImageUrl = GetGravatarUrl(txtEmail.Text)
+    'End Sub
 
     Private Sub BindCommentsList()
         Dim objCtlComments As New CommentController
@@ -736,63 +736,63 @@ Partial Public Class ViewEntry
     ' Return TimeZoneInfo.ConvertTime(strDate, TimeZone).Day.ToString
     'End Function
 
-    Private Function GetGravatarUrl(ByVal email As String) As String
-        Dim emailHash As String
-        Dim gravatarUrl As String
-        'Dim gravatarDefaultImageUrl As String = CType(m_oBlogSettings("GravatarDefaultImageUrl"), String)
-        If email <> String.Empty Then
-            emailHash = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(email.ToLower(), "md5").ToLower()
-        Else
-            emailHash = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(Request.UserHostAddress, "md5").ToLower()
-        End If
-        gravatarUrl = GravatarURLPrefix() + emailHash + GravatarURLSuffix()
-        Return gravatarUrl
-    End Function
+    'Private Function GetGravatarUrl(ByVal email As String) As String
+    '    Dim emailHash As String
+    '    Dim gravatarUrl As String
+    '    'Dim gravatarDefaultImageUrl As String = CType(m_oBlogSettings("GravatarDefaultImageUrl"), String)
+    '    If email <> String.Empty Then
+    '        emailHash = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(email.ToLower(), "md5").ToLower()
+    '    Else
+    '        emailHash = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(Request.UserHostAddress, "md5").ToLower()
+    '    End If
+    '    gravatarUrl = GravatarURLPrefix() + emailHash + GravatarURLSuffix()
+    '    Return gravatarUrl
+    'End Function
 
-    Private Function GravatarURLPrefix() As String
-        'Get the prefix for the gravatar URL.  This allows us to support 
-        ' SSL URLs.
-        Dim prefix As String
-        If (Request.Url.Scheme = "http") Then
-            prefix = "http://www"
-        Else
-            prefix = "https://secure"
-        End If
+    'Private Function GravatarURLPrefix() As String
+    '    'Get the prefix for the gravatar URL.  This allows us to support 
+    '    ' SSL URLs.
+    '    Dim prefix As String
+    '    If (Request.Url.Scheme = "http") Then
+    '        prefix = "http://www"
+    '    Else
+    '        prefix = "https://secure"
+    '    End If
 
-        Return prefix + ".gravatar.com/avatar/"
-    End Function
+    '    Return prefix + ".gravatar.com/avatar/"
+    'End Function
 
-    Private Function GravatarURLSuffix() As String
-        'Retrieve the Module Settings related to Gravatar support
-        'Dim gravatarImageWidth As String = CType(m_oBlogSettings("GravatarImageWidth"), String)
-        'Dim gravatarRating As String = CType(m_oBlogSettings("GravatarRating"), String)
-        'Dim gravatarDefaultImageUrl As String = CType(m_oBlogSettings("GravatarDefaultImageUrl"), String)
-        'Dim customImageURL As String = CType(m_oBlogSettings("GravatarCustomUrl"), String)
-        'Dim size As String = BlogSettings.GravatarImageWidth
-        Dim prefix As String = GravatarURLPrefix()
-        Dim defaultImagePath As String
+    'Private Function GravatarURLSuffix() As String
+    '    'Retrieve the Module Settings related to Gravatar support
+    '    'Dim gravatarImageWidth As String = CType(m_oBlogSettings("GravatarImageWidth"), String)
+    '    'Dim gravatarRating As String = CType(m_oBlogSettings("GravatarRating"), String)
+    '    'Dim gravatarDefaultImageUrl As String = CType(m_oBlogSettings("GravatarDefaultImageUrl"), String)
+    '    'Dim customImageURL As String = CType(m_oBlogSettings("GravatarCustomUrl"), String)
+    '    'Dim size As String = BlogSettings.GravatarImageWidth
+    '    Dim prefix As String = GravatarURLPrefix()
+    '    Dim defaultImagePath As String
 
-        If BlogSettings.GravatarDefaultImageUrl <> String.Empty Then
-            If BlogSettings.GravatarDefaultImageUrl = "custom" Then
-                defaultImagePath = BlogSettings.GravatarCustomUrl
-            Else
-                defaultImagePath = BlogSettings.GravatarDefaultImageUrl
-            End If
-        Else
-            ' First attempt.  Left for reference.  Decided to store default image at Gravatar.com
-            ' since the images are cached at varying sizes for you by this service.  email used was
-            ' dnnblog@itcrossing.com.  Contact don@itcrossing.com regarding the update of this default
-            ' image if an update is needed.  Note.  This is a temporary feature anyway.  When we are able 
-            ' to move to .NET 2.0, we'll replace this feature with Identicon support as the default.
-            'appPath = HttpContext.Current.Request.ApplicationPath
-            'If appPath = "/" Then appPath = String.Empty
-            'defaultImagePath = Request.Url.Scheme & "://" & Request.Url.Host & appPath & "/desktopmodules/blog/images/noimage.jpg"
-            defaultImagePath = HttpUtility.UrlEncode(String.Format("{0}{1}?size={2}", prefix, "b6267c6fe44b457964aed2218e3ef8fe", BlogSettings.GravatarImageWidth))
-        End If
+    '    If BlogSettings.GravatarDefaultImageUrl <> String.Empty Then
+    '        If BlogSettings.GravatarDefaultImageUrl = "custom" Then
+    '            defaultImagePath = BlogSettings.GravatarCustomUrl
+    '        Else
+    '            defaultImagePath = BlogSettings.GravatarDefaultImageUrl
+    '        End If
+    '    Else
+    '        ' First attempt.  Left for reference.  Decided to store default image at Gravatar.com
+    '        ' since the images are cached at varying sizes for you by this service.  email used was
+    '        ' dnnblog@itcrossing.com.  Contact don@itcrossing.com regarding the update of this default
+    '        ' image if an update is needed.  Note.  This is a temporary feature anyway.  When we are able 
+    '        ' to move to .NET 2.0, we'll replace this feature with Identicon support as the default.
+    '        'appPath = HttpContext.Current.Request.ApplicationPath
+    '        'If appPath = "/" Then appPath = String.Empty
+    '        'defaultImagePath = Request.Url.Scheme & "://" & Request.Url.Host & appPath & "/desktopmodules/blog/images/noimage.jpg"
+    '        defaultImagePath = HttpUtility.UrlEncode(String.Format("{0}{1}?size={2}", prefix, "b6267c6fe44b457964aed2218e3ef8fe", BlogSettings.GravatarImageWidth))
+    '    End If
 
-        Return String.Format("?s={0}&r={1}&d={2}", BlogSettings.GravatarImageWidth, BlogSettings.GravatarRating, defaultImagePath)
+    '    Return String.Format("?s={0}&r={1}&d={2}", BlogSettings.GravatarImageWidth, BlogSettings.GravatarRating, defaultImagePath)
 
-    End Function
+    'End Function
 
     Private Sub sendMail(ByVal oBlog As BlogInfo, ByVal Comment As CommentInfo)
         Dim strSubject As String = Localization.GetString("msgMailSubject", LocalResourceFile)
