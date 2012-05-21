@@ -11,6 +11,10 @@ DesktopModules\Blog\EditCategories.ascx
 DesktopModules\Blog\EditCategories.ascx.designer.vb
 DesktopModules\Blog\EditCategories.ascx.vb
 DesktopModules\Blog\App_LocalResources\EditCategories.ascx.resx
+DesktopModules\Blog\Search.ascx
+DesktopModules\Blog\Search.ascx.designer.vb
+DesktopModules\Blog\Search.ascx.vb
+DesktopModules\Blog\App_LocalResources\Search.ascx.resx
 DesktopModules\Blog\Blog.ascx
 DesktopModules\Blog\Blog.ascx.designer.vb
 DesktopModules\Blog Blog.ascx.vb

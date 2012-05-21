@@ -175,23 +175,6 @@
 					  </moduleControls>
 				  </moduleDefinition>
 				  <moduleDefinition>
-					  <friendlyName>Search_Blog</friendlyName>
-					  <defaultCacheTime>-1</defaultCacheTime>
-					  <moduleControls>
-						  <moduleControl>
-							  <controlKey />
-							  <controlSrc>DesktopModules/Blog/Search.ascx</controlSrc>
-							  <supportsPartialRendering>False</supportsPartialRendering>
-							  <controlTitle>Search</controlTitle>
-							  <controlType>View</controlType>
-							  <iconFile />
-							  <helpUrl />
-							  <supportsPopUps>False</supportsPopUps>
-							  <viewOrder>0</viewOrder>
-						  </moduleControl>
-					  </moduleControls>
-				  </moduleDefinition>
-				  <moduleDefinition>
 					  <friendlyName>Blog_Archive</friendlyName>
 					  <defaultCacheTime>-1</defaultCacheTime>
 					  <moduleControls>

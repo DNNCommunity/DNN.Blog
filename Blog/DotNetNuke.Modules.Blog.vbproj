@@ -122,7 +122,6 @@
     <Content Include="js\jquery.tagify.js" />
     <Content Include="module.css" />
     <Content Include="ModuleOptions.ascx" />
-    <Content Include="Search.ascx" />
     <Content Include="Trackback.aspx" />
     <Content Include="ViewBlog.ascx" />
     <Content Include="ViewCategories.ascx" />
@@ -266,13 +265,6 @@
     <Compile Include="Components\Rss\BlogRssFeed.vb" />
     <Compile Include="Providers\Data\DataProvider.vb" />
     <Compile Include="Providers\Data\SqlDataProvider\SqlDataProvider.vb" />
-    <Compile Include="Search.ascx.designer.vb">
-      <DependentUpon>Search.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Search.ascx.vb">
-      <DependentUpon>Search.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Trackback.aspx.designer.vb">
       <DependentUpon>Trackback.aspx</DependentUpon>
     </Compile>
