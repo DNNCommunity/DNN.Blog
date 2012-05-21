@@ -22,7 +22,6 @@ Imports System
 Imports DotNetNuke.Modules.Blog.Components.Business
 Imports DotNetNuke.Modules.Blog.Components.Controllers
 Imports DotNetNuke.Modules.Blog.Components.Common
-Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Common.Globals
@@ -220,10 +219,6 @@ Partial Public Class EditBlog
         End Try
     End Sub
 
-    'Protected Sub cboCulture_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboCulture.SelectedIndexChanged
-    '    BindDateFormats()
-    'End Sub
-
     Protected Sub cmdUpdate_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdUpdate.Click
         If UpdateBlog() Then
             If Not m_oParentBlog Is Nothing Then
@@ -264,19 +259,6 @@ Partial Public Class EditBlog
 #End Region
 
 #Region "Private Methods"
-
-    'Private Sub BindDateOptions(ByVal Culture As String, ByVal DateFormat As String)
-    '    'If Not cboCulture.Items.FindByValue(Culture) Is Nothing Then
-    '    '    cboCulture.SelectedValue = Culture
-    '    'End If
-    '    'If Not cboTimeZone.Items.FindByValue(TimeZone.ToString()) Is Nothing Then
-    '    ' cboTimeZone.SelectedValue = TimeZone.ToString
-    '    'End If
-    '    'BindDateFormats()
-    '    'If Not cboDateFormat.Items.FindByValue(DateFormat) Is Nothing Then
-    '    '    cboDateFormat.SelectedValue = DateFormat
-    '    'End If
-    'End Sub
 
     Private Function UpdateBlog() As Boolean
         Try
@@ -364,29 +346,6 @@ Partial Public Class EditBlog
         End Try
         Return False
     End Function
-
-    'Private Sub BindDateFormats()
-    '    If Not cboCulture.SelectedItem Is Nothing Then
-    '        Dim tzi As TimeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(ddTimeZone.SelectedValue)
-    '        Dim dt As Date = TimeZoneInfo.ConvertTimeFromUtc(Date.UtcNow, tzi)
-    '        Dim dtf As System.Globalization.DateTimeFormatInfo = New System.Globalization.CultureInfo(cboCulture.SelectedItem.Value, False).DateTimeFormat
-    '        Dim i As Integer = cboDateFormat.SelectedIndex
-    '        With cboDateFormat
-    '            .Items.Clear()
-    '            .Items.Add(New ListItem(dt.ToString("d", dtf), "d"))
-    '            .Items.Add(New ListItem(dt.ToString("g", dtf), "g"))
-    '            .Items.Add(New ListItem(dt.ToString("G", dtf), "G"))
-    '            .Items.Add(New ListItem(dt.ToString("D", dtf), "D"))
-    '            .Items.Add(New ListItem(dt.ToString("f", dtf), "f"))
-    '            .Items.Add(New ListItem(dt.ToString("F", dtf), "F"))
-    '            .Items.Add(New ListItem(dt.ToString("U", dtf), "U"))
-    '            .Items.Add(New ListItem(dt.ToString("r", dtf), "r"))
-    '            .Items.Add(New ListItem(dt.ToString("s", dtf), "s"))
-    '            .Items.Add(New ListItem(dt.ToString("u", dtf), "u"))
-    '            .SelectedIndex = i
-    '        End With
-    '    End If
-    'End Sub
 
 #End Region
 

@@ -32,7 +32,6 @@ Imports DotNetNuke.Modules.Blog.Components.Entities
 
 Namespace Components.MetaWeblog
 
-
     Public Class BlogModuleProvider
         Implements IPublishable, ILinkable
 
@@ -222,7 +221,7 @@ Namespace Components.MetaWeblog
             Dim itemArray As Item() = Nothing
             Dim objBlogController As New BlogController
             Dim intBlogID As Integer = objBlogController.GetUsersParentBlogById(portalSettings.PortalId, userInfo.UserID).BlogID
-   Dim arEntries As List(Of EntryInfo) = New EntryController().GetEntriesByBlog(intBlogID, DateTime.Now.ToUniversalTime(), blogSettings.RecentEntriesMax, 1, True, True)
+            Dim arEntries As List(Of EntryInfo) = New EntryController().GetEntriesByBlog(intBlogID, DateTime.Now.ToUniversalTime(), blogSettings.RecentEntriesMax, 1, True, True)
 
             ' Find which is the least, numberOfPosts or arEntries.Count
             Dim loopCutOff As Integer = DirectCast(IIf((numberOfItems >= arEntries.Count), arEntries.Count, numberOfItems), Integer)
@@ -345,7 +344,7 @@ Namespace Components.MetaWeblog
                         journalUserId = userInfo.UserID
                 End Select
 
-                cntIntegration.AddItemToJournal(objEntry, PortalID, journalUserId, objEntry.PermaLink)
+                cntIntegration.AddBlogEntryToJournal(objEntry, PortalID, objEntry.TabID, journalUserId, objEntry.PermaLink)
             End If
 
             ' If this is a style detection post, then we write to the Blog_MetaWeblogData table to note
@@ -461,7 +460,7 @@ Namespace Components.MetaWeblog
                         journalUserId = userInfo.UserID
                 End Select
 
-                cntIntegration.AddItemToJournal(objEntry, portalSettings.PortalId, journalUserId, objEntry.PermaLink)
+                cntIntegration.AddBlogEntryToJournal(objEntry, portalSettings.PortalId, objEntry.TabID, journalUserId, objEntry.PermaLink)
             End If
 
             Return True
@@ -476,7 +475,7 @@ Namespace Components.MetaWeblog
 
             'Create new BlogController to delete the blog entry.
             Dim objEntryController As New EntryController
-            objEntryController.DeleteEntry(Convert.ToInt32(itemId), objEntry.ContentItemId)
+            objEntryController.DeleteEntry(objEntry.EntryID, objEntry.ContentItemId, objEntry.BlogID, portalSettings.PortalId)
             Return True
         End Function
 

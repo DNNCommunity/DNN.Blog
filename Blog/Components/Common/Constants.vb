@@ -37,6 +37,9 @@ Namespace Components.Common
         End Enum
 
         Public Const ContentTypeName As String = "DNN_Blog_Entry"
+        Public Const JournalBlogTypeName As String = "blog"
+        Public Const JournalCommentTypeName As String = "comment"
+
         Public Const SharedResourceFileName As String = "~/DesktopModules/Blog/App_LocalResources/SharedResources.resx"
 
         Public Const SeoTitleLimit As Integer = 64

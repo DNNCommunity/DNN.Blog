@@ -83,10 +83,16 @@ Namespace Components.Controllers
             With objBlog
                 DataProvider.Instance().UpdateBlog(.PortalID, .BlogID, .ParentBlogID, .UserID, .Title, .Description, .Public, .AllowComments, .AllowAnonymous, .ShowFullName, .Syndicated, .SyndicateIndependant, .SyndicationURL, .SyndicationEmail, .EmailNotification, .AllowTrackbacks, .AutoTrackback, .MustApproveComments, .MustApproveAnonymous, .MustApproveTrackbacks, .UseCaptcha, .AuthorMode)
             End With
+
+            Dim strCacheKey As String = Common.Constants.ModuleCacheKeyPrefix + Common.Constants.PortalBlogsCacheKey & CStr(objBlog.PortalID)
+            DataCache.RemoveCache(strCacheKey)
         End Sub
 
         Public Sub DeleteBlog(ByVal blogID As Integer, ByVal portalId As Integer)
             DataProvider.Instance().DeleteBlog(blogID, portalId)
+
+            Dim strCacheKey As String = Common.Constants.ModuleCacheKeyPrefix + Common.Constants.PortalBlogsCacheKey & CStr(portalId)
+            DataCache.RemoveCache(strCacheKey)
         End Sub
 
         Public Function GetBlogFromContext() As BlogInfo

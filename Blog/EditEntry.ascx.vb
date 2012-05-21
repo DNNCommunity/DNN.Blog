@@ -262,7 +262,7 @@ Partial Class EditEntry
         Try
             If Not m_oEntry Is Nothing Then
                 DeleteAllFiles()
-                m_oEntryController.DeleteEntry(m_oEntry.EntryID, m_oEntry.ContentItemId)
+                m_oEntryController.DeleteEntry(m_oEntry.EntryID, m_oEntry.ContentItemId, m_oEntry.BlogID, ModuleContext.PortalId)
                 Response.Redirect(Utility.AddTOQueryString(NavigateURL(), "BlogID", m_oEntry.BlogID.ToString()), True)
             Else
                 Response.Redirect(NavigateURL(), True)
@@ -483,7 +483,7 @@ Partial Class EditEntry
                     Next
 
                     If VocabularyId > 0 Then
-                        For Each t As RadTreeNode In dtCategories.CheckedNodes
+                        For Each t As Telerik.Web.UI.RadTreeNode In dtCategories.CheckedNodes
                             Dim objTerm As Term = Components.Integration.Terms.GetTermById(Convert.ToInt32(t.Value), VocabularyId)
                             terms.Add(objTerm)
                         Next
@@ -513,7 +513,7 @@ Partial Class EditEntry
                                 journalUserId = ModuleContext.PortalSettings.UserId
                         End Select
 
-                        cntIntegration.AddItemToJournal(m_oEntry, ModuleContext.PortalId, journalUserId, journalUrl)
+                        cntIntegration.AddBlogEntryToJournal(m_oEntry, ModuleContext.PortalId, ModuleContext.TabId, journalUserId, journalUrl)
                     End If
                 End With
             End If
@@ -623,7 +623,6 @@ Partial Class EditEntry
         Catch
 
         End Try
-
     End Sub
 
 #End Region

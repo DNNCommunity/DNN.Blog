@@ -74,11 +74,11 @@ Namespace Components.Controllers
             DataProvider.Instance().UpdateEntryViewCount(EntryID)
         End Function
 
-  Public Sub DeleteEntry(ByVal EntryID As Integer, ByVal contentItemId As Integer)
-   DataProvider.Instance().DeleteEntry(EntryID)
+        Public Sub DeleteEntry(ByVal entryId As Integer, ByVal contentItemId As Integer, ByVal blogId As Integer, ByVal portalId As Integer)
+            DataProvider.Instance().DeleteEntry(entryId)
 
-   CompleteEntryDelete(contentItemId)
-  End Sub
+            CompleteEntryDelete(contentItemId, blogId, entryId, portalId)
+        End Sub
 
 #Region "Private Methods"
 
@@ -107,10 +107,12 @@ Namespace Components.Controllers
    cntTaxonomy.UpdateContentItem(objEntry, tabId, portalId)
   End Sub
 
-  Private Shared Sub CompleteEntryDelete(ByVal contentItemId As Integer)
-   Content.DeleteContentItem(contentItemId)
-   'TODO: Remove from Journal?
-  End Sub
+        Private Shared Sub CompleteEntryDelete(ByVal contentItemId As Integer, ByVal blogId As Integer, ByVal entryId As Integer, ByVal portalId As Integer)
+            Content.DeleteContentItem(contentItemId)
+            'TODO: Remove from Journal?
+            Dim cntJournal As New Journal()
+            cntJournal.RemoveBlogEntryFromJournal(blogId, entryId, portalId)
+        End Sub
 
 #Region "5.0 Taxonomy Migration"
 
