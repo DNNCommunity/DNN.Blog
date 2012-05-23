@@ -75,6 +75,9 @@ Namespace Components.Controllers
 
         Public Function AddBlog(ByVal objBlog As BlogInfo) As Integer
             With objBlog
+                Dim strCacheKey As String = Common.Constants.ModuleCacheKeyPrefix + Common.Constants.PortalBlogsCacheKey & CStr(objBlog.PortalID)
+                DataCache.RemoveCache(strCacheKey)
+
                 Return CType(DataProvider.Instance().AddBlog(.PortalID, .ParentBlogID, .UserID, .Title, .Description, .Public, .AllowComments, .AllowAnonymous, .ShowFullName, .Syndicated, .SyndicateIndependant, .SyndicationURL, .SyndicationEmail, .EmailNotification, .AllowTrackbacks, .AutoTrackback, .MustApproveComments, .MustApproveAnonymous, .MustApproveTrackbacks, .UseCaptcha, .AuthorMode), Integer)
             End With
         End Function

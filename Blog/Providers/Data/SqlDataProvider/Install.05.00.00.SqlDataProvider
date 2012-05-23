@@ -2208,3 +2208,163 @@ AS
 ' 
 END
 GO
+
+
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetTermsByContentItem') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
+CREATE PROCEDURE {objectQualifier}Blog_GetTermsByContentItem
+	@ContentItemId INT ,
+	@VocabularyId INT
+AS 
+	SELECT TOP 100
+			TermId ,
+			Name ,
+			ParentTermId ,
+			[Description] ,
+			[Weight] ,
+			( SELECT    CreatedOnDate
+			  FROM      {objectQualifier}{objectQualifier}Taxonomy_Terms T
+			  WHERE     VRT.TermId = T.TermId
+			) AS CreatedOnDate ,
+			( SELECT    CreatedByUserId
+			  FROM      {objectQualifier}{objectQualifier}Taxonomy_Terms T
+			  WHERE     VRT.TermId = T.TermId
+			) AS CreatedByUserId ,
+			( SELECT    LastModifiedOnDate
+			  FROM      {objectQualifier}{objectQualifier}Taxonomy_Terms T
+			  WHERE     VRT.TermId = T.TermId
+			) AS LastModifiedOnDate ,
+			( SELECT    LastModifiedByUserId
+			  FROM      {objectQualifier}{objectQualifier}Taxonomy_Terms T
+			  WHERE     VRT.TermId = T.TermId
+			) AS LastModifiedByUserId ,
+			VocabularyId ,
+			TermLeft ,
+			TermRight ,
+			( SELECT    COUNT(TermId)
+			  FROM      {objectQualifier}{objectQualifier}vw_Blog_Terms
+			  WHERE     TermId = VRT.TermId
+						AND ContentItemId = @ContentItemId
+			) AS TotalTermUsage ,
+			( SELECT    COUNT(TermId)
+			  FROM      {objectQualifier}{objectQualifier}vw_Blog_Terms
+			  WHERE     TermId = VRT.TermId
+						AND ContentItemId = @ContentItemId
+						AND CreatedOnDate > DATEDIFF(day, GETDATE(), -30)
+			) AS MonthTermUsage ,
+			( SELECT    COUNT(TermId)
+			  FROM      {objectQualifier}{objectQualifier}vw_Blog_Terms
+			  WHERE     TermId = VRT.TermId
+						AND ContentItemId = @ContentItemId
+						AND CreatedOnDate > DATEDIFF(day, GETDATE(), -7)
+			) AS WeekTermUsage ,
+			( SELECT    COUNT(TermId)
+			  FROM      {objectQualifier}{objectQualifier}vw_Blog_Terms
+			  WHERE     TermId = VRT.TermId
+						AND ContentItemId = @ContentItemId
+						AND CreatedOnDate > DATEDIFF(day, GETDATE(), -1)
+			) AS DayTermUsage
+	FROM    {objectQualifier}{objectQualifier}vw_Blog_Terms AS VRT
+	WHERE   ContentItemId = @ContentItemId
+			AND VocabularyID = @VocabularyId
+	GROUP BY TermId ,
+			Name ,
+			ParentTermId ,
+			[Description] ,
+			[Weight] ,
+			VocabularyId ,
+			TermLeft ,
+			TermRight
+' 
+END
+GO
+
+
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetEntry') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
+CREATE PROCEDURE {objectQualifier}Blog_GetEntry
+	@EntryID INT ,
+	@PortalId INT
+AS 
+	SELECT  E.* ,
+			B.[UserID] ,
+			B.[SyndicationEmail] ,
+			U.[UserName] ,
+			U.[DisplayName] AS UserFullName ,
+			( SELECT    COUNT(*)
+			  FROM      {objectQualifier}Blog_Comments
+			  WHERE     EntryID = E.EntryID
+						AND Approved = 1
+			) AS CommentCount ,
+			CI.CreatedByUserID ,
+			CI.CreatedOnDate ,
+			CI.ContentKey ,
+			CI.Indexed ,
+			CI.Content ,
+			CI.ContentItemID ,
+			CI.LastModifiedByUserID ,
+			CI.LastModifiedOnDate ,
+			CI.ModuleID ,
+			CI.TabID ,
+			CI.ContentTypeID ,
+			( SELECT    1
+			) AS TotalRecords
+	FROM    {objectQualifier}Blog_Entries E
+			INNER JOIN {objectQualifier}Blog_Blogs B ON B.BlogID = E.BlogID
+			INNER JOIN {objectQualifier}{objectQualifier}Users U ON U.UserID = B.UserID
+			LEFT OUTER JOIN {objectQualifier}{objectQualifier}ContentItems CI ON E.ContentItemId = CI.ContentItemID
+	WHERE   E.[EntryID] = @EntryID
+			AND B.PortalId = @PortalId
+' 
+END
+GO
+
+
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetCommentsByEntry') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
+CREATE PROCEDURE {objectQualifier}Blog_GetCommentsByEntry
+	@EntryID INT,
+	@ShowNonApproved BIT
+AS
+	SELECT
+		C.[CommentID],
+		C.[EntryID],
+		C.[UserID],
+		C.[Title],
+		C.[Comment],
+		C.[AddedDate],
+		U.[UserName],
+		U.[DisplayName] AS UserFullName,
+		C.[Author],
+		C.[Approved],
+		C.[Website],
+		C.[Email]
+	FROM {objectQualifier}Blog_Comments C
+		LEFT JOIN {objectQualifier}{objectQualifier}Users U ON C.[UserID] = U.[UserID]
+		WHERE [EntryID] = @EntryID AND (C.[Approved]=1 OR C.[Approved] <> @ShowNonApproved)
+		ORDER By C.[CommentID]
+' 
+END
+GO
+
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_UpdateEntryViewCount') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Blog_UpdateEntryViewCount] @EntryID INT
+AS 
+	UPDATE  {databaseOwner}{objectQualifier}Blog_Entries
+	SET     ViewCount = ViewCount + 1
+	WHERE   EntryID = @EntryID
+END
+GO
