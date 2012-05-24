@@ -21,7 +21,6 @@
 Imports System
 Imports DotNetNuke.Modules.Blog.Components.Controllers
 Imports DotNetNuke.Modules.Blog.Components.Common
-Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Services.Localization
@@ -51,14 +50,6 @@ Partial Class MassEdit
             m_oBlog = objBlog.GetBlog(m_PersonalBlogID)
             'ModuleConfiguration.ModuleTitle = m_oBlog.Title
         End If
-        If Not m_oBlog Is Nothing Then
-
-            If ModuleSecurity.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
-                MyActions.Add(GetNextActionID, Localization.GetString("msgEditBlogSettings", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Blog"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
-                MyActions.Add(GetNextActionID, Localization.GetString("msgAddBlogEntry", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Entry"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
-                MyActions.Add(GetNextActionID, Localization.GetString("msgMassEdit", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Mass_Edit"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
-            End If
-        End If
         MyActions.Add(GetNextActionID, Localization.GetString("msgModuleOptions", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("", "", "Module_Options"), False, DotNetNuke.Security.SecurityAccessLevel.Admin, True, False)
     End Sub
 
@@ -73,7 +64,12 @@ Partial Class MassEdit
      list = objEntries.GetEntriesByPortal(Me.PortalId, m_dBlogDate, m_dBlogDateType, 100000, 1, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
 
                 Else
-     list = objEntries.GetEntriesByBlog(m_oBlog.BlogID, m_dBlogDate, 100000, 1, ModuleSecurity.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId), ModuleSecurity.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId))
+                    Dim objSecurity As ModuleSecurity = New ModuleSecurity(ModuleContext.ModuleId, ModuleContext.TabId)
+
+                    Dim isOwner As Boolean
+                    isOwner = m_oBlog.UserID = ModuleContext.PortalSettings.UserId
+
+                    list = objEntries.GetEntriesByBlog(m_oBlog.BlogID, m_dBlogDate, 100000, 1, objSecurity.CanAddEntry(isOwner, m_oBlog.AuthorMode), objSecurity.CanAddEntry(isOwner, m_oBlog.AuthorMode))
                 End If
 
                 Dim PageSize As Integer = 20 'Display 20 items per page
@@ -134,7 +130,7 @@ Partial Class MassEdit
     Protected Sub rptEdit_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.RepeaterItemEventArgs) Handles rptEdit.ItemDataBound
         If (e.Item.ItemType = ListItemType.Item Or e.Item.ItemType = ListItemType.AlternatingItem) Then
 
-            Dim ti As String
+            'Dim ti As String
             Dim eid As Integer = CType(CType(e.Item.DataItem, EntryInfo).EntryID, Integer)
             'TODO: CP
             'ti = TagController.GetTagsByEntry(eid)

@@ -93,15 +93,6 @@ Partial Public Class ViewBlog
             Else
                 ModuleConfiguration.ModuleTitle = GetString("msgSearchResultsFor", LocalResourceFile) & " " & m_oBlog.Title
             End If
-
-        Else
-            If m_oBlog IsNot Nothing Then
-                If ModuleSecurity.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId) Then
-                    MyActions.Add(GetNextActionID, GetString("msgEditBlogSettings", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Blog"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
-                    MyActions.Add(GetNextActionID, GetString("msgAddBlogEntry", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Edit_Entry"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
-                    MyActions.Add(GetNextActionID, GetString("msgMassEdit", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("BlogID", m_oBlog.BlogID.ToString(), "Mass_Edit"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
-                End If
-            End If
         End If
         MyActions.Add(GetNextActionID, GetString("msgModuleOptions", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("", "", "Module_Options"), False, DotNetNuke.Security.SecurityAccessLevel.Admin, True, False)
     End Sub
@@ -187,8 +178,13 @@ Partial Public Class ViewBlog
                                 hlAuthor.NavigateUrl = DotNetNuke.Common.Globals.UserProfileURL(m_oBlog.UserID)
                                 imgAuthorLink.NavigateUrl = DotNetNuke.Common.Globals.UserProfileURL(m_oBlog.UserID)
 
+                                Dim objSecurity As ModuleSecurity = New ModuleSecurity(ModuleContext.ModuleId, ModuleContext.TabId)
+
+                                Dim isOwner As Boolean
+                                isOwner = m_oBlog.UserID = ModuleContext.PortalSettings.UserId
+
                                 litBlogDescription.Text = m_oBlog.Description
-                                list = objEntries.GetEntriesByBlog(m_oBlog.BlogID, m_dBlogDate, BlogSettings.RecentEntriesMax, CurrentPage, ModuleSecurity.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId), ModuleSecurity.HasBlogPermission(Me.UserId, m_oBlog.UserID, Me.ModuleId))
+                                list = objEntries.GetEntriesByBlog(m_oBlog.BlogID, m_dBlogDate, BlogSettings.RecentEntriesMax, CurrentPage, objSecurity.CanAddEntry(isOwner, m_oBlog.AuthorMode), objSecurity.CanAddEntry(isOwner, m_oBlog.AuthorMode))
 
                                 prevPage = Links.ViewEntriesByBlog(ModuleContext, m_oBlog.BlogID, CurrentPage - 1)
                                 nextPage = Links.ViewEntriesByBlog(ModuleContext, m_oBlog.BlogID, CurrentPage + 1)
@@ -332,7 +328,12 @@ Partial Public Class ViewBlog
             imgEdit = CType(e.Item.FindControl("imgEdit"), System.Web.UI.WebControls.Image)
 
             If Not m_oEntry Is Nothing Then
-                If ModuleSecurity.HasBlogPermission(Me.UserId, m_oEntry.UserID, Me.ModuleId) AndAlso Not lnkEditEntry Is Nothing Then
+                Dim objSecurity As ModuleSecurity = New ModuleSecurity(ModuleContext.ModuleId, ModuleContext.TabId)
+
+                Dim isOwner As Boolean
+                isOwner = oBlog.UserID = ModuleContext.PortalSettings.UserId
+
+                If objSecurity.CanAddEntry(isOwner, oBlog.AuthorMode) AndAlso Not lnkEditEntry Is Nothing Then
                     lnkEditEntry.Visible = True
                     lnkEditEntry.NavigateUrl = EditUrl("EntryID", CType(e.Item.DataItem, EntryInfo).EntryID.ToString(), "Edit_Entry")
                 Else

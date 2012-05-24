@@ -70,9 +70,9 @@ Namespace Components.Controllers
    CompleteEntryUpdate(objEntry, tabId, portalId)
   End Sub
 
-        Public Function UpdateEntryViewCount(ByVal EntryID As Integer) As EntryInfo
+        Public Sub UpdateEntryViewCount(ByVal EntryID As Integer)
             DataProvider.Instance().UpdateEntryViewCount(EntryID)
-        End Function
+        End Sub
 
         Public Sub DeleteEntry(ByVal entryId As Integer, ByVal contentItemId As Integer, ByVal blogId As Integer, ByVal portalId As Integer)
             DataProvider.Instance().DeleteEntry(entryId)

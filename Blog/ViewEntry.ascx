@@ -19,7 +19,7 @@
 	</div>
 	<div class="vbFooter dnnClear">
 		<div class="dnnLeft">
-		    <div class="BlogCategories">
+			<div class="BlogCategories">
 				<label><%= Localization.GetString("lblCategories", LocalResourceFile)%></label>
 				<asp:HyperLink ID="lnkBlogs" runat="server" Text="Blogs" />
 				<asp:Image ID="imgBlogParentSeparator" runat="server" ImageUrl="~/desktopmodules/Blog/Images/folder_closed.gif" AlternateText="Parent Separator" />
@@ -60,82 +60,44 @@
 	<asp:Panel ID="pnlComments" runat="server" Visible="False">
 		<a id="Comments" name="Comments"></a>
 		<h3 class="BlogComments"><a id="linkAddComment" href="#AddComment"><asp:Label ID="lblComments" runat="server" /></a></h3>
-		<asp:ImageButton ID="lnkDeleteAllUnapproved" runat="server" ImageUrl="~/images/delete.gif" Visible="false" CausesValidation="false" CssClass="dnnBlogDeleteAllComments" />
-		<asp:LinkButton ID="btDeleteAllUnapproved" runat="server" Visible="false" resourcekey="DeleteAllUnapproved" CssClass="dnnBlogDeleteAllComments" CausesValidation="false" /><br />
 		<asp:DataList ID="lstComments" runat="server" Width="100%">
 		<ItemTemplate>
 			<asp:Panel ID="divBlogBubble" runat="server" CssClass="BlogBubble">
 				<blockquote>
-					<asp:Panel ID="divBlogGravatar" runat="server" CssClass="BlogGravatar">
-						<asp:Image runat="server" Width="48" ID="imgGravatar" AlternateText="Gravatar" />
-					</asp:Panel>
-					<p>
+					<div class="dnnLeft">
+						<asp:HyperLink ID="hlUser" runat="server"><asp:Image ID="imgUser" runat="server" /></asp:HyperLink>
+					</div>
+					<div class="dnnLeft">
+						<p>
 						<asp:ImageButton ID="lnkEditComment" runat="server" Visible="false" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="EditComment" ImageUrl="~/images/edit.gif" />
 						<asp:LinkButton ID="btEditComment" runat="server" Visible="False" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="EditComment" resourcekey="cmdEdit" />
 						<asp:ImageButton ID="lnkApproveComment" runat="server" Visible="false" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="ApproveComment" ImageUrl="~/desktopmodules/Blog/images/blog_accept.png" CausesValidation="false" />
 						<asp:LinkButton ID="btApproveComment" runat="server" Visible="False" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="ApproveComment" resourcekey="Approve" CssClass="CommandButton" CausesValidation="false" />
 						<asp:ImageButton ID="lnkDeleteComment" runat="server" Visible="false" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="DeleteComment" ImageUrl="~/images/delete.gif" CausesValidation="false" CssClass="dnnBlogCommentDelete" />
 						<asp:LinkButton ID="btDeleteComment" runat="server" Visible="False" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="DeleteComment" resourcekey="Delete" CssClass="dnnBlogCommentDelete"  CausesValidation="false" />
-						<asp:Label ID="lblTitle" runat="server" />
-					</p>
-					<p><%# server.htmldecode(DataBinder.Eval(Container.DataItem,"Comment")) %></p>
+						</p>
+						<p><%# server.htmldecode(DataBinder.Eval(Container.DataItem,"Comment")) %></p>
+					</div>
 				</blockquote>
 				<cite>
-					<asp:Label ID="lblUserName" runat="server" Text="Label" Visible="true" />&nbsp;<asp:Label ID="lblCommentDate" runat="server" />
+					<asp:HyperLink ID="hlCommentAuthor" runat="server" />&nbsp;<asp:Label ID="lblCommentDate" runat="server" />
 				</cite>
 			</asp:Panel>
 		</ItemTemplate>
 		</asp:DataList>
 	</asp:Panel>
-	<asp:Panel ID="pnlLogin" runat="server" Visible="false">
-		<asp:LinkButton ID="cmdLogin" TabIndex="7" runat="server" CssClass="dnnPrimaryAction" ResourceKey="cmdLogin" />
-	</asp:Panel>
 	<asp:Panel ID="pnlAddComment" runat="server">
 		<a id="AddComment" name="AddComment"></a>
-		<asp:ValidationSummary ID="valSummary" runat="server" CssClass="dnnFormMessage dnnFormValidationSummary" Enabled="False" />
-		<asp:RequiredFieldValidator ID="valCommentAuthor" runat="server" ResourceKey="valCommentAuthor.ErrorMessage" CssClass="dnnFormError" Enabled="False" ErrorMessage="Author is required" ControlToValidate="txtAuthor" Display="None" EnableClientScript="False" />
-		<asp:RequiredFieldValidator ID="valCommentTitle" runat="server" ResourceKey="valCommentTitle.ErrorMessage" CssClass="dnnFormError" Enabled="False" ErrorMessage="Title is required" ControlToValidate="txtCommentTitle" Display="None" EnableClientScript="False" />
 		<asp:RequiredFieldValidator ID="valComment" runat="server" ResourceKey="valComment.ErrorMessage" CssClass="dnnFormError" Enabled="False" ErrorMessage="Comment is required" ControlToValidate="txtComment" Display="None" EnableClientScript="False" />
 		<div id="CommentForm" class="dnnClear">
 			<fieldset>
-				<div class="dnnFormItem">
-					<label for="<%= txtAuthor.ClientID %>"><%= Localization.GetString("lblAuthor", LocalResourceFile)%></label>
-					<asp:TextBox ID="txtAuthor" TabIndex="1" runat="server" />                   
-				</div>
-				<asp:Panel runat="server" ID="pnlGravatar">
-					<div class="dnnFormItem">
-						<label for="<%= txtEmail.ClientID %>"><%= Localization.GetString("lblEmail", LocalResourceFile)%></label>
-						<asp:TextBox ID="txtEmail" TabIndex="2" runat="server" />
-					</div>
-					<div class="dnnFormItem">
-						<label>Email optional:</label>
-						<div class="dnnLeft">
-							<%= Localization.GetString("lblEmailExplanation", LocalResourceFile)%>
-						</div>
-						<div class="dnnRight">
-							<asp:Image ID="imgGravatarPreview" runat="server" AlternateText="Gravatar Preview" />
-						</div>
-					</div>
-				</asp:Panel>
-				<asp:Panel class="dnnFormItem" id="pnlWebsite" runat="server">
-					<label for="<%= txtWebsite.ClientID %>"><%= Localization.GetString("lblWebsite", LocalResourceFile)%></label>
-					<asp:TextBox ID="txtWebsite" TabIndex="3" runat="server" />
-				</asp:Panel>
-				<asp:Panel class="dnnFormItem" id="pnlCommentTitle" runat="server">
-					<label for="<%= txtCommentTitle.ClientID %>"><%= Localization.GetString("lblCommentTitle", LocalResourceFile)%></label>
-					<asp:TextBox ID="txtCommentTitle" TabIndex="4" runat="server" />
-				</asp:Panel>
-				<div class="dnnFormItem">
-					<label for="<%= txtComment.ClientID %>"><%= Localization.GetString("lblComment", LocalResourceFile)%></label>
-					<asp:TextBox ID="txtComment" TabIndex="5" runat="server" TextMode="MultiLine" Rows="8" Width="350" />
-				</div>
-				<asp:Panel ID="pnlCaptcha" runat="server" CssClass="dnnFormItem">
-					<label for="<%= ctlCaptcha.ClientID %>"><%= Localization.GetString("lblCaptcha", LocalResourceFile)%></label>
-					<dnn:CaptchaControl id="ctlCaptcha" tabIndex="6" runat="server" errorstyle-cssclass="dnnFormError" captchawidth="130" captchaheight="40" />
-				</asp:Panel>
+				<dl>
+					<dt><label for="<%= txtComment.ClientID %>"><%= Localization.GetString("lblComment", LocalResourceFile)%></label></dt>
+					<dd><asp:TextBox ID="txtComment" runat="server" TextMode="MultiLine" Rows="8" Width="100%" /></dd>
+				</dl>
 				<ul class="dnnActions">
-					<li><asp:LinkButton ID="cmdAddComment" TabIndex="7" runat="server" CssClass="dnnPrimaryAction" /></li>
-					<li><asp:LinkButton ID="cmdDeleteComment" TabIndex="9" runat="server" ResourceKey="cmdDelete" CssClass="dnnSecondaryAction" Visible="False" /></li>
+					<li><asp:LinkButton ID="cmdAddComment" runat="server" CssClass="dnnPrimaryAction" /></li>
+					<li><asp:LinkButton ID="cmdDeleteComment" runat="server" ResourceKey="cmdDelete" CssClass="dnnSecondaryAction" Visible="False" /></li>
 				</ul>
 			</fieldset>
 		</div>

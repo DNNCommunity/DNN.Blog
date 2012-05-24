@@ -50,9 +50,9 @@ Namespace Components.Common
 
         Public Shared Function EditEntry(ByVal modContext As ModuleInstanceContext, ByVal blogId As Integer, ByVal entryId As Integer) As String
             If entryId > 0 Then
-                Return modContext.NavigateUrl(modContext.TabId, ControlKey_EditEntry, False, "BlogID=" & blogId.ToString(), "mid=" + modContext.ModuleId.ToString())
-            Else
                 Return modContext.NavigateUrl(modContext.TabId, ControlKey_EditEntry, False, "BlogID=" & blogId.ToString(), "mid=" + modContext.ModuleId.ToString(), "EntryId=" + entryId.ToString())
+            Else
+                Return modContext.NavigateUrl(modContext.TabId, ControlKey_EditEntry, False, "BlogID=" & blogId.ToString(), "mid=" + modContext.ModuleId.ToString())
             End If
         End Function
 

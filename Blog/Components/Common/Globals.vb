@@ -165,8 +165,8 @@ Namespace Components.Common
 
         Public Shared Sub AddModDef(ByVal PortalSettings As DotNetNuke.Entities.Portals.PortalSettings, ByVal ModuleDefID As Integer, ByVal TabID As Integer, ByVal paneName As String, ByVal position As Integer, ByVal title As String)
 
-            Dim objModuleDefinition As Definitions.ModuleDefinitionInfo = (New Definitions.ModuleDefinitionController).GetModuleDefinition(ModuleDefID)
-            Dim objTabPermissions As Security.Permissions.TabPermissionCollection = (New Security.Permissions.TabPermissionController).GetTabPermissionsCollectionByTabID(TabID, PortalSettings.PortalId)
+            Dim objModuleDefinition As Definitions.ModuleDefinitionInfo = Definitions.ModuleDefinitionController.GetModuleDefinitionByID(ModuleDefID)
+            Dim objTabPermissions As Security.Permissions.TabPermissionCollection = Security.Permissions.TabPermissionController.GetTabPermissions(TabID, PortalSettings.PortalId)
             Dim objModule As New ModuleInfo
             objModule.Initialize(PortalSettings.PortalId)
             objModule.PortalID = PortalSettings.PortalId

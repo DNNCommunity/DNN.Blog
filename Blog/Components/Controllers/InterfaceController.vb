@@ -163,7 +163,7 @@ Namespace Components.Controllers
                 Dim ModuleDefInfo As ModuleDefinitionInfo
                 Dim ModuleInfo As ModuleInfo
                 ModuleInfo = ModuleController.GetModule(ModuleID, Null.NullInteger)
-                ModuleDefInfo = ModuleDefController.GetModuleDefinition(ModuleInfo.ModuleDefID)
+                ModuleDefInfo = ModuleDefinitionController.GetModuleDefinitionByID(ModuleInfo.ModuleDefID)
                 If ModuleDefInfo.FriendlyName = "Blog_List" Then
 
                     If Not IsNothing(xmlBlogs) Then
@@ -319,7 +319,7 @@ Namespace Components.Controllers
             Dim BlogSettings As BlogSettings = Components.Settings.BlogSettings.GetBlogSettings(ModInfo.PortalID, ModInfo.TabID)
 
             Dim SearchItemCollection As New SearchItemInfoCollection
-            If ModInfo.ControlTitle = "View Blog" Then
+            If ModInfo.ModuleTitle = "View Blog" Then
                 Dim m_EntryController As New EntryController
                 Dim Entries As List(Of EntryInfo) = m_EntryController.GetAllEntriesByPortal(ModInfo.PortalID, False, False)
                 Dim objEntry As Object
@@ -332,7 +332,7 @@ Namespace Components.Controllers
                             Dim UserId As Integer = .UserID
                             Dim strContent As String = System.Web.HttpUtility.HtmlDecode(.Title & " " & .Description & " " & .Entry)
                             Dim strDescription As String = HtmlUtils.Shorten(HtmlUtils.Clean(System.Web.HttpUtility.HtmlDecode(.Entry), False), 100, "...")
-                            SearchItem = New SearchItemInfo(ModInfo.FriendlyName & " - " & .Title, strDescription, UserId, .AddedDate, ModInfo.ModuleID, .EntryID.ToString, strContent, "EntryId=" & .EntryID.ToString)
+                            SearchItem = New SearchItemInfo(ModInfo.DesktopModule.FriendlyName & " - " & .Title, strDescription, UserId, .AddedDate, ModInfo.ModuleID, .EntryID.ToString, strContent, "EntryId=" & .EntryID.ToString)
                             SearchItemCollection.Add(SearchItem)
                         End With
                     Catch ex As Exception

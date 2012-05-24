@@ -43,7 +43,7 @@ Partial Class EditEntry
 
     Public ReadOnly Property FilePath() As String
         Get
-            Return Me.PortalSettings.HomeDirectory & Me.ModuleConfiguration.FriendlyName & "/"
+            Return Me.PortalSettings.HomeDirectory & Me.ModuleConfiguration.DesktopModule.FriendlyName & "/"
         End Get
     End Property
 
@@ -594,7 +594,7 @@ Partial Class EditEntry
                     ProcessModuleLoadException(String.Format(GetString("SaveFileError"), strFileName), Me, ex, True)
                 End Try
             Else
-                Me.valUpload.ErrorMessage = String.Format(GetString("RestrictedFileType"), strFileName, Replace(Me.PortalSettings.HostSettings("FileExtensions").ToString, ",", ", *."))
+                Me.valUpload.ErrorMessage = String.Format(GetString("RestrictedFileType"), strFileName, Replace(Entities.Host.Host.GetHostSettingsDictionary("FileExtensions").ToString, ",", ", *."))
                 Me.valUpload.IsValid = False
             End If
 
