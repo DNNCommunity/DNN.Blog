@@ -168,7 +168,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Components\Blogger\IBlogger.vb" />
-    <Compile Include="Components\Business\SystemDateTime.vb" />
     <Compile Include="Components\Common\BlogModuleBase.vb">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

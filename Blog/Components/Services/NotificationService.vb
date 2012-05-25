@@ -33,8 +33,6 @@ Namespace Components.Services
 
 #Region "Private Members"
 
-        Private TabId As Integer = -1
-        Private ModuleId As Integer = -1
         Private BlogId As Integer = -1
         Private EntryId As Integer = -1
 
@@ -72,23 +70,23 @@ Namespace Components.Services
                 End If
 
                 objEntry.Published = True
-                cntEntry.UpdateEntry(objEntry, TabId, PortalSettings.PortalId)
+                cntEntry.UpdateEntry(objEntry, objEntry.TabID, PortalSettings.PortalId)
             Else
                 ' blogger mode
                 Dim isOwner As Boolean = objBlog.UserID = UserInfo.UserID
-                Dim objSecurity As New ModuleSecurity(ModuleId, TabId)
+                Dim cntEntry As New EntryController
+                Dim objEntry As EntryInfo = cntEntry.GetEntry(EntryId, PortalSettings.PortalId)
+
+                If objEntry Is Nothing Then
+                    Return Json(New With {.Result = "error"})
+                End If
+
+                Dim objSecurity As New ModuleSecurity(objEntry.ModuleID, objEntry.TabID)
 
                 If objSecurity.CanAddEntry(isOwner, Constants.AuthorMode.BloggerMode) Then
                     ' approve the blog post
-                    Dim cntEntry As New EntryController
-                    Dim objEntry As EntryInfo = cntEntry.GetEntry(EntryId, PortalSettings.PortalId)
-
-                    If objEntry Is Nothing Then
-                        Return Json(New With {.Result = "error"})
-                    End If
-
                     objEntry.Published = True
-                    cntEntry.UpdateEntry(objEntry, TabId, PortalSettings.PortalId)
+                    cntEntry.UpdateEntry(objEntry, objEntry.TabID, PortalSettings.PortalId)
                 Else
                     Return Json(New With {.Result = "error"})
                 End If
@@ -132,17 +130,17 @@ Namespace Components.Services
             Else
                 ' blogger mode
                 Dim isOwner As Boolean = objBlog.UserID = UserInfo.UserID
-                Dim objSecurity As New ModuleSecurity(ModuleId, TabId)
+                Dim cntEntry As New EntryController
+                Dim objEntry As EntryInfo = cntEntry.GetEntry(EntryId, PortalSettings.PortalId)
+
+                If objEntry Is Nothing Then
+                    Return Json(New With {.Result = "error"})
+                End If
+
+                Dim objSecurity As New ModuleSecurity(objEntry.ModuleID, objEntry.TabID)
 
                 If objSecurity.CanAddEntry(isOwner, Constants.AuthorMode.BloggerMode) Then
                     ' delete the blog post
-                    Dim cntEntry As New EntryController
-                    Dim objEntry As EntryInfo = cntEntry.GetEntry(EntryId, PortalSettings.PortalId)
-
-                    If objEntry Is Nothing Then
-                        Return Json(New With {.Result = "error"})
-                    End If
-
                     cntEntry.DeleteEntry(EntryId, objEntry.ContentItemId, objBlog.BlogID, PortalSettings.PortalId)
                 Else
                     Return Json(New With {.Result = "error"})
@@ -174,10 +172,8 @@ Namespace Components.Services
         Private Sub ParseKey(key As String)
             Dim keys() As String = key.Split(CChar(":"))
             ' 0 is content type string, to ensure unique key
-            TabId = Integer.Parse(keys(1))
-            ModuleId = Integer.Parse(keys(2))
-            BlogId = Integer.Parse(keys(3))
-            EntryId = Integer.Parse(keys(4))
+            BlogId = Integer.Parse(keys(1))
+            EntryId = Integer.Parse(keys(2))
         End Sub
 
 #End Region

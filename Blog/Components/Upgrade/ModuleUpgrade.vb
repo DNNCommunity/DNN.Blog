@@ -36,11 +36,12 @@ Namespace Components.Upgrade
 
         Public Function MigrateTaxonomyFolksonomy() As String
             Try
-                Dim message As String = ""
+                Components.Integration.Notifications.AddNotificationTypes()
+
+                Dim message As String = "Created Notification Types & Actions for Module." & vbCrLf & vbCrLf
                 Dim countContentItems As Integer = 0
                 Dim countCategories As Integer = 0
                 Dim countTags As Integer = 0
-
                 Dim cntEntry As New EntryController
                 Dim colEntries As New List(Of EntryInfo)
                 colEntries = cntEntry.RetrieveTaxonomyRelatedPosts()
@@ -64,7 +65,7 @@ Namespace Components.Upgrade
                             countTags += 1
                         Next
                     End If
-                    message = "Migrated " + countTags.ToString() + " tags. " & vbCrLf & vbCrLf
+                    message += "Migrated " + countTags.ToString() + " tags. " & vbCrLf & vbCrLf
 
                     ' loop through categories (old system), from table ordered by portal id, create under new vocabulary. KEEP both collections available
                     Dim colOldCategories As List(Of MigrateCategoryInfo)
