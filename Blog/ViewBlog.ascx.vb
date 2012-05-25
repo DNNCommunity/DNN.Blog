@@ -299,7 +299,7 @@ Partial Public Class ViewBlog
             Dim litAuthor As System.Web.UI.WebControls.Literal = CType(e.Item.FindControl("litAuthor"), System.Web.UI.WebControls.Literal)
             Dim lblDescription As System.Web.UI.WebControls.Literal = CType(e.Item.FindControl("litDescription"), System.Web.UI.WebControls.Literal)
             Dim lnkComments As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkComments"), System.Web.UI.WebControls.HyperLink)
-            Dim lblPublished As System.Web.UI.WebControls.Label = CType(e.Item.FindControl("lblPublished"), System.Web.UI.WebControls.Label)
+            Dim pnNotPublished As System.Web.UI.WebControls.Panel = CType(e.Item.FindControl("pnNotPublished"), System.Web.UI.WebControls.Panel)
             Dim lblPublishDate As System.Web.UI.WebControls.Label = CType(e.Item.FindControl("lblPublishDate"), System.Web.UI.WebControls.Label)
             Dim lnkParentBlog As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkParentBlog"), System.Web.UI.WebControls.HyperLink)
             Dim imgBlogParentSeparator As System.Web.UI.WebControls.Image = CType(e.Item.FindControl("imgBlogParentSeparator"), System.Web.UI.WebControls.Image)
@@ -394,7 +394,7 @@ Partial Public Class ViewBlog
                 litAuthor.Visible = True
             End If
 
-            lblPublished.Visible = Not CType(e.Item.DataItem, EntryInfo).Published
+            pnNotPublished.Visible = Not CType(e.Item.DataItem, EntryInfo).Published
 
             lblPublishDate.Text = Utility.DateFromUtc(m_oEntry.AddedDate, UITimeZone).ToString("f")
 

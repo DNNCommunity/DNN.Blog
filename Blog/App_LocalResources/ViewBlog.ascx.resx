@@ -156,7 +156,7 @@
     <value>Comments ({0})</value>
   </data>
   <data name="lblPublished.Text" xml:space="preserve">
-    <value>&lt;p&gt;This entry has not been published.&lt;/p&gt;</value>
+    <value>This entry is not published</value>
   </data>
   <data name="msgMostRecentEntries.Text" xml:space="preserve">
     <value>Most recent blog entries</value>

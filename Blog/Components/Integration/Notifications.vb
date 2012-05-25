@@ -78,12 +78,14 @@ Namespace Components.Integration
                 actions.Add(New NotificationTypeAction() With { _
                  .NameResourceKey = "Approve", _
                  .DescriptionResourceKey = "ApprovePost", _
-                 .APICall = "DesktopModules/Blog/API/NotificationService.ashx/ApprovePost" _
+                 .APICall = "DesktopModules/Blog/API/NotificationService.ashx/ApprovePost", _
+                 .Order = 1
                 })
                 actions.Add(New NotificationTypeAction() With { _
                  .NameResourceKey = "Ignore", _
                  .DescriptionResourceKey = "IngorePost", _
-                 .APICall = "DesktopModules/Blog/API/NotificationService.ashx/IngorePost" _
+                 .APICall = "DesktopModules/Blog/API/NotificationService.ashx/IngorePost", _
+                 .Order = 2
                 })
                 NotificationsController.Instance.CreateNotificationType(objNotificationType)
                 NotificationsController.Instance.SetNotificationTypeActions(actions, objNotificationType.NotificationTypeId)

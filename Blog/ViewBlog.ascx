@@ -44,7 +44,9 @@
 					<div class="dnnRight"></div>
 				</div>
 				<div class="vbBody dnnClear">
-					<asp:Label ID="lblPublished" runat="server" Visible="False" CssClass="dnnFormMessage dnnFormWarning" ResourceKey="lblPublished" />
+					<asp:Panel id="pnNotPublished" runat="server" Visible="false" CssClass="dnnFormMessage dnnFormWarning">
+						<%= LocalizeString("lblPublished")%>
+					</asp:Panel>
 					<asp:Literal ID="litDescription" runat="server" />
 					<div class="BlogReadMore" runat="server" id="divBlogReadMore">
 						<asp:HyperLink ID="hlPermaLink" runat="server" CssClass="dnnSecondaryAction" />
