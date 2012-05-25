@@ -22,6 +22,7 @@ Imports System.Net
 Imports System.IO
 Imports System.Text
 Imports System.Text.RegularExpressions
+Imports DotNetNuke.Services.SystemDateTime
 Imports DotNetNuke.Common
 Imports DotNetNuke.Modules.Blog.Components.Controllers
 Imports DotNetNuke.Modules.Blog.Components.Common
@@ -561,7 +562,7 @@ Namespace Components.Business
   ''' <returns></returns>
   Public Shared Function CalculateDateForDisplay([date] As DateTime) As String
    Dim utcDate As DateTime = [date].ToUniversalTime()
-   Dim utcTimeDifference As TimeSpan = Services.SystemDateTime.SystemDateTime.GetCurrentTimeUtc() - utcDate
+            Dim utcTimeDifference As TimeSpan = SystemDateTime.GetCurrentTimeUtc() - utcDate
 
    If utcTimeDifference.TotalSeconds < 60 Then
     Return CInt(utcTimeDifference.TotalSeconds).ToString() + Localization.GetString("secondsago", Constants.SharedResourceFileName)

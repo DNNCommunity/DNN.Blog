@@ -20,9 +20,41 @@
 Option Strict On
 Option Explicit On
 
+Imports DotNetNuke.Services.Social.Notifications
+Imports DotNetNuke.Modules.Blog.Components.Entities
+Imports DotNetNuke.Entities.Users
+
 Namespace Components.Integration
 
     Public Class Notifications
+
+        Friend Sub EntryPendingApproval(ByVal objBlog As BlogInfo, ByVal objEntry As EntryInfo, ByVal portalId As Integer, ByVal subject As String)
+            Dim notificationType As NotificationType = NotificationsController.Instance.GetNotificationType(Common.Constants.NotificationPublishingTypeName)
+
+            Select Case objBlog.AuthorMode
+                Case Common.Constants.AuthorMode.PersonalMode
+                    ' should never happen
+                Case Common.Constants.AuthorMode.GhostMode
+                    Dim notificationKey As String = String.Format("{0}:{1}:{2}:{3}:{4}", Components.Common.Constants.ContentTypeName, objEntry.TabID, objEntry.ModuleID, objEntry.BlogID, objEntry.EntryID)
+                    Dim objNotification As New Notification
+
+                    objNotification.NotificationTypeID = notificationType.NotificationTypeId
+                    objNotification.Subject = subject
+                    objNotification.Body = objEntry.Title
+                    objNotification.IncludeDismissAction = False
+                    objNotification.SenderUserID = objEntry.CreatedUserId
+                    objNotification.Context = notificationKey
+
+                    Dim objOwner As UserInfo = UserController.GetUserById(portalId, objBlog.UserID)
+                    Dim colUsers As New List(Of UserInfo)
+
+                    colUsers.Add(objOwner)
+
+                    NotificationsController.Instance.SendNotification(objNotification, portalId, Nothing, colUsers)
+                Case Else
+                    ' in blogger mode, we are not sending any notifications at this time
+            End Select
+        End Sub
 
     End Class
 

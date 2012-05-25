@@ -514,6 +514,11 @@ Partial Class EditEntry
                         End Select
 
                         cntIntegration.AddBlogEntryToJournal(m_oEntry, ModuleContext.PortalId, ModuleContext.TabId, journalUserId, journalUrl)
+                    Else
+                        If (m_oBlog.UserID <> ModuleContext.PortalSettings.UserId) AndAlso (m_oBlog.AuthorMode = Constants.AuthorMode.GhostMode) Then
+                            Dim cntNotifications As New Components.Integration.Notifications
+                            cntNotifications.EntryPendingApproval(m_oBlog, m_oEntry, ModuleContext.PortalId, "A blog entry is pending approval")
+                        End If
                     End If
                 End With
             End If

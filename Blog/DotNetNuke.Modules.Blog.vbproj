@@ -77,6 +77,10 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\bin\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
@@ -164,6 +168,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Components\Blogger\IBlogger.vb" />
+    <Compile Include="Components\Business\SystemDateTime.vb" />
     <Compile Include="Components\Common\BlogModuleBase.vb">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -186,6 +191,8 @@
     <Compile Include="Components\Integration\Journal.vb" />
     <Compile Include="Components\Integration\Notifications.vb" />
     <Compile Include="Components\Integration\Terms.vb" />
+    <Compile Include="Components\Services\BlogRouteMapper.vb" />
+    <Compile Include="Components\Services\NotificationService.vb" />
     <Compile Include="Components\Settings\ArchiveViewSettings.vb" />
     <Compile Include="Components\Settings\BlogSettings.vb" />
     <Compile Include="Components\Business\TemplateManager.vb" />

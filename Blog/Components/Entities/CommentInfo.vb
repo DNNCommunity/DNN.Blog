@@ -172,13 +172,13 @@ Namespace Components.Entities
         End Property
 #End Region
 
-        Public ReadOnly Property Cacheability() As Services.Tokens.CacheLevel Implements Services.Tokens.IPropertyAccess.Cacheability
+        Public ReadOnly Property Cacheability() As CacheLevel Implements IPropertyAccess.Cacheability
             Get
                 Return CacheLevel.fullyCacheable
             End Get
         End Property
 
-        Public Function GetProperty(ByVal strPropertyName As String, ByVal strFormat As String, ByVal formatProvider As System.Globalization.CultureInfo, ByVal AccessingUser As UserInfo, ByVal AccessLevel As Services.Tokens.Scope, ByRef PropertyNotFound As Boolean) As String Implements Services.Tokens.IPropertyAccess.GetProperty
+        Public Function GetProperty(ByVal strPropertyName As String, ByVal strFormat As String, ByVal formatProvider As System.Globalization.CultureInfo, ByVal AccessingUser As UserInfo, ByVal AccessLevel As Scope, ByRef PropertyNotFound As Boolean) As String Implements IPropertyAccess.GetProperty
 
             Dim OutputFormat As String = String.Empty
             If strFormat = String.Empty Then

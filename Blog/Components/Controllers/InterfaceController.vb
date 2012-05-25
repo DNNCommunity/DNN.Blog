@@ -30,6 +30,7 @@ Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Entities.Users
 Imports DotNetNuke.Modules.Blog.Components.Settings
 Imports DotNetNuke.Modules.Blog.Components.Entities
+Imports DotNetNuke.Services
 
 Namespace Components.Controllers
 
@@ -315,7 +316,7 @@ Namespace Components.Controllers
 
 #Region "ISearchable"
 
-        Public Function GetSearchItems(ByVal ModInfo As DotNetNuke.Entities.Modules.ModuleInfo) As Services.Search.SearchItemInfoCollection Implements DotNetNuke.Entities.Modules.ISearchable.GetSearchItems
+        Public Function GetSearchItems(ByVal ModInfo As DotNetNuke.Entities.Modules.ModuleInfo) As Search.SearchItemInfoCollection Implements DotNetNuke.Entities.Modules.ISearchable.GetSearchItems
             Dim BlogSettings As BlogSettings = Components.Settings.BlogSettings.GetBlogSettings(ModInfo.PortalID, ModInfo.TabID)
 
             Dim SearchItemCollection As New SearchItemInfoCollection

@@ -39,6 +39,7 @@ Namespace Components.Common
         Public Const ContentTypeName As String = "DNN_Blog_Entry"
         Public Const JournalBlogTypeName As String = "blog"
         Public Const JournalCommentTypeName As String = "comment"
+        Public Const NotificationPublishingTypeName As String = "DNN_Blog_Entry_Publishing"
 
         Public Const SharedResourceFileName As String = "~/DesktopModules/Blog/App_LocalResources/SharedResources.resx"
 
