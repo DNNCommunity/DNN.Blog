@@ -1,69 +1,26 @@
 /* Social Calendar List CSS */
 /**********************************************************/
-.socialEvent-calendar-wrapper{
-	min-width: 242px;
-	padding: 6px;
-	border: 1px solid #b4b3b4;
-}
-
-.socialEvent-calendar{
-	background: #fff;
-}
-.socialEvent-calendar tr td{
-	padding: 0;
-	margin: 0;
-}
-.socialEvent-calendarTitle{
-	border-bottom: 1px solid #b4b3b4;
-}
-.socialEvent-calendarTitle tr td{
-	padding: 6px;
-	font-size: 18px;
-	line-height: 24px;
-	font-weight: bold;
-}
+.socialEvent-calendar-wrapper							{ padding: 6px; border: 1px solid #b4b3b4; display: inline-block; }
+.socialEvent-calendar									{ background: #fff; }
+.socialEvent-calendar tr td								{ padding: 0; margin: 0; }
+.socialEvent-calendarTitle								{ border-bottom: 1px solid #b4b3b4; }
+.socialEvent-calendarTitle tr td							{ padding: 6px; font-size: 18px; line-height: 24px; font-weight: bold; }
 .socialEvent-calendarNextPrev a,
 .socialEvent-calendarNextPrev a:link,
-.socialEvent-calendarNextPrev a:visited{
-	font-size: 16px;
-	font-weight: normal;
-	text-decoration: none;
-}
+.socialEvent-calendarNextPrev a:visited					{ font-size: 16px; font-weight: normal; text-decoration: none; }
 .socialEvent-calendarNextPrev a:hover,
 .socialEvent-calendarNextPrev a:focus,
-.socialEvent-calendarNextPrev a:active{
-	color: #cd0000 !important;
-	text-decoration: none;
-}
-.socialEvent-calendar th.socialEvent-calendarDayHeader{
-	padding: 4px 4px 0 4px; 
-	text-align: center;
-	text-transform: uppercase;
-	color: #939393;
-	font-weight: normal;
-}
-.socialEvent-calendar td.socialEvent-calendarDay{
-	padding: 6px;
-	background: #e2e2e2;
-	color: #353535;
-}
+.socialEvent-calendarNextPrev a:active					{ color: #cd0000 !important; text-decoration: none; }
+.socialEvent-calendar th.socialEvent-calendarDayHeader	{ padding: 4px 4px 0 4px; text-align: center; text-transform: uppercase;
+														color: #939393; font-weight: normal; }
+.socialEvent-calendar td.socialEvent-calendarDay			{ padding: 6px; background: #e2e2e2; color: #353535; }
 .socialEvent-calendar td.socialEvent-calendarOtherMonth,
-.socialEvent-calendar td.socialEvent-calendarWeekend{
-	padding: 6px;
-	background: #e2e2e2;
-	color: #959595;
-}
-.socialEvent-calendar td.socialEvent-calendarToday{
-	padding: 6px;
-	background: #b4b3b4;
-	color: #353535;
-}
+.socialEvent-calendar td.socialEvent-calendarWeekend		{ padding: 6px; background: #e2e2e2; color: #959595; }
+.socialEvent-calendar td.socialEvent-calendarToday		{ padding: 6px; background: #b4b3b4; color: #353535; }
 .socialEvent-calendar td.socialEvent-calendarDay,
 .socialEvent-calendar td.socialEvent-calendarWeekend,
 .socialEvent-calendar td.socialEvent-calendarOtherMonth,
-.socialEvent-calendar td.socialEvent-calendarToday{
-	border: 2px solid #fff;
-}
+.socialEvent-calendar td.socialEvent-calendarToday		{ border: 2px solid #fff; }
 .socialEvent-calendar td.socialEvent-calendarDay a,
 .socialEvent-calendar td.socialEvent-calendarDay a:link,
 .socialEvent-calendar td.socialEvent-calendarDay a:visited,
@@ -72,20 +29,10 @@
 .socialEvent-calendar td.socialEvent-calendarWeekend a:visited,
 .socialEvent-calendar td.socialEvent-calendarToday a,
 .socialEvent-calendar td.socialEvent-calendarToday a:link,
-.socialEvent-calendar td.socialEvent-calendarToday a:visited{
-	color: #000;
-	font-weight: bold;
-	text-decoration: none;
-}
-.socialEvent-calendar td.socialEvent-calendarSelectedDay{
-	padding: 6px;
-	background: #5c5c5c !important;
-	color: #fff;
-}
+.socialEvent-calendar td.socialEvent-calendarToday a:visited
+														{ color: #000; font-weight: bold; text-decoration: none; }
+.socialEvent-calendar td.socialEvent-calendarSelectedDay	{ padding: 6px; background: #5c5c5c !important; color: #fff; }
 .socialEvent-calendar td.socialEvent-calendarSelectedDay a,
 .socialEvent-calendar td.socialEvent-calendarSelectedDay a:link,
-.socialEvent-calendar td.socialEvent-calendarSelectedDay a:visited{
-	color: #fff;
-	font-weight: bold;
-	text-decoration: none;
-}
+.socialEvent-calendar td.socialEvent-calendarSelectedDay a:visited
+														{ color: #fff; font-weight: bold; text-decoration: none; }

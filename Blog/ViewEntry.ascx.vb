@@ -183,6 +183,21 @@ Partial Public Class ViewEntry
                 End If
 
                 If Not Entry Is Nothing Then
+                    ' Make sure content item and moduleid are proper here (because we integrated content items years after module was built)
+                    If (Entry.ContentItemId < 1) Then
+                        Dim cntEntry As New EntryController()
+                        Dim objEntry As EntryInfo = cntEntry.GetEntry(Entry.EntryID, ModuleContext.PortalId)
+
+                        objEntry.ModuleID = ModuleContext.ModuleId
+                        objEntry.TabID = ModuleContext.TabId
+
+                        Dim cntTaxonomy As New Content()
+                        Dim objContentItem As ContentItem = cntTaxonomy.CreateContentItem(objEntry, ModuleContext.TabId)
+                        objEntry.ContentItemId = objContentItem.ContentItemId
+
+                        cntEntry.UpdateEntry(objEntry, ModuleContext.TabId, ModuleContext.PortalId)
+                    End If
+
                     'DW - 08/14/2008 - Added code to issue a 301 Redirect in cases where the URL of the page is not the same
                     ' as that created by the new BlogNavigateURL function
                     Dim requestedUrl As String = DirectCast(HttpContext.Current.Items()("UrlRewrite:OriginalUrl"), String)
@@ -277,23 +292,7 @@ Partial Public Class ViewEntry
                     'pnlGravatar.Visible = BlogSettings.ShowGravatars
                 End If
 
-                ' Make sure content item and moduleid are proper here (because we integrated content items years after module was built)
-                If (Entry.ModuleID < 1 Or Entry.ContentItemId < 1 Or Entry.TabID < 1) Then
-                    Dim cntEntry As New EntryController()
-
-                    Entry.ModuleID = ModuleContext.ModuleId
-                    Entry.TabID = ModuleContext.TabId
-
-                    If (Entry.ContentItemId < 1) Then
-                        Dim cntTaxonomy As New Content()
-                        Dim objContentItem As ContentItem = cntTaxonomy.CreateContentItem(Entry, ModuleContext.TabId)
-                        Entry.ContentItemId = objContentItem.ContentItemId
-                    End If
-
-                    cntEntry.UpdateEntry(Entry, ModuleContext.TabId, ModuleContext.PortalId)
-                End If
-
-                cntEntry.UpdateEntryViewCount(Entry.EntryID)
+            cntEntry.UpdateEntryViewCount(Entry.EntryID)
             End If
 
             txtClientIP.Text = HttpContext.Current.Request.UserHostAddress.ToString
@@ -323,17 +322,13 @@ Partial Public Class ViewEntry
     Protected Sub lstComments_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataListItemEventArgs) Handles lstComments.ItemDataBound
         Dim imgUser As System.Web.UI.WebControls.Image = CType(e.Item.FindControl("imgUser"), System.Web.UI.WebControls.Image)
         Dim hlUser As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("hlUser"), System.Web.UI.WebControls.HyperLink)
-
         Dim hlCommentAuthor As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("hlCommentAuthor"), System.Web.UI.WebControls.HyperLink)
         'hlCommentAuthor
         Dim lnkEditComment As System.Web.UI.WebControls.ImageButton = CType(e.Item.FindControl("lnkEditComment"), System.Web.UI.WebControls.ImageButton)
         Dim lnkApproveComment As System.Web.UI.WebControls.ImageButton = CType(e.Item.FindControl("lnkApproveComment"), System.Web.UI.WebControls.ImageButton)
-        Dim btEditComment As System.Web.UI.WebControls.LinkButton = CType(e.Item.FindControl("btEditComment"), System.Web.UI.WebControls.LinkButton)
-        Dim btApproveComment As System.Web.UI.WebControls.LinkButton = CType(e.Item.FindControl("btApproveComment"), System.Web.UI.WebControls.LinkButton)
         Dim lblCommentDate As System.Web.UI.WebControls.Label = CType(e.Item.FindControl("lblCommentDate"), System.Web.UI.WebControls.Label)
         Dim divBlogBubble As System.Web.UI.WebControls.Panel = CType(e.Item.FindControl("divBlogBubble"), System.Web.UI.WebControls.Panel)
         Dim lnkDeleteComment As System.Web.UI.WebControls.ImageButton = CType(e.Item.FindControl("lnkDeleteComment"), System.Web.UI.WebControls.ImageButton)
-        Dim btDeleteComment As System.Web.UI.WebControls.LinkButton = CType(e.Item.FindControl("btDeleteComment"), System.Web.UI.WebControls.LinkButton)
 
         Dim objComment As CommentInfo = CType(e.Item.DataItem, CommentInfo)
 
@@ -345,7 +340,6 @@ Partial Public Class ViewEntry
         lnkEditComment.Visible = objSecurity.CanAddEntry(isOwner, objBlog.AuthorMode)
 
         lnkDeleteComment.Visible = lnkEditComment.Visible
-        btDeleteComment.Visible = lnkEditComment.Visible
 
         Dim objUser As UserInfo = UserController.GetUserById(ModuleContext.PortalId, objComment.UserID)
 
@@ -360,8 +354,6 @@ Partial Public Class ViewEntry
             divBlogBubble.CssClass = "BlogBubbleOwner"
         End If
 
-        btEditComment.Visible = lnkEditComment.Visible
-
         Dim n As DateTime = Utility.AdjustedDate(CType(e.Item.DataItem, CommentInfo).AddedDate, UITimeZone)
         Dim publishDate As DateTime = n
         Dim timeOffset As TimeSpan = UITimeZone.BaseUtcOffset
@@ -373,7 +365,6 @@ Partial Public Class ViewEntry
         Else
             lnkApproveComment.Visible = False
         End If
-        btApproveComment.Visible = lnkApproveComment.Visible
     End Sub
 
     Protected Sub lstComments_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataListCommandEventArgs) Handles lstComments.ItemCommand
@@ -434,10 +425,19 @@ Partial Public Class ViewEntry
                 End If
                 If objComment.CommentID > -1 Then
                     cntComment.UpdateComment(objComment)
+
+                    If objComment.Approved Then
+                        Dim cntJournal As New Journal
+                        cntJournal.AddCommentToJournal(Entry, objComment, ModuleContext.PortalId, ModuleContext.TabId, objComment.UserID, Entry.PermaLink)
+                    End If
                 Else
                     objComment.CommentID = cntComment.AddComment(objComment)
-                    Dim cntJournal As New Journal
-                    cntJournal.AddCommentToJournal(Entry, objComment, ModuleContext.PortalId, ModuleContext.TabId, ModuleContext.PortalSettings.UserId, Entry.PermaLink)
+
+                    If objComment.Approved Then
+                        Dim cntJournal As New Journal
+                        cntJournal.AddCommentToJournal(Entry, objComment, ModuleContext.PortalId, ModuleContext.TabId, ModuleContext.PortalSettings.UserId, Entry.PermaLink)
+                    End If
+
                     If objBlog.EmailNotification = True Then
                         sendMail(objBlog, objComment)
                     End If

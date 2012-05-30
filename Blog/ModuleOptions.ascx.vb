@@ -28,6 +28,8 @@ Imports DotNetNuke.Services.Localization.Localization
 Imports DotNetNuke.Framework
 Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.Modules.Blog.Components.Integration
+Imports DotNetNuke.Services.Upgrade
+Imports DotNetNuke.Modules.Blog.Components
 
 Partial Public Class ModuleOptions
     Inherits BlogModuleBase
@@ -168,6 +170,12 @@ Partial Public Class ModuleOptions
         Dim totalBlogs As Integer = (New BlogController).GetPortalBlogs(PortalId, True).Count
         Dim parentBlogs As Integer = (New BlogController).GetPortalParentBlogs(PortalId).Count
         lblChildBlogsStatus.Text = String.Format(GetString("lblChildBlogsStatus", LocalResourceFile), CInt(totalBlogs - parentBlogs))
+    End Sub
+
+    Protected Sub cmdUpdate_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
+        Dim _CustomUpgrade As New Components.Upgrade.ModuleUpgrade
+        '_CustomUpgrade.MigrateTaxonomyFolksonomy()
+        _CustomUpgrade.MigrateContentItems(ModuleContext.PortalId)
     End Sub
 
 #End Region

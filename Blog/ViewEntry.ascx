@@ -62,20 +62,17 @@
 		<h3 class="BlogComments"><a id="linkAddComment" href="#AddComment"><asp:Label ID="lblComments" runat="server" /></a></h3>
 		<asp:DataList ID="lstComments" runat="server" Width="100%">
 		<ItemTemplate>
-			<asp:Panel ID="divBlogBubble" runat="server" CssClass="BlogBubble">
+			<asp:Panel ID="divBlogBubble" runat="server" CssClass="BlogBubble dnnClear">
 				<blockquote>
-					<div class="dnnLeft">
+					<div class="commentAuthor dnnLeft">
 						<asp:HyperLink ID="hlUser" runat="server"><asp:Image ID="imgUser" runat="server" /></asp:HyperLink>
 					</div>
-					<div class="dnnLeft">
-						<p>
-						<asp:ImageButton ID="lnkEditComment" runat="server" Visible="false" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="EditComment" ImageUrl="~/images/edit.gif" />
-						<asp:LinkButton ID="btEditComment" runat="server" Visible="False" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="EditComment" resourcekey="cmdEdit" />
-						<asp:ImageButton ID="lnkApproveComment" runat="server" Visible="false" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="ApproveComment" ImageUrl="~/desktopmodules/Blog/images/blog_accept.png" CausesValidation="false" />
-						<asp:LinkButton ID="btApproveComment" runat="server" Visible="False" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="ApproveComment" resourcekey="Approve" CssClass="CommandButton" CausesValidation="false" />
-						<asp:ImageButton ID="lnkDeleteComment" runat="server" Visible="false" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="DeleteComment" ImageUrl="~/images/delete.gif" CausesValidation="false" CssClass="dnnBlogCommentDelete" />
-						<asp:LinkButton ID="btDeleteComment" runat="server" Visible="False" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="DeleteComment" resourcekey="Delete" CssClass="dnnBlogCommentDelete"  CausesValidation="false" />
-						</p>
+					<div class="dnnRight">
+						<asp:ImageButton ID="lnkEditComment" runat="server" Visible="false" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="EditComment" ImageUrl="~/images/edit.gif" resourcekey="cmdEdit" />
+						<asp:ImageButton ID="lnkApproveComment" runat="server" Visible="false" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="ApproveComment" ImageUrl="~/desktopmodules/Blog/images/blog_accept.png" CausesValidation="false" resourcekey="cmdApprove" />
+						<asp:ImageButton ID="lnkDeleteComment" runat="server" Visible="false" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="DeleteComment" ImageUrl="~/images/delete.gif" CausesValidation="false" CssClass="dnnBlogCommentDelete" resourcekey="cmdDelete" />
+					</div>
+					<div>
 						<p><%# server.htmldecode(DataBinder.Eval(Container.DataItem,"Comment")) %></p>
 					</div>
 				</blockquote>

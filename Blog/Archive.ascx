@@ -7,7 +7,7 @@
 		NextPrevStyle-CssClass="socialEvent-calendarNextPrev" OtherMonthDayStyle-CssClass="socialEvent-calendarOtherMonth" 
 		SelectedDayStyle-CssClass="socialEvent-calendarSelectedDay" SelectorStyle-CssClass="socialEvent-calendarSelector" 
 		TodayDayStyle-CssClass="socialEvent-calendarToday" WeekendDayStyle-CssClass="socialEvent-calendarWeekend" 
-		TitleStyle-BackColor="transparent" NextMonthText="&gt;&gt;" PrevMonthText="&lt;&lt;" />
+		TitleStyle-BackColor="transparent" NextMonthText="&gt;&gt;" PrevMonthText="&lt;&lt;" CellPadding="0" BorderStyle="None" DayNameFormat="FirstLetter" />
 	</asp:Panel>
 	<asp:Panel ID="pnlList" runat="server" Visible="false">
 		<asp:DataList ID="lstArchiveMonths" runat="server">

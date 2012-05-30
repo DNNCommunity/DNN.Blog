@@ -272,11 +272,11 @@ Namespace Providers.Data
 
 #Region "Blog_Tags / Blog_Cats Methods"
   Public Overrides Function GetCategoriesByEntry(ByVal EntryID As Integer) As System.Data.IDataReader
-   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Upgrade_GetCategoriesByEntry", EntryID), IDataReader)
+            Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "Upgrade_GetCategoriesByEntry", EntryID), IDataReader)
   End Function
 
   Public Overrides Function GetTagsByEntry(ByVal EntryID As Integer) As System.Data.IDataReader
-   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Upgrade_GetTagsByEntry", EntryID), IDataReader)
+            Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "Upgrade_GetTagsByEntry", EntryID), IDataReader)
   End Function
 
   Public Overrides Function GetAllTagsForUpgrade() As System.Data.IDataReader

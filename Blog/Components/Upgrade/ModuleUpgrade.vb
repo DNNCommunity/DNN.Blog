@@ -208,6 +208,22 @@ Namespace Components.Upgrade
             End Try
         End Function
 
+        Public Sub MigrateContentItems(ByVal PortalId As Integer)
+            Dim cntEntries As New EntryController
+            Dim colEntries As List(Of EntryInfo) = cntEntries.GetAllEntriesByPortal(PortalId)
+
+            For Each objEntry As EntryInfo In colEntries
+                If objEntry.ContentItemId < 1 Then
+                    Dim cntTaxonomy As New Content()
+                    Dim objContentItem As ContentItem = cntTaxonomy.CreateContentItem(objEntry, objEntry.TabID)
+                    objEntry.ContentItemId = objContentItem.ContentItemId
+
+                    cntEntries.UpdateEntry(objEntry, objEntry.TabID, PortalId)
+                End If
+            Next
+
+        End Sub
+
 #End Region
 
     End Class

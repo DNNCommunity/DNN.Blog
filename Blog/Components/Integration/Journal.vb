@@ -102,7 +102,7 @@ Namespace Components.Integration
             ji.Title = objEntry.Title
             ji.ItemData = New ItemData()
             ji.ItemData.Url = url
-            ji.Summary = objComment.Comment
+            ji.Summary = "" ' objComment.Comment
             ji.Body = Nothing
             ji.JournalTypeId = GetCommentJournalTypeID(portalId)
             ji.ObjectKey = objectKey
