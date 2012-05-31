@@ -47,9 +47,9 @@ Namespace Components.Controllers
         Public Function GetParentsChildBlogs(ByVal portalId As Integer, ByVal parentBlogId As Integer, ByVal ShowNonPublic As Boolean) As List(Of BlogInfo)
             Dim colPortalBlogs As List(Of BlogInfo) = GetAllPortalBlogs(portalId)
             If ShowNonPublic Then
-                Return colPortalBlogs.Where(Function(t) t.PortalID = portalId AndAlso t.ParentBlogID = parentBlogId).ToList
+                Return colPortalBlogs.Where(Function(t) t.PortalID = portalId AndAlso t.ParentBlogID = parentBlogId).OrderBy(Function(t) t.Title).ToList
             Else
-                Return colPortalBlogs.Where(Function(t) t.PortalID = portalId AndAlso t.ParentBlogID = parentBlogId AndAlso t.Public = True).ToList
+                Return colPortalBlogs.Where(Function(t) t.PortalID = portalId AndAlso t.ParentBlogID = parentBlogId AndAlso t.Public = True).OrderBy(Function(t) t.Title).ToList
             End If
         End Function
 
@@ -133,7 +133,7 @@ Namespace Components.Controllers
             If colBlogs Is Nothing Then
                 Dim timeOut As Int32 = Common.Constants.CACHE_TIMEOUT * Convert.ToInt32(DotNetNuke.Entities.Host.Host.PerformanceSetting)
 
-    colBlogs = CBO.FillCollection(Of BlogInfo)(DataProvider.Instance().GetBlogsByPortal(portalId))
+                colBlogs = CBO.FillCollection(Of BlogInfo)(DataProvider.Instance().GetBlogsByPortal(portalId))
 
                 'Cache Forum if timeout > 0 and Forum is not null
                 If timeOut > 0 And colBlogs IsNot Nothing Then

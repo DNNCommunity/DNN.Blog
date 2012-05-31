@@ -162,4 +162,10 @@
   <data name="Blogger.Permission" xml:space="preserve">
     <value>Blogger</value>
   </data>
+  <data name="Ignore.Text" xml:space="preserve">
+    <value>Ignore*</value>
+  </data>
+  <data name="IngorePost.Text" xml:space="preserve">
+    <value>Ignore Description</value>
+  </data>
 </root>
