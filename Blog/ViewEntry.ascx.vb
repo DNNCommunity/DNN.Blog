@@ -524,6 +524,8 @@ Partial Public Class ViewEntry
         If BlogSettings.EnableLinkedIn Then
             ClientResourceManager.RegisterScript(Page, "https://platform.linkedin.com/in.js")
         End If
+
+
     End Sub
 
     Private Sub BindCommentsList()

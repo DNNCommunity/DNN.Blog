@@ -19,6 +19,7 @@
 '
 
 Imports System
+Imports DotNetNuke.Web.Client.ClientResourceManagement
 Imports DotNetNuke.Modules.Blog.Components.Business
 Imports DotNetNuke.Modules.Blog.Components.Controllers
 Imports DotNetNuke.Modules.Blog.Components.Common
@@ -27,6 +28,7 @@ Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Services.Localization.Localization
 Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.Modules.Blog.Components.Entities
+Imports DotNetNuke.Framework
 
 Partial Public Class ViewBlog
     Inherits BlogModuleBase
@@ -78,6 +80,10 @@ Partial Public Class ViewBlog
 #Region "Event Handlers"
 
     Protected Overloads Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        jQuery.RequestUIRegistration()
+        ClientResourceManager.RegisterScript(Page, TemplateSourceDirectory + "/js/jquery.qatooltip.js")
+        ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js")
+
         m_oBlog = m_oBlogController.GetBlogFromContext()
         m_PersonalBlogID = BlogSettings.PageBlogs
 
