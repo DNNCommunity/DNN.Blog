@@ -57,7 +57,7 @@ Namespace Components.Controllers
   End Function
 
   Public Function AddEntry(ByVal objEntry As EntryInfo, ByVal tabId As Integer) As EntryInfo
-            objEntry.EntryID = CType(DataProvider.Instance().AddEntry(objEntry.BlogID, objEntry.Title, objEntry.Description, objEntry.Entry, objEntry.Published, objEntry.AllowComments, objEntry.AddedDate, objEntry.DisplayCopyright, objEntry.Copyright, objEntry.PermaLink, objEntry.CreatedUserId), Integer)
+   objEntry.EntryID = CType(DataProvider.Instance().AddEntry(objEntry.BlogID, objEntry.Title, objEntry.Description, objEntry.Entry, objEntry.Published, objEntry.AllowComments, objEntry.AddedDate, objEntry.DisplayCopyright, objEntry.Copyright, objEntry.PermaLink, objEntry.CreatedUserId), Integer)
 
    objEntry.ContentItemId = CompleteEntryCreation(objEntry, tabId)
 
@@ -70,15 +70,15 @@ Namespace Components.Controllers
    CompleteEntryUpdate(objEntry, tabId, portalId)
   End Sub
 
-        Public Sub UpdateEntryViewCount(ByVal EntryID As Integer)
-            DataProvider.Instance().UpdateEntryViewCount(EntryID)
-        End Sub
+  Public Sub UpdateEntryViewCount(ByVal EntryID As Integer)
+   DataProvider.Instance().UpdateEntryViewCount(EntryID)
+  End Sub
 
-        Public Sub DeleteEntry(ByVal entryId As Integer, ByVal contentItemId As Integer, ByVal blogId As Integer, ByVal portalId As Integer)
-            DataProvider.Instance().DeleteEntry(entryId)
+  Public Sub DeleteEntry(ByVal entryId As Integer, ByVal contentItemId As Integer, ByVal blogId As Integer, ByVal portalId As Integer)
+   DataProvider.Instance().DeleteEntry(entryId)
 
-            CompleteEntryDelete(contentItemId, blogId, entryId, portalId)
-        End Sub
+   CompleteEntryDelete(contentItemId, blogId, entryId, portalId)
+  End Sub
 
 #Region "Private Methods"
 
@@ -107,12 +107,12 @@ Namespace Components.Controllers
    cntTaxonomy.UpdateContentItem(objEntry, tabId, portalId)
   End Sub
 
-        Private Shared Sub CompleteEntryDelete(ByVal contentItemId As Integer, ByVal blogId As Integer, ByVal entryId As Integer, ByVal portalId As Integer)
-            Content.DeleteContentItem(contentItemId)
-            'TODO: Remove from Journal?
-            Dim cntJournal As New Journal()
-            cntJournal.RemoveBlogEntryFromJournal(blogId, entryId, portalId)
-        End Sub
+  Private Shared Sub CompleteEntryDelete(ByVal contentItemId As Integer, ByVal blogId As Integer, ByVal entryId As Integer, ByVal portalId As Integer)
+   Content.DeleteContentItem(contentItemId)
+   'TODO: Remove from Journal?
+   Dim cntJournal As New Integration.Journal()
+   cntJournal.RemoveBlogEntryFromJournal(blogId, entryId, portalId)
+  End Sub
 
 #Region "5.0 Taxonomy Migration"
 
