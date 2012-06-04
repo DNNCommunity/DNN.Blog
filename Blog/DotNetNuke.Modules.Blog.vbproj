@@ -116,6 +116,7 @@
     <Content Include="BlogTerms.asmx" />
     <Content Include="Archive.css" />
     <Content Include="ArchiveSettings.ascx" />
+    <Content Include="Trackback.aspx" />
     <Content Include="ViewCategoriesSettings.ascx" />
     <Content Include="Documentation\License.txt" />
     <Content Include="Documentation\ReleaseNotes.txt" />
@@ -126,7 +127,6 @@
     <Content Include="js\jquery.tagify.js" />
     <Content Include="module.css" />
     <Content Include="ModuleOptions.ascx" />
-    <Content Include="Trackback.aspx" />
     <Content Include="ViewBlog.ascx" />
     <Content Include="ViewCategories.ascx" />
     <Content Include="ViewEntry.ascx" />
@@ -225,6 +225,13 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Providers\Sitemap\EntrySitemap.vb" />
+    <Compile Include="Trackback.aspx.designer.vb">
+      <DependentUpon>Trackback.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Trackback.aspx.vb">
+      <DependentUpon>Trackback.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="ViewCategoriesSettings.ascx.designer.vb">
       <DependentUpon>ViewCategoriesSettings.ascx</DependentUpon>
     </Compile>
@@ -271,13 +278,6 @@
     <Compile Include="Components\Rss\BlogRssFeed.vb" />
     <Compile Include="Providers\Data\DataProvider.vb" />
     <Compile Include="Providers\Data\SqlDataProvider\SqlDataProvider.vb" />
-    <Compile Include="Trackback.aspx.designer.vb">
-      <DependentUpon>Trackback.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Trackback.aspx.vb">
-      <DependentUpon>Trackback.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="ViewBlog.ascx.designer.vb">
       <DependentUpon>ViewBlog.ascx</DependentUpon>
     </Compile>

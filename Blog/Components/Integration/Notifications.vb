@@ -79,7 +79,6 @@ Namespace Components.Integration
             objNotificationType.Name = Common.Constants.NotificationPublishingTypeName
             objNotificationType.Description = "Description"
             objNotificationType.DesktopModuleId = deskModuleId
-            'objNotificationType.TimeToLive = TimeSpan.FromDays(7)
 
             If NotificationsController.Instance.GetNotificationType(objNotificationType.Name) Is Nothing Then
                 Dim objAction As New NotificationTypeAction
@@ -98,6 +97,40 @@ Namespace Components.Integration
 
                 NotificationsController.Instance.CreateNotificationType(objNotificationType)
                 NotificationsController.Instance.SetNotificationTypeActions(actions, objNotificationType.NotificationTypeId)
+            End If
+
+            objNotificationType = New NotificationType
+            objNotificationType.Name = Common.Constants.NotificationCommentApprovalTypeName
+            objNotificationType.Description = "Description"
+            objNotificationType.DesktopModuleId = deskModuleId
+
+            If NotificationsController.Instance.GetNotificationType(objNotificationType.Name) Is Nothing Then
+                Dim objAction As New NotificationTypeAction
+                objAction.NameResourceKey = "ApproveComment"
+                objAction.DescriptionResourceKey = "ApproveComment_Desc"
+                objAction.APICall = "DesktopModules/Blog/API/NotificationService.ashx/ApproveComment"
+                objAction.Order = 3
+                actions.Add(objAction)
+
+                objAction = New NotificationTypeAction
+                objAction.NameResourceKey = "DeleteComment"
+                objAction.DescriptionResourceKey = "DeleteComment_Desc"
+                objAction.APICall = "DesktopModules/Blog/API/NotificationService.ashx/DeleteComment"
+                objAction.ConfirmResourceKey = "DeleteComment_Confirm"
+                objAction.Order = 4
+                actions.Add(objAction)
+
+                NotificationsController.Instance.CreateNotificationType(objNotificationType)
+                NotificationsController.Instance.SetNotificationTypeActions(actions, objNotificationType.NotificationTypeId)
+            End If
+
+            objNotificationType = New NotificationType
+            objNotificationType.Name = Common.Constants.NotificationCommentAddedTypeName
+            objNotificationType.Description = "Description"
+            objNotificationType.DesktopModuleId = deskModuleId
+
+            If NotificationsController.Instance.GetNotificationType(objNotificationType.Name) Is Nothing Then
+                NotificationsController.Instance.CreateNotificationType(objNotificationType)
             End If
         End Sub
 
