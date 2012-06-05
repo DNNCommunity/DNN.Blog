@@ -434,23 +434,23 @@ Partial Public Class ViewEntry
      objComment.CommentID = cntComment.AddComment(objComment)
 
 
-                    If objComment.Approved Then
-                        Dim cntJournal As New Journal
-                        cntJournal.AddCommentToJournal(Entry, objComment, ModuleContext.PortalId, ModuleContext.TabId, ModuleContext.PortalSettings.UserId, Entry.PermaLink)
+     If objComment.Approved Then
+      Dim cntJournal As New Components.Integration.Journal
+      cntJournal.AddCommentToJournal(Entry, objComment, ModuleContext.PortalId, ModuleContext.TabId, ModuleContext.PortalSettings.UserId, Entry.PermaLink)
 
-                        ' Notification of the comment being added (unless the blog owner is adding it)
-                        If (objComment.UserID <> objBlog.UserID) Then
-                            If objBlog.EmailNotification = True Then
-                                Dim cntNotification As New Notifications
+      ' Notification of the comment being added (unless the blog owner is adding it)
+      If (objComment.UserID <> objBlog.UserID) Then
+       If objBlog.EmailNotification = True Then
+        Dim cntNotification As New Notifications
 
 
-                            End If
-                        End If
-                    Else
-                        ' Notification of comment requiring approval
-                        Dim cntNotification As New Notifications
+       End If
+      End If
+     Else
+      ' Notification of comment requiring approval
+      Dim cntNotification As New Notifications
 
-                    End If
+     End If
 
      If objComment.Approved Then
       Dim cntJournal As New Components.Integration.Journal

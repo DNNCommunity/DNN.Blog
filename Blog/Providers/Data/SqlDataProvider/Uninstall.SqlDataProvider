@@ -1,3 +1,14 @@
+/******* DATA (HACK FOR DNN 6.2.0 ISSUE 21595) *******/
+DELETE FROM {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions
+FROM {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions nta
+ INNER JOIN {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypes nt ON nt.NotificationTypeID=nta.NotificationTypeID
+WHERE nt.Name LIKE 'DNN_Blog_%'
+GO
+
+DELETE FROM {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypes
+WHERE [Name] LIKE 'DNN_Blog_%'
+GO
+
 /******* SPROCS *******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_AddBlog') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_AddBlog
