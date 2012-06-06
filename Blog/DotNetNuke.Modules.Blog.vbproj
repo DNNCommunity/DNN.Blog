@@ -260,13 +260,6 @@
       <DependentUpon>MainView.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="MassEdit.ascx.designer.vb">
-      <DependentUpon>MassEdit.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="MassEdit.ascx.vb">
-      <DependentUpon>MassEdit.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="ModuleOptions.ascx.designer.vb">
       <DependentUpon>ModuleOptions.ascx</DependentUpon>
     </Compile>
@@ -336,8 +329,6 @@
     <Content Include="App_LocalResources\ViewEntry.ascx.resx" />
     <Content Include="App_LocalResources\SharedResources.resx" />
     <Content Include="App_LocalResources\ViewTagsSettings.ascx.resx" />
-    <Content Include="App_LocalResources\MassEdit.ascx.resx" />
-    <Content Include="App_LocalResources\BlogTemplates.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="blogpost.ashx" />
@@ -345,7 +336,6 @@
     <Content Include="include\css\shCoreDefault.css" />
     <Content Include="include\js\syntaxHighlighter.js" />
     <Content Include="MainView.ascx" />
-    <Content Include="MassEdit.ascx" />
     <Content Include="js\Gravatar.js" />
     <Content Include="js\md5.js" />
     <Content Include="Styles\Blog-FullEnry.xsl" />

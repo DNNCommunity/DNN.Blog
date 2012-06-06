@@ -36,3 +36,8 @@ DesktopModules\Blog\BlogImport.ascx
 DesktopModules\Blog\BlogImport.designer.vb
 DesktopModules\Blog\BlogImport.ascx.vb
 DesktopModules\Blog\App_LocalResources\BlogImport.ascx.resx
+DesktopModules\Blog\MassEdit.ascx
+DesktopModules\Blog\MassEdit.designer.vb
+DesktopModules\Blog\MassEdit.ascx.vb
+DesktopModules\Blog\App_LocalResources\MassEdit.ascx.resx
+DesktopModules\Blog\App_LocalResources\BlogTemplates.ascx.resx
