@@ -23,6 +23,7 @@ DesktopModules\Blog\Components\Settings\RecentEntriesSettings.vb
 DesktopModules\Blog\App_LocalResources\SharedResources.ascx.resx
 DesktopModules\Blog\js\bookmark.js
 DesktopModules\Blog\js\bookmark.xml
+DesktopModules\Blog\js\Gravatar.js
 DesktopModules\Blog\js\tag.js
 DesktopModules\Blog\RecentComments.ascx
 DesktopModules\Blog\RecentComments.ascx.designer.vb
