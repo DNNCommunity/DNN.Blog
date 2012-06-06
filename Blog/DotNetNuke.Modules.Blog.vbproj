@@ -338,11 +338,6 @@
     <Content Include="MainView.ascx" />
     <Content Include="js\Gravatar.js" />
     <Content Include="js\md5.js" />
-    <Content Include="Styles\Blog-FullEnry.xsl" />
-    <Content Include="Styles\Blog-Full_Blue.xsl" />
-    <Content Include="Styles\Blog-Full_Grey.xsl" />
-    <Content Include="Styles\Blog-Headlines.xsl" />
-    <Content Include="Styles\Blog-Head_Grey.xsl" />
     <None Include="DNN_Blog.dnn">
       <SubType>Designer</SubType>
     </None>
