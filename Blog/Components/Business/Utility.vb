@@ -555,60 +555,60 @@ Namespace Components.Business
    Return source
   End Function
 
-  ''' <summary>
-  ''' 
-  ''' </summary>
-  ''' <param name="date"></param>
-  ''' <returns></returns>
-  Public Shared Function CalculateDateForDisplay([date] As DateTime) As String
-   Dim utcDate As DateTime = [date].ToUniversalTime()
+        ''' <summary>
+        ''' This method takes a UTC date and compares it against the current UTC to return a friendly format (ie. 10 seconds ago)
+        ''' </summary>
+        ''' <param name="utcDate"></param>
+        ''' <returns></returns>
+        ''' <remarks>This method is currently used by comments only.</remarks>
+        Public Shared Function CalculateDateForDisplay(utcDate As DateTime) As String
             Dim utcTimeDifference As TimeSpan = SystemDateTime.GetCurrentTimeUtc() - utcDate
 
-   If utcTimeDifference.TotalSeconds < 60 Then
-    Return CInt(utcTimeDifference.TotalSeconds).ToString() + Localization.GetString("secondsago", Constants.SharedResourceFileName)
-   End If
-   If utcTimeDifference.TotalMinutes < 60 Then
-    If utcTimeDifference.TotalMinutes < 2 Then
-     Return CInt(utcTimeDifference.TotalMinutes).ToString() + Localization.GetString("minuteago", Constants.SharedResourceFileName)
-    End If
-    Return CInt(utcTimeDifference.TotalMinutes).ToString() + Localization.GetString("minutesago", Constants.SharedResourceFileName)
-   End If
-   If utcTimeDifference.TotalHours < 24 Then
-    If utcTimeDifference.TotalHours < 2 Then
-     Return CInt(utcTimeDifference.TotalHours).ToString() + Localization.GetString("hourago", Constants.SharedResourceFileName)
-    End If
-    Return CInt(utcTimeDifference.TotalHours).ToString() + Localization.GetString("hoursago", Constants.SharedResourceFileName)
-   End If
+            If utcTimeDifference.TotalSeconds < 60 Then
+                Return CInt(utcTimeDifference.TotalSeconds).ToString() + Localization.GetString("secondsago", Constants.SharedResourceFileName)
+            End If
+            If utcTimeDifference.TotalMinutes < 60 Then
+                If utcTimeDifference.TotalMinutes < 2 Then
+                    Return CInt(utcTimeDifference.TotalMinutes).ToString() + Localization.GetString("minuteago", Constants.SharedResourceFileName)
+                End If
+                Return CInt(utcTimeDifference.TotalMinutes).ToString() + Localization.GetString("minutesago", Constants.SharedResourceFileName)
+            End If
+            If utcTimeDifference.TotalHours < 24 Then
+                If utcTimeDifference.TotalHours < 2 Then
+                    Return CInt(utcTimeDifference.TotalHours).ToString() + Localization.GetString("hourago", Constants.SharedResourceFileName)
+                End If
+                Return CInt(utcTimeDifference.TotalHours).ToString() + Localization.GetString("hoursago", Constants.SharedResourceFileName)
+            End If
 
-   If utcTimeDifference.TotalDays < 7 Then
-    If utcTimeDifference.TotalDays < 2 Then
-     Return CInt(utcTimeDifference.TotalDays).ToString() + Localization.GetString("dayago", Constants.SharedResourceFileName)
-    End If
-    Return CInt(utcTimeDifference.TotalDays).ToString() + Localization.GetString("daysago", Constants.SharedResourceFileName)
-   End If
+            If utcTimeDifference.TotalDays < 7 Then
+                If utcTimeDifference.TotalDays < 2 Then
+                    Return CInt(utcTimeDifference.TotalDays).ToString() + Localization.GetString("dayago", Constants.SharedResourceFileName)
+                End If
+                Return CInt(utcTimeDifference.TotalDays).ToString() + Localization.GetString("daysago", Constants.SharedResourceFileName)
+            End If
 
-   If utcTimeDifference.TotalDays < 30 Then
-    If utcTimeDifference.TotalDays < 14 Then
-     Return CInt((utcTimeDifference.TotalDays) / 7).ToString() + Localization.GetString("weekago", Constants.SharedResourceFileName)
-    End If
-    Return CInt((utcTimeDifference.TotalDays) / 7).ToString() + Localization.GetString("weeksago", Constants.SharedResourceFileName)
-   End If
+            If utcTimeDifference.TotalDays < 30 Then
+                If utcTimeDifference.TotalDays < 14 Then
+                    Return CInt((utcTimeDifference.TotalDays) / 7).ToString() + Localization.GetString("weekago", Constants.SharedResourceFileName)
+                End If
+                Return CInt((utcTimeDifference.TotalDays) / 7).ToString() + Localization.GetString("weeksago", Constants.SharedResourceFileName)
+            End If
 
-   If utcTimeDifference.TotalDays < 180 Then
-    If utcTimeDifference.TotalDays < 60 Then
-     Return CInt((utcTimeDifference.TotalDays) / 30).ToString() + Localization.GetString("monthago", Constants.SharedResourceFileName)
-    End If
-    Return CInt((utcTimeDifference.TotalDays) / 30).ToString() + Localization.GetString("monthsago", Constants.SharedResourceFileName)
-   End If
+            If utcTimeDifference.TotalDays < 180 Then
+                If utcTimeDifference.TotalDays < 60 Then
+                    Return CInt((utcTimeDifference.TotalDays) / 30).ToString() + Localization.GetString("monthago", Constants.SharedResourceFileName)
+                End If
+                Return CInt((utcTimeDifference.TotalDays) / 30).ToString() + Localization.GetString("monthsago", Constants.SharedResourceFileName)
+            End If
 
-   'if (utcTimeDifference.TotalDays < 60)
-   '{
-   '    return 1 + Localization.GetString("monthago", Constants.SharedResourceFileName);
-   '}
+            'if (utcTimeDifference.TotalDays < 60)
+            '{
+            '    return 1 + Localization.GetString("monthago", Constants.SharedResourceFileName);
+            '}
 
-   ' anything else (this is the only time we have to personalize it to the user)
-   Return [date].ToShortDateString()
-  End Function
+            ' anything else (this is the only time we have to personalize it to the user)
+            Return utcDate.ToShortDateString()
+        End Function
 
 #End Region
 

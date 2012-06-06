@@ -343,18 +343,7 @@ Partial Public Class ViewEntry
             imgUser.ImageUrl = Control.ResolveUrl("~/profilepic.ashx?userid=" + objComment.UserID.ToString + "&w=" + "50" + "&h=" + "50")
             hlCommentAuthor.Text = objUser.DisplayName
             hlCommentAuthor.NavigateUrl = DotNetNuke.Common.Globals.UserProfileURL(objUser.UserID)
-
-            ''DW - 06/06/2008
-            ''Set a unique CSS class for the blog bubbles of the blog owner
-            'If objBlog.UserID = objComment.UserID Then
-            ' divBlogBubble.CssClass = "BlogBubbleOwner"
-            'End If
-
-            Dim n As DateTime = Utility.AdjustedDate(CType(e.Item.DataItem, CommentInfo).AddedDate, UITimeZone)
-            Dim publishDate As DateTime = n
-            Dim timeOffset As TimeSpan = UITimeZone.BaseUtcOffset
-            publishDate = publishDate.Add(timeOffset)
-            lblCommentDate.Text = Utility.CalculateDateForDisplay(publishDate)
+            lblCommentDate.Text = Utility.CalculateDateForDisplay(CType(e.Item.DataItem, CommentInfo).AddedDate)
 
             If Not objComment.Approved Then
                 lnkApproveComment.Visible = True

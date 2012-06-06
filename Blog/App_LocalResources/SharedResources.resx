@@ -168,4 +168,7 @@
   <data name="IngorePost.Text" xml:space="preserve">
     <value>Ignore Description</value>
   </data>
+  <data name="secondsago.Text" xml:space="preserve">
+    <value> seconds ago</value>
+  </data>
 </root>
