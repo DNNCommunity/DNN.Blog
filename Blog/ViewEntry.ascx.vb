@@ -319,53 +319,50 @@ Partial Public Class ViewEntry
   End Try
  End Sub
 
- Protected Sub lstComments_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataListItemEventArgs) Handles lstComments.ItemDataBound
-  Dim imgUser As System.Web.UI.WebControls.Image = CType(e.Item.FindControl("imgUser"), System.Web.UI.WebControls.Image)
-  Dim hlUser As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("hlUser"), System.Web.UI.WebControls.HyperLink)
-  Dim hlCommentAuthor As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("hlCommentAuthor"), System.Web.UI.WebControls.HyperLink)
-  'hlCommentAuthor
-  Dim lnkEditComment As System.Web.UI.WebControls.ImageButton = CType(e.Item.FindControl("lnkEditComment"), System.Web.UI.WebControls.ImageButton)
-  Dim lnkApproveComment As System.Web.UI.WebControls.ImageButton = CType(e.Item.FindControl("lnkApproveComment"), System.Web.UI.WebControls.ImageButton)
-  Dim lblCommentDate As System.Web.UI.WebControls.Label = CType(e.Item.FindControl("lblCommentDate"), System.Web.UI.WebControls.Label)
-  Dim divBlogBubble As System.Web.UI.WebControls.Panel = CType(e.Item.FindControl("divBlogBubble"), System.Web.UI.WebControls.Panel)
-  Dim lnkDeleteComment As System.Web.UI.WebControls.ImageButton = CType(e.Item.FindControl("lnkDeleteComment"), System.Web.UI.WebControls.ImageButton)
+    Protected Sub lstComments_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataListItemEventArgs) Handles lstComments.ItemDataBound
+        If (e.Item.ItemType = ListItemType.AlternatingItem) Or (e.Item.ItemType = ListItemType.Item) Then
+            Dim imgUser As System.Web.UI.WebControls.Image = CType(e.Item.FindControl("imgUser"), System.Web.UI.WebControls.Image)
+            Dim hlUser As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("hlUser"), System.Web.UI.WebControls.HyperLink)
+            Dim hlCommentAuthor As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("hlCommentAuthor"), System.Web.UI.WebControls.HyperLink)
+            Dim lnkEditComment As System.Web.UI.WebControls.ImageButton = CType(e.Item.FindControl("lnkEditComment"), System.Web.UI.WebControls.ImageButton)
+            Dim lnkApproveComment As System.Web.UI.WebControls.ImageButton = CType(e.Item.FindControl("lnkApproveComment"), System.Web.UI.WebControls.ImageButton)
+            Dim lblCommentDate As System.Web.UI.WebControls.Label = CType(e.Item.FindControl("lblCommentDate"), System.Web.UI.WebControls.Label)
+            Dim lnkDeleteComment As System.Web.UI.WebControls.ImageButton = CType(e.Item.FindControl("lnkDeleteComment"), System.Web.UI.WebControls.ImageButton)
+            Dim objComment As CommentInfo = CType(e.Item.DataItem, CommentInfo)
+            Dim objSecurity As ModuleSecurity = New ModuleSecurity(ModuleContext.ModuleId, ModuleContext.TabId)
 
-  Dim objComment As CommentInfo = CType(e.Item.DataItem, CommentInfo)
+            Dim isOwner As Boolean
+            isOwner = objBlog.UserID = ModuleContext.PortalSettings.UserId
 
-  Dim objSecurity As ModuleSecurity = New ModuleSecurity(ModuleContext.ModuleId, ModuleContext.TabId)
+            lnkEditComment.Visible = objSecurity.CanAddEntry(isOwner, objBlog.AuthorMode)
+            lnkDeleteComment.Visible = lnkEditComment.Visible
 
-  Dim isOwner As Boolean
-  isOwner = objBlog.UserID = ModuleContext.PortalSettings.UserId
+            Dim objUser As UserInfo = UserController.GetUserById(ModuleContext.PortalId, objComment.UserID)
 
-  lnkEditComment.Visible = objSecurity.CanAddEntry(isOwner, objBlog.AuthorMode)
+            hlUser.NavigateUrl = DotNetNuke.Common.Globals.UserProfileURL(objUser.UserID)
+            imgUser.ImageUrl = Control.ResolveUrl("~/profilepic.ashx?userid=" + objComment.UserID.ToString + "&w=" + "50" + "&h=" + "50")
+            hlCommentAuthor.Text = objUser.DisplayName
+            hlCommentAuthor.NavigateUrl = DotNetNuke.Common.Globals.UserProfileURL(objUser.UserID)
 
-  lnkDeleteComment.Visible = lnkEditComment.Visible
+            ''DW - 06/06/2008
+            ''Set a unique CSS class for the blog bubbles of the blog owner
+            'If objBlog.UserID = objComment.UserID Then
+            ' divBlogBubble.CssClass = "BlogBubbleOwner"
+            'End If
 
-  Dim objUser As UserInfo = UserController.GetUserById(ModuleContext.PortalId, objComment.UserID)
+            Dim n As DateTime = Utility.AdjustedDate(CType(e.Item.DataItem, CommentInfo).AddedDate, UITimeZone)
+            Dim publishDate As DateTime = n
+            Dim timeOffset As TimeSpan = UITimeZone.BaseUtcOffset
+            publishDate = publishDate.Add(timeOffset)
+            lblCommentDate.Text = Utility.CalculateDateForDisplay(publishDate)
 
-  hlUser.NavigateUrl = DotNetNuke.Common.Globals.UserProfileURL(objUser.UserID)
-  imgUser.ImageUrl = Control.ResolveUrl("~/profilepic.ashx?userid=" + objComment.UserID.ToString + "&w=" + "50" + "&h=" + "50")
-  hlCommentAuthor.Text = objUser.DisplayName
-  hlCommentAuthor.NavigateUrl = DotNetNuke.Common.Globals.UserProfileURL(objUser.UserID)
-
-  'DW - 06/06/2008
-  'Set a unique CSS class for the blog bubbles of the blog owner
-  If objBlog.UserID = objComment.UserID Then
-   divBlogBubble.CssClass = "BlogBubbleOwner"
-  End If
-
-  Dim n As DateTime = Utility.AdjustedDate(CType(e.Item.DataItem, CommentInfo).AddedDate, UITimeZone)
-  Dim publishDate As DateTime = n
-  Dim timeOffset As TimeSpan = UITimeZone.BaseUtcOffset
-  publishDate = publishDate.Add(timeOffset)
-  lblCommentDate.Text = Utility.CalculateDateForDisplay(publishDate)
-
-  If Not objComment.Approved Then
-   lnkApproveComment.Visible = True
-  Else
-   lnkApproveComment.Visible = False
-  End If
- End Sub
+            If Not objComment.Approved Then
+                lnkApproveComment.Visible = True
+            Else
+                lnkApproveComment.Visible = False
+            End If
+        End If
+    End Sub
 
  Protected Sub lstComments_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataListCommandEventArgs) Handles lstComments.ItemCommand
   Select Case e.CommandName.ToLower

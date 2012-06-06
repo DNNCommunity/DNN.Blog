@@ -16,18 +16,12 @@
 .BlogCopyright {font-size:10px;}
 .BlogImageList {line-height:20px;vertical-align:middle;}
 /* Comments */
-div.BlogBubble,div.BlogBubbleOwner {width:auto;font-size:10pt;margin-bottom:24px;padding:8px 4px 8px 4px;}
-div.BlogBubble blockquote {border:1px solid #c9c2c1;background-color:#fff;zoom:1;min-height:64px;margin:0;padding:0;}
-div.BlogBubbleOwner blockquote {border:1px solid #aaa;background-color:#e0e0e0;zoom:1;min-height:64px;margin:0;padding:0;}
-div.BlogBubble blockquote p,div.BlogBubbleOwner blockquote p {margin:10px;padding:0;}
-div.BlogBubble cite,div.BlogBubbleOwner cite {position:relative;top:6px;background:transparent url(images/blog_comment_tip.gif) no-repeat 0px 0;margin:-62px;padding:7px 0 0 0px;}
-div.BlogBubbleOwner cite {background:transparent url(images/blog_comment_tip_owner.gif) no-repeat 20px 0;}
-div.BlogBubble p {color:#000;}
-
-
+.blogComments{width:100%;border: 1px solid #e3e3e3;}
 .commentAuthor{padding:8px;}
-.BlogGravatar {float:left;border:solid 1px #ddd;background-color:#fff;margin:5px 5px -5px 4px;padding:2px;}
-.BlogGravatarPreview {border:solid 1px #ddd;background-color:#fff;float:right;margin:0;padding:2px;}
+	.ccAuthor{font-style:italic;padding-bottom:4px;}
+.commentContent{padding:8px;}
+.commentMod{padding:8px;}
+.blogSeparate{padding-bottom:2px;}
 /* Tagify */
 .ui-menu {width: 225px;}
 .tagify-container {width: 350px;height: 100px;border: 1px solid #CCC;background-color: #FFF;border-radius: 2px;font-family: Verdana, sans-serif;font-size: 12px;overflow: auto;}
