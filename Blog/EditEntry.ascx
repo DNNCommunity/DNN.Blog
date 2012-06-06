@@ -14,8 +14,10 @@
 		</div>
 		<div class="dnnFormItem">
 			<dnn:Label ID="lblPublishDate" runat="server" ControlName="dpEntryDate" Suffix=":" />
-			<dnnweb:DnnDatePicker ID="dpEntryDate" runat="server" />
-			<dnnweb:DnnTimePicker ID="tpEntryTime" runat="server" TimeView-Columns="4" ShowPopupOnFocus="true" />
+			<div class="dnnLeft">
+				<dnnweb:DnnDatePicker ID="dpEntryDate" runat="server" CssClass="dateFix" />
+				<dnnweb:DnnTimePicker ID="tpEntryTime" runat="server" TimeView-Columns="4" ShowPopupOnFocus="true" CssClass="dateFix" />
+			</div>
 		</div>
 		<div class="dnnFormItem">
 			<label></label>

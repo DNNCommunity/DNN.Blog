@@ -40,6 +40,7 @@ div.BlogBubble p {color:#000;}
 ul.ui-autocomplete{overflow:hidden;clear:both;}
 .ui-autocomplete { position: absolute; cursor: default; }
 .ui-autocomplete-loading { background: white; }
+.dateFix input, .dateFix textarea{float: none;}
 /* workarounds */
 * html .ui-autocomplete { width:1px; } /* without this, the menu expands to 100% in IE6 */
 /* Menu */
@@ -106,6 +107,3 @@ ul.rlbList {list-style:none;}
 	
 		.selectDrop {position:relative;z-index:1; width:auto;}
 		 .selectDrop .dnnTertiaryAction span{padding-right:5px;}
-		
-		
-		
