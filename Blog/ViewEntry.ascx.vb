@@ -391,7 +391,7 @@ Partial Public Class ViewEntry
                 Dim objSecurity As ModuleSecurity = New ModuleSecurity(ModuleContext.ModuleId, ModuleContext.TabId)
                 Dim isOwner As Boolean
                 isOwner = objBlog.UserID = ModuleContext.PortalSettings.UserId
-                objComment.Approved = objSecurity.CanAddApprovedComment(isOwner, objBlog.AuthorMode, False)
+                objComment.Approved = objSecurity.CanAddApprovedComment(False)
 
                 If objComment.CommentID > -1 Then
                     cntComment.UpdateComment(objComment)

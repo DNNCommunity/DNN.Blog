@@ -55,8 +55,16 @@ Namespace Components.Common
             Return HasEdit Or (HasGhost AndAlso BlogAuthorMode = Constants.AuthorMode.GhostMode) Or (HasBlogger AndAlso IsOwner) Or (HasBlogger AndAlso BlogAuthorMode = Constants.AuthorMode.BloggerMode)
         End Function
 
-        Public Function CanAddApprovedComment(ByVal IsOwner As Boolean, ByVal BlogAuthorMode As Integer, ByVal AutoApprove As Boolean) As Boolean
-            If HasEdit Or HasBlogger Then
+        Public Function CanApproveComment() As Boolean
+            If HasEdit Or HasBlogger Or HasGhost Then
+                Return True
+            Else
+                Return False
+            End If
+        End Function
+
+        Public Function CanAddApprovedComment(ByVal AutoApprove As Boolean) As Boolean
+            If HasEdit Or HasBlogger Or HasGhost Then
                 Return True
             Else
                 Return AutoApprove

@@ -35,13 +35,14 @@ Namespace Components.Services
 
         Private BlogId As Integer = -1
         Private EntryId As Integer = -1
+        Private CommentId As Integer = -1
 
 #End Region
 
         <DnnAuthorize()> _
-        Public Function ApprovePost(notificationId As Integer) As ActionResult
+        Public Function ApproveEntry(notificationId As Integer) As ActionResult
             Dim notify As Notification = NotificationsController.Instance.GetNotification(notificationId)
-            ParseKey(notify.Context)
+            ParsePublishKey(notify.Context)
 
             Dim cntBlog As New BlogController
             Dim objBlog As BlogInfo = cntBlog.GetBlog(BlogId)
@@ -97,9 +98,9 @@ Namespace Components.Services
         End Function
 
         <DnnAuthorize()> _
-        Public Function DeletePost(notificationId As Integer) As ActionResult
+        Public Function DeleteEntry(notificationId As Integer) As ActionResult
             Dim notify As Notification = NotificationsController.Instance.GetNotification(notificationId)
-            ParseKey(notify.Context)
+            ParsePublishKey(notify.Context)
             Dim cntBlog As New BlogController
             Dim objBlog As BlogInfo = cntBlog.GetBlog(BlogId)
 
@@ -151,9 +152,9 @@ Namespace Components.Services
         End Function
 
         <DnnAuthorize()> _
-        Public Function IgnorePost(notificationId As Integer) As ActionResult
+        Public Function ApproveComment(notificationId As Integer) As ActionResult
             Dim notify As Notification = NotificationsController.Instance.GetNotification(notificationId)
-            ParseKey(notify.Context)
+            ParseCommentKey(notify.Context)
 
             Dim cntBlog As New BlogController
             Dim objBlog As BlogInfo = cntBlog.GetBlog(BlogId)
@@ -162,18 +163,92 @@ Namespace Components.Services
                 Return Json(New With {.Result = "error"})
             End If
 
+            Dim isOwner As Boolean = objBlog.UserID = UserInfo.UserID
+
+            Dim cntEntry As New EntryController
+            Dim objEntry As EntryInfo = cntEntry.GetEntry(EntryId, PortalSettings.PortalId)
+
+            If objEntry Is Nothing Then
+                Return Json(New With {.Result = "error"})
+            End If
+
+            Dim objSecurity As New ModuleSecurity(objEntry.ModuleID, objEntry.TabID)
+
+            If Not objSecurity.CanApproveComment() Then
+                Return Json(New With {.Result = "error"})
+            End If
+
+            Dim cntComment As New CommentController
+            Dim objComment As CommentInfo = cntComment.GetComment(CommentId)
+
+            If objComment Is Nothing Then
+                Return Json(New With {.Result = "error"})
+            End If
+
+            objComment.Approved = True
+            cntComment.UpdateComment(objComment)
+            
             NotificationsController.Instance().DeleteNotification(notificationId)
             Return Json(New With {.Result = "success"})
+        End Function
 
+        <DnnAuthorize()> _
+        Public Function DeleteComment(notificationId As Integer) As ActionResult
+            Dim notify As Notification = NotificationsController.Instance.GetNotification(notificationId)
+            ParseCommentKey(notify.Context)
+
+            Dim cntBlog As New BlogController
+            Dim objBlog As BlogInfo = cntBlog.GetBlog(BlogId)
+
+            If objBlog Is Nothing Then
+                Return Json(New With {.Result = "error"})
+            End If
+
+            Dim isOwner As Boolean = objBlog.UserID = UserInfo.UserID
+
+            Dim cntEntry As New EntryController
+            Dim objEntry As EntryInfo = cntEntry.GetEntry(EntryId, PortalSettings.PortalId)
+
+            If objEntry Is Nothing Then
+                Return Json(New With {.Result = "error"})
+            End If
+
+            Dim objSecurity As New ModuleSecurity(objEntry.ModuleID, objEntry.TabID)
+
+            If Not objSecurity.CanApproveComment() Then
+                Return Json(New With {.Result = "error"})
+            End If
+
+            Dim cntComment As New CommentController
+            Dim objComment As CommentInfo = cntComment.GetComment(CommentId)
+
+            If objComment Is Nothing Then
+                Return Json(New With {.Result = "error"})
+            End If
+
+            cntComment.DeleteComment(CommentId)
+
+            ' No journal call here because it should have never been added (since it wasn't approved)
+
+            NotificationsController.Instance().DeleteNotification(notificationId)
+            Return Json(New With {.Result = "success"})
         End Function
 
 #Region "Private Methods"
 
-        Private Sub ParseKey(key As String)
+        Private Sub ParsePublishKey(key As String)
             Dim keys() As String = key.Split(CChar(":"))
             ' 0 is content type string, to ensure unique key
             BlogId = Integer.Parse(keys(1))
             EntryId = Integer.Parse(keys(2))
+        End Sub
+
+        Private Sub ParseCommentKey(key As String)
+            Dim keys() As String = key.Split(CChar(":"))
+            ' 0 is content type string, to ensure unique key
+            BlogId = Integer.Parse(keys(1))
+            EntryId = Integer.Parse(keys(2))
+            CommentId = Integer.Parse(keys(3))
         End Sub
 
 #End Region

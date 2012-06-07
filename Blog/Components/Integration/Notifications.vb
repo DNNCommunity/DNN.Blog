@@ -68,7 +68,7 @@ Namespace Components.Integration
         Friend Sub CommentPendingApproval(ByVal objComment As CommentInfo, ByVal objBlog As BlogInfo, ByVal objEntry As EntryInfo, ByVal portalId As Integer, ByVal summary As String)
             Dim notificationType As NotificationType = NotificationsController.Instance.GetNotificationType(Common.Constants.NotificationCommentApprovalTypeName)
 
-            Dim notificationKey As String = String.Format("{0}:{1}:{2}", Components.Common.Constants.ContentTypeName + Common.Constants.NotificationCommentApprovalTypeName, objEntry.EntryID, objComment.CommentID)
+            Dim notificationKey As String = String.Format("{0}:{1}:{2}:{3}", Components.Common.Constants.ContentTypeName + Common.Constants.NotificationCommentApprovalTypeName, objBlog.BlogID, objEntry.EntryID, objComment.CommentID)
             Dim objNotification As New Notification
 
             objNotification.NotificationTypeID = notificationType.NotificationTypeId
@@ -89,7 +89,7 @@ Namespace Components.Integration
         Friend Sub CommentAdded(ByVal objComment As CommentInfo, ByVal objEntry As EntryInfo, ByVal objBlog As BlogInfo, ByVal portalId As Integer, ByVal summary As String)
             Dim notificationType As NotificationType = NotificationsController.Instance.GetNotificationType(Common.Constants.NotificationCommentAddedTypeName)
 
-            Dim notificationKey As String = String.Format("{0}:{1}:{2}", Components.Common.Constants.ContentTypeName + Common.Constants.NotificationCommentAddedTypeName, objEntry.EntryID, objComment.CommentID)
+            Dim notificationKey As String = String.Format("{0}:{1}:{2}:{3}", Components.Common.Constants.ContentTypeName + Common.Constants.NotificationCommentAddedTypeName, objBlog.BlogID, objEntry.EntryID, objComment.CommentID)
             Dim objNotification As New Notification
 
             objNotification.NotificationTypeID = notificationType.NotificationTypeId
