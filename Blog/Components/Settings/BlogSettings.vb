@@ -72,7 +72,7 @@ Namespace Components.Settings
         Private _EnableTwitter As Boolean = True
         Private _EnableLinkedIn As Boolean = True
 
-        Private _CommentMode As String = "Default"
+        Private _CommentMode As Integer = Constants.CommentMode.Default
 
 #End Region
 
@@ -173,7 +173,7 @@ Namespace Components.Settings
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "EnablePlusOne", Me.EnablePlusOne.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "EnableTwitter", Me.EnableTwitter.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "EnableLinkedIn", Me.EnableLinkedIn.ToString)
-            Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "CommentMode", Me.CommentMode)
+            Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "CommentMode", Me.CommentMode.ToString)
 
             ' WLW implementation parameters
             Business.Utility.UpdateBlogModuleSetting(_portalId, -1, "AllowMultipleCategories", Me.AllowMultipleCategories.ToString)
@@ -495,11 +495,11 @@ Namespace Components.Settings
             End Set
         End Property
 
-        Public Property CommentMode() As String
+        Public Property CommentMode() As Integer
             Get
                 Return _CommentMode
             End Get
-            Set(ByVal Value As String)
+            Set(ByVal Value As Integer)
                 _CommentMode = Value
             End Set
         End Property

@@ -98,10 +98,10 @@
 	</asp:Panel>
 	<h2 id="dnnSitePanel-EntryOptions" class="dnnFormSectionHead"><a href="" class=""><%= LocalizeString("secEntryOptions")%></a></h2>
 	<fieldset>
-		<div class="dnnFormItem">
+		<asp:Panel ID="pnlComments" runat="server" class="dnnFormItem">
 			<dnn:Label ID="lblAllowComments" runat="server" controlname="chkAllowComments" suffix=":" />
 			<asp:CheckBox ID="chkAllowComments" runat="server" />
-		</div>
+		</asp:Panel>
 		<div class="dnnFormItem">
 			<dnn:Label ID="lblDisplayCopyright" runat="server" controlname="chkDisplayCopyright" suffix=":" />
 			<asp:CheckBox ID="chkDisplayCopyright" runat="server" AutoPostBack="True" />

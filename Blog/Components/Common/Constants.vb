@@ -36,6 +36,16 @@ Namespace Components.Common
             BloggerMode = 2
         End Enum
 
+        Public Enum CommentMode
+            None = -1
+            [Default] = 0
+        End Enum
+
+        Public Enum SocialSharingMode
+            None = -1
+            [Default] = 0
+        End Enum
+
         Public Const ContentTypeName As String = "DNN_Blog_Entry"
         Public Const JournalBlogTypeName As String = "blog"
         Public Const JournalCommentTypeName As String = "comment"

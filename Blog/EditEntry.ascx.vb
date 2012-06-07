@@ -142,11 +142,6 @@ Partial Class EditEntry
 
                 pnlChildBlogs.Visible = BlogSettings.AllowChildBlogs AndAlso colBlogs.Count > 0
 
-                ' change in 3.1.23 not display the trackback url field if auto trackback is enabled
-                'Me.lblTrackbackUrl.Visible = Not m_oParentBlog.AutoTrackback
-                'Me.txtTrackBackUrl.Visible = Not m_oParentBlog.AutoTrackback
-                ' end change in 3.1.23
-
                 If BlogSettings.AllowSummaryHtml Then
                     txtDescription.Visible = True
                     txtDescriptionText.Visible = False
@@ -157,10 +152,10 @@ Partial Class EditEntry
 
                 cmdPublish.Text = GetString("SaveAndPublish", LocalResourceFile)
                 cmdDraft.Text = GetString("SaveAsDraft", LocalResourceFile)
-                'lblPublished.Text = GetString("UnPublished.Status", LocalResourceFile)
+
+                pnlComments.Visible = ((BlogSettings.CommentMode = Constants.CommentMode.Default) AndAlso m_oBlog.AllowComments)
 
                 If Not m_oEntry Is Nothing Then
-
                     litTimezone.Text = UITimeZone.DisplayName
 
                     Dim n As DateTime = Utility.AdjustedDate(m_oEntry.AddedDate, UITimeZone)

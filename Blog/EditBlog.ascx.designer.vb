@@ -176,24 +176,6 @@ Partial Public Class EditBlog
     Protected WithEvents chkAllowComments As Global.System.Web.UI.WebControls.CheckBox
 
     '''<summary>
-    '''lblEmailNotification control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblEmailNotification As Global.DotNetNuke.UI.UserControls.LabelControl
-
-    '''<summary>
-    '''chkEmailNotification control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents chkEmailNotification As Global.System.Web.UI.WebControls.CheckBox
-
-    '''<summary>
     '''lblSyndicate control.
     '''</summary>
     '''<remarks>

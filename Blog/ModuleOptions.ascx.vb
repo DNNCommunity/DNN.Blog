@@ -28,8 +28,6 @@ Imports DotNetNuke.Services.Localization.Localization
 Imports DotNetNuke.Framework
 Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.Modules.Blog.Components.Integration
-Imports DotNetNuke.Services.Upgrade
-Imports DotNetNuke.Modules.Blog.Components
 
 Partial Public Class ModuleOptions
     Inherits BlogModuleBase
@@ -61,6 +59,7 @@ Partial Public Class ModuleOptions
                 chkAllowMultipleCategories.Checked = BlogSettings.AllowMultipleCategories
                 chkUseWLWExcerpt.Checked = BlogSettings.UseWLWExcerpt
                 ddlCatVocabRoot.SelectedValue = BlogSettings.VocabularyId.ToString()
+                ddlCommentMode.SelectedValue = BlogSettings.CommentMode.ToString()
                 ddlSocialSharingMode.SelectedValue = BlogSettings.SocialSharingMode
                 txtAddThisId.Text = BlogSettings.AddThisId
                 txtFacebookAppId.Text = BlogSettings.FacebookAppId
@@ -86,8 +85,6 @@ Partial Public Class ModuleOptions
                 If cblPortalFiles.Items.Count < 1 Then
                     pnlPortalFiles.Visible = False
                 End If
-
-                'ForumBlog.Utils.isForumBlogInstalled(PortalId, TabId, True)
 
                 hlCancelOptions.NavigateUrl = ModuleContext.NavigateUrl(ModuleContext.TabId, "", False, "")
             End If
@@ -118,6 +115,7 @@ Partial Public Class ModuleOptions
                 .AllowMultipleCategories = chkAllowMultipleCategories.Checked
                 .UseWLWExcerpt = chkUseWLWExcerpt.Checked
                 .VocabularyId = Convert.ToInt32(ddlCatVocabRoot.SelectedValue)
+                .CommentMode = Convert.ToInt32(ddlCommentMode.SelectedItem.Value)
                 .SocialSharingMode = ddlSocialSharingMode.SelectedItem.Value
                 .AddThisId = txtAddThisId.Text
                 .FacebookAppId = txtFacebookAppId.Text

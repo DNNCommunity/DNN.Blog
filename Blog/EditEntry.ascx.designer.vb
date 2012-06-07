@@ -293,6 +293,15 @@ Partial Public Class EditEntry
     Protected WithEvents dgLinkedFiles As Global.System.Web.UI.WebControls.DataGrid
 
     '''<summary>
+    '''pnlComments control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents pnlComments As Global.System.Web.UI.WebControls.Panel
+
+    '''<summary>
     '''lblAllowComments control.
     '''</summary>
     '''<remarks>

@@ -97,6 +97,7 @@ Partial Public Class EditBlog
             If Not Page.IsPostBack Then
                 fsChildBlogs.Visible = BlogSettings.AllowChildBlogs
                 dnnSitePanelChildBlogs.Visible = BlogSettings.AllowChildBlogs
+                pnlComments.Visible = (BlogSettings.CommentMode = Constants.CommentMode.Default)
 
                 If Not BlogSettings.AllowWLW Then
                     lblMetaWeblogUrl.Visible = False

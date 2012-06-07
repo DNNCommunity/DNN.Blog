@@ -52,10 +52,6 @@
                 <asp:CheckBox ID="chkAllowComments" runat="server" />        
             </asp:Panel>
             <div class="dnnFormItem">
-                <dnn:Label ID="lblEmailNotification" runat="server" controlname="chkEmailNotification" suffix=":" />
-                <asp:CheckBox ID="chkEmailNotification" runat="server" />           
-            </div>
-            <div class="dnnFormItem">
                 <dnn:Label ID="lblSyndicate" runat="server" controlname="chkSyndicate" suffix=":" />
                 <asp:CheckBox ID="chkSyndicate" runat="server" />
             </div>

@@ -148,7 +148,7 @@ Partial Public Class ViewEntry
                         hlAuthorBio.Text = Entry.UserName
                     End If
                     hlAuthor.NavigateUrl = DotNetNuke.Common.Globals.UserProfileURL(Entry.UserID)
-                    pnlComments.Visible = objBlog.AllowComments
+                    pnlComments.Visible = (BlogSettings.CommentMode = Constants.CommentMode.Default AndAlso objBlog.AllowComments)
 
                     hlAuthorBio.NavigateUrl = DotNetNuke.Common.Globals.UserProfileURL(Entry.UserID)
                     imgAuthorLink.NavigateUrl = DotNetNuke.Common.Globals.UserProfileURL(Entry.UserID)
@@ -258,11 +258,11 @@ Partial Public Class ViewEntry
 
                     litEntry.Text = Server.HtmlDecode(Entry.Entry)
 
-                    pnlComments.Visible = (objBlog.AllowComments Or Entry.AllowComments)
+                    pnlComments.Visible = ((BlogSettings.CommentMode = Constants.CommentMode.Default AndAlso objBlog.AllowComments) AndAlso Entry.AllowComments)
                     If pnlComments.Visible Then
                         BindCommentsList()
                     End If
-                    pnlAddComment.Visible = (objBlog.AllowComments Or Entry.AllowComments)
+                    pnlAddComment.Visible = pnlComments.Visible
 
                     If ModuleContext.PortalSettings.UserId > 0 Then
                         litAddComment.Text = "<a href='#AddComment' id='linkAdd' class='dnnPrimaryAction'>" + Localization.GetString("AddComment", LocalResourceFile) + "</a>"

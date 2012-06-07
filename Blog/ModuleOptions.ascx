@@ -48,7 +48,6 @@
 					<asp:DropDownList ID="ddlCommentMode" runat="server">
 						<asp:ListItem Value="-1" resourcekey="None" />
 						<asp:ListItem Value="0" resourcekey="Default" />
-						<asp:ListItem Value="1" resourcekey="Disqus" />
 					</asp:DropDownList>
 				</div>
 				<div class="dnnFormItem">
@@ -56,7 +55,6 @@
 					<asp:DropDownList ID="ddlSocialSharingMode" runat="server">
 						<asp:ListItem Value="-1" resourcekey="None" />
 						<asp:ListItem Value="0" resourcekey="Default" />
-						<asp:ListItem Value="1" resourcekey="AddThis" />
 					</asp:DropDownList>
 				</div>
 				<div class="dnnFormItem" id="divAddThisId" style="display:none;">
