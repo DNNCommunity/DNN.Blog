@@ -32,12 +32,11 @@
 			<li>Added new social sharing option, big 4 only, same as it was done in Q&A.</li>
 			<li>Replaced custom tag cloud with Rad Tag Cloud (and now wired into core folksonomy).</li>
 			<li>21730, 20946 - Changed how blog post counts are calculated (for display in blog list).</li>
-			<li><strong>NEW</strong></li>
 			<li>22459 - Now showing comment link and count to unauthenticated users.</li>
 			<li>21252 - Cleaned up HTML and CSS in normal user views (changed from table layout to divs, removed unnecessary styling, moved archive out into its own file).</li>
 			<li>Replaced dnn tree view (for category selection) with Telerik Treeview.</li>
 			<li>Corrected index problems on category and tag tables (even though they will eventually be removed), to avoid maintenance problems.</li>
-			<li>20215 - Removed ShareBadge Pro and added option for AddThis (which allows complete customization), in addition to big 4 I already added.</li>
+			<li>20215 - Removed ShareBadge Pro</li>
 			<li>Added user image and profile link to blog description, added author profile section to entry view.</li>
 			<li>Corrected TimeZone problems and module is now based on user profile settings (not a per blog setting).</li>	
 			<li>19021, 20865 - Added support for "Ghost Writer" via a new module permission as well as "Blogger" permissions.</li>
