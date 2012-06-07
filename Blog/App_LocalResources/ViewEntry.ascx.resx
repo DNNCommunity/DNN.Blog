@@ -174,7 +174,7 @@
     <value>Your comment MUST be approved by the blog owner BEFORE it is displayed on the web site. Do you wish to save your comment now ?</value>
   </data>
   <data name="lblAuthor.Text" xml:space="preserve">
-    <value>Your name:</value>
+    <value>Author</value>
   </data>
   <data name="valCommentAuthor.ErrorMessage" xml:space="preserve">
     <value>Author is required</value>

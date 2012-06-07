@@ -95,8 +95,6 @@ Partial Public Class EditBlog
     Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             If Not Page.IsPostBack Then
-                'Localization.LoadCultureDropDownList(cboCulture, CultureDropDownTypes.NativeName, CType(Page, PageBase).PageCulture.Name)
-
                 fsChildBlogs.Visible = BlogSettings.AllowChildBlogs
                 dnnSitePanelChildBlogs.Visible = BlogSettings.AllowChildBlogs
 
@@ -109,54 +107,14 @@ Partial Public Class EditBlog
                 End If
 
                 If Not objBlog Is Nothing Then
-                    'Load data
                     txtTitle.Text = objBlog.Title
                     txtDescription.Text = objBlog.Description
                     chkPublic.Checked = objBlog.Public
-
-                    'Try
-                    '    ddTimeZone.Items.FindByValue(objBlog.TimeZone.Id).Selected = True
-                    'Catch ex As Exception
-                    'End Try
-
-                    If objBlog.AllowComments Then
-                        If objBlog.MustApproveComments Then
-                            rdoUsersComments.Items.FindByValue("RequireApproval").Selected = True
-                        Else
-                            rdoUsersComments.Items.FindByValue("Allow").Selected = True
-                        End If
-                    Else
-                        rdoUsersComments.Items.FindByValue("Disallow").Selected = True
-                    End If
-                    If objBlog.AllowAnonymous Then
-                        If objBlog.MustApproveAnonymous Then
-                            rdoAnonymousComments.Items.FindByValue("RequireApproval").Selected = True
-                        Else
-                            rdoAnonymousComments.Items.FindByValue("Allow").Selected = True
-                        End If
-                    Else
-                        rdoAnonymousComments.Items.FindByValue("Disallow").Selected = True
-                    End If
-                    If objBlog.AllowTrackbacks Then
-                        If objBlog.MustApproveTrackbacks Then
-                            rdoTrackbacks.Items.FindByValue("RequireApproval").Selected = True
-                        Else
-                            rdoTrackbacks.Items.FindByValue("Allow").Selected = True
-                        End If
-                    Else
-                        rdoTrackbacks.Items.FindByValue("Disallow").Selected = True
-                    End If
-                    chkEmailNotification.Checked = objBlog.EmailNotification
-                    chkAutoTrackbacks.Checked = objBlog.AutoTrackback
-                    chkCaptcha.Checked = objBlog.UseCaptcha
+                    rdoUserName.Items.FindByValue(objBlog.ShowFullName.ToString()).Selected = True
                     ddlAuthorMode.SelectedValue = objBlog.AuthorMode.ToString
 
+                    chkAllowComments.Checked = objBlog.AllowComments
                     chkSyndicate.Checked = objBlog.Syndicated
-                    If objBlog.ParentBlogID = -1 Then
-                        chkSyndicateIndependant.Visible = False
-                    Else
-                        chkSyndicateIndependant.Checked = objBlog.SyndicateIndependant
-                    End If
                     If objBlog.SyndicationEmail Is Nothing Then
                         txtSyndicationEmail.Text = ModuleContext.PortalSettings.UserInfo.Email
                     Else
@@ -165,7 +123,7 @@ Partial Public Class EditBlog
                     cmdDelete.Visible = True
                     cmdAddChildBlog.Enabled = BlogSettings.AllowChildBlogs
                     If Not rdoUserName.SelectedItem Is Nothing Then rdoUserName.SelectedItem.Selected = False
-                    rdoUserName.Items.FindByValue(objBlog.ShowFullName.ToString()).Selected = True
+
                     lstChildBlogs.Attributes.Add("onclick", "if (this.selectedIndex > -1) { " & cmdEditChildBlog.ClientID & ".disabled = false; " & cmdDeleteChildBlog.ClientID & ".disabled = false; }")
 
                     If m_oParentBlog Is Nothing Then
@@ -179,17 +137,12 @@ Partial Public Class EditBlog
                         dnnSitePanelChildBlogs.Visible = False
                     End If
 
-                    'BindDateOptions(objBlog.Culture, objBlog.DateFormat)
                     lblMetaWeblogUrl.Text = "http://" & Request.Url.Host & ControlPath & "blogpost.ashx?tabid=" & TabId
-
                 ElseIf Not m_oParentBlog Is Nothing Then
                     If Not rdoUserName.SelectedItem Is Nothing Then rdoUserName.SelectedItem.Selected = False
                     rdoUserName.Items.FindByValue(m_oParentBlog.ShowFullName.ToString()).Selected = True
-                    'BindDateOptions(m_oParentBlog.Culture, m_oParentBlog.DateFormat)
 
                     dnnSitePanelChildBlogs.Visible = False
-                    'Else
-                    '    BindDateOptions(System.Threading.Thread.CurrentThread.CurrentCulture.Name, "g")
                 End If
 
                 If Not Request.UrlReferrer Is Nothing Then
@@ -207,6 +160,12 @@ Partial Public Class EditBlog
         End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Protected Sub cmdDelete_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdDelete.Click
         Try
             If Not objBlog Is Nothing Then
@@ -214,11 +173,17 @@ Partial Public Class EditBlog
                 cntBlog.DeleteBlog(objBlog.BlogID, ModuleContext.PortalId)
             End If
             Response.Redirect(NavigateURL(), True)
-        Catch exc As Exception    'Module failed to load
+        Catch exc As Exception
             ProcessModuleLoadException(Me, exc)
         End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Protected Sub cmdUpdate_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdUpdate.Click
         If UpdateBlog() Then
             If Not m_oParentBlog Is Nothing Then
@@ -229,12 +194,24 @@ Partial Public Class EditBlog
         End If
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Protected Sub btnAddChildBlog_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdAddChildBlog.Click
         If UpdateBlog() Then
             Response.Redirect(EditUrl("ParentBlogID", objBlog.BlogID.ToString(), "Edit_Blog"))
         End If
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Protected Sub btnEditChildBlog_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdEditChildBlog.Click
         If Not lstChildBlogs.SelectedItem Is Nothing Then
             If UpdateBlog() Then
@@ -243,6 +220,12 @@ Partial Public Class EditBlog
         End If
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Protected Sub btnDeleteChildBlog_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdDeleteChildBlog.Click
         If Not lstChildBlogs.SelectedItem Is Nothing Then
             Dim cntBlog As New BlogController
@@ -252,6 +235,12 @@ Partial Public Class EditBlog
         End If
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Protected Sub cmdGenerateLinks_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdGenerateLinks.Click
         Utility.CreateAllEntryLinks(PortalId, objBlog.BlogID)
     End Sub
@@ -279,57 +268,12 @@ Partial Public Class EditBlog
                     .Description = txtDescription.Text
                     .Public = chkPublic.Checked
                     .ShowFullName = CType(rdoUserName.SelectedItem.Value, Boolean)
-                    .Syndicated = chkSyndicate.Checked
-                    .SyndicateIndependant = chkSyndicateIndependant.Checked
-                    .SyndicationEmail = txtSyndicationEmail.Text
-                    .EmailNotification = chkEmailNotification.Checked
-                    .AutoTrackback = chkAutoTrackbacks.Checked
-                    .UseCaptcha = chkCaptcha.Checked
                     .AuthorMode = Convert.ToInt32(ddlAuthorMode.SelectedItem.Value)
 
-                    Select Case rdoUsersComments.SelectedItem.Value
-                        Case "Allow"
-                            .AllowComments = True
-                            .MustApproveComments = False
-                        Case "RequireApproval"
-                            .AllowComments = True
-                            .MustApproveComments = True
-                        Case "Disallow"
-                            .AllowComments = False
-                            .MustApproveComments = True
-                        Case Else
-                            .AllowComments = True
-                            .MustApproveComments = True
-                    End Select
-                    Select Case rdoAnonymousComments.SelectedItem.Value
-                        Case "Allow"
-                            .AllowAnonymous = True
-                            .MustApproveAnonymous = False
-                        Case "RequireApproval"
-                            .AllowAnonymous = True
-                            .MustApproveAnonymous = True
-                        Case "Disallow"
-                            .AllowAnonymous = False
-                            .MustApproveAnonymous = True
-                        Case Else
-                            .AllowAnonymous = True
-                            .MustApproveAnonymous = True
-                    End Select
-                    Select Case rdoTrackbacks.SelectedItem.Value
-                        Case "Allow"
-                            .AllowTrackbacks = True
-                            .MustApproveTrackbacks = False
-                        Case "RequireApproval"
-                            .AllowTrackbacks = True
-                            .MustApproveTrackbacks = True
-                        Case "Disallow"
-                            .AllowTrackbacks = False
-                            .MustApproveTrackbacks = True
-                        Case Else
-                            .AllowTrackbacks = True
-                            .MustApproveTrackbacks = True
-                    End Select
-                    'DR-19/04/2009-BLG-9760
+                    .AllowComments = chkAllowComments.Checked
+                    .Syndicated = chkSyndicate.Checked
+                    .SyndicationEmail = txtSyndicationEmail.Text
+
                     Dim cntBlog As New BlogController
 
                     If Null.IsNull(objBlog.BlogID) Then
@@ -341,7 +285,7 @@ Partial Public Class EditBlog
                 End With
                 Return True
             End If
-        Catch exc As Exception    'Module failed to load
+        Catch exc As Exception
             ProcessModuleLoadException(Me, exc)
         End Try
         Return False

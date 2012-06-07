@@ -62,22 +62,14 @@ Namespace Components.Entities
         Public Property Description() As String
         Public Property [Public]() As Boolean
         Public Property AllowComments() As Boolean
-        Public Property AllowAnonymous() As Boolean
         Public Property LastEntry() As DateTime
         Public Property Created() As DateTime
         Public Property ShowFullName() As Boolean
         Public Property ChildBlogCount() As Integer = 0
         Public Property Syndicated() As Boolean
-        Public Property SyndicateIndependant() As Boolean
         Public Property SyndicationURL() As String
         Public Property SyndicationEmail() As String
-        Public Property EmailNotification() As Boolean
-        Public Property AllowTrackbacks() As Boolean
-        Public Property AutoTrackback() As Boolean
-        Public Property MustApproveComments() As Boolean
-        Public Property MustApproveAnonymous() As Boolean
-        Public Property MustApproveTrackbacks() As Boolean
-        Public Property UseCaptcha() As Boolean
+        'Public Property EmailNotification() As Boolean
         Public Property BlogPostCount() As Integer
 
         Public Property UserName() As String
@@ -161,28 +153,20 @@ Namespace Components.Entities
         ''' 	[pdonker]	11/07/2010  Created
         ''' </history>
         Public Sub Fill(ByVal dr As IDataReader) Implements IHydratable.Fill
-            AllowAnonymous = Convert.ToBoolean(Null.SetNull(dr.Item("AllowAnonymous"), AllowAnonymous))
             AllowComments = Convert.ToBoolean(Null.SetNull(dr.Item("AllowComments"), AllowComments))
-            AllowTrackbacks = Convert.ToBoolean(Null.SetNull(dr.Item("AllowTrackbacks"), AllowTrackbacks))
-            AutoTrackback = Convert.ToBoolean(Null.SetNull(dr.Item("AutoTrackback"), AutoTrackback))
             BlogID = Convert.ToInt32(Null.SetNull(dr.Item("BlogID"), BlogID))
             Created = Convert.ToDateTime(Null.SetNull(dr.Item("Created"), Created))
             Description = Convert.ToString(Null.SetNull(dr.Item("Description"), Description))
-            EmailNotification = Convert.ToBoolean(Null.SetNull(dr.Item("EmailNotification"), EmailNotification))
+            'EmailNotification = Convert.ToBoolean(Null.SetNull(dr.Item("EmailNotification"), EmailNotification))
             LastEntry = Convert.ToDateTime(Null.SetNull(dr.Item("LastEntry"), LastEntry))
-            MustApproveAnonymous = Convert.ToBoolean(Null.SetNull(dr.Item("MustApproveAnonymous"), MustApproveAnonymous))
-            MustApproveComments = Convert.ToBoolean(Null.SetNull(dr.Item("MustApproveComments"), MustApproveComments))
-            MustApproveTrackbacks = Convert.ToBoolean(Null.SetNull(dr.Item("MustApproveTrackbacks"), MustApproveTrackbacks))
             ParentBlogID = Convert.ToInt32(Null.SetNull(dr.Item("ParentBlogID"), ParentBlogID))
             PortalID = Convert.ToInt32(Null.SetNull(dr.Item("PortalID"), PortalID))
             [Public] = Convert.ToBoolean(Null.SetNull(dr.Item("Public"), [Public]))
             ShowFullName = Convert.ToBoolean(Null.SetNull(dr.Item("ShowFullName"), ShowFullName))
             Syndicated = Convert.ToBoolean(Null.SetNull(dr.Item("Syndicated"), Syndicated))
-            SyndicateIndependant = Convert.ToBoolean(Null.SetNull(dr.Item("SyndicateIndependant"), SyndicateIndependant))
             SyndicationEmail = Convert.ToString(Null.SetNull(dr.Item("SyndicationEmail"), SyndicationEmail))
             SyndicationURL = Convert.ToString(Null.SetNull(dr.Item("SyndicationURL"), SyndicationURL))
             Title = Convert.ToString(Null.SetNull(dr.Item("Title"), Title))
-            UseCaptcha = Convert.ToBoolean(Null.SetNull(dr.Item("UseCaptcha"), UseCaptcha))
             BlogPostCount = Convert.ToInt32(Null.SetNull(dr.Item("BlogPostCount"), BlogPostCount))
             UserID = Convert.ToInt32(Null.SetNull(dr.Item("UserID"), UserID))
             AuthorMode = Convert.ToInt32(Null.SetNull(dr.Item("AuthorMode"), AuthorMode))
@@ -218,30 +202,18 @@ Namespace Components.Entities
                 OutputFormat = strFormat
             End If
             Select Case strPropertyName.ToLower
-                Case "allowanonymous"
-                    Return PropertyAccess.Boolean2LocalizedYesNo(Me.AllowAnonymous, formatProvider)
                 Case "allowcomments"
                     Return PropertyAccess.Boolean2LocalizedYesNo(Me.AllowComments, formatProvider)
-                Case "allowtrackbacks"
-                    Return PropertyAccess.Boolean2LocalizedYesNo(Me.AllowTrackbacks, formatProvider)
-                Case "autotrackback"
-                    Return PropertyAccess.Boolean2LocalizedYesNo(Me.AutoTrackback, formatProvider)
                 Case "blogid"
                     Return (Me.BlogID.ToString(OutputFormat, formatProvider))
                 Case "created"
                     Return (Me.Created.ToString(OutputFormat, formatProvider))
                 Case "description"
                     Return PropertyAccess.FormatString(Me.Description, strFormat)
-                Case "emailnotification"
-                    Return PropertyAccess.Boolean2LocalizedYesNo(Me.EmailNotification, formatProvider)
+                    'Case "emailnotification"
+                    '    Return PropertyAccess.Boolean2LocalizedYesNo(Me.EmailNotification, formatProvider)
                 Case "lastentry"
                     Return (Me.LastEntry.ToString(OutputFormat, formatProvider))
-                Case "mustapproveanonymous"
-                    Return PropertyAccess.Boolean2LocalizedYesNo(Me.MustApproveAnonymous, formatProvider)
-                Case "mustapprovecomments"
-                    Return PropertyAccess.Boolean2LocalizedYesNo(Me.MustApproveComments, formatProvider)
-                Case "mustapprovetrackbacks"
-                    Return PropertyAccess.Boolean2LocalizedYesNo(Me.MustApproveTrackbacks, formatProvider)
                 Case "parentblogid"
                     Return (Me.ParentBlogID.ToString(OutputFormat, formatProvider))
                 Case "portalid"
@@ -252,16 +224,12 @@ Namespace Components.Entities
                     Return PropertyAccess.Boolean2LocalizedYesNo(Me.ShowFullName, formatProvider)
                 Case "syndicated"
                     Return PropertyAccess.Boolean2LocalizedYesNo(Me.Syndicated, formatProvider)
-                Case "syndicateindependant"
-                    Return PropertyAccess.Boolean2LocalizedYesNo(Me.SyndicateIndependant, formatProvider)
                 Case "syndicationemail"
                     Return PropertyAccess.FormatString(Me.SyndicationEmail, strFormat)
                 Case "syndicationurl"
                     Return PropertyAccess.FormatString(Me.SyndicationURL, strFormat)
                 Case "title"
                     Return PropertyAccess.FormatString(Me.Title, strFormat)
-                Case "usecaptcha"
-                    Return PropertyAccess.Boolean2LocalizedYesNo(Me.UseCaptcha, formatProvider)
                 Case "userid"
                     Return (Me.UserID.ToString(OutputFormat, formatProvider))
                 Case "authormode"
@@ -315,22 +283,15 @@ Namespace Components.Entities
         ''' </history>
         Public Sub ReadXml(ByVal reader As XmlReader) Implements IXmlSerializable.ReadXml
             Try
-
-                Boolean.TryParse(readElement(reader, "AllowAnonymous"), AllowAnonymous)
                 Boolean.TryParse(readElement(reader, "AllowComments"), AllowComments)
-                Boolean.TryParse(readElement(reader, "AllowTrackbacks"), AllowTrackbacks)
-                Boolean.TryParse(readElement(reader, "AutoTrackback"), AutoTrackback)
                 If Not DateTime.TryParse(readElement(reader, "Created"), Created) Then
                     Created = DateTime.MinValue
                 End If
                 Description = readElement(reader, "Description")
-                Boolean.TryParse(readElement(reader, "EmailNotification"), EmailNotification)
+                'Boolean.TryParse(readElement(reader, "EmailNotification"), EmailNotification)
                 If Not DateTime.TryParse(readElement(reader, "LastEntry"), LastEntry) Then
                     LastEntry = DateTime.MinValue
                 End If
-                Boolean.TryParse(readElement(reader, "MustApproveAnonymous"), MustApproveAnonymous)
-                Boolean.TryParse(readElement(reader, "MustApproveComments"), MustApproveComments)
-                Boolean.TryParse(readElement(reader, "MustApproveTrackbacks"), MustApproveTrackbacks)
                 If Not Int32.TryParse(readElement(reader, "ParentBlogID"), ParentBlogID) Then
                     ParentBlogID = Null.NullInteger
                 End If
@@ -340,11 +301,9 @@ Namespace Components.Entities
                 Boolean.TryParse(readElement(reader, "Public"), [Public])
                 Boolean.TryParse(readElement(reader, "ShowFullName"), ShowFullName)
                 Boolean.TryParse(readElement(reader, "Syndicated"), Syndicated)
-                Boolean.TryParse(readElement(reader, "SyndicateIndependant"), SyndicateIndependant)
                 SyndicationEmail = readElement(reader, "SyndicationEmail")
                 SyndicationURL = readElement(reader, "SyndicationURL")
                 Title = readElement(reader, "Title")
-                Boolean.TryParse(readElement(reader, "UseCaptcha"), UseCaptcha)
                 If Not Int32.TryParse(readElement(reader, "UserID"), UserID) Then
                     UserID = Null.NullInteger
                 End If
@@ -371,27 +330,19 @@ Namespace Components.Entities
         Public Sub WriteXml(ByVal writer As XmlWriter) Implements IXmlSerializable.WriteXml
             writer.WriteStartElement("Blog")
             writer.WriteElementString("BlogID", BlogID.ToString())
-            writer.WriteElementString("AllowAnonymous", AllowAnonymous.ToString())
             writer.WriteElementString("AllowComments", AllowComments.ToString())
-            writer.WriteElementString("AllowTrackbacks", AllowTrackbacks.ToString())
-            writer.WriteElementString("AutoTrackback", AutoTrackback.ToString())
             writer.WriteElementString("Created", Created.ToString())
             writer.WriteElementString("Description", Description)
-            writer.WriteElementString("EmailNotification", EmailNotification.ToString())
+            'writer.WriteElementString("EmailNotification", EmailNotification.ToString())
             writer.WriteElementString("LastEntry", LastEntry.ToString())
-            writer.WriteElementString("MustApproveAnonymous", MustApproveAnonymous.ToString())
-            writer.WriteElementString("MustApproveComments", MustApproveComments.ToString())
-            writer.WriteElementString("MustApproveTrackbacks", MustApproveTrackbacks.ToString())
             writer.WriteElementString("ParentBlogID", ParentBlogID.ToString())
             writer.WriteElementString("PortalID", PortalID.ToString())
             writer.WriteElementString("Public", [Public].ToString())
             writer.WriteElementString("ShowFullName", ShowFullName.ToString())
             writer.WriteElementString("Syndicated", Syndicated.ToString())
-            writer.WriteElementString("SyndicateIndependant", SyndicateIndependant.ToString())
             writer.WriteElementString("SyndicationEmail", SyndicationEmail)
             writer.WriteElementString("SyndicationURL", SyndicationURL)
             writer.WriteElementString("Title", Title)
-            writer.WriteElementString("UseCaptcha", UseCaptcha.ToString())
             writer.WriteElementString("UserID", UserID.ToString())
             writer.WriteElementString("AuthorMode", AuthorMode.ToString())
             writer.WriteEndElement()

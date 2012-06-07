@@ -41,14 +41,14 @@
 			</div> 
 		</div>  
 		<div class="dnnRight">
-			<asp:HyperLink ID="lnkTrackBack" ResourceKey="lnkTrackBack" CssClass="BlogTrackback" runat="server" />
 			<asp:LinkButton ID="cmdPrint" runat="server" CausesValidation="False" CssClass="BlogPrint" resourcekey="cmdPrint" />
 			<asp:HyperLink ID="lnkEditEntry" ResourceKey="msgEditEntry" CssClass="BlogEditLink" runat="server" />
 		</div>
 	</div>
 	<div class="vbAuthor dnnClear">
-		<div class="dnnLeft">
-			<asp:HyperLink id="imgAuthorLink" runat="server"><dnnweb:DnnBinaryImage ID="dbiUser" runat="server" Width="40" /></asp:HyperLink>
+		<div class="vbaImage dnnLeft">
+			<div><asp:HyperLink id="imgAuthorLink" runat="server"><dnnweb:DnnBinaryImage ID="dbiUser" runat="server" Width="50" /></asp:HyperLink></div>
+			<div><cite><%= Localization.GetString("lblAuthor", LocalResourceFile)%></cite></div>
 		</div>
 		<div class="dnnLeft">
 			<asp:HyperLink ID="hlAuthorBio" runat="server" />

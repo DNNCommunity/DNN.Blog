@@ -78,13 +78,13 @@ Namespace Components.Controllers
                 Dim strCacheKey As String = Common.Constants.ModuleCacheKeyPrefix + Common.Constants.PortalBlogsCacheKey & CStr(objBlog.PortalID)
                 DataCache.RemoveCache(strCacheKey)
 
-                Return CType(DataProvider.Instance().AddBlog(.PortalID, .ParentBlogID, .UserID, .Title, .Description, .Public, .AllowComments, .AllowAnonymous, .ShowFullName, .Syndicated, .SyndicateIndependant, .SyndicationURL, .SyndicationEmail, .EmailNotification, .AllowTrackbacks, .AutoTrackback, .MustApproveComments, .MustApproveAnonymous, .MustApproveTrackbacks, .UseCaptcha, .AuthorMode), Integer)
+                Return CType(DataProvider.Instance().AddBlog(.PortalID, .ParentBlogID, .UserID, .Title, .Description, .Public, .AllowComments, False, .ShowFullName, .Syndicated, True, .SyndicationURL, .SyndicationEmail, True, False, False, True, True, True, False, .AuthorMode), Integer)
             End With
         End Function
 
         Public Sub UpdateBlog(ByVal objBlog As BlogInfo)
             With objBlog
-                DataProvider.Instance().UpdateBlog(.PortalID, .BlogID, .ParentBlogID, .UserID, .Title, .Description, .Public, .AllowComments, .AllowAnonymous, .ShowFullName, .Syndicated, .SyndicateIndependant, .SyndicationURL, .SyndicationEmail, .EmailNotification, .AllowTrackbacks, .AutoTrackback, .MustApproveComments, .MustApproveAnonymous, .MustApproveTrackbacks, .UseCaptcha, .AuthorMode)
+                DataProvider.Instance().UpdateBlog(.PortalID, .BlogID, .ParentBlogID, .UserID, .Title, .Description, .Public, .AllowComments, False, .ShowFullName, .Syndicated, True, .SyndicationURL, .SyndicationEmail, True, False, False, True, True, True, False, .AuthorMode)
             End With
 
             Dim strCacheKey As String = Common.Constants.ModuleCacheKeyPrefix + Common.Constants.PortalBlogsCacheKey & CStr(objBlog.PortalID)

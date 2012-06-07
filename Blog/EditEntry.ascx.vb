@@ -143,8 +143,8 @@ Partial Class EditEntry
                 pnlChildBlogs.Visible = BlogSettings.AllowChildBlogs AndAlso colBlogs.Count > 0
 
                 ' change in 3.1.23 not display the trackback url field if auto trackback is enabled
-                Me.lblTrackbackUrl.Visible = Not m_oParentBlog.AutoTrackback
-                Me.txtTrackBackUrl.Visible = Not m_oParentBlog.AutoTrackback
+                'Me.lblTrackbackUrl.Visible = Not m_oParentBlog.AutoTrackback
+                'Me.txtTrackBackUrl.Visible = Not m_oParentBlog.AutoTrackback
                 ' end change in 3.1.23
 
                 If BlogSettings.AllowSummaryHtml Then
@@ -493,13 +493,6 @@ Partial Class EditEntry
                     .Terms.AddRange(terms)
 
                     m_oEntryController.UpdateEntry(m_oEntry, Me.TabId, PortalId)
-
-                    If txtTrackBackUrl.Text <> "" Then
-                        PingBackService.SendTrackBack(txtTrackBackUrl.Text, m_oEntry, m_oBlog.Title)
-                    End If
-                    If m_oBlog.AutoTrackback Then
-                        Utility.AutoTrackback(m_oEntry, m_oBlog.Title)
-                    End If
 
                     If (publish) Then
                         Dim cntIntegration As New Components.Integration.Journal()

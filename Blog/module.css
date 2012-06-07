@@ -1,8 +1,9 @@
 /* typical blog content (head, body, links, etc.) seen in multiple views */
 .blogSeparator{padding:8px;}
 .BlogCategories label{font-weight: bold;}
-.vbAuthor{padding:8px;}
+.vbAuthor{padding:8px;  -webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;background:#efefef;border:1px #ccc solid;}
 	.vbAuthor img{padding-right: 6px;}
+	.vbaImage{text-align:center;}
 .vbHeader{padding-bottom:20px;}
 .vbBody{padding-bottom:12px;padding-bottom:12px;}
 .vbHeader img{padding:2px;}

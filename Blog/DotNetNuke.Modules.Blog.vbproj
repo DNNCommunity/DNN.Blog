@@ -59,10 +59,10 @@
     </Reference>
     <Reference Include="DotNetNuke.Web, Version=6.2.0.1610, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-  </Reference>
+    </Reference>
     <Reference Include="DotNetNuke.Web.Client, Version=6.1.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-  </Reference>
+    </Reference>
     <Reference Include="DotNetNuke.WebControls, Version=2.4.0.598, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\DotNetNuke.WebControls.dll</HintPath>
@@ -91,7 +91,7 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Telerik.Web.UI, Version=2012.1.411.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-  </Reference>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Import Include="Microsoft.VisualBasic" />
@@ -376,9 +376,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_LocalResources\ViewCategoriesSettings.ascx.resx" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="App_LocalResources\RosterSettings.ascx.resx" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />

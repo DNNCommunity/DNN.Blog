@@ -106,19 +106,19 @@ Partial Class Trackback
             Dim objBlogs As New PingBackService
             Dim tmpTitle As String = objBlogs.CheckForURL(url, m_oEntry.PermaLink, title)
             If tmpTitle <> "0" Then
-              Dim oComment As New CommentInfo
-              oComment.EntryID = entryId
-              oComment.Title = title
-              oComment.UserID = -2
-              oComment.Approved = Not m_oBlog.MustApproveTrackbacks
+                            'Dim oComment As New CommentInfo
+                            'oComment.EntryID = entryId
+                            'oComment.Title = title
+                            'oComment.UserID = -2
+                            'oComment.Approved = Not m_oBlog.MustApproveTrackbacks
 
-              oComment.Comment = Utility.removeAllHtmltags(excerpt) & CType(IIf(excerpt.Length > 0, "<br>", String.Empty), String) & "<a href=""" & url & """ target=""_blank""># " & blog_name & "</a>"
-              If m_oBlog.AllowTrackbacks Then
-                m_oCommentController.AddComment(oComment)
-                If m_oBlog.EmailNotification Then
-                  sendMail(m_oBlog, m_oEntry, oComment)
-                End If
-              End If
+                            'oComment.Comment = Utility.removeAllHtmltags(excerpt) & CType(IIf(excerpt.Length > 0, "<br>", String.Empty), String) & "<a href=""" & url & """ target=""_blank""># " & blog_name & "</a>"
+                            'If m_oBlog.AllowTrackbacks Then
+                            '  m_oCommentController.AddComment(oComment)
+                            '  If m_oBlog.EmailNotification Then
+                            '    sendMail(m_oBlog, m_oEntry, oComment)
+                            '  End If
+                            'End If
               TrackbackResponse(0, "")
             Else
               TrackbackResponse(1, "Sorry couldn't find a " & _

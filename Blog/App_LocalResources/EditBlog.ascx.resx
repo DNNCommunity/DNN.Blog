@@ -202,9 +202,6 @@
   <data name="msgEditBlog.Text" xml:space="preserve">
     <value>Edit Blog</value>
   </data>
-  <data name="lblEmailNotification.Help" xml:space="preserve">
-    <value>If checked,  you will receive email notifications after comments and trackbacks are posted.</value>
-  </data>
   <data name="msgCreateNewChildBlog.Text" xml:space="preserve">
     <value>Create new Child Blog</value>
   </data>
@@ -224,7 +221,7 @@
     <value>Require CAPTCHA</value>
   </data>
   <data name="lblCommentOptions.Text" xml:space="preserve">
-    <value>Comments, Trackback &amp; Syndication</value>
+    <value>Comments &amp; Syndication</value>
   </data>
   <data name="lblTrackbackOptions.Help" xml:space="preserve">
     <value>These options control the Trackback related settings.</value>
@@ -277,9 +274,6 @@
   <data name="lblCaptcha.Help" xml:space="preserve">
     <value>If checked, site visitors will have to enter a CAPTCHA when posting a comment.</value>
   </data>
-  <data name="lblEmailNotification.Text" xml:space="preserve">
-    <value>Enable Email Notifications</value>
-  </data>
   <data name="lblMetaWebBlog.Help" xml:space="preserve">
     <value>Use the following URL to connect to your blog using a MetaWeblog enabled client such as Windows Live Writer or Word 2007.  Change the tabid parameter as needed if this blog appears on a different tab.</value>
   </data>
@@ -327,5 +321,11 @@
   </data>
   <data name="PersonalMode.Text" xml:space="preserve">
     <value>Personal</value>
+  </data>
+  <data name="lblAllowComments.Help" xml:space="preserve">
+    <value>If checked, registered users will be permitted to post comments (how this is done is controlled at the module level).</value>
+  </data>
+  <data name="lblAllowComments.Text" xml:space="preserve">
+    <value>Allow Comments</value>
   </data>
 </root>

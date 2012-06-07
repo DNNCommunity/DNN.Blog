@@ -254,7 +254,7 @@ Partial Public Class ViewBlog
                 End If ' search display or not
 
                 If Not m_oBlog Is Nothing Then
-                    If m_oBlog.Syndicated And (m_oBlog.ParentBlogID = -1 Or m_oBlog.SyndicateIndependant) Then
+                    If m_oBlog.Syndicated Then
                         lnkRSS.NavigateUrl = Links.RSSByBlog(ModuleContext, m_oBlog.BlogID)
                         lnkRSS.Visible = True
                     End If
@@ -270,7 +270,7 @@ Partial Public Class ViewBlog
                         objLink.Attributes("type") = "application/rss+xml"
                         objLink.Attributes("href") = Links.RSSAggregated(ModuleContext)
                         ph.Controls.Add(objLink)
-                    ElseIf Not m_oBlog Is Nothing AndAlso m_oBlog.Syndicated AndAlso (m_oBlog.ParentBlogID = -1 OrElse m_oBlog.SyndicateIndependant) Then
+                    ElseIf Not m_oBlog Is Nothing AndAlso m_oBlog.Syndicated Then
                         Dim objLink As New HtmlGenericControl("LINK")
                         objLink.Attributes("title") = "RSS"
                         objLink.Attributes("rel") = "alternate"

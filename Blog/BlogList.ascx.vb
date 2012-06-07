@@ -104,7 +104,7 @@ Partial Class BlogList
                     lnkBlogRSS.Visible = True
                 End If
             Else
-                If CType(e.Item.DataItem, BlogInfo).Syndicated And CType(e.Item.DataItem, BlogInfo).SyndicateIndependant Then
+                If CType(e.Item.DataItem, BlogInfo).Syndicated Then
                     lnkBlogRSS.NavigateUrl = NavigateURL(Me.TabId, "", "rssid=" & CType(e.Item.DataItem, BlogInfo).BlogID.ToString())
                     lnkBlogRSS.Visible = True
                 End If
@@ -140,7 +140,7 @@ Partial Class BlogList
         lnkChildIcon.NavigateUrl = NavigateURL(Me.TabId, "", "&BlogID=" & CType(e.Item.DataItem, BlogInfo).BlogID.ToString() & "&ParentBlogID=" & CType(e.Item.DataItem, BlogInfo).ParentBlogID.ToString())
         lnkChildBlog.NavigateUrl = NavigateURL(Me.TabId, "", "&BlogID=" & CType(e.Item.DataItem, BlogInfo).BlogID.ToString() & "&ParentBlogID=" & CType(e.Item.DataItem, BlogInfo).ParentBlogID.ToString())
 
-        If CType(e.Item.DataItem, BlogInfo).Syndicated And CType(e.Item.DataItem, BlogInfo).SyndicateIndependant Then
+        If CType(e.Item.DataItem, BlogInfo).Syndicated Then
             lnkChildBlogRSS.NavigateUrl = NavigateURL(Me.TabId, "", "rssid=" & CType(e.Item.DataItem, BlogInfo).BlogID.ToString())
             lnkChildBlogRSS.Visible = True
         End If

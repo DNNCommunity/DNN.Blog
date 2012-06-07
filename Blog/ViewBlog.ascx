@@ -7,20 +7,20 @@
 <div class="dnnClear dnnForm dnnViewBlog">
 	<asp:Panel ID="pnlBlogInfo" Visible="false" runat="server">
 		<div class="vbAuthor dnnClear">
-			<div class="dnnLeft">
-				<asp:HyperLink id="imgAuthorLink" runat="server"><dnnweb:DnnBinaryImage ID="dbiUser" runat="server" Width="40" /></asp:HyperLink>
-			</div>
-			<div class="dnnLeft">
-				<asp:HyperLink ID="hlAuthor" runat="server" />
-				<div class="dnnLeft">
-					<asp:Literal ID="litBlogDescription" runat="server" />
-				</div>
-			</div>
-			<div class="dnnRight">
-				<asp:HyperLink ID="lnkRSS" runat="server" Visible="False" Target="_blank">
-					<asp:Image ID="Image1" runat="server" ImageUrl="~/desktopmodules/Blog/Images/feed-icon-24x24.gif" AlternateText="RssIcon" />
-				</asp:HyperLink>
-			</div>
+		    <div class="vbaImage dnnLeft">
+			    <div><asp:HyperLink id="imgAuthorLink" runat="server"><dnnweb:DnnBinaryImage ID="dbiUser" runat="server" Width="50" /></asp:HyperLink></div>
+		    </div>
+		    <div class="dnnLeft">
+			    <asp:HyperLink ID="hlAuthor" runat="server" />
+			    <div class="dnnLeft">
+				    <asp:Literal ID="litBlogDescription" runat="server" />
+			    </div>
+		    </div>
+	    </div>
+		<div class="dnnRight">
+			<asp:HyperLink ID="lnkRSS" runat="server" Visible="False" Target="_blank">
+				<asp:Image ID="Image1" runat="server" ImageUrl="~/desktopmodules/Blog/Images/feed-icon-24x24.gif" AlternateText="RssIcon" />
+			</asp:HyperLink>
 		</div>
 	</asp:Panel>
 	<asp:Panel ID="pnlBlogRss" runat="server" Visible="False">

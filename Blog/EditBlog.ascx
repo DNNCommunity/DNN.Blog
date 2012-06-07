@@ -47,38 +47,10 @@
         </fieldset>
         <h2 id="dnnSitePanel-CommentOptions" class="dnnFormSectionHead"><a href="" class=""><%=LocalizeString("lblCommentOptions")%></a></h2>
         <fieldset>
-            <div class="dnnFormItem">
-                <dnn:Label ID="lblUsersComments" runat="server" controlname="rdoUsersComments" />
-                <asp:RadioButtonList ID="rdoUsersComments" runat="server" CssClass="dnnFormRadioButtons">
-                    <asp:ListItem Value="Allow" resourceKey="rdoComments_Allow" Selected="True" />
-                    <asp:ListItem Value="RequireApproval" resourceKey="rdoComments_RequireApproval" />
-                    <asp:ListItem Value="Disallow" resourceKey="rdoComments_Disallow" />
-                </asp:RadioButtonList>
-            </div>
-            <div class="dnnFormItem">
-                <dnn:Label ID="lblAnonymousComments" runat="server" controlname="rdoAnonymousComments" suffix=":" />
-                <asp:RadioButtonList ID="rdoAnonymousComments" runat="server" CssClass="dnnFormRadioButtons">
-                    <asp:ListItem Value="Allow" resourceKey="rdoComments_Allow" Selected="True" />
-                    <asp:ListItem Value="RequireApproval" resourceKey="rdoComments_RequireApproval" />
-                    <asp:ListItem Value="Disallow" resourceKey="rdoComments_Disallow" />
-                </asp:RadioButtonList>
-            </div>
-            <div class="dnnFormItem">
-                <dnn:Label ID="lblTrackbacks" runat="server" controlname="rdoTrackbacks" suffix=":" />
-                <asp:RadioButtonList ID="rdoTrackbacks" runat="server" CssClass="dnnFormRadioButtons">
-                    <asp:ListItem Value="Allow" resourceKey="rdoComments_Allow" Selected="True" />
-                    <asp:ListItem Value="RequireApproval" resourceKey="rdoComments_RequireApproval" />
-                    <asp:ListItem Value="Disallow" resourceKey="rdoComments_Disallow" />
-                </asp:RadioButtonList>
-            </div>
-            <div class="dnnFormItem">
-                <dnn:Label ID="lblCaptcha" runat="server" controlname="chkCaptcha" suffix=":" />
-                <asp:CheckBox ID="chkCaptcha" runat="server" />
-            </div>
-            <div class="dnnFormItem">
-                <dnn:Label ID="lblAutoTrackbacks" runat="server" controlname="chkAutoTrackbacks" suffix=":" />
-                <asp:CheckBox ID="chkAutoTrackbacks" runat="server" />
-            </div>
+            <asp:Panel ID="pnlComments" runat="server" CssClass="dnnFormItem">
+                <dnn:Label ID="lblAllowComments" runat="server" controlname="chkAllowComments" suffix=":" />
+                <asp:CheckBox ID="chkAllowComments" runat="server" />        
+            </asp:Panel>
             <div class="dnnFormItem">
                 <dnn:Label ID="lblEmailNotification" runat="server" controlname="chkEmailNotification" suffix=":" />
                 <asp:CheckBox ID="chkEmailNotification" runat="server" />           
@@ -86,10 +58,6 @@
             <div class="dnnFormItem">
                 <dnn:Label ID="lblSyndicate" runat="server" controlname="chkSyndicate" suffix=":" />
                 <asp:CheckBox ID="chkSyndicate" runat="server" />
-            </div>
-            <div class="dnnFormItem">
-                <dnn:Label ID="lblSyndicateIndependant" runat="server" controlname="chkSyndicateIndependant" suffix=":" />
-                <asp:CheckBox ID="chkSyndicateIndependant" runat="server" />
             </div>
             <div class="dnnFormItem">
                 <dnn:Label ID="lblSyndicationEmail" runat="server" controlname="txtSyndicationEmail" suffix=":" />

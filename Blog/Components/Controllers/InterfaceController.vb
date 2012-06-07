@@ -76,20 +76,17 @@ Namespace Components.Controllers
                 m_Blogs = m_BlogController.GetPortalBlogs(m_PortalID, True)
                 For Each blog As BlogInfo In m_Blogs
                     strXML += "<blog>"
-                    strXML += "<allowAnonymous>" & XmlUtils.XMLEncode(blog.AllowAnonymous.ToString) & "</allowAnonymous>"
                     strXML += "<allowComments>" & XmlUtils.XMLEncode(blog.AllowComments.ToString) & "</allowComments>"
                     strXML += "<blogID>" & XmlUtils.XMLEncode(blog.BlogID.ToString) & "</blogID>"
                     strXML += "<childBlogCount>" & XmlUtils.XMLEncode(blog.ChildBlogCount.ToString) & "</childBlogCount>"
                     strXML += "<created>" & XmlUtils.XMLEncode(blog.Created.ToString) & "</created>"
                     strXML += "<description>" & XmlUtils.XMLEncode(blog.Description) & "</description>"
-                    strXML += "<emailNotification>" & XmlUtils.XMLEncode(blog.EmailNotification.ToString) & "</emailNotification>"
                     strXML += "<lastEntry>" & XmlUtils.XMLEncode(blog.LastEntry.ToString) & "</lastEntry>"
                     strXML += "<parentBlogID>" & XmlUtils.XMLEncode(blog.ParentBlogID.ToString) & "</parentBlogID>"
                     strXML += "<portalID>" & XmlUtils.XMLEncode(blog.PortalID.ToString) & "</portalID>"
                     strXML += "<public>" & XmlUtils.XMLEncode(blog.Public.ToString) & "</public>"
                     strXML += "<showFullName>" & XmlUtils.XMLEncode(blog.ShowFullName.ToString) & "</showFullName>"
                     strXML += "<syndicated>" & XmlUtils.XMLEncode(blog.Syndicated.ToString) & "</syndicated>"
-                    strXML += "<syndicateIndependant>" & XmlUtils.XMLEncode(blog.SyndicateIndependant.ToString) & "</syndicateIndependant>"
                     strXML += "<syndicationEmail>" & XmlUtils.XMLEncode(blog.SyndicationEmail) & "</syndicationEmail>"
                     strXML += "<syndicationURL>" & XmlUtils.XMLEncode(blog.SyndicationURL) & "</syndicationURL>"
                     strXML += "<title>" & XmlUtils.XMLEncode(blog.Title) & "</title>"
@@ -124,13 +121,8 @@ Namespace Components.Controllers
                                     strXML += "<addedDate>" & XmlUtils.XMLEncode(comment.AddedDate.ToString) & "</addedDate>"
                                     strXML += "<comment>" & XmlUtils.XMLEncode(comment.Comment) & "</comment>"
                                     strXML += "<commentID>" & XmlUtils.XMLEncode(comment.CommentID.ToString) & "</commentID>"
-                                    strXML += "<email>" & XmlUtils.XMLEncode(comment.Email) & "</email>"
                                     strXML += "<entryID>" & XmlUtils.XMLEncode(comment.EntryID.ToString) & "</entryID>"
-                                    strXML += "<title>" & XmlUtils.XMLEncode(comment.Title) & "</title>"
-                                    strXML += "<userFullName>" & XmlUtils.XMLEncode(comment.UserFullName) & "</userFullName>"
                                     strXML += "<userID>" & XmlUtils.XMLEncode(comment.UserID.ToString) & "</userID>"
-                                    strXML += "<userName>" & XmlUtils.XMLEncode(comment.UserName) & "</userName>"
-                                    strXML += "<website>" & XmlUtils.XMLEncode(comment.Website) & "</website>"
                                     strXML += "</blogComment>"
                                 Next
                                 strXML += "</comments>"
@@ -170,20 +162,17 @@ Namespace Components.Controllers
                     If Not IsNothing(xmlBlogs) Then
                         For Each xmlblog In xmlBlogs
                             Dim m_Blog As New BlogInfo
-                            m_Blog.AllowAnonymous = Boolean.Parse(xmlblog.Item("allowAnonymous").InnerText)
                             m_Blog.AllowComments = Boolean.Parse(xmlblog.Item("allowComments").InnerText)
                             m_Blog.BlogID = Integer.Parse(xmlblog.Item("blogID").InnerText)
                             m_Blog.ChildBlogCount = Integer.Parse(xmlblog.Item("childBlogCount").InnerText)
                             m_Blog.Created = Date.Parse(xmlblog.Item("created").InnerText)
                             m_Blog.Description = xmlblog.Item("description").InnerText
-                            m_Blog.EmailNotification = Boolean.Parse(xmlblog.Item("emailNotification").InnerText)
                             m_Blog.LastEntry = Date.Parse(xmlblog.Item("lastEntry").InnerText)
                             m_Blog.ParentBlogID = Integer.Parse(xmlblog.Item("parentBlogID").InnerText)
                             m_Blog.PortalID = Integer.Parse(xmlblog.Item("portalID").InnerText)
                             m_Blog.Public = Boolean.Parse(xmlblog.Item("public").InnerText)
                             m_Blog.ShowFullName = Boolean.Parse(xmlblog.Item("showFullName").InnerText)
                             m_Blog.Syndicated = Boolean.Parse(xmlblog.Item("syndicated").InnerText)
-                            m_Blog.SyndicateIndependant = Boolean.Parse(xmlblog.Item("syndicateIndependant").InnerText)
                             m_Blog.SyndicationEmail = xmlblog.Item("syndicationEmail").InnerText
                             m_Blog.SyndicationURL = xmlblog.Item("syndicationURL").InnerText
                             m_Blog.Title = xmlblog.Item("title").InnerText
@@ -225,13 +214,8 @@ Namespace Components.Controllers
                                             m_Comment.AddedDate = Date.Parse(xmlComment.Item("addedDate").InnerText)
                                             m_Comment.Comment = xmlComment.Item("comment").InnerText
                                             m_Comment.CommentID = Integer.Parse(xmlComment.Item("commentID").InnerText)
-                                            m_Comment.Email = xmlComment.Item("email").InnerText
                                             m_Comment.EntryID = Integer.Parse(xmlComment.Item("entryID").InnerText)
-                                            m_Comment.Title = xmlComment.Item("title").InnerText
-                                            m_Comment.UserFullName = xmlComment.Item("userFullName").InnerText
                                             m_Comment.UserID = Integer.Parse(xmlComment.Item("userID").InnerText)
-                                            m_Comment.UserName = xmlComment.Item("userName").InnerText
-                                            m_Comment.Website = xmlComment.Item("website").InnerText
                                             Me.addComments(m_Entry, m_Comment)
                                         Next
                                     End If
