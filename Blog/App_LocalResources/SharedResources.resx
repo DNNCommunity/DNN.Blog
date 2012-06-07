@@ -180,6 +180,12 @@
   <data name="ApprovePostNotifyBody.Text" xml:space="preserve">
     <value>A new blog entry is pending approval: </value>
   </data>
+  <data name="CommentAddedNotify.Text" xml:space="preserve">
+    <value>A new comment has been added for: </value>
+  </data>
+  <data name="CommentPendingNotify.Text" xml:space="preserve">
+    <value>A new comment is pending approval for: </value>
+  </data>
   <data name="DeleteComment.Text" xml:space="preserve">
     <value>Delete</value>
   </data>

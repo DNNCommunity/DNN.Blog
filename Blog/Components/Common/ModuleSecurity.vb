@@ -55,6 +55,14 @@ Namespace Components.Common
             Return HasEdit Or (HasGhost AndAlso BlogAuthorMode = Constants.AuthorMode.GhostMode) Or (HasBlogger AndAlso IsOwner) Or (HasBlogger AndAlso BlogAuthorMode = Constants.AuthorMode.BloggerMode)
         End Function
 
+        Public Function CanAddApprovedComment(ByVal IsOwner As Boolean, ByVal BlogAuthorMode As Integer, ByVal AutoApprove As Boolean) As Boolean
+            If HasEdit Or HasBlogger Then
+                Return True
+            Else
+                Return AutoApprove
+            End If
+        End Function
+
         <Obsolete("This method is deprecated, use specific functions instead (CanCreateBlog, CanEditBlog, CanAddEntry, etc.)")> _
         Public Shared Function HasBlogPermission(ByVal UserID As Integer, ByVal BlogUserID As Integer, ByVal ModuleID As Integer) As Boolean
             Dim PortalSettings As DotNetNuke.Entities.Portals.PortalSettings = CType(HttpContext.Current.Items("PortalSettings"), DotNetNuke.Entities.Portals.PortalSettings)

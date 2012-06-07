@@ -384,18 +384,15 @@ Partial Public Class ViewEntry
                     objComment.EntryID = Entry.EntryID
                     objComment.UserID = Me.UserId
                 End If
-                Dim objSec As New PortalSecurity
 
+                Dim objSec As New PortalSecurity
                 objComment.Comment = objSec.InputFilter(txtComment.Text, PortalSecurity.FilterFlag.NoProfanity)
 
                 Dim objSecurity As ModuleSecurity = New ModuleSecurity(ModuleContext.ModuleId, ModuleContext.TabId)
-
                 Dim isOwner As Boolean
                 isOwner = objBlog.UserID = ModuleContext.PortalSettings.UserId
+                objComment.Approved = objSecurity.CanAddApprovedComment(isOwner, objBlog.AuthorMode, False)
 
-                If objSecurity.CanAddEntry(isOwner, objBlog.AuthorMode) Then
-                    objComment.Approved = True
-                End If
                 If objComment.CommentID > -1 Then
                     cntComment.UpdateComment(objComment)
 
@@ -406,31 +403,24 @@ Partial Public Class ViewEntry
                 Else
                     objComment.CommentID = cntComment.AddComment(objComment)
 
-
                     If objComment.Approved Then
                         Dim cntJournal As New Components.Integration.Journal
                         cntJournal.AddCommentToJournal(Entry, objComment, ModuleContext.PortalId, ModuleContext.TabId, ModuleContext.PortalSettings.UserId, Entry.PermaLink)
 
-                        ' Notification of the comment being added (unless the blog owner is adding it)
                         If (objComment.UserID <> objBlog.UserID) Then
-                                Dim cntNotification As New Notifications
+                            Dim cntNotification As New Components.Integration.Notifications
+                            Dim summary As String = Localization.GetString("CommentAddedNotify", Localization.SharedResourceFile)
+                            summary += "<a href='" + Entry.PermaLink + "'>" + Entry.Title + "</a>"
 
-
+                            cntNotification.CommentAdded(objComment, Entry, objBlog, ModuleContext.PortalId, summary)
                         End If
                     Else
-                        ' Notification of comment requiring approval
-                        Dim cntNotification As New Notifications
+                        Dim cntNotification As New Components.Integration.Notifications
+                        Dim summary As String = Localization.GetString("CommentPendingNotify", Localization.SharedResourceFile)
+                        summary += "<a href='" + Entry.PermaLink + "'>" + Entry.Title + "</a>"
 
+                        cntNotification.CommentPendingApproval(objComment, objBlog, Entry, ModuleContext.PortalId, summary)
                     End If
-
-                    If objComment.Approved Then
-                        Dim cntJournal As New Components.Integration.Journal
-                        cntJournal.AddCommentToJournal(Entry, objComment, ModuleContext.PortalId, ModuleContext.TabId, ModuleContext.PortalSettings.UserId, Entry.PermaLink)
-                    End If
-
-                    'If objBlog.EmailNotification = True Then
-                    '    sendMail(objBlog, objComment)
-                    'End If
                 End If
                 BindCommentsList()
             End If
