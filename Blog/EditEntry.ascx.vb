@@ -34,6 +34,7 @@ Imports System.Linq
 Imports DotNetNuke.Entities.Content.Taxonomy
 Imports DotNetNuke.Modules.Blog.Components.File
 Imports DotNetNuke.Modules.Blog.Components.Entities
+Imports DotNetNuke.Services.Localization
 Imports Telerik.Web.UI
 
 Partial Class EditEntry
@@ -505,7 +506,10 @@ Partial Class EditEntry
                     Else
                         If (m_oBlog.UserID <> ModuleContext.PortalSettings.UserId) AndAlso (m_oBlog.AuthorMode = Constants.AuthorMode.GhostMode) Then
                             Dim cntNotifications As New Components.Integration.Notifications
-                            cntNotifications.EntryPendingApproval(m_oBlog, m_oEntry, ModuleContext.PortalId, "A blog entry is pending approval")
+                            Dim summary As String = Localization.GetString("ApprovePostNotifyBody", SharedResourceFile)
+                            summary += "<a href='" + m_oEntry.PermaLink + "'>" + m_oEntry.Title + "</a>"
+
+                            cntNotifications.EntryPendingApproval(m_oBlog, m_oEntry, ModuleContext.PortalId, summary)
                         End If
                     End If
                 End With
