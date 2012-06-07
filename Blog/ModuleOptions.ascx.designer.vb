@@ -626,11 +626,11 @@ Partial Public Class ModuleOptions
     Protected WithEvents hlCancelOptions As Global.System.Web.UI.WebControls.HyperLink
 
     '''<summary>
-    '''cmdUpdate control.
+    '''cmdUpgrade control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cmdUpdate As Global.System.Web.UI.WebControls.LinkButton
+    Protected WithEvents cmdUpgrade As Global.System.Web.UI.WebControls.LinkButton
 End Class

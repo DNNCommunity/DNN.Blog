@@ -389,4 +389,7 @@ About Identicon, Wavicon, and MonsterID: Gravatar will be displayed for users wh
   <data name="lblCommentMode.Text" xml:space="preserve">
     <value>Comment Mode</value>
   </data>
+  <data name="cmdUpgrade.Text" xml:space="preserve">
+    <value>Create Content Items</value>
+  </data>
 </root>

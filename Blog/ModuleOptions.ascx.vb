@@ -28,6 +28,8 @@ Imports DotNetNuke.Services.Localization.Localization
 Imports DotNetNuke.Framework
 Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.Modules.Blog.Components.Integration
+Imports DotNetNuke.Modules.Blog.Components.Entities
+Imports System.Linq
 
 Partial Public Class ModuleOptions
     Inherits BlogModuleBase
@@ -66,6 +68,12 @@ Partial Public Class ModuleOptions
                 chkEnablePlusOne.Checked = BlogSettings.EnablePlusOne
                 chkEnableTwitter.Checked = BlogSettings.EnableTwitter
                 chkEnableLinkedIN.Checked = BlogSettings.EnableLinkedIn
+
+                Dim cntBlog As New BlogController
+                Dim colEntries As List(Of EntryInfo) = cntBlog.GetAllPublishedPortalBlogEntries(ModuleContext.PortalId)
+                Dim colNoContentItems As List(Of EntryInfo) = colEntries.Where(Function(t) t.ContentItemId < 1).ToList()
+                cmdUpgrade.Visible = colNoContentItems.Count > 0
+
 
                 ' Additional files to load
                 Dim fileList As String = ";" & BlogSettings.IncludeFiles
@@ -170,7 +178,7 @@ Partial Public Class ModuleOptions
         lblChildBlogsStatus.Text = String.Format(GetString("lblChildBlogsStatus", LocalResourceFile), CInt(totalBlogs - parentBlogs))
     End Sub
 
-    Protected Sub cmdUpdate_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
+    Protected Sub cmdUpdate_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdUpgrade.Click
         Dim _CustomUpgrade As New Components.Upgrade.ModuleUpgrade
         '_CustomUpgrade.MigrateTaxonomyFolksonomy()
         _CustomUpgrade.MigrateContentItems(ModuleContext.PortalId)

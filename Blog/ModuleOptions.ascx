@@ -176,7 +176,7 @@
 	<ul class="dnnActions">
 		<li><asp:LinkButton ID="cmdUpdateOptions" runat="server" CausesValidation="False" resourceKey="cmdUpdate" CssClass="dnnPrimaryAction" /></li>
 		<li><asp:HyperLink ID="hlCancelOptions" runat="server" resourceKey="cmdCancel" CssClass="dnnSecondaryAction" /></li>
-		<li><asp:LinkButton ID="cmdUpdate" runat="server" CausesValidation="False" CssClass="dnnSecondaryAction">Upgrade</asp:LinkButton></li>
+		<li><asp:LinkButton ID="cmdUpgrade" runat="server" CausesValidation="False" CssClass="dnnSecondaryAction" resourcekey="cmdUpgrade" /></li>
 	</ul>
 </div>
 <script language="javascript" type="text/javascript">
