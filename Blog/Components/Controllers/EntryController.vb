@@ -37,7 +37,7 @@ Namespace Components.Controllers
   End Function
 
   Public Function GetEntriesByBlog(ByVal BlogID As Integer, ByVal BlogDate As Date, ByVal PageSize As Integer, ByVal CurrentPage As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As List(Of EntryInfo)
-   Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().GetEntriesByBlog(BlogID, BlogDate, PageSize, CurrentPage, ShowNonPublic, ShowNonPublished))
+            Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().GetEntriesByBlog(BlogID, BlogDate, PageSize, CurrentPage - 1, ShowNonPublic, ShowNonPublished))
   End Function
 
   Public Function GetAllEntriesByBlog(ByVal BlogID As Integer) As List(Of EntryInfo)
@@ -45,7 +45,7 @@ Namespace Components.Controllers
   End Function
 
   Public Function GetEntriesByPortal(ByVal PortalID As Integer, ByVal BlogDate As Date, ByVal BlogDateType As String, ByVal PageSize As Integer, ByVal CurrentPage As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As List(Of EntryInfo)
-   Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().GetEntriesByPortal(PortalID, BlogDate, BlogDateType, PageSize, CurrentPage, ShowNonPublic, ShowNonPublished))
+            Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().GetEntriesByPortal(PortalID, BlogDate, BlogDateType, PageSize, CurrentPage - 1, ShowNonPublic, ShowNonPublished))
   End Function
 
   Public Function GetAllEntriesByPortal(ByVal PortalID As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As List(Of EntryInfo)
@@ -53,7 +53,7 @@ Namespace Components.Controllers
   End Function
 
   Public Function GetEntriesByTerm(ByVal portalId As Integer, ByVal BlogDate As Date, ByVal termId As Integer, ByVal pageSize As Integer, ByVal currentPage As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As List(Of EntryInfo)
-   Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().GetEntriesByTerm(portalId, BlogDate, termId, pageSize, currentPage, ShowNonPublic, ShowNonPublished))
+            Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().GetEntriesByTerm(portalId, BlogDate, termId, pageSize, currentPage - 1, ShowNonPublic, ShowNonPublished))
   End Function
 
   Public Function AddEntry(ByVal objEntry As EntryInfo, ByVal tabId As Integer) As EntryInfo
@@ -109,7 +109,7 @@ Namespace Components.Controllers
 
   Private Shared Sub CompleteEntryDelete(ByVal contentItemId As Integer, ByVal blogId As Integer, ByVal entryId As Integer, ByVal portalId As Integer)
    Content.DeleteContentItem(contentItemId)
-   'TODO: Remove from Journal?
+
    Dim cntJournal As New Integration.Journal()
    cntJournal.RemoveBlogEntryFromJournal(blogId, entryId, portalId)
   End Sub
@@ -124,5 +124,6 @@ Namespace Components.Controllers
 
 #End Region
 
- End Class
+    End Class
+
 End Namespace

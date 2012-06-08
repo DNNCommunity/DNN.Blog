@@ -27,7 +27,7 @@ Namespace Components.Services
     Public Class BlogRouteMapper
         Implements IServiceRouteMapper
         Public Sub RegisterRoutes(mapRouteManager As IMapRoute) Implements IServiceRouteMapper.RegisterRoutes
-            mapRouteManager.MapRoute("Blog", "{controller}.ashx/{action}", New With {Key .Controller = "NotificationService", Key .Action = "Index"}, New String() {"DotNetNuke.Modules.Blog"})
+            mapRouteManager.MapRoute("Blog", "{controller}.ashx/{action}", New String() {"DotNetNuke.Modules.Blog"})
         End Sub
     End Class
 

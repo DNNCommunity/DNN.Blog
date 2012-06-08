@@ -365,24 +365,6 @@ Partial Public Class EditEntry
     Protected WithEvents txtCopyright As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
-    '''lblTrackbackUrl control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblTrackbackUrl As Global.DotNetNuke.UI.UserControls.LabelControl
-
-    '''<summary>
-    '''txtTrackBackUrl control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents txtTrackBackUrl As Global.System.Web.UI.WebControls.TextBox
-
-    '''<summary>
     '''cmdPublish control.
     '''</summary>
     '''<remarks>

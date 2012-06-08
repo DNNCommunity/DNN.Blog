@@ -26,8 +26,10 @@ Imports DotNetNuke.Web.Services
 Imports System.Web.Mvc
 Imports DotNetNuke.Services.Social.Notifications
 Imports DotNetNuke.Modules.Blog.Components.Entities
+Imports DotNetNuke.UI.Utilities
 
 Namespace Components.Services
+
     Public Class NotificationServiceController
         Inherits DnnController
 
@@ -52,7 +54,7 @@ Namespace Components.Services
             End If
 
             If objBlog.AuthorMode = Constants.AuthorMode.PersonalMode Then
-                ' this should never happen
+                ' this should never happen (only if they changed modes)
                 Return Json(New With {.Result = "error"})
             ElseIf objBlog.AuthorMode = Constants.AuthorMode.GhostMode Then
                 Dim isOwner As Boolean = objBlog.UserID = UserInfo.UserID
@@ -62,7 +64,6 @@ Namespace Components.Services
                     Return Json(New With {.Result = "error"})
                 End If
 
-                ' approve the blog post
                 Dim cntEntry As New EntryController
                 Dim objEntry As EntryInfo = cntEntry.GetEntry(EntryId, PortalSettings.PortalId)
 
@@ -72,6 +73,21 @@ Namespace Components.Services
 
                 objEntry.Published = True
                 cntEntry.UpdateEntry(objEntry, objEntry.TabID, PortalSettings.PortalId)
+
+                Dim strCacheKey As String = Constants.ModuleCacheKeyPrefix + Constants.PortalBlogsCacheKey & CStr(objBlog.PortalID)
+                DataCache.RemoveCache(strCacheKey)
+
+                strCacheKey = Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + "1"
+                DataCache.RemoveCache(strCacheKey)
+
+                strCacheKey = Constants.ModuleCacheKeyPrefix + Constants.ContentItemTermsCacheKey + objEntry.ContentItemId.ToString() + Constants.VocabularySuffixCacheKey + "1"
+                DataCache.RemoveCache(strCacheKey)
+
+                'strCacheKey = Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + VocabularyId.ToString()
+                'DataCache.RemoveCache(strCacheKey)
+
+                'strCacheKey = Constants.ModuleCacheKeyPrefix + Constants.ContentItemTermsCacheKey + objEntry.ContentItemId.ToString() + Constants.VocabularySuffixCacheKey + VocabularyId.ToString()
+                'DataCache.RemoveCache(strCacheKey)
             Else
                 ' blogger mode
                 Dim isOwner As Boolean = objBlog.UserID = UserInfo.UserID
@@ -85,9 +101,23 @@ Namespace Components.Services
                 Dim objSecurity As New ModuleSecurity(objEntry.ModuleID, objEntry.TabID)
 
                 If objSecurity.CanAddEntry(isOwner, Constants.AuthorMode.BloggerMode) Then
-                    ' approve the blog post
                     objEntry.Published = True
                     cntEntry.UpdateEntry(objEntry, objEntry.TabID, PortalSettings.PortalId)
+
+                    Dim strCacheKey As String = Constants.ModuleCacheKeyPrefix + Constants.PortalBlogsCacheKey & CStr(objBlog.PortalID)
+                    DataCache.RemoveCache(strCacheKey)
+
+                    strCacheKey = Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + "1"
+                    DataCache.RemoveCache(strCacheKey)
+
+                    strCacheKey = Constants.ModuleCacheKeyPrefix + Constants.ContentItemTermsCacheKey + objEntry.ContentItemId.ToString() + Constants.VocabularySuffixCacheKey + "1"
+                    DataCache.RemoveCache(strCacheKey)
+
+                    'strCacheKey = Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + VocabularyId.ToString()
+                    'DataCache.RemoveCache(strCacheKey)
+
+                    'strCacheKey = Constants.ModuleCacheKeyPrefix + Constants.ContentItemTermsCacheKey + objEntry.ContentItemId.ToString() + Constants.VocabularySuffixCacheKey + VocabularyId.ToString()
+                    'DataCache.RemoveCache(strCacheKey)
                 Else
                     Return Json(New With {.Result = "error"})
                 End If
@@ -109,7 +139,7 @@ Namespace Components.Services
             End If
 
             If objBlog.AuthorMode = Constants.AuthorMode.PersonalMode Then
-                ' this should never happen
+                ' this should never happen (only if they changed modes)
                 Return Json(New With {.Result = "error"})
             ElseIf objBlog.AuthorMode = Constants.AuthorMode.GhostMode Then
                 Dim isOwner As Boolean = objBlog.UserID = UserInfo.UserID
@@ -119,7 +149,6 @@ Namespace Components.Services
                     Return Json(New With {.Result = "error"})
                 End If
 
-                ' delete the blog post
                 Dim cntEntry As New EntryController
                 Dim objEntry As EntryInfo = cntEntry.GetEntry(EntryId, PortalSettings.PortalId)
 
@@ -128,6 +157,21 @@ Namespace Components.Services
                 End If
 
                 cntEntry.DeleteEntry(EntryId, objEntry.ContentItemId, objBlog.BlogID, PortalSettings.PortalId)
+
+                Dim strCacheKey As String = Constants.ModuleCacheKeyPrefix + Constants.PortalBlogsCacheKey & CStr(objBlog.PortalID)
+                DataCache.RemoveCache(strCacheKey)
+
+                strCacheKey = Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + "1"
+                DataCache.RemoveCache(strCacheKey)
+
+                strCacheKey = Constants.ModuleCacheKeyPrefix + Constants.ContentItemTermsCacheKey + objEntry.ContentItemId.ToString() + Constants.VocabularySuffixCacheKey + "1"
+                DataCache.RemoveCache(strCacheKey)
+
+                'strCacheKey = Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + VocabularyId.ToString()
+                'DataCache.RemoveCache(strCacheKey)
+
+                'strCacheKey = Constants.ModuleCacheKeyPrefix + Constants.ContentItemTermsCacheKey + objEntry.ContentItemId.ToString() + Constants.VocabularySuffixCacheKey + VocabularyId.ToString()
+                'DataCache.RemoveCache(strCacheKey)
             Else
                 ' blogger mode
                 Dim isOwner As Boolean = objBlog.UserID = UserInfo.UserID
@@ -141,8 +185,10 @@ Namespace Components.Services
                 Dim objSecurity As New ModuleSecurity(objEntry.ModuleID, objEntry.TabID)
 
                 If objSecurity.CanAddEntry(isOwner, Constants.AuthorMode.BloggerMode) Then
-                    ' delete the blog post
                     cntEntry.DeleteEntry(EntryId, objEntry.ContentItemId, objBlog.BlogID, PortalSettings.PortalId)
+
+                    Dim strCacheKey As String = Constants.ModuleCacheKeyPrefix + Constants.PortalBlogsCacheKey & CStr(objBlog.PortalID)
+                    DataCache.RemoveCache(strCacheKey)
                 Else
                     Return Json(New With {.Result = "error"})
                 End If
@@ -187,7 +233,7 @@ Namespace Components.Services
 
             objComment.Approved = True
             cntComment.UpdateComment(objComment)
-            
+
             NotificationsController.Instance().DeleteNotification(notificationId)
             Return Json(New With {.Result = "success"})
         End Function

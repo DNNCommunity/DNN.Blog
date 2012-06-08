@@ -127,7 +127,7 @@ Namespace Components.Entities
             SyndicationEmail = Convert.ToString(Null.SetNull(dr.Item("SyndicationEmail"), SyndicationEmail))
             CreatedUserId = Convert.ToInt32(Null.SetNull(dr.Item("CreatedUserId"), CreatedUserId))
             ViewCount = Convert.ToInt32(Null.SetNull(dr.Item("ViewCount"), ViewCount))
-            TotalRecords = Convert.ToInt32(Null.SetNull(dr.Item("CommentCount"), CommentCount))
+            TotalRecords = Convert.ToInt32(Null.SetNull(dr.Item("TotalRecords"), CommentCount))
         End Sub
 
         ''' <summary>

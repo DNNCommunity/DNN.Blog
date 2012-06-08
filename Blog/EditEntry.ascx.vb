@@ -245,13 +245,10 @@ Partial Class EditEntry
 
     Protected Sub cmdPublish_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdPublish.Click
         updateEntry(True)
-        Response.Redirect(NavigateURL(Me.TabId, "", "BlogID=" & m_oBlog.BlogID.ToString()), True)
     End Sub
 
     Protected Sub cmdDraft_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdDraft.Click
-        'DR-04/16/2009-BLG-9657
         updateEntry(False)
-        Me.Response.Redirect(EditUrl("EntryID", m_oEntry.EntryID.ToString(), "Edit_Entry"), False)
     End Sub
 
     Protected Sub cmdDelete_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdDelete.Click
@@ -411,6 +408,11 @@ Partial Class EditEntry
 
 #Region "Private Methods"
 
+    ''' <summary>
+    ''' This method will update a blog entry and fire off any necessary notifications and add journal entries depending on publishing status.
+    ''' </summary>
+    ''' <param name="publish"></param>
+    ''' <remarks></remarks>
     Private Sub updateEntry(ByVal publish As Boolean)
         Try
             If Page.IsValid = True Then
@@ -423,16 +425,16 @@ Partial Class EditEntry
                 Dim firstPublish As Boolean = CBool((Not m_oEntry.Published) And publish)
 
                 With m_oEntry
-                    'bind text values to object
                     .BlogID = m_oBlog.BlogID
                     .Title = txtTitle.Text
-                    'DR-04/16/2009-BLG-9658
+
                     Dim descriptionText As String = ""
                     If BlogSettings.AllowSummaryHtml Then
                         descriptionText = Trim(txtDescription.Text)
                     Else
                         descriptionText = (New DotNetNuke.Security.PortalSecurity).InputFilter(Trim(txtDescriptionText.Text), Security.PortalSecurity.FilterFlag.NoMarkup)
                     End If
+
                     If (descriptionText.Length = 0) OrElse (descriptionText = "&lt;p&gt;&amp;#160;&lt;/p&gt;") Then
                         .Description = Nothing
                     Else
@@ -440,7 +442,6 @@ Partial Class EditEntry
                     End If
 
                     .Entry = teBlogEntry.Text
-                    'DR-04/16/2009-BLG-9657
                     .Published = publish
                     .AllowComments = chkAllowComments.Checked
                     .DisplayCopyright = chkDisplayCopyright.Checked
@@ -503,18 +504,32 @@ Partial Class EditEntry
                         End Select
 
                         cntIntegration.AddBlogEntryToJournal(m_oEntry, ModuleContext.PortalId, ModuleContext.TabId, journalUserId, journalUrl)
+
+                        Dim cntNotifications As New Components.Integration.Notifications
+                        cntNotifications.RemoveEntryPendingNotification(m_oBlog.BlogID, m_oEntry.EntryID)
+
+                        Dim strCacheKey As String = Constants.ModuleCacheKeyPrefix + Constants.PortalBlogsCacheKey & CStr(PortalId)
+                        DataCache.RemoveCache(strCacheKey)
+
+                        strCacheKey = Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + VocabularyId.ToString()
+                        DataCache.RemoveCache(strCacheKey)
+
+                        strCacheKey = Constants.ModuleCacheKeyPrefix + Constants.ContentItemTermsCacheKey + m_oEntry.ContentItemId.ToString() + Constants.VocabularySuffixCacheKey + VocabularyId.ToString()
+                        DataCache.RemoveCache(strCacheKey)
                     Else
                         If (m_oBlog.UserID <> ModuleContext.PortalSettings.UserId) AndAlso (m_oBlog.AuthorMode = Constants.AuthorMode.GhostMode) Then
                             Dim cntNotifications As New Components.Integration.Notifications
-                            Dim summary As String = Localization.GetString("ApprovePostNotifyBody", SharedResourceFile)
-                            summary += "<a href='" + m_oEntry.PermaLink + "'>" + m_oEntry.Title + "</a>"
+                            Dim title As String = Localization.GetString("ApprovePostNotifyBody", Constants.SharedResourceFileName)
+                            Dim summary As String = "<a target='_blank' href='" + m_oEntry.PermaLink + "'>" + m_oEntry.Title + "</a>"
 
-                            cntNotifications.EntryPendingApproval(m_oBlog, m_oEntry, ModuleContext.PortalId, summary)
+                            cntNotifications.EntryPendingApproval(m_oBlog, m_oEntry, ModuleContext.PortalId, summary, title)
                         End If
                     End If
+
+                    Response.Redirect(m_oEntry.PermaLink, False)
                 End With
             End If
-        Catch exc As Exception    'Module failed to load
+        Catch exc As Exception
             ProcessModuleLoadException(Me, exc)
         End Try
     End Sub

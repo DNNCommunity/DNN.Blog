@@ -141,16 +141,6 @@ Partial Public Class ViewBlog
                             list = New SearchController().SearchByKeywordByBlog(m_oBlog.BlogID, m_sSearchString, DotNetNuke.Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString()))
                         End If
                     End If
-                    lstSearchResults.Visible = True
-                    lstBlogView.Visible = False
-
-                    lstSearchResults.DataSource = list
-                    lstSearchResults.DataBind()
-
-                    ' TODO: Page Meta
-
-                    ' if no Entries are shown, show the info Entry
-                    HasValue = (lstSearchResults.Items.Count > 0)
                 Else
                     Dim pageTitle As String = Me.BasePage.Title
                     Dim keyWords As String = Me.BasePage.KeyWords
@@ -162,14 +152,14 @@ Partial Public Class ViewBlog
                             If m_oBlog Is Nothing Then
                                 ' most recent approved blog list (default view), no category/tag specified
 
-                                'BLG-4154
-                                'Antonio Chagoury 9/1/2007
                                 list = objEntries.GetEntriesByPortal(Me.PortalId, m_dBlogDate, m_dBlogDateType, BlogSettings.RecentEntriesMax, CurrentPage, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
 
                                 pnlBlogInfo.Visible = False
                                 If Not lnkRecentRss Is Nothing Then
                                     lnkRecentRss.NavigateUrl = NavigateURL(Me.TabId, "", "rssid=0")
                                 End If
+
+                                ' No paging or meta updates for this view.
                             Else
                                 ' Specific blog view
                                 pnlBlogInfo.Visible = True
@@ -185,7 +175,6 @@ Partial Public Class ViewBlog
                                 imgAuthorLink.NavigateUrl = DotNetNuke.Common.Globals.UserProfileURL(m_oBlog.UserID)
 
                                 Dim objSecurity As ModuleSecurity = New ModuleSecurity(ModuleContext.ModuleId, ModuleContext.TabId)
-
                                 Dim isOwner As Boolean
                                 isOwner = m_oBlog.UserID = ModuleContext.PortalSettings.UserId
 
@@ -196,11 +185,9 @@ Partial Public Class ViewBlog
                                 nextPage = Links.ViewEntriesByBlog(ModuleContext, m_oBlog.BlogID, CurrentPage + 1)
                                 pageUrl = Links.ViewEntriesByBlog(ModuleContext, m_oBlog.BlogID, CurrentPage)
 
-                                ' TODO: Page Meta
                                 pageTitle = m_oBlog.Title
                                 pageDescription = m_oBlog.Description
                                 pageAuthor = m_oBlog.UserFullName
-
                             End If
                         Else
                             list = objEntries.GetEntriesByTerm(Me.PortalId, m_dBlogDate, Tag, BlogSettings.RecentEntriesMax, CurrentPage, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
@@ -213,9 +200,9 @@ Partial Public Class ViewBlog
                             nextPage = Links.ViewEntriesByTag(ModuleContext, Tag, CurrentPage + 1)
                             pageUrl = Links.ViewEntriesByTag(ModuleContext, Tag, CurrentPage)
                             ' TODO: Page Meta
-
                         End If
                     Else
+                        ' category specific search
                         list = objEntries.GetEntriesByTerm(Me.PortalId, m_dBlogDate, Category, BlogSettings.RecentEntriesMax, CurrentPage, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
                         pnlBlogInfo.Visible = False
                         If Not lnkRecentRss Is Nothing Then
@@ -226,7 +213,6 @@ Partial Public Class ViewBlog
                         nextPage = Links.ViewEntriesByCategory(ModuleContext, Category, CurrentPage + 1)
                         pageUrl = Links.ViewEntriesByCategory(ModuleContext, Category, CurrentPage)
                         ' TODO: Page Meta
-
                     End If
 
                     lstBlogView.DataSource = list
@@ -513,89 +499,6 @@ Partial Public Class ViewBlog
                 Response.Redirect(EntryInfo.PermaLink & "#Comments")
             Case "User"
         End Select
-    End Sub
-
-    Protected Sub lstSearchResults_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataListCommandEventArgs) Handles lstSearchResults.ItemCommand
-        Select Case e.CommandName
-            Case "Entry"
-                Dim EntryID As Integer = Int32.Parse(CType(e.CommandArgument, String))
-                ' DW - 04/22/2008 - Added to allow the use of the new BlogNavigateURL method
-                Dim EntryController As New EntryController
-                Dim EntryInfo As EntryInfo = EntryController.GetEntry(EntryID, PortalId)
-                ' DW - 11/12/2008 - Replaced with Permalink
-                Response.Redirect(EntryInfo.PermaLink)
-            Case "Blog"
-                Dim BlogID As Integer = Int32.Parse(CType(e.CommandArgument, String))
-                Response.Redirect(NavigateURL(Me.TabId, "", "BlogID=" & BlogID))
-            Case "User"
-
-        End Select
-    End Sub
-
-    Protected Sub lstSearchResults_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataListItemEventArgs) Handles lstSearchResults.ItemDataBound
-        Dim lblEntryDate As System.Web.UI.WebControls.Label = CType(e.Item.FindControl("lblEntryDate"), System.Web.UI.WebControls.Label)
-        Dim lblEntryUserName As System.Web.UI.WebControls.Label = CType(e.Item.FindControl("lblEntryUserName"), System.Web.UI.WebControls.Label)
-        Dim lnkParentBlog As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkParentBlogSearch"), System.Web.UI.WebControls.HyperLink)
-        Dim imgBlogParentSeparator As System.Web.UI.WebControls.Image = CType(e.Item.FindControl("imgBlogParentSeparatorSearch"), System.Web.UI.WebControls.Image)
-        Dim lnkChildBlog As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkChildBlogSearch"), System.Web.UI.WebControls.HyperLink)
-        Dim lnkEntryTitle As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkEntryTitle"), System.Web.UI.WebControls.HyperLink)
-        Dim lblInfoEntrytemSummary As Label = CType(e.Item.FindControl("lblItemSummary"), Label)
-
-        Dim oBlog As BlogInfo
-
-        If m_oBlog Is Nothing Then
-            oBlog = m_oBlogController.GetBlog(CType(e.Item.DataItem, SearchResult).BlogID)
-        Else
-            If m_oBlog.BlogID <> CType(e.Item.DataItem, SearchResult).BlogID Then
-                oBlog = m_oBlogController.GetBlog(CType(e.Item.DataItem, SearchResult).BlogID)
-            Else
-                oBlog = m_oBlog
-            End If
-        End If
-
-        ' Link The Entry
-        Dim oSearchResult As SearchResult = CType(e.Item.DataItem, SearchResult)
-        ' DW - 11/12/2008 - Replaced with Permalink
-        lnkEntryTitle.NavigateUrl = oSearchResult.PermaLink
-
-        ' Display the proper UserName
-        If CType(e.Item.DataItem, SearchResult).UserName.Length > 0 Then
-            If oBlog.ShowFullName Then lblEntryUserName.Text = CType(e.Item.DataItem, SearchResult).UserFullName
-            lblEntryUserName.Visible = True
-        End If
-
-        Dim n As DateTime = Utility.AdjustedDate(CType(e.Item.DataItem, SearchResult).AddedDate, UITimeZone)
-        Dim publishDate As DateTime = n
-        Dim timeOffset As TimeSpan = UITimeZone.BaseUtcOffset
-        publishDate = publishDate.Add(timeOffset)
-        lblEntryDate.Text = publishDate.ToString("f")
-
-        'Setup blog path
-        If oBlog.ParentBlogID = -1 Then
-            If Not IsNothing(imgBlogParentSeparator) Then
-                imgBlogParentSeparator.Visible = False
-            End If
-            If Not IsNothing(lnkChildBlog) Then
-                lnkChildBlog.Visible = False
-            End If
-            If Not IsNothing(lnkParentBlog) Then
-                lnkParentBlog.Text = oBlog.Title
-            End If
-            If Not IsNothing(lnkParentBlog) Then
-                lnkParentBlog.NavigateUrl = NavigateURL(Me.TabId, "", "&BlogID=" & oBlog.BlogID)
-            End If
-        Else
-            Dim oParentBlog As BlogInfo = m_oBlogController.GetBlog(oBlog.ParentBlogID)
-            lnkParentBlog.Text = oParentBlog.Title
-            lnkParentBlog.NavigateUrl = NavigateURL(Me.TabId, "", "&BlogID=" & oParentBlog.BlogID.ToString())
-            lnkChildBlog.Text = oBlog.Title
-            lnkChildBlog.NavigateUrl = NavigateURL(Me.TabId, "", "&BlogID=" & oBlog.BlogID.ToString() & "&ParentBlogID=" & oParentBlog.BlogID.ToString())
-            imgBlogParentSeparator.Visible = True
-            lnkChildBlog.Visible = True
-            oParentBlog = Nothing
-        End If
-        oBlog = Nothing
-
     End Sub
 
 #End Region

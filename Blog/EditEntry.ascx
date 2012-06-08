@@ -110,10 +110,6 @@
 			<dnn:Label ID="lblCopyright" runat="server" controlname="txtCopyright" suffix=":" />
 			<asp:TextBox ID="txtCopyright" runat="server" />
 		</asp:Panel>
-		<div class="dnnFormItem">
-			<dnn:Label ID="lblTrackbackUrl" runat="server" controlname="txtTrackBackUrl" suffix=":" />
-			<asp:TextBox ID="txtTrackBackUrl" runat="server" />
-		</div>
 	</fieldset>
 	<ul class="dnnActions">
 		<li><asp:LinkButton ID="cmdPublish" runat="server" CssClass="dnnPrimaryAction" resourcekey="cmdPublish" /></li>

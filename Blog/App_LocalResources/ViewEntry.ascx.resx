@@ -149,9 +149,6 @@
   <data name="lblLocation.Text" xml:space="preserve">
     <value>Location: </value>
   </data>
-  <data name="valCommentTitle.ErrorMessage" xml:space="preserve">
-    <value>Title is required</value>
-  </data>
   <data name="msgMailBody.Text" xml:space="preserve">
     <value>&lt;p&gt;The following comment has been added in the blog [BLOG]:&lt;/p&gt;&lt;p&gt;[TITLE]&lt;/p&gt;&lt;p&gt;[COMMENT]&lt;/p&gt;&lt;p&gt;By [USER], on [DATE].&lt;/p&gt;&lt;p&gt;&lt;a href="[URL]"&gt;Click to visit&lt;/a&gt;.&lt;/p&gt;</value>
   </data>
@@ -176,9 +173,6 @@
   <data name="lblAuthor.Text" xml:space="preserve">
     <value>Author</value>
   </data>
-  <data name="valCommentAuthor.ErrorMessage" xml:space="preserve">
-    <value>Author is required</value>
-  </data>
   <data name="lblCaptcha.Text" xml:space="preserve">
     <value>Security Code</value>
   </data>
@@ -202,9 +196,6 @@
   </data>
   <data name="lnkRss.Text" xml:space="preserve">
     <value>The RSS syndication link for this blog</value>
-  </data>
-  <data name="valCommentEmail.ErrorMessage" xml:space="preserve">
-    <value>Email is required</value>
   </data>
   <data name="lblEmail.Text" xml:space="preserve">
     <value>Your email:</value>
@@ -253,5 +244,8 @@
   </data>
   <data name="cmdApprove.Text" xml:space="preserve">
     <value>Approve</value>
+  </data>
+  <data name="CommentPendingApproval.Text" xml:space="preserve">
+    <value>Thanks, your comment has been received and is pending approval.</value>
   </data>
 </root>

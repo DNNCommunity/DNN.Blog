@@ -197,7 +197,7 @@
     <Compile Include="Components\Integration\Notifications.vb" />
     <Compile Include="Components\Integration\Terms.vb" />
     <Compile Include="Components\Services\BlogRouteMapper.vb" />
-    <Compile Include="Components\Services\NotificationService.vb" />
+    <Compile Include="Components\Services\NotificationServiceController.vb" />
     <Compile Include="Components\Settings\ArchiveViewSettings.vb" />
     <Compile Include="Components\Settings\BlogSettings.vb" />
     <Compile Include="Components\Business\TemplateManager.vb" />

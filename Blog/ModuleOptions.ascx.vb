@@ -62,18 +62,19 @@ Partial Public Class ModuleOptions
                 chkUseWLWExcerpt.Checked = BlogSettings.UseWLWExcerpt
                 ddlCatVocabRoot.SelectedValue = BlogSettings.VocabularyId.ToString()
                 ddlCommentMode.SelectedValue = BlogSettings.CommentMode.ToString()
-                ddlSocialSharingMode.SelectedValue = BlogSettings.SocialSharingMode
+                ddlSocialSharingMode.SelectedValue = BlogSettings.SocialSharingMode.ToString()
                 txtAddThisId.Text = BlogSettings.AddThisId
                 txtFacebookAppId.Text = BlogSettings.FacebookAppId
                 chkEnablePlusOne.Checked = BlogSettings.EnablePlusOne
                 chkEnableTwitter.Checked = BlogSettings.EnableTwitter
                 chkEnableLinkedIN.Checked = BlogSettings.EnableLinkedIn
 
-                Dim cntBlog As New BlogController
-                Dim colEntries As List(Of EntryInfo) = cntBlog.GetAllPublishedPortalBlogEntries(ModuleContext.PortalId)
-                Dim colNoContentItems As List(Of EntryInfo) = colEntries.Where(Function(t) t.ContentItemId < 1).ToList()
-                cmdUpgrade.Visible = colNoContentItems.Count > 0
-
+                Dim cntEntry As New EntryController
+                Dim colEntries As List(Of EntryInfo) = cntEntry.GetAllEntriesByPortal(ModuleContext.PortalId, True, True)
+                If colEntries IsNot Nothing Then
+                    Dim colNoContentItems As List(Of EntryInfo) = colEntries.Where(Function(t) t.ContentItemId < 1).ToList()
+                    cmdUpgrade.Visible = colNoContentItems.Count > 0
+                End If
 
                 ' Additional files to load
                 Dim fileList As String = ";" & BlogSettings.IncludeFiles
@@ -124,7 +125,7 @@ Partial Public Class ModuleOptions
                 .UseWLWExcerpt = chkUseWLWExcerpt.Checked
                 .VocabularyId = Convert.ToInt32(ddlCatVocabRoot.SelectedValue)
                 .CommentMode = Convert.ToInt32(ddlCommentMode.SelectedItem.Value)
-                .SocialSharingMode = ddlSocialSharingMode.SelectedItem.Value
+                .SocialSharingMode = Convert.ToInt32(ddlSocialSharingMode.SelectedItem.Value)
                 .AddThisId = txtAddThisId.Text
                 .FacebookAppId = txtFacebookAppId.Text
                 .EnablePlusOne = chkEnablePlusOne.Checked

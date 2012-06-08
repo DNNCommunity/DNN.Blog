@@ -7,20 +7,20 @@
 <div class="dnnClear dnnForm dnnViewBlog">
 	<asp:Panel ID="pnlBlogInfo" Visible="false" runat="server">
 		<div class="vbAuthor dnnClear">
-		    <div class="vbaImage dnnLeft">
-			    <div><asp:HyperLink id="imgAuthorLink" runat="server"><dnnweb:DnnBinaryImage ID="dbiUser" runat="server" Width="50" /></asp:HyperLink></div>
-		    </div>
-		    <div class="dnnLeft">
-			    <asp:HyperLink ID="hlAuthor" runat="server" />
-			    <div class="dnnLeft">
-				    <asp:Literal ID="litBlogDescription" runat="server" />
-			    </div>
-		    </div>
-	    </div>
-		<div class="dnnRight">
-			<asp:HyperLink ID="lnkRSS" runat="server" Visible="False" Target="_blank">
-				<asp:Image ID="Image1" runat="server" ImageUrl="~/desktopmodules/Blog/Images/feed-icon-24x24.gif" AlternateText="RssIcon" />
-			</asp:HyperLink>
+			<div class="vbaImage dnnLeft">
+				<div><asp:HyperLink id="imgAuthorLink" runat="server"><dnnweb:DnnBinaryImage ID="dbiUser" runat="server" Width="50" /></asp:HyperLink></div>
+			</div>
+			<div class="dnnLeft">
+				<asp:HyperLink ID="hlAuthor" runat="server" />
+				<div class="dnnLeft">
+					<asp:Literal ID="litBlogDescription" runat="server" />
+				</div>
+			</div>
+			<div class="dnnRight">
+				<asp:HyperLink ID="lnkRSS" runat="server" Visible="False" Target="_blank">
+					<asp:Image ID="Image1" runat="server" ImageUrl="~/desktopmodules/Blog/Images/feed-icon-24x24.gif" AlternateText="RssIcon" />
+				</asp:HyperLink>
+			</div>
 		</div>
 	</asp:Panel>
 	<asp:Panel ID="pnlBlogRss" runat="server" Visible="False">
@@ -83,43 +83,6 @@
 		<asp:HyperLink ID="hlPagerPrev" resourcekey="hlPagerPrev" runat="server" CssClass="dnnPrimaryAction" Visible="false" />
 		<asp:HyperLink ID="hlPagerNext" resourcekey="hlPagerNext" runat="server" CssClass="dnnPrimaryAction" Visible="false" />
 	</div>
-	<asp:DataList ID="lstSearchResults" Visible="False" runat="server" Width="100%">
-		<ItemTemplate>
-			<table>
-				<tr>
-					<td>
-						<asp:HyperLink ID="lnkEntryTitle" runat="server"><%# Server.HtmlDecode(DataBinder.Eval(Container.DataItem, "EntryTitle")) %></asp:HyperLink>
-					</td>
-					<td>
-						<asp:Label runat="server" ID="lblEntryUserName" />
-						<asp:Label runat="server" ID="lblEntryDate" />
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<asp:HyperLink ID="lnkParentBlogSearch" runat="server" CssClass="dnnSecondaryAction" />
-						<asp:Image ID="imgBlogParentSeparatorSearch" runat="server" ImageUrl="~/desktopmodules/Blog/Images/folder_closed.gif" Visible="False" AlternateText="Parent Separator" />
-						<asp:HyperLink ID="lnkChildBlogSearch" runat="server" CssClass="dnnSecondaryAction" Visible="False" />
-					</td>
-					<td>
-						<asp:Label runat="server" ID="lblHits" resourcekey="lblHits" />
-						<%# DataBinder.Eval(Container.DataItem, "Rank") %>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						<asp:Label ID="lblItemSummary" runat="server" />
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						<asp:HyperLink runat="server" ID="hlPermaLinkSearch" NavigateUrl='<%# DataBinder.Eval(Container.DataItem, "PermaLink") %>' ResourceKey="lnkPermaLink" CssClass="dnnSecondaryAction" Visible='<%# CBool(CStr(DataBinder.Eval(Container.DataItem, "PermaLink")) <> Utility.BlogNavigateURL(TabID, PortalId, DataBinder.Eval(Container.DataItem, "EntryID"), DataBinder.Eval(Container.DataItem, "EntryTitle"), BlogSettings.ShowSeoFriendlyUrl)) %>' />
-						<asp:HyperLink runat="server" ID="hlMoreSearch" NavigateUrl='<%# Utility.BlogNavigateURL(TabID, PortalId, DataBinder.Eval(Container.DataItem, "EntryID"), DataBinder.Eval(Container.DataItem, "EntryTitle"), BlogSettings.ShowSeoFriendlyUrl) %>' ResourceKey="lnkReadMore" CssClass="dnnSecondaryAction" />
-					</td>
-				</tr>
-			</table>
-		</ItemTemplate>
-	</asp:DataList>
 	<asp:Panel ID="pnlNoRecords" runat="server" Visible="false" CssClass="dnnFormMessage dnnFormInfo">
 		<asp:Literal ID="litNoRecords" runat="server" />
 	</asp:Panel>

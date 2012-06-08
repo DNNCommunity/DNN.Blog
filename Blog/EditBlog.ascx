@@ -4,8 +4,7 @@
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <div class="dnnForm dnnEditBlog dnnClear" id="dnnEditBlog">
     <div id="ebContent">
-        <div class="dnnFormExpandContent"><a href=""><%=Localization.GetString("ExpandAll", Localization.SharedResourceFile)%></a></div>
-        <h2 id="dnnSitePanel-Options" class="dnnFormSectionHead"><a href="" class="dnnSectionExpanded"><%=LocalizeString("lblOptions")%></a></h2>
+        <h2 id="dnnSitePanel-Options" class="dnnFormSectionHead"><%=LocalizeString("lblOptions")%></h2>
         <fieldset>
             <div class="dnnFormItem dnnFormHelp dnnClear"><p class="dnnFormRequired"><span><%=LocalizeString("RequiredFields")%></span></p></div>
             <div class="dnnFormItem">
@@ -45,7 +44,7 @@
                 </div>
             </div>
         </fieldset>
-        <h2 id="dnnSitePanel-CommentOptions" class="dnnFormSectionHead"><a href="" class=""><%=LocalizeString("lblCommentOptions")%></a></h2>
+        <h2 id="dnnSitePanel-CommentOptions" class="dnnFormSectionHead"><%=LocalizeString("lblCommentOptions")%></h2>
         <fieldset>
             <asp:Panel ID="pnlComments" runat="server" CssClass="dnnFormItem">
                 <dnn:Label ID="lblAllowComments" runat="server" controlname="chkAllowComments" suffix=":" />
@@ -64,7 +63,7 @@
                 <asp:LinkButton ID="cmdGenerateLinks" runat="server" CausesValidation="False" resourceKey="cmdGenerateLinks" CssClass="dnnSecondaryAction" />
             </div>
         </fieldset>
-        <h2 id="dnnSitePanelChildBlogs" class="dnnFormSectionHead" runat="server"><a href="" class=""><%=LocalizeString("lblChildBlogs")%></a></h2>
+        <h2 id="dnnSitePanelChildBlogs" class="dnnFormSectionHead" runat="server"><%=LocalizeString("lblChildBlogs")%></h2>
         <fieldset runat="server" id="fsChildBlogs">
             <div>
                 <p><%=LocalizeString("ChildBlogsDesc")%></p>
@@ -89,8 +88,6 @@
     /*globals jQuery, window, Sys */
     (function ($, Sys) {
         function setupDnnBlogSettings() {
-            $('#dnnEditBlog').dnnPanels();
-
             $('.dnnBlogDelete').dnnConfirm({
                 text: '<%= LocalizeString("msgDeleteBlog") %>',
                 yesText: '<%= Localization.GetString("Yes.Text", Localization.SharedResourceFile) %>',
@@ -103,9 +100,6 @@
                 noText: '<%= Localization.GetString("No.Text", Localization.SharedResourceFile) %>',
                 title: '<%= Localization.GetString("Confirm.Text", Localization.SharedResourceFile) %>'
             });
-
-            $('#ebContent .dnnFormExpandContent a').dnnExpandAll({ expandText: '<%=Localization.GetSafeJSString("ExpandAll", Localization.SharedResourceFile)%>', collapseText: '<%=Localization.GetSafeJSString("CollapseAll", Localization.SharedResourceFile)%>', targetArea: '#ebContent' });
-
         };
 
         $(document).ready(function () {

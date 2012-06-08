@@ -135,23 +135,12 @@ Namespace Components.Controllers
 
                 colBlogs = CBO.FillCollection(Of BlogInfo)(DataProvider.Instance().GetBlogsByPortal(portalId))
 
-                'Cache Forum if timeout > 0 and Forum is not null
+                'Cache if timeout > 0 and collection is not null
                 If timeOut > 0 And colBlogs IsNot Nothing Then
                     DataCache.SetCache(strCacheKey, colBlogs, TimeSpan.FromMinutes(timeOut))
                 End If
             End If
             Return colBlogs
-        End Function
-
-#End Region
-
-#Region " 4.5.0 Upgrade"
-
-        Public Function GetAllPublishedPortalBlogEntries(ByVal PortalID As Integer) As List(Of EntryInfo)
-
-            Return Nothing
-            'Return CBO.FillCollection(DataProvider.Instance().ListBlogsRootByPortal(PortalID), GetType(BlogInfo))
-
         End Function
 
 #End Region

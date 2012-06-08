@@ -178,13 +178,13 @@
     <value>Approve the blog post, it will be viewable online once the publish date has been reached (if it is in the future, live immediately if in the past).</value>
   </data>
   <data name="ApprovePostNotifyBody.Text" xml:space="preserve">
-    <value>A new blog entry is pending approval: </value>
+    <value>A new blog entry is pending approval</value>
   </data>
   <data name="CommentAddedNotify.Text" xml:space="preserve">
-    <value>A new comment has been added for: </value>
+    <value>A new comment has been added</value>
   </data>
   <data name="CommentPendingNotify.Text" xml:space="preserve">
-    <value>A new comment is pending approval for: </value>
+    <value>A new comment is pending approval</value>
   </data>
   <data name="DeleteComment.Text" xml:space="preserve">
     <value>Delete</value>

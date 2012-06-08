@@ -80,9 +80,9 @@ Namespace Components.Rss
 
 #End Region
 
-#Region " Constructors "
-        Public Sub New(ByVal ModuleConfiguration As DotNetNuke.Entities.Modules.ModuleInfo, ByVal Request As HttpRequest, ByVal RssView As RssViews)
+#Region "Constructors"
 
+        Public Sub New(ByVal ModuleConfiguration As DotNetNuke.Entities.Modules.ModuleInfo, ByVal Request As HttpRequest, ByVal RssView As RssViews)
             ' Set variables
             _blogSettings = BlogSettings.GetBlogSettings(ModuleConfiguration.PortalID, ModuleConfiguration.TabID)
             _moduleId = ModuleConfiguration.ModuleID
@@ -111,8 +111,8 @@ Namespace Components.Rss
             _portalSettings = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings
             _useFriendlyUrls = DotNetNuke.Entities.Host.Host.UseFriendlyUrls
             _userId = DotNetNuke.Entities.Users.UserController.GetCurrentUserInfo.UserID
-
         End Sub
+
 #End Region
 
 #Region " Public Methods "
@@ -146,7 +146,6 @@ Namespace Components.Rss
         End Sub
 
         Public Sub WriteRss(ByRef output As XmlTextWriter)
-
             output.Formatting = Formatting.Indented
             output.WriteStartDocument()
             output.WriteStartElement("rss")
@@ -154,7 +153,7 @@ Namespace Components.Rss
             output.WriteStartElement("channel")
             output.WriteAttributeString("xmlns", nsBlogPre, Nothing, nsBlogFull)
             output.WriteAttributeString("xmlns", nsSlashPre, Nothing, nsSlashFull)
-            output.WriteAttributeString("xmlns", nsTrackbackPre, Nothing, nsTrackbackFull)
+            'output.WriteAttributeString("xmlns", nsTrackbackPre, Nothing, nsTrackbackFull)
 
             ' CP - Updates to allow aggreated feed (via ID 0) and to avoid unhandled exception if not found. 
             If _blog Is Nothing Then
@@ -171,9 +170,7 @@ Namespace Components.Rss
             Dim Language As String = _portalSettings.DefaultLanguage
 
             Select Case _rssView
-
                 Case RssViews.ArchivEntries
-
                     ManagingEditor = _portalSettings.Email
                     Title = Localization.GetString("lblArchive.Text", ModulePath & Localization.LocalResourceDirectory & "/Archive")
                     If _portalSettings.ActiveTab.Description <> "" Then
@@ -203,9 +200,7 @@ Namespace Components.Rss
                             Link = New Uri(Utility.checkUriFormat(NavigateURL(_tabId) & "&BlogDate=" & _rssDate))
                         End If
                     End If
-
                 Case RssViews.RecentEntries
-
                     ManagingEditor = _portalSettings.Email
                     Title = Localization.GetString("msgMostRecentEntries.Text", ModulePath & Localization.LocalResourceDirectory & "/ViewBlog")
                     If _portalSettings.ActiveTab.Description <> "" Then
@@ -219,7 +214,6 @@ Namespace Components.Rss
 
                     Link = New Uri(Utility.checkUriFormat(NavigateURL(_tabId, "", "BlogId=" & _blog.BlogID)))
                     'Language = _blog.Culture
-
             End Select
 
             ' Write the channel header block
@@ -287,9 +281,9 @@ Namespace Components.Rss
         End Function
 #End Region
 
-#Region "Private Methods "
-        Private Sub WriteItem(ByRef writer As XmlTextWriter, ByVal ir As IDataReader)
+#Region "Private Methods"
 
+        Private Sub WriteItem(ByRef writer As XmlTextWriter, ByVal ir As IDataReader)
             Dim EntryId As Integer = CInt(ir.Item("EntryId"))
             Dim PermaLink As String = HttpUtility.HtmlDecode(CStr(ir.Item("PermaLink")))
 
@@ -303,23 +297,25 @@ Namespace Components.Rss
             Else
                 Description = Utility.RewriteRefs(HttpUtility.HtmlDecode(CStr(ir.Item("Description"))))
             End If
-            'TODO: CP
-            'If _includeTagsInDescription Then
-            '    Dim TagString As String = TagController.GetTagsByEntry(EntryId)
-            '    If Not TagString = "" Then
-            '        Description &= "<div class=""tags"">" & Localization.GetString("Tags", Components.Common.Globals.glbSharedResourceFile) & ": " & TagString & "</div>"
-            '    End If
-            'End If
+
             Dim cntTerms As New TermController()
-            Dim colCategories As List(Of TermInfo) = cntTerms.GetTermsByContentItem(EntryId, _blogSettings.VocabularyId)
-            If _includeCategoriesInDescription Then
-                For Each c As TermInfo In colCategories
-                    Description &= "<div class=""category"">" & Localization.GetString("Category", Components.Common.Globals.glbSharedResourceFile) & ": <a href=" & NavigateURL(_tabId, "", "CatID=" & c.TermId.ToString) & ">" & c.Name & "</a></div>"
+            Dim colTags As List(Of TermInfo) = cntTerms.GetTermsByContentItem(EntryId, 1)
+            If _includeTagsInDescription Then
+                For Each c As TermInfo In colTags
+                    Description &= "<div class=""tags"">" & Localization.GetString("Tags", Components.Common.Globals.glbSharedResourceFile) & ": <a href=" & NavigateURL(_tabId, False, _portalSettings, "", "tagid=" + c.TermId.ToString) & ">" & c.Name & "</a></div>"
                 Next
             End If
+
+            Dim colCategories As List(Of TermInfo) = cntTerms.GetTermsByContentItem(EntryId, _blogSettings.VocabularyId)
+            If _includeCategoriesInDescription AndAlso _blogSettings.VocabularyId > 0 Then
+                For Each c As TermInfo In colCategories
+                    Description &= "<div class=""category"">" & Localization.GetString("Category", Components.Common.Globals.glbSharedResourceFile) & ": <a href=" & NavigateURL(_tabId, False, _portalSettings, "", "catid=" + c.TermId.ToString) & ">" & c.Name & "</a></div>"
+                Next
+            End If
+
             writer.WriteElementString("description", Description)
             WriteElement(writer, "author", ir, "SyndicationEmail", False)
-            ' categories
+
             For Each c As TermInfo In colCategories
                 writer.WriteStartElement("category")
                 writer.WriteAttributeString("domain", NavigateURL(_tabId, "", "CatID=" & CType(c.TermId, String)))
@@ -339,21 +335,19 @@ Namespace Components.Rss
             writer.WriteString(PermaLink)
             writer.WriteEndElement()
             writer.WriteElementString("pubDate", XmlConvert.ToString(CDate(ir.Item("AddedDate")), DateTimeFormatString))
-            writer.WriteElementString(nsTrackbackPre, "ping", Nothing, HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) & ModulePath & "Trackback.aspx?id=" & EntryId.ToString)
-            'TODO: CP
-            ' Write Blog specific data
-            ' Write tags
-            'For Each t As TagInfo In TagController.ListTagsByEntry(EntryId)
-            '    writer.WriteStartElement(nsBlogPre, "tag", nsBlogFull)
-            '    writer.WriteAttributeString(nsBlogPre, "url", Nothing, NavigateURL(_tabId, "", "TagID=" & t.TagId.ToString))
-            '    writer.WriteString(t.Tag)
-            '    writer.WriteEndElement()
-            'Next
+            'writer.WriteElementString(nsTrackbackPre, "ping", Nothing, HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) & ModulePath & "Trackback.aspx?id=" & EntryId.ToString)
+
+            For Each c As TermInfo In colTags
+                writer.WriteStartElement(nsBlogPre, "tag", nsBlogFull)
+                writer.WriteAttributeString(nsBlogPre, "url", Nothing, NavigateURL(_tabId, False, _portalSettings, "", "tagid=" + c.TermId.ToString))
+                writer.WriteString(c.Name)
+                writer.WriteEndElement()
+            Next
+
             If _includeBody Then
                 writer.WriteElementString(nsBlogPre, "body", Nothing, Utility.RewriteRefs(HttpUtility.HtmlDecode(CStr(ir.Item("Entry")))))
             End If
             writer.WriteEndElement()
-
         End Sub
 
         Public Sub WriteElement(ByRef output As XmlTextWriter, ByVal elementName As String, ByVal ir As IDataReader, ByVal columnName As String, ByVal required As Boolean)
@@ -377,7 +371,9 @@ Namespace Components.Rss
                 output.WriteElementString(nsPrefix, elementName, Nothing, value)
             End If
         End Sub
+
 #End Region
 
     End Class
+
 End Namespace

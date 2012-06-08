@@ -131,15 +131,6 @@ Partial Public Class ViewBlog
     Protected WithEvents hlPagerNext As Global.System.Web.UI.WebControls.HyperLink
 
     '''<summary>
-    '''lstSearchResults control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lstSearchResults As Global.System.Web.UI.WebControls.DataList
-
-    '''<summary>
     '''pnlNoRecords control.
     '''</summary>
     '''<remarks>

@@ -29,10 +29,11 @@ Namespace Components.Controllers
     Public Class TermController
 
         Public Function GetTermsByContentType(ByVal portalId As Integer, ByVal vocabularyId As Integer) As List(Of TermInfo)
+            Dim strCacheKey As String = Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + vocabularyId.ToString()
             DotNetNuke.Common.Requires.PropertyNotNegative("portalId", "", portalId)
             DotNetNuke.Common.Requires.PropertyNotNegative("vocabularyId", "", vocabularyId)
 
-            Dim colTerms As List(Of TermInfo) = DirectCast(DataCache.GetCache(Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + vocabularyId.ToString()), List(Of TermInfo))
+            Dim colTerms As List(Of TermInfo) = DirectCast(DataCache.GetCache(strCacheKey), List(Of TermInfo))
 
             If colTerms Is Nothing Then
                 Dim timeOut As Int32 = Common.Constants.CACHE_TIMEOUT * Convert.ToInt32(DotNetNuke.Entities.Host.Host.PerformanceSetting)
@@ -47,9 +48,10 @@ Namespace Components.Controllers
         End Function
 
         Public Function GetTermsByContentItem(ByVal contentItemId As Integer, ByVal vocabularyId As Integer) As List(Of TermInfo)
+            Dim strCacheKey As String = Constants.ModuleCacheKeyPrefix + Constants.ContentItemTermsCacheKey + contentItemId.ToString() + Constants.VocabularySuffixCacheKey + vocabularyId.ToString()
             DotNetNuke.Common.Requires.PropertyNotNegative("contentItemId", "", contentItemId)
 
-            Dim colTerms As List(Of TermInfo) = DirectCast(DataCache.GetCache(Constants.ModuleCacheKeyPrefix + Constants.ContentItemTermsCacheKey + contentItemId.ToString() + Constants.VocabularySuffixCacheKey + vocabularyId.ToString()), List(Of TermInfo))
+            Dim colTerms As List(Of TermInfo) = DirectCast(DataCache.GetCache(strCacheKey), List(Of TermInfo))
 
             If colTerms Is Nothing Then
                 Dim timeOut As Int32 = Common.Constants.CACHE_TIMEOUT * Convert.ToInt32(DotNetNuke.Entities.Host.Host.PerformanceSetting)

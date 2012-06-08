@@ -19,6 +19,7 @@
 '
 
 Imports System
+Imports DotNetNuke.UI.Skins.Controls
 Imports DotNetNuke.Modules.Blog.Components.Business
 Imports DotNetNuke.Modules.Blog.Components.Controllers
 Imports DotNetNuke.Modules.Blog.Components.Common
@@ -155,7 +156,7 @@ Partial Public Class ViewEntry
 
                     Dim objAuthor As Entities.Users.UserInfo = DotNetNuke.Entities.Users.UserController.GetUserById(ModuleContext.PortalId, objBlog.UserID)
                     dbiUser.ImageUrl = Control.ResolveUrl("~/profilepic.ashx?userid=" + objAuthor.UserID.ToString + "&w=" + "50" + "&h=" + "50")
-                    'litBio.Text = "<p>" + objAuthor.DisplayName + "</p>"
+                    litBio.Text = "<p>" + objBlog.Description + "</p>"
 
                     lnkBlogs.NavigateUrl = NavigateURL()
                     If objBlog.ParentBlogID > -1 Then
@@ -218,7 +219,7 @@ Partial Public Class ViewEntry
                     lblTrackback.Text = Utility.GetTrackbackRDF(NavigateURL(), Entry)
                     lblDateTime.Text = Utility.DateFromUtc(Entry.AddedDate, UITimeZone).ToString("f")
 
-                    If BlogSettings.SocialSharingMode = "0" Then
+                    If BlogSettings.SocialSharingMode = Constants.SocialSharingMode.Default Then
                         Dim facebookContent As String = ""
                         Dim googleContent As String = ""
                         Dim twitterContent As String = ""
@@ -241,8 +242,8 @@ Partial Public Class ViewEntry
                         End If
 
                         litSocialSharing.Text = "<ul class='qaSocialActions'>" + facebookContent + googleContent + twitterContent + linkedInContent + "</ul>"
-                    ElseIf BlogSettings.SocialSharingMode = "1" Then
-                        Dim addThisId As String = BlogSettings.AddThisId
+                        'ElseIf BlogSettings.SocialSharingMode = Constants.SocialSharingMode.AddThis Then
+                        '    Dim addThisId As String = BlogSettings.AddThisId
 
                     Else
                         litSocialSharing.Visible = False
@@ -352,18 +353,29 @@ Partial Public Class ViewEntry
 
                     cmdAddComment.Text = Localization.GetString("msgUpdateComment", LocalResourceFile)
                     cmdDeleteComment.Visible = True
+
+                    Dim cntNotification As New Components.Integration.Notifications
+                    cntNotification.RemoveCommentPendingNotification(objBlog.BlogID, oComment.EntryID, oComment.CommentID)
                 End If
             Case "approvecomment"
                 Dim oComment As CommentInfo = New CommentController().GetComment(Int32.Parse(CType(e.CommandArgument, String)))
                 oComment.Approved = True
                 Dim objCtlComment As New CommentController
                 objCtlComment.UpdateComment(oComment)
+
+                Dim cntNotification As New Components.Integration.Notifications
+                cntNotification.RemoveCommentPendingNotification(objBlog.BlogID, oComment.EntryID, oComment.CommentID)
+
                 BindCommentsList()
             Case "deletecomment"
                 ' DR 01/21/2008 - Fix BLG-8849
                 ' Added fast comment deletion.
                 Dim oCommentController As New CommentController
                 oCommentController.DeleteComment(Int32.Parse(CType(e.CommandArgument, String)))
+
+                Dim cntNotification As New Components.Integration.Notifications
+                cntNotification.RemoveCommentPendingNotification(objBlog.BlogID, Entry.EntryID, Int32.Parse(CType(e.CommandArgument, String)))
+
                 BindCommentsList()
         End Select
     End Sub
@@ -409,19 +421,23 @@ Partial Public Class ViewEntry
 
                         If (objComment.UserID <> objBlog.UserID) Then
                             Dim cntNotification As New Components.Integration.Notifications
-                            Dim summary As String = Localization.GetString("CommentAddedNotify", Localization.SharedResourceFile)
-                            summary += "<a href='" + Entry.PermaLink + "'>" + Entry.Title + "</a>"
+                            Dim title As String = Localization.GetString("CommentAddedNotify", Constants.SharedResourceFileName)
+                            Dim summary As String = "<a target='_blank' href='" + Entry.PermaLink + "'>" + Entry.Title + "</a>"
 
-                            cntNotification.CommentAdded(objComment, Entry, objBlog, ModuleContext.PortalId, summary)
+                            cntNotification.CommentAdded(objComment, Entry, objBlog, ModuleContext.PortalId, summary, title)
                         End If
                     Else
                         Dim cntNotification As New Components.Integration.Notifications
-                        Dim summary As String = Localization.GetString("CommentPendingNotify", Localization.SharedResourceFile)
-                        summary += "<a href='" + Entry.PermaLink + "'>" + Entry.Title + "</a>"
+                        Dim title As String = Localization.GetString("CommentPendingNotify", Constants.SharedResourceFileName)
+                        Dim summary As String = "<a target='_blank' href='" + Entry.PermaLink + "'>" + Entry.Title + "</a><br />" + objComment.Comment
 
-                        cntNotification.CommentPendingApproval(objComment, objBlog, Entry, ModuleContext.PortalId, summary)
+                        cntNotification.CommentPendingApproval(objComment, objBlog, Entry, ModuleContext.PortalId, summary, title)
+
+                        UI.Skins.Skin.AddModuleMessage(Me, Localization.GetString("CommentPendingApproval", LocalResourceFile), ModuleMessage.ModuleMessageType.BlueInfo)
                     End If
                 End If
+
+                txtComment.Text = String.Empty
                 BindCommentsList()
             End If
         Catch exc As Exception

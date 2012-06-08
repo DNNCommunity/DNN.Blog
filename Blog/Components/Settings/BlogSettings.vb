@@ -65,7 +65,7 @@ Namespace Components.Settings
         'Private Const version As String = "03.05.00"
 
         Private _VocabularyId As Integer = 1
-        Private _SocialSharingMode As String = "Default"
+
         Private _AddThisId As String = ""
         Private _FacebookAppId As String = ""
         Private _EnablePlusOne As Boolean = True
@@ -73,6 +73,7 @@ Namespace Components.Settings
         Private _EnableLinkedIn As Boolean = True
 
         Private _CommentMode As Integer = Constants.CommentMode.Default
+        Private _SocialSharingMode As Integer = Constants.SocialSharingMode.Default
 
 #End Region
 
@@ -167,7 +168,7 @@ Namespace Components.Settings
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "AllowChildBlogs", Me.AllowChildBlogs.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "AllowWLW", Me.AllowWLW.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "IncludeFiles", Me.IncludeFiles)
-            Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "SocialSharingMode", Me.SocialSharingMode)
+            Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "SocialSharingMode", Me.SocialSharingMode.ToString)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "AddThisId", Me.AddThisId)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "FacebookAppId", Me.FacebookAppId)
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "EnablePlusOne", Me.EnablePlusOne.ToString)
@@ -441,11 +442,11 @@ Namespace Components.Settings
             End Set
         End Property
 
-        Public Property SocialSharingMode() As String
+        Public Property SocialSharingMode() As Integer
             Get
                 Return _SocialSharingMode
             End Get
-            Set(ByVal Value As String)
+            Set(ByVal Value As Integer)
                 _SocialSharingMode = Value
             End Set
         End Property
