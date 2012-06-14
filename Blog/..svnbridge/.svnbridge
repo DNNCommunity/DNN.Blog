@@ -32,4 +32,17 @@ bin
 obj
 package
 packages
+</Value></Property><Property><Name>svn:ignore</Name><Value>*.cache
+*.manifest
+*.suo
+*.user
+Install.04.00.00.SqlDataProvider
+ResourceZip
+ShareBadge
+_ReSharper.DotNetNuke.Modules.Blog
+_ReSharper.DotNetNuke.Modules.Blog5
+bin
+obj
+package
+packages
 </Value></Property></Properties></ItemProperties>

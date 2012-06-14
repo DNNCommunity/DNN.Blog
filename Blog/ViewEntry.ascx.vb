@@ -138,6 +138,10 @@ Partial Public Class ViewEntry
                     Response.Redirect(NavigateURL("Access Denied"), False)
                 End If
 
+                If Entry.Published = False Then
+                    UI.Skins.Skin.AddModuleMessage(Me, Localization.GetString("lblPublished", LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning)
+                End If
+
                 If Not objBlog Is Nothing Then
                     ' Comment perms here
 
@@ -276,7 +280,6 @@ Partial Public Class ViewEntry
 
                         returnUrl = HttpUtility.UrlEncode(returnUrl)
                         litAddComment.Text = "<a href='" + DotNetNuke.Common.Globals.LoginURL(returnUrl, False) + "' class='dnnPrimaryAction'>" + Localization.GetString("AddComment", LocalResourceFile) + "</a>"
-
                     End If
                 End If
 
@@ -309,6 +312,10 @@ Partial Public Class ViewEntry
 
     Protected Sub lstComments_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataListItemEventArgs) Handles lstComments.ItemDataBound
         If (e.Item.ItemType = ListItemType.AlternatingItem) Or (e.Item.ItemType = ListItemType.Item) Then
+            If (e.Item.DataItem Is Nothing) Or (objBlog Is Nothing) Then
+                Return
+            End If
+
             Dim imgUser As System.Web.UI.WebControls.Image = CType(e.Item.FindControl("imgUser"), System.Web.UI.WebControls.Image)
             Dim hlUser As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("hlUser"), System.Web.UI.WebControls.HyperLink)
             Dim hlCommentAuthor As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("hlCommentAuthor"), System.Web.UI.WebControls.HyperLink)
@@ -331,7 +338,7 @@ Partial Public Class ViewEntry
             imgUser.ImageUrl = Control.ResolveUrl("~/profilepic.ashx?userid=" + objComment.UserID.ToString + "&w=" + "50" + "&h=" + "50")
             hlCommentAuthor.Text = objUser.DisplayName
             hlCommentAuthor.NavigateUrl = DotNetNuke.Common.Globals.UserProfileURL(objUser.UserID)
-            lblCommentDate.Text = Utility.CalculateDateForDisplay(CType(e.Item.DataItem, CommentInfo).AddedDate)
+            lblCommentDate.Text = Utility.CalculateDateForDisplay(objComment.AddedDate)
 
             If Not objComment.Approved Then
                 lnkApproveComment.Visible = True

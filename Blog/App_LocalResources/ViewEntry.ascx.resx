@@ -248,4 +248,7 @@
   <data name="CommentPendingApproval.Text" xml:space="preserve">
     <value>Thanks, your comment has been received and is pending approval.</value>
   </data>
+  <data name="lblPublished.Text" xml:space="preserve">
+    <value>This entry is not published</value>
+  </data>
 </root>
