@@ -251,4 +251,7 @@
   <data name="lblPublished.Text" xml:space="preserve">
     <value>This entry is not published</value>
   </data>
+  <data name="Anonymous.Text" xml:space="preserve">
+    <value>Anonymous</value>
+  </data>
 </root>

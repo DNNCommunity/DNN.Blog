@@ -3,7 +3,6 @@
 <%@ Control Language="vb" AutoEventWireup="false" CodeBehind="ViewEntry.ascx.vb" Inherits="DotNetNuke.Modules.Blog.ViewEntry" %>
 <%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Import Namespace="DotNetNuke.Services.Localization" %>
-<asp:Label ID="lblTrackback" runat="server" />
 <div class="dnnForm dnnViewEntry dnnClear">
 	<h2 id="lblBlogTitle" runat="server" />
 	<div class="vbHeader dnnClear">

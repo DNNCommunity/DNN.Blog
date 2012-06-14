@@ -105,7 +105,7 @@ Partial Public Class ViewEntry
             Dim count As Integer = keyCount
             Dim pageTitle As String = Entry.Title
             Dim keyWords As String = ""
-            Dim pageDescription As String = Entry.Entry
+            Dim pageDescription As String = Entry.Description
             Dim pageUrl As String = Entry.PermaLink
             Dim pageAuthor As String = objBlog.UserFullName
 
@@ -220,7 +220,7 @@ Partial Public Class ViewEntry
 
                     lblBlogTitle.InnerHtml = Entry.Title ' Issue 22505
                     'lblBlogTitle.NavigateUrl = m_oEntry.PermaLink
-                    lblTrackback.Text = Utility.GetTrackbackRDF(NavigateURL(), Entry)
+                    'lblTrackback.Text = Utility.GetTrackbackRDF(NavigateURL(), Entry)
                     lblDateTime.Text = Utility.DateFromUtc(Entry.AddedDate, UITimeZone).ToString("f")
 
                     If BlogSettings.SocialSharingMode = Constants.SocialSharingMode.Default Then
@@ -334,10 +334,18 @@ Partial Public Class ViewEntry
 
             Dim objUser As UserInfo = UserController.GetUserById(ModuleContext.PortalId, objComment.UserID)
 
-            hlUser.NavigateUrl = DotNetNuke.Common.Globals.UserProfileURL(objUser.UserID)
-            imgUser.ImageUrl = Control.ResolveUrl("~/profilepic.ashx?userid=" + objComment.UserID.ToString + "&w=" + "50" + "&h=" + "50")
-            hlCommentAuthor.Text = objUser.DisplayName
-            hlCommentAuthor.NavigateUrl = DotNetNuke.Common.Globals.UserProfileURL(objUser.UserID)
+            If objUser IsNot Nothing Then
+                hlUser.NavigateUrl = DotNetNuke.Common.Globals.UserProfileURL(objUser.UserID)
+                imgUser.ImageUrl = Control.ResolveUrl("~/profilepic.ashx?userid=" + objComment.UserID.ToString + "&w=" + "50" + "&h=" + "50")
+                hlCommentAuthor.Text = objUser.DisplayName
+                hlCommentAuthor.NavigateUrl = DotNetNuke.Common.Globals.UserProfileURL(objUser.UserID)
+            Else
+                hlUser.NavigateUrl = DotNetNuke.Common.Globals.UserProfileURL(-1)
+                imgUser.ImageUrl = Control.ResolveUrl("~/profilepic.ashx?userid=-1&w=" + "50" + "&h=" + "50")
+                hlCommentAuthor.Text = Localization.GetString("Anonymous", LocalResourceFile)
+                hlCommentAuthor.NavigateUrl = DotNetNuke.Common.Globals.UserProfileURL(-1)
+            End If
+
             lblCommentDate.Text = Utility.CalculateDateForDisplay(objComment.AddedDate)
 
             If Not objComment.Approved Then

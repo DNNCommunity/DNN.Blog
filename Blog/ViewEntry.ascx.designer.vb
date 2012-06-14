@@ -14,15 +14,6 @@ Option Explicit On
 Partial Public Class ViewEntry
 
     '''<summary>
-    '''lblTrackback control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblTrackback As Global.System.Web.UI.WebControls.Label
-
-    '''<summary>
     '''lblBlogTitle control.
     '''</summary>
     '''<remarks>

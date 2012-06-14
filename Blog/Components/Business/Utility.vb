@@ -334,7 +334,8 @@ Namespace Components.Business
 
   Private Shared Function TagMatch(ByVal match As Match) As String
    Return match.ToString().Replace(" ", "_!_")
-  End Function
+        End Function
+
 #End Region
 
 #Region "Dates"
@@ -412,109 +413,32 @@ Namespace Components.Business
 
 #End Region
 
-#Region " Trackback "
-  Public Shared Function GetTrackbackRDF(ByVal URL As String, ByVal oEntry As EntryInfo) As String
-   Dim HostURL As String = AddHTTP(GetDomainName(HttpContext.Current.Request))
-   If Not HostURL.EndsWith("/") Then
-    HostURL &= "/"
-   End If
-   Dim sRDF As String = Environment.NewLine
-   sRDF += "<!--" + Environment.NewLine
-   sRDF += "<rdf:RDF xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#""" + Environment.NewLine
-   sRDF += "xmlns:dc=""http://purl.org/dc/elements/1.1/""" + Environment.NewLine
-   sRDF += "xmlns:trackback=""http://madskills.com/public/xml/rss/module/trackback/"">" + Environment.NewLine
-   sRDF += "<rdf:Description " + Environment.NewLine
-   sRDF += "rdf:about=""" & URL & """" + Environment.NewLine
-   sRDF += "dc:identifier=""" & URL & """" + Environment.NewLine
-   sRDF += "dc:title=""" & oEntry.Title & """" + Environment.NewLine
-   sRDF += "trackback:ping=""" & HostURL & "desktopmodules/Blog/Trackback.aspx?id=" & oEntry.EntryID & """ />" + Environment.NewLine
-   sRDF += "</rdf:RDF>" + Environment.NewLine
-   sRDF += "-->" + Environment.NewLine
-   Return sRDF
-  End Function
-
-  Public Shared Function GetTrackbackLink(ByVal pageBody As String) As String
-   Dim sPattern As String = "<rdf:\w+\s[^>]*?>(</rdf:rdf>)?"
-   Dim anchors As Regex = New Regex(sPattern, RegexOptions.IgnoreCase)
-   For Each match As Match In anchors.Matches(pageBody)
-    Dim pattern As String = "trackback:ping=""(?<url>[^""]+)"""
-    Dim anchor As Regex = New Regex(pattern, RegexOptions.IgnoreCase)
-    Dim m As Match = anchor.Match(match.Value)
-    If Not (m.Groups("url").Value = "") Then
-     Dim trackBacklink As Uri = New Uri(m.Groups("url").Value)
-     If trackBacklink.Scheme = Uri.UriSchemeHttp Then
-      Return trackBacklink.ToString
-     End If
-    End If
-   Next
-   Return Nothing
-  End Function
-
-  Public Shared Sub AutoTrackback(ByVal content As EntryInfo, ByVal title As String)
-   If Not (content Is Nothing) Then
-
-    Dim anchors As Regex = New Regex("href\s*=\s*(?:(?:\""(?<url>[^\""]*)\"")|(?<url>[^\s]* ))")
-    For Each match As Match In anchors.Matches(HttpUtility.HtmlDecode(content.Entry))
-     Dim url As String = match.Groups("url").Value
-     If url.StartsWith("http") Then
-      Try
-
-       Dim req As WebRequest = WebRequest.Create(url)
-       ' Replaed null with Nothing
-       ' Dim Null As Object
-       Dim wreq As HttpWebRequest = CType(req, HttpWebRequest)
-       If Not (wreq Is Nothing) Then
-        wreq.UserAgent = "Blog for DNN"
-        wreq.Referer = HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority)
-        wreq.Timeout = 60000
-       End If
-       Dim response As HttpWebResponse = CType(wreq.GetResponse, HttpWebResponse)
-       Dim s As Stream = response.GetResponseStream
-       Dim enc As String = response.ContentEncoding.Trim
-       If enc = "" Then enc = "us-ascii"
-       Dim encode As Encoding = System.Text.Encoding.GetEncoding(enc)
-       Dim sr As StreamReader = New StreamReader(s, encode)
-       Dim remoteBody As String = sr.ReadToEnd
-       Dim trackbackUrl As String = GetTrackbackLink(remoteBody)
-       If Not (trackbackUrl Is Nothing) Then
-        PingBackService.SendTrackBack(trackbackUrl, content, title)
-       End If
-       response.Close()
-      Catch e As Exception
-
-      End Try
-     End If
-    Next
-   End If
-  End Sub
-#End Region
-
 #Region "SEO"
 
-  Public Shared Sub SetPageMetaAndOpenGraph(ByVal defaultPage As CDefault, ByVal modContext As ModuleInstanceContext, ByVal title As String, ByVal content As String, ByVal keyWords As String, ByVal link As String)
-   defaultPage.Title = title + " - " + modContext.PortalSettings.PortalName
+        Public Shared Sub SetPageMetaAndOpenGraph(ByVal defaultPage As CDefault, ByVal modContext As ModuleInstanceContext, ByVal title As String, ByVal content As String, ByVal keyWords As String, ByVal link As String)
+            defaultPage.Title = title + " - " + modContext.PortalSettings.PortalName
 
-   Dim meta As New HtmlMeta()
-   meta.Attributes.Add("property", "og:title")
-   meta.Attributes.Add("content", title)
-   defaultPage.Header.Controls.Add(meta)
+            Dim meta As New HtmlMeta()
+            meta.Attributes.Add("property", "og:title")
+            meta.Attributes.Add("content", title)
+            defaultPage.Header.Controls.Add(meta)
 
-   content = (HttpUtility.HtmlDecode(content))
-   Dim description As String = TruncateString(content, Constants.SeoDescriptionLimit, False)
+            content = StripTagsCharArray(HttpUtility.HtmlDecode(content))
+            Dim description As String = TruncateString(content, Constants.SeoDescriptionLimit, False)
 
-   If description.Length > 0 Then
-    defaultPage.Description = description
+            If description.Length > 0 Then
+                defaultPage.Description = description
 
-    meta = New HtmlMeta()
-    meta.Attributes.Add("property", "og:description")
-    meta.Attributes.Add("content", description)
-    defaultPage.Header.Controls.Add(meta)
-   End If
+                meta = New HtmlMeta()
+                meta.Attributes.Add("property", "og:description")
+                meta.Attributes.Add("content", description)
+                defaultPage.Header.Controls.Add(meta)
+            End If
 
-   meta = New HtmlMeta()
-   meta.Attributes.Add("property", "og:type")
-   meta.Attributes.Add("content", "article")
-   defaultPage.Header.Controls.Add(meta)
+            meta = New HtmlMeta()
+            meta.Attributes.Add("property", "og:type")
+            meta.Attributes.Add("content", "article")
+            defaultPage.Header.Controls.Add(meta)
 
             If keyWords.Length > 0 Then
                 ' CP - As per discussion w/ Titan, these will be cleared out.
@@ -526,34 +450,60 @@ Namespace Components.Business
                 defaultPage.Header.Controls.Add(meta)
             End If
 
-   meta = New HtmlMeta()
-   meta.Attributes.Add("property", "og:url")
-   meta.Attributes.Add("content", link)
-   defaultPage.Header.Controls.Add(meta)
+            meta = New HtmlMeta()
+            meta.Attributes.Add("property", "og:url")
+            meta.Attributes.Add("content", link)
+            defaultPage.Header.Controls.Add(meta)
 
-   meta = New HtmlMeta()
-   meta.Attributes.Add("property", "og:site_name")
-   meta.Attributes.Add("content", modContext.PortalSettings.PortalName)
-   defaultPage.Header.Controls.Add(meta)
+            meta = New HtmlMeta()
+            meta.Attributes.Add("property", "og:site_name")
+            meta.Attributes.Add("content", modContext.PortalSettings.PortalName)
+            defaultPage.Header.Controls.Add(meta)
 
-   If modContext.PortalSettings.LogoFile.Trim().Length > 0 Then
-    Dim url As String = "http://" + modContext.PortalAlias.HTTPAlias + "/Portals/" + modContext.PortalId.ToString() + "/" + modContext.PortalSettings.LogoFile
-    meta = New HtmlMeta()
-    meta.Attributes.Add("property", "og:image")
-    meta.Attributes.Add("content", url)
-    defaultPage.Header.Controls.Add(meta)
-   End If
-  End Sub
+            If modContext.PortalSettings.LogoFile.Trim().Length > 0 Then
+                Dim url As String = "http://" + modContext.PortalAlias.HTTPAlias + "/Portals/" + modContext.PortalId.ToString() + "/" + modContext.PortalSettings.LogoFile
+                meta = New HtmlMeta()
+                meta.Attributes.Add("property", "og:image")
+                meta.Attributes.Add("content", url)
+                defaultPage.Header.Controls.Add(meta)
+            End If
+        End Sub
 
-  Public Shared Function TruncateString(source As String, length As Integer, showElipse As Boolean) As String
-   If source.Length > length Then
-    source = source.Substring(0, length)
-    If showElipse Then
-     source += "..."
-    End If
-   End If
-   Return source
-  End Function
+        ''' <summary>
+        ''' Remove HTML tags from string using char array.
+        ''' </summary>
+        Public Shared Function StripTagsCharArray(ByVal source As String) As String
+            Dim myArray(source.Length - 1) As Char
+            Dim arrayIndex As Integer = 0
+            Dim inside As Boolean = False
+
+            For i As Integer = 0 To source.Length - 1
+                Dim strLet As String = source(i)
+                If strLet = "<"c Then
+                    inside = True
+                    Continue For
+                End If
+                If strLet = ">"c Then
+                    inside = False
+                    Continue For
+                End If
+                If Not inside Then
+                    myArray(arrayIndex) = CChar(strLet)
+                    arrayIndex += 1
+                End If
+            Next
+            Return New String(myArray, 0, arrayIndex)
+        End Function
+
+        Public Shared Function TruncateString(ByVal source As String, ByVal length As Integer, ByVal showElipse As Boolean) As String
+            If source.Length > length Then
+                source = source.Substring(0, length)
+                If showElipse Then
+                    source += "..."
+                End If
+            End If
+            Return source
+        End Function
 
         ''' <summary>
         ''' This method takes a UTC date and compares it against the current UTC to return a friendly format (ie. 10 seconds ago)
