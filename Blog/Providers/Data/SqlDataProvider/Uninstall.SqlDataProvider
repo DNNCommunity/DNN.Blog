@@ -1,14 +1,3 @@
-/******* DATA (HACK FOR DNN 6.2.0 ISSUE 21595) *******/
-DELETE FROM {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions
-FROM {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions nta
- INNER JOIN {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypes nt ON nt.NotificationTypeID=nta.NotificationTypeID
-WHERE nt.Name LIKE 'DNN_Blog_%'
-GO
-
-DELETE FROM {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypes
-WHERE [Name] LIKE 'DNN_Blog_%'
-GO
-
 /******* SPROCS *******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_AddBlog') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_AddBlog
@@ -162,40 +151,12 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwn
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_CategoriesGet
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Upgrade_DeleteBlog') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_DeleteBlog
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Upgrade_DeleteComment') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_DeleteComment
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Upgrade_DeleteEntry') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_DeleteEntry
-GO
-
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Upgrade_GetCategoriesByEntry') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_GetCategoriesByEntry
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Upgrade_GetSettings') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_GetSettings
-GO
-
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Upgrade_GetTagsByEntry') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_GetTagsByEntry
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Upgrade_ListBlogs') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_ListBlogs
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Upgrade_ListComments') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_ListComments
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Upgrade_ListEntriesByBlog') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_ListEntriesByBlog
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Upgrade_RetrieveTaxonomyEntries') AND type in (N'P', N'PC'))
@@ -204,10 +165,6 @@ GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Upgrade_TagsGet') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_TagsGet
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Upgrade_UpdateModuleDefId') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_UpdateModuleDefId
 GO
 
 /******* VIEWS *******/

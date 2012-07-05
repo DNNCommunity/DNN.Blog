@@ -22,27 +22,27 @@ Imports System
 
 Namespace Providers.Data
 
-    Public MustInherit Class DataProvider
+ Public MustInherit Class DataProvider
 
 #Region "Shared/Static Methods"
 
-        ' singleton reference to the instantiated object 
-        Private Shared objProvider As DataProvider = Nothing
+  ' singleton reference to the instantiated object 
+  Private Shared objProvider As DataProvider = Nothing
 
-        ' constructor
-        Shared Sub New()
-            CreateProvider()
-        End Sub
+  ' constructor
+  Shared Sub New()
+   CreateProvider()
+  End Sub
 
-        ' dynamically create provider
-        Private Shared Sub CreateProvider()
-            objProvider = CType(Framework.Reflection.CreateObject("data", "DotNetNuke.Modules.Blog.Providers.Data", ""), DataProvider)
-        End Sub
+  ' dynamically create provider
+  Private Shared Sub CreateProvider()
+   objProvider = CType(Framework.Reflection.CreateObject("data", "DotNetNuke.Modules.Blog.Providers.Data", ""), DataProvider)
+  End Sub
 
-        ' return the provider
-        Public Shared Shadows Function Instance() As DataProvider
-            Return objProvider
-        End Function
+  ' return the provider
+  Public Shared Shadows Function Instance() As DataProvider
+   Return objProvider
+  End Function
 
 #End Region
 
@@ -51,9 +51,9 @@ Namespace Providers.Data
 #Region " Blogs Methods "
 
   Public MustOverride Function GetBlog(ByVal blogID As Integer) As IDataReader
-        Public MustOverride Function GetBlogsByPortal(ByVal portalId As Integer) As IDataReader
+  Public MustOverride Function GetBlogsByPortal(ByVal portalId As Integer) As IDataReader
 
-        Public MustOverride Function AddBlog(ByVal PortalID As Integer, ByVal ParentBlogID As Integer, ByVal userID As Integer, ByVal title As String, ByVal description As String, ByVal [Public] As Boolean, ByVal allowComments As Boolean, ByVal allowAnonymous As Boolean, ByVal ShowFullName As Boolean, ByVal syndicated As Boolean, ByVal SyndicateIndependant As Boolean, ByVal SyndicationURL As String, ByVal SyndicationEmail As String, ByVal EmailNotification As Boolean, ByVal AllowTrackbacks As Boolean, ByVal AutoTrackback As Boolean, ByVal MustApproveComments As Boolean, ByVal MustApproveAnonymous As Boolean, ByVal MustApproveTrackbacks As Boolean, ByVal UseCaptcha As Boolean, ByVal EnableGhostWriter As Integer) As Integer
+  Public MustOverride Function AddBlog(ByVal PortalID As Integer, ByVal ParentBlogID As Integer, ByVal userID As Integer, ByVal title As String, ByVal description As String, ByVal [Public] As Boolean, ByVal allowComments As Boolean, ByVal allowAnonymous As Boolean, ByVal ShowFullName As Boolean, ByVal syndicated As Boolean, ByVal SyndicateIndependant As Boolean, ByVal SyndicationURL As String, ByVal SyndicationEmail As String, ByVal EmailNotification As Boolean, ByVal AllowTrackbacks As Boolean, ByVal AutoTrackback As Boolean, ByVal MustApproveComments As Boolean, ByVal MustApproveAnonymous As Boolean, ByVal MustApproveTrackbacks As Boolean, ByVal UseCaptcha As Boolean, ByVal EnableGhostWriter As Integer) As Integer
 
   Public MustOverride Sub UpdateBlog(ByVal PortalID As Integer, ByVal blogID As Integer, ByVal ParentBlogID As Integer, ByVal userID As Integer, ByVal title As String, ByVal description As String, ByVal [Public] As Boolean, ByVal allowComments As Boolean, ByVal allowAnonymous As Boolean, ByVal ShowFullName As Boolean, ByVal syndicated As Boolean, ByVal SyndicateIndependant As Boolean, ByVal SyndicationURL As String, ByVal SyndicationEmail As String, ByVal EmailNotification As Boolean, ByVal AllowTrackbacks As Boolean, ByVal AutoTrackback As Boolean, ByVal MustApproveComments As Boolean, ByVal MustApproveAnonymous As Boolean, ByVal MustApproveTrackbacks As Boolean, ByVal UseCaptcha As Boolean, ByVal EnableGhostWriter As Integer)
   Public MustOverride Sub DeleteBlog(ByVal blogID As Integer, ByVal portalId As Integer)
@@ -64,9 +64,9 @@ Namespace Providers.Data
 
   Public MustOverride Function GetEntry(ByVal EntryID As Integer, ByVal PortalId As Integer) As IDataReader
   Public MustOverride Function GetEntries(ByVal PortalID As Integer, ByVal BlogID As Integer, ByVal BlogDate As Date, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As IDataReader
-        Public MustOverride Function AddEntry(ByVal blogID As Integer, ByVal title As String, ByVal description As String, ByVal Entry As String, ByVal Published As Boolean, ByVal AllowComments As Boolean, ByVal AddedDate As DateTime, ByVal DisplayCopyright As Boolean, ByVal Copyright As String, ByVal PermaLink As String, ByVal CreatedUserId As Integer) As Integer
-        Public MustOverride Sub UpdateEntry(ByVal EntryID As Integer, ByVal blogID As Integer, ByVal title As String, ByVal description As String, ByVal Entry As String, ByVal Published As Boolean, ByVal AllowComments As Boolean, ByVal AddedDate As DateTime, ByVal DisplayCopyright As Boolean, ByVal Copyright As String, ByVal PermaLink As String, ByVal contentItemId As Integer)
-        Public MustOverride Sub UpdateEntryViewCount(ByVal EntryID As Integer)
+  Public MustOverride Function AddEntry(ByVal blogID As Integer, ByVal title As String, ByVal description As String, ByVal Entry As String, ByVal Published As Boolean, ByVal AllowComments As Boolean, ByVal AddedDate As DateTime, ByVal DisplayCopyright As Boolean, ByVal Copyright As String, ByVal PermaLink As String, ByVal CreatedUserId As Integer) As Integer
+  Public MustOverride Sub UpdateEntry(ByVal EntryID As Integer, ByVal blogID As Integer, ByVal title As String, ByVal description As String, ByVal Entry As String, ByVal Published As Boolean, ByVal AllowComments As Boolean, ByVal AddedDate As DateTime, ByVal DisplayCopyright As Boolean, ByVal Copyright As String, ByVal PermaLink As String, ByVal contentItemId As Integer)
+  Public MustOverride Sub UpdateEntryViewCount(ByVal EntryID As Integer)
   Public MustOverride Sub DeleteEntry(ByVal EntryID As Integer)
   Public MustOverride Function GetEntriesByBlog(ByVal BlogID As Integer, ByVal BlogDate As Date, ByVal PageSize As Integer, ByVal CurrentPage As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As IDataReader
   Public MustOverride Function GetAllEntriesByBlog(ByVal BlogID As Integer) As IDataReader
@@ -76,27 +76,27 @@ Namespace Providers.Data
 
 #End Region
 
-#Region "Blog_Comments Methods"
+#Region " Blog Comments Methods "
 
-        Public MustOverride Function GetComment(ByVal commentID As Integer) As IDataReader
+  Public MustOverride Function GetComment(ByVal commentID As Integer) As IDataReader
   Public MustOverride Function GetCommentsByEntry(ByVal EntryID As Integer, ByVal ShowNonApproved As Boolean) As IDataReader
   Public MustOverride Function GetCommentsByBlog(ByVal BlogID As Integer, ByVal ShowNonApproved As Boolean, ByVal MaximumComments As Integer) As IDataReader
   Public MustOverride Function GetCommentsByPortal(ByVal PortalID As Integer, ByVal ShowNonApproved As Boolean, ByVal MaximumComments As Integer) As IDataReader
-        Public MustOverride Function AddComment(ByVal EntryID As Integer, ByVal UserID As Integer, ByVal Title As String, ByVal comment As String, ByVal Author As String, ByVal Approved As Boolean, ByVal Website As String, ByVal Email As String, ByVal AddedDate As DateTime) As Integer
-        Public MustOverride Sub UpdateComment(ByVal commentID As Integer, ByVal EntryID As Integer, ByVal userID As Integer, ByVal Title As String, ByVal comment As String, ByVal Author As String, ByVal Approved As Boolean, ByVal Website As String, ByVal Email As String, ByVal AddedDate As DateTime)
-        Public MustOverride Sub DeleteComment(ByVal commentID As Integer)
-        Public MustOverride Sub DeleteAllUnapproved(ByVal EntryID As Integer)
+  Public MustOverride Function AddComment(ByVal EntryID As Integer, ByVal UserID As Integer, ByVal Title As String, ByVal comment As String, ByVal Author As String, ByVal Approved As Boolean, ByVal Website As String, ByVal Email As String, ByVal AddedDate As DateTime) As Integer
+  Public MustOverride Sub UpdateComment(ByVal commentID As Integer, ByVal EntryID As Integer, ByVal userID As Integer, ByVal Title As String, ByVal comment As String, ByVal Author As String, ByVal Approved As Boolean, ByVal Website As String, ByVal Email As String, ByVal AddedDate As DateTime)
+  Public MustOverride Sub DeleteComment(ByVal commentID As Integer)
+  Public MustOverride Sub DeleteAllUnapproved(ByVal EntryID As Integer)
 
 #End Region
 
-#Region "Archive Methods"
+#Region " Archive Methods "
 
   Public MustOverride Function GetBlogMonths(ByVal PortalID As Integer, ByVal BlogID As Integer) As IDataReader
   Public MustOverride Function GetBlogDaysForMonth(ByVal PortalID As Integer, ByVal BlogID As Integer, ByVal BlogDate As Date) As IDataReader
 
 #End Region
 
-#Region "Search Methods"
+#Region " Search Methods "
 
   Public MustOverride Function SearchByKeyWordAndPortal(ByVal PortalID As Integer, ByVal SearchString As String, ByVal ShowNonPublic As Boolean, ByVal ShowNonPublished As Boolean) As IDataReader
   Public MustOverride Function SearchByKeyWordAndBlog(ByVal BlogID As Integer, ByVal SearchString As String, ByVal ShowNonPublic As Boolean, ByVal ShowNonPublished As Boolean) As IDataReader
@@ -105,17 +105,15 @@ Namespace Providers.Data
 
 #End Region
 
-#Region "Settings Methods"
+#Region " Settings Methods "
 
   Public MustOverride Function GetSettings(ByVal PortalID As Integer, ByVal TabID As Integer) As IDataReader
   Public MustOverride Sub UpdateSetting(ByVal PortalID As Integer, ByVal TabID As Integer, ByVal Key As String, ByVal Value As String)
-        Public MustOverride Function GetBlogViewEntryModuleID(ByVal tabID As Integer) As Integer
+  Public MustOverride Function GetBlogViewEntryModuleID(ByVal tabID As Integer) As Integer
 
 #End Region
 
-#Region "NewBlog upgrade methods"
-
-#Region "Blog_Tags / Blog_Cats Methods"
+#Region " Upgrade Methods "
 
   Public MustOverride Function GetCategoriesByEntry(ByVal EntryID As Integer) As IDataReader
   Public MustOverride Function GetTagsByEntry(ByVal EntryID As Integer) As IDataReader
@@ -125,80 +123,15 @@ Namespace Providers.Data
 
 #End Region
 
-#Region "Blog methods"
-
-        Public MustOverride Function Upgrade_ListBlogs(ByVal PortalID As Integer, ByVal ParentBlogID As Integer, ByVal ShowNonPublic As Boolean) As IDataReader
-        Public MustOverride Sub Upgrade_DeleteBlog(ByVal blogID As Integer)
-
-#End Region
-
-#Region "Blog entries upgrade methods"
-
-        Public MustOverride Function Upgrade_ListEntriesByBlog(ByVal BlogID As Integer, ByVal BlogDate As Date, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As IDataReader
-        Public MustOverride Sub Upgrade_DeleteEntry(ByVal EntryID As Integer)
-
-#End Region
-
-#Region "Blog comment upgrade methods"
-
-        Public MustOverride Function Upgrade_ListComments(ByVal EntryID As Integer) As IDataReader
-        Public MustOverride Sub Upgrade_DeleteComment(ByVal commentID As Integer)
-
-#End Region
-
-#Region "General upgrade methods"
-
-        Public MustOverride Sub Upgrade_UpdateModuleDefId(ByVal ModuleDefID As Integer, ByVal ModuleId As Integer)
-        Public MustOverride Function Upgrade_GetBlogModuleSettings() As IDataReader
-
-#End Region
-
-#End Region
-
-#Region "ForumBlog upgrade methods"
-
-#Region "Forum_Groups Methods"
-
-        Public MustOverride Function Upgrade_ListForum_Groups(ByVal PortalID As Integer) As IDataReader
-        Public MustOverride Function Upgrade_ListForum_GroupsByGroup(ByVal GroupID As Integer) As IDataReader
-
-#End Region
-
-#Region "Forum_Forums Methods"
-
-        Public MustOverride Function Upgrade_ListForum_Forums(ByVal GroupID As Integer) As IDataReader
-
-#End Region
-
-#Region "Forum_Threads Methods"
-
-        Public MustOverride Function Upgrade_ListForum_Threads(ByVal ForumID As Integer) As IDataReader
-
-#End Region
-
-#Region "Forum_Posts Methods"
-
-        Public MustOverride Function Upgrade_ListForum_Posts(ByVal ThreadID As Integer) As IDataReader
-
-#End Region
-
-#Region "Forum_ThreadRating Methods"
-
-        Public MustOverride Function Upgrade_ListForum_ThreadRating(ByVal ThreadID As Integer) As IDataReader
-
-#End Region
-
-#End Region
-
 #Region "Terms"
 
-        Public MustOverride Function GetTermsByContentType(ByVal portalId As Integer, ByVal contentTypeId As Integer, ByVal vocabularyId As Integer) As IDataReader
+  Public MustOverride Function GetTermsByContentType(ByVal portalId As Integer, ByVal contentTypeId As Integer, ByVal vocabularyId As Integer) As IDataReader
 
-        Public MustOverride Function GetTermsByContentItem(ByVal contentItemId As Integer, ByVal vocabularyId As Integer) As IDataReader
-
-#End Region
+  Public MustOverride Function GetTermsByContentItem(ByVal contentItemId As Integer, ByVal vocabularyId As Integer) As IDataReader
 
 #End Region
 
-    End Class
+#End Region
+
+ End Class
 End Namespace

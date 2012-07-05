@@ -173,17 +173,17 @@ Namespace Providers.Data
    Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "GetEntriesByTerm", portalId, BlogDate, termId, pageSize, currentPage, ShowNonPublic, ShowNonPublished), IDataReader)
   End Function
 
-        Public Overrides Function AddEntry(ByVal blogID As Integer, ByVal title As String, ByVal description As String, ByVal Entry As String, ByVal Published As Boolean, ByVal AllowComments As Boolean, ByVal AddedDate As DateTime, ByVal DisplayCopyright As Boolean, ByVal Copyright As String, ByVal PermaLink As String, ByVal CreatedUserId As Integer) As Integer
-            Return CType(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "AddEntry", blogID, title, Null.GetNull(description, DBNull.Value), Null.GetNull(Entry, DBNull.Value), Published, AllowComments, AddedDate, DisplayCopyright, Null.GetNull(Copyright, DBNull.Value), Null.GetNull(PermaLink, DBNull.Value), CreatedUserId), Integer)
-        End Function
+  Public Overrides Function AddEntry(ByVal blogID As Integer, ByVal title As String, ByVal description As String, ByVal Entry As String, ByVal Published As Boolean, ByVal AllowComments As Boolean, ByVal AddedDate As DateTime, ByVal DisplayCopyright As Boolean, ByVal Copyright As String, ByVal PermaLink As String, ByVal CreatedUserId As Integer) As Integer
+   Return CType(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "AddEntry", blogID, title, Null.GetNull(description, DBNull.Value), Null.GetNull(Entry, DBNull.Value), Published, AllowComments, AddedDate, DisplayCopyright, Null.GetNull(Copyright, DBNull.Value), Null.GetNull(PermaLink, DBNull.Value), CreatedUserId), Integer)
+  End Function
 
   Public Overrides Sub UpdateEntry(ByVal BlogID As Integer, ByVal EntryID As Integer, ByVal Title As String, ByVal Description As String, ByVal Entry As String, ByVal Published As Boolean, ByVal AllowComments As Boolean, ByVal AddedDate As DateTime, ByVal DisplayCopyright As Boolean, ByVal Copyright As String, ByVal PermaLink As String, ByVal contentItemId As Integer)
    SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "UpdateEntry", BlogID, EntryID, Title, Null.GetNull(Description, DBNull.Value), Entry, Published, AllowComments, AddedDate, DisplayCopyright, Null.GetNull(Copyright, DBNull.Value), Null.GetNull(PermaLink, DBNull.Value), Null.GetNull(contentItemId, DBNull.Value))
   End Sub
 
-        Public Overrides Sub UpdateEntryViewCount(ByVal EntryId As Integer)
-            SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "UpdateEntryViewCount", EntryId)
-        End Sub
+  Public Overrides Sub UpdateEntryViewCount(ByVal EntryId As Integer)
+   SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "UpdateEntryViewCount", EntryId)
+  End Sub
 
   Public Overrides Sub DeleteEntry(ByVal EntryID As Integer)
    SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "DeleteEntry", EntryID)
@@ -268,15 +268,14 @@ Namespace Providers.Data
   End Function
 #End Region
 
-#Region " NewBlog upgrade methods "
+#Region " Upgrade Methods "
 
-#Region "Blog_Tags / Blog_Cats Methods"
   Public Overrides Function GetCategoriesByEntry(ByVal EntryID As Integer) As System.Data.IDataReader
-            Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "Upgrade_GetCategoriesByEntry", EntryID), IDataReader)
+   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "Upgrade_GetCategoriesByEntry", EntryID), IDataReader)
   End Function
 
   Public Overrides Function GetTagsByEntry(ByVal EntryID As Integer) As System.Data.IDataReader
-            Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "Upgrade_GetTagsByEntry", EntryID), IDataReader)
+   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "Upgrade_GetTagsByEntry", EntryID), IDataReader)
   End Function
 
   Public Overrides Function GetAllTagsForUpgrade() As System.Data.IDataReader
@@ -290,88 +289,6 @@ Namespace Providers.Data
   Public Overrides Function RetrieveTaxonomyRelatedPosts() As System.Data.IDataReader
    Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "Upgrade_RetrieveTaxonomyEntries"), IDataReader)
   End Function
-
-#End Region
-
-#Region "Blog methods"
-  Public Overrides Function Upgrade_ListBlogs(ByVal PortalID As Integer, ByVal ParentBlogID As Integer, ByVal ShowNonPublic As Boolean) As IDataReader
-   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "Upgrade_ListBlogs", PortalID, ParentBlogID, ShowNonPublic), IDataReader)
-  End Function
-
-  Public Overrides Sub Upgrade_DeleteBlog(ByVal blogID As Integer)
-   SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "Upgrade_DeleteBlog", blogID)
-  End Sub
-#End Region
-
-#Region "Blog entries upgrade methods"
-  Public Overrides Function Upgrade_ListEntriesByBlog(ByVal BlogID As Integer, ByVal BlogDate As Date, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As System.Data.IDataReader
-   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "Upgrade_ListEntriesByBlog", BlogID, Null.GetNull(BlogDate, DBNull.Value), ShowNonPublic, ShowNonPublished), IDataReader)
-  End Function
-
-  Public Overrides Sub Upgrade_DeleteEntry(ByVal EntryID As Integer)
-   SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "Upgrade_DeleteEntry", EntryID)
-  End Sub
-#End Region
-
-#Region "Blog comment upgrade methods"
-  Public Overrides Function Upgrade_ListComments(ByVal EntryID As Integer) As IDataReader
-   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "Upgrade_ListComments", EntryID), IDataReader)
-  End Function
-
-  Public Overrides Sub Upgrade_DeleteComment(ByVal commentID As Integer)
-   SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "Upgrade_DeleteComment", commentID)
-  End Sub
-#End Region
-
-#Region "General upgrade methods"
-  Public Overrides Sub Upgrade_UpdateModuleDefId(ByVal ModuleDefID As Integer, ByVal ModuleId As Integer)
-   SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "Upgrade_UpdateModuleDefId", ModuleDefID, ModuleId)
-  End Sub
-
-  Public Overrides Function Upgrade_GetBlogModuleSettings() As IDataReader
-   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "Upgrade_GetSettings"), IDataReader)
-  End Function
-#End Region
-
-#End Region
-
-#Region " ForumBlog upgrade methods "
-
-#Region "Forum_Groups Methods"
-
-  Public Overrides Function Upgrade_ListForum_Groups(ByVal portalID As Integer) As IDataReader
-   Return CType(SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Upgrade_ForumGroupsList"), GetNull(portalID)), IDataReader)
-  End Function
-
-  Public Overrides Function Upgrade_ListForum_GroupsByGroup(ByVal groupID As Integer) As IDataReader
-   Return CType(SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Upgrade_ForumGroupsByGroup"), GetNull(groupID)), IDataReader)
-  End Function
-
-#End Region
-
-#Region "Forum_Forums Methods"
-  Public Overrides Function Upgrade_ListForum_Forums(ByVal GroupId As Integer) As IDataReader
-   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "Upgrade_ForumForumsList", GetNull(GroupId)), IDataReader)
-  End Function
-#End Region
-
-#Region "Forum_Threads Methods"
-  Public Overrides Function Upgrade_ListForum_Threads(ByVal ForumID As Integer) As IDataReader
-   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "Upgrade_ForumThreadsList", GetNull(ForumID)), IDataReader)
-  End Function
-#End Region
-
-#Region "Forum_Posts Methods"
-  Public Overrides Function Upgrade_ListForum_Posts(ByVal ThreadID As Integer) As IDataReader
-   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "Upgrade_ForumPostsList", ThreadID), IDataReader)
-  End Function
-#End Region
-
-#Region "Forum_ThreadRating Methods"
-  Public Overrides Function Upgrade_ListForum_ThreadRating(ByVal ThreadID As Integer) As IDataReader
-   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "Upgrade_ForumThreadRatingList", ThreadID), IDataReader)
-  End Function
-#End Region
 
 #End Region
 
