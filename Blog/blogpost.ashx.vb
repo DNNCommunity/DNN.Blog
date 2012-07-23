@@ -130,30 +130,34 @@ Public Class BlogPost
     Public Function getCategories_WordPress(ByVal blogid As String, ByVal username As String, ByVal password As String) As Components.WordPress.CategoryInfo() Implements IWordPress.getCategories
         InitializeMethodCall(username, password)
 
-        Dim termController As ITermController = DotNetNuke.Entities.Content.Common.Util.GetTermController()
-        Dim colCategories As IQueryable(Of Term) = termController.GetTermsByVocabulary(_blogSettings.VocabularyId)
-        Dim res(colCategories.Count - 1) As Components.WordPress.CategoryInfo
-        Dim i As Integer = 0
+        If _blogSettings.VocabularyId > 1 Then
+            Dim termController As ITermController = Entities.Content.Common.Util.GetTermController()
+            Dim colCategories As IQueryable(Of Term) = termController.GetTermsByVocabulary(_blogSettings.VocabularyId)
+            Dim res(colCategories.Count - 1) As Components.WordPress.CategoryInfo
+            Dim i As Integer = 0
 
-        For Each objTerm As Term In colCategories
-            res(i).categoryId = objTerm.TermId
+            For Each objTerm As Term In colCategories
+                res(i).categoryId = objTerm.TermId
 
-            If objTerm.ParentTermId = DotNetNuke.Common.Utilities.Null.NullInteger Then
-                ' the way vocabs are setup for categories, this shouldn't happen
-                res(i).parentId = 0
-            Else
-                res(i).parentId = Convert.ToInt32(objTerm.ParentTermId)
-            End If
+                If objTerm.ParentTermId = Common.Utilities.Null.NullInteger Then
+                    ' the way vocabs are setup for categories, this shouldn't happen
+                    res(i).parentId = 0
+                Else
+                    res(i).parentId = Convert.ToInt32(objTerm.ParentTermId)
+                End If
 
-            res(i).categoryName = objTerm.Name
-            res(i).description = objTerm.Description
-            res(i).htmlUrl = "http://google.com"
-            res(i).rssUrl = "http://google.com"
+                res(i).categoryName = objTerm.Name
+                res(i).description = objTerm.Description
+                res(i).htmlUrl = "http://google.com"
+                res(i).rssUrl = "http://google.com"
 
-            i += 1
-        Next
+                i += 1
+            Next
 
-        Return res
+            Return res
+        Else
+            Return Nothing
+        End If
     End Function
 
     Public Function getPostCategories(ByVal postid As String, ByVal username As String, ByVal password As String) As Category() Implements IMoveableType.getPostCategories

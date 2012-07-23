@@ -138,25 +138,25 @@ Partial Public Class ViewBlog
                         If m_oBlog Is Nothing Then
                             list = New SearchController().SearchByKeywordByPortal(Me.PortalId, m_sSearchString, DotNetNuke.Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString()))
                         Else
-                            list = New SearchController().SearchByKeywordByBlog(m_oBlog.BlogID, m_sSearchString, DotNetNuke.Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString()))
+                            list = New SearchController().SearchByKeywordByBlog(m_oBlog.BlogID, m_sSearchString, Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString()), Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString()))
                         End If
                     End If
                 Else
-                    Dim pageTitle As String = Me.BasePage.Title
-                    Dim keyWords As String = Me.BasePage.KeyWords
-                    Dim pageDescription As String = Me.BasePage.Description
-                    Dim pageAuthor As String = Me.BasePage.Author
+                    Dim pageTitle As String = BasePage.Title
+                    Dim keyWords As String = BasePage.KeyWords
+                    Dim pageDescription As String = BasePage.Description
+                    Dim pageAuthor As String = BasePage.Author
 
                     If Category < 1 Then
                         If Tag < 1 Then
                             If m_oBlog Is Nothing Then
                                 ' most recent approved blog list (default view), no category/tag specified
 
-                                list = objEntries.GetEntriesByPortal(Me.PortalId, m_dBlogDate, m_dBlogDateType, BlogSettings.RecentEntriesMax, CurrentPage, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
+                                list = objEntries.GetEntriesByPortal(PortalId, m_dBlogDate, m_dBlogDateType, BlogSettings.RecentEntriesMax, CurrentPage, Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
 
                                 pnlBlogInfo.Visible = False
                                 If Not lnkRecentRss Is Nothing Then
-                                    lnkRecentRss.NavigateUrl = NavigateURL(Me.TabId, "", "rssid=0")
+                                    lnkRecentRss.NavigateUrl = NavigateURL(ModuleContext.TabId, "", "rssid=0")
                                 End If
 
                                 ' No paging or meta updates for this view.

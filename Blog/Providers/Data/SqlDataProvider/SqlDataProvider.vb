@@ -145,29 +145,29 @@ Namespace Providers.Data
    Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "GetEntriesByBlog", BlogID, Null.GetNull(BlogDate, DBNull.Value), PageSize, CurrentPage, ShowNonPublic, ShowNonPublished), IDataReader)
   End Function
 
-  Public Overrides Function GetAllEntriesByBlog(ByVal BlogID As Integer) As System.Data.IDataReader
-   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "GetAllEntriesByBlog", BlogID), IDataReader)
-  End Function
+        Public Overrides Function GetAllEntriesByBlog(ByVal BlogID As Integer) As IDataReader
+            Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "GetAllEntriesByBlog", BlogID), IDataReader)
+        End Function
 
-  Public Overrides Function GetEntriesByPortal(ByVal PortalID As Integer, ByVal BlogDate As Date, ByVal BlogDateType As String, ByVal PageSize As Integer, ByVal CurrentPage As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As System.Data.IDataReader
+        Public Overrides Function GetEntriesByPortal(ByVal PortalID As Integer, ByVal BlogDate As Date, ByVal BlogDateType As String, ByVal PageSize As Integer, ByVal CurrentPage As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As IDataReader
 
-   Dim sproc As String = ""
-   Select Case BlogDateType
-    Case Nothing
-     sproc = "GetEntriesByPortal"
-    Case "day"
-     sproc = "GetEntriesByDay"
-    Case "month"
-     sproc = "GetEntriesByMonth"
-   End Select
+            Dim sproc As String = ""
+            Select Case BlogDateType
+                Case Nothing
+                    sproc = "GetEntriesByPortal"
+                Case "day"
+                    sproc = "GetEntriesByDay"
+                Case "month"
+                    sproc = "GetEntriesByMonth"
+            End Select
 
-   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & sproc, PortalID, Null.GetNull(BlogDate, DBNull.Value), PageSize, CurrentPage, ShowNonPublic, ShowNonPublished), IDataReader)
-  End Function
+            Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & sproc, PortalID, Null.GetNull(BlogDate, DBNull.Value), PageSize, CurrentPage, ShowNonPublic, ShowNonPublished), IDataReader)
+        End Function
 
 
-  Public Overrides Function GetAllEntriesByPortal(ByVal PortalID As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As System.Data.IDataReader
-   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "GetAllEntriesByPortal", PortalID, ShowNonPublic, ShowNonPublished), IDataReader)
-  End Function
+        Public Overrides Function GetAllEntriesByPortal(ByVal PortalID As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As IDataReader
+            Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "GetAllEntriesByPortal", PortalID, ShowNonPublic, ShowNonPublished), IDataReader)
+        End Function
 
   Public Overrides Function GetEntriesByTerm(ByVal portalId As Integer, ByVal BlogDate As Date, ByVal termId As Integer, ByVal pageSize As Integer, ByVal currentPage As Integer, Optional ByVal ShowNonPublic As Boolean = False, Optional ByVal ShowNonPublished As Boolean = False) As System.Data.IDataReader
    Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "GetEntriesByTerm", portalId, BlogDate, termId, pageSize, currentPage, ShowNonPublic, ShowNonPublished), IDataReader)

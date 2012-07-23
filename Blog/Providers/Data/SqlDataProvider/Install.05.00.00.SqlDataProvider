@@ -1131,7 +1131,7 @@ AS
  DECLARE @RowStart INT 
  DECLARE @RowEnd INT 
     
- SET @RowStart = @PageSize * ( @CurrentPage - 1 )
+ SET @RowStart = @PageSize * ( @CurrentPage ) + 1
  SET @RowEnd = @RowStart + @PageSize
  
  SELECT  *
@@ -1210,7 +1210,7 @@ AS
  DECLARE @RowStart INT 
  DECLARE @RowEnd INT 
     
- SET @RowStart = @PageSize * ( @CurrentPage - 1 )
+ SET @RowStart = @PageSize * ( @CurrentPage ) + 1
  SET @RowEnd = @RowStart + @PageSize
  
  SELECT  *

@@ -432,7 +432,7 @@ Namespace Components.MetaWeblog
                 ' so we'll update it ourselves
                 Dim SQL As String = "UPDATE {databaseOwner}[{objectQualifier}Blog_Entries] SET AddedDate = '" + item.DateCreated.ToString() + "' WHERE EntryID = " & objEntry.EntryID.ToString()
 
-                DotNetNuke.Data.DataProvider.Instance().ExecuteSQL(SQL)
+                DataProvider.Instance().ExecuteSQL(SQL)
                 ' Nothing happens since we want to keep the time previously entered.
             Else
             End If
@@ -446,13 +446,13 @@ Namespace Components.MetaWeblog
 
             ' Tags?
 
-            If blogSettings.VocabularyId > 0 Then
+            If blogSettings.VocabularyId > 1 Then
                 For Each s As String In userEnteredTerms
                     If s.Length > 0 Then
                         'If (ContainsSpecialCharacters) Then
                         '    UI.Skins.Skin.AddModuleMessage(control, msg, ModuleMessage.ModuleMessageType.RedError);
                         'End If
-                        Dim newTerm As Term = Components.Integration.Terms.CreateAndReturnTerm(s, 1)
+                        Dim newTerm As Term = Integration.Terms.CreateAndReturnTerm(s, 1)
                         terms.Add(newTerm)
                     End If
                 Next
