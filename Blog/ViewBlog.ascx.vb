@@ -169,10 +169,10 @@ Partial Public Class ViewBlog
                                     hlAuthor.Text = m_oBlog.UserName
                                 End If
 
-                                Dim objAuthor As Entities.Users.UserInfo = DotNetNuke.Entities.Users.UserController.GetUserById(ModuleContext.PortalId, m_oBlog.UserID)
+                                Dim objAuthor As Entities.Users.UserInfo = Entities.Users.UserController.GetUserById(ModuleContext.PortalId, m_oBlog.UserID)
                                 dbiUser.ImageUrl = objAuthor.Profile.PhotoURL
-                                hlAuthor.NavigateUrl = DotNetNuke.Common.Globals.UserProfileURL(m_oBlog.UserID)
-                                imgAuthorLink.NavigateUrl = DotNetNuke.Common.Globals.UserProfileURL(m_oBlog.UserID)
+                                hlAuthor.NavigateUrl = UserProfileURL(m_oBlog.UserID)
+                                imgAuthorLink.NavigateUrl = UserProfileURL(m_oBlog.UserID)
 
                                 Dim objSecurity As ModuleSecurity = New ModuleSecurity(ModuleContext.ModuleId, ModuleContext.TabId)
                                 Dim isOwner As Boolean
@@ -190,7 +190,7 @@ Partial Public Class ViewBlog
                                 pageAuthor = m_oBlog.UserFullName
                             End If
                         Else
-                            list = objEntries.GetEntriesByTerm(Me.PortalId, m_dBlogDate, Tag, BlogSettings.RecentEntriesMax, CurrentPage, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
+                            list = objEntries.GetEntriesByTerm(PortalId, m_dBlogDate, Tag, BlogSettings.RecentEntriesMax, CurrentPage, Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
                             pnlBlogInfo.Visible = False
                             If Not lnkRecentRss Is Nothing Then
                                 lnkRecentRss.NavigateUrl = Links.RssByTag(ModuleContext, Tag)
@@ -388,7 +388,7 @@ Partial Public Class ViewBlog
 
             pnNotPublished.Visible = Not CType(e.Item.DataItem, EntryInfo).Published
 
-            lblPublishDate.Text = Utility.DateFromUtc(m_oEntry.AddedDate, UITimeZone).ToString("f")
+            lblPublishDate.Text = Utility.DateFromUtc(m_oEntry.AddedDate, UiTimeZone).ToString("f")
 
             ' DW - Updated again to make the truncation of the summary optional based on the EnforceSummaryTruncation
             '       blog setting.

@@ -157,11 +157,11 @@ Partial Class EditEntry
                 pnlComments.Visible = ((BlogSettings.CommentMode = Constants.CommentMode.Default) AndAlso m_oBlog.AllowComments)
 
                 If Not m_oEntry Is Nothing Then
-                    litTimezone.Text = UITimeZone.DisplayName
+                    litTimezone.Text = UiTimeZone.DisplayName
 
-                    Dim n As DateTime = Utility.AdjustedDate(m_oEntry.AddedDate, UITimeZone)
+                    Dim n As DateTime = Utility.AdjustedDate(m_oEntry.AddedDate, UiTimeZone)
                     Dim publishDate As DateTime = n
-                    Dim timeOffset As TimeSpan = UITimeZone.BaseUtcOffset
+                    Dim timeOffset As TimeSpan = UiTimeZone.BaseUtcOffset
 
                     publishDate = publishDate.Add(timeOffset)
 
@@ -212,17 +212,17 @@ Partial Class EditEntry
                     End If
                 Else
                     ' New Entry
-                    litTimezone.Text = UITimeZone.DisplayName
+                    litTimezone.Text = UiTimeZone.DisplayName
 
                     'DR-04/16/2009-BLG-9657
                     chkAllowComments.Checked = m_oBlog.AllowComments
 
-                    litTimezone.Text = UITimeZone.DisplayName
-                    Dim n As Date = Utility.AdjustedDate(DateTime.Now, UITimeZone)
+                    litTimezone.Text = UiTimeZone.DisplayName
+                    Dim n As Date = Utility.AdjustedDate(DateTime.Now, UiTimeZone)
                     dpEntryDate.Culture = Threading.Thread.CurrentThread.CurrentUICulture
                     dpEntryDate.SelectedDate = n.Date
                     tpEntryTime.Culture = Threading.Thread.CurrentThread.CurrentUICulture
-                    tpEntryTime.SelectedDate = Utility.AdjustedDate(DateTime.Now, UITimeZone)
+                    tpEntryTime.SelectedDate = Utility.AdjustedDate(DateTime.Now, UiTimeZone)
                 End If
 
                 If Not Request.UrlReferrer Is Nothing Then
@@ -459,7 +459,7 @@ Partial Class EditEntry
                     Dim minute As Integer = tpEntryTime.SelectedDate.Value.Minute
                     .AddedDate = .AddedDate.AddHours(hour)
                     .AddedDate = .AddedDate.AddMinutes(minute)
-                    .AddedDate = TimeZoneInfo.ConvertTimeToUtc(.AddedDate, UITimeZone)
+                    .AddedDate = TimeZoneInfo.ConvertTimeToUtc(.AddedDate, UiTimeZone)
 
                     If Null.IsNull(m_oEntry.EntryID) Then
                         .EntryID = m_oEntryController.AddEntry(m_oEntry, ModuleContext.TabId).EntryID

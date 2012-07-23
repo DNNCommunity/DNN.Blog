@@ -17,6 +17,7 @@
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 ' DEALINGS IN THE SOFTWARE.
 '
+
 Imports System.Xml
 Imports DotNetNuke.Modules.Blog.Providers.Data
 Imports DotNetNuke.Modules.Blog.Components.Business
@@ -28,7 +29,6 @@ Imports DotNetNuke.Modules.Blog.Components.Settings
 Imports DotNetNuke.Modules.Blog.Components.Entities
 
 Namespace Components.Rss
-
 
     ''' <summary>
     ''' This class will produce a RSS 2.0 compliant feed for the Blog module
@@ -82,26 +82,26 @@ Namespace Components.Rss
 
 #Region "Constructors"
 
-        Public Sub New(ByVal ModuleConfiguration As DotNetNuke.Entities.Modules.ModuleInfo, ByVal Request As HttpRequest, ByVal RssView As RssViews)
+        Public Sub New(ByVal moduleConfiguration As DotNetNuke.Entities.Modules.ModuleInfo, ByVal request As HttpRequest, ByVal rssView As RssViews)
             ' Set variables
-            _blogSettings = BlogSettings.GetBlogSettings(ModuleConfiguration.PortalID, ModuleConfiguration.TabID)
-            _moduleId = ModuleConfiguration.ModuleID
-            _tabId = ModuleConfiguration.TabID
+            _blogSettings = BlogSettings.GetBlogSettings(moduleConfiguration.PortalID, moduleConfiguration.TabID)
+            _moduleId = moduleConfiguration.ModuleID
+            _tabId = moduleConfiguration.TabID
             _rssView = RssView
             _includeBody = _blogSettings.IncludeBody
             If _includeBody Then
                 _includeBody = False
-                Components.Common.Globals.ReadValue(Request.Params, "body", _includeBody)
+                Common.Globals.ReadValue(request.Params, "body", _includeBody)
             End If
             _includeCategoriesInDescription = _blogSettings.IncludeCategoriesInDescription
             _includeTagsInDescription = _blogSettings.IncludeTagsInDescription
 
             ' Read request
-            _requestUrl = Request.Url
-            Components.Common.Globals.ReadValue(Request.Params, "rssid", _rssId)
+            _requestUrl = request.Url
+            Common.Globals.ReadValue(request.Params, "rssid", _rssId)
             _blog = (New BlogController).GetBlog(_rssId)
-            Components.Common.Globals.ReadValue(Request.Params, "rssentryid", _rssEntryId)
-            Components.Common.Globals.ReadValue(Request.Params, "rssdate", _rssDate)
+            Common.Globals.ReadValue(request.Params, "rssentryid", _rssEntryId)
+            Common.Globals.ReadValue(request.Params, "rssdate", _rssDate)
             If _rssDate <> "" Then
                 _rssDateAsDate = CType(_rssDate, Date)
                 _rssDateAsDate = _rssDateAsDate.AddDays(1)
@@ -115,7 +115,8 @@ Namespace Components.Rss
 
 #End Region
 
-#Region " Public Methods "
+#Region "Public Methods"
+
         Public Function WriteRssToString() As String
             Dim sb As New StringBuilder
             WriteRss(sb)
@@ -123,20 +124,20 @@ Namespace Components.Rss
         End Function
 
         Public Sub WriteRss(ByRef output As IO.Stream)
-            Dim xtw As New XmlTextWriter(output, System.Text.Encoding.UTF8)
+            Dim xtw As New XmlTextWriter(output, Encoding.UTF8)
             WriteRss(xtw)
             xtw.Flush()
         End Sub
 
         Public Sub WriteRss(ByVal fileName As String)
-            Dim xtw As New XmlTextWriter(fileName, System.Text.Encoding.UTF8)
+            Dim xtw As New XmlTextWriter(fileName, Encoding.UTF8)
             WriteRss(xtw)
             xtw.Flush()
             xtw.Close()
         End Sub
 
         Public Sub WriteRss(ByRef output As StringBuilder)
-            Dim sw As New StringWriterWithEncoding(output, System.Text.Encoding.UTF8)
+            Dim sw As New StringWriterWithEncoding(output, Encoding.UTF8)
             Dim xtw As New XmlTextWriter(sw)
             WriteRss(xtw)
             xtw.Flush()
@@ -163,20 +164,20 @@ Namespace Components.Rss
             ' End Updates
 
             ' set variables for channel header
-            Dim ManagingEditor As String = _blog.SyndicationEmail
-            Dim Title As String = _blog.Title
-            Dim Description As String = _blog.Description
-            Dim Link As System.Uri = _requestUrl
+            Dim managingEditor As String = _blog.SyndicationEmail
+            Dim title As String = _blog.Title
+            Dim description As String = _blog.Description
+            Dim link As Uri = _requestUrl
             Dim Language As String = _portalSettings.DefaultLanguage
 
             Select Case _rssView
                 Case RssViews.ArchivEntries
-                    ManagingEditor = _portalSettings.Email
-                    Title = Localization.GetString("lblArchive.Text", ModulePath & Localization.LocalResourceDirectory & "/Archive")
+                    managingEditor = _portalSettings.Email
+                    title = Localization.GetString("lblArchive.Text", ModulePath & Localization.LocalResourceDirectory & "/Archive")
                     If _portalSettings.ActiveTab.Description <> "" Then
-                        Description = _portalSettings.ActiveTab.Description
+                        description = _portalSettings.ActiveTab.Description
                     Else
-                        Description = _portalSettings.Description
+                        description = _portalSettings.Description
                     End If
                     If _rssId = -1 Then
                         'Dim userCulture As CultureInfo = New System.Globalization.CultureInfo(ModuleContext.PortalSettings.CultureCode)
@@ -188,40 +189,39 @@ Namespace Components.Rss
 
                         'Language = _blog.Culture
                         If _useFriendlyUrls Then
-                            Link = New Uri(Utility.checkUriFormat(NavigateURL(_tabId, "", "BlogId=" & _blog.BlogID.ToString()) & "?BlogDate=" & _rssDate))
+                            link = New Uri(Utility.checkUriFormat(NavigateURL(_tabId, "", "BlogId=" & _blog.BlogID.ToString()) & "?BlogDate=" & _rssDate))
                         Else
-                            Link = New Uri(Utility.checkUriFormat(NavigateURL(_tabId, "", "BlogId=" & _blog.BlogID.ToString()) & "&BlogDate=" & _rssDate))
+                            link = New Uri(Utility.checkUriFormat(NavigateURL(_tabId, "", "BlogId=" & _blog.BlogID.ToString()) & "&BlogDate=" & _rssDate))
                         End If
                     Else
                         Language = _portalSettings.DefaultLanguage
                         If _useFriendlyUrls Then
-                            Link = New Uri(Utility.checkUriFormat(NavigateURL(_tabId) & "?BlogDate=" & _rssDate))
+                            link = New Uri(Utility.checkUriFormat(NavigateURL(_tabId) & "?BlogDate=" & _rssDate))
                         Else
-                            Link = New Uri(Utility.checkUriFormat(NavigateURL(_tabId) & "&BlogDate=" & _rssDate))
+                            link = New Uri(Utility.checkUriFormat(NavigateURL(_tabId) & "&BlogDate=" & _rssDate))
                         End If
                     End If
-                Case RssViews.RecentEntries
-                    ManagingEditor = _portalSettings.Email
-                    Title = Localization.GetString("msgMostRecentEntries.Text", ModulePath & Localization.LocalResourceDirectory & "/ViewBlog")
-                    If _portalSettings.ActiveTab.Description <> "" Then
-                        Description = _portalSettings.ActiveTab.Description
-                    Else
-                        Description = _portalSettings.Description
-                    End If
-                    Link = New Uri(Utility.checkUriFormat(NavigateURL(_tabId)))
-
                 Case RssViews.SingleEntry, RssViews.BlogEntries
 
-                    Link = New Uri(Utility.checkUriFormat(NavigateURL(_tabId, "", "BlogId=" & _blog.BlogID)))
+                    link = New Uri(Utility.checkUriFormat(NavigateURL(_tabId, "", "BlogId=" & _blog.BlogID)))
                     'Language = _blog.Culture
+                Case RssViews.RecentEntries
+                    managingEditor = _portalSettings.Email
+                    title = Localization.GetString("msgMostRecentEntries.Text", ModulePath & Localization.LocalResourceDirectory & "/ViewBlog")
+                    If _portalSettings.ActiveTab.Description <> "" Then
+                        description = _portalSettings.ActiveTab.Description
+                    Else
+                        description = _portalSettings.Description
+                    End If
+                    link = New Uri(Utility.checkUriFormat(NavigateURL(_tabId)))
             End Select
 
             ' Write the channel header block
-            output.WriteElementString("title", Title)
-            output.WriteElementString("description", Description)
-            output.WriteElementString("link", Link.ToString)
+            output.WriteElementString("title", title)
+            output.WriteElementString("description", description)
+            output.WriteElementString("link", link.ToString)
             'output.WriteElementString("language", Language)
-            output.WriteElementString("webMaster", ManagingEditor)
+            output.WriteElementString("webMaster", managingEditor)
             output.WriteElementString("pubDate", Now.ToString(DateTimeFormatString))
             output.WriteElementString("lastBuildDate", Now.ToString(DateTimeFormatString))
             output.WriteElementString("docs", "http://backend.userland.com/rss")
@@ -233,15 +233,14 @@ Namespace Components.Rss
             Select Case _rssView
                 Case RssViews.None ' could not be, but ...
                 Case RssViews.RecentEntries
-                    dr = DataProvider.Instance().GetEntriesByPortal(_portalSettings.PortalId, Date.UtcNow, Nothing, _blogSettings.RecentRssEntriesMax, 1, DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName), DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName))
+                    dr = DataProvider.Instance().GetEntriesByPortal(_portalSettings.PortalId, Date.UtcNow, Nothing, _blogSettings.RecentRssEntriesMax, 1, Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName), Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName))
                 Case RssViews.BlogEntries
                     If Not _blog Is Nothing Then
                         Dim objSecurity As ModuleSecurity = New ModuleSecurity(_moduleId, _tabId)
-
                         Dim isOwner As Boolean
                         isOwner = _blog.UserID = _userId
 
-                        dr = DataProvider.Instance().GetEntriesByBlog(_rssId, Date.UtcNow, _blogSettings.RecentRssEntriesMax, 1, objSecurity.CanAddEntry(isOwner, _blog.AuthorMode), objSecurity.CanAddEntry(isOwner, _blog.AuthorMode))
+                        dr = DataProvider.Instance().GetEntriesByBlog(_rssId, Date.UtcNow, _blogSettings.RecentRssEntriesMax, 0, objSecurity.CanAddEntry(isOwner, _blog.AuthorMode), objSecurity.CanAddEntry(isOwner, _blog.AuthorMode))
                     End If
                 Case RssViews.ArchivEntries
                     Dim m_dBlogDate As Date
@@ -252,7 +251,7 @@ Namespace Components.Rss
                         isOwner = _blog.UserID = _userId
                         dr = DataProvider.Instance().GetEntriesByBlog(_rssId, m_dBlogDate.ToUniversalTime, _blogSettings.RecentRssEntriesMax, 1, objSecurity.CanAddEntry(isOwner, _blog.AuthorMode), objSecurity.CanAddEntry(isOwner, _blog.AuthorMode))
                     Else
-                        dr = DataProvider.Instance().GetEntriesByPortal(_portalSettings.PortalId, m_dBlogDate.ToUniversalTime, Nothing, _blogSettings.RecentRssEntriesMax, 1, DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName), DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName))
+                        dr = DataProvider.Instance().GetEntriesByPortal(_portalSettings.PortalId, m_dBlogDate.ToUniversalTime, Nothing, _blogSettings.RecentRssEntriesMax, 1, DotNetNuke.Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName), Security.PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName))
                     End If
                 Case RssViews.SingleEntry
                     dr = DataProvider.Instance().GetEntry(_rssEntryId, _portalSettings.PortalId)
@@ -279,6 +278,7 @@ Namespace Components.Rss
         Public Function CacheKey() As String
             Return String.Format("ID{0}TAB{1}MID{2}ENT{3}DAT{4}BODY{5}LOC{6}USER{7}", _rssId, _tabId, _moduleId, _rssEntryId, _rssDate.Replace(" ", "_"), _includeBody, _locale, _userId)
         End Function
+
 #End Region
 
 #Region "Private Methods"

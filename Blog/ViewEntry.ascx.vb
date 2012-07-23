@@ -221,7 +221,7 @@ Partial Public Class ViewEntry
                     lblBlogTitle.InnerHtml = Entry.Title ' Issue 22505
                     'lblBlogTitle.NavigateUrl = m_oEntry.PermaLink
                     'lblTrackback.Text = Utility.GetTrackbackRDF(NavigateURL(), Entry)
-                    lblDateTime.Text = Utility.DateFromUtc(Entry.AddedDate, UITimeZone).ToString("f")
+                    lblDateTime.Text = Utility.DateFromUtc(Entry.AddedDate, UiTimeZone).ToString("f")
 
                     If BlogSettings.SocialSharingMode = Constants.SocialSharingMode.Default Then
                         Dim facebookContent As String = ""

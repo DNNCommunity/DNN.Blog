@@ -26,30 +26,28 @@ Partial Public Class BlogFeed
  Inherits BlogModuleBase
 
 #Region "Event Handlers"
- Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
-  Response.Clear()
-  Response.ClearContent()
-  Response.ContentType = "application/xml"
+    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As EventArgs) Handles MyBase.Load
+        Response.Clear()
+        Response.ClearContent()
+        Response.ContentType = "application/xml"
 
-  Dim feed As New BlogRssFeed(Me.ModuleConfiguration, Me.Request, RssView)
-  Dim xmlfeed As String = Nothing
+        Dim feed As New BlogRssFeed(ModuleConfiguration, Request, RssView)
+        Dim xmlfeed As String = Nothing
         Try
-            xmlfeed = CStr(DotNetNuke.Common.Utilities.DataCache.GetCache(feed.CacheKey))
+            xmlfeed = CStr(Common.Utilities.DataCache.GetCache(feed.CacheKey))
         Catch
         End Try
         If xmlfeed Is Nothing Then
             xmlfeed = feed.WriteRssToString()
-            DotNetNuke.Common.Utilities.DataCache.SetCache(feed.CacheKey, xmlfeed, TimeSpan.FromMinutes(DotNetNuke.Entities.Host.Host.PerformanceSetting * 20))
+            Common.Utilities.DataCache.SetCache(feed.CacheKey, xmlfeed, TimeSpan.FromMinutes(Entities.Host.Host.PerformanceSetting * 20))
         End If
 
         Response.Write(xmlfeed)
 
         Response.End()
+    End Sub
 
- End Sub
 #End Region
 
 End Class
-
-
