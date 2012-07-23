@@ -66,11 +66,11 @@ Partial Class ViewCategories
 
 #Region "Event Handlers"
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         If Not Page.IsPostBack Then
 
-            If VocabularyId > 0 Then
-                Dim termController As ITermController = DotNetNuke.Entities.Content.Common.Util.GetTermController()
+            If VocabularyId > 1 Then
+                Dim termController As ITermController = Entities.Content.Common.Util.GetTermController()
                 Dim colCoreCategories As IQueryable(Of Term) = termController.GetTermsByVocabulary(VocabularyId)
 
                 dtCategories.DataSource = colCoreCategories
