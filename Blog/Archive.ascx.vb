@@ -30,74 +30,74 @@ Imports DotNetNuke.Modules.Blog.Components.Entities
 Imports DotNetNuke.Modules.Blog.Components.Settings
 
 Partial Public Class Archive
- Inherits BlogModuleBase
+    Inherits BlogModuleBase
 
 #Region "Private Members"
 
- Private _settings As ArchiveViewSettings
- Private objBlog As BlogInfo
- Private objCtlBlog As New BlogController
- Private m_Culture As String
- Private m_BlogID As Integer = -1
- Private BlogDate As Date = Date.UtcNow
- Private m_PersonalBlogID As Integer
+    Private _settings As ArchiveViewSettings
+    Private objBlog As BlogInfo
+    Private objCtlBlog As New BlogController
+    Private m_Culture As String
+    Private m_BlogID As Integer = -1
+    Private BlogDate As Date = Date.UtcNow
+    Private m_PersonalBlogID As Integer
 
 #End Region
 
 #Region "Event Handlers"
 
- Protected Overloads Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
-  _settings = ArchiveViewSettings.GetArchiveViewSettings(TabModuleId)
- End Sub
+    Protected Overloads Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        _settings = ArchiveViewSettings.GetArchiveViewSettings(TabModuleId)
+    End Sub
 
- Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-  Try
-   If Not Request.Params("BlogID") Is Nothing Then
-    m_BlogID = CType(Request.Params("BlogID"), Integer)
-   End If
-   If Not Request.Params("BlogDate") Is Nothing Then
-    BlogDate = CType(Request.Params("BlogDate"), Date)
-   End If
+    Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Try
+            If Not Request.Params("BlogID") Is Nothing Then
+                m_BlogID = CType(Request.Params("BlogID"), Integer)
+            End If
+            If Not Request.Params("BlogDate") Is Nothing Then
+                BlogDate = CType(Request.Params("BlogDate"), Date)
+            End If
 
-   If Not Page.IsPostBack Then
-    objBlog = objCtlBlog.GetBlogFromContext()
+            If _settings.EnableArchiveCss Then
+                ClientResourceManager.RegisterStyleSheet(Page, TemplateSourceDirectory + "/Archive.css", Web.Client.FileOrder.Css.ModuleCss)
+            End If
 
-    If BlogSettings.PageBlogs <> -1 Then
-     m_PersonalBlogID = BlogSettings.PageBlogs
-     m_BlogID = m_PersonalBlogID
-    Else
-     m_PersonalBlogID = -1
-    End If
+            If Not Page.IsPostBack Then
+                objBlog = objCtlBlog.GetBlogFromContext()
 
-    Dim objCtlArchive As New ArchiveController
+                If BlogSettings.PageBlogs <> -1 Then
+                    m_PersonalBlogID = BlogSettings.PageBlogs
+                    m_BlogID = m_PersonalBlogID
+                Else
+                    m_PersonalBlogID = -1
+                End If
+
+                Dim objCtlArchive As New ArchiveController
                 Dim objArchiveDays As List(Of ArchiveDays)
-    Dim objArchiveDay As ArchiveDays
-    Dim objArchiveMonths As List(Of ArchiveMonths)
-    objArchiveDays = objCtlArchive.GetBlogDaysForMonth(Me.PortalId, m_BlogID, BlogDate)
+                Dim objArchiveDay As ArchiveDays
+                Dim objArchiveMonths As List(Of ArchiveMonths)
+                objArchiveDays = objCtlArchive.GetBlogDaysForMonth(Me.PortalId, m_BlogID, BlogDate)
 
-    If _settings.ArchiveDisplayMode = "List" Then
-     objArchiveMonths = objCtlArchive.GetBlogMonths(Me.PortalId, m_BlogID)
+                If _settings.ArchiveDisplayMode = "List" Then
+                    objArchiveMonths = objCtlArchive.GetBlogMonths(Me.PortalId, m_BlogID)
 
-     If objArchiveMonths.Count > 0 Then
-      If _settings.ListDisplayMode = "DropDown" Then
-       BindArchiveDropDown(objArchiveMonths)
-       ddlArchiveMonths.Visible = True
-       cmdGo.Visible = True
-       lstArchiveMonths.Visible = False
-      Else
-       lstArchiveMonths.DataSource = objArchiveMonths
-       lstArchiveMonths.DataBind()
-      End If
-     End If
+                    If objArchiveMonths.Count > 0 Then
+                        If _settings.ListDisplayMode = "DropDown" Then
+                            BindArchiveDropDown(objArchiveMonths)
+                            ddlArchiveMonths.Visible = True
+                            cmdGo.Visible = True
+                            lstArchiveMonths.Visible = False
+                        Else
+                            lstArchiveMonths.DataSource = objArchiveMonths
+                            lstArchiveMonths.DataBind()
+                        End If
+                    End If
 
-     pnlList.Visible = True
-    Else
-     If _settings.EnableArchiveCss Then
-      ClientResourceManager.RegisterStyleSheet(Page, TemplateSourceDirectory + "/Archive.css", Web.Client.FileOrder.Css.ModuleCss)
-     End If
-
-     calMonth.SelectedDates.Clear()
-     For Each objArchiveDay In objArchiveDays
+                    pnlList.Visible = True
+                Else
+                    calMonth.SelectedDates.Clear()
+                    For Each objArchiveDay In objArchiveDays
                         Dim n As DateTime = Utility.AdjustedDate(objArchiveDay.AddedDate, UiTimeZone)
                         Dim publishDate As DateTime = n
                         Dim timeOffset As TimeSpan = UiTimeZone.BaseUtcOffset
@@ -192,43 +192,43 @@ Partial Public Class Archive
         End If
     End Sub
 
- Protected Sub calMonth_VisibleMonthChanged(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.MonthChangedEventArgs) Handles calMonth.VisibleMonthChanged
-  'Utility.SetCulture(CType(Me.Page, PageBase).PageCulture.Name)
+    Protected Sub calMonth_VisibleMonthChanged(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.MonthChangedEventArgs) Handles calMonth.VisibleMonthChanged
+        'Utility.SetCulture(CType(Me.Page, PageBase).PageCulture.Name)
 
-  Try
-   Dim newDate As String = (New Date(e.NewDate.Year, e.NewDate.Month, Date.DaysInMonth(e.NewDate.Year, e.NewDate.Month))).ToString("yyyy-MM-dd")
-   Response.Redirect(Links.ViewBlogsByDate(ModuleContext, newDate, "month"), False)
-  Catch ex As Exception
-   ProcessModuleLoadException(Me, ex)
-  End Try
- End Sub
+        Try
+            Dim newDate As String = (New Date(e.NewDate.Year, e.NewDate.Month, Date.DaysInMonth(e.NewDate.Year, e.NewDate.Month))).ToString("yyyy-MM-dd")
+            Response.Redirect(Links.ViewBlogsByDate(ModuleContext, newDate, "month"), False)
+        Catch ex As Exception
+            ProcessModuleLoadException(Me, ex)
+        End Try
+    End Sub
 
 #End Region
 
 #Region "Private Methods"
 
- ''' <summary>
- ''' 
- ''' </summary>
- ''' <param name="archivedMonths"></param>
- ''' <remarks>CP: Added new option via module settings.</remarks>
- Private Sub BindArchiveDropDown(ByVal archivedMonths As List(Of ArchiveMonths))
-  For Each item As ArchiveMonths In archivedMonths
-   Dim li As New ListItem
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="archivedMonths"></param>
+    ''' <remarks>CP: Added new option via module settings.</remarks>
+    Private Sub BindArchiveDropDown(ByVal archivedMonths As List(Of ArchiveMonths))
+        For Each item As ArchiveMonths In archivedMonths
+            Dim li As New ListItem
 
-   li.Text = String.Format("{0} ({1})", Convert.ToDateTime(item.AddedDate).ToString("y"), item.PostCount)
+            li.Text = String.Format("{0} ({1})", Convert.ToDateTime(item.AddedDate).ToString("y"), item.PostCount)
 
-   If Not Request.Params("BlogId") Is Nothing Then
-    Dim BlogId As Integer = Int32.Parse(Request.Params("BlogID"))
-    li.Value = NavigateURL(TabId, "", "BlogId", BlogId.ToString(), "BlogDate=" & Format(item.AddedDate, "yyyy-MM-dd"), "DateType=" & "month")
-   Else
-    li.Value = NavigateURL(TabId, "", "BlogDate=" & Format(item.AddedDate, "yyyy-MM-dd"), "DateType=" & "month")
-   End If
+            If Not Request.Params("BlogId") Is Nothing Then
+                Dim BlogId As Integer = Int32.Parse(Request.Params("BlogID"))
+                li.Value = NavigateURL(TabId, "", "BlogId", BlogId.ToString(), "BlogDate=" & Format(item.AddedDate, "yyyy-MM-dd"), "DateType=" & "month")
+            Else
+                li.Value = NavigateURL(TabId, "", "BlogDate=" & Format(item.AddedDate, "yyyy-MM-dd"), "DateType=" & "month")
+            End If
 
-   ddlArchiveMonths.Items.Add(li)
-  Next
+            ddlArchiveMonths.Items.Add(li)
+        Next
 
- End Sub
+    End Sub
 
 
 #End Region

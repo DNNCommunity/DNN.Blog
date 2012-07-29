@@ -19,6 +19,7 @@
 '
 
 Imports System.Linq
+Imports DotNetNuke.Web.Client.ClientResourceManagement
 Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Entities.Content.Taxonomy
 Imports DotNetNuke.Modules.Blog.Components.Settings
@@ -32,6 +33,7 @@ Partial Class ViewCategories
 #Region "Private Members"
 
     Private _blogSettings As BlogSettings
+    Private _settings As CategoryViewSettings
 
     Private Property BlogSettings() As BlogSettings
         Get
@@ -66,9 +68,16 @@ Partial Class ViewCategories
 
 #Region "Event Handlers"
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
-        If Not Page.IsPostBack Then
+    Protected Overloads Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        _settings = CategoryViewSettings.GetCategoryViewSettings(TabModuleId)
+    End Sub
 
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+        If _settings.TreeSkin <> "" Then
+            dtCategories.Skin = _settings.TreeSkin
+        End If
+
+        If Not Page.IsPostBack Then
             If VocabularyId > 1 Then
                 Dim termController As ITermController = Entities.Content.Common.Util.GetTermController()
                 Dim colCoreCategories As IQueryable(Of Term) = termController.GetTermsByVocabulary(VocabularyId)
