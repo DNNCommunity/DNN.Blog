@@ -26,7 +26,6 @@ Imports DotNetNuke.Modules.Blog.Components.Common
 Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Services.Localization.Localization
-Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.Modules.Blog.Components.Entities
 Imports DotNetNuke.Framework
 
@@ -35,15 +34,15 @@ Partial Public Class ViewBlog
 
 #Region "Private Members"
 
-    Private m_sSearchString As String
-    Private m_sSearchType As String = "Keyword"
-    Private m_oBlogController As New BlogController
-    Private m_oBlog As BlogInfo
-    Private m_dBlogDate As Date = Date.UtcNow
-    Private m_dBlogDateType As String
-    Private m_bSearchDisplay As Boolean = False
-    Private m_PersonalBlogID As Integer
-    Private m_SeoFriendlyUrl As Boolean
+    Private _mSSearchString As String
+    Private _mSSearchType As String = "Keyword"
+    Private ReadOnly _mOBlogController As New BlogController
+    Private _mOBlog As BlogInfo
+    Private _mDBlogDate As Date = Date.UtcNow
+    Private _mDBlogDateType As String
+    Private _mBSearchDisplay As Boolean = False
+    Private _mPersonalBlogId As Integer
+    Private _mSeoFriendlyUrl As Boolean
 
     Private ReadOnly Property CurrentPage() As Integer
         Get
@@ -79,45 +78,46 @@ Partial Public Class ViewBlog
 
 #Region "Event Handlers"
 
-    Protected Overloads Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Protected Overloads Sub Page_Init(ByVal sender As System.Object, ByVal e As EventArgs) Handles MyBase.Init
         jQuery.RequestUIRegistration()
         ClientResourceManager.RegisterScript(Page, TemplateSourceDirectory + "/js/jquery.qatooltip.js")
         ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js")
 
-        m_oBlog = m_oBlogController.GetBlogFromContext()
-        m_PersonalBlogID = BlogSettings.PageBlogs
+        _mOBlog = _mOBlogController.GetBlogFromContext()
+        _mPersonalBlogId = BlogSettings.PageBlogs
 
-        If m_PersonalBlogID <> -1 And m_oBlog Is Nothing Then
+        If _mPersonalBlogId <> -1 And _mOBlog Is Nothing Then
             Dim objBlog As New BlogController
-            m_oBlog = objBlog.GetBlog(m_PersonalBlogID)
+            _mOBlog = objBlog.GetBlog(_mPersonalBlogId)
         End If
         If Not Request.Params("Search") Is Nothing Then
-            m_sSearchString = Request.Params("Search")
-            m_bSearchDisplay = True
-            If m_oBlog Is Nothing Then
+            _mSSearchString = Request.Params("Search")
+            _mBSearchDisplay = True
+            If _mOBlog Is Nothing Then
                 ModuleConfiguration.ModuleTitle = GetString("msgSearchResults", LocalResourceFile)
             Else
-                ModuleConfiguration.ModuleTitle = GetString("msgSearchResultsFor", LocalResourceFile) & " " & m_oBlog.Title
+                ModuleConfiguration.ModuleTitle = GetString("msgSearchResultsFor", LocalResourceFile) & " " & _mOBlog.Title
             End If
         End If
-        MyActions.Add(GetNextActionID, GetString("msgModuleOptions", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("", "", "Module_Options"), False, DotNetNuke.Security.SecurityAccessLevel.Admin, True, False)
+        MyActions.Add(GetNextActionID, GetString("msgModuleOptions", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("", "", "Module_Options"), False, Security.SecurityAccessLevel.Admin, True, False)
     End Sub
 
     Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
-            m_SeoFriendlyUrl = BlogSettings.ShowSeoFriendlyUrl
+            _mSeoFriendlyUrl = BlogSettings.ShowSeoFriendlyUrl
             Dim objEntries As New EntryController
             Dim list As List(Of EntryInfo)
 
             If Not Request.Params("BlogDate") Is Nothing Then
-                m_dBlogDate = CType(Date.Parse(Request.Params("BlogDate")), Date)
+                _mDBlogDate = CType(Date.Parse(Request.Params("BlogDate")), Date)
+                _mDBlogDate = TimeZoneInfo.ConvertTimeToUtc(_mDBlogDate, UiTimeZone)
 
                 If Not Request.Params("DateType") Is Nothing Then
-                    m_dBlogDateType = Request.Params("DateType")
+                    _mDBlogDateType = Request.Params("DateType")
                 End If
             End If
             If Not Request.Params("SearchType") Is Nothing Then
-                m_sSearchType = Request.Params("SearchType")
+                _mSSearchType = Request.Params("SearchType")
             End If
 
             Dim prevPage As String = NavigateURL()
@@ -127,18 +127,18 @@ Partial Public Class ViewBlog
             If Not Page.IsPostBack Then
                 Dim HasValue As Boolean = False
 
-                If m_bSearchDisplay Then
-                    If m_sSearchType = "Phrase" Then
-                        If m_oBlog Is Nothing Then
-                            list = New SearchController().SearchByPhraseByPortal(Me.PortalId, m_sSearchString, DotNetNuke.Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString()))
+                If _mBSearchDisplay Then
+                    If _mSSearchType = "Phrase" Then
+                        If _mOBlog Is Nothing Then
+                            list = New SearchController().SearchByPhraseByPortal(PortalId, _mSSearchString, Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
                         Else
-                            list = New SearchController().SearchByPhraseByBlog(m_oBlog.BlogID, m_sSearchString, DotNetNuke.Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString()))
+                            list = New SearchController().SearchByPhraseByBlog(_mOBlog.BlogID, _mSSearchString, Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
                         End If
                     Else
-                        If m_oBlog Is Nothing Then
-                            list = New SearchController().SearchByKeywordByPortal(Me.PortalId, m_sSearchString, DotNetNuke.Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString()))
+                        If _mOBlog Is Nothing Then
+                            list = New SearchController().SearchByKeywordByPortal(PortalId, _mSSearchString, Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
                         Else
-                            list = New SearchController().SearchByKeywordByBlog(m_oBlog.BlogID, m_sSearchString, Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString()), Security.PortalSecurity.IsInRole(Me.PortalSettings.AdministratorRoleId.ToString()))
+                            list = New SearchController().SearchByKeywordByBlog(_mOBlog.BlogID, _mSSearchString, Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
                         End If
                     End If
                 Else
@@ -149,10 +149,10 @@ Partial Public Class ViewBlog
 
                     If Category < 1 Then
                         If Tag < 1 Then
-                            If m_oBlog Is Nothing Then
+                            If _mOBlog Is Nothing Then
                                 ' most recent approved blog list (default view), no category/tag specified
 
-                                list = objEntries.GetEntriesByPortal(PortalId, m_dBlogDate, m_dBlogDateType, BlogSettings.RecentEntriesMax, CurrentPage, Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
+                                list = objEntries.GetEntriesByPortal(PortalId, _mDBlogDate, _mDBlogDateType, BlogSettings.RecentEntriesMax, CurrentPage, Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
 
                                 pnlBlogInfo.Visible = False
                                 If Not lnkRecentRss Is Nothing Then
@@ -163,34 +163,34 @@ Partial Public Class ViewBlog
                             Else
                                 ' Specific blog view
                                 pnlBlogInfo.Visible = True
-                                If m_oBlog.ShowFullName Then
-                                    hlAuthor.Text = m_oBlog.UserFullName
+                                If _mOBlog.ShowFullName Then
+                                    hlAuthor.Text = _mOBlog.UserFullName
                                 Else
-                                    hlAuthor.Text = m_oBlog.UserName
+                                    hlAuthor.Text = _mOBlog.UserName
                                 End If
 
-                                Dim objAuthor As Entities.Users.UserInfo = Entities.Users.UserController.GetUserById(ModuleContext.PortalId, m_oBlog.UserID)
+                                Dim objAuthor As Entities.Users.UserInfo = Entities.Users.UserController.GetUserById(ModuleContext.PortalId, _mOBlog.UserID)
                                 dbiUser.ImageUrl = objAuthor.Profile.PhotoURL
-                                hlAuthor.NavigateUrl = UserProfileURL(m_oBlog.UserID)
-                                imgAuthorLink.NavigateUrl = UserProfileURL(m_oBlog.UserID)
+                                hlAuthor.NavigateUrl = UserProfileURL(_mOBlog.UserID)
+                                imgAuthorLink.NavigateUrl = UserProfileURL(_mOBlog.UserID)
 
                                 Dim objSecurity As ModuleSecurity = New ModuleSecurity(ModuleContext.ModuleId, ModuleContext.TabId)
                                 Dim isOwner As Boolean
-                                isOwner = m_oBlog.UserID = ModuleContext.PortalSettings.UserId
+                                isOwner = _mOBlog.UserID = ModuleContext.PortalSettings.UserId
 
-                                litBlogDescription.Text = m_oBlog.Description
-                                list = objEntries.GetEntriesByBlog(m_oBlog.BlogID, m_dBlogDate, BlogSettings.RecentEntriesMax, CurrentPage, objSecurity.CanAddEntry(isOwner, m_oBlog.AuthorMode), objSecurity.CanAddEntry(isOwner, m_oBlog.AuthorMode))
+                                litBlogDescription.Text = _mOBlog.Description
+                                list = objEntries.GetEntriesByBlog(_mOBlog.BlogID, _mDBlogDate, BlogSettings.RecentEntriesMax, CurrentPage, objSecurity.CanAddEntry(isOwner, _mOBlog.AuthorMode), objSecurity.CanAddEntry(isOwner, _mOBlog.AuthorMode))
 
-                                prevPage = Links.ViewEntriesByBlog(ModuleContext, m_oBlog.BlogID, CurrentPage - 1)
-                                nextPage = Links.ViewEntriesByBlog(ModuleContext, m_oBlog.BlogID, CurrentPage + 1)
-                                pageUrl = Links.ViewEntriesByBlog(ModuleContext, m_oBlog.BlogID, CurrentPage)
+                                prevPage = Links.ViewEntriesByBlog(ModuleContext, _mOBlog.BlogID, CurrentPage - 1)
+                                nextPage = Links.ViewEntriesByBlog(ModuleContext, _mOBlog.BlogID, CurrentPage + 1)
+                                pageUrl = Links.ViewEntriesByBlog(ModuleContext, _mOBlog.BlogID, CurrentPage)
 
-                                pageTitle = m_oBlog.Title
-                                pageDescription = m_oBlog.Description
-                                pageAuthor = m_oBlog.UserFullName
+                                pageTitle = _mOBlog.Title
+                                pageDescription = _mOBlog.Description
+                                pageAuthor = _mOBlog.UserFullName
                             End If
                         Else
-                            list = objEntries.GetEntriesByTerm(PortalId, m_dBlogDate, Tag, BlogSettings.RecentEntriesMax, CurrentPage, Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
+                            list = objEntries.GetEntriesByTerm(PortalId, _mDBlogDate, Tag, BlogSettings.RecentEntriesMax, CurrentPage, Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
                             pnlBlogInfo.Visible = False
                             If Not lnkRecentRss Is Nothing Then
                                 lnkRecentRss.NavigateUrl = Links.RssByTag(ModuleContext, Tag)
@@ -203,7 +203,7 @@ Partial Public Class ViewBlog
                         End If
                     Else
                         ' category specific search
-                        list = objEntries.GetEntriesByTerm(Me.PortalId, m_dBlogDate, Category, BlogSettings.RecentEntriesMax, CurrentPage, DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
+                        list = objEntries.GetEntriesByTerm(PortalId, _mDBlogDate, Category, BlogSettings.RecentEntriesMax, CurrentPage, Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
                         pnlBlogInfo.Visible = False
                         If Not lnkRecentRss Is Nothing Then
                             lnkRecentRss.NavigateUrl = Links.RssByCategory(ModuleContext, Category)
@@ -239,9 +239,9 @@ Partial Public Class ViewBlog
                     Utility.SetPageMetaAndOpenGraph(BasePage, ModuleContext, pageTitle, pageDescription, keyWords, pageUrl)
                 End If ' search display or not
 
-                If Not m_oBlog Is Nothing Then
-                    If m_oBlog.Syndicated Then
-                        lnkRSS.NavigateUrl = Links.RSSByBlog(ModuleContext, m_oBlog.BlogID)
+                If Not _mOBlog Is Nothing Then
+                    If _mOBlog.Syndicated Then
+                        lnkRSS.NavigateUrl = Links.RSSByBlog(ModuleContext, _mOBlog.BlogID)
                         lnkRSS.Visible = True
                     End If
                 End If
@@ -249,19 +249,19 @@ Partial Public Class ViewBlog
                 ' add rss discovery link
                 Dim ph As PlaceHolder = CType(BasePage.FindControl("phDNNHead"), PlaceHolder)
                 If Not ph Is Nothing Then
-                    If m_oBlog Is Nothing AndAlso pnlBlogRss.Visible Then
+                    If _mOBlog Is Nothing AndAlso pnlBlogRss.Visible Then
                         Dim objLink As New HtmlGenericControl("LINK")
                         objLink.Attributes("title") = "RSS"
                         objLink.Attributes("rel") = "alternate"
                         objLink.Attributes("type") = "application/rss+xml"
                         objLink.Attributes("href") = Links.RSSAggregated(ModuleContext)
                         ph.Controls.Add(objLink)
-                    ElseIf Not m_oBlog Is Nothing AndAlso m_oBlog.Syndicated Then
+                    ElseIf Not _mOBlog Is Nothing AndAlso _mOBlog.Syndicated Then
                         Dim objLink As New HtmlGenericControl("LINK")
                         objLink.Attributes("title") = "RSS"
                         objLink.Attributes("rel") = "alternate"
                         objLink.Attributes("type") = "application/rss+xml"
-                        objLink.Attributes("href") = Links.RSSByBlog(ModuleContext, m_oBlog.BlogID)
+                        objLink.Attributes("href") = Links.RSSByBlog(ModuleContext, _mOBlog.BlogID)
                         ph.Controls.Add(objLink)
                     End If
                 End If
@@ -269,11 +269,11 @@ Partial Public Class ViewBlog
                 If (HasValue = False) Then
                     Dim message As String = GetString("msgNoResult", LocalResourceFile)
 
-                    If m_bSearchDisplay Then
+                    If _mBSearchDisplay Then
                         message = GetString("msgNoSearchResult", LocalResourceFile)
-                    ElseIf m_dBlogDate <> Date.MinValue Then
+                    ElseIf _mDBlogDate <> Date.MinValue Then
                         message = GetString("msgNoPeriodResult", LocalResourceFile)
-                    ElseIf Not m_oBlog Is Nothing Then
+                    ElseIf Not _mOBlog Is Nothing Then
                         message = GetString("msgNoBlogResult", LocalResourceFile)
                     End If
 
@@ -286,38 +286,38 @@ Partial Public Class ViewBlog
         End Try
     End Sub
 
-    Protected Sub lstBlogView_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataListItemEventArgs) Handles lstBlogView.ItemDataBound
+    Protected Sub lstBlogView_ItemDataBound(ByVal sender As Object, ByVal e As DataListItemEventArgs) Handles lstBlogView.ItemDataBound
         If e.Item.ItemType = ListItemType.AlternatingItem Or e.Item.ItemType = ListItemType.Item Then
-            Dim litAuthor As System.Web.UI.WebControls.Literal = CType(e.Item.FindControl("litAuthor"), System.Web.UI.WebControls.Literal)
-            Dim lblDescription As System.Web.UI.WebControls.Literal = CType(e.Item.FindControl("litDescription"), System.Web.UI.WebControls.Literal)
-            Dim lnkComments As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkComments"), System.Web.UI.WebControls.HyperLink)
-            Dim pnNotPublished As System.Web.UI.WebControls.Panel = CType(e.Item.FindControl("pnNotPublished"), System.Web.UI.WebControls.Panel)
-            Dim lblPublishDate As System.Web.UI.WebControls.Label = CType(e.Item.FindControl("lblPublishDate"), System.Web.UI.WebControls.Label)
-            Dim lnkParentBlog As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkParentBlog"), System.Web.UI.WebControls.HyperLink)
-            Dim imgBlogParentSeparator As System.Web.UI.WebControls.Image = CType(e.Item.FindControl("imgBlogParentSeparator"), System.Web.UI.WebControls.Image)
-            Dim lnkChildBlog As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkChildBlog"), System.Web.UI.WebControls.HyperLink)
-            Dim lnkEntry As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("lnkEntry"), System.Web.UI.WebControls.HyperLink)
-            Dim divBlogReadMore As System.Web.UI.HtmlControls.HtmlGenericControl = CType(e.Item.FindControl("divBlogReadMore"), System.Web.UI.HtmlControls.HtmlGenericControl)
-            Dim litCategories As System.Web.UI.WebControls.Literal = CType(e.Item.FindControl("litCategories"), System.Web.UI.WebControls.Literal)
+            Dim litAuthor As Literal = CType(e.Item.FindControl("litAuthor"), Literal)
+            Dim lblDescription As Literal = CType(e.Item.FindControl("litDescription"), Literal)
+            Dim lnkComments As HyperLink = CType(e.Item.FindControl("lnkComments"), HyperLink)
+            Dim pnNotPublished As Panel = CType(e.Item.FindControl("pnNotPublished"), Panel)
+            Dim lblPublishDate As Label = CType(e.Item.FindControl("lblPublishDate"), Label)
+            Dim lnkParentBlog As HyperLink = CType(e.Item.FindControl("lnkParentBlog"), HyperLink)
+            Dim imgBlogParentSeparator As Image = CType(e.Item.FindControl("imgBlogParentSeparator"), Image)
+            Dim lnkChildBlog As HyperLink = CType(e.Item.FindControl("lnkChildBlog"), HyperLink)
+            Dim lnkEntry As HyperLink = CType(e.Item.FindControl("lnkEntry"), HyperLink)
+            Dim divBlogReadMore As HtmlGenericControl = CType(e.Item.FindControl("divBlogReadMore"), HtmlGenericControl)
+            Dim litCategories As Literal = CType(e.Item.FindControl("litCategories"), Literal)
             Dim tagControl As Tags = DirectCast(e.Item.FindControl("dbaTag"), Tags)
             Dim oBlog As BlogInfo
 
-            If m_oBlog Is Nothing Then
-                oBlog = m_oBlogController.GetBlog(CType(CType(e.Item.DataItem, EntryInfo).BlogID, Integer))
+            If _mOBlog Is Nothing Then
+                oBlog = _mOBlogController.GetBlog(CType(CType(e.Item.DataItem, EntryInfo).BlogID, Integer))
             Else
-                If m_oBlog.BlogID <> CType(CType(e.Item.DataItem, EntryInfo).BlogID, Integer) Then
-                    oBlog = m_oBlogController.GetBlog(CType(CType(e.Item.DataItem, EntryInfo).BlogID, Integer))
+                If _mOBlog.BlogID <> CType(CType(e.Item.DataItem, EntryInfo).BlogID, Integer) Then
+                    oBlog = _mOBlogController.GetBlog(CType(CType(e.Item.DataItem, EntryInfo).BlogID, Integer))
                 Else
-                    oBlog = m_oBlog
+                    oBlog = _mOBlog
                 End If
             End If
 
             ' Added this in order to have the Edit Entry Link on all the pages.
             Dim m_oEntry As EntryInfo = CType(e.Item.DataItem, EntryInfo)
             Dim lnkEditEntry As HyperLink
-            Dim imgEdit As System.Web.UI.WebControls.Image
+            Dim imgEdit As Image
             lnkEditEntry = CType(e.Item.FindControl("lnkEditEntry"), HyperLink)
-            imgEdit = CType(e.Item.FindControl("imgEdit"), System.Web.UI.WebControls.Image)
+            imgEdit = CType(e.Item.FindControl("imgEdit"), Image)
 
             If Not m_oEntry Is Nothing Then
                 Dim objSecurity As ModuleSecurity = New ModuleSecurity(ModuleContext.ModuleId, ModuleContext.TabId)
@@ -334,12 +334,12 @@ Partial Public Class ViewBlog
 
                 Dim hlPermaLink As HyperLink = CType(e.Item.FindControl("hlPermaLink"), HyperLink)
                 hlPermaLink.NavigateUrl = m_oEntry.PermaLink
-                hlPermaLink.Text = Localization.GetString("lnkPermaLink", LocalResourceFile)
+                hlPermaLink.Text = GetString("lnkPermaLink", LocalResourceFile)
                 hlPermaLink.Visible = (m_oEntry.PermaLink <> Utility.BlogNavigateURL(TabId, PortalId, m_oEntry.EntryID, m_oEntry.Title, BlogSettings.ShowSeoFriendlyUrl))
 
                 Dim hlMore As HyperLink = CType(e.Item.FindControl("hlMore"), HyperLink)
                 hlMore.NavigateUrl = Utility.BlogNavigateURL(TabId, PortalId, m_oEntry.EntryID, m_oEntry.Title, BlogSettings.ShowSeoFriendlyUrl)
-                hlMore.Text = Localization.GetString("lnkReadMore", LocalResourceFile)
+                hlMore.Text = GetString("lnkReadMore", LocalResourceFile)
                 hlMore.Visible = (m_oEntry.PermaLink <> Utility.BlogNavigateURL(TabId, PortalId, m_oEntry.EntryID, m_oEntry.Title, BlogSettings.ShowSeoFriendlyUrl))
 
                 Dim Categories As String = ""
@@ -368,7 +368,7 @@ Partial Public Class ViewBlog
             lnkEntry.Attributes.Add("rel", "bookmark")
 
             If CType(e.Item.DataItem, EntryInfo).UserName.Length > 0 Then
-                Dim userProfile As String = DotNetNuke.Common.Globals.UserProfileURL(m_oEntry.UserID)
+                Dim userProfile As String = UserProfileURL(m_oEntry.UserID)
 
                 If oBlog.ShowFullName Then
                     litAuthor.Text = GetString("msgCreateFrom", LocalResourceFile) & " "
@@ -446,8 +446,8 @@ Partial Public Class ViewBlog
             If oBlog.ParentBlogID = -1 Then
                 imgBlogParentSeparator.Visible = False
                 lnkChildBlog.Visible = False
-                If Not m_oBlog Is Nothing Then
-                    If m_oBlog.BlogID = oBlog.BlogID Then
+                If Not _mOBlog Is Nothing Then
+                    If _mOBlog.BlogID = oBlog.BlogID Then
                         lnkParentBlog.Visible = False
                         imgBlogParentSeparator.Visible = False
                         lnkChildBlog.Visible = False
@@ -458,18 +458,18 @@ Partial Public Class ViewBlog
                     lnkParentBlog.NavigateUrl = Links.ViewBlog(ModuleContext, oBlog.BlogID)
                 End If
             Else
-                If Not m_oBlog Is Nothing Then
-                    If m_oBlog.BlogID = oBlog.BlogID Then
+                If Not _mOBlog Is Nothing Then
+                    If _mOBlog.BlogID = oBlog.BlogID Then
                         lnkParentBlog.Visible = False
                         imgBlogParentSeparator.Visible = False
                         lnkChildBlog.Visible = False
-                    ElseIf m_oBlog.BlogID = oBlog.ParentBlogID Then
+                    ElseIf _mOBlog.BlogID = oBlog.ParentBlogID Then
                         lnkParentBlog.Visible = False
                         imgBlogParentSeparator.Visible = False
                     End If
                 End If
                 If lnkParentBlog.Visible Then
-                    Dim oParentBlog As BlogInfo = m_oBlogController.GetBlog(oBlog.ParentBlogID)
+                    Dim oParentBlog As BlogInfo = _mOBlogController.GetBlog(oBlog.ParentBlogID)
                     lnkParentBlog.Text = oParentBlog.Title
                     lnkParentBlog.NavigateUrl = Links.ViewBlog(ModuleContext, oParentBlog.BlogID)
                     imgBlogParentSeparator.Visible = True
@@ -485,18 +485,16 @@ Partial Public Class ViewBlog
         End If
     End Sub
 
-    Protected Sub lstBlogView_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataListCommandEventArgs) Handles lstBlogView.ItemCommand
-        ' DW - 04/22/2008 - Added to allow the use of the new BlogNavigateURL method
-
-        Dim EntryID As Integer = Int32.Parse(CType(e.CommandArgument, String))
-        Dim EntryController As New EntryController
-        Dim EntryInfo As EntryInfo = EntryController.GetEntry(EntryID, PortalId)
+    Protected Sub lstBlogView_ItemCommand(ByVal source As Object, ByVal e As DataListCommandEventArgs) Handles lstBlogView.ItemCommand
+        Dim entryId As Integer = Int32.Parse(CType(e.CommandArgument, String))
+        Dim entryController As New EntryController
+        Dim entryInfo As EntryInfo = entryController.GetEntry(entryId, PortalId)
 
         Select Case e.CommandName
             Case "Entry"
-                Response.Redirect(EntryInfo.PermaLink)
+                Response.Redirect(entryInfo.PermaLink)
             Case "Comments"
-                Response.Redirect(EntryInfo.PermaLink & "#Comments")
+                Response.Redirect(entryInfo.PermaLink & "#Comments")
             Case "User"
         End Select
     End Sub
