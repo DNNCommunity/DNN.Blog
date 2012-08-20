@@ -1,15 +1,34 @@
-/******* SOCIAL INTEGRATION DATA *******/
-DELETE FROM {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions
-FROM {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions nta
- INNER JOIN {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypes nt ON nta.NotificationTypeID=nt.NotificationTypeID
- INNER JOIN {databaseOwner}{objectQualifier}DesktopModules dtm ON nt.DesktopModuleID=dtm.DesktopModuleID
-WHERE dtm.ModuleName='Blog'
-GO
+/******* CORE NOTIFICATIONS DATA *******/
+DECLARE @NotificationTypeId INT
+ SET @NotificationTypeId = (SELECT NotificationTypeID from {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes] WHERE Name = N'DNN_Blog_Entry_Publishing')
+ DELETE FROM  {databaseOwner}[{objectQualifier}CoreMessaging_Messages] 
+	WHERE NotificationTypeId = @NotificationTypeId
 
-DELETE FROM {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypes
-FROM {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypes nt
- INNER JOIN {databaseOwner}{objectQualifier}DesktopModules dtm ON nt.DesktopModuleID=dtm.DesktopModuleID
-WHERE dtm.ModuleName='Blog'
+ DELETE FROM {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions] 
+	WHERE NotificationTypeId = @NotificationTypeId
+
+DELETE FROM {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes] 
+	WHERE NotificationTypeId = @NotificationTypeId
+
+SET @NotificationTypeId = (SELECT NotificationTypeID from {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes] WHERE Name = N'DNN_Blog_Entry_CommentApproval')
+DELETE FROM  {databaseOwner}[{objectQualifier}CoreMessaging_Messages] 
+	WHERE NotificationTypeId = @NotificationTypeId
+
+DELETE FROM {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions] 
+	WHERE NotificationTypeId = @NotificationTypeId
+
+DELETE FROM {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes] 
+	WHERE NotificationTypeId = @NotificationTypeId
+
+SET @NotificationTypeId = (SELECT NotificationTypeID from {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes] WHERE Name = N'DNN_Blog_Entry_CommentApproval')
+DELETE FROM  {databaseOwner}[{objectQualifier}CoreMessaging_Messages] 
+	WHERE NotificationTypeId = @NotificationTypeId
+
+DELETE FROM {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions] 
+WHERE NotificationTypeId = @NotificationTypeId
+
+DELETE FROM {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes] 
+	WHERE NotificationTypeId = @NotificationTypeId
 GO
 
 /******* SPROCS *******/
