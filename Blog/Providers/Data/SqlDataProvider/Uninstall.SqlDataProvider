@@ -41,6 +41,9 @@ SET @ContentTypeID = ( SELECT   ContentTypeID
 
 DELETE FROM {databaseOwner}{objectQualifier}ContentItems
 	WHERE   ContentTypeID = @ContentTypeID
+
+DELETE FROM  {databaseOwner}{objectQualifier}ContentTypes
+	WHERE ContentTypeID = @ContentTypeID
 GO
 
 /******* SPROCS *******/
