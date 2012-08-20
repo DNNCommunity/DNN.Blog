@@ -20,7 +20,7 @@ DELETE FROM {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActio
 DELETE FROM {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes] 
 	WHERE NotificationTypeId = @NotificationTypeId
 
-SET @NotificationTypeId = (SELECT NotificationTypeID from {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes] WHERE Name = N'DNN_Blog_Entry_CommentApproval')
+SET @NotificationTypeId = (SELECT NotificationTypeID from {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes] WHERE Name = N'DNN_Blog_Entry_CommentAdded')
 DELETE FROM  {databaseOwner}[{objectQualifier}CoreMessaging_Messages] 
 	WHERE NotificationTypeId = @NotificationTypeId
 
