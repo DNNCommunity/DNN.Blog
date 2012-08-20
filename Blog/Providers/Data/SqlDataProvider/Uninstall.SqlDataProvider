@@ -1,4 +1,5 @@
-/******* CORE NOTIFICATIONS DATA *******/
+/******* CORE INTEGRATION DATA *******/
+/* Notifications */
 DECLARE @NotificationTypeId INT
  SET @NotificationTypeId = (SELECT NotificationTypeID from {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes] WHERE Name = N'DNN_Blog_Entry_Publishing')
  DELETE FROM  {databaseOwner}[{objectQualifier}CoreMessaging_Messages] 
@@ -29,6 +30,17 @@ WHERE NotificationTypeId = @NotificationTypeId
 
 DELETE FROM {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes] 
 	WHERE NotificationTypeId = @NotificationTypeId
+GO
+
+/* Content Item */
+DECLARE @ContentTypeID INT
+SET @ContentTypeID = ( SELECT   ContentTypeID
+					   FROM     {databaseOwner}{objectQualifier}ContentTypes
+					   WHERE    ContentType = 'DNN_Blog_Entry'
+					 )
+
+DELETE FROM {databaseOwner}{objectQualifier}ContentItems
+	WHERE   ContentTypeID = @ContentTypeID
 GO
 
 /******* SPROCS *******/
