@@ -182,7 +182,7 @@ Partial Public Class ModuleOptions
     Protected Sub cmdUpdate_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdUpgrade.Click
         Dim _CustomUpgrade As New Components.Upgrade.ModuleUpgrade
         '_CustomUpgrade.MigrateTaxonomyFolksonomy()
-        _CustomUpgrade.MigrateContentItems(ModuleContext.PortalId)
+        _CustomUpgrade.CreateContentItems(ModuleContext.PortalId)
     End Sub
 
 #End Region
