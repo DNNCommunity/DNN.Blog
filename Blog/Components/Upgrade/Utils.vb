@@ -22,6 +22,7 @@ Option Explicit On
 
 Imports DotNetNuke.Modules.Blog.Providers.Data
 Imports DotNetNuke.Common.Utilities
+Imports DotNetNuke.Modules.Blog.Components.Entities
 
 Namespace Components.Upgrade
 
@@ -227,6 +228,10 @@ Namespace Components.Upgrade
 
         Public Shared Function GetAllTagsForUpgrade() As List(Of MigrateTagInfo)
             Return CBO.FillCollection(Of MigrateTagInfo)(DataProvider.Instance().GetAllTagsForUpgrade())
+        End Function
+
+        Public Shared Function GetAllBlogsForUpgrade() As List(Of BlogInfo)
+            Return CBO.FillCollection(Of BlogInfo)(DataProvider.Instance().GetAllBlogsForUpgrade())
         End Function
 
     End Class

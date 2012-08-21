@@ -290,6 +290,10 @@ Namespace Providers.Data
    Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "Upgrade_RetrieveTaxonomyEntries"), IDataReader)
   End Function
 
+        Public Overrides Function GetAllBlogsForUpgrade() As System.Data.IDataReader
+            Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "Upgrade_BlogsGetAll"), IDataReader)
+        End Function
+
 #End Region
 
 #Region " Terms "
@@ -304,5 +308,6 @@ Namespace Providers.Data
 
 #End Region
 
- End Class
+    End Class
+
 End Namespace

@@ -45,8 +45,20 @@ Namespace Components.Upgrade
                 message = "Created Notification Types & Actions for the Blog Module." & vbCrLf & vbCrLf
 
                 ' handle content item creation (for all blog entries in all portals)
+                Dim colBlogs As New List(Of BlogInfo)
+                colBlogs = ModuleUpgradeController.GetAllBlogsForUpgrade()
 
+                If colBlogs IsNot Nothing Then
+                    If colBlogs.Count > 0 Then
+                        ' we want to loop through each portal, not blog so limit the results
+                        Dim disBlogs As List(Of Integer) = (From t In colBlogs Select t.PortalID).Distinct().ToList()
 
+                        For Each i As Integer In disBlogs
+                            message += "Creating Content Items for PortalID: " + i.ToString() & vbCrLf & vbCrLf
+                            CreateContentItems(i)
+                        Next
+                    End If
+                End If
 
                 ' deal w/ category/tag migration
                 colEntries = cntEntry.RetrieveTaxonomyRelatedPosts()
@@ -237,7 +249,6 @@ Namespace Components.Upgrade
                     cntEntries.UpdateEntry(objEntry, objEntry.TabID, PortalId)
                 End If
             Next
-
         End Sub
 
 #End Region

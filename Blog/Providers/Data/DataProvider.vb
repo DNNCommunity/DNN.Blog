@@ -120,6 +120,7 @@ Namespace Providers.Data
   Public MustOverride Function GetAllTagsForUpgrade() As IDataReader
   Public MustOverride Function GetAllCategoriesForUpgrade() As IDataReader
   Public MustOverride Function RetrieveTaxonomyRelatedPosts() As IDataReader
+        Public MustOverride Function GetAllBlogsForUpgrade() As IDataReader
 
 #End Region
 
