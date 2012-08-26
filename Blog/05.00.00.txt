@@ -52,6 +52,7 @@ DesktopModules\Blog\Styles\Blog-Full_Grey.xsl
 DesktopModules\Blog\Styles\Blog-FullEnry.xsl
 DesktopModules\Blog\Styles\Blog-Head_Grey.xsl
 DesktopModules\Blog\Styles\Blog-Blog-Headlines.xsl
+DesktopModules\Blog\Styles\
 DesktopModules\Blog\Images\approve.gif
 DesktopModules\Blog\Images\blog_comment_tip.gif
 DesktopModules\Blog\Images\blog_comment_tip_owner.gif
@@ -75,4 +76,7 @@ DesktopModules\Blog\Images\xml_small.gif
 DesktopModules\Blog\Images\xml_small_warning.gif
 DesktopModules\Blog\Images\xml_warning.gif
 DesktopModules\Blog\Images\yourimagehere.png
-DesktopModules\Blog\Images\bookmarks
+DesktopModules\Blog\Images\bookmarks\
+DesktopModules\Blog\ShareBadge\
+DesktopModules\Blog\Install.04.00.00.SqlDataProvider
+DesktopModules\Blog\04.01.00.SqlDataProvider
