@@ -226,7 +226,7 @@ Namespace Components.Upgrade
                         ' update content item
                         objEntry.Terms.Clear()
                         objEntry.Terms.AddRange(entryTerms)
-                        cntEntry.UpdateEntry(objEntry, objEntry.TabID, portalId)
+                        cntEntry.UpdateEntry(objEntry, objEntry.TabID, portalId, currentVocabId)
                     End If
                 Next
                 message += "Migrated " + countContentItems.ToString() + " content items. " & vbCrLf & vbCrLf
@@ -245,7 +245,7 @@ Namespace Components.Upgrade
                     Dim objContentItem As ContentItem = cntTaxonomy.CreateContentItem(objEntry, objEntry.TabID)
                     objEntry.ContentItemId = objContentItem.ContentItemId
 
-                    cntEntries.UpdateEntry(objEntry, objEntry.TabID, PortalId)
+                    cntEntries.UpdateEntry(objEntry, objEntry.TabID, portalId, 1)
                 End If
             Next
         End Sub

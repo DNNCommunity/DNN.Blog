@@ -19,9 +19,7 @@
 '
 
 Imports System.Linq
-Imports DotNetNuke.Web.Client.ClientResourceManagement
 Imports DotNetNuke.Modules.Blog.Components.Common
-Imports DotNetNuke.Entities.Content.Taxonomy
 Imports DotNetNuke.Modules.Blog.Components.Settings
 Imports DotNetNuke.Modules.Blog.Components.Entities
 Imports Telerik.Web.UI
@@ -79,10 +77,10 @@ Partial Class ViewCategories
 
         If Not Page.IsPostBack Then
             If VocabularyId > 1 Then
-                Dim termController As ITermController = Entities.Content.Common.Util.GetTermController()
-                Dim colCoreCategories As IQueryable(Of Term) = termController.GetTermsByVocabulary(VocabularyId)
+                Dim cntTerm As New TermController
+                Dim colCategories As List(Of TermInfo) = cntTerm.GetTermsByContentType(ModuleContext.PortalId, VocabularyId)
 
-                dtCategories.DataSource = colCoreCategories
+                dtCategories.DataSource = colCategories
                 dtCategories.DataBind()
 
                 If Request.Params("catid") IsNot Nothing Then

@@ -44,7 +44,7 @@ Namespace Components.Settings
         End Sub
 
         Public Shared Function GetTagViewSettings(ByVal TabModuleId As Integer) As TagViewSettings
-            Dim CacheKey As String = Constants.ModuleCacheKeyPrefix & Constants.TagSettingsCacheKey & TabModuleId.ToString
+            Dim CacheKey As String = Constants.TagSettingsCacheKey & TabModuleId.ToString
             Dim bs As TagViewSettings = CType(DotNetNuke.Common.Utilities.DataCache.GetCache(CacheKey), TagViewSettings)
 
             If bs Is Nothing Then
@@ -69,7 +69,7 @@ Namespace Components.Settings
                 .UpdateTabModuleSetting(_tabModuleId, Constants.SettingTagDisplayMode, TagDisplayMode)
                 .UpdateTabModuleSetting(_tabModuleId, Constants.SettingCloudSkin, CloudSkin)
             End With
-            Dim CacheKey As String = Constants.ModuleCacheKeyPrefix & Constants.TagSettingsCacheKey & _tabModuleId.ToString
+            Dim CacheKey As String = Constants.TagSettingsCacheKey & _tabModuleId.ToString
             DotNetNuke.Common.Utilities.DataCache.RemoveCache(CacheKey)
         End Sub
 

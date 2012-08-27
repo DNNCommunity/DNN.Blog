@@ -97,9 +97,6 @@ Namespace Components.Integration
             ' Update Terms
             Dim cntTerm As New Terms()
             cntTerm.ManageEntryTerms(objEntry, objContent)
-
-            DataCache.RemoveCache(Constants.ModuleCacheKeyPrefix + Constants.ContentItemTermsCacheKey + objEntry.ContentItemId.ToString() + Constants.VocabularySuffixCacheKey)
-            DataCache.RemoveCache(Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + portalId.ToString())
         End Sub
 
         ''' <summary>

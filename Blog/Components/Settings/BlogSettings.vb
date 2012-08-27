@@ -185,8 +185,12 @@ Namespace Components.Settings
             Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "VocabularyId", Me.VocabularyId.ToString)
 
             ' Clear cache
-            DataCache.ClearCache(Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + VocabularyId.ToString())
-            DataCache.ClearCache(Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + "1") ' Tags
+            Dim tagsKey As String = Common.Constants.TermsKey + "1"
+            DataCache.RemoveCache(tagsKey)
+            Dim categoriesKey As String = Common.Constants.TermsKey + VocabularyId.ToString()
+            DataCache.RemoveCache(categoriesKey)
+
+            'DataCache.ClearCache(Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + VocabularyId.ToString())
 
             Dim CacheKey As String = "BlogSettings" & _portalId.ToString & "-" & _tabId.ToString
             DotNetNuke.Common.Utilities.DataCache.RemoveCache(CacheKey)

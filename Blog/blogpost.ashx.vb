@@ -199,7 +199,7 @@ Public Class BlogPost
         objEntry.Terms.Clear()
         objEntry.Terms.AddRange(terms)
 
-        cntEntry.UpdateEntry(objEntry, _tabId, _portalSettings.PortalId)
+        cntEntry.UpdateEntry(objEntry, _tabId, _portalSettings.PortalId, _blogSettings.VocabularyId)
 
         Return True
     End Function

@@ -42,7 +42,7 @@ Namespace Components.Settings
         End Sub
 
         Public Shared Function GetRosterViewSettings(ByVal TabModuleId As Integer) As RosterSettings
-            Dim CacheKey As String = Constants.ModuleCacheKeyPrefix & Constants.RosterSettingsCacheKey & TabModuleId.ToString
+            Dim CacheKey As String = Constants.RosterSettingsCacheKey & TabModuleId.ToString
             Dim bs As RosterSettings = CType(DotNetNuke.Common.Utilities.DataCache.GetCache(CacheKey), RosterSettings)
 
             If bs Is Nothing Then
@@ -66,7 +66,7 @@ Namespace Components.Settings
             With objModules
                 .UpdateTabModuleSetting(_tabModuleId, Constants.SettingRosterDisplayMode, RosterDisplayMode)
             End With
-            Dim CacheKey As String = Constants.ModuleCacheKeyPrefix & Constants.RosterSettingsCacheKey & _tabModuleId.ToString
+            Dim CacheKey As String = Constants.RosterSettingsCacheKey & _tabModuleId.ToString
             DotNetNuke.Common.Utilities.DataCache.RemoveCache(CacheKey)
         End Sub
 

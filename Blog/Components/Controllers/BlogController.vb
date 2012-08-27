@@ -75,7 +75,7 @@ Namespace Components.Controllers
 
         Public Function AddBlog(ByVal objBlog As BlogInfo) As Integer
             With objBlog
-                Dim strCacheKey As String = Common.Constants.ModuleCacheKeyPrefix + Common.Constants.PortalBlogsCacheKey & CStr(objBlog.PortalID)
+                Dim strCacheKey As String = Common.Constants.PortalBlogsCacheKey & CStr(objBlog.PortalID)
                 DataCache.RemoveCache(strCacheKey)
 
                 Return CType(DataProvider.Instance().AddBlog(.PortalID, .ParentBlogID, .UserID, .Title, .Description, .Public, .AllowComments, False, .ShowFullName, .Syndicated, True, .SyndicationURL, .SyndicationEmail, True, False, False, True, True, True, False, .AuthorMode), Integer)
@@ -87,14 +87,14 @@ Namespace Components.Controllers
                 DataProvider.Instance().UpdateBlog(.PortalID, .BlogID, .ParentBlogID, .UserID, .Title, .Description, .Public, .AllowComments, False, .ShowFullName, .Syndicated, True, .SyndicationURL, .SyndicationEmail, True, False, False, True, True, True, False, .AuthorMode)
             End With
 
-            Dim strCacheKey As String = Common.Constants.ModuleCacheKeyPrefix + Common.Constants.PortalBlogsCacheKey & CStr(objBlog.PortalID)
+            Dim strCacheKey As String = Common.Constants.PortalBlogsCacheKey & CStr(objBlog.PortalID)
             DataCache.RemoveCache(strCacheKey)
         End Sub
 
         Public Sub DeleteBlog(ByVal blogID As Integer, ByVal portalId As Integer)
             DataProvider.Instance().DeleteBlog(blogID, portalId)
 
-            Dim strCacheKey As String = Common.Constants.ModuleCacheKeyPrefix + Common.Constants.PortalBlogsCacheKey & CStr(portalId)
+            Dim strCacheKey As String = Common.Constants.PortalBlogsCacheKey & CStr(portalId)
             DataCache.RemoveCache(strCacheKey)
         End Sub
 
@@ -127,7 +127,7 @@ Namespace Components.Controllers
         ''' <returns></returns>
         ''' <remarks></remarks>
         Private Function GetAllPortalBlogs(ByVal portalId As Integer) As List(Of BlogInfo)
-            Dim strCacheKey As String = Common.Constants.ModuleCacheKeyPrefix + Common.Constants.PortalBlogsCacheKey & CStr(portalId)
+            Dim strCacheKey As String = Common.Constants.PortalBlogsCacheKey & CStr(portalId)
             Dim colBlogs As List(Of BlogInfo) = CType(DataCache.GetCache(strCacheKey), List(Of BlogInfo))
 
             If colBlogs Is Nothing Then

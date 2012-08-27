@@ -255,7 +255,7 @@ Partial Class EditEntry
         Try
             If Not m_oEntry Is Nothing Then
                 DeleteAllFiles()
-                m_oEntryController.DeleteEntry(m_oEntry.EntryID, m_oEntry.ContentItemId, m_oEntry.BlogID, ModuleContext.PortalId)
+                m_oEntryController.DeleteEntry(m_oEntry.EntryID, m_oEntry.ContentItemId, m_oEntry.BlogID, ModuleContext.PortalId, VocabularyId)
                 Response.Redirect(Utility.AddTOQueryString(NavigateURL(), "BlogID", m_oEntry.BlogID.ToString()), True)
             Else
                 Response.Redirect(NavigateURL(), True)
@@ -489,7 +489,7 @@ Partial Class EditEntry
                     .Terms.Clear()
                     .Terms.AddRange(terms)
 
-                    m_oEntryController.UpdateEntry(m_oEntry, Me.TabId, PortalId)
+                    m_oEntryController.UpdateEntry(m_oEntry, Me.TabId, PortalId, VocabularyId)
 
                     If (publish) Then
                         Dim cntIntegration As New Components.Integration.Journal()
@@ -507,15 +507,6 @@ Partial Class EditEntry
 
                         Dim cntNotifications As New Components.Integration.Notifications
                         cntNotifications.RemoveEntryPendingNotification(m_oBlog.BlogID, m_oEntry.EntryID)
-
-                        Dim strCacheKey As String = Constants.ModuleCacheKeyPrefix + Constants.PortalBlogsCacheKey & CStr(PortalId)
-                        DataCache.RemoveCache(strCacheKey)
-
-                        strCacheKey = Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + VocabularyId.ToString()
-                        DataCache.RemoveCache(strCacheKey)
-
-                        strCacheKey = Constants.ModuleCacheKeyPrefix + Constants.ContentItemTermsCacheKey + m_oEntry.ContentItemId.ToString() + Constants.VocabularySuffixCacheKey + VocabularyId.ToString()
-                        DataCache.RemoveCache(strCacheKey)
                     Else
                         If (m_oBlog.UserID <> ModuleContext.PortalSettings.UserId) AndAlso (m_oBlog.AuthorMode = Constants.AuthorMode.GhostMode) Then
                             Dim cntNotifications As New Components.Integration.Notifications

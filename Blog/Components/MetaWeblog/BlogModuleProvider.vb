@@ -17,6 +17,7 @@
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 ' DEALINGS IN THE SOFTWARE.
 '
+
 Imports System
 Imports System.Collections
 Imports System.Reflection
@@ -29,7 +30,6 @@ Imports DotNetNuke.Entities.Users
 Imports DotNetNuke.Entities.Content.Taxonomy
 Imports DotNetNuke.Modules.Blog.Components.Settings
 Imports DotNetNuke.Modules.Blog.Components.Entities
-Imports DotNetNuke.UI.Utilities
 
 Namespace Components.MetaWeblog
 
@@ -328,10 +328,7 @@ Namespace Components.MetaWeblog
             objEntry.Terms.Clear()
             objEntry.Terms.AddRange(terms)
 
-            objEntryController.UpdateEntry(objEntry, objEntry.TabID, PortalID)
-
-            Dim strCacheKey As String = Common.Constants.ModuleCacheKeyPrefix + Common.Constants.PortalBlogsCacheKey & CStr(PortalID)
-            DataCache.RemoveCache(strCacheKey)
+            objEntryController.UpdateEntry(objEntry, objEntry.TabID, PortalID, blogSettings.VocabularyId)
 
             If (objEntry.Published) Then
                 Dim objBlog As BlogInfo
@@ -349,18 +346,6 @@ Namespace Components.MetaWeblog
                 End Select
 
                 cntIntegration.AddBlogEntryToJournal(objEntry, PortalID, objEntry.TabID, journalUserId, objEntry.PermaLink)
-
-                strCacheKey = Common.Constants.ModuleCacheKeyPrefix + Common.Constants.VocabTermsCacheKey + Common.Constants.VocabSuffixCacheKey + "1"
-                DataCache.RemoveCache(strCacheKey)
-
-                strCacheKey = Common.Constants.ModuleCacheKeyPrefix + Common.Constants.ContentItemTermsCacheKey + objEntry.ContentItemId.ToString() + Common.Constants.VocabularySuffixCacheKey + "1"
-                DataCache.RemoveCache(strCacheKey)
-
-                strCacheKey = Common.Constants.ModuleCacheKeyPrefix + Common.Constants.VocabTermsCacheKey + Common.Constants.VocabSuffixCacheKey + blogSettings.VocabularyId.ToString()
-                DataCache.RemoveCache(strCacheKey)
-
-                strCacheKey = Common.Constants.ModuleCacheKeyPrefix + Common.Constants.ContentItemTermsCacheKey + objEntry.ContentItemId.ToString() + Common.Constants.VocabularySuffixCacheKey + blogSettings.VocabularyId.ToString()
-                DataCache.RemoveCache(strCacheKey)
                 'Else
                 ' We could add notifications if the user is a ghost user and not the owner (didn't wire ghost into WLW this version)
             End If
@@ -461,10 +446,7 @@ Namespace Components.MetaWeblog
             objEntry.Terms.Clear()
             objEntry.Terms.AddRange(terms)
 
-            objEntryController.UpdateEntry(objEntry, objEntry.ContentItemId, portalSettings.PortalId)
-
-            Dim strCacheKey As String = Common.Constants.ModuleCacheKeyPrefix + Common.Constants.PortalBlogsCacheKey & CStr(portalSettings.PortalId)
-            DataCache.RemoveCache(strCacheKey)
+            objEntryController.UpdateEntry(objEntry, objEntry.ContentItemId, portalSettings.PortalId, blogSettings.VocabularyId)
 
             If (objEntry.Published) Then
                 Dim objBlog As BlogInfo
@@ -482,19 +464,6 @@ Namespace Components.MetaWeblog
                 End Select
 
                 cntIntegration.AddBlogEntryToJournal(objEntry, portalSettings.PortalId, objEntry.TabID, journalUserId, objEntry.PermaLink)
-
-                strCacheKey = Common.Constants.ModuleCacheKeyPrefix + Common.Constants.VocabTermsCacheKey + Common.Constants.VocabSuffixCacheKey + "1"
-                DataCache.RemoveCache(strCacheKey)
-
-                strCacheKey = Common.Constants.ModuleCacheKeyPrefix + Common.Constants.ContentItemTermsCacheKey + objEntry.ContentItemId.ToString() + Common.Constants.VocabularySuffixCacheKey + "1"
-                DataCache.RemoveCache(strCacheKey)
-
-                strCacheKey = Common.Constants.ModuleCacheKeyPrefix + Common.Constants.VocabTermsCacheKey + Common.Constants.VocabSuffixCacheKey + blogSettings.VocabularyId.ToString()
-                DataCache.RemoveCache(strCacheKey)
-
-                strCacheKey = Common.Constants.ModuleCacheKeyPrefix + Common.Constants.ContentItemTermsCacheKey + objEntry.ContentItemId.ToString() + Common.Constants.VocabularySuffixCacheKey + blogSettings.VocabularyId.ToString()
-                DataCache.RemoveCache(strCacheKey)
-
                 'Else
                 ' We could add notifications if the user is a ghost user and not the owner (didn't wire ghost into WLW this version)
             End If
@@ -511,17 +480,8 @@ Namespace Components.MetaWeblog
 
             'Create new BlogController to delete the blog entry.
             Dim objEntryController As New EntryController
-            objEntryController.DeleteEntry(objEntry.EntryID, objEntry.ContentItemId, objEntry.BlogID, portalSettings.PortalId)
+            objEntryController.DeleteEntry(objEntry.EntryID, objEntry.ContentItemId, objEntry.BlogID, portalSettings.PortalId, blogSettings.VocabularyId)
 
-
-            Dim strCacheKey As String = Common.Constants.ModuleCacheKeyPrefix + Common.Constants.PortalBlogsCacheKey & CStr(portalSettings.PortalId)
-            DataCache.RemoveCache(strCacheKey)
-
-            strCacheKey = Common.Constants.ModuleCacheKeyPrefix + Common.Constants.VocabTermsCacheKey + Common.Constants.VocabSuffixCacheKey + blogSettings.VocabularyId.ToString()
-            DataCache.RemoveCache(strCacheKey)
-
-            strCacheKey = Common.Constants.ModuleCacheKeyPrefix + Common.Constants.ContentItemTermsCacheKey + objEntry.ContentItemId.ToString() + Common.Constants.VocabularySuffixCacheKey + blogSettings.VocabularyId.ToString()
-            DataCache.RemoveCache(strCacheKey)
             Return True
         End Function
 

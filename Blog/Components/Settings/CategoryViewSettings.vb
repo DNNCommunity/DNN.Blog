@@ -44,7 +44,7 @@ Namespace Components.Settings
         End Sub
 
         Public Shared Function GetCategoryViewSettings(ByVal TabModuleId As Integer) As CategoryViewSettings
-            Dim CacheKey As String = Constants.ModuleCacheKeyPrefix & Constants.CategorySettingsCacheKey & TabModuleId.ToString
+            Dim CacheKey As String = Constants.CategorySettingsCacheKey & TabModuleId.ToString
             Dim bs As CategoryViewSettings = CType(DotNetNuke.Common.Utilities.DataCache.GetCache(CacheKey), CategoryViewSettings)
 
             If bs Is Nothing Then
@@ -69,7 +69,7 @@ Namespace Components.Settings
                 .UpdateTabModuleSetting(_tabModuleId, Constants.SettingCategoryDisplayMode, CategoryDisplayMode)
                 .UpdateTabModuleSetting(_tabModuleId, Constants.SettingCategoryTreeSkin, TreeSkin)
             End With
-            Dim CacheKey As String = Constants.ModuleCacheKeyPrefix & Constants.CategorySettingsCacheKey & _tabModuleId.ToString
+            Dim CacheKey As String = Constants.CategorySettingsCacheKey & _tabModuleId.ToString
             DotNetNuke.Common.Utilities.DataCache.RemoveCache(CacheKey)
         End Sub
 

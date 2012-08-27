@@ -654,48 +654,48 @@ Namespace Components.Business
    End If
   End Function
 
-  Public Shared Sub CreateAllEntryLinks(ByVal PortalID As Integer, Optional ByVal BlogId As Integer = -1, Optional ByVal TabID As Integer = -1)
-   Dim m_EntryController As New EntryController
-   Dim m_Entries As New List(Of EntryInfo)
-   Dim TabIdFromPortalId As Integer = -1 'Needed only if TabID isn't passed in and TabID can't be retrieved
-   ' from the PermaLink
+        Public Shared Sub CreateAllEntryLinks(ByVal PortalID As Integer, Optional ByVal BlogId As Integer = -1, Optional ByVal TabID As Integer = -1)
+            Dim m_EntryController As New EntryController
+            Dim m_Entries As New List(Of EntryInfo)
+            Dim TabIdFromPortalId As Integer = -1 'Needed only if TabID isn't passed in and TabID can't be retrieved
+            ' from the PermaLink
 
-   m_Entries = m_EntryController.GetAllEntriesByPortal(PortalID, True)
-   For Each entry As EntryInfo In m_Entries
-    If (BlogId = entry.BlogID Or BlogId = -1) And (TabID = -1 _
-                                                   Or entry.PermaLink Is Nothing Or entry.PermaLink = String.Empty _
-                                                   Or entry.PermaLink.ToLower().IndexOf("tabid=" & TabID) > 0 _
-                                                   Or entry.PermaLink.ToLower().IndexOf("tabid/" & TabID) > 0) Then
+            m_Entries = m_EntryController.GetAllEntriesByPortal(PortalID, True)
+            For Each entry As EntryInfo In m_Entries
+                If (BlogId = entry.BlogID Or BlogId = -1) And (TabID = -1 _
+                                                               Or entry.PermaLink Is Nothing Or entry.PermaLink = String.Empty _
+                                                               Or entry.PermaLink.ToLower().IndexOf("tabid=" & TabID) > 0 _
+                                                               Or entry.PermaLink.ToLower().IndexOf("tabid/" & TabID) > 0) Then
 
-     Dim CurrentTabId As Integer
-     If TabID = -1 Then
-      ' Get the TabID from the PortalId
-      ' This is the case when the procedure is being called from the 
-      ' Blog settings page and we're trying to update all the 
-      ' Permalinks after making a change to the URL format.
-      ' In this case, the correct TabID is in the PermaLink, so
-      ' we'll extract it with some regex.
-      ' 
-      Dim match As Match
-      match = Regex.Match(entry.PermaLink, "tabid(?:/|=)(?<TabId>\d*)", RegexOptions.IgnoreCase)
-      If Not match.Groups("TabId").Value Is Nothing And match.Groups("TabId").Value <> String.Empty Then
-       CurrentTabId = Convert.ToInt32(match.Groups("TabId").Value)
-      Else
-       ' Otherwise, we'll try to get the TabID from the PortalID
-       If TabIdFromPortalId = -1 Then
-        'We haven't retrieved this yet, so we'll retreive it
-        TabIdFromPortalId = Utility.GetTabIDByPortalID(PortalID.ToString())
-       End If
-       CurrentTabId = TabIdFromPortalId
-      End If
-     Else
-      CurrentTabId = TabID
-     End If
-     entry.PermaLink = GenerateEntryLink(PortalID, entry.EntryID, CurrentTabId)
-     m_EntryController.UpdateEntry(entry, CurrentTabId, PortalID)
-    End If
-   Next
-  End Sub
+                    Dim CurrentTabId As Integer
+                    If TabID = -1 Then
+                        ' Get the TabID from the PortalId
+                        ' This is the case when the procedure is being called from the 
+                        ' Blog settings page and we're trying to update all the 
+                        ' Permalinks after making a change to the URL format.
+                        ' In this case, the correct TabID is in the PermaLink, so
+                        ' we'll extract it with some regex.
+                        ' 
+                        Dim match As Match
+                        match = Regex.Match(entry.PermaLink, "tabid(?:/|=)(?<TabId>\d*)", RegexOptions.IgnoreCase)
+                        If Not match.Groups("TabId").Value Is Nothing And match.Groups("TabId").Value <> String.Empty Then
+                            CurrentTabId = Convert.ToInt32(match.Groups("TabId").Value)
+                        Else
+                            ' Otherwise, we'll try to get the TabID from the PortalID
+                            If TabIdFromPortalId = -1 Then
+                                'We haven't retrieved this yet, so we'll retreive it
+                                TabIdFromPortalId = Utility.GetTabIDByPortalID(PortalID.ToString())
+                            End If
+                            CurrentTabId = TabIdFromPortalId
+                        End If
+                    Else
+                        CurrentTabId = TabID
+                    End If
+                    entry.PermaLink = GenerateEntryLink(PortalID, entry.EntryID, CurrentTabId)
+                    m_EntryController.UpdateEntry(entry, CurrentTabId, PortalID, 1)
+                End If
+            Next
+        End Sub
 
   Public Shared Function BlogNavigateURL(ByVal TabId As Integer, ByVal PortalID As Integer, ByVal EntryInfo As EntryInfo, ByVal ShowSEOFriendly As Boolean) As String
    Dim TabInfo As DotNetNuke.Entities.Tabs.TabInfo

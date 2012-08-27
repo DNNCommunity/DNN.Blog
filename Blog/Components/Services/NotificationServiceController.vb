@@ -26,7 +26,6 @@ Imports DotNetNuke.Web.Services
 Imports System.Web.Mvc
 Imports DotNetNuke.Services.Social.Notifications
 Imports DotNetNuke.Modules.Blog.Components.Entities
-Imports DotNetNuke.UI.Utilities
 
 Namespace Components.Services
 
@@ -72,22 +71,8 @@ Namespace Components.Services
                 End If
 
                 objEntry.Published = True
-                cntEntry.UpdateEntry(objEntry, objEntry.TabID, PortalSettings.PortalId)
-
-                Dim strCacheKey As String = Constants.ModuleCacheKeyPrefix + Constants.PortalBlogsCacheKey & CStr(objBlog.PortalID)
-                DataCache.RemoveCache(strCacheKey)
-
-                strCacheKey = Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + "1"
-                DataCache.RemoveCache(strCacheKey)
-
-                strCacheKey = Constants.ModuleCacheKeyPrefix + Constants.ContentItemTermsCacheKey + objEntry.ContentItemId.ToString() + Constants.VocabularySuffixCacheKey + "1"
-                DataCache.RemoveCache(strCacheKey)
-
-                'strCacheKey = Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + VocabularyId.ToString()
-                'DataCache.RemoveCache(strCacheKey)
-
-                'strCacheKey = Constants.ModuleCacheKeyPrefix + Constants.ContentItemTermsCacheKey + objEntry.ContentItemId.ToString() + Constants.VocabularySuffixCacheKey + VocabularyId.ToString()
-                'DataCache.RemoveCache(strCacheKey)
+                'CP TO DO: This shouldn't assume vocab = 1
+                cntEntry.UpdateEntry(objEntry, objEntry.TabID, PortalSettings.PortalId, 1)
             Else
                 ' blogger mode
                 Dim isOwner As Boolean = objBlog.UserID = UserInfo.UserID
@@ -102,22 +87,8 @@ Namespace Components.Services
 
                 If objSecurity.CanAddEntry(isOwner, Constants.AuthorMode.BloggerMode) Then
                     objEntry.Published = True
-                    cntEntry.UpdateEntry(objEntry, objEntry.TabID, PortalSettings.PortalId)
-
-                    Dim strCacheKey As String = Constants.ModuleCacheKeyPrefix + Constants.PortalBlogsCacheKey & CStr(objBlog.PortalID)
-                    DataCache.RemoveCache(strCacheKey)
-
-                    strCacheKey = Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + "1"
-                    DataCache.RemoveCache(strCacheKey)
-
-                    strCacheKey = Constants.ModuleCacheKeyPrefix + Constants.ContentItemTermsCacheKey + objEntry.ContentItemId.ToString() + Constants.VocabularySuffixCacheKey + "1"
-                    DataCache.RemoveCache(strCacheKey)
-
-                    'strCacheKey = Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + VocabularyId.ToString()
-                    'DataCache.RemoveCache(strCacheKey)
-
-                    'strCacheKey = Constants.ModuleCacheKeyPrefix + Constants.ContentItemTermsCacheKey + objEntry.ContentItemId.ToString() + Constants.VocabularySuffixCacheKey + VocabularyId.ToString()
-                    'DataCache.RemoveCache(strCacheKey)
+                    'CP TO DO: This shouldn't assume vocab = 1
+                    cntEntry.UpdateEntry(objEntry, objEntry.TabID, PortalSettings.PortalId, 1)
                 Else
                     Return Json(New With {.Result = "error"})
                 End If
@@ -155,23 +126,8 @@ Namespace Components.Services
                 If objEntry Is Nothing Then
                     Return Json(New With {.Result = "error"})
                 End If
-
-                cntEntry.DeleteEntry(EntryId, objEntry.ContentItemId, objBlog.BlogID, PortalSettings.PortalId)
-
-                Dim strCacheKey As String = Constants.ModuleCacheKeyPrefix + Constants.PortalBlogsCacheKey & CStr(objBlog.PortalID)
-                DataCache.RemoveCache(strCacheKey)
-
-                strCacheKey = Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + "1"
-                DataCache.RemoveCache(strCacheKey)
-
-                strCacheKey = Constants.ModuleCacheKeyPrefix + Constants.ContentItemTermsCacheKey + objEntry.ContentItemId.ToString() + Constants.VocabularySuffixCacheKey + "1"
-                DataCache.RemoveCache(strCacheKey)
-
-                'strCacheKey = Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + VocabularyId.ToString()
-                'DataCache.RemoveCache(strCacheKey)
-
-                'strCacheKey = Constants.ModuleCacheKeyPrefix + Constants.ContentItemTermsCacheKey + objEntry.ContentItemId.ToString() + Constants.VocabularySuffixCacheKey + VocabularyId.ToString()
-                'DataCache.RemoveCache(strCacheKey)
+                'CP TO DO: This shouldn't assume vocab = 1
+                cntEntry.DeleteEntry(EntryId, objEntry.ContentItemId, objBlog.BlogID, PortalSettings.PortalId, 1)
             Else
                 ' blogger mode
                 Dim isOwner As Boolean = objBlog.UserID = UserInfo.UserID
@@ -185,10 +141,8 @@ Namespace Components.Services
                 Dim objSecurity As New ModuleSecurity(objEntry.ModuleID, objEntry.TabID)
 
                 If objSecurity.CanAddEntry(isOwner, Constants.AuthorMode.BloggerMode) Then
-                    cntEntry.DeleteEntry(EntryId, objEntry.ContentItemId, objBlog.BlogID, PortalSettings.PortalId)
-
-                    Dim strCacheKey As String = Constants.ModuleCacheKeyPrefix + Constants.PortalBlogsCacheKey & CStr(objBlog.PortalID)
-                    DataCache.RemoveCache(strCacheKey)
+                    'CP TO DO: This shouldn't assume vocab = 1
+                    cntEntry.DeleteEntry(EntryId, objEntry.ContentItemId, objBlog.BlogID, PortalSettings.PortalId, 1)
                 Else
                     Return Json(New With {.Result = "error"})
                 End If

@@ -29,11 +29,11 @@ Namespace Components.Controllers
     Public Class TermController
 
         Public Function GetTermsByContentType(ByVal portalId As Integer, ByVal vocabularyId As Integer) As List(Of TermInfo)
-            Dim strCacheKey As String = Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + vocabularyId.ToString()
             DotNetNuke.Common.Requires.PropertyNotNegative("portalId", "", portalId)
             DotNetNuke.Common.Requires.PropertyNotNegative("vocabularyId", "", vocabularyId)
+            Dim tagsKey As String = Common.Constants.TermsKey + vocabularyId.ToString
 
-            Dim colTerms As List(Of TermInfo) = DirectCast(DataCache.GetCache(strCacheKey), List(Of TermInfo))
+            Dim colTerms As List(Of TermInfo) = DirectCast(DataCache.GetCache(tagsKey), List(Of TermInfo))
 
             If colTerms Is Nothing Then
                 Dim timeOut As Int32 = Common.Constants.CACHE_TIMEOUT * Convert.ToInt32(DotNetNuke.Entities.Host.Host.PerformanceSetting)
@@ -41,17 +41,18 @@ Namespace Components.Controllers
                 colTerms = CBO.FillCollection(Of TermInfo)(DataProvider.Instance().GetTermsByContentType(portalId, Content.GetContentTypeID(), vocabularyId))
 
                 If timeOut > 0 And colTerms IsNot Nothing Then
-                    DataCache.SetCache(Constants.ModuleCacheKeyPrefix + Constants.VocabTermsCacheKey + Constants.VocabSuffixCacheKey + vocabularyId.ToString(), colTerms, TimeSpan.FromMinutes(timeOut))
+                    DataCache.SetCache(tagsKey, colTerms, TimeSpan.FromMinutes(timeOut))
                 End If
             End If
             Return colTerms
         End Function
 
         Public Function GetTermsByContentItem(ByVal contentItemId As Integer, ByVal vocabularyId As Integer) As List(Of TermInfo)
-            Dim strCacheKey As String = Constants.ModuleCacheKeyPrefix + Constants.ContentItemTermsCacheKey + contentItemId.ToString() + Constants.VocabularySuffixCacheKey + vocabularyId.ToString()
             DotNetNuke.Common.Requires.PropertyNotNegative("contentItemId", "", contentItemId)
 
-            Dim colTerms As List(Of TermInfo) = DirectCast(DataCache.GetCache(strCacheKey), List(Of TermInfo))
+            Dim contentItemKey As String = Common.Constants.ContentItemsKey + contentItemId.ToString() + Common.Constants.VocabSuffixCacheKey + vocabularyId.ToString
+
+            Dim colTerms As List(Of TermInfo) = DirectCast(DataCache.GetCache(contentItemKey), List(Of TermInfo))
 
             If colTerms Is Nothing Then
                 Dim timeOut As Int32 = Common.Constants.CACHE_TIMEOUT * Convert.ToInt32(DotNetNuke.Entities.Host.Host.PerformanceSetting)
@@ -59,7 +60,7 @@ Namespace Components.Controllers
                 colTerms = CBO.FillCollection(Of TermInfo)(DataProvider.Instance().GetTermsByContentItem(contentItemId, vocabularyId))
 
                 If timeOut > 0 And colTerms IsNot Nothing Then
-                    DataCache.SetCache(Constants.ModuleCacheKeyPrefix + Constants.ContentItemTermsCacheKey + contentItemId.ToString() + Constants.VocabularySuffixCacheKey + vocabularyId.ToString(), colTerms, TimeSpan.FromMinutes(timeOut))
+                    DataCache.SetCache(contentItemKey, colTerms, TimeSpan.FromMinutes(timeOut))
                 End If
             End If
             Return colTerms

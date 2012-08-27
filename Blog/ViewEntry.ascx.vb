@@ -183,7 +183,7 @@ Partial Public Class ViewEntry
                         Dim objContentItem As ContentItem = cntTaxonomy.CreateContentItem(objEntry, ModuleContext.TabId)
                         objEntry.ContentItemId = objContentItem.ContentItemId
 
-                        cntEntry.UpdateEntry(objEntry, ModuleContext.TabId, ModuleContext.PortalId)
+                        cntEntry.UpdateEntry(objEntry, ModuleContext.TabId, ModuleContext.PortalId, VocabularyId)
                     End If
 
                     Dim profileUrl As String = UserProfileURL(Entry.UserID)
