@@ -28,6 +28,7 @@ Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Services.Localization.Localization
 Imports DotNetNuke.Modules.Blog.Components.Entities
 Imports DotNetNuke.Framework
+Imports DotNetNuke.Entities.Users
 
 Partial Public Class ViewBlog
     Inherits BlogModuleBase
@@ -300,51 +301,48 @@ Partial Public Class ViewBlog
             Dim divBlogReadMore As HtmlGenericControl = CType(e.Item.FindControl("divBlogReadMore"), HtmlGenericControl)
             Dim litCategories As Literal = CType(e.Item.FindControl("litCategories"), Literal)
             Dim tagControl As Tags = DirectCast(e.Item.FindControl("dbaTag"), Tags)
-            Dim oBlog As BlogInfo
+            Dim objBlog As BlogInfo
+            Dim objEntry As EntryInfo = CType(e.Item.DataItem, EntryInfo)
 
             If _mOBlog Is Nothing Then
-                oBlog = _mOBlogController.GetBlog(CType(CType(e.Item.DataItem, EntryInfo).BlogID, Integer))
+                objBlog = _mOBlogController.GetBlog(objEntry.BlogID)
             Else
-                If _mOBlog.BlogID <> CType(CType(e.Item.DataItem, EntryInfo).BlogID, Integer) Then
-                    oBlog = _mOBlogController.GetBlog(CType(CType(e.Item.DataItem, EntryInfo).BlogID, Integer))
+                If _mOBlog.BlogID <> objEntry.BlogID Then
+                    objBlog = _mOBlogController.GetBlog(objEntry.BlogID)
                 Else
-                    oBlog = _mOBlog
+                    objBlog = _mOBlog
                 End If
             End If
 
-            ' Added this in order to have the Edit Entry Link on all the pages.
-            Dim m_oEntry As EntryInfo = CType(e.Item.DataItem, EntryInfo)
             Dim lnkEditEntry As HyperLink
             Dim imgEdit As Image
             lnkEditEntry = CType(e.Item.FindControl("lnkEditEntry"), HyperLink)
             imgEdit = CType(e.Item.FindControl("imgEdit"), Image)
 
-            If Not m_oEntry Is Nothing Then
+            If Not objEntry Is Nothing Then
                 Dim objSecurity As ModuleSecurity = New ModuleSecurity(ModuleContext.ModuleId, ModuleContext.TabId)
+                Dim isOwner As Boolean = objBlog.UserID = ModuleContext.PortalSettings.UserId
 
-                Dim isOwner As Boolean
-                isOwner = oBlog.UserID = ModuleContext.PortalSettings.UserId
-
-                If objSecurity.CanAddEntry(isOwner, oBlog.AuthorMode) AndAlso Not lnkEditEntry Is Nothing Then
+                If objSecurity.CanAddEntry(isOwner, objBlog.AuthorMode) AndAlso Not lnkEditEntry Is Nothing Then
                     lnkEditEntry.Visible = True
-                    lnkEditEntry.NavigateUrl = EditUrl("EntryID", CType(e.Item.DataItem, EntryInfo).EntryID.ToString(), "Edit_Entry")
+                    lnkEditEntry.NavigateUrl = EditUrl("EntryID", objEntry.EntryID.ToString(), "Edit_Entry")
                 Else
                     lnkEditEntry.Visible = False
                 End If
 
                 Dim hlPermaLink As HyperLink = CType(e.Item.FindControl("hlPermaLink"), HyperLink)
-                hlPermaLink.NavigateUrl = m_oEntry.PermaLink
+                hlPermaLink.NavigateUrl = objEntry.PermaLink
                 hlPermaLink.Text = GetString("lnkPermaLink", LocalResourceFile)
-                hlPermaLink.Visible = (m_oEntry.PermaLink <> Utility.BlogNavigateURL(TabId, PortalId, m_oEntry.EntryID, m_oEntry.Title, BlogSettings.ShowSeoFriendlyUrl))
+                hlPermaLink.Visible = (objEntry.PermaLink <> Utility.BlogNavigateURL(TabId, PortalId, objEntry.EntryID, objEntry.Title, BlogSettings.ShowSeoFriendlyUrl))
 
                 Dim hlMore As HyperLink = CType(e.Item.FindControl("hlMore"), HyperLink)
-                hlMore.NavigateUrl = Utility.BlogNavigateURL(TabId, PortalId, m_oEntry.EntryID, m_oEntry.Title, BlogSettings.ShowSeoFriendlyUrl)
+                hlMore.NavigateUrl = Utility.BlogNavigateURL(TabId, PortalId, objEntry.EntryID, objEntry.Title, BlogSettings.ShowSeoFriendlyUrl)
                 hlMore.Text = GetString("lnkReadMore", LocalResourceFile)
-                hlMore.Visible = (m_oEntry.PermaLink <> Utility.BlogNavigateURL(TabId, PortalId, m_oEntry.EntryID, m_oEntry.Title, BlogSettings.ShowSeoFriendlyUrl))
+                hlMore.Visible = (objEntry.PermaLink <> Utility.BlogNavigateURL(TabId, PortalId, objEntry.EntryID, objEntry.Title, BlogSettings.ShowSeoFriendlyUrl))
 
                 Dim Categories As String = ""
                 Dim i As Integer = 0
-                Dim colCategories As List(Of TermInfo) = m_oEntry.EntryTerms(BlogSettings.VocabularyId)
+                Dim colCategories As List(Of TermInfo) = objEntry.EntryTerms(BlogSettings.VocabularyId)
 
                 For Each objTerm As TermInfo In colCategories
                     Categories += "<a href='" + Links.ViewEntriesByCategory(ModuleContext, objTerm.TermId, 1) + "'>" + objTerm.Name + "</a>"
@@ -357,43 +355,60 @@ Partial Public Class ViewBlog
                 litCategories.Text = Categories
 
                 tagControl.ModContext = ModuleContext
-                tagControl.DataSource = m_oEntry.EntryTerms(1)
+                tagControl.DataSource = objEntry.EntryTerms(1)
                 tagControl.DataBind()
             End If
 
-            lnkEntry.NavigateUrl = m_oEntry.PermaLink
-            lnkComments.NavigateUrl = m_oEntry.PermaLink & "#Comments"
+            lnkEntry.NavigateUrl = objEntry.PermaLink
+            lnkComments.NavigateUrl = objEntry.PermaLink & "#Comments"
 
             'DR-04/24/2009-BLG-9712
             lnkEntry.Attributes.Add("rel", "bookmark")
 
-            If CType(e.Item.DataItem, EntryInfo).UserName.Length > 0 Then
-                Dim userProfile As String = UserProfileURL(m_oEntry.UserID)
+            Dim profileUrl As String = UserProfileURL(objEntry.UserID)
+            Dim username As String = "Anonymous"
+            Dim displayName As String = "Anonymous"
 
-                If oBlog.ShowFullName Then
-                    litAuthor.Text = GetString("msgCreateFrom", LocalResourceFile) & " "
-                    litAuthor.Text += "<a href='" + userProfile + "'>"
-                    litAuthor.Text += CType(e.Item.DataItem, EntryInfo).UserFullName
-                    litAuthor.Text += "</a>"
-                    litAuthor.Text += " " & GetString("msgCreateOn", LocalResourceFile)
-                Else
-                    litAuthor.Text = GetString("msgCreateFrom", LocalResourceFile) & " "
-                    litAuthor.Text += "<a href='" + userProfile + "'>"
-                    litAuthor.Text += CType(e.Item.DataItem, EntryInfo).UserName
-                    litAuthor.Text += "</a>"
-                    litAuthor.Text += " " & GetString("msgCreateOn", LocalResourceFile)
+            If objBlog.AuthorMode = Constants.AuthorMode.BloggerMode Then
+                ' This means the credit always goes to the user who posted the entry (other modes credit the blog owner
+                Dim objUser As UserInfo = UserController.GetUserById(ModuleContext.PortalId, objEntry.CreatedUserId)
+                If objUser IsNot Nothing Then
+                    username = objUser.Username
+                    displayName = objUser.DisplayName
+                    profileUrl = UserProfileURL(objEntry.CreatedUserId)
+                    litAuthor.Visible = True
                 End If
-                litAuthor.Visible = True
+            Else
+                Dim objUser As UserInfo = UserController.GetUserById(ModuleContext.PortalId, objBlog.UserID)
+                If objUser IsNot Nothing Then
+                    username = objUser.Username
+                    displayName = objUser.DisplayName
+                    profileUrl = UserProfileURL(objEntry.CreatedUserId)
+                    litAuthor.Visible = True
+                End If
             End If
 
-            pnNotPublished.Visible = Not CType(e.Item.DataItem, EntryInfo).Published
+            If objBlog.ShowFullName Then
+                litAuthor.Text = GetString("msgCreateFrom", LocalResourceFile) & " "
+                litAuthor.Text += "<a href='" + profileUrl + "'>"
+                litAuthor.Text += username
+                litAuthor.Text += "</a>"
+                litAuthor.Text += " " & GetString("msgCreateOn", LocalResourceFile)
+            Else
+                litAuthor.Text = GetString("msgCreateFrom", LocalResourceFile) & " "
+                litAuthor.Text += "<a href='" + profileUrl + "'>"
+                litAuthor.Text += displayName
+                litAuthor.Text += "</a>"
+                litAuthor.Text += " " & GetString("msgCreateOn", LocalResourceFile)
+            End If
 
-            lblPublishDate.Text = Utility.DateFromUtc(m_oEntry.AddedDate, UiTimeZone).ToString("f")
+            pnNotPublished.Visible = Not objEntry.Published
+            lblPublishDate.Text = Utility.DateFromUtc(objEntry.AddedDate, UiTimeZone).ToString("f")
 
             ' DW - Updated again to make the truncation of the summary optional based on the EnforceSummaryTruncation
             '       blog setting.
-            Dim ActualSummary As String = Server.HtmlDecode(CType(e.Item.DataItem, EntryInfo).Description)
-            Dim Entry As String = Server.HtmlDecode(CType(e.Item.DataItem, EntryInfo).Entry)
+            Dim ActualSummary As String = Server.HtmlDecode(objEntry.Description)
+            Dim Entry As String = Server.HtmlDecode(objEntry.Entry)
             Dim GeneratedSummary As String = CType(IIf(ActualSummary Is Nothing, String.Empty, ActualSummary), String)
             Dim EnforceSummaryTruncation As Boolean = BlogSettings.EnforceSummaryTruncation
             If GeneratedSummary = String.Empty Then
@@ -434,54 +449,54 @@ Partial Public Class ViewBlog
                 End If
             End If
 
-            If ((oBlog.AllowComments Or CType(e.Item.DataItem, EntryInfo).AllowComments)) Then
+            If (objBlog.AllowComments Or objEntry.AllowComments) Then
                 ' CP: Removed from above, we should always show the comment link as long as we allow them (in other words, who cares if they are logged in) - CodePlex = 22459
                 'And CType(IIf(Me.UserId = -1, oBlog.AllowAnonymous, True), Boolean) 
                 lnkComments.Visible = True
-                lnkComments.Text = String.Format(GetString("lnkComments", LocalResourceFile), CType(e.Item.DataItem, EntryInfo).CommentCount)
+                lnkComments.Text = String.Format(GetString("lnkComments", LocalResourceFile), objEntry.CommentCount)
             Else
                 lnkComments.Visible = False
             End If
 
-            If oBlog.ParentBlogID = -1 Then
+            If objBlog.ParentBlogID = -1 Then
                 imgBlogParentSeparator.Visible = False
                 lnkChildBlog.Visible = False
                 If Not _mOBlog Is Nothing Then
-                    If _mOBlog.BlogID = oBlog.BlogID Then
+                    If _mOBlog.BlogID = objBlog.BlogID Then
                         lnkParentBlog.Visible = False
                         imgBlogParentSeparator.Visible = False
                         lnkChildBlog.Visible = False
                     End If
                 End If
                 If lnkParentBlog.Visible Then
-                    lnkParentBlog.Text = oBlog.Title
-                    lnkParentBlog.NavigateUrl = Links.ViewBlog(ModuleContext, oBlog.BlogID)
+                    lnkParentBlog.Text = objBlog.Title
+                    lnkParentBlog.NavigateUrl = Links.ViewBlog(ModuleContext, objBlog.BlogID)
                 End If
             Else
                 If Not _mOBlog Is Nothing Then
-                    If _mOBlog.BlogID = oBlog.BlogID Then
+                    If _mOBlog.BlogID = objBlog.BlogID Then
                         lnkParentBlog.Visible = False
                         imgBlogParentSeparator.Visible = False
                         lnkChildBlog.Visible = False
-                    ElseIf _mOBlog.BlogID = oBlog.ParentBlogID Then
+                    ElseIf _mOBlog.BlogID = objBlog.ParentBlogID Then
                         lnkParentBlog.Visible = False
                         imgBlogParentSeparator.Visible = False
                     End If
                 End If
                 If lnkParentBlog.Visible Then
-                    Dim oParentBlog As BlogInfo = _mOBlogController.GetBlog(oBlog.ParentBlogID)
+                    Dim oParentBlog As BlogInfo = _mOBlogController.GetBlog(objBlog.ParentBlogID)
                     lnkParentBlog.Text = oParentBlog.Title
                     lnkParentBlog.NavigateUrl = Links.ViewBlog(ModuleContext, oParentBlog.BlogID)
                     imgBlogParentSeparator.Visible = True
                     oParentBlog = Nothing
                 End If
                 If lnkChildBlog.Visible Then
-                    lnkChildBlog.Text = oBlog.Title
-                    lnkChildBlog.NavigateUrl = Links.ViewChildBlog(ModuleContext, oBlog.BlogID, oBlog.ParentBlogID)
+                    lnkChildBlog.Text = objBlog.Title
+                    lnkChildBlog.NavigateUrl = Links.ViewChildBlog(ModuleContext, objBlog.BlogID, objBlog.ParentBlogID)
                     lnkChildBlog.Visible = True
                 End If
             End If
-            oBlog = Nothing
+            objBlog = Nothing
         End If
     End Sub
 
