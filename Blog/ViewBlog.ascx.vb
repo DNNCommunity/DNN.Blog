@@ -155,7 +155,6 @@ Partial Public Class ViewBlog
 
                                 list = objEntries.GetEntriesByPortal(PortalId, _mDBlogDate, _mDBlogDateType, BlogSettings.RecentEntriesMax, CurrentPage, Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
 
-                                pnlBlogInfo.Visible = False
                                 If Not lnkRecentRss Is Nothing Then
                                     lnkRecentRss.NavigateUrl = NavigateURL(ModuleContext.TabId, "", "rssid=0")
                                 End If
@@ -163,17 +162,20 @@ Partial Public Class ViewBlog
                                 ' No paging or meta updates for this view.
                             Else
                                 ' Specific blog view
-                                pnlBlogInfo.Visible = True
                                 If _mOBlog.ShowFullName Then
                                     hlAuthor.Text = _mOBlog.UserFullName
                                 Else
                                     hlAuthor.Text = _mOBlog.UserName
                                 End If
 
-                                Dim objAuthor As Entities.Users.UserInfo = Entities.Users.UserController.GetUserById(ModuleContext.PortalId, _mOBlog.UserID)
-                                dbiUser.ImageUrl = objAuthor.Profile.PhotoURL
-                                hlAuthor.NavigateUrl = UserProfileURL(_mOBlog.UserID)
-                                imgAuthorLink.NavigateUrl = UserProfileURL(_mOBlog.UserID)
+                                If _mOBlog.AuthorMode <> Constants.AuthorMode.BloggerMode Then
+                                    Dim objAuthor As Entities.Users.UserInfo = Entities.Users.UserController.GetUserById(ModuleContext.PortalId, _mOBlog.UserID)
+                                    dbiUser.ImageUrl = objAuthor.Profile.PhotoURL
+                                    hlAuthor.NavigateUrl = UserProfileURL(_mOBlog.UserID)
+                                    imgAuthorLink.NavigateUrl = UserProfileURL(_mOBlog.UserID)
+
+                                    pnlBlogInfo.Visible = True
+                                End If
 
                                 Dim objSecurity As ModuleSecurity = New ModuleSecurity(ModuleContext.ModuleId, ModuleContext.TabId)
                                 Dim isOwner As Boolean
@@ -192,7 +194,7 @@ Partial Public Class ViewBlog
                             End If
                         Else
                             list = objEntries.GetEntriesByTerm(PortalId, _mDBlogDate, Tag, BlogSettings.RecentEntriesMax, CurrentPage, Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
-                            pnlBlogInfo.Visible = False
+
                             If Not lnkRecentRss Is Nothing Then
                                 lnkRecentRss.NavigateUrl = Links.RssByTag(ModuleContext, Tag)
                             End If
@@ -205,7 +207,7 @@ Partial Public Class ViewBlog
                     Else
                         ' category specific search
                         list = objEntries.GetEntriesByTerm(PortalId, _mDBlogDate, Category, BlogSettings.RecentEntriesMax, CurrentPage, Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()), Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleId.ToString()))
-                        pnlBlogInfo.Visible = False
+
                         If Not lnkRecentRss Is Nothing Then
                             lnkRecentRss.NavigateUrl = Links.RssByCategory(ModuleContext, Category)
                         End If
