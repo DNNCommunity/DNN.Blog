@@ -41,7 +41,7 @@ Namespace Components.Upgrade
                 Dim colEntries As New List(Of EntryInfo)
 
                 ' handle notification types
-                Components.Integration.Notifications.AddNotificationTypes()
+                Notifications.AddNotificationTypes()
                 message = "Created Notification Types & Actions for the Blog Module." & vbCrLf & vbCrLf
 
                 ' handle content item creation (for all blog entries in all portals)
@@ -54,15 +54,15 @@ Namespace Components.Upgrade
                         Dim disBlogs As List(Of Integer) = (From t In colBlogs Select t.PortalID).Distinct().ToList()
 
                         For Each i As Integer In disBlogs
-                            message += "Creating Content Items for PortalID: " + i.ToString() & vbCrLf & vbCrLf
                             CreateContentItems(i)
+                            message += "Created " + disBlogs.Count.ToString() + " Content Items for Portal: " + i.ToString() & vbCrLf & vbCrLf
                         Next
                     End If
                 End If
 
                 ' deal w/ category/tag migration
                 colEntries = cntEntry.RetrieveTaxonomyRelatedPosts()
-                MigrateTaxonomy(colEntries)
+                message = MigrateTaxonomy(colEntries, message)
 
                 Return message
             Catch ex As Exception
@@ -71,8 +71,7 @@ Namespace Components.Upgrade
             End Try
         End Function
 
-        Friend Function MigrateTaxonomy(ByVal colEntries As List(Of EntryInfo)) As String
-            Dim message As String = ""
+        Friend Function MigrateTaxonomy(ByVal colEntries As List(Of EntryInfo), ByVal message As String) As String
             Dim countContentItems As Integer = 0
             Dim countCategories As Integer = 0
             Dim countTags As Integer = 0
@@ -104,7 +103,7 @@ Namespace Components.Upgrade
                 colOldCategories = ModuleUpgradeController.GetAllCategoriesForUpgrade()
 
                 Dim cntVocabulary As New VocabularyController
-                Dim colVocabs As IQueryable(Of Vocabulary) = cntVocabulary.GetVocabularies()
+                'Dim colVocabs As IQueryable(Of Vocabulary) = cntVocabulary.GetVocabularies()
 
                 Dim currentPortalId As Integer = -1
                 Dim currentVocabId As Integer = -1
@@ -136,7 +135,7 @@ Namespace Components.Upgrade
 
                             currentVocabId = objVocab.VocabularyId
 
-                            DotNetNuke.Modules.Blog.Components.Business.Utility.UpdateBlogModuleSetting(currentPortalId, -1, "VocabularyId", currentVocabId.ToString)
+                            Business.Utility.UpdateBlogModuleSetting(currentPortalId, -1, "VocabularyId", currentVocabId.ToString)
                             'End If
                         End If
 
@@ -213,7 +212,7 @@ Namespace Components.Upgrade
 
                         If objMatchedCategory IsNot Nothing Then
                             Dim objMatchedTerm As Term
-                            objMatchedTerm = Terms.GetTermById(objMatchedCategory.NewTermId, 1)
+                            objMatchedTerm = Terms.GetTermById(objMatchedCategory.NewTermId, currentVocabId)
 
                             If objMatchedTerm IsNot Nothing Then
                                 entryTerms.Add(objMatchedTerm)
@@ -236,7 +235,7 @@ Namespace Components.Upgrade
             Return message
         End Function
 
-        Friend Sub CreateContentItems(ByVal PortalId As Integer)
+        Friend Sub CreateContentItems(ByVal portalId As Integer)
             Dim cntEntries As New EntryController
             Dim colEntries As List(Of EntryInfo) = cntEntries.GetAllEntriesByPortal(PortalId)
 
