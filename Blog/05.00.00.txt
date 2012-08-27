@@ -24,6 +24,7 @@ DesktopModules\Blog\App_LocalResources\SharedResources.ascx.resx
 DesktopModules\Blog\js\bookmark.js
 DesktopModules\Blog\js\bookmark.xml
 DesktopModules\Blog\js\Gravatar.js
+DesktopModules\Blog\js\jquery.min.js
 DesktopModules\Blog\js\tag.js
 DesktopModules\Blog\RecentComments.ascx
 DesktopModules\Blog\RecentComments.ascx.designer.vb
@@ -80,3 +81,4 @@ DesktopModules\Blog\Images\bookmarks\
 DesktopModules\Blog\ShareBadge\
 DesktopModules\Blog\Install.04.00.00.SqlDataProvider
 DesktopModules\Blog\04.01.00.SqlDataProvider
+DesktopModules\Blog\Uninstall.SqlDataProvider
