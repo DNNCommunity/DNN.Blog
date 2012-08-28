@@ -342,23 +342,25 @@ Partial Public Class ViewBlog
                 hlMore.Text = GetString("lnkReadMore", LocalResourceFile)
                 hlMore.Visible = (objEntry.PermaLink <> Utility.BlogNavigateURL(TabId, PortalId, objEntry.EntryID, objEntry.Title, BlogSettings.ShowSeoFriendlyUrl))
 
-                Dim Categories As String = ""
-                Dim i As Integer = 0
-                Dim colCategories As List(Of TermInfo) = objEntry.EntryTerms(BlogSettings.VocabularyId)
+                If objEntry.ContentItemId > 0 Then
+                    Dim Categories As String = ""
+                    Dim i As Integer = 0
+                    Dim colCategories As List(Of TermInfo) = objEntry.EntryTerms(BlogSettings.VocabularyId)
 
-                For Each objTerm As TermInfo In colCategories
-                    Categories += "<a href='" + Links.ViewEntriesByCategory(ModuleContext, objTerm.TermId, 1) + "'>" + objTerm.Name + "</a>"
-                    i += 1
-                    If i <= (colCategories.Count - 1) Then
-                        Categories += ", "
-                    End If
-                Next
+                    For Each objTerm As TermInfo In colCategories
+                        Categories += "<a href='" + Links.ViewEntriesByCategory(ModuleContext, objTerm.TermId, 1) + "'>" + objTerm.Name + "</a>"
+                        i += 1
+                        If i <= (colCategories.Count - 1) Then
+                            Categories += ", "
+                        End If
+                    Next
 
-                litCategories.Text = Categories
+                    litCategories.Text = Categories
 
-                tagControl.ModContext = ModuleContext
-                tagControl.DataSource = objEntry.EntryTerms(1)
-                tagControl.DataBind()
+                    tagControl.ModContext = ModuleContext
+                    tagControl.DataSource = objEntry.EntryTerms(1)
+                    tagControl.DataBind()
+                End If
             End If
 
             lnkEntry.NavigateUrl = objEntry.PermaLink

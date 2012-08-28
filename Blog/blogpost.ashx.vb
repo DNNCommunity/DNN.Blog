@@ -160,6 +160,14 @@ Public Class BlogPost
         End If
     End Function
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="postid"></param>
+    ''' <param name="username"></param>
+    ''' <param name="password"></param>
+    ''' <returns></returns>
+    ''' <remarks>We do not handle tags in here, handled in provider. Likewise, provider 'retrieval' doesn't handle categories.</remarks>
     Public Function getPostCategories(ByVal postid As String, ByVal username As String, ByVal password As String) As Category() Implements IMoveableType.getPostCategories
         InitializeMethodCall(username, password)
 
@@ -185,21 +193,21 @@ Public Class BlogPost
     End Function
 
     Public Function setPostCategories(ByVal postid As String, ByVal username As String, ByVal password As String, ByVal categories As Category()) As Boolean Implements IMoveableType.setPostCategories
-        InitializeMethodCall(username, password)
+        'InitializeMethodCall(username, password)
 
-        Dim cntEntry As New EntryController
-        Dim objEntry As EntryInfo = cntEntry.GetEntry(Convert.ToInt32(postid), _portalSettings.PortalId)
-        Dim terms As New List(Of Term)
+        'Dim cntEntry As New EntryController
+        'Dim objEntry As EntryInfo = cntEntry.GetEntry(Convert.ToInt32(postid), _portalSettings.PortalId)
+        'Dim terms As New List(Of Term)
 
-        For Each t As Category In categories
-            Dim objTerm As Term = Components.Integration.Terms.GetTermById(Convert.ToInt32(t.categoryId), _blogSettings.VocabularyId)
-            terms.Add(objTerm)
-        Next
+        'For Each t As Category In categories
+        '    Dim objTerm As Term = Components.Integration.Terms.GetTermById(Convert.ToInt32(t.categoryId), _blogSettings.VocabularyId)
+        '    terms.Add(objTerm)
+        'Next
 
-        objEntry.Terms.Clear()
-        objEntry.Terms.AddRange(terms)
+        'objEntry.Terms.Clear()
+        'objEntry.Terms.AddRange(terms)
 
-        cntEntry.UpdateEntry(objEntry, _tabId, _portalSettings.PortalId, _blogSettings.VocabularyId)
+        'cntEntry.UpdateEntry(objEntry, _tabId, _portalSettings.PortalId, _blogSettings.VocabularyId)
 
         Return True
     End Function

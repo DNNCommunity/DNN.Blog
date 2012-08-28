@@ -30,6 +30,7 @@ Imports DotNetNuke.Entities.Users
 Imports DotNetNuke.Entities.Content.Taxonomy
 Imports DotNetNuke.Modules.Blog.Components.Settings
 Imports DotNetNuke.Modules.Blog.Components.Entities
+Imports System.Linq
 
 Namespace Components.MetaWeblog
 
@@ -158,60 +159,70 @@ Namespace Components.MetaWeblog
 
 #Region "Item Related Procedures"
 
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="itemId"></param>
+        ''' <param name="userInfo"></param>
+        ''' <param name="portalSettings"></param>
+        ''' <param name="blogSettings"></param>
+        ''' <param name="itemType"></param>
+        ''' <returns></returns>
+        ''' <remarks>We do not handle categories in here, handled in blogpost.ashx.</remarks>
         Public Function GetItem(ByVal itemId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal itemType As ItemType) As Item Implements IPublishable.GetItem
-            Dim entryController As New EntryController
-            Dim item As New Item
+            Try
+                Dim entryController As New EntryController
+                Dim item As New Item
 
-            ' Need to use reflection to get the right procedure since 
-            ' the blog module authors changed the signature in
-            ' release 03.04.00
-            Dim BlogType As Type = entryController.[GetType]()
-            Dim miGetEntry As MethodInfo = BlogType.GetMethod("GetEntry")
-            Dim piParameters As ParameterInfo() = miGetEntry.GetParameters()
-            Dim entryInfo As EntryInfo
-            If piParameters.Length = 1 Then
-                Dim methodParams As Object() = New Object(0) {}
-                methodParams.SetValue(Convert.ToInt32(itemId), 0)
-                entryInfo = DirectCast(miGetEntry.Invoke(entryController, methodParams), EntryInfo)
-            Else
-                Dim methodParams As Object() = New Object(1) {}
-                methodParams.SetValue(Convert.ToInt32(itemId), 0)
-                methodParams.SetValue(portalSettings.PortalId, 1)
-                entryInfo = DirectCast(miGetEntry.Invoke(entryController, methodParams), EntryInfo)
-            End If
-
-            'Check to make sure user is authorized to view this content
-            BlogPostServices.AuthorizeUser(entryInfo.BlogID.ToString(), GetModulesForUser(userInfo, portalSettings, blogSettings, ProviderKey))
-
-            item.Link = entryInfo.PermaLink
-            item.Content = HttpUtility.HtmlDecode(entryInfo.Entry)
-            item.Summary = HttpUtility.HtmlDecode(entryInfo.Description)
-
-            item.DateCreated = GetLocalAddedTime(entryInfo.AddedDate, portalSettings.PortalId, userInfo)
-            item.StartDate = entryInfo.AddedDate
-            item.ItemId = entryInfo.EntryID.ToString()
-            item.Title = entryInfo.Title
-            item.Permalink = entryInfo.PermaLink
-            item.AllowComments = DirectCast(IIf((entryInfo.AllowComments), 1, 0), Integer)
-            item.Publish = entryInfo.Published
-            item.AuthorId = entryInfo.CreatedUserId.ToString()
-
-            Dim i As Integer = 0
-
-            For Each t As Term In entryInfo.Terms
-                If t.VocabularyId = 1 Then
-                    item.Keywords += "," + t.Name
+                ' Need to use reflection to get the right procedure since 
+                ' the blog module authors changed the signature in
+                ' release 03.04.00
+                Dim BlogType As Type = entryController.[GetType]()
+                Dim miGetEntry As MethodInfo = BlogType.GetMethod("GetEntry")
+                Dim piParameters As ParameterInfo() = miGetEntry.GetParameters()
+                Dim entryInfo As EntryInfo
+                If piParameters.Length = 1 Then
+                    Dim methodParams As Object() = New Object(0) {}
+                    methodParams.SetValue(Convert.ToInt32(itemId), 0)
+                    entryInfo = DirectCast(miGetEntry.Invoke(entryController, methodParams), EntryInfo)
                 Else
-                    item.Categories(i) = t.Name
-                    i += 1
+                    Dim methodParams As Object() = New Object(1) {}
+                    methodParams.SetValue(Convert.ToInt32(itemId), 0)
+                    methodParams.SetValue(portalSettings.PortalId, 1)
+                    entryInfo = DirectCast(miGetEntry.Invoke(entryController, methodParams), EntryInfo)
                 End If
-            Next
 
-            If itemType = itemType.Post And Not blogSettings.ExcerptEnabled Then
-                FindAndPlaceSummary(item)
-            End If
+                'Check to make sure user is authorized to view this content
+                BlogPostServices.AuthorizeUser(entryInfo.BlogID.ToString(), GetModulesForUser(userInfo, portalSettings, blogSettings, ProviderKey))
 
-            Return item
+                item.Link = entryInfo.PermaLink
+                item.Content = HttpUtility.HtmlDecode(entryInfo.Entry)
+                item.Summary = HttpUtility.HtmlDecode(entryInfo.Description)
+
+                item.DateCreated = GetLocalAddedTime(entryInfo.AddedDate, portalSettings.PortalId, userInfo)
+                item.StartDate = entryInfo.AddedDate
+                item.ItemId = entryInfo.EntryID.ToString()
+                item.Title = entryInfo.Title
+                item.Permalink = entryInfo.PermaLink
+                item.AllowComments = DirectCast(IIf((entryInfo.AllowComments), 1, 0), Integer)
+                item.Publish = entryInfo.Published
+                item.AuthorId = entryInfo.CreatedUserId.ToString()
+
+                For Each t As Term In entryInfo.Terms
+                    If t.VocabularyId = 1 Then
+                        item.Keywords += t.Name + ","
+                    End If
+                Next
+
+                If itemType = itemType.Post And Not blogSettings.ExcerptEnabled Then
+                    FindAndPlaceSummary(item)
+                End If
+
+                Return item
+            Catch ex As Exception
+                DotNetNuke.Services.Exceptions.LogException(ex)
+                Return Nothing
+            End Try
         End Function
 
         Public Function GetRecentItems(ByVal blogId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal numberOfItems As Integer, ByVal requestType As RecentItemsRequestType, ByVal providerKey As String) As Item() Implements IPublishable.GetRecentItems
@@ -252,114 +263,127 @@ Namespace Components.MetaWeblog
         End Function
 
         Public Function NewItem(ByVal blogId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal item As Item) As String Implements IPublishable.NewItem
-            BlogPostServices.AuthorizeUser(blogId, GetModulesForUser(userInfo, portalSettings, blogSettings, ProviderKey))
+            Try
+                BlogPostServices.AuthorizeUser(blogId, GetModulesForUser(userInfo, portalSettings, blogSettings, ProviderKey))
 
-            ExtractSummaryFromExtendedContent(item)
+                ExtractSummaryFromExtendedContent(item)
 
-            Dim blogController As New BlogController
-            Dim objEntryController As New EntryController
-            Dim objEntry As New EntryInfo
-            Dim blogTabID As Integer = 0
-            Dim tempBlogID As Integer = 0
-            Dim PortalID As Integer = portalSettings.PortalId
-            objEntry.Title = item.Title
+                Dim blogController As New BlogController
+                Dim objEntryController As New EntryController
+                Dim objEntry As New EntryInfo
+                Dim blogTabID As Integer = 0
+                Dim tempBlogID As Integer = 0
+                Dim PortalID As Integer = portalSettings.PortalId
+                objEntry.Title = item.Title
 
-            ' HtmlEncode the entry.
-            objEntry.Entry = HttpUtility.HtmlEncode(item.Content)
+                ' HtmlEncode the entry.
+                objEntry.Entry = HttpUtility.HtmlEncode(item.Content)
 
-            ' Retrieve the TabID where this blog can be viewed
-            If Not HttpContext.Current.Request("tabid") Is Nothing AndAlso HttpContext.Current.Request("tabid").ToString() <> String.Empty Then
-                blogTabID = Convert.ToInt32(HttpContext.Current.Request("tabid"))
-            Else
-                blogTabID = Utility.GetTabIDByPortalID(portalSettings.PortalId.ToString())
-            End If
+                ' Retrieve the TabID where this blog can be viewed
+                If Not HttpContext.Current.Request("tabid") Is Nothing AndAlso HttpContext.Current.Request("tabid").ToString() <> String.Empty Then
+                    blogTabID = Convert.ToInt32(HttpContext.Current.Request("tabid"))
+                Else
+                    blogTabID = Utility.GetTabIDByPortalID(portalSettings.PortalId.ToString())
+                End If
 
-            If tempBlogID = 0 Then
-                tempBlogID = Convert.ToInt32(blogId)
-            End If
+                If tempBlogID = 0 Then
+                    tempBlogID = Convert.ToInt32(blogId)
+                End If
 
-            ' Make sure the AddedDate is valid
-            If item.DateCreated.Year > 1 Then
-                ' WLW manages the TZ offset automatically
-                objEntry.AddedDate = item.DateCreated
-            Else
-                objEntry.AddedDate = DateTime.Now.ToUniversalTime()
-            End If
+                ' Make sure the AddedDate is valid
+                If item.DateCreated.Year > 1 Then
+                    ' WLW manages the TZ offset automatically
+                    objEntry.AddedDate = item.DateCreated
+                Else
+                    objEntry.AddedDate = DateTime.Now.ToUniversalTime()
+                End If
 
-            objEntry.AllowComments = DirectCast(IIf((item.AllowComments = -1 OrElse item.AllowComments = 1), True, False), Boolean)
+                objEntry.AllowComments = DirectCast(IIf((item.AllowComments = -1 OrElse item.AllowComments = 1), True, False), Boolean)
 
-            objEntry.Published = item.Publish
-            If blogSettings.AllowSummaryHtml Then
-                objEntry.Description = item.Summary
-            Else
-                objEntry.Description = Common.Globals.RemoveMarkup(item.Summary)
-            End If
-            objEntry.DisplayCopyright = False
-            objEntry.Copyright = ""
-            objEntry.CreatedUserId = Convert.ToInt32(item.AuthorId)
-            objEntry.BlogID = tempBlogID
-            objEntry.ModuleID = -1
-            objEntry.EntryID = objEntryController.AddEntry(objEntry, blogTabID).EntryID
-            objEntry.TabID = blogTabID
+                objEntry.Published = item.Publish
+                If blogSettings.AllowSummaryHtml Then
+                    objEntry.Description = item.Summary
+                Else
+                    objEntry.Description = Common.Globals.RemoveMarkup(item.Summary)
+                End If
+                objEntry.DisplayCopyright = False
+                objEntry.Copyright = ""
+                objEntry.CreatedUserId = Convert.ToInt32(item.AuthorId)
+                objEntry.BlogID = tempBlogID
+                objEntry.ModuleID = -1
+                objEntry.EntryID = objEntryController.AddEntry(objEntry, blogTabID).EntryID
+                objEntry.TabID = blogTabID
 
-            'True in the last parameter just specifies that we want the SEO Friendly URL to be saved
-            ' in the permalink field which is used by WLW to redirect to post after entry is made.
-            objEntry.PermaLink = Utility.BlogNavigateURL(blogTabID, PortalID, objEntry, True)
-            BlogPostServices.ProcessItemImages(objEntry, RootBlogPath)
+                'True in the last parameter just specifies that we want the SEO Friendly URL to be saved
+                ' in the permalink field which is used by WLW to redirect to post after entry is made.
+                objEntry.PermaLink = Utility.BlogNavigateURL(blogTabID, PortalID, objEntry, True)
+                BlogPostServices.ProcessItemImages(objEntry, RootBlogPath)
 
-            ' NOTE: CP - COMEBACK
-            Dim userEnteredTerms As Array = item.Categories
-            Dim terms As New List(Of Term)
+                Dim userEnteredTerms As Array = item.Categories
+                Dim userEnteredTags As Array = item.Keywords.Trim.Split(","c)
+                Dim terms As New List(Of Term)
 
-            ' Tags?
-
-            If blogSettings.VocabularyId > 0 Then
-                For Each s As String In userEnteredTerms
+                For Each s As String In userEnteredTags
                     If s.Length > 0 Then
                         'If (ContainsSpecialCharacters) Then
                         '    UI.Skins.Skin.AddModuleMessage(control, msg, ModuleMessage.ModuleMessageType.RedError);
                         'End If
-                        Dim newTerm As Term = Components.Integration.Terms.CreateAndReturnTerm(s, 1)
+                        Dim newTerm As Term = Components.Integration.Terms.CreateAndReturnTerm(s.Trim, 1)
                         terms.Add(newTerm)
                     End If
                 Next
-            End If
 
-            objEntry.Terms.Clear()
-            objEntry.Terms.AddRange(terms)
+                If blogSettings.VocabularyId > 1 Then
+                    For Each s As String In userEnteredTerms
+                        If s.Length > 0 Then
+                            'If (ContainsSpecialCharacters) Then
+                            '    UI.Skins.Skin.AddModuleMessage(control, msg, ModuleMessage.ModuleMessageType.RedError);
+                            'End If
+                            Dim newTerm As Term = Integration.Terms.CreateAndReturnTerm(s.Trim, blogSettings.VocabularyId)
+                            terms.Add(newTerm)
+                        End If
+                    Next
+                End If
 
-            objEntryController.UpdateEntry(objEntry, objEntry.TabID, PortalID, blogSettings.VocabularyId)
+                objEntry.Terms.Clear()
+                objEntry.Terms.AddRange(terms)
 
-            If (objEntry.Published) Then
-                Dim objBlog As BlogInfo
-                Dim cntBlog As New BlogController
-                objBlog = cntBlog.GetBlog(tempBlogID)
+                objEntryController.UpdateEntry(objEntry, objEntry.TabID, PortalID, blogSettings.VocabularyId)
 
-                Dim cntIntegration As New Components.Integration.Journal()
-                Dim journalUserId As Integer
+                If (objEntry.Published) Then
+                    Dim objBlog As BlogInfo
+                    Dim cntBlog As New BlogController
+                    objBlog = cntBlog.GetBlog(tempBlogID)
 
-                Select Case objBlog.AuthorMode
-                    Case Common.Constants.AuthorMode.GhostMode
-                        journalUserId = objBlog.UserID
-                    Case Else
-                        journalUserId = userInfo.UserID
-                End Select
+                    Dim cntIntegration As New Components.Integration.Journal()
+                    Dim journalUserId As Integer
 
-                cntIntegration.AddBlogEntryToJournal(objEntry, PortalID, objEntry.TabID, journalUserId, objEntry.PermaLink)
-                'Else
-                ' We could add notifications if the user is a ghost user and not the owner (didn't wire ghost into WLW this version)
-            End If
+                    Select Case objBlog.AuthorMode
+                        Case Common.Constants.AuthorMode.GhostMode
+                            journalUserId = objBlog.UserID
+                        Case Else
+                            journalUserId = userInfo.UserID
+                    End Select
 
-            ' If this is a style detection post, then we write to the Blog_MetaWeblogData table to note
-            ' that this post is a new post.  We're just using the DAL+ here to manage this feature.
-            If (item.StyleDetectionPost) Then
-                Dim blogUrl As String = (New DotNetNuke.Security.PortalSecurity).InputFilter(objEntry.PermaLink, Security.PortalSecurity.FilterFlag.NoSQL)
-                ' DW - 01/27/2010 - Updated to ensure that at least 1 row exists in this table.
-                Dim sSQL As String = "DECLARE @Count INT; SELECT @Count = (SELECT Count(*) FROM {databaseOwner}{objectQualifier}Blog_MetaWeblogData); IF @Count = 0 INSERT INTO {databaseOwner}{objectQualifier}Blog_MetaWeblogData SELECT '" & blogUrl & "' ELSE UPDATE dbo.Blog_MetaWeblogData SET TempInstallUrl = '" & blogUrl & "'"
-                DataProvider.Instance.ExecuteSQL(sSQL)
-            End If
+                    cntIntegration.AddBlogEntryToJournal(objEntry, PortalID, objEntry.TabID, journalUserId, objEntry.PermaLink)
+                    'Else
+                    ' We could add notifications if the user is a ghost user and not the owner (didn't wire ghost into WLW this version)
+                End If
 
-            Return objEntry.EntryID.ToString()
+                ' If this is a style detection post, then we write to the Blog_MetaWeblogData table to note
+                ' that this post is a new post.  We're just using the DAL+ here to manage this feature.
+                If (item.StyleDetectionPost) Then
+                    Dim blogUrl As String = (New DotNetNuke.Security.PortalSecurity).InputFilter(objEntry.PermaLink, Security.PortalSecurity.FilterFlag.NoSQL)
+                    ' DW - 01/27/2010 - Updated to ensure that at least 1 row exists in this table.
+                    Dim sSQL As String = "DECLARE @Count INT; SELECT @Count = (SELECT Count(*) FROM {databaseOwner}{objectQualifier}Blog_MetaWeblogData); IF @Count = 0 INSERT INTO {databaseOwner}{objectQualifier}Blog_MetaWeblogData SELECT '" & blogUrl & "' ELSE UPDATE dbo.Blog_MetaWeblogData SET TempInstallUrl = '" & blogUrl & "'"
+                    DataProvider.Instance.ExecuteSQL(sSQL)
+                End If
+
+                Return objEntry.EntryID.ToString()
+            Catch ex As Exception
+                DotNetNuke.Services.Exceptions.LogException(ex)
+                Return Nothing
+            End Try
         End Function
 
         Public Function EditItem(ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings, ByVal blogSettings As BlogSettings, ByVal item As Item) As Boolean Implements IPublishable.EditItem
@@ -425,11 +449,19 @@ Namespace Components.MetaWeblog
 
             BlogPostServices.ProcessItemImages(objEntry, RootBlogPath)
 
-            ' NOTE: CP - COMEBACK
             Dim userEnteredTerms As Array = item.Categories
+            Dim userEnteredTags As Array = item.Keywords.Trim.Split(","c)
             Dim terms As New List(Of Term)
 
-            ' Tags?
+            For Each s As String In userEnteredTags
+                If s.Length > 0 Then
+                    'If (ContainsSpecialCharacters) Then
+                    '    UI.Skins.Skin.AddModuleMessage(control, msg, ModuleMessage.ModuleMessageType.RedError);
+                    'End If
+                    Dim newTerm As Term = Components.Integration.Terms.CreateAndReturnTerm(s.Trim, 1)
+                    terms.Add(newTerm)
+                End If
+            Next
 
             If blogSettings.VocabularyId > 1 Then
                 For Each s As String In userEnteredTerms
@@ -437,7 +469,7 @@ Namespace Components.MetaWeblog
                         'If (ContainsSpecialCharacters) Then
                         '    UI.Skins.Skin.AddModuleMessage(control, msg, ModuleMessage.ModuleMessageType.RedError);
                         'End If
-                        Dim newTerm As Term = Integration.Terms.CreateAndReturnTerm(s, 1)
+                        Dim newTerm As Term = Integration.Terms.CreateAndReturnTerm(s.Trim, blogSettings.VocabularyId)
                         terms.Add(newTerm)
                     End If
                 Next
@@ -583,10 +615,10 @@ Namespace Components.MetaWeblog
         Public Function GetPingbackSettings(ByVal moduleLevelId As String, ByVal userInfo As UserInfo, ByVal portalSettings As PortalSettings) As TrackbackAndPingSettings Implements ILinkable.GetPingbackSettings
             Dim trackbackSettings As New TrackbackAndPingSettings
 
-            trackbackSettings.allowAutoDiscovery = True
+            trackbackSettings.allowAutoDiscovery = False
             trackbackSettings.AllowForPage = False 'Not implemented with blog
-            trackbackSettings.AllowForPost = True
-            trackbackSettings.allowOverrideByPingDropDown = True
+            trackbackSettings.AllowForPost = False
+            trackbackSettings.allowOverrideByPingDropDown = False
 
             Return trackbackSettings
         End Function
