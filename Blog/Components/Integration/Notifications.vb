@@ -36,14 +36,15 @@ Namespace Components.Integration
         ''' <param name="objBlog"></param>
         ''' <param name="objEntry"></param>
         ''' <param name="portalId"></param>
-        ''' <param name="subject"></param>
+        ''' <param name="summary"></param>
+        ''' <param name="title"></param>
         ''' <remarks></remarks>
         Friend Sub EntryPendingApproval(ByVal objBlog As BlogInfo, ByVal objEntry As EntryInfo, ByVal portalId As Integer, ByVal summary As String, ByVal title As String)
             Dim notificationType As NotificationType = NotificationsController.Instance.GetNotificationType(Common.Constants.NotificationPublishingTypeName)
 
             Select Case objBlog.AuthorMode
-                Case Common.Constants.AuthorMode.PersonalMode
-                    ' should never happen
+                'Case Common.Constants.AuthorMode.PersonalMode
+                '    ' should never happen
                 Case Common.Constants.AuthorMode.GhostMode
                     Dim notificationKey As String = String.Format("{0}:{1}:{2}", Components.Common.Constants.ContentTypeName, objEntry.BlogID, objEntry.EntryID)
                     Dim objNotification As New Notification
@@ -62,7 +63,7 @@ Namespace Components.Integration
 
                     NotificationsController.Instance.SendNotification(objNotification, portalId, Nothing, colUsers)
                 Case Else
-                    ' in blogger mode, we are not sending any notifications at this time
+                    ' All Bloggers mode (needs no notifications)
             End Select
         End Sub
 
@@ -98,6 +99,14 @@ Namespace Components.Integration
             Dim notificationKey As String = String.Format("{0}:{1}:{2}:{3}", Components.Common.Constants.ContentTypeName + Common.Constants.NotificationCommentApprovalTypeName, objBlog.BlogID, objEntry.EntryID, objComment.CommentID)
             Dim objNotification As New Notification
 
+            Dim recipientId As Integer
+            Select Case objBlog.AuthorMode
+                Case Common.Constants.AuthorMode.BloggerMode
+                    recipientId = objEntry.CreatedUserId
+                Case Else
+                    recipientId = objBlog.UserID
+            End Select
+
             objNotification.NotificationTypeID = notificationType.NotificationTypeId
             objNotification.Subject = subject
             objNotification.Body = summary
@@ -105,7 +114,7 @@ Namespace Components.Integration
             objNotification.SenderUserID = objComment.UserID
             objNotification.Context = notificationKey
 
-            Dim objOwner As UserInfo = UserController.GetUserById(portalId, objBlog.UserID)
+            Dim objOwner As UserInfo = UserController.GetUserById(portalId, recipientId)
             Dim colUsers As New List(Of UserInfo)
 
             colUsers.Add(objOwner)
@@ -145,6 +154,14 @@ Namespace Components.Integration
             Dim notificationKey As String = String.Format("{0}:{1}:{2}:{3}", Components.Common.Constants.ContentTypeName + Common.Constants.NotificationCommentAddedTypeName, objBlog.BlogID, objEntry.EntryID, objComment.CommentID)
             Dim objNotification As New Notification
 
+            Dim recipientId As Integer
+            Select Case objBlog.AuthorMode
+                Case Common.Constants.AuthorMode.BloggerMode
+                    recipientId = objEntry.CreatedUserId
+                Case Else
+                    recipientId = objBlog.UserID
+            End Select
+
             objNotification.NotificationTypeID = notificationType.NotificationTypeId
             objNotification.Subject = subject
             objNotification.Body = summary
@@ -152,7 +169,7 @@ Namespace Components.Integration
             objNotification.SenderUserID = objComment.UserID
             objNotification.Context = notificationKey
 
-            Dim objOwner As UserInfo = UserController.GetUserById(portalId, objBlog.UserID)
+            Dim objOwner As UserInfo = UserController.GetUserById(portalId, recipientId)
             Dim colUsers As New List(Of UserInfo)
 
             colUsers.Add(objOwner)
