@@ -6,10 +6,10 @@
 </p>
 <hr/>
 <div class="License">
-	<h3>About the Core Blog</h3>
+	<h3>About the Core Blog Module</h3>
 	<p class="Owner">
 		<strong>Version 5.0.0</strong><br /><br />
-		This version of the module requires DotNetNuke Core 6.2 Beta 2 or greater. <br /><br />
+		This version of the module requires DotNetNuke Core 6.2 or greater. <br /><br />
 		FYI: Developers should be aware that the module uses Visual Studio 2010 only. <br /><br />
 
 		Release Highlights:
