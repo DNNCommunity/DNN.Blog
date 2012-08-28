@@ -50,8 +50,7 @@ Namespace Components.Controllers
         Public Function GetTermsByContentItem(ByVal contentItemId As Integer, ByVal vocabularyId As Integer) As List(Of TermInfo)
             DotNetNuke.Common.Requires.PropertyNotNegative("contentItemId", "", contentItemId)
 
-            Dim contentItemKey As String = Common.Constants.ContentItemsKey + contentItemId.ToString() + Common.Constants.VocabSuffixCacheKey + vocabularyId.ToString
-
+            Dim contentItemKey As String = Common.Constants.ContentItemsKey + contentItemId.ToString() + "-" + vocabularyId.ToString
             Dim colTerms As List(Of TermInfo) = DirectCast(DataCache.GetCache(contentItemKey), List(Of TermInfo))
 
             If colTerms Is Nothing Then

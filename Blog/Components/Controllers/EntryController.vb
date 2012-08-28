@@ -109,8 +109,10 @@ Namespace Components.Controllers
             ' Clear Cache
             Dim tagsKey As String = Common.Constants.TermsKey + "1"
             DataCache.RemoveCache(tagsKey)
-            Dim contentItemKey As String = Common.Constants.ContentItemsKey + objEntry.ContentItemId.ToString() + Common.Constants.VocabSuffixCacheKey + "1"
+            Dim contentItemKey As String = Common.Constants.ContentItemsKey + objEntry.ContentItemId.ToString() + "-" + "1"
             DataCache.RemoveCache(contentItemKey)
+            Dim contentItemCatKey As String = Common.Constants.ContentItemsKey + objEntry.ContentItemId.ToString() + "-" + vocabularyId.ToString()
+            DataCache.RemoveCache(contentItemCatKey)
             Dim categoriesKey As String = Common.Constants.TermsKey + vocabularyId.ToString()
             DataCache.RemoveCache(categoriesKey)
             Dim portalKey As String = Common.Constants.PortalBlogsCacheKey & CStr(portalId)
@@ -126,8 +128,10 @@ Namespace Components.Controllers
             ' Clear Cache
             Dim tagsKey As String = Common.Constants.TermsKey + "1"
             DataCache.RemoveCache(tagsKey)
-            Dim contentItemKey As String = Common.Constants.ContentItemsKey + contentItemId.ToString() + Common.Constants.VocabSuffixCacheKey + "1"
+            Dim contentItemKey As String = Common.Constants.ContentItemsKey + contentItemId.ToString() + "-" + "1"
             DataCache.RemoveCache(contentItemKey)
+            Dim contentItemCatKey As String = Common.Constants.ContentItemsKey + contentItemId.ToString() + "-" + vocabularyId.ToString()
+            DataCache.RemoveCache(contentItemCatKey)
             Dim categoriesKey As String = Common.Constants.TermsKey + vocabularyId.ToString()
             DataCache.RemoveCache(categoriesKey)
             Dim portalKey As String = Common.Constants.PortalBlogsCacheKey & CStr(portalId)

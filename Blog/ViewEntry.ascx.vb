@@ -310,7 +310,8 @@ Partial Public Class ViewEntry
 
             Dim Categories As String = ""
             Dim i As Integer = 0
-            Dim colCategories As List(Of TermInfo) = Entry.EntryTerms(VocabularyId)
+
+            Dim colCategories As List(Of TermInfo) = Entry.EntryCategories(VocabularyId)
 
             For Each objTerm As TermInfo In colCategories
                 Categories += "<a href='" + ModuleContext.NavigateUrl(ModuleContext.TabId, "", False, "catid=" + objTerm.TermId.ToString()) + "'>" + objTerm.Name + "</a>"
@@ -322,7 +323,7 @@ Partial Public Class ViewEntry
 
             litCategories.Text = Categories
 
-            rptTags.DataSource = Entry.EntryTerms(1)
+            rptTags.DataSource = Entry.EntryTags()
             rptTags.DataBind()
 
         Catch exc As Exception

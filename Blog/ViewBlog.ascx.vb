@@ -345,7 +345,7 @@ Partial Public Class ViewBlog
                 If objEntry.ContentItemId > 0 Then
                     Dim Categories As String = ""
                     Dim i As Integer = 0
-                    Dim colCategories As List(Of TermInfo) = objEntry.EntryTerms(BlogSettings.VocabularyId)
+                    Dim colCategories As List(Of TermInfo) = objEntry.EntryCategories(BlogSettings.VocabularyId)
 
                     For Each objTerm As TermInfo In colCategories
                         Categories += "<a href='" + Links.ViewEntriesByCategory(ModuleContext, objTerm.TermId, 1) + "'>" + objTerm.Name + "</a>"
@@ -358,7 +358,7 @@ Partial Public Class ViewBlog
                     litCategories.Text = Categories
 
                     tagControl.ModContext = ModuleContext
-                    tagControl.DataSource = objEntry.EntryTerms(1)
+                    tagControl.DataSource = objEntry.EntryTags()
                     tagControl.DataBind()
                 End If
             End If

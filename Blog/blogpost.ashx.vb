@@ -193,6 +193,8 @@ Public Class BlogPost
     End Function
 
     Public Function setPostCategories(ByVal postid As String, ByVal username As String, ByVal password As String, ByVal categories As Category()) As Boolean Implements IMoveableType.setPostCategories
+        ' The set is handled in the saving
+
         'InitializeMethodCall(username, password)
 
         'Dim cntEntry As New EntryController

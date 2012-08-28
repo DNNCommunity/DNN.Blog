@@ -88,9 +88,14 @@ Namespace Components.Entities
 
 #Region "Public Methods"
 
-        Public Function EntryTerms(vocabularyId As Integer) As List(Of TermInfo)
+        Public Function EntryCategories(vocabularyId As Integer) As List(Of TermInfo)
             Dim cntTerms As New TermController()
             Return cntTerms.GetTermsByContentItem(ContentItemId, vocabularyId)
+        End Function
+
+        Public Function EntryTags() As List(Of TermInfo)
+            Dim cntTerms As New TermController()
+            Return cntTerms.GetTermsByContentItem(ContentItemId, 1)
         End Function
 
 #End Region

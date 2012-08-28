@@ -70,15 +70,13 @@ Namespace Components.Common
         ''' <remarks></remarks>
         Public Const CACHE_TIMEOUT As Integer = 20
 
-        Public Const VocabSuffixCacheKey As String = "Vocabulary_"
-
         Public Const ArchiveSettingsCacheKey As String = "ArchiveSettings_"
         Public Const CategorySettingsCacheKey As String = "CategorySettings_"
         Public Const TagSettingsCacheKey As String = "TagSettings_"
         Public Const RosterSettingsCacheKey As String = "RosterSettings_"
         Public Const ModuleSettingsCacheKey As String = "ModuleSettings_"
-        Public Const PortalBlogsCacheKey As String = "PortalBlogs_"
 
+        Public Const PortalBlogsCacheKey As String = "PortalBlogs_"
         Public Const TermsKey As String = "DNNBLOG_Terms_"
         Public Const ContentItemsKey As String = "DNNBLOG_ContentItems_"
 
