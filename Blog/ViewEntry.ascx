@@ -67,7 +67,7 @@
 					</div>
 					<div class="commentContent">
 						<div class="ccAuthor"><asp:HyperLink ID="hlCommentAuthor" runat="server" />&nbsp;<asp:Label ID="lblCommentDate" runat="server" /></div>
-						<div><p><%# server.htmldecode(DataBinder.Eval(Container.DataItem,"Comment")) %></p></div>
+						<div><p><asp:Literal runat="server" ID="txtCommentBody"></asp:Literal></p></div>
 						<div class="commentMod dnnRight">
 							<asp:ImageButton ID="lnkEditComment" runat="server" Visible="false" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="EditComment" ImageUrl="~/images/edit.gif" resourcekey="cmdEdit" />
 							<asp:ImageButton ID="lnkApproveComment" runat="server" Visible="false" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="ApproveComment" ImageUrl="~/desktopmodules/Blog/images/blog_accept.png" CausesValidation="false" resourcekey="cmdApprove" />

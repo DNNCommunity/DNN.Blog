@@ -368,6 +368,7 @@ Partial Public Class ViewEntry
             End If
 
             lblCommentDate.Text = Utility.CalculateDateForDisplay(objComment.AddedDate)
+            CType(e.Item.FindControl("txtCommentBody"), Literal).Text = objComment.Comment.Replace(System.Environment.NewLine, "<br />")
 
             If Not objComment.Approved Then
                 lnkApproveComment.Visible = True
@@ -434,7 +435,7 @@ Partial Public Class ViewEntry
                 End If
 
                 Dim objSec As New PortalSecurity
-                objComment.Comment = objSec.InputFilter(txtComment.Text, PortalSecurity.FilterFlag.NoProfanity)
+                objComment.Comment = Server.HtmlEncode(objSec.InputFilter(txtComment.Text, PortalSecurity.FilterFlag.NoProfanity))
 
                 Dim objSecurity As ModuleSecurity = New ModuleSecurity(ModuleContext.ModuleId, ModuleContext.TabId)
                 Dim isOwner As Boolean
