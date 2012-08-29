@@ -143,8 +143,6 @@ Partial Public Class ViewEntry
                 End If
 
                 If Not objBlog Is Nothing Then
-                    ' Comment perms here
-                    pnlComments.Visible = UserInfo.UserID > -1 AndAlso (BlogSettings.CommentMode = Constants.CommentMode.Default AndAlso objBlog.AllowComments)
                     lnkBlogs.NavigateUrl = NavigateURL()
                     If objBlog.ParentBlogID > -1 Then
                         Dim cntBlog As New BlogController
@@ -283,11 +281,11 @@ Partial Public Class ViewEntry
 
                     litEntry.Text = Server.HtmlDecode(Entry.Entry)
 
-                    pnlComments.Visible = UserInfo.UserID > -1 AndAlso ((BlogSettings.CommentMode = Constants.CommentMode.Default AndAlso objBlog.AllowComments) AndAlso Entry.AllowComments)
+                    pnlComments.Visible = (BlogSettings.CommentMode = Constants.CommentMode.Default AndAlso objBlog.AllowComments AndAlso Entry.AllowComments)
                     If pnlComments.Visible Then
                         BindCommentsList()
                     End If
-                    pnlAddComment.Visible = pnlComments.Visible
+                    pnlAddComment.Visible = (pnlComments.Visible AndAlso ModuleContext.PortalSettings.UserId > 0)
 
                     If ModuleContext.PortalSettings.UserId > 0 Then
                         litAddComment.Text = "<a href='#AddComment' id='linkAdd' class='dnnPrimaryAction'>" + Localization.GetString("AddComment", LocalResourceFile) + "</a>"
