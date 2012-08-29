@@ -28,6 +28,7 @@
       <DefaultExclude Include="**\*.txt" />
       <DefaultExclude Include="**\*ReSharper.*\**" />
 	  <DefaultExclude Include="**\Tests*\**" />
+	  <DefaultExclude Include="**\_Installation\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -40,8 +41,9 @@
       <InstallInclude Include="**\*.resx" />
       <InstallInclude Include="**\*.aspx" />
       <InstallInclude Include="**\*.js" />
-      <InstallInclude Include="**\*.txt"  Exclude="**\obj\**;**\_ReSharper*\**;**\Documentation\License.txt;**\Documentation\ReleaseNotes.txt;" />
+      <InstallInclude Include="**\*.txt"  Exclude="**\obj\**;**\_ReSharper*\**;**\Documentation\License.txt;**\Documentation\ReleaseNotes.txt;**\_Installation\**;**\05.00.00.txt;" />
       <InstallInclude Include="**\images\*.*" />
+	  <InstallInclude Include="**\wlwblog.xml" />
     </ItemGroup>
 
     <ItemGroup>
@@ -56,7 +58,7 @@
       <SourceInclude Include="**\*.xml" Exclude="**\obj\**;**\_ReSharper*\**;**\bin\**;" />
       <SourceInclude Include="**\*.aspx" />
       <SourceInclude Include="**\*.js" />
-      <SourceInclude Include="**\*.txt" Exclude="**\obj\**;**\_ReSharper*\**;**\Documentation\License.txt;**\Documentation\ReleaseNotes.txt;" />
+      <SourceInclude Include="**\*.txt" Exclude="**\obj\**;**\_ReSharper*\**;**\Documentation\License.txt;**\Documentation\ReleaseNotes.txt;**\05.00.00.txt;" />
       <SourceInclude Include="**\images\*.*" />
       <SourceInclude Include="**\*.cs" />
       <SourceInclude Include="**\*.cs.designer" />
@@ -68,6 +70,7 @@
       <SourceInclude Include="**\*.sln" />
 	  <SourceInclude Include="**\Tests\*.*" />
 	  <SourceInclude Include="**\Tests\**\*.*" Exclude="**\Tests\bin\**;**\.svn\**;**\Tests\obj\**;**\*.mdf;**\*.ldf;" />
+	  <SourceInclude Include="**\wlwblog.xml" />
     </ItemGroup>
     
     <CreateItem Include="$(DNNFileName).dnn">
@@ -83,10 +86,6 @@
     </CreateItem>
 
 	<CreateItem Include="**\$(Version).txt">
-      <Output TaskParameter="Include" ItemName="PackageTxtFiles" />
-    </CreateItem>
-
-	<CreateItem Include="**\Images\blogIcon.png">
       <Output TaskParameter="Include" ItemName="PackageTxtFiles" />
     </CreateItem>
 	
