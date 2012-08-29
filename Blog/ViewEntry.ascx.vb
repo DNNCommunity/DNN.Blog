@@ -344,6 +344,8 @@ Partial Public Class ViewEntry
             Dim lnkApproveComment As System.Web.UI.WebControls.ImageButton = CType(e.Item.FindControl("lnkApproveComment"), System.Web.UI.WebControls.ImageButton)
             Dim lblCommentDate As System.Web.UI.WebControls.Label = CType(e.Item.FindControl("lblCommentDate"), System.Web.UI.WebControls.Label)
             Dim lnkDeleteComment As System.Web.UI.WebControls.ImageButton = CType(e.Item.FindControl("lnkDeleteComment"), System.Web.UI.WebControls.ImageButton)
+            Dim litComment As System.Web.UI.WebControls.Literal = CType(e.Item.FindControl("txtCommentBody"), Literal)
+
             Dim objComment As CommentInfo = CType(e.Item.DataItem, CommentInfo)
             Dim objSecurity As ModuleSecurity = New ModuleSecurity(ModuleContext.ModuleId, ModuleContext.TabId)
 
@@ -368,7 +370,14 @@ Partial Public Class ViewEntry
             End If
 
             lblCommentDate.Text = Utility.CalculateDateForDisplay(objComment.AddedDate)
-            CType(e.Item.FindControl("txtCommentBody"), Literal).Text = objComment.Comment.Replace(System.Environment.NewLine, "<br />")
+            Dim comment As String = objComment.Comment
+            Dim matches As MatchCollection = New Regex("(?<!["">])((http|https|ftp)\://.+?)(?=\s|$)").Matches(comment)
+
+            For Each m As Match In matches
+                comment = comment.Replace(m.Value, "<a rel=""nofollow"" href=""" + m.Value + """>" + m.Value + "</a>")
+            Next
+            comment.Replace(System.Environment.NewLine, "<br />")
+            litComment.Text = comment
 
             If Not objComment.Approved Then
                 lnkApproveComment.Visible = True
