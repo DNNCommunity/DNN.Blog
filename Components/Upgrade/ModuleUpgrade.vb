@@ -20,15 +20,15 @@
 Option Strict On
 Option Explicit On
 
-Imports DotNetNuke.Modules.Blog.Components.Controllers
+Imports DotNetNuke.Modules.Blog.Controllers
 Imports DotNetNuke.Entities.Content.Taxonomy
-Imports DotNetNuke.Modules.Blog.Components.Integration
+Imports DotNetNuke.Modules.Blog.Integration
 Imports System.Linq
 Imports DotNetNuke.Entities.Content
-Imports DotNetNuke.Modules.Blog.Components.Entities
+Imports DotNetNuke.Modules.Blog.Entities
 Imports DotNetNuke.Services.Exceptions
 
-Namespace Components.Upgrade
+Namespace Upgrade
 
  Public Class ModuleUpgrade
 

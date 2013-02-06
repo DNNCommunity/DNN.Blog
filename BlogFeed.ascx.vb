@@ -19,8 +19,8 @@
 '
 
 Imports System
-Imports DotNetNuke.Modules.Blog.Components.Common
-Imports DotNetNuke.Modules.Blog.Components.Rss
+Imports DotNetNuke.Modules.Blog.Common
+Imports DotNetNuke.Modules.Blog.Rss
 
 Partial Public Class BlogFeed
  Inherits BlogModuleBase
@@ -40,7 +40,7 @@ Partial Public Class BlogFeed
   End Try
   If xmlfeed Is Nothing Then
    xmlfeed = feed.WriteRssToString()
-   DotNetNuke.Common.Utilities.DataCache.SetCache(feed.CacheKey, xmlfeed, TimeSpan.FromMinutes(Entities.Host.Host.PerformanceSetting * 20))
+   DotNetNuke.Common.Utilities.DataCache.SetCache(feed.CacheKey, xmlfeed, TimeSpan.FromMinutes(DotNetNuke.Entities.Host.Host.PerformanceSetting * 20))
   End If
 
   Response.Write(xmlfeed)

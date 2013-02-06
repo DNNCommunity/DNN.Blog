@@ -19,8 +19,8 @@
 '
 
 Imports System.Xml
-Imports DotNetNuke.Modules.Blog.Components.Common
-Imports DotNetNuke.Modules.Blog.Components.Settings
+Imports DotNetNuke.Modules.Blog.Common
+Imports DotNetNuke.Modules.Blog.Settings
 
 Partial Public Class WLWManifest
  Inherits System.Web.UI.Page

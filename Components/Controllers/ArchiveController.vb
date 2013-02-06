@@ -18,10 +18,10 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 Imports DotNetNuke.Modules.Blog.Providers.Data
-Imports DotNetNuke.Modules.Blog.Components.Business
+Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Common.Utilities
 
-Namespace Components.Controllers
+Namespace Controllers
 
  Public Class ArchiveController
 

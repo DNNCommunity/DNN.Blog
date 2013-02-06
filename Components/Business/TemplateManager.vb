@@ -19,33 +19,33 @@
 '
 
 Imports DotNetNuke.Services.Tokens
-Imports DotNetNuke.Modules.Blog.Components.Entities
+Imports DotNetNuke.Modules.Blog.Entities
 
-Namespace Components.Business
+Namespace Business
 
 
-    Public Class TemplateManager
-        Inherits TokenReplace
+ Public Class TemplateManager
+  Inherits TokenReplace
 
-        Public Sub New(ByVal objComment As CommentInfo)
-            MyBase.new(Scope.DefaultSettings)
-            Me.UseObjectLessExpression = True
-            Me.PropertySource(ObjectLessToken) = objComment
-        End Sub
+  Public Sub New(ByVal objComment As CommentInfo)
+   MyBase.new(Scope.DefaultSettings)
+   Me.UseObjectLessExpression = True
+   Me.PropertySource(ObjectLessToken) = objComment
+  End Sub
 
-        Public Sub New(ByVal objEntry As EntryInfo)
-            MyBase.new(Scope.DefaultSettings)
-            Me.UseObjectLessExpression = True
-            Me.PropertySource(ObjectLessToken) = objEntry
-        End Sub
+  Public Sub New(ByVal objEntry As EntryInfo)
+   MyBase.new(Scope.DefaultSettings)
+   Me.UseObjectLessExpression = True
+   Me.PropertySource(ObjectLessToken) = objEntry
+  End Sub
 
-        Protected Overrides Function replacedTokenValue(ByVal strObjectName As String, ByVal strPropertyName As String, ByVal strFormat As String) As String
-            Return MyBase.replacedTokenValue(strObjectName, strPropertyName, strFormat)
-        End Function
+  Protected Overrides Function replacedTokenValue(ByVal strObjectName As String, ByVal strPropertyName As String, ByVal strFormat As String) As String
+   Return MyBase.replacedTokenValue(strObjectName, strPropertyName, strFormat)
+  End Function
 
-        Public Function ProcessTemplate(ByVal strSourceText As String) As String
-            Return MyBase.ReplaceTokens(strSourceText)
-        End Function
+  Public Function ProcessTemplate(ByVal strSourceText As String) As String
+   Return MyBase.ReplaceTokens(strSourceText)
+  End Function
 
-    End Class
+ End Class
 End Namespace

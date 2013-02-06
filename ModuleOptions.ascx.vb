@@ -19,16 +19,16 @@
 '
 
 Imports System
-Imports DotNetNuke.Modules.Blog.Components.Business
-Imports DotNetNuke.Modules.Blog.Components.Controllers
-Imports DotNetNuke.Modules.Blog.Components.Common
+Imports DotNetNuke.Modules.Blog.Business
+Imports DotNetNuke.Modules.Blog.Controllers
+Imports DotNetNuke.Modules.Blog.Common
 Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Services.Exceptions.Exceptions
 Imports DotNetNuke.Services.Localization.Localization
 Imports DotNetNuke.Framework
 Imports DotNetNuke.Services.Localization
-Imports DotNetNuke.Modules.Blog.Components.Integration
-Imports DotNetNuke.Modules.Blog.Components.Entities
+Imports DotNetNuke.Modules.Blog.Integration
+Imports DotNetNuke.Modules.Blog.Entities
 Imports System.Linq
 
 Partial Public Class ModuleOptions
@@ -157,7 +157,7 @@ Partial Public Class ModuleOptions
  End Sub
 
  Protected Sub cmdUpdate_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdUpgrade.Click
-  Dim _CustomUpgrade As New Components.Upgrade.ModuleUpgrade
+  Dim _CustomUpgrade As New Upgrade.ModuleUpgrade
   '_CustomUpgrade.MigrateTaxonomyFolksonomy()
   _CustomUpgrade.CreateContentItems(ModuleContext.PortalId)
  End Sub

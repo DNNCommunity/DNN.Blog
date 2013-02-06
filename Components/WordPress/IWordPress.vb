@@ -20,36 +20,36 @@
 
 Imports CookComputing.XmlRpc
 
-Namespace Components.WordPress
+Namespace WordPress
 
-    ''' <summary>
-    ''' Interface for Wordpress methods that WLW uses
-    ''' </summary>
-    ''' <remarks></remarks>
-    ''' <history>
-    '''		[pdonker]	12/14/2009	created
-    ''' </history>
-    Public Interface IWordPress
+ ''' <summary>
+ ''' Interface for Wordpress methods that WLW uses
+ ''' </summary>
+ ''' <remarks></remarks>
+ ''' <history>
+ '''		[pdonker]	12/14/2009	created
+ ''' </history>
+ Public Interface IWordPress
 
-        <XmlRpcMethod("wp.getCategories", Description:="Retrieves the categories for a blog using the Wordpress API. Returns an array of category Infos.")> _
-        Function getCategories(ByVal blogid As String, ByVal username As String, ByVal password As String) As CategoryInfo()
+  <XmlRpcMethod("wp.getCategories", Description:="Retrieves the categories for a blog using the Wordpress API. Returns an array of category Infos.")> _
+  Function getCategories(ByVal blogid As String, ByVal username As String, ByVal password As String) As CategoryInfo()
 
-    End Interface
+ End Interface
 
-    ''' <summary>
-    ''' WP specific category structure
-    ''' </summary>
-    ''' <remarks></remarks>
-    ''' <history>
-    '''		[pdonker]	12/14/2009	created
-    ''' </history>
-    Public Structure CategoryInfo
-        Public categoryId As Integer
-        Public parentId As Integer
-        Public description As String
-        Public categoryName As String
-        Public htmlUrl As String
-        Public rssUrl As String
-    End Structure
+ ''' <summary>
+ ''' WP specific category structure
+ ''' </summary>
+ ''' <remarks></remarks>
+ ''' <history>
+ '''		[pdonker]	12/14/2009	created
+ ''' </history>
+ Public Structure CategoryInfo
+  Public categoryId As Integer
+  Public parentId As Integer
+  Public description As String
+  Public categoryName As String
+  Public htmlUrl As String
+  Public rssUrl As String
+ End Structure
 
 End Namespace

@@ -20,7 +20,7 @@
 
 Imports CookComputing.XmlRpc
 
-Namespace Components.MetaWeblog
+Namespace MetaWeblog
 
  ''' <summary>
  ''' Interface for MetaWeblog methods that WLW uses

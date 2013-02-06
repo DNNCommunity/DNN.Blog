@@ -19,11 +19,11 @@
 '
 
 Imports System.Linq
-Imports DotNetNuke.Modules.Blog.Components.Common
-Imports DotNetNuke.Modules.Blog.Components.Settings
-Imports DotNetNuke.Modules.Blog.Components.Entities
+Imports DotNetNuke.Modules.Blog.Common
+Imports DotNetNuke.Modules.Blog.Settings
+Imports DotNetNuke.Modules.Blog.Entities
 Imports Telerik.Web.UI
-Imports TermController = DotNetNuke.Modules.Blog.Components.Controllers.TermController
+Imports TermController = DotNetNuke.Modules.Blog.Controllers.TermController
 
 Partial Class ViewCategories
  Inherits BlogModuleBase

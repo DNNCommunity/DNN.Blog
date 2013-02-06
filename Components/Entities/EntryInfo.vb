@@ -22,14 +22,14 @@ Imports System.Data
 Imports System.Xml
 Imports System.Xml.Schema
 Imports System.Xml.Serialization
-Imports DotNetNuke.Modules.Blog.Components.Controllers
-Imports DotNetNuke.Modules.Blog.Components.Business
+Imports DotNetNuke.Modules.Blog.Controllers
+Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Entities.Modules
 Imports DotNetNuke.Services.Tokens
 Imports DotNetNuke.Entities.Users
 
-Namespace Components.Entities
+Namespace Entities
 
  <Serializable(), XmlRoot("Entry")> _
  Public Class EntryInfo

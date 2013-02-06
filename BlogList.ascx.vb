@@ -19,12 +19,12 @@
 '
 
 Imports System
-Imports DotNetNuke.Modules.Blog.Components.Controllers
-Imports DotNetNuke.Modules.Blog.Components.Common
+Imports DotNetNuke.Modules.Blog.Controllers
+Imports DotNetNuke.Modules.Blog.Common
 Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Services.Exceptions.Exceptions
 Imports DotNetNuke.Services.Localization
-Imports DotNetNuke.Modules.Blog.Components.Entities
+Imports DotNetNuke.Modules.Blog.Entities
 
 Partial Class BlogList
  Inherits BlogModuleBase

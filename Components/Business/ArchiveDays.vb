@@ -20,95 +20,95 @@
 
 Imports System
 
-Namespace Components.Business
+Namespace Business
 
-    Public Class ArchiveDays
+ Public Class ArchiveDays
 
 #Region "local property declarations"
-        Dim _BlogID As Integer
-        Dim _EntryID As Integer
-        Dim _AddedDate As DateTime
-        Dim _Title As String
-        Dim _userName As String
+  Dim _BlogID As Integer
+  Dim _EntryID As Integer
+  Dim _AddedDate As DateTime
+  Dim _Title As String
+  Dim _userName As String
 #End Region
 
 #Region "Constructors"
-        Public Sub New()
-        End Sub
+  Public Sub New()
+  End Sub
 
-        Public Sub New(ByVal BlogID As Integer, ByVal EntryID As Integer, ByVal AddedDate As DateTime, ByVal Title As String, ByVal UserName As String)
-            Me.BlogID = BlogID
-            Me.EntryID = EntryID
-            Me.AddedDate = AddedDate
-            Me.Title = Title
-            Me.UserName = UserName
-        End Sub
+  Public Sub New(ByVal BlogID As Integer, ByVal EntryID As Integer, ByVal AddedDate As DateTime, ByVal Title As String, ByVal UserName As String)
+   Me.BlogID = BlogID
+   Me.EntryID = EntryID
+   Me.AddedDate = AddedDate
+   Me.Title = Title
+   Me.UserName = UserName
+  End Sub
 #End Region
 
 #Region "Public Properties"
-        Public Property BlogID() As Integer
-            Get
-                Return _BlogID
-            End Get
-            Set(ByVal Value As Integer)
-                _BlogID = Value
-            End Set
-        End Property
+  Public Property BlogID() As Integer
+   Get
+    Return _BlogID
+   End Get
+   Set(ByVal Value As Integer)
+    _BlogID = Value
+   End Set
+  End Property
 
-        Public Property EntryID() As Integer
-            Get
-                Return _EntryID
-            End Get
-            Set(ByVal Value As Integer)
-                _EntryID = Value
-            End Set
-        End Property
+  Public Property EntryID() As Integer
+   Get
+    Return _EntryID
+   End Get
+   Set(ByVal Value As Integer)
+    _EntryID = Value
+   End Set
+  End Property
 
-        Public Property AddedDate() As DateTime
-            Get
-                Return _AddedDate
-            End Get
-            Set(ByVal Value As DateTime)
-                _AddedDate = Value
-            End Set
-        End Property
+  Public Property AddedDate() As DateTime
+   Get
+    Return _AddedDate
+   End Get
+   Set(ByVal Value As DateTime)
+    _AddedDate = Value
+   End Set
+  End Property
 
-        Public Property Title() As String
-            Get
-                Return _Title
-            End Get
-            Set(ByVal Value As String)
-                _Title = Value
-            End Set
-        End Property
+  Public Property Title() As String
+   Get
+    Return _Title
+   End Get
+   Set(ByVal Value As String)
+    _Title = Value
+   End Set
+  End Property
 
-        Public Property UserName() As String
-            Get
-                Return _userName
-            End Get
-            Set(ByVal Value As String)
-                _userName = Value
-            End Set
-        End Property
+  Public Property UserName() As String
+   Get
+    Return _userName
+   End Get
+   Set(ByVal Value As String)
+    _userName = Value
+   End Set
+  End Property
 
-        Public ReadOnly Property AddedDay() As Integer
-            Get
-                Return _AddedDate.Day
-            End Get
-        End Property
+  Public ReadOnly Property AddedDay() As Integer
+   Get
+    Return _AddedDate.Day
+   End Get
+  End Property
 
-        Public ReadOnly Property AddedMonth() As Integer
-            Get
-                Return _AddedDate.Month
-            End Get
-        End Property
+  Public ReadOnly Property AddedMonth() As Integer
+   Get
+    Return _AddedDate.Month
+   End Get
+  End Property
 
-        Public ReadOnly Property AddedYear() As Integer
-            Get
-                Return _AddedDate.Year
-            End Get
-        End Property
+  Public ReadOnly Property AddedYear() As Integer
+   Get
+    Return _AddedDate.Year
+   End Get
+  End Property
 #End Region
 
-    End Class
+ End Class
 End Namespace

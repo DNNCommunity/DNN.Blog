@@ -20,10 +20,10 @@
 Option Strict On
 Option Explicit On
 
-Imports DotNetNuke.Modules.Blog.Components.Controllers
+Imports DotNetNuke.Modules.Blog.Controllers
 Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Services.Sitemap
-Imports DotNetNuke.Modules.Blog.Components.Entities
+Imports DotNetNuke.Modules.Blog.Entities
 
 Namespace Providers.Sitemap
 

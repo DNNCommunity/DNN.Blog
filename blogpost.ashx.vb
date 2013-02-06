@@ -21,9 +21,9 @@
 Imports System
 Imports System.Data
 Imports System.Text.RegularExpressions
-Imports DotNetNuke.Modules.Blog.Components.Controllers
-Imports DotNetNuke.Modules.Blog.Components.Blogger
-Imports DotNetNuke.Modules.Blog.Components.Common
+Imports DotNetNuke.Modules.Blog.Controllers
+Imports DotNetNuke.Modules.Blog.Blogger
+Imports DotNetNuke.Modules.Blog.Common
 Imports DotNetNuke.Data
 Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Entities.Tabs
@@ -35,11 +35,11 @@ Imports System.IO
 Imports System.Web
 Imports DotNetNuke.Entities.Content.Taxonomy
 Imports System.Linq
-Imports DotNetNuke.Modules.Blog.Components.Settings
-Imports DotNetNuke.Modules.Blog.Components.WordPress
-Imports DotNetNuke.Modules.Blog.Components.MoveableType
-Imports DotNetNuke.Modules.Blog.Components.MetaWeblog
-Imports DotNetNuke.Modules.Blog.Components.Entities
+Imports DotNetNuke.Modules.Blog.Settings
+Imports DotNetNuke.Modules.Blog.WordPress
+Imports DotNetNuke.Modules.Blog.MoveableType
+Imports DotNetNuke.Modules.Blog.MetaWeblog
+Imports DotNetNuke.Modules.Blog.Entities
 
 ''' <summary>
 ''' Implements the MetaBlog API.
@@ -127,18 +127,18 @@ Public Class BlogPost
 
  End Function
 
- Public Function getCategories_WordPress(blogid As String, username As String, password As String) As Components.WordPress.CategoryInfo() Implements IWordPress.getCategories
+ Public Function getCategories_WordPress(blogid As String, username As String, password As String) As WordPress.CategoryInfo() Implements IWordPress.getCategories
   InitializeMethodCall(username, password, blogid, "")
   RequireAccessPermission()
 
   If BlogSettings.VocabularyId > 1 Then
    Dim termController As ITermController = DotNetNuke.Entities.Content.Common.Util.GetTermController()
    Dim colCategories As IQueryable(Of Term) = termController.GetTermsByVocabulary(BlogSettings.VocabularyId)
-   Dim res(colCategories.Count - 1) As Components.WordPress.CategoryInfo
+   Dim res(colCategories.Count - 1) As WordPress.CategoryInfo
    Dim i As Integer = 0
    For Each objTerm As Term In colCategories
     res(i).categoryId = objTerm.TermId
-    If objTerm.ParentTermId = Common.Utilities.Null.NullInteger Then
+    If objTerm.ParentTermId = DotNetNuke.Common.Utilities.Null.NullInteger Then
      ' the way vocabs are setup for categories, this shouldn't happen
      res(i).parentId = 0
     Else
@@ -193,7 +193,7 @@ Public Class BlogPost
   'Dim terms As New List(Of Term)
 
   'For Each t As Category In categories
-  '    Dim objTerm As Term = Components.Integration.Terms.GetTermById(Convert.ToInt32(t.categoryId), _blogSettings.VocabularyId)
+  '    Dim objTerm As Term = Integration.Terms.GetTermById(Convert.ToInt32(t.categoryId), _blogSettings.VocabularyId)
   '    terms.Add(objTerm)
   'Next
 
@@ -350,17 +350,17 @@ Public Class BlogPost
 
  End Function
 
- Public Function getWPCategories(blogid As String, username As String, password As String) As Components.MetaWeblog.CategoryInfo()
+ Public Function getWPCategories(blogid As String, username As String, password As String) As MetaWeblog.CategoryInfo()
   InitializeMethodCall(username, password, blogid, "")
   RequireAccessPermission()
 
-  Dim categories As New List(Of Components.MetaWeblog.CategoryInfo)
+  Dim categories As New List(Of MetaWeblog.CategoryInfo)
   Try
    If BlogSettings.VocabularyId > 1 Then
     Dim termController As ITermController = DotNetNuke.Entities.Content.Common.Util.GetTermController()
     Dim colCategories As IQueryable(Of Term) = termController.GetTermsByVocabulary(BlogSettings.VocabularyId)
     For Each objTerm As Term In colCategories
-     categories.Add(New Components.MetaWeblog.CategoryInfo() With {.categoryId = objTerm.TermId.ToString, .categoryName = objTerm.Name, .description = objTerm.Description, .htmlUrl = "http://google.com", .parentId = objTerm.ParentTermId.ToString, .rssUrl = "http://google.com"})
+     categories.Add(New MetaWeblog.CategoryInfo() With {.categoryId = objTerm.TermId.ToString, .categoryName = objTerm.Name, .description = objTerm.Description, .htmlUrl = "http://google.com", .parentId = objTerm.ParentTermId.ToString, .rssUrl = "http://google.com"})
     Next
    End If
   Catch ex As BlogPostException
@@ -381,13 +381,13 @@ Public Class BlogPost
   InitializeMethodCall(username, password, blogid, "")
   RequireAccessPermission()
 
-  Dim categories As New List(Of Components.MetaWeblog.MetaWebLogCategoryInfo)
+  Dim categories As New List(Of MetaWeblog.MetaWebLogCategoryInfo)
   Try
    If BlogSettings.VocabularyId > 1 Then
     Dim termController As ITermController = DotNetNuke.Entities.Content.Common.Util.GetTermController()
     Dim colCategories As IQueryable(Of Term) = termController.GetTermsByVocabulary(BlogSettings.VocabularyId)
     For Each objTerm As Term In colCategories
-     categories.Add(New Components.MetaWeblog.MetaWebLogCategoryInfo() With {.description = objTerm.Description, .htmlUrl = "http://google.com", .rssUrl = "http://google.com"})
+     categories.Add(New MetaWeblog.MetaWebLogCategoryInfo() With {.description = objTerm.Description, .htmlUrl = "http://google.com", .rssUrl = "http://google.com"})
     Next
    End If
   Catch ex As BlogPostException
@@ -475,7 +475,7 @@ Public Class BlogPost
   post.date_created_gmt = entry.AddedDate
   'post.mt_text_more =
   post.postid = entry.EntryID.ToString
-  post.mt_keywords = String.Join(",", entry.Tags.ToStringArray)
+  post.mt_keywords = String.Join(",", entry.EntryTags.ToStringArray)
   post.link = entry.PermaLink
   post.permalink = entry.PermaLink
   'post.mt_tb_ping_urls =
@@ -645,11 +645,10 @@ Public Class BlogPost
   'Get the PortalAlias based on the Request object
   Dim pc As New PortalController
   Try
-   Dim dr As IDataReader = DotNetNuke.Data.DataProvider.Instance().GetPortalByAlias(portalAlias)
-   If dr.Read() Then
-    PortalId = dr.GetInt32(dr.GetOrdinal("PortalID"))
+   Dim pAlias As PortalAliasInfo = PortalAliasController.GetPortalAliasInfo(portalAlias)
+   If pAlias IsNot Nothing Then
+    PortalId = pAlias.PortalID
    End If
-   dr.Close()
   Catch generatedExceptionName As Exception
    ' Just ignore the errors if any and pass up 0 for the portalID.  0 for the portalID
    ' will throw an error in the calling procedure.
@@ -687,14 +686,14 @@ Public Class BlogPost
   Dim terms As New List(Of Term)
   For Each s As String In post.mt_keywords.Replace(";", ",").Split(","c)
    If s.Length > 0 Then
-    Dim newTerm As Term = Components.Integration.Terms.CreateAndReturnTerm(s.Trim, 1)
+    Dim newTerm As Term = Integration.Terms.CreateAndReturnTerm(s.Trim, 1)
     terms.Add(newTerm)
    End If
   Next
   If BlogSettings.VocabularyId > 1 Then
    For Each s As String In post.categories
     If s.Length > 0 Then
-     Dim newTerm As Term = Components.Integration.Terms.CreateAndReturnTerm(s.Trim, BlogSettings.VocabularyId)
+     Dim newTerm As Term = Integration.Terms.CreateAndReturnTerm(s.Trim, BlogSettings.VocabularyId)
      terms.Add(newTerm)
     End If
    Next
@@ -705,7 +704,7 @@ Public Class BlogPost
  End Sub
 
  Private Sub PublishToJournal(newEntry As EntryInfo)
-  Dim cntIntegration As New Components.Integration.Journal()
+  Dim cntIntegration As New Integration.Journal()
   Dim journalUserId As Integer
   Select Case Blog.AuthorMode
    Case Constants.AuthorMode.GhostMode

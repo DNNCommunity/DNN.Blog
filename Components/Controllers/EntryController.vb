@@ -21,10 +21,10 @@
 Imports DotNetNuke.Modules.Blog.Providers.Data
 Imports DotNetNuke.Entities.Content
 Imports DotNetNuke.Common.Utilities
-Imports DotNetNuke.Modules.Blog.Components.Integration
-Imports DotNetNuke.Modules.Blog.Components.Entities
+Imports DotNetNuke.Modules.Blog.Integration
+Imports DotNetNuke.Modules.Blog.Entities
 
-Namespace Components.Controllers
+Namespace Controllers
 
  Public Class EntryController
 

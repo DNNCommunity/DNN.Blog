@@ -89,12 +89,23 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_References\System.Net.Http.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_References\System.Web.Http.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\bin\System.Web.Mvc.dll</HintPath>
     </Reference>
@@ -108,6 +119,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Import Include="DotNetNuke.Modules.Blog.Common" />
     <Import Include="Microsoft.VisualBasic" />
     <Import Include="System" />
     <Import Include="System.Collections" />
@@ -187,6 +199,7 @@
     <Compile Include="Components\Common\BlogModuleBase.vb">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Components\Common\BlogPostException.vb" />
     <Compile Include="Components\Common\Constants.vb" />
     <Compile Include="Components\Common\Extensions.vb" />
     <Compile Include="Components\Common\Globals.vb" />
@@ -235,7 +248,7 @@
       <DependentUpon>ArchiveSettings.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Providers\Sitemap\EntrySitemap.vb" />
+    <Compile Include="Components\Integration\EntrySitemap.vb" />
     <Compile Include="ViewCategoriesSettings.ascx.designer.vb">
       <DependentUpon>ViewCategoriesSettings.ascx</DependentUpon>
     </Compile>
@@ -273,8 +286,8 @@
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="Components\Rss\BlogRssFeed.vb" />
-    <Compile Include="Providers\Data\DataProvider.vb" />
-    <Compile Include="Providers\Data\SqlDataProvider\SqlDataProvider.vb" />
+    <Compile Include="Components\Data\DataProvider.vb" />
+    <Compile Include="Components\Data\SqlDataProvider.vb" />
     <Compile Include="ViewBlog.ascx.designer.vb">
       <DependentUpon>ViewBlog.ascx</DependentUpon>
     </Compile>
@@ -344,23 +357,6 @@
     <Content Include="ViewTags.ascx" />
     <Content Include="ViewTagsSettings.ascx" />
     <Content Include="WLWManifest.aspx" />
-    <None Include="Providers\Data\SqlDataProvider\01.00.00.SqlDataProvider" />
-    <None Include="Providers\Data\SqlDataProvider\01.00.02.SqlDataProvider" />
-    <None Include="Providers\Data\SqlDataProvider\03.01.04.SqlDataProvider" />
-    <None Include="Providers\Data\SqlDataProvider\03.01.07.SqlDataProvider" />
-    <None Include="Providers\Data\SqlDataProvider\03.01.12.SqlDataProvider" />
-    <None Include="Providers\Data\SqlDataProvider\03.01.15.SqlDataProvider" />
-    <None Include="Providers\Data\SqlDataProvider\03.01.20.SqlDataProvider" />
-    <None Include="Providers\Data\SqlDataProvider\03.01.21.SqlDataProvider" />
-    <None Include="Providers\Data\SqlDataProvider\03.03.00.SqlDataProvider" />
-    <None Include="Providers\Data\SqlDataProvider\03.04.01.SqlDataProvider" />
-    <None Include="Providers\Data\SqlDataProvider\03.05.00.SqlDataProvider" />
-    <None Include="Providers\Data\SqlDataProvider\03.05.01.SqlDataProvider" />
-    <None Include="Providers\Data\SqlDataProvider\04.00.00.SqlDataProvider" />
-    <None Include="Providers\Data\SqlDataProvider\04.01.00.SqlDataProvider" />
-    <None Include="Providers\Data\SqlDataProvider\05.00.00.SqlDataProvider" />
-    <None Include="Providers\Data\SqlDataProvider\Install.05.00.00.SqlDataProvider" />
-    <None Include="Providers\Data\SqlDataProvider\Uninstall.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_LocalResources\ViewCategories.ascx.resx" />

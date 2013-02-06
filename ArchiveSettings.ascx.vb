@@ -20,53 +20,53 @@
 
 Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Entities.Modules
-Imports DotNetNuke.Modules.Blog.Components.Settings
+Imports DotNetNuke.Modules.Blog.Settings
 
 Partial Public Class ArchiveSettings
-    Inherits Entities.Modules.ModuleSettingsBase
+ Inherits DotNetNuke.Entities.Modules.ModuleSettingsBase
 
 #Region "Private Members"
 
-    Private _settings As ArchiveViewSettings
+ Private _settings As ArchiveViewSettings
 
 #End Region
 
 #Region "Event Handlers"
 
-    Protected Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Init
-        _settings = ArchiveViewSettings.GetArchiveViewSettings(TabModuleId)
-    End Sub
+ Protected Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Init
+  _settings = ArchiveViewSettings.GetArchiveViewSettings(TabModuleId)
+ End Sub
 
 #End Region
 
 #Region "Base Methods"
 
-    Public Overrides Sub LoadSettings()
-        Try
-            If (Page.IsPostBack = False) Then
-                ddlDisplayMode.SelectedValue = _settings.ArchiveDisplayMode
-                rblLoadCss.SelectedValue = _settings.EnableArchiveCss.ToString()
-                ddlListMode.SelectedValue = _settings.ListDisplayMode
-            End If
-        Catch exc As Exception
-            ProcessModuleLoadException(Me, exc)
-        End Try
-    End Sub
+ Public Overrides Sub LoadSettings()
+  Try
+   If (Page.IsPostBack = False) Then
+    ddlDisplayMode.SelectedValue = _settings.ArchiveDisplayMode
+    rblLoadCss.SelectedValue = _settings.EnableArchiveCss.ToString()
+    ddlListMode.SelectedValue = _settings.ListDisplayMode
+   End If
+  Catch exc As Exception
+   ProcessModuleLoadException(Me, exc)
+  End Try
+ End Sub
 
-    Public Overrides Sub UpdateSettings()
-        Try
-            Dim objModule As ModuleController = New ModuleController
+ Public Overrides Sub UpdateSettings()
+  Try
+   Dim objModule As ModuleController = New ModuleController
 
-            _settings.ArchiveDisplayMode = ddlDisplayMode.SelectedItem.Value
-            _settings.EnableArchiveCss = Convert.ToBoolean(rblLoadCss.SelectedItem.Value)
-            _settings.ListDisplayMode = ddlListMode.SelectedItem.Value
+   _settings.ArchiveDisplayMode = ddlDisplayMode.SelectedItem.Value
+   _settings.EnableArchiveCss = Convert.ToBoolean(rblLoadCss.SelectedItem.Value)
+   _settings.ListDisplayMode = ddlListMode.SelectedItem.Value
 
-            _settings.UpdateSettings()
+   _settings.UpdateSettings()
 
-        Catch exc As Exception
-            ProcessModuleLoadException(Me, exc)
-        End Try
-    End Sub
+  Catch exc As Exception
+   ProcessModuleLoadException(Me, exc)
+  End Try
+ End Sub
 
 #End Region
 

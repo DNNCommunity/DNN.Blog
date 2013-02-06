@@ -19,10 +19,10 @@
 '
 Imports System.Xml
 Imports DotNetNuke.Modules.Blog.Providers.Data
-Imports DotNetNuke.Modules.Blog.Components.Common
+Imports DotNetNuke.Modules.Blog.Common
 Imports DotNetNuke.Common.Utilities
 
-Namespace Components.Settings
+Namespace Settings
 
  ''' <summary>
  ''' This class abstracts all settings for the module and makes sure they're (a) defaulted and (b) hard typed 
@@ -188,7 +188,7 @@ Namespace Components.Settings
 
 #End Region
 
-#Region "Properties"
+#Region " Properties "
 
   Public Property PageBlogs As Integer = -1
   Public Property EntryDescriptionRequired As Boolean = False

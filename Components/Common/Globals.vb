@@ -20,60 +20,60 @@
 
 Imports DotNetNuke.Entities.Modules
 
-Namespace Components.Common
+Namespace Common
 
-    Public Enum RssViews
-        None = 0
-        ArchivEntries = 1
-        BlogEntries = 2
-        RecentEntries = 3
-        SingleEntry = 4
-    End Enum
+ Public Enum RssViews
+  None = 0
+  ArchivEntries = 1
+  BlogEntries = 2
+  RecentEntries = 3
+  SingleEntry = 4
+ End Enum
 
-    Public Class Globals
-        Public Const glbSharedResourceFile As String = "DesktopModules/Blog/App_LocalResources/SharedResources"
+ Public Class Globals
+  Public Const glbSharedResourceFile As String = "DesktopModules/Blog/App_LocalResources/SharedResources"
 
-        Public Shared Function RemoveMarkup(ByVal input As String) As String
-            If String.IsNullOrEmpty(input) Then Return ""
-            Return Regex.Replace(input, "<[^>]+>", "")
-        End Function
+  Public Shared Function RemoveMarkup(ByVal input As String) As String
+   If String.IsNullOrEmpty(input) Then Return ""
+   Return Regex.Replace(input, "<[^>]+>", "")
+  End Function
 
 #Region " Other "
-        Public Shared Function CYesNo(ByVal value As Boolean) As String
-            If value Then
-                Return "Yes"
-            Else
-                Return "No"
-            End If
-        End Function
+  Public Shared Function CYesNo(ByVal value As Boolean) As String
+   If value Then
+    Return "Yes"
+   Else
+    Return "No"
+   End If
+  End Function
 
-        Public Shared Sub AddModDef(ByVal PortalSettings As DotNetNuke.Entities.Portals.PortalSettings, ByVal ModuleDefID As Integer, ByVal TabID As Integer, ByVal paneName As String, ByVal position As Integer, ByVal title As String)
+  Public Shared Sub AddModDef(ByVal PortalSettings As DotNetNuke.Entities.Portals.PortalSettings, ByVal ModuleDefID As Integer, ByVal TabID As Integer, ByVal paneName As String, ByVal position As Integer, ByVal title As String)
 
-            Dim objModuleDefinition As Definitions.ModuleDefinitionInfo = Definitions.ModuleDefinitionController.GetModuleDefinitionByID(ModuleDefID)
-            Dim objTabPermissions As Security.Permissions.TabPermissionCollection = Security.Permissions.TabPermissionController.GetTabPermissions(TabID, PortalSettings.PortalId)
-            Dim objModule As New ModuleInfo
-            objModule.Initialize(PortalSettings.PortalId)
-            objModule.PortalID = PortalSettings.PortalId
-            objModule.TabID = PortalSettings.ActiveTab.TabID
-            objModule.ModuleOrder = position
-            If title = "" Then
-                objModule.ModuleTitle = objModuleDefinition.FriendlyName
-            Else
-                objModule.ModuleTitle = title
-            End If
-            objModule.PaneName = paneName
-            objModule.ModuleDefID = objModuleDefinition.ModuleDefID
-            objModule.InheritViewPermissions = True
+   Dim objModuleDefinition As Definitions.ModuleDefinitionInfo = Definitions.ModuleDefinitionController.GetModuleDefinitionByID(ModuleDefID)
+   Dim objTabPermissions As Security.Permissions.TabPermissionCollection = Security.Permissions.TabPermissionController.GetTabPermissions(TabID, PortalSettings.PortalId)
+   Dim objModule As New ModuleInfo
+   objModule.Initialize(PortalSettings.PortalId)
+   objModule.PortalID = PortalSettings.PortalId
+   objModule.TabID = PortalSettings.ActiveTab.TabID
+   objModule.ModuleOrder = position
+   If title = "" Then
+    objModule.ModuleTitle = objModuleDefinition.FriendlyName
+   Else
+    objModule.ModuleTitle = title
+   End If
+   objModule.PaneName = paneName
+   objModule.ModuleDefID = objModuleDefinition.ModuleDefID
+   objModule.InheritViewPermissions = True
 
-            ' get the default module view permissions
-            Dim arrSystemModuleViewPermissions As ArrayList = (New DotNetNuke.Security.Permissions.PermissionController).GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", "VIEW")
+   ' get the default module view permissions
+   Dim arrSystemModuleViewPermissions As ArrayList = (New DotNetNuke.Security.Permissions.PermissionController).GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", "VIEW")
 
-            objModule.AllTabs = False
-            objModule.Alignment = ""
-            Dim objModules As New ModuleController
-            objModules.AddModule(objModule)
+   objModule.AllTabs = False
+   objModule.Alignment = ""
+   Dim objModules As New ModuleController
+   objModules.AddModule(objModule)
 
-        End Sub
+  End Sub
 
   Public Shared Function GetLocalAddedTime(ByVal AddedDate As DateTime, ByVal PortalId As Integer, ByVal user As DotNetNuke.Entities.Users.UserInfo) As DateTime
    Return TimeZoneInfo.ConvertTimeToUtc(AddedDate, user.Profile.PreferredTimeZone)
@@ -84,6 +84,6 @@ Namespace Components.Common
   End Function
 #End Region
 
-    End Class
+ End Class
 
 End Namespace

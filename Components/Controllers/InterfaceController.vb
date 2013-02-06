@@ -19,7 +19,7 @@
 '
 Imports System
 Imports System.Xml
-Imports DotNetNuke.Modules.Blog.Components.Business
+Imports DotNetNuke.Modules.Blog.Business
 Imports DotNetNuke.Common
 Imports DotNetNuke.Services.Search
 Imports DotNetNuke.Entities.Modules
@@ -28,11 +28,11 @@ Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Entities.Users
-Imports DotNetNuke.Modules.Blog.Components.Settings
+Imports DotNetNuke.Modules.Blog.Settings
 Imports DotNetNuke.Services
-Imports DotNetNuke.Modules.Blog.Components.Entities
+Imports DotNetNuke.Modules.Blog.Entities
 
-Namespace Components.Controllers
+Namespace Controllers
 
  Public Class InterfaceController
   Implements DotNetNuke.Entities.Modules.IUpgradeable
@@ -294,7 +294,7 @@ Namespace Components.Controllers
 #Region "ISearchable"
 
   Public Function GetSearchItems(ByVal ModInfo As DotNetNuke.Entities.Modules.ModuleInfo) As Search.SearchItemInfoCollection Implements DotNetNuke.Entities.Modules.ISearchable.GetSearchItems
-   Dim BlogSettings As BlogSettings = Components.Settings.BlogSettings.GetBlogSettings(ModInfo.PortalID, ModInfo.TabID)
+   Dim BlogSettings As BlogSettings = Settings.BlogSettings.GetBlogSettings(ModInfo.PortalID, ModInfo.TabID)
 
    Dim SearchItemCollection As New SearchItemInfoCollection
    If ModInfo.ModuleTitle = "View Blog" Then

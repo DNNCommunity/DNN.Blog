@@ -19,15 +19,15 @@
 '
 
 Imports System
-Imports DotNetNuke.Modules.Blog.Components.Business
-Imports DotNetNuke.Modules.Blog.Components.Controllers
-Imports DotNetNuke.Modules.Blog.Components.Common
+Imports DotNetNuke.Modules.Blog.Business
+Imports DotNetNuke.Modules.Blog.Controllers
+Imports DotNetNuke.Modules.Blog.Common
 Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Framework
 Imports DotNetNuke.Common.Utilities
-Imports DotNetNuke.Modules.Blog.Components.Entities
+Imports DotNetNuke.Modules.Blog.Entities
 
 Partial Public Class EditBlog
  Inherits BlogModuleBase

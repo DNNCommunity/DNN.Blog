@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<!-- targets to be executed, when omitted from command line default is run -->
+<project name="BlogScript" default="create.script" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://nant.sf.net/release/0.91/nant.xsd D:\Programs\Nant\schema\nant.xsd" xmlns="http://nant.sf.net/release/0.91/nant.xsd">
+ <target name="create.script">
+  <createscript isdropscript="false" modulequalifier="Blog" postscript="" prescript="" targetfile="E:\Webroot\DNNBLOG5DEV3\DesktopModules\Blog\_BuildSupport\Install.00.00.00.SqlDataProvider" originalscriptoutput="E:\Webroot\DNNBLOG5DEV3\DesktopModules\Blog\_BuildSupport\OriginalScript.sql"/>
+  <createscript isdropscript="true" modulequalifier="Blog" postscript="" prescript="" targetfile="E:\Webroot\DNNBLOG5DEV3\DesktopModules\Blog\_BuildSupport\Uninstall.SqlDataProvider"/>
+ </target>
+</project>

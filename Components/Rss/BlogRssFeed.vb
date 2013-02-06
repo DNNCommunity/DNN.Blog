@@ -20,15 +20,15 @@
 
 Imports System.Xml
 Imports DotNetNuke.Modules.Blog.Providers.Data
-Imports DotNetNuke.Modules.Blog.Components.Business
-Imports DotNetNuke.Modules.Blog.Components.Controllers
-Imports DotNetNuke.Modules.Blog.Components.Common
+Imports DotNetNuke.Modules.Blog.Business
+Imports DotNetNuke.Modules.Blog.Controllers
+Imports DotNetNuke.Modules.Blog.Common
 Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.Common
-Imports DotNetNuke.Modules.Blog.Components.Settings
-Imports DotNetNuke.Modules.Blog.Components.Entities
+Imports DotNetNuke.Modules.Blog.Settings
+Imports DotNetNuke.Modules.Blog.Entities
 
-Namespace Components.Rss
+Namespace Rss
 
  ''' <summary>
  ''' This class will produce a RSS 2.0 compliant feed for the Blog module
@@ -291,7 +291,7 @@ Namespace Components.Rss
    writer.WriteElementString("link", PermaLink)
    Dim Description As String = ""
    If ir.Item("Description") Is DBNull.Value Then
-    Description = Utility.RewriteRefs(HttpUtility.HtmlDecode(CStr(ir.Item("Entry")))) & "<br /><a href=" + PermaLink + ">" & Localization.GetString("More", Components.Common.Globals.glbSharedResourceFile) & "</a>"
+    Description = Utility.RewriteRefs(HttpUtility.HtmlDecode(CStr(ir.Item("Entry")))) & "<br /><a href=" + PermaLink + ">" & Localization.GetString("More", Common.Globals.glbSharedResourceFile) & "</a>"
    Else
     Description = Utility.RewriteRefs(HttpUtility.HtmlDecode(CStr(ir.Item("Description"))))
    End If
@@ -299,14 +299,14 @@ Namespace Components.Rss
    Dim colTags As List(Of TermInfo) = TermController.GetTermsByContentItem(EntryId, 1)
    If _includeTagsInDescription Then
     For Each c As TermInfo In colTags
-     Description &= "<div class=""tags"">" & Localization.GetString("Tags", Components.Common.Globals.glbSharedResourceFile) & ": <a href=" & NavigateURL(_tabId, False, _portalSettings, "", "tagid=" + c.TermId.ToString) & ">" & c.Name & "</a></div>"
+     Description &= "<div class=""tags"">" & Localization.GetString("Tags", Common.Globals.glbSharedResourceFile) & ": <a href=" & NavigateURL(_tabId, False, _portalSettings, "", "tagid=" + c.TermId.ToString) & ">" & c.Name & "</a></div>"
     Next
    End If
 
    Dim colCategories As List(Of TermInfo) = TermController.GetTermsByContentItem(EntryId, _blogSettings.VocabularyId)
    If _includeCategoriesInDescription AndAlso _blogSettings.VocabularyId > 0 Then
     For Each c As TermInfo In colCategories
-     Description &= "<div class=""category"">" & Localization.GetString("Category", Components.Common.Globals.glbSharedResourceFile) & ": <a href=" & NavigateURL(_tabId, False, _portalSettings, "", "catid=" + c.TermId.ToString) & ">" & c.Name & "</a></div>"
+     Description &= "<div class=""category"">" & Localization.GetString("Category", Common.Globals.glbSharedResourceFile) & ": <a href=" & NavigateURL(_tabId, False, _portalSettings, "", "catid=" + c.TermId.ToString) & ">" & c.Name & "</a></div>"
     Next
    End If
 

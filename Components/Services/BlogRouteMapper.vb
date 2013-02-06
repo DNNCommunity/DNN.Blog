@@ -20,15 +20,17 @@
 Option Strict On
 Option Explicit On
 
-Imports DotNetNuke.Web.Services
+Imports DotNetNuke.Web.Api
 
-Namespace Components.Services
+Namespace Services
 
-    Public Class BlogRouteMapper
-        Implements IServiceRouteMapper
-        Public Sub RegisterRoutes(mapRouteManager As IMapRoute) Implements IServiceRouteMapper.RegisterRoutes
-            mapRouteManager.MapRoute("Blog", "{controller}.ashx/{action}", New String() {"DotNetNuke.Modules.Blog"})
-        End Sub
-    End Class
+ Public Class BlogRouteMapper
+  Implements IServiceRouteMapper
+
+  Public Sub RegisterRoutes(mapRouteManager As IMapRoute) Implements IServiceRouteMapper.RegisterRoutes
+   mapRouteManager.MapHttpRoute("Blog", "Default", "{controller}.ashx/{action}", New String() {"DotNetNuke.Modules.Blog"})
+  End Sub
+
+ End Class
 
 End Namespace

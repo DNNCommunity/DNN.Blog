@@ -20,10 +20,10 @@
 Imports System
 Imports DotNetNuke.Modules.Blog.Providers.Data
 Imports DotNetNuke.Common.Utilities
-Imports DotNetNuke.Modules.Blog.Components.Entities
+Imports DotNetNuke.Modules.Blog.Entities
 Imports System.Linq
 
-Namespace Components.Controllers
+Namespace Controllers
 
  Public Class BlogController
 

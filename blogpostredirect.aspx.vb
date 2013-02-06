@@ -19,8 +19,8 @@
 '
 
 Imports DotNetNuke.Data
-Imports DotNetNuke.Modules.Blog.Components.MetaWeblog
-Imports DotNetNuke.Modules.Blog.Components.Common
+Imports DotNetNuke.Modules.Blog.MetaWeblog
+Imports DotNetNuke.Modules.Blog.Common
 
 Namespace MetaWeblog
 

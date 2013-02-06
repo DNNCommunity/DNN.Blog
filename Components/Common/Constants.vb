@@ -18,83 +18,83 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Namespace Components.Common
+Namespace Common
 
-    Public Class Constants
+ Public Class Constants
 
-        Public Enum TagMode
-            ShowNoUsage = 0
-            ShowDailyUsage = 1
-            ShowWeeklyUsage = 2
-            ShowMonthlyUsage = 3
-            ShowTotalUsage = 4
-        End Enum
+  Public Enum TagMode
+   ShowNoUsage = 0
+   ShowDailyUsage = 1
+   ShowWeeklyUsage = 2
+   ShowMonthlyUsage = 3
+   ShowTotalUsage = 4
+  End Enum
 
-        Public Enum AuthorMode
-            PersonalMode = 0
-            GhostMode = 1
-            BloggerMode = 2
-        End Enum
+  Public Enum AuthorMode
+   PersonalMode = 0
+   GhostMode = 1
+   BloggerMode = 2
+  End Enum
 
-        Public Enum CommentMode
-            None = -1
-            [Default] = 0
-        End Enum
+  Public Enum CommentMode
+   None = -1
+   [Default] = 0
+  End Enum
 
-        Public Enum SocialSharingMode
-            None = -1
-            [Default] = 0
-        End Enum
+  Public Enum SocialSharingMode
+   None = -1
+   [Default] = 0
+  End Enum
 
-        Public Const ContentTypeName As String = "DNN_Blog_Entry"
-        Public Const JournalBlogTypeName As String = "blog"
-        Public Const JournalCommentTypeName As String = "comment"
-        Public Const NotificationPublishingTypeName As String = "DNN_Blog_Entry_Publishing"
-        Public Const NotificationCommentApprovalTypeName As String = "DNN_Blog_Entry_CommentApproval"
-        Public Const NotificationCommentAddedTypeName As String = "DNN_Blog_Entry_CommentAdded"
+  Public Const ContentTypeName As String = "DNN_Blog_Entry"
+  Public Const JournalBlogTypeName As String = "blog"
+  Public Const JournalCommentTypeName As String = "comment"
+  Public Const NotificationPublishingTypeName As String = "DNN_Blog_Entry_Publishing"
+  Public Const NotificationCommentApprovalTypeName As String = "DNN_Blog_Entry_CommentApproval"
+  Public Const NotificationCommentAddedTypeName As String = "DNN_Blog_Entry_CommentAdded"
 
-        Public Const SharedResourceFileName As String = "~/DesktopModules/Blog/App_LocalResources/SharedResources.resx"
+  Public Const SharedResourceFileName As String = "~/DesktopModules/Blog/App_LocalResources/SharedResources.resx"
 
-        Public Const SeoTitleLimit As Integer = 64
-        Public Const SeoDescriptionLimit As Integer = 150
-        Public Const SeoKeywordsLimit As Integer = 15
+  Public Const SeoTitleLimit As Integer = 64
+  Public Const SeoDescriptionLimit As Integer = 150
+  Public Const SeoKeywordsLimit As Integer = 15
 
-        Public Const BloggerPermission As String = "BLOGGER"
-        Public Const GhostWriterPermission As String = "GHOSTWRITER"
+  Public Const BloggerPermission As String = "BLOGGER"
+  Public Const GhostWriterPermission As String = "GHOSTWRITER"
 
 #Region "Caching"
 
-        ''' <summary>
-        ''' The number of minutes used to calculate cache timeout.
-        ''' </summary>
-        ''' <remarks></remarks>
-        Public Const CACHE_TIMEOUT As Integer = 20
+  ''' <summary>
+  ''' The number of minutes used to calculate cache timeout.
+  ''' </summary>
+  ''' <remarks></remarks>
+  Public Const CACHE_TIMEOUT As Integer = 20
 
-        Public Const ArchiveSettingsCacheKey As String = "ArchiveSettings_"
-        Public Const CategorySettingsCacheKey As String = "CategorySettings_"
-        Public Const TagSettingsCacheKey As String = "TagSettings_"
-        Public Const RosterSettingsCacheKey As String = "RosterSettings_"
-        Public Const ModuleSettingsCacheKey As String = "ModuleSettings_"
+  Public Const ArchiveSettingsCacheKey As String = "ArchiveSettings_"
+  Public Const CategorySettingsCacheKey As String = "CategorySettings_"
+  Public Const TagSettingsCacheKey As String = "TagSettings_"
+  Public Const RosterSettingsCacheKey As String = "RosterSettings_"
+  Public Const ModuleSettingsCacheKey As String = "ModuleSettings_"
 
-        Public Const PortalBlogsCacheKey As String = "PortalBlogs_"
-        Public Const TermsKey As String = "DNNBLOG_Terms_"
-        Public Const ContentItemsKey As String = "DNNBLOG_ContentItems_"
+  Public Const PortalBlogsCacheKey As String = "PortalBlogs_"
+  Public Const TermsKey As String = "DNNBLOG_Terms_"
+  Public Const ContentItemsKey As String = "DNNBLOG_ContentItems_"
 
 #End Region
 
 #Region "Module Settings"
 
-        Public Const SettingArchiveDisplayMode As String = "BLOG_ARCHIVE_DISPLAYMODE"
-        Public Const SettingListDisplayMode As String = "BLOG_ARCHIVE_LISTMODE"
-        Public Const SettingEnableArchiveCss As String = "BLOG_ARCHVE_ENABLECSS"
-        Public Const SettingCategoryDisplayMode As String = "BLOG_CATEGORY_DISPLAYMODE"
-        Public Const SettingCategoryTreeSkin As String = "BLOG_CATEGORY_TREESKIN"
-        Public Const SettingTagDisplayMode As String = "TagDisplayMode"
-        Public Const SettingCloudSkin As String = "BLOG_TAG_CLOUDSKIN"
-        Public Const SettingRosterDisplayMode As String = "BLOG_ROSTER_DISPLAYMODE"
+  Public Const SettingArchiveDisplayMode As String = "BLOG_ARCHIVE_DISPLAYMODE"
+  Public Const SettingListDisplayMode As String = "BLOG_ARCHIVE_LISTMODE"
+  Public Const SettingEnableArchiveCss As String = "BLOG_ARCHVE_ENABLECSS"
+  Public Const SettingCategoryDisplayMode As String = "BLOG_CATEGORY_DISPLAYMODE"
+  Public Const SettingCategoryTreeSkin As String = "BLOG_CATEGORY_TREESKIN"
+  Public Const SettingTagDisplayMode As String = "TagDisplayMode"
+  Public Const SettingCloudSkin As String = "BLOG_TAG_CLOUDSKIN"
+  Public Const SettingRosterDisplayMode As String = "BLOG_ROSTER_DISPLAYMODE"
 
 #End Region
 
-    End Class
+ End Class
 
 End Namespace

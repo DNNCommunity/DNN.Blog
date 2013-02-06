@@ -20,9 +20,9 @@
 
 Imports System
 Imports DotNetNuke.UI.Skins.Controls
-Imports DotNetNuke.Modules.Blog.Components.Business
-Imports DotNetNuke.Modules.Blog.Components.Controllers
-Imports DotNetNuke.Modules.Blog.Components.Common
+Imports DotNetNuke.Modules.Blog.Business
+Imports DotNetNuke.Modules.Blog.Controllers
+Imports DotNetNuke.Modules.Blog.Common
 Imports DotNetNuke.Entities.Content
 Imports DotNetNuke.Web.Client.ClientResourceManagement
 Imports DotNetNuke.Security
@@ -32,8 +32,8 @@ Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Entities.Users
 Imports DotNetNuke.Framework
-Imports DotNetNuke.Modules.Blog.Components.Integration
-Imports DotNetNuke.Modules.Blog.Components.Entities
+Imports DotNetNuke.Modules.Blog.Integration
+Imports DotNetNuke.Modules.Blog.Entities
 
 Partial Public Class ViewEntry
  Inherits BlogModuleBase
@@ -346,7 +346,7 @@ Partial Public Class ViewEntry
      cmdAddComment.Text = Localization.GetString("msgUpdateComment", LocalResourceFile)
      cmdDeleteComment.Visible = True
 
-     Dim cntNotification As New Components.Integration.Notifications
+     Dim cntNotification As New Integration.Notifications
      cntNotification.RemoveCommentPendingNotification(Blog.BlogID, oComment.EntryID, oComment.CommentID)
     End If
    Case "approvecomment"
@@ -354,7 +354,7 @@ Partial Public Class ViewEntry
     oComment.Approved = True
     CommentController.UpdateComment(oComment)
 
-    Dim cntNotification As New Components.Integration.Notifications
+    Dim cntNotification As New Integration.Notifications
     cntNotification.RemoveCommentPendingNotification(Blog.BlogID, oComment.EntryID, oComment.CommentID)
 
     BindCommentsList()
@@ -363,7 +363,7 @@ Partial Public Class ViewEntry
     ' Added fast comment deletion.
     CommentController.DeleteComment(Int32.Parse(CType(e.CommandArgument, String)))
 
-    Dim cntNotification As New Components.Integration.Notifications
+    Dim cntNotification As New Integration.Notifications
     cntNotification.RemoveCommentPendingNotification(Blog.BlogID, Entry.EntryID, Int32.Parse(CType(e.CommandArgument, String)))
 
     BindCommentsList()
@@ -397,25 +397,25 @@ Partial Public Class ViewEntry
      CommentController.UpdateComment(objComment)
 
      If objComment.Approved Then
-      Dim cntJournal As New Components.Integration.Journal
+      Dim cntJournal As New Integration.Journal
       cntJournal.AddCommentToJournal(Entry, objComment, ModuleContext.PortalId, ModuleContext.TabId, objComment.UserID, Entry.PermaLink)
      End If
     Else
      objComment.CommentID = CommentController.AddComment(objComment)
 
      If objComment.Approved Then
-      Dim cntJournal As New Components.Integration.Journal
+      Dim cntJournal As New Integration.Journal
       cntJournal.AddCommentToJournal(Entry, objComment, ModuleContext.PortalId, ModuleContext.TabId, ModuleContext.PortalSettings.UserId, Entry.PermaLink)
 
       If (objComment.UserID <> Blog.UserID) Then
-       Dim cntNotification As New Components.Integration.Notifications
+       Dim cntNotification As New Integration.Notifications
        Dim title As String = Localization.GetString("CommentAddedNotify", Constants.SharedResourceFileName)
        Dim summary As String = "<a target='_blank' href='" + Entry.PermaLink + "'>" + Entry.Title + "</a>"
 
        cntNotification.CommentAdded(objComment, Entry, Blog, ModuleContext.PortalId, summary, title)
       End If
      Else
-      Dim cntNotification As New Components.Integration.Notifications
+      Dim cntNotification As New Integration.Notifications
       Dim title As String = Localization.GetString("CommentPendingNotify", Constants.SharedResourceFileName)
       Dim summary As String = "<a target='_blank' href='" + Entry.PermaLink + "'>" + Entry.Title + "</a><br />" + objComment.Comment
 

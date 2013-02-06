@@ -18,12 +18,12 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports DotNetNuke.Modules.Blog.Components.Controllers
-Imports DotNetNuke.Modules.Blog.Components.Common
+Imports DotNetNuke.Modules.Blog.Controllers
+Imports DotNetNuke.Modules.Blog.Common
 Imports DotNetNuke.Web.Client.ClientResourceManagement
 Imports DotNetNuke.Framework
-Imports DotNetNuke.Modules.Blog.Components.Settings
-Imports DotNetNuke.Modules.Blog.Components.Entities
+Imports DotNetNuke.Modules.Blog.Settings
+Imports DotNetNuke.Modules.Blog.Entities
 Imports Telerik.Web.UI
 
 Partial Public Class ViewTags

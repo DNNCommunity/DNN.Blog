@@ -28,28 +28,28 @@ Imports DotNetNuke.Common.Utilities
 <System.Web.Services.WebService(Namespace:="http://www.dotnetnuke.com/")> _
 <System.Web.Services.WebServiceBinding(ConformsTo:=WsiProfiles.BasicProfile1_1)> _
 <ToolboxItem(False)> _
- Public Class BlogTerms
-    Inherits System.Web.Services.WebService
+Public Class BlogTerms
+ Inherits System.Web.Services.WebService
 
-    Public Const DisallowedCharacters As String = "%?*&;:'\\"
+ Public Const DisallowedCharacters As String = "%?*&;:'\\"
 
 
-    <WebMethod()> _
-    <ScriptMethod(ResponseFormat:=ResponseFormat.Json)> _
-    Public Function SearchTags(searchTerm As String) As String
-        If String.IsNullOrEmpty(searchTerm) Then
-            Return ""
-        End If
+ <WebMethod()> _
+ <ScriptMethod(ResponseFormat:=ResponseFormat.Json)> _
+ Public Function SearchTags(searchTerm As String) As String
+  If String.IsNullOrEmpty(searchTerm) Then
+   Return ""
+  End If
 
-        Dim colTerms As IQueryable(Of String) = (From t In Entities.Content.Common.Util.GetTermController().GetTermsByVocabulary(1) _
+  Dim colTerms As IQueryable(Of String) = (From t In DotNetNuke.Entities.Content.Common.Util.GetTermController().GetTermsByVocabulary(1) _
                 Where t.Name.ToLower().Contains(searchTerm.ToLower())
                 Where (t.Name.IndexOfAny(DisallowedCharacters.ToCharArray()) = -1)
                 Select t.Name)
 
-        'Dim terms As IQueryable = Entities.Content.Common.Util.GetTermController().GetTermsByVocabulary(1).Where(Function(t) t.Name.ToLower().Contains(searchTerm.ToLower())).Where(Function(t) t.Name.IndexOfAny(Constants.DisallowedCharacters.ToCharArray()) = -1).[Select](Function(term) term.Name)
-        Return colTerms.ToJson()
-    End Function
+  'Dim terms As IQueryable = Entities.Content.Common.Util.GetTermController().GetTermsByVocabulary(1).Where(Function(t) t.Name.ToLower().Contains(searchTerm.ToLower())).Where(Function(t) t.Name.IndexOfAny(Constants.DisallowedCharacters.ToCharArray()) = -1).[Select](Function(term) term.Name)
+  Return colTerms.ToJson()
+ End Function
 
-    ' TODO: CP - Create a new method to return a list of terms based on searchTerm and vocabulary
+ ' TODO: CP - Create a new method to return a list of terms based on searchTerm and vocabulary
 
 End Class

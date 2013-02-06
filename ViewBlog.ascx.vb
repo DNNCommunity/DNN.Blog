@@ -20,13 +20,13 @@
 
 Imports System
 Imports DotNetNuke.Web.Client.ClientResourceManagement
-Imports DotNetNuke.Modules.Blog.Components.Business
-Imports DotNetNuke.Modules.Blog.Components.Controllers
-Imports DotNetNuke.Modules.Blog.Components.Common
+Imports DotNetNuke.Modules.Blog.Business
+Imports DotNetNuke.Modules.Blog.Controllers
+Imports DotNetNuke.Modules.Blog.Common
 Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Services.Localization.Localization
-Imports DotNetNuke.Modules.Blog.Components.Entities
+Imports DotNetNuke.Modules.Blog.Entities
 Imports DotNetNuke.Framework
 Imports DotNetNuke.Entities.Users
 
@@ -99,7 +99,7 @@ Partial Public Class ViewBlog
     ModuleConfiguration.ModuleTitle = GetString("msgSearchResultsFor", LocalResourceFile) & " " & Blog.Title
    End If
   End If
-  MyActions.Add(GetNextActionID, GetString("msgModuleOptions", LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("", "", "Module_Options"), False, DotNetNuke.Security.SecurityAccessLevel.Admin, True, False)
+  MyActions.Add(GetNextActionID, GetString("msgModuleOptions", LocalResourceFile), DotNetNuke.Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", EditUrl("", "", "Module_Options"), False, DotNetNuke.Security.SecurityAccessLevel.Admin, True, False)
  End Sub
 
  Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -155,7 +155,7 @@ Partial Public Class ViewBlog
         End If
 
         If Blog.AuthorMode <> Constants.AuthorMode.BloggerMode Then
-         Dim objAuthor As Entities.Users.UserInfo = Entities.Users.UserController.GetUserById(ModuleContext.PortalId, Blog.UserID)
+         Dim objAuthor As DotNetNuke.Entities.Users.UserInfo = DotNetNuke.Entities.Users.UserController.GetUserById(ModuleContext.PortalId, Blog.UserID)
          dbiUser.ImageUrl = objAuthor.Profile.PhotoURL
          hlAuthor.NavigateUrl = UserProfileURL(Blog.UserID)
          imgAuthorLink.NavigateUrl = UserProfileURL(Blog.UserID)

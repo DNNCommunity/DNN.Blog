@@ -24,8 +24,8 @@ Imports System.Text
 Imports System.Text.RegularExpressions
 Imports DotNetNuke.Services.SystemDateTime
 Imports DotNetNuke.Common
-Imports DotNetNuke.Modules.Blog.Components.Controllers
-Imports DotNetNuke.Modules.Blog.Components.Common
+Imports DotNetNuke.Modules.Blog.Controllers
+Imports DotNetNuke.Modules.Blog.Common
 Imports DotNetNuke.Security
 Imports DotNetNuke.Data
 Imports DotNetNuke.Services.Exceptions
@@ -35,10 +35,10 @@ Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Framework
 Imports DotNetNuke.UI.Modules
 Imports DotNetNuke.Services.Localization
-Imports DotNetNuke.Modules.Blog.Components.Settings
-Imports DotNetNuke.Modules.Blog.Components.Entities
+Imports DotNetNuke.Modules.Blog.Settings
+Imports DotNetNuke.Modules.Blog.Entities
 
-Namespace Components.Business
+Namespace Business
 
  Public Class Utility
 
@@ -334,7 +334,7 @@ Namespace Components.Business
 
   Private Shared Function TagMatch(ByVal match As Match) As String
    Return match.ToString().Replace(" ", "_!_")
-        End Function
+  End Function
 
 #End Region
 
@@ -415,150 +415,150 @@ Namespace Components.Business
 
 #Region "SEO"
 
-        Public Shared Sub SetPageMetaAndOpenGraph(ByVal defaultPage As CDefault, ByVal modContext As ModuleInstanceContext, ByVal title As String, ByVal content As String, ByVal keyWords As String, ByVal link As String)
-            defaultPage.Title = title + " - " + modContext.PortalSettings.PortalName
+  Public Shared Sub SetPageMetaAndOpenGraph(ByVal defaultPage As CDefault, ByVal modContext As ModuleInstanceContext, ByVal title As String, ByVal content As String, ByVal keyWords As String, ByVal link As String)
+   defaultPage.Title = title + " - " + modContext.PortalSettings.PortalName
 
-            Dim meta As New HtmlMeta()
-            meta.Attributes.Add("property", "og:title")
-            meta.Attributes.Add("content", title)
-            defaultPage.Header.Controls.Add(meta)
+   Dim meta As New HtmlMeta()
+   meta.Attributes.Add("property", "og:title")
+   meta.Attributes.Add("content", title)
+   defaultPage.Header.Controls.Add(meta)
 
-            content = StripTagsCharArray(HttpUtility.HtmlDecode(content))
-            Dim description As String = TruncateString(content, Constants.SeoDescriptionLimit, False)
+   content = StripTagsCharArray(HttpUtility.HtmlDecode(content))
+   Dim description As String = TruncateString(content, Constants.SeoDescriptionLimit, False)
 
-            If description.Length > 0 Then
-                defaultPage.Description = description
+   If description.Length > 0 Then
+    defaultPage.Description = description
 
-                meta = New HtmlMeta()
-                meta.Attributes.Add("property", "og:description")
-                meta.Attributes.Add("content", description)
-                defaultPage.Header.Controls.Add(meta)
-            End If
+    meta = New HtmlMeta()
+    meta.Attributes.Add("property", "og:description")
+    meta.Attributes.Add("content", description)
+    defaultPage.Header.Controls.Add(meta)
+   End If
 
-            meta = New HtmlMeta()
-            meta.Attributes.Add("property", "og:type")
-            meta.Attributes.Add("content", "article")
-            defaultPage.Header.Controls.Add(meta)
+   meta = New HtmlMeta()
+   meta.Attributes.Add("property", "og:type")
+   meta.Attributes.Add("content", "article")
+   defaultPage.Header.Controls.Add(meta)
 
-            If keyWords.Length > 0 Then
-                ' CP - As per discussion w/ Titan, these will be cleared out.
-                defaultPage.KeyWords = ""
+   If keyWords.Length > 0 Then
+    ' CP - As per discussion w/ Titan, these will be cleared out.
+    defaultPage.KeyWords = ""
 
-                meta = New HtmlMeta()
-                meta.Attributes.Add("property", "article:tag")
-                meta.Attributes.Add("content", keyWords)
-                defaultPage.Header.Controls.Add(meta)
-            End If
+    meta = New HtmlMeta()
+    meta.Attributes.Add("property", "article:tag")
+    meta.Attributes.Add("content", keyWords)
+    defaultPage.Header.Controls.Add(meta)
+   End If
 
-            meta = New HtmlMeta()
-            meta.Attributes.Add("property", "og:url")
-            meta.Attributes.Add("content", link)
-            defaultPage.Header.Controls.Add(meta)
+   meta = New HtmlMeta()
+   meta.Attributes.Add("property", "og:url")
+   meta.Attributes.Add("content", link)
+   defaultPage.Header.Controls.Add(meta)
 
-            meta = New HtmlMeta()
-            meta.Attributes.Add("property", "og:site_name")
-            meta.Attributes.Add("content", modContext.PortalSettings.PortalName)
-            defaultPage.Header.Controls.Add(meta)
+   meta = New HtmlMeta()
+   meta.Attributes.Add("property", "og:site_name")
+   meta.Attributes.Add("content", modContext.PortalSettings.PortalName)
+   defaultPage.Header.Controls.Add(meta)
 
-            If modContext.PortalSettings.LogoFile.Trim().Length > 0 Then
-                Dim url As String = "http://" + modContext.PortalAlias.HTTPAlias + "/Portals/" + modContext.PortalId.ToString() + "/" + modContext.PortalSettings.LogoFile
-                meta = New HtmlMeta()
-                meta.Attributes.Add("property", "og:image")
-                meta.Attributes.Add("content", url)
-                defaultPage.Header.Controls.Add(meta)
-            End If
-        End Sub
+   If modContext.PortalSettings.LogoFile.Trim().Length > 0 Then
+    Dim url As String = "http://" + modContext.PortalAlias.HTTPAlias + "/Portals/" + modContext.PortalId.ToString() + "/" + modContext.PortalSettings.LogoFile
+    meta = New HtmlMeta()
+    meta.Attributes.Add("property", "og:image")
+    meta.Attributes.Add("content", url)
+    defaultPage.Header.Controls.Add(meta)
+   End If
+  End Sub
 
-        ''' <summary>
-        ''' Remove HTML tags from string using char array.
-        ''' </summary>
-        Public Shared Function StripTagsCharArray(ByVal source As String) As String
-            Dim myArray(source.Length - 1) As Char
-            Dim arrayIndex As Integer = 0
-            Dim inside As Boolean = False
+  ''' <summary>
+  ''' Remove HTML tags from string using char array.
+  ''' </summary>
+  Public Shared Function StripTagsCharArray(ByVal source As String) As String
+   Dim myArray(source.Length - 1) As Char
+   Dim arrayIndex As Integer = 0
+   Dim inside As Boolean = False
 
-            For i As Integer = 0 To source.Length - 1
-                Dim strLet As String = source(i)
-                If strLet = "<"c Then
-                    inside = True
-                    Continue For
-                End If
-                If strLet = ">"c Then
-                    inside = False
-                    Continue For
-                End If
-                If Not inside Then
-                    myArray(arrayIndex) = CChar(strLet)
-                    arrayIndex += 1
-                End If
-            Next
-            Return New String(myArray, 0, arrayIndex)
-        End Function
+   For i As Integer = 0 To source.Length - 1
+    Dim strLet As String = source(i)
+    If strLet = "<"c Then
+     inside = True
+     Continue For
+    End If
+    If strLet = ">"c Then
+     inside = False
+     Continue For
+    End If
+    If Not inside Then
+     myArray(arrayIndex) = CChar(strLet)
+     arrayIndex += 1
+    End If
+   Next
+   Return New String(myArray, 0, arrayIndex)
+  End Function
 
-        Public Shared Function TruncateString(ByVal source As String, ByVal length As Integer, ByVal showElipse As Boolean) As String
-            If source.Length > length Then
-                source = source.Substring(0, length)
-                If showElipse Then
-                    source += "..."
-                End If
-            End If
-            Return source
-        End Function
+  Public Shared Function TruncateString(ByVal source As String, ByVal length As Integer, ByVal showElipse As Boolean) As String
+   If source.Length > length Then
+    source = source.Substring(0, length)
+    If showElipse Then
+     source += "..."
+    End If
+   End If
+   Return source
+  End Function
 
-        ''' <summary>
-        ''' This method takes a UTC date and compares it against the current UTC to return a friendly format (ie. 10 seconds ago)
-        ''' </summary>
-        ''' <param name="utcDate"></param>
-        ''' <returns></returns>
-        ''' <remarks>This method is currently used by comments only.</remarks>
-        Public Shared Function CalculateDateForDisplay(utcDate As DateTime) As String
-            Dim utcTimeDifference As TimeSpan = SystemDateTime.GetCurrentTimeUtc() - utcDate
+  ''' <summary>
+  ''' This method takes a UTC date and compares it against the current UTC to return a friendly format (ie. 10 seconds ago)
+  ''' </summary>
+  ''' <param name="utcDate"></param>
+  ''' <returns></returns>
+  ''' <remarks>This method is currently used by comments only.</remarks>
+  Public Shared Function CalculateDateForDisplay(utcDate As DateTime) As String
+   Dim utcTimeDifference As TimeSpan = SystemDateTime.GetCurrentTimeUtc() - utcDate
 
-            If utcTimeDifference.TotalSeconds < 60 Then
-                Return CInt(utcTimeDifference.TotalSeconds).ToString() + Localization.GetString("secondsago", Constants.SharedResourceFileName)
-            End If
-            If utcTimeDifference.TotalMinutes < 60 Then
-                If utcTimeDifference.TotalMinutes < 2 Then
-                    Return CInt(utcTimeDifference.TotalMinutes).ToString() + Localization.GetString("minuteago", Constants.SharedResourceFileName)
-                End If
-                Return CInt(utcTimeDifference.TotalMinutes).ToString() + Localization.GetString("minutesago", Constants.SharedResourceFileName)
-            End If
-            If utcTimeDifference.TotalHours < 24 Then
-                If utcTimeDifference.TotalHours < 2 Then
-                    Return CInt(utcTimeDifference.TotalHours).ToString() + Localization.GetString("hourago", Constants.SharedResourceFileName)
-                End If
-                Return CInt(utcTimeDifference.TotalHours).ToString() + Localization.GetString("hoursago", Constants.SharedResourceFileName)
-            End If
+   If utcTimeDifference.TotalSeconds < 60 Then
+    Return CInt(utcTimeDifference.TotalSeconds).ToString() + Localization.GetString("secondsago", Constants.SharedResourceFileName)
+   End If
+   If utcTimeDifference.TotalMinutes < 60 Then
+    If utcTimeDifference.TotalMinutes < 2 Then
+     Return CInt(utcTimeDifference.TotalMinutes).ToString() + Localization.GetString("minuteago", Constants.SharedResourceFileName)
+    End If
+    Return CInt(utcTimeDifference.TotalMinutes).ToString() + Localization.GetString("minutesago", Constants.SharedResourceFileName)
+   End If
+   If utcTimeDifference.TotalHours < 24 Then
+    If utcTimeDifference.TotalHours < 2 Then
+     Return CInt(utcTimeDifference.TotalHours).ToString() + Localization.GetString("hourago", Constants.SharedResourceFileName)
+    End If
+    Return CInt(utcTimeDifference.TotalHours).ToString() + Localization.GetString("hoursago", Constants.SharedResourceFileName)
+   End If
 
-            If utcTimeDifference.TotalDays < 7 Then
-                If utcTimeDifference.TotalDays < 2 Then
-                    Return CInt(utcTimeDifference.TotalDays).ToString() + Localization.GetString("dayago", Constants.SharedResourceFileName)
-                End If
-                Return CInt(utcTimeDifference.TotalDays).ToString() + Localization.GetString("daysago", Constants.SharedResourceFileName)
-            End If
+   If utcTimeDifference.TotalDays < 7 Then
+    If utcTimeDifference.TotalDays < 2 Then
+     Return CInt(utcTimeDifference.TotalDays).ToString() + Localization.GetString("dayago", Constants.SharedResourceFileName)
+    End If
+    Return CInt(utcTimeDifference.TotalDays).ToString() + Localization.GetString("daysago", Constants.SharedResourceFileName)
+   End If
 
-            If utcTimeDifference.TotalDays < 30 Then
-                If utcTimeDifference.TotalDays < 14 Then
-                    Return CInt((utcTimeDifference.TotalDays) / 7).ToString() + Localization.GetString("weekago", Constants.SharedResourceFileName)
-                End If
-                Return CInt((utcTimeDifference.TotalDays) / 7).ToString() + Localization.GetString("weeksago", Constants.SharedResourceFileName)
-            End If
+   If utcTimeDifference.TotalDays < 30 Then
+    If utcTimeDifference.TotalDays < 14 Then
+     Return CInt((utcTimeDifference.TotalDays) / 7).ToString() + Localization.GetString("weekago", Constants.SharedResourceFileName)
+    End If
+    Return CInt((utcTimeDifference.TotalDays) / 7).ToString() + Localization.GetString("weeksago", Constants.SharedResourceFileName)
+   End If
 
-            If utcTimeDifference.TotalDays < 180 Then
-                If utcTimeDifference.TotalDays < 60 Then
-                    Return CInt((utcTimeDifference.TotalDays) / 30).ToString() + Localization.GetString("monthago", Constants.SharedResourceFileName)
-                End If
-                Return CInt((utcTimeDifference.TotalDays) / 30).ToString() + Localization.GetString("monthsago", Constants.SharedResourceFileName)
-            End If
+   If utcTimeDifference.TotalDays < 180 Then
+    If utcTimeDifference.TotalDays < 60 Then
+     Return CInt((utcTimeDifference.TotalDays) / 30).ToString() + Localization.GetString("monthago", Constants.SharedResourceFileName)
+    End If
+    Return CInt((utcTimeDifference.TotalDays) / 30).ToString() + Localization.GetString("monthsago", Constants.SharedResourceFileName)
+   End If
 
-            'if (utcTimeDifference.TotalDays < 60)
-            '{
-            '    return 1 + Localization.GetString("monthago", Constants.SharedResourceFileName);
-            '}
+   'if (utcTimeDifference.TotalDays < 60)
+   '{
+   '    return 1 + Localization.GetString("monthago", Constants.SharedResourceFileName);
+   '}
 
-            ' anything else (this is the only time we have to personalize it to the user)
-            Return utcDate.ToShortDateString()
-        End Function
+   ' anything else (this is the only time we have to personalize it to the user)
+   Return utcDate.ToShortDateString()
+  End Function
 
 #End Region
 
@@ -654,48 +654,48 @@ Namespace Components.Business
    End If
   End Function
 
-        Public Shared Sub CreateAllEntryLinks(ByVal PortalID As Integer, Optional ByVal BlogId As Integer = -1, Optional ByVal TabID As Integer = -1)
-            Dim m_EntryController As New EntryController
-            Dim m_Entries As New List(Of EntryInfo)
-            Dim TabIdFromPortalId As Integer = -1 'Needed only if TabID isn't passed in and TabID can't be retrieved
-            ' from the PermaLink
+  Public Shared Sub CreateAllEntryLinks(ByVal PortalID As Integer, Optional ByVal BlogId As Integer = -1, Optional ByVal TabID As Integer = -1)
+   Dim m_EntryController As New EntryController
+   Dim m_Entries As New List(Of EntryInfo)
+   Dim TabIdFromPortalId As Integer = -1 'Needed only if TabID isn't passed in and TabID can't be retrieved
+   ' from the PermaLink
 
-            m_Entries = m_EntryController.GetAllEntriesByPortal(PortalID, True)
-            For Each entry As EntryInfo In m_Entries
-                If (BlogId = entry.BlogID Or BlogId = -1) And (TabID = -1 _
-                                                               Or entry.PermaLink Is Nothing Or entry.PermaLink = String.Empty _
-                                                               Or entry.PermaLink.ToLower().IndexOf("tabid=" & TabID) > 0 _
-                                                               Or entry.PermaLink.ToLower().IndexOf("tabid/" & TabID) > 0) Then
+   m_Entries = m_EntryController.GetAllEntriesByPortal(PortalID, True)
+   For Each entry As EntryInfo In m_Entries
+    If (BlogId = entry.BlogID Or BlogId = -1) And (TabID = -1 _
+                                                   Or entry.PermaLink Is Nothing Or entry.PermaLink = String.Empty _
+                                                   Or entry.PermaLink.ToLower().IndexOf("tabid=" & TabID) > 0 _
+                                                   Or entry.PermaLink.ToLower().IndexOf("tabid/" & TabID) > 0) Then
 
-                    Dim CurrentTabId As Integer
-                    If TabID = -1 Then
-                        ' Get the TabID from the PortalId
-                        ' This is the case when the procedure is being called from the 
-                        ' Blog settings page and we're trying to update all the 
-                        ' Permalinks after making a change to the URL format.
-                        ' In this case, the correct TabID is in the PermaLink, so
-                        ' we'll extract it with some regex.
-                        ' 
-                        Dim match As Match
-                        match = Regex.Match(entry.PermaLink, "tabid(?:/|=)(?<TabId>\d*)", RegexOptions.IgnoreCase)
-                        If Not match.Groups("TabId").Value Is Nothing And match.Groups("TabId").Value <> String.Empty Then
-                            CurrentTabId = Convert.ToInt32(match.Groups("TabId").Value)
-                        Else
-                            ' Otherwise, we'll try to get the TabID from the PortalID
-                            If TabIdFromPortalId = -1 Then
-                                'We haven't retrieved this yet, so we'll retreive it
-                                TabIdFromPortalId = Utility.GetTabIDByPortalID(PortalID.ToString())
-                            End If
-                            CurrentTabId = TabIdFromPortalId
-                        End If
-                    Else
-                        CurrentTabId = TabID
-                    End If
-                    entry.PermaLink = GenerateEntryLink(PortalID, entry.EntryID, CurrentTabId)
-                    m_EntryController.UpdateEntry(entry, CurrentTabId, PortalID, 1)
-                End If
-            Next
-        End Sub
+     Dim CurrentTabId As Integer
+     If TabID = -1 Then
+      ' Get the TabID from the PortalId
+      ' This is the case when the procedure is being called from the 
+      ' Blog settings page and we're trying to update all the 
+      ' Permalinks after making a change to the URL format.
+      ' In this case, the correct TabID is in the PermaLink, so
+      ' we'll extract it with some regex.
+      ' 
+      Dim match As Match
+      match = Regex.Match(entry.PermaLink, "tabid(?:/|=)(?<TabId>\d*)", RegexOptions.IgnoreCase)
+      If Not match.Groups("TabId").Value Is Nothing And match.Groups("TabId").Value <> String.Empty Then
+       CurrentTabId = Convert.ToInt32(match.Groups("TabId").Value)
+      Else
+       ' Otherwise, we'll try to get the TabID from the PortalID
+       If TabIdFromPortalId = -1 Then
+        'We haven't retrieved this yet, so we'll retreive it
+        TabIdFromPortalId = Utility.GetTabIDByPortalID(PortalID.ToString())
+       End If
+       CurrentTabId = TabIdFromPortalId
+      End If
+     Else
+      CurrentTabId = TabID
+     End If
+     entry.PermaLink = GenerateEntryLink(PortalID, entry.EntryID, CurrentTabId)
+     m_EntryController.UpdateEntry(entry, CurrentTabId, PortalID, 1)
+    End If
+   Next
+  End Sub
 
   Public Shared Function BlogNavigateURL(ByVal TabId As Integer, ByVal PortalID As Integer, ByVal EntryInfo As EntryInfo, ByVal ShowSEOFriendly As Boolean) As String
    Dim TabInfo As DotNetNuke.Entities.Tabs.TabInfo

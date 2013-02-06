@@ -19,12 +19,12 @@
 '
 Imports DotNetNuke.Security
 Imports DotNetNuke.Security.Permissions
-Imports DotNetNuke.Modules.Blog.Components.Entities
+Imports DotNetNuke.Modules.Blog.Entities
 Imports DotNetNuke.Entities.Users
 
-Namespace Components.Common
+Namespace Common
 
-    Public Class ModuleSecurity
+ Public Class ModuleSecurity
   Private Property HasEdit As Boolean = False
   Private Property HasBlogger As Boolean = False
   Private Property HasGhost As Boolean = False
@@ -38,42 +38,42 @@ Namespace Components.Common
     BlogAuthorMode = blog.AuthorMode
    End If
    _userIsAdmin = DotNetNuke.Security.PortalSecurity.IsInRole(DotNetNuke.Entities.Portals.PortalSettings.Current.AdministratorRoleName)
-            Dim mc As New DotNetNuke.Entities.Modules.ModuleController
-            Dim objMod As New DotNetNuke.Entities.Modules.ModuleInfo
-            objMod = mc.GetModule(moduleId, tabId, False)
-            If objMod Is Nothing Then
-                Return
-            End If
-            HasEdit = ModulePermissionController.CanEditModuleContent(objMod)
-            HasBlogger = ModulePermissionController.HasModulePermission(objMod.ModulePermissions, Constants.BloggerPermission)
-            HasGhost = ModulePermissionController.HasModulePermission(objMod.ModulePermissions, Constants.GhostWriterPermission)
-        End Sub
+   Dim mc As New DotNetNuke.Entities.Modules.ModuleController
+   Dim objMod As New DotNetNuke.Entities.Modules.ModuleInfo
+   objMod = mc.GetModule(moduleId, tabId, False)
+   If objMod Is Nothing Then
+    Return
+   End If
+   HasEdit = ModulePermissionController.CanEditModuleContent(objMod)
+   HasBlogger = ModulePermissionController.HasModulePermission(objMod.ModulePermissions, Constants.BloggerPermission)
+   HasGhost = ModulePermissionController.HasModulePermission(objMod.ModulePermissions, Constants.GhostWriterPermission)
+  End Sub
 
   Public ReadOnly Property CanCreate() As Boolean
    Get
-            Return HasEdit Or HasBlogger
+    Return HasEdit Or HasBlogger
    End Get
   End Property
 
   Public ReadOnly Property CanEdit() As Boolean
    Get
-            Return HasEdit Or (HasBlogger AndAlso IsOwner)
+    Return HasEdit Or (HasBlogger AndAlso IsOwner)
    End Get
   End Property
 
   Public ReadOnly Property CanAddEntry() As Boolean
    Get
-            Return HasEdit Or (HasGhost AndAlso BlogAuthorMode = Constants.AuthorMode.GhostMode) Or (HasBlogger AndAlso IsOwner) Or (HasBlogger AndAlso BlogAuthorMode = Constants.AuthorMode.BloggerMode)
+    Return HasEdit Or (HasGhost AndAlso BlogAuthorMode = Constants.AuthorMode.GhostMode) Or (HasBlogger AndAlso IsOwner) Or (HasBlogger AndAlso BlogAuthorMode = Constants.AuthorMode.BloggerMode)
    End Get
   End Property
 
   Public ReadOnly Property CanApproveComment() As Boolean
    Get
-            If HasEdit Or HasBlogger Or HasGhost Then
-                Return True
-            Else
-                Return False
-            End If
+    If HasEdit Or HasBlogger Or HasGhost Then
+     Return True
+    Else
+     Return False
+    End If
    End Get
   End Property
 
@@ -88,5 +88,5 @@ Namespace Components.Common
     Return _userIsAdmin
    End Get
   End Property
-    End Class
+ End Class
 End Namespace

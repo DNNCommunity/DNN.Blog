@@ -1,6 +1,6 @@
 ﻿Imports System.Linq
 
-Namespace Components.Common
+Namespace Common
  Module Extensions
 
 #Region " Collection Read Extensions "

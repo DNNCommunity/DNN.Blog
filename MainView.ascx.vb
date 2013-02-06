@@ -19,17 +19,17 @@
 '
 
 Imports System
-Imports DotNetNuke.Modules.Blog.Components.Controllers
-Imports DotNetNuke.Modules.Blog.Components.Common
+Imports DotNetNuke.Modules.Blog.Controllers
+Imports DotNetNuke.Modules.Blog.Common
 Imports DotNetNuke.Entities.Modules.Definitions
 Imports DotNetNuke.Entities.Modules.Actions
 Imports DotNetNuke.Services.Localization.Localization
 Imports DotNetNuke.Services.Localization
-Imports DotNetNuke.Modules.Blog.Components.Entities
+Imports DotNetNuke.Modules.Blog.Entities
 
 Partial Public Class MainView
  Inherits BlogModuleBase
- Implements Entities.Modules.IActionable
+ Implements DotNetNuke.Entities.Modules.IActionable
 
 #Region " IActionable "
 

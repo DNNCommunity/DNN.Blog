@@ -19,12 +19,12 @@
 '
 Imports System
 Imports DotNetNuke.Modules.Blog.Providers.Data
-Imports DotNetNuke.Modules.Blog.Components.Common
+Imports DotNetNuke.Modules.Blog.Common
 Imports DotNetNuke.Common.Utilities
-Imports DotNetNuke.Modules.Blog.Components.Integration
-Imports DotNetNuke.Modules.Blog.Components.Entities
+Imports DotNetNuke.Modules.Blog.Integration
+Imports DotNetNuke.Modules.Blog.Entities
 
-Namespace Components.Controllers
+Namespace Controllers
 
  Public Class TermController
 

@@ -20,9 +20,9 @@
 
 Imports System
 Imports System.IO
-Imports DotNetNuke.Modules.Blog.Components.Business
-Imports DotNetNuke.Modules.Blog.Components.Controllers
-Imports DotNetNuke.Modules.Blog.Components.Common
+Imports DotNetNuke.Modules.Blog.Business
+Imports DotNetNuke.Modules.Blog.Controllers
+Imports DotNetNuke.Modules.Blog.Common
 Imports DotNetNuke.Web.Client.ClientResourceManagement
 Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Services.Localization.Localization
@@ -32,8 +32,8 @@ Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Framework
 Imports System.Linq
 Imports DotNetNuke.Entities.Content.Taxonomy
-Imports DotNetNuke.Modules.Blog.Components.File
-Imports DotNetNuke.Modules.Blog.Components.Entities
+Imports DotNetNuke.Modules.Blog.File
+Imports DotNetNuke.Modules.Blog.Entities
 Imports DotNetNuke.Services.Localization
 Imports Telerik.Web.UI
 
@@ -397,14 +397,14 @@ Partial Class EditEntry
 
      For Each s As String In userEnteredTerms
       If s.Length > 0 Then
-       Dim newTerm As Term = Components.Integration.Terms.CreateAndReturnTerm(s, 1)
+       Dim newTerm As Term = Integration.Terms.CreateAndReturnTerm(s, 1)
        terms.Add(newTerm)
       End If
      Next
 
      If VocabularyId > 0 Then
       For Each t As Telerik.Web.UI.RadTreeNode In dtCategories.CheckedNodes
-       Dim objTerm As Term = Components.Integration.Terms.GetTermById(Convert.ToInt32(t.Value), VocabularyId)
+       Dim objTerm As Term = Integration.Terms.GetTermById(Convert.ToInt32(t.Value), VocabularyId)
        terms.Add(objTerm)
       Next
      End If
@@ -415,7 +415,7 @@ Partial Class EditEntry
      EntryController.UpdateEntry(Entry, Me.TabId, PortalId, VocabularyId)
 
      If (publish) Then
-      Dim cntIntegration As New Components.Integration.Journal()
+      Dim cntIntegration As New Integration.Journal()
       Dim journalUserId As Integer
       Dim journalUrl As String = Utility.AddTOQueryString(NavigateURL(), "EntryId", Entry.EntryID.ToString())
 
@@ -428,11 +428,11 @@ Partial Class EditEntry
 
       cntIntegration.AddBlogEntryToJournal(Entry, ModuleContext.PortalId, ModuleContext.TabId, journalUserId, journalUrl)
 
-      Dim cntNotifications As New Components.Integration.Notifications
+      Dim cntNotifications As New Integration.Notifications
       cntNotifications.RemoveEntryPendingNotification(Blog.BlogID, Entry.EntryID)
      Else
       If (Blog.UserID <> ModuleContext.PortalSettings.UserId) AndAlso (Blog.AuthorMode = Constants.AuthorMode.GhostMode) Then
-       Dim cntNotifications As New Components.Integration.Notifications
+       Dim cntNotifications As New Integration.Notifications
        Dim title As String = Localization.GetString("ApprovePostNotifyBody", Constants.SharedResourceFileName)
        Dim summary As String = "<a target='_blank' href='" + Entry.PermaLink + "'>" + Entry.Title + "</a>"
 

@@ -20,29 +20,29 @@
 
 Imports CookComputing.XmlRpc
 
-Namespace Components.Blogger
+Namespace Blogger
 
-    ''' <summary>
-    ''' Interface for Blogger Methods that WLW uses
-    ''' </summary>
-    ''' <remarks></remarks>
-    ''' <history>
-    '''		[pdonker]	12/14/2009	created
-    ''' </history>
-    Public Interface IBlogger
+ ''' <summary>
+ ''' Interface for Blogger Methods that WLW uses
+ ''' </summary>
+ ''' <remarks></remarks>
+ ''' <history>
+ '''		[pdonker]	12/14/2009	created
+ ''' </history>
+ Public Interface IBlogger
 
-        <XmlRpcMethod("blogger.deletePost", Description:="Deletes a post.")> _
-        Function deletePost(ByVal appKey As String, ByVal postid As String, ByVal username As String, ByVal password As String, <XmlRpcParameter(Description:="Where applicable, this specifies whether the blog " + "should be republished after the post has been deleted.")> _
+  <XmlRpcMethod("blogger.deletePost", Description:="Deletes a post.")> _
+  Function deletePost(ByVal appKey As String, ByVal postid As String, ByVal username As String, ByVal password As String, <XmlRpcParameter(Description:="Where applicable, this specifies whether the blog " + "should be republished after the post has been deleted.")> _
                                ByVal publish As Boolean) As Boolean
 
-        <XmlRpcMethod("blogger.getUsersBlogs", Description:="Returns information on all the blogs a given user " + "is a member.")> _
-        Function getUsersBlogs(ByVal appKey As String, ByVal username As String, ByVal password As String) As BlogInfoStruct()
+  <XmlRpcMethod("blogger.getUsersBlogs", Description:="Returns information on all the blogs a given user " + "is a member.")> _
+  Function getUsersBlogs(ByVal appKey As String, ByVal username As String, ByVal password As String) As BlogInfoStruct()
 
-    End Interface
+ End Interface
 
-    Public Structure BlogInfoStruct
-        Public url As String
-        Public blogName As String
-        Public blogid As String
-    End Structure
+ Public Structure BlogInfoStruct
+  Public url As String
+  Public blogName As String
+  Public blogid As String
+ End Structure
 End Namespace
