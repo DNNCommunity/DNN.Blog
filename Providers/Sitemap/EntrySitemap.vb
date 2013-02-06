@@ -27,67 +27,66 @@ Imports DotNetNuke.Modules.Blog.Components.Entities
 
 Namespace Providers.Sitemap
 
-    ''' <summary>
-    ''' This is the seo sitemap provider for the core forum module. 
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Class EntrySitemap
-        Inherits SitemapProvider
+ ''' <summary>
+ ''' This is the seo sitemap provider for the core forum module. 
+ ''' </summary>
+ ''' <remarks></remarks>
+ Public Class EntrySitemap
+  Inherits SitemapProvider
 
-        ''' <summary>
-        ''' Builds a collection of sitemap url's which are then used by the Sitemap Provider for the Forum module to generate pages for the SEO sitemap. 
-        ''' </summary>
-        ''' <param name="portalId"></param>
-        ''' <param name="ps"></param>
-        ''' <param name="version"></param>
-        ''' <returns></returns>
-        ''' <remarks>Only public forums are included in the seo sitemap.</remarks>
-        Public Overrides Function GetUrls(ByVal portalId As Integer, ByVal ps As PortalSettings, ByVal version As String) As List(Of SitemapUrl)
-            Dim permaLink As SitemapUrl
-            Dim urls As New List(Of SitemapUrl)
-            Dim cntEntry As New EntryController()
-            Dim entries As List(Of EntryInfo)
+  ''' <summary>
+  ''' Builds a collection of sitemap url's which are then used by the Sitemap Provider for the Forum module to generate pages for the SEO sitemap. 
+  ''' </summary>
+  ''' <param name="portalId"></param>
+  ''' <param name="ps"></param>
+  ''' <param name="version"></param>
+  ''' <returns></returns>
+  ''' <remarks>Only public forums are included in the seo sitemap.</remarks>
+  Public Overrides Function GetUrls(ByVal portalId As Integer, ByVal ps As PortalSettings, ByVal version As String) As List(Of SitemapUrl)
+   Dim permaLink As SitemapUrl
+   Dim urls As New List(Of SitemapUrl)
+   Dim entries As List(Of EntryInfo)
 
-            ' get all portal blog entries that are published (and at current date)
-   entries = cntEntry.GetAllEntriesByPortal(portalId, False, False)
+   ' get all portal blog entries that are published (and at current date)
+   entries = EntryController.GetAllEntriesByPortal(portalId, False, False)
 
-            For Each objEntry As EntryInfo In entries
-                permaLink = GetEntryUrl(objEntry)
-                urls.Add(permaLink)
-            Next
+   For Each objEntry As EntryInfo In entries
+    permaLink = GetEntryUrl(objEntry)
+    urls.Add(permaLink)
+   Next
 
-            Return urls
-        End Function
+   Return urls
+  End Function
 
-        ''' <summary>
-        ''' Creates a seo sitemap url, with priority, change frequency
-        ''' </summary>
-        ''' <param name="objEntry"></param>
-        ''' <returns>A single sitemap url object.</returns>
-        ''' <remarks></remarks>
-        Private Function GetEntryUrl(ByVal objEntry As EntryInfo) As SitemapUrl
-            Dim pageUrl As New SitemapUrl
-            pageUrl.Url = objEntry.PermaLink
-            'pageUrl.Priority = 
-            pageUrl.LastModified = objEntry.AddedDate ' This is UTC
+  ''' <summary>
+  ''' Creates a seo sitemap url, with priority, change frequency
+  ''' </summary>
+  ''' <param name="objEntry"></param>
+  ''' <returns>A single sitemap url object.</returns>
+  ''' <remarks></remarks>
+  Private Function GetEntryUrl(ByVal objEntry As EntryInfo) As SitemapUrl
+   Dim pageUrl As New SitemapUrl
+   pageUrl.Url = objEntry.PermaLink
+   'pageUrl.Priority = 
+   pageUrl.LastModified = objEntry.AddedDate ' This is UTC
 
-            If objEntry.AddedDate > DateAdd(DateInterval.Month, 18, DateTime.Now()) Then
-                pageUrl.ChangeFrequency = SitemapChangeFrequency.Never
-            ElseIf objEntry.AddedDate > DateAdd(DateInterval.Month, 6, DateTime.Now()) Then
-                pageUrl.ChangeFrequency = SitemapChangeFrequency.Yearly
-            ElseIf objEntry.AddedDate > DateAdd(DateInterval.Month, 1, DateTime.Now()) Then
-                pageUrl.ChangeFrequency = SitemapChangeFrequency.Monthly
-            ElseIf objEntry.AddedDate > DateAdd(DateInterval.Day, 6, DateTime.Now()) Then
-                pageUrl.ChangeFrequency = SitemapChangeFrequency.Weekly
-            ElseIf objEntry.AddedDate > DateAdd(DateInterval.Hour, 12, DateTime.Now()) Then
-                pageUrl.ChangeFrequency = SitemapChangeFrequency.Daily
-            Else
-                pageUrl.ChangeFrequency = SitemapChangeFrequency.Hourly
-            End If
+   If objEntry.AddedDate > DateAdd(DateInterval.Month, 18, DateTime.Now()) Then
+    pageUrl.ChangeFrequency = SitemapChangeFrequency.Never
+   ElseIf objEntry.AddedDate > DateAdd(DateInterval.Month, 6, DateTime.Now()) Then
+    pageUrl.ChangeFrequency = SitemapChangeFrequency.Yearly
+   ElseIf objEntry.AddedDate > DateAdd(DateInterval.Month, 1, DateTime.Now()) Then
+    pageUrl.ChangeFrequency = SitemapChangeFrequency.Monthly
+   ElseIf objEntry.AddedDate > DateAdd(DateInterval.Day, 6, DateTime.Now()) Then
+    pageUrl.ChangeFrequency = SitemapChangeFrequency.Weekly
+   ElseIf objEntry.AddedDate > DateAdd(DateInterval.Hour, 12, DateTime.Now()) Then
+    pageUrl.ChangeFrequency = SitemapChangeFrequency.Daily
+   Else
+    pageUrl.ChangeFrequency = SitemapChangeFrequency.Hourly
+   End If
 
-            Return pageUrl
-        End Function
+   Return pageUrl
+  End Function
 
-    End Class
+ End Class
 
 End Namespace

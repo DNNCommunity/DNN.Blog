@@ -1,4 +1,5 @@
 <%@ Control Language="vb" AutoEventWireup="false" CodeBehind="BlogList.ascx.vb" Inherits="DotNetNuke.Modules.Blog.BlogList" %>
+<h2>Blog List Control</h2>
 <div class="dnnBlogList dnnClear">
     <asp:DataList ID="lstBlogs" ShowFooter="False" ExtractTemplateRows="True" Width="100%" runat="server">
      <HeaderTemplate>

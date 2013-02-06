@@ -27,63 +27,62 @@ Imports DotNetNuke.Modules.Blog.Components.Entities
 Imports Telerik.Web.UI
 
 Partial Public Class ViewTags
-    Inherits DotNetNuke.Entities.Modules.PortalModuleBase
+ Inherits DotNetNuke.Entities.Modules.PortalModuleBase
 
-    Private _settings As TagViewSettings
-    Protected WithEvents rtcTags As DotNetNuke.Web.UI.WebControls.DnnTagCloud
+ Private _settings As TagViewSettings
+ Protected WithEvents rtcTags As DotNetNuke.Web.UI.WebControls.DnnTagCloud
 
 #Region "Event Handlers"
 
-    Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
-        jQuery.RequestUIRegistration()
-        ClientResourceManager.RegisterScript(Page, TemplateSourceDirectory + "/js/jquery.qatooltip.js")
-        ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js")
+ Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+  jQuery.RequestUIRegistration()
+  ClientResourceManager.RegisterScript(Page, TemplateSourceDirectory + "/js/jquery.qatooltip.js")
+  ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js")
 
-        _settings = TagViewSettings.GetTagViewSettings(TabModuleId)
-    End Sub
+  _settings = TagViewSettings.GetTagViewSettings(TabModuleId)
+ End Sub
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Dim cntTerm As New TermController
-        Dim colTags As List(Of TermInfo)
-        colTags = cntTerm.GetTermsByContentType(ModuleContext.PortalId, 1) ' the 1 ensures tags only
+ Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+  Dim colTags As List(Of TermInfo)
+  colTags = TermController.GetTermsByContentType(ModuleContext.PortalId, 1) ' the 1 ensures tags only
 
-        If _settings.TagDisplayMode = "List" Then
-            rptTags.DataSource = colTags
-            rptTags.DataBind()
+  If _settings.TagDisplayMode = "List" Then
+   rptTags.DataSource = colTags
+   rptTags.DataBind()
 
-            pnlTagList.Visible = True
-        Else
-            rtcTags.Skin = _settings.CloudSkin
+   pnlTagList.Visible = True
+  Else
+   rtcTags.Skin = _settings.CloudSkin
 
-            rtcTags.DataSource = colTags
-            rtcTags.DataBind()
+   rtcTags.DataSource = colTags
+   rtcTags.DataBind()
 
-            pnlTagCloud.Visible = True
-        End If
-    End Sub
+   pnlTagCloud.Visible = True
+  End If
+ End Sub
 
-    Protected Sub RptTagsItemDataBound(sender As Object, e As RepeaterItemEventArgs)
-        Dim tagControl As Tags = DirectCast(e.Item.FindControl("dbaSingleTag"), Tags)
-        Dim term As TermInfo = DirectCast(e.Item.DataItem, TermInfo)
-        Dim colTerms As New List(Of TermInfo)
+ Protected Sub RptTagsItemDataBound(sender As Object, e As RepeaterItemEventArgs)
+  Dim tagControl As Tags = DirectCast(e.Item.FindControl("dbaSingleTag"), Tags)
+  Dim term As TermInfo = DirectCast(e.Item.DataItem, TermInfo)
+  Dim colTerms As New List(Of TermInfo)
 
-        If term IsNot Nothing Then
-            colTerms.Add(term)
-        End If
+  If term IsNot Nothing Then
+   colTerms.Add(term)
+  End If
 
-        tagControl.ModContext = ModuleContext
-        tagControl.DataSource = colTerms
-        tagControl.CountMode = Constants.TagMode.ShowTotalUsage
-        tagControl.DataBind()
-    End Sub
+  tagControl.ModContext = ModuleContext
+  tagControl.DataSource = colTerms
+  tagControl.CountMode = Constants.TagMode.ShowTotalUsage
+  tagControl.DataBind()
+ End Sub
 
-    Protected Sub RtcCloudItemDataBound(sender As Object, e As RadTagCloudEventArgs)
-        Dim term As TermInfo = DirectCast(e.Item.DataItem, TermInfo)
-        Dim cloudLink As RadTagCloudItem = e.Item
-        Dim link As String = DotNetNuke.Common.NavigateURL(ModuleContext.TabId, "", "tagid=" & term.TermId)
+ Protected Sub RtcCloudItemDataBound(sender As Object, e As RadTagCloudEventArgs)
+  Dim term As TermInfo = DirectCast(e.Item.DataItem, TermInfo)
+  Dim cloudLink As RadTagCloudItem = e.Item
+  Dim link As String = DotNetNuke.Common.NavigateURL(ModuleContext.TabId, "", "tagid=" & term.TermId)
 
-        cloudLink.NavigateUrl = link
-    End Sub
+  cloudLink.NavigateUrl = link
+ End Sub
 
 #End Region
 

@@ -1,5 +1,6 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="ViewTagsSettings.ascx.vb" Inherits="DotNetNuke.Modules.Blog.ViewTagsSettings" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
+<h2>View Tags Settings Control</h2>
 <div class="dnnForm dnnTagSettings dnnClear">
 	<div class="dnnFormItem">
 		<dnn:Label ID="lblDisplayMode" runat="server" controlname="rblTagDisplayMode" suffix=":" />

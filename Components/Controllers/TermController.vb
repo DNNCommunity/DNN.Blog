@@ -26,45 +26,45 @@ Imports DotNetNuke.Modules.Blog.Components.Entities
 
 Namespace Components.Controllers
 
-    Public Class TermController
+ Public Class TermController
 
-        Public Function GetTermsByContentType(ByVal portalId As Integer, ByVal vocabularyId As Integer) As List(Of TermInfo)
-            DotNetNuke.Common.Requires.PropertyNotNegative("portalId", "", portalId)
-            DotNetNuke.Common.Requires.PropertyNotNegative("vocabularyId", "", vocabularyId)
-            Dim tagsKey As String = Common.Constants.TermsKey + vocabularyId.ToString
+  Public Shared Function GetTermsByContentType(ByVal portalId As Integer, ByVal vocabularyId As Integer) As List(Of TermInfo)
+   DotNetNuke.Common.Requires.PropertyNotNegative("portalId", "", portalId)
+   DotNetNuke.Common.Requires.PropertyNotNegative("vocabularyId", "", vocabularyId)
+   Dim tagsKey As String = Common.Constants.TermsKey + vocabularyId.ToString
 
-            Dim colTerms As List(Of TermInfo) = DirectCast(DataCache.GetCache(tagsKey), List(Of TermInfo))
+   Dim colTerms As List(Of TermInfo) = DirectCast(DataCache.GetCache(tagsKey), List(Of TermInfo))
 
-            If colTerms Is Nothing Then
-                Dim timeOut As Int32 = Common.Constants.CACHE_TIMEOUT * Convert.ToInt32(DotNetNuke.Entities.Host.Host.PerformanceSetting)
+   If colTerms Is Nothing Then
+    Dim timeOut As Int32 = Common.Constants.CACHE_TIMEOUT * Convert.ToInt32(DotNetNuke.Entities.Host.Host.PerformanceSetting)
 
-                colTerms = CBO.FillCollection(Of TermInfo)(DataProvider.Instance().GetTermsByContentType(portalId, Content.GetContentTypeID(), vocabularyId))
+    colTerms = CBO.FillCollection(Of TermInfo)(DataProvider.Instance().GetTermsByContentType(portalId, Content.GetContentTypeID(), vocabularyId))
 
-                If timeOut > 0 And colTerms IsNot Nothing Then
-                    DataCache.SetCache(tagsKey, colTerms, TimeSpan.FromMinutes(timeOut))
-                End If
-            End If
-            Return colTerms
-        End Function
+    If timeOut > 0 And colTerms IsNot Nothing Then
+     DataCache.SetCache(tagsKey, colTerms, TimeSpan.FromMinutes(timeOut))
+    End If
+   End If
+   Return colTerms
+  End Function
 
-        Public Function GetTermsByContentItem(ByVal contentItemId As Integer, ByVal vocabularyId As Integer) As List(Of TermInfo)
-            DotNetNuke.Common.Requires.PropertyNotNegative("contentItemId", "", contentItemId)
+  Public Shared Function GetTermsByContentItem(ByVal contentItemId As Integer, ByVal vocabularyId As Integer) As List(Of TermInfo)
+   DotNetNuke.Common.Requires.PropertyNotNegative("contentItemId", "", contentItemId)
 
-            Dim contentItemKey As String = Common.Constants.ContentItemsKey + contentItemId.ToString() + "-" + vocabularyId.ToString
-            Dim colTerms As List(Of TermInfo) = DirectCast(DataCache.GetCache(contentItemKey), List(Of TermInfo))
+   Dim contentItemKey As String = Common.Constants.ContentItemsKey + contentItemId.ToString() + "-" + vocabularyId.ToString
+   Dim colTerms As List(Of TermInfo) = DirectCast(DataCache.GetCache(contentItemKey), List(Of TermInfo))
 
-            If colTerms Is Nothing Then
-                Dim timeOut As Int32 = Common.Constants.CACHE_TIMEOUT * Convert.ToInt32(DotNetNuke.Entities.Host.Host.PerformanceSetting)
+   If colTerms Is Nothing Then
+    Dim timeOut As Int32 = Common.Constants.CACHE_TIMEOUT * Convert.ToInt32(DotNetNuke.Entities.Host.Host.PerformanceSetting)
 
-                colTerms = CBO.FillCollection(Of TermInfo)(DataProvider.Instance().GetTermsByContentItem(contentItemId, vocabularyId))
+    colTerms = CBO.FillCollection(Of TermInfo)(DataProvider.Instance().GetTermsByContentItem(contentItemId, vocabularyId))
 
-                If timeOut > 0 And colTerms IsNot Nothing Then
-                    DataCache.SetCache(contentItemKey, colTerms, TimeSpan.FromMinutes(timeOut))
-                End If
-            End If
-            Return colTerms
-        End Function
+    If timeOut > 0 And colTerms IsNot Nothing Then
+     DataCache.SetCache(contentItemKey, colTerms, TimeSpan.FromMinutes(timeOut))
+    End If
+   End If
+   Return colTerms
+  End Function
 
-    End Class
+ End Class
 
 End Namespace

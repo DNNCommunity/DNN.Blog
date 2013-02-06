@@ -129,14 +129,12 @@
     <Import Include="System.Web.UI.HtmlControls" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="05.00.00.txt" />
     <Content Include="Archive.ascx" />
     <Content Include="BlogFeed.ascx" />
     <Content Include="BlogList.ascx" />
     <Content Include="BlogTerms.asmx" />
     <Content Include="Archive.css" />
     <Content Include="ArchiveSettings.ascx" />
-    <Content Include="Trackback.aspx" />
     <Content Include="ViewCategoriesSettings.ascx" />
     <Content Include="EditBlog.ascx" />
     <Content Include="EditEntry.ascx" />
@@ -190,6 +188,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Components\Common\Constants.vb" />
+    <Compile Include="Components\Common\Extensions.vb" />
     <Compile Include="Components\Common\Globals.vb" />
     <Compile Include="Components\Common\Links.vb" />
     <Compile Include="Components\Common\ModuleSecurity.vb" />
@@ -226,12 +225,6 @@
     <Compile Include="Components\Business\ArchiveDays.vb" />
     <Compile Include="Components\Business\ArchiveMonths.vb" />
     <Compile Include="Components\File\FileController.vb" />
-    <Compile Include="Components\MetaWeblog\BlogModuleProvider.vb" />
-    <Compile Include="Components\MetaWeblog\ProviderEnums.vb" />
-    <Compile Include="Components\MetaWeblog\ProviderExceptions.vb" />
-    <Compile Include="Components\MetaWeblog\ProviderInterfaces.vb" />
-    <Compile Include="Components\MetaWeblog\ProviderServices.vb" />
-    <Compile Include="Components\MetaWeblog\ProviderStructs.vb" />
     <Compile Include="Components\Business\PingBackService.vb" />
     <Compile Include="Components\Business\SearchResult.vb" />
     <Compile Include="Components\Business\Utility.vb" />
@@ -243,13 +236,6 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Providers\Sitemap\EntrySitemap.vb" />
-    <Compile Include="Trackback.aspx.designer.vb">
-      <DependentUpon>Trackback.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Trackback.aspx.vb">
-      <DependentUpon>Trackback.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="ViewCategoriesSettings.ascx.designer.vb">
       <DependentUpon>ViewCategoriesSettings.ascx</DependentUpon>
     </Compile>

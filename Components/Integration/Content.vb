@@ -30,132 +30,128 @@ Imports DotNetNuke.Modules.Blog.Components.Entities
 
 Namespace Components.Integration
 
-    ''' <summary>
-    ''' This class handles all core content item integration methods. This is abstracted to create a centralized spot within the module to manage it's own content items.
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Class Content
+ ''' <summary>
+ ''' This class handles all core content item integration methods. This is abstracted to create a centralized spot within the module to manage it's own content items.
+ ''' </summary>
+ ''' <remarks></remarks>
+ Public Class Content
 
-        ''' <summary>
-        ''' Creates a content item in the data store (via core API). Also, associates any 'terms'. 
-        ''' </summary>
-        ''' <param name="objEntry"></param>
-        ''' <param name="tabId"></param>
-        ''' <returns></returns>
-        ''' <remarks>Once created, a thread is immediately updated (thread = content item). Will handlescontent type check too.</remarks>
-        Friend Function CreateContentItem(ByVal objEntry As EntryInfo, ByVal tabId As Integer) As ContentItem
-            Dim typeController As IContentTypeController = New ContentTypeController
-            Dim colContentTypes As IQueryable(Of ContentType) = (From t In typeController.GetContentTypes() Where t.ContentType = Constants.ContentTypeName Select t)
-            Dim ContentTypeID As Integer
+  ''' <summary>
+  ''' Creates a content item in the data store (via core API). Also, associates any 'terms'. 
+  ''' </summary>
+  ''' <param name="objEntry"></param>
+  ''' <param name="tabId"></param>
+  ''' <returns></returns>
+  ''' <remarks>Once created, a thread is immediately updated (thread = content item). Will handlescontent type check too.</remarks>
+  Friend Function CreateContentItem(ByVal objEntry As EntryInfo, ByVal tabId As Integer) As ContentItem
+   Dim typeController As IContentTypeController = New ContentTypeController
+   Dim colContentTypes As IQueryable(Of ContentType) = (From t In typeController.GetContentTypes() Where t.ContentType = Constants.ContentTypeName Select t)
+   Dim ContentTypeID As Integer
 
-            If colContentTypes.Count > 0 Then
-                ContentTypeID = colContentTypes(0).ContentTypeId
-            Else
-                ContentTypeID = CreateContentType()
-            End If
+   If colContentTypes.Count > 0 Then
+    ContentTypeID = colContentTypes(0).ContentTypeId
+   Else
+    ContentTypeID = CreateContentType()
+   End If
 
-            Dim objContent As New ContentItem
-            objContent.Content = objEntry.Entry
-            objContent.ContentTypeId = ContentTypeID
-            objContent.Indexed = False
-            objContent.ContentKey = "EntryId=" + objEntry.EntryID.ToString()
-            objContent.ModuleID = objEntry.ModuleID
-            objContent.TabID = objEntry.TabID
+   Dim objContent As New ContentItem
+   objContent.Content = objEntry.Entry
+   objContent.ContentTypeId = ContentTypeID
+   objContent.Indexed = False
+   objContent.ContentKey = "EntryId=" + objEntry.EntryID.ToString()
+   objContent.ModuleID = objEntry.ModuleID
+   objContent.TabID = objEntry.TabID
 
-            objContent.ContentItemId = Util.GetContentController.AddContentItem(objContent)
+   objContent.ContentItemId = Util.GetContentController.AddContentItem(objContent)
 
-            ' we need to update the thread here so it has the new content item id
-            Dim cntEntry As New EntryController()
-            'cntThread.UpdateThread(objThread.ThreadID, objContent.ContentItemId, objThread.SitemapInclude)
+   ' Update Terms
+   Dim cntTerm As New Terms()
+   cntTerm.ManageEntryTerms(objEntry, objContent)
 
-            ' Update Terms
-            Dim cntTerm As New Terms()
-            cntTerm.ManageEntryTerms(objEntry, objContent)
+   Return objContent
+  End Function
 
-            Return objContent
-        End Function
+  ''' <summary>
+  ''' Updates a content item in the data store (via core API). Also updates associated 'terms'. 
+  ''' </summary>
+  ''' <param name="objEntry"></param>
+  ''' <param name="tabId"></param>
+  ''' <remarks></remarks>
+  Friend Sub UpdateContentItem(ByVal objEntry As EntryInfo, ByVal tabId As Integer, ByVal portalId As Integer)
+   Dim objContent As New ContentItem
+   objContent = Util.GetContentController().GetContentItem(objEntry.ContentItemId)
 
-        ''' <summary>
-        ''' Updates a content item in the data store (via core API). Also updates associated 'terms'. 
-        ''' </summary>
-        ''' <param name="objEntry"></param>
-        ''' <param name="tabId"></param>
-        ''' <remarks></remarks>
-        Friend Sub UpdateContentItem(ByVal objEntry As EntryInfo, ByVal tabId As Integer, ByVal portalId As Integer)
-            Dim objContent As New ContentItem
-            objContent = Util.GetContentController().GetContentItem(objEntry.ContentItemId)
+   If objContent Is Nothing Then
+    Return
+   End If
+   objContent.Content = objEntry.Entry
+   objContent.TabID = tabId
+   objContent.ModuleID = objEntry.ModuleID
 
-            If objContent Is Nothing Then
-                Return
-            End If
-            objContent.Content = objEntry.Entry
-            objContent.TabID = tabId
-            objContent.ModuleID = objEntry.ModuleID
+   Util.GetContentController().UpdateContentItem(objContent)
 
-            Util.GetContentController().UpdateContentItem(objContent)
+   ' Update Terms
+   Dim cntTerm As New Terms()
+   cntTerm.ManageEntryTerms(objEntry, objContent)
+  End Sub
 
-            ' Update Terms
-            Dim cntTerm As New Terms()
-            cntTerm.ManageEntryTerms(objEntry, objContent)
-        End Sub
+  ''' <summary>
+  ''' Deletes a content item from the data store (via core API).
+  ''' </summary>
+  ''' <param name="contentItemId"></param>
+  Friend Shared Sub DeleteContentItem(ByVal contentItemId As Integer)
+   If contentItemId <= Null.NullInteger Then
+    Return
+   End If
+   Dim objContent As ContentItem = Util.GetContentController().GetContentItem(contentItemId)
+   If objContent Is Nothing Then
+    Return
+   End If
 
-        ''' <summary>
-        ''' Deletes a content item from the data store (via core API).
-        ''' </summary>
-        ''' <param name="contentItemId"></param>
-        Friend Shared Sub DeleteContentItem(ByVal contentItemId As Integer)
-            If contentItemId <= Null.NullInteger Then
-                Return
-            End If
-            Dim objContent As ContentItem = Util.GetContentController().GetContentItem(contentItemId)
-            If objContent Is Nothing Then
-                Return
-            End If
+   ' remove any metadata/terms associated first (perhaps we should just rely on ContentItem cascade delete here?)
+   Dim cntTerms As New Terms()
+   cntTerms.RemoveEntryTerms(objContent)
 
-            ' remove any metadata/terms associated first (perhaps we should just rely on ContentItem cascade delete here?)
-            Dim cntTerms As New Terms()
-            cntTerms.RemoveEntryTerms(objContent)
+   Util.GetContentController().DeleteContentItem(objContent)
+  End Sub
 
-            Util.GetContentController().DeleteContentItem(objContent)
-        End Sub
+  ''' <summary>
+  ''' This is used to determine the ContentTypeID (part of the Core API) based on this module's content type. If the content type doesn't exist yet for the module, it is created.
+  ''' </summary>
+  ''' <returns>The primary key value (ContentTypeID) from the core API's Content Types table.</returns>
+  ''' <remarks></remarks>
+  Friend Shared Function GetContentTypeID() As Integer
+   Dim typeController As New ContentTypeController()
+   Dim colContentTypes As IQueryable(Of ContentType)
+   colContentTypes = (From t In typeController.GetContentTypes() Where t.ContentType = Constants.ContentTypeName)
+   Dim contentTypeId As Integer
 
-        ''' <summary>
-        ''' This is used to determine the ContentTypeID (part of the Core API) based on this module's content type. If the content type doesn't exist yet for the module, it is created.
-        ''' </summary>
-        ''' <returns>The primary key value (ContentTypeID) from the core API's Content Types table.</returns>
-        ''' <remarks></remarks>
-        Friend Shared Function GetContentTypeID() As Integer
-            Dim typeController As New ContentTypeController()
-            Dim colContentTypes As IQueryable(Of ContentType)
-            colContentTypes = (From t In typeController.GetContentTypes() Where t.ContentType = Constants.ContentTypeName)
-            Dim contentTypeId As Integer
+   If colContentTypes.Count() > 0 Then
+    Dim contentType As ContentType = colContentTypes.Single()
+    contentTypeId = If(contentType Is Nothing, CreateContentType(), contentType.ContentTypeId)
+   Else
+    contentTypeId = CreateContentType()
+   End If
 
-            If colContentTypes.Count() > 0 Then
-                Dim contentType As ContentType = colContentTypes.Single()
-                contentTypeId = If(contentType Is Nothing, CreateContentType(), contentType.ContentTypeId)
-            Else
-                contentTypeId = CreateContentType()
-            End If
-
-            Return contentTypeId
-        End Function
+   Return contentTypeId
+  End Function
 
 #Region "Private Methods"
 
-        ''' <summary>
-        ''' This will create our content item type. 
-        ''' </summary>
-        ''' <returns>ContentTypeID, the primary key integer.</returns>
-        ''' <remarks></remarks>
-        Private Shared Function CreateContentType() As Integer
-            Dim cntType As New ContentTypeController()
-            Dim objContentType As ContentType = New ContentType() With {.ContentType = Constants.ContentTypeName}
+  ''' <summary>
+  ''' This will create our content item type. 
+  ''' </summary>
+  ''' <returns>ContentTypeID, the primary key integer.</returns>
+  ''' <remarks></remarks>
+  Private Shared Function CreateContentType() As Integer
+   Dim cntType As New ContentTypeController()
+   Dim objContentType As ContentType = New ContentType() With {.ContentType = Constants.ContentTypeName}
 
-            Return cntType.AddContentType(objContentType)
-        End Function
+   Return cntType.AddContentType(objContentType)
+  End Function
 
 #End Region
 
-    End Class
+ End Class
 
 End Namespace

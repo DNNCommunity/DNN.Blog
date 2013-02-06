@@ -2,6 +2,7 @@
 <%@ Import Namespace="DotNetNuke.Services.Localization" %>
 <%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
+<h2>Blog Edit Control</h2>
 <div class="dnnForm dnnEditBlog dnnClear" id="dnnEditBlog">
     <div id="ebContent">
         <h2 id="dnnSitePanel-Options" class="dnnFormSectionHead"><%=LocalizeString("lblOptions")%></h2>
@@ -63,20 +64,6 @@
                 <asp:LinkButton ID="cmdGenerateLinks" runat="server" CausesValidation="False" resourceKey="cmdGenerateLinks" CssClass="dnnSecondaryAction" />
             </div>
         </fieldset>
-        <h2 id="dnnSitePanelChildBlogs" class="dnnFormSectionHead" runat="server"><%=LocalizeString("lblChildBlogs")%></h2>
-        <fieldset runat="server" id="fsChildBlogs">
-            <div>
-                <p><%=LocalizeString("ChildBlogsDesc")%></p>
-            </div>
-            <div class="dnnFormItem">
-                <asp:ListBox ID="lstChildBlogs" runat="server" Rows="5" Width="300" />
-            </div>
-            <ul class="dnnActions">
-                <li><asp:LinkButton ID="cmdAddChildBlog" CssClass="dnnSecondaryAction" runat="server" Enabled="False" resourceKey="cmdAdd" /></li>
-                <li><asp:LinkButton ID="cmdEditChildBlog" CssClass="dnnSecondaryAction" runat="server" Enabled="False" resourceKey="cmdEdit" /></li>
-                <li><asp:LinkButton ID="cmdDeleteChildBlog" CssClass="dnnSecondaryAction dnnChildDelete" runat="server" Enabled="False" resourceKey="cmdDelete" /></li>
-            </ul>
-        </fieldset>
     </div>
     <ul class="dnnActions">
         <li><asp:LinkButton ID="cmdUpdate" CssClass="dnnPrimaryAction" runat="server" resourceKey="cmdUpdate" /></li>
@@ -90,12 +77,6 @@
         function setupDnnBlogSettings() {
             $('.dnnBlogDelete').dnnConfirm({
                 text: '<%= LocalizeString("msgDeleteBlog") %>',
-                yesText: '<%= Localization.GetString("Yes.Text", Localization.SharedResourceFile) %>',
-                noText: '<%= Localization.GetString("No.Text", Localization.SharedResourceFile) %>',
-                title: '<%= Localization.GetString("Confirm.Text", Localization.SharedResourceFile) %>'
-            });
-            $('.dnnChildDelete').dnnConfirm({
-                text: '<%= LocalizeString("msgDeleteChildBlog") %>',
                 yesText: '<%= Localization.GetString("Yes.Text", Localization.SharedResourceFile) %>',
                 noText: '<%= Localization.GetString("No.Text", Localization.SharedResourceFile) %>',
                 title: '<%= Localization.GetString("Confirm.Text", Localization.SharedResourceFile) %>'

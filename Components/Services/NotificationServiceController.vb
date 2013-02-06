@@ -29,230 +29,218 @@ Imports DotNetNuke.Modules.Blog.Components.Entities
 
 Namespace Components.Services
 
-    Public Class NotificationServiceController
-        Inherits DnnController
+ Public Class NotificationServiceController
+  Inherits DnnController
 
 #Region "Private Members"
 
-        Private BlogId As Integer = -1
-        Private EntryId As Integer = -1
-        Private CommentId As Integer = -1
+  Private BlogId As Integer = -1
+  Private EntryId As Integer = -1
+  Private CommentId As Integer = -1
 
 #End Region
 
-        <DnnAuthorize()> _
-        Public Function ApproveEntry(notificationId As Integer) As ActionResult
-            Dim notify As Notification = NotificationsController.Instance.GetNotification(notificationId)
-            ParsePublishKey(notify.Context)
+  <DnnAuthorize()> _
+  Public Function ApproveEntry(notificationId As Integer) As ActionResult
+   Dim notify As Notification = NotificationsController.Instance.GetNotification(notificationId)
+   ParsePublishKey(notify.Context)
 
-            Dim cntBlog As New BlogController
-            Dim objBlog As BlogInfo = cntBlog.GetBlog(BlogId)
+   Dim objBlog As BlogInfo = BlogController.GetBlog(BlogId)
 
-            If objBlog Is Nothing Then
-                Return Json(New With {.Result = "error"})
-            End If
+   If objBlog Is Nothing Then
+    Return Json(New With {.Result = "error"})
+   End If
 
-            If objBlog.AuthorMode = Constants.AuthorMode.PersonalMode Then
-                ' this should never happen (only if they changed modes)
-                Return Json(New With {.Result = "error"})
-            ElseIf objBlog.AuthorMode = Constants.AuthorMode.GhostMode Then
-                Dim isOwner As Boolean = objBlog.UserID = UserInfo.UserID
+   If objBlog.AuthorMode = Constants.AuthorMode.PersonalMode Then
+    ' this should never happen (only if they changed modes)
+    Return Json(New With {.Result = "error"})
+   ElseIf objBlog.AuthorMode = Constants.AuthorMode.GhostMode Then
+    Dim isOwner As Boolean = objBlog.UserID = UserInfo.UserID
 
-                ' NOTE: we need to allow more than just the owner (think of admin)
-                If Not isOwner Then
-                    Return Json(New With {.Result = "error"})
-                End If
+    ' NOTE: we need to allow more than just the owner (think of admin)
+    If Not isOwner Then
+     Return Json(New With {.Result = "error"})
+    End If
 
-                Dim cntEntry As New EntryController
-                Dim objEntry As EntryInfo = cntEntry.GetEntry(EntryId, PortalSettings.PortalId)
+    Dim objEntry As EntryInfo = EntryController.GetEntry(EntryId, PortalSettings.PortalId)
 
-                If objEntry Is Nothing Then
-                    Return Json(New With {.Result = "error"})
-                End If
+    If objEntry Is Nothing Then
+     Return Json(New With {.Result = "error"})
+    End If
 
-                objEntry.Published = True
-                'CP TO DO: This shouldn't assume vocab = 1
-                cntEntry.UpdateEntry(objEntry, objEntry.TabID, PortalSettings.PortalId, 1)
-            Else
-                ' blogger mode
-                Dim isOwner As Boolean = objBlog.UserID = UserInfo.UserID
-                Dim cntEntry As New EntryController
-                Dim objEntry As EntryInfo = cntEntry.GetEntry(EntryId, PortalSettings.PortalId)
+    objEntry.Published = True
+    'CP TO DO: This shouldn't assume vocab = 1
+    EntryController.UpdateEntry(objEntry, objEntry.TabID, PortalSettings.PortalId, 1)
+   Else
+    ' blogger mode
+    Dim isOwner As Boolean = objBlog.UserID = UserInfo.UserID
+    Dim objEntry As EntryInfo = EntryController.GetEntry(EntryId, PortalSettings.PortalId)
 
-                If objEntry Is Nothing Then
-                    Return Json(New With {.Result = "error"})
-                End If
+    If objEntry Is Nothing Then
+     Return Json(New With {.Result = "error"})
+    End If
 
-                Dim objSecurity As New ModuleSecurity(objEntry.ModuleID, objEntry.TabID)
+    Dim objSecurity As New ModuleSecurity(objEntry.ModuleID, objEntry.TabID, objBlog, UserInfo)
 
-                If objSecurity.CanAddEntry(isOwner, Constants.AuthorMode.BloggerMode) Then
-                    objEntry.Published = True
-                    'CP TO DO: This shouldn't assume vocab = 1
-                    cntEntry.UpdateEntry(objEntry, objEntry.TabID, PortalSettings.PortalId, 1)
-                Else
-                    Return Json(New With {.Result = "error"})
-                End If
-            End If
+    If objSecurity.CanAddEntry Then
+     objEntry.Published = True
+     'CP TO DO: This shouldn't assume vocab = 1
+     EntryController.UpdateEntry(objEntry, objEntry.TabID, PortalSettings.PortalId, 1)
+    Else
+     Return Json(New With {.Result = "error"})
+    End If
+   End If
 
-            NotificationsController.Instance().DeleteNotification(notificationId)
-            Return Json(New With {.Result = "success"})
-        End Function
+   NotificationsController.Instance().DeleteNotification(notificationId)
+   Return Json(New With {.Result = "success"})
+  End Function
 
-        <DnnAuthorize()> _
-        Public Function DeleteEntry(notificationId As Integer) As ActionResult
-            Dim notify As Notification = NotificationsController.Instance.GetNotification(notificationId)
-            ParsePublishKey(notify.Context)
-            Dim cntBlog As New BlogController
-            Dim objBlog As BlogInfo = cntBlog.GetBlog(BlogId)
+  <DnnAuthorize()> _
+  Public Function DeleteEntry(notificationId As Integer) As ActionResult
+   Dim notify As Notification = NotificationsController.Instance.GetNotification(notificationId)
+   ParsePublishKey(notify.Context)
+   Dim objBlog As BlogInfo = BlogController.GetBlog(BlogId)
 
-            If objBlog Is Nothing Then
-                Return Json(New With {.Result = "error"})
-            End If
+   If objBlog Is Nothing Then
+    Return Json(New With {.Result = "error"})
+   End If
 
-            If objBlog.AuthorMode = Constants.AuthorMode.PersonalMode Then
-                ' this should never happen (only if they changed modes)
-                Return Json(New With {.Result = "error"})
-            ElseIf objBlog.AuthorMode = Constants.AuthorMode.GhostMode Then
-                Dim isOwner As Boolean = objBlog.UserID = UserInfo.UserID
+   If objBlog.AuthorMode = Constants.AuthorMode.PersonalMode Then
+    ' this should never happen (only if they changed modes)
+    Return Json(New With {.Result = "error"})
+   ElseIf objBlog.AuthorMode = Constants.AuthorMode.GhostMode Then
+    Dim isOwner As Boolean = objBlog.UserID = UserInfo.UserID
 
-                ' NOTE: we need to allow more than just the owner (think of admin)
-                If Not isOwner Then
-                    Return Json(New With {.Result = "error"})
-                End If
+    ' NOTE: we need to allow more than just the owner (think of admin)
+    If Not isOwner Then
+     Return Json(New With {.Result = "error"})
+    End If
 
-                Dim cntEntry As New EntryController
-                Dim objEntry As EntryInfo = cntEntry.GetEntry(EntryId, PortalSettings.PortalId)
+    Dim objEntry As EntryInfo = EntryController.GetEntry(EntryId, PortalSettings.PortalId)
 
-                If objEntry Is Nothing Then
-                    Return Json(New With {.Result = "error"})
-                End If
-                'CP TO DO: This shouldn't assume vocab = 1
-                cntEntry.DeleteEntry(EntryId, objEntry.ContentItemId, objBlog.BlogID, PortalSettings.PortalId, 1)
-            Else
-                ' blogger mode
-                Dim isOwner As Boolean = objBlog.UserID = UserInfo.UserID
-                Dim cntEntry As New EntryController
-                Dim objEntry As EntryInfo = cntEntry.GetEntry(EntryId, PortalSettings.PortalId)
+    If objEntry Is Nothing Then
+     Return Json(New With {.Result = "error"})
+    End If
+    'CP TO DO: This shouldn't assume vocab = 1
+    EntryController.DeleteEntry(EntryId, objEntry.ContentItemId, objBlog.BlogID, PortalSettings.PortalId, 1)
+   Else
+    ' blogger mode
+    Dim isOwner As Boolean = objBlog.UserID = UserInfo.UserID
+    Dim objEntry As EntryInfo = EntryController.GetEntry(EntryId, PortalSettings.PortalId)
 
-                If objEntry Is Nothing Then
-                    Return Json(New With {.Result = "error"})
-                End If
+    If objEntry Is Nothing Then
+     Return Json(New With {.Result = "error"})
+    End If
 
-                Dim objSecurity As New ModuleSecurity(objEntry.ModuleID, objEntry.TabID)
+    Dim objSecurity As New ModuleSecurity(objEntry.ModuleID, objEntry.TabID, objBlog, UserInfo)
 
-                If objSecurity.CanAddEntry(isOwner, Constants.AuthorMode.BloggerMode) Then
-                    'CP TO DO: This shouldn't assume vocab = 1
-                    cntEntry.DeleteEntry(EntryId, objEntry.ContentItemId, objBlog.BlogID, PortalSettings.PortalId, 1)
-                Else
-                    Return Json(New With {.Result = "error"})
-                End If
-            End If
-            NotificationsController.Instance().DeleteNotification(notificationId)
-            Return Json(New With {.Result = "success"})
-        End Function
+    If objSecurity.CanAddEntry Then
+     'CP TO DO: This shouldn't assume vocab = 1
+     EntryController.DeleteEntry(EntryId, objEntry.ContentItemId, objBlog.BlogID, PortalSettings.PortalId, 1)
+    Else
+     Return Json(New With {.Result = "error"})
+    End If
+   End If
+   NotificationsController.Instance().DeleteNotification(notificationId)
+   Return Json(New With {.Result = "success"})
+  End Function
 
-        <DnnAuthorize()> _
-        Public Function ApproveComment(notificationId As Integer) As ActionResult
-            Dim notify As Notification = NotificationsController.Instance.GetNotification(notificationId)
-            ParseCommentKey(notify.Context)
+  <DnnAuthorize()> _
+  Public Function ApproveComment(notificationId As Integer) As ActionResult
+   Dim notify As Notification = NotificationsController.Instance.GetNotification(notificationId)
+   ParseCommentKey(notify.Context)
 
-            Dim cntBlog As New BlogController
-            Dim objBlog As BlogInfo = cntBlog.GetBlog(BlogId)
+   Dim objBlog As BlogInfo = BlogController.GetBlog(BlogId)
 
-            If objBlog Is Nothing Then
-                Return Json(New With {.Result = "error"})
-            End If
+   If objBlog Is Nothing Then
+    Return Json(New With {.Result = "error"})
+   End If
 
-            Dim isOwner As Boolean = objBlog.UserID = UserInfo.UserID
+   Dim isOwner As Boolean = objBlog.UserID = UserInfo.UserID
 
-            Dim cntEntry As New EntryController
-            Dim objEntry As EntryInfo = cntEntry.GetEntry(EntryId, PortalSettings.PortalId)
+   Dim objEntry As EntryInfo = EntryController.GetEntry(EntryId, PortalSettings.PortalId)
 
-            If objEntry Is Nothing Then
-                Return Json(New With {.Result = "error"})
-            End If
+   If objEntry Is Nothing Then
+    Return Json(New With {.Result = "error"})
+   End If
 
-            Dim objSecurity As New ModuleSecurity(objEntry.ModuleID, objEntry.TabID)
+   Dim objSecurity As New ModuleSecurity(objEntry.ModuleID, objEntry.TabID, objBlog, UserInfo)
 
-            If Not objSecurity.CanApproveComment() Then
-                Return Json(New With {.Result = "error"})
-            End If
+   If Not objSecurity.CanApproveComment() Then
+    Return Json(New With {.Result = "error"})
+   End If
 
-            Dim cntComment As New CommentController
-            Dim objComment As CommentInfo = cntComment.GetComment(CommentId)
+   Dim objComment As CommentInfo = CommentController.GetComment(CommentId)
 
-            If objComment Is Nothing Then
-                Return Json(New With {.Result = "error"})
-            End If
+   If objComment Is Nothing Then
+    Return Json(New With {.Result = "error"})
+   End If
 
-            objComment.Approved = True
-            cntComment.UpdateComment(objComment)
+   objComment.Approved = True
+   CommentController.UpdateComment(objComment)
 
-            NotificationsController.Instance().DeleteNotification(notificationId)
-            Return Json(New With {.Result = "success"})
-        End Function
+   NotificationsController.Instance().DeleteNotification(notificationId)
+   Return Json(New With {.Result = "success"})
+  End Function
 
-        <DnnAuthorize()> _
-        Public Function DeleteComment(notificationId As Integer) As ActionResult
-            Dim notify As Notification = NotificationsController.Instance.GetNotification(notificationId)
-            ParseCommentKey(notify.Context)
+  <DnnAuthorize()> _
+  Public Function DeleteComment(notificationId As Integer) As ActionResult
+   Dim notify As Notification = NotificationsController.Instance.GetNotification(notificationId)
+   ParseCommentKey(notify.Context)
 
-            Dim cntBlog As New BlogController
-            Dim objBlog As BlogInfo = cntBlog.GetBlog(BlogId)
+   Dim objBlog As BlogInfo = BlogController.GetBlog(BlogId)
 
-            If objBlog Is Nothing Then
-                Return Json(New With {.Result = "error"})
-            End If
+   If objBlog Is Nothing Then
+    Return Json(New With {.Result = "error"})
+   End If
 
-            Dim isOwner As Boolean = objBlog.UserID = UserInfo.UserID
+   Dim isOwner As Boolean = objBlog.UserID = UserInfo.UserID
 
-            Dim cntEntry As New EntryController
-            Dim objEntry As EntryInfo = cntEntry.GetEntry(EntryId, PortalSettings.PortalId)
+   Dim objEntry As EntryInfo = EntryController.GetEntry(EntryId, PortalSettings.PortalId)
 
-            If objEntry Is Nothing Then
-                Return Json(New With {.Result = "error"})
-            End If
+   If objEntry Is Nothing Then
+    Return Json(New With {.Result = "error"})
+   End If
 
-            Dim objSecurity As New ModuleSecurity(objEntry.ModuleID, objEntry.TabID)
+   Dim objSecurity As New ModuleSecurity(objEntry.ModuleID, objEntry.TabID, objBlog, UserInfo)
 
-            If Not objSecurity.CanApproveComment() Then
-                Return Json(New With {.Result = "error"})
-            End If
+   If Not objSecurity.CanApproveComment() Then
+    Return Json(New With {.Result = "error"})
+   End If
 
-            Dim cntComment As New CommentController
-            Dim objComment As CommentInfo = cntComment.GetComment(CommentId)
+   Dim objComment As CommentInfo = CommentController.GetComment(CommentId)
 
-            If objComment Is Nothing Then
-                Return Json(New With {.Result = "error"})
-            End If
+   If objComment Is Nothing Then
+    Return Json(New With {.Result = "error"})
+   End If
 
-            cntComment.DeleteComment(CommentId)
+   CommentController.DeleteComment(CommentId)
 
-            ' No journal call here because it should have never been added (since it wasn't approved)
+   ' No journal call here because it should have never been added (since it wasn't approved)
 
-            NotificationsController.Instance().DeleteNotification(notificationId)
-            Return Json(New With {.Result = "success"})
-        End Function
+   NotificationsController.Instance().DeleteNotification(notificationId)
+   Return Json(New With {.Result = "success"})
+  End Function
 
 #Region "Private Methods"
 
-        Private Sub ParsePublishKey(key As String)
-            Dim keys() As String = key.Split(CChar(":"))
-            ' 0 is content type string, to ensure unique key
-            BlogId = Integer.Parse(keys(1))
-            EntryId = Integer.Parse(keys(2))
-        End Sub
+  Private Sub ParsePublishKey(key As String)
+   Dim keys() As String = key.Split(CChar(":"))
+   ' 0 is content type string, to ensure unique key
+   BlogId = Integer.Parse(keys(1))
+   EntryId = Integer.Parse(keys(2))
+  End Sub
 
-        Private Sub ParseCommentKey(key As String)
-            Dim keys() As String = key.Split(CChar(":"))
-            ' 0 is content type string, to ensure unique key
-            BlogId = Integer.Parse(keys(1))
-            EntryId = Integer.Parse(keys(2))
-            CommentId = Integer.Parse(keys(3))
-        End Sub
+  Private Sub ParseCommentKey(key As String)
+   Dim keys() As String = key.Split(CChar(":"))
+   ' 0 is content type string, to ensure unique key
+   BlogId = Integer.Parse(keys(1))
+   EntryId = Integer.Parse(keys(2))
+   CommentId = Integer.Parse(keys(3))
+  End Sub
 
 #End Region
 
-    End Class
+ End Class
 
 End Namespace

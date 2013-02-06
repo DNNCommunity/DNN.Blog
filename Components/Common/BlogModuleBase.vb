@@ -57,6 +57,13 @@ Namespace Components.Common
 #End Region
 
 #Region "Public Properties"
+  Public Property BlogId As Integer = -1
+  Public Property EntryId As Integer = -1
+  Public Property Blog As Entities.BlogInfo = Nothing
+  Public Property Entry As Entities.EntryInfo = Nothing
+  Public Property Security As ModuleSecurity = Nothing
+  Public Shadows Property Settings As Settings.BlogSettings = Nothing
+  Public Property OutputAdditionalFiles As Boolean
 
         Public ReadOnly Property BasePage() As CDefault
             Get
@@ -65,37 +72,6 @@ Namespace Components.Common
                 Catch
                     Return Nothing
                 End Try
-            End Get
-        End Property
-
-        Public Property BlogSettings() As Settings.BlogSettings
-            Get
-                If _blogSettings Is Nothing Then
-                    _blogSettings = Components.Settings.BlogSettings.GetBlogSettings(PortalId, TabId)
-                End If
-                Return _blogSettings
-            End Get
-            Set(ByVal value As Settings.BlogSettings)
-                _blogSettings = value
-            End Set
-        End Property
-
-        Public Property OutputAdditionalFiles() As Boolean
-            Get
-                Return _outputAdditionalFiles
-            End Get
-            Set(ByVal value As Boolean)
-                _outputAdditionalFiles = value
-            End Set
-        End Property
-
-        Public ReadOnly Property SpecificBlogId() As Integer
-            Get
-                Dim blogId As Integer = -1
-                If Request.QueryString("BlogID") IsNot Nothing Then
-                    blogId = Convert.ToInt32(Request.QueryString("BlogID"))
-                End If
-                Return blogId
             End Get
         End Property
 
@@ -116,13 +92,10 @@ Namespace Components.Common
                 Return _uiTimezone
             End Get
         End Property
-
 #End Region
 
 #Region "Private Members"
 
-        Private _blogSettings As Settings.BlogSettings
-        Private _outputAdditionalFiles As Boolean = False
         Private _uiTimezone As TimeZoneInfo = Nothing
 
 #End Region
@@ -130,8 +103,8 @@ Namespace Components.Common
 #Region "Event Handlers"
 
         Protected Sub Page_Init(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Init
-            jQuery.RequestUIRegistration()
 
+   jQuery.RequestUIRegistration()
             Dim script As New StringBuilder
             script.AppendLine("<script type=""text/javascript"">")
             script.AppendLine("//<![CDATA[")
@@ -139,11 +112,23 @@ Namespace Components.Common
             script.AppendLine("//]]>")
             script.AppendLine("</script>")
             UI.Utilities.ClientAPI.RegisterClientScriptBlock(Page, "blogAppPath", script.ToString)
+
+   Settings = Components.Settings.BlogSettings.GetBlogSettings(PortalId, TabId)
+
+   Request.Params.ReadValue("BlogId", BlogId)
+   Request.Params.ReadValue("EntryId", EntryId)
+   If EntryId > -1 Then Entry = Controllers.EntryController.GetEntry(EntryId, PortalId)
+   If Settings.PageBlogs > -1 Then BlogId = Settings.PageBlogs ' page blog trumps requested blog
+   If BlogId > -1 AndAlso Entry.BlogID <> BlogId Then Entry = Nothing ' double check in case someone is hacking to retrieve an entry from another blog
+   If BlogId = -1 And Entry IsNot Nothing Then BlogId = Entry.BlogID
+   If BlogId > -1 Then Blog = Controllers.BlogController.GetBlog(BlogId)
+   Security = New ModuleSecurity(ModuleId, TabId, Blog, UserInfo)
+
         End Sub
 
         Protected Sub Page_PreRender(ByVal sender As Object, ByVal e As EventArgs) Handles Me.PreRender
             If OutputAdditionalFiles Then
-                For Each f As String In BlogSettings.IncludeFiles.Split(";"c)
+    For Each f As String In Settings.IncludeFiles.Split(";"c)
                     If Not String.IsNullOrEmpty(f) Then
                         If f.ToLower.EndsWith(".js") Then
                             Dim path As String = f.Replace("[P]", PortalSettings.HomeDirectory & "Blog/Include/").Replace("[H]", DotNetNuke.Common.ApplicationPath & "/DesktopModules/Blog/include/")

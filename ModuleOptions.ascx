@@ -2,6 +2,7 @@
 <%@ Import Namespace="DotNetNuke.Services.Localization" %>
 <%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
+<h2>Module Options Control</h2>
 <div class="dnnForm dnnBlogOptions dnnClear" id="dnnBlogOptions">
 	<ul class="dnnAdminTabNav dnnClear">
 		<li><a href="#boBasicSettings"><%=LocalizeString("BasicSettings")%></a></li>
@@ -29,17 +30,6 @@
 					<dnn:label id="lblAllowMultipleCategories" runat="server" controlname="chkAllowMultipleCategories" suffix=":" />
 					<asp:CheckBox ID="chkAllowMultipleCategories" runat="server" />
 				</div>
-				<asp:Panel class="dnnFormItem" id="pnlAllowChildBlogs" runat="server">
-					<dnn:label id="lblAllowChildBlogs" runat="server" controlname="chkAllowChildBlogs" suffix=":" />
-					<asp:CheckBox ID="chkAllowChildBlogs" runat="server" />
-				</asp:Panel>
-				<asp:Panel class="dnnFormItem" id="pnlMigrateChildBlogs" runat="server">
-					<dnn:label id="lblMigrateChildblogs" runat="server" suffix=":" controlname="cmdMigrateChildblogs" />
-					<asp:Label runat="server" ID="lblChildBlogsStatus" />
-					<div class="dnnRight">
-						<asp:LinkButton ID="cmdMigrateChildblogs" runat="server" CausesValidation="False" resourceKey="cmdMigrateChildblogs" CssClass="dnnSecondaryAction" />
-					</div>
-				</asp:Panel>
 			</fieldset>
 			<h2 id="dnnSitePanel-CommentSettings" class="dnnFormSectionHead"><a href="" class=""><%=LocalizeString("secCommentSettings")%></a></h2>
 			<fieldset>

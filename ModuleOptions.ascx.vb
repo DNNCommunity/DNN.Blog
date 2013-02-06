@@ -32,206 +32,172 @@ Imports DotNetNuke.Modules.Blog.Components.Entities
 Imports System.Linq
 
 Partial Public Class ModuleOptions
-    Inherits BlogModuleBase
+ Inherits BlogModuleBase
 
 #Region "Event Handlers"
 
-    Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Try
-            jQuery.RequestDnnPluginsRegistration()
+ Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+  Try
+   jQuery.RequestDnnPluginsRegistration()
 
-            If Not Page.IsPostBack Then
-                PopulateDropDowns()
+   If Not Page.IsPostBack Then
+    PopulateDropDowns()
 
-                chkForceDescription.Checked = BlogSettings.EntryDescriptionRequired
-                txtSummaryLimit.Text = BlogSettings.SummaryMaxLength.ToString
-                txtMaxImageWidth.Text = BlogSettings.MaxImageWidth.ToString
-                dntxtbxRecentEntriesMax.Value = BlogSettings.RecentEntriesMax
-                txtRecentRssEntriesMax.Text = BlogSettings.RecentRssEntriesMax.ToString
-                chkUploadOption.Checked = BlogSettings.EnableUploadOption
-                chkShowSummary.Checked = BlogSettings.ShowSummary
-                chkShowSeoFriendlyUrl.Checked = BlogSettings.ShowSeoFriendlyUrl
-                chkEnforceSummaryTruncation.Checked = BlogSettings.EnforceSummaryTruncation
-                chkAllowSummaryHtml.Checked = BlogSettings.AllowSummaryHtml
-                chkAllowWLW.Checked = BlogSettings.AllowWLW
-                chkIncludeBody.Checked = BlogSettings.IncludeBody
-                chkIncludeCategoriesInDescription.Checked = BlogSettings.IncludeCategoriesInDescription
-                chkIncludeTagsInDescription.Checked = BlogSettings.IncludeTagsInDescription
-                chkAllowChildBlogs.Checked = BlogSettings.AllowChildBlogs
-                chkAllowMultipleCategories.Checked = BlogSettings.AllowMultipleCategories
-                chkUseWLWExcerpt.Checked = BlogSettings.UseWLWExcerpt
-                ddlCatVocabRoot.SelectedValue = BlogSettings.VocabularyId.ToString()
-                ddlCommentMode.SelectedValue = BlogSettings.CommentMode.ToString()
-                ddlSocialSharingMode.SelectedValue = BlogSettings.SocialSharingMode.ToString()
-                txtAddThisId.Text = BlogSettings.AddThisId
-                txtFacebookAppId.Text = BlogSettings.FacebookAppId
-                chkEnablePlusOne.Checked = BlogSettings.EnablePlusOne
-                chkEnableTwitter.Checked = BlogSettings.EnableTwitter
-                chkEnableLinkedIN.Checked = BlogSettings.EnableLinkedIn
+    chkForceDescription.Checked = Settings.EntryDescriptionRequired
+    txtSummaryLimit.Text = Settings.SummaryMaxLength.ToString
+    txtMaxImageWidth.Text = Settings.MaxImageWidth.ToString
+    dntxtbxRecentEntriesMax.Value = Settings.RecentEntriesMax
+    txtRecentRssEntriesMax.Text = Settings.RecentRssEntriesMax.ToString
+    chkUploadOption.Checked = Settings.EnableUploadOption
+    chkShowSummary.Checked = Settings.ShowSummary
+    chkShowSeoFriendlyUrl.Checked = Settings.ShowSeoFriendlyUrl
+    chkEnforceSummaryTruncation.Checked = Settings.EnforceSummaryTruncation
+    chkAllowSummaryHtml.Checked = Settings.AllowSummaryHtml
+    chkAllowWLW.Checked = Settings.AllowWLW
+    chkIncludeBody.Checked = Settings.IncludeBody
+    chkIncludeCategoriesInDescription.Checked = Settings.IncludeCategoriesInDescription
+    chkIncludeTagsInDescription.Checked = Settings.IncludeTagsInDescription
+    chkAllowMultipleCategories.Checked = Settings.AllowMultipleCategories
+    chkUseWLWExcerpt.Checked = Settings.UseWLWExcerpt
+    ddlCatVocabRoot.SelectedValue = Settings.VocabularyId.ToString()
+    ddlCommentMode.SelectedValue = Settings.CommentMode.ToString()
+    ddlSocialSharingMode.SelectedValue = Settings.SocialSharingMode.ToString()
+    txtAddThisId.Text = Settings.AddThisId
+    txtFacebookAppId.Text = Settings.FacebookAppId
+    chkEnablePlusOne.Checked = Settings.EnablePlusOne
+    chkEnableTwitter.Checked = Settings.EnableTwitter
+    chkEnableLinkedIN.Checked = Settings.EnableLinkedIn
 
-                Dim cntEntry As New EntryController
-                Dim colEntries As List(Of EntryInfo) = cntEntry.GetAllEntriesByPortal(ModuleContext.PortalId, True, True)
-                If colEntries IsNot Nothing Then
-                    Dim colNoContentItems As List(Of EntryInfo) = colEntries.Where(Function(t) t.ContentItemId < 1).ToList()
-                    cmdUpgrade.Visible = colNoContentItems.Count > 0
-                End If
+    Dim colEntries As List(Of EntryInfo) = EntryController.GetAllEntriesByPortal(ModuleContext.PortalId, True, True)
+    If colEntries IsNot Nothing Then
+     Dim colNoContentItems As List(Of EntryInfo) = colEntries.Where(Function(t) t.ContentItemId < 1).ToList()
+     cmdUpgrade.Visible = colNoContentItems.Count > 0
+    End If
 
-                ' Additional files to load
-                Dim fileList As String = ";" & BlogSettings.IncludeFiles
-                AddFolderToList(cblHostFiles, Server.MapPath("~/DesktopModules/Blog/include"), "")
-                AddFolderToList(cblPortalFiles, PortalSettings.HomeDirectoryMapPath & "Blog\include\", "")
-                For Each itm As ListItem In cblHostFiles.Items
-                    If fileList.IndexOf(";[H]" & itm.Value & ";") > -1 Then
-                        itm.Selected = True
-                    End If
-                Next
-                For Each itm As ListItem In cblPortalFiles.Items
-                    If fileList.IndexOf(";[P]" & itm.Value & ";") > -1 Then
-                        itm.Selected = True
-                    End If
-                Next
+    ' Additional files to load
+    Dim fileList As String = ";" & Settings.IncludeFiles
+    AddFolderToList(cblHostFiles, Server.MapPath("~/DesktopModules/Blog/include"), "")
+    AddFolderToList(cblPortalFiles, PortalSettings.HomeDirectoryMapPath & "Blog\include\", "")
+    For Each itm As ListItem In cblHostFiles.Items
+     If fileList.IndexOf(";[H]" & itm.Value & ";") > -1 Then
+      itm.Selected = True
+     End If
+    Next
+    For Each itm As ListItem In cblPortalFiles.Items
+     If fileList.IndexOf(";[P]" & itm.Value & ";") > -1 Then
+      itm.Selected = True
+     End If
+    Next
 
-                If cblPortalFiles.Items.Count < 1 Then
-                    pnlPortalFiles.Visible = False
-                End If
+    If cblPortalFiles.Items.Count < 1 Then
+     pnlPortalFiles.Visible = False
+    End If
 
-                hlCancelOptions.NavigateUrl = ModuleContext.NavigateUrl(ModuleContext.TabId, "", False, "")
-            End If
-        Catch exc As Exception
-            ProcessModuleLoadException(Me, exc)
-        End Try
-    End Sub
+    hlCancelOptions.NavigateUrl = ModuleContext.NavigateUrl(ModuleContext.TabId, "", False, "")
+   End If
+  Catch exc As Exception
+   ProcessModuleLoadException(Me, exc)
+  End Try
+ End Sub
 
-    Protected Sub cmdUpdateOptions_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdUpdateOptions.Click
-        Try
-            With BlogSettings
-                .EntryDescriptionRequired = chkForceDescription.Checked
-                .SummaryMaxLength = CInt(txtSummaryLimit.Text)
-                .MaxImageWidth = CInt(txtMaxImageWidth.Text)
-                .RecentEntriesMax = CInt(dntxtbxRecentEntriesMax.Value)
-                .RecentRssEntriesMax = CInt(txtRecentRssEntriesMax.Text)
-                .EnableUploadOption = chkUploadOption.Checked
-                .ShowSummary = chkShowSummary.Checked
-                .ShowSeoFriendlyUrl = chkShowSeoFriendlyUrl.Checked
-                .PageBlogs = CInt(cmbPageBlogs.SelectedItem.Value)
-                .EnforceSummaryTruncation = chkEnforceSummaryTruncation.Checked
-                .IncludeBody = chkIncludeBody.Checked
-                .IncludeCategoriesInDescription = chkIncludeCategoriesInDescription.Checked
-                .IncludeTagsInDescription = chkIncludeTagsInDescription.Checked
-                .AllowSummaryHtml = chkAllowSummaryHtml.Checked
-                .AllowChildBlogs = chkAllowChildBlogs.Checked
-                .AllowWLW = chkAllowWLW.Checked
-                .AllowMultipleCategories = chkAllowMultipleCategories.Checked
-                .UseWLWExcerpt = chkUseWLWExcerpt.Checked
-                .VocabularyId = Convert.ToInt32(ddlCatVocabRoot.SelectedValue)
-                .CommentMode = Convert.ToInt32(ddlCommentMode.SelectedItem.Value)
-                .SocialSharingMode = Convert.ToInt32(ddlSocialSharingMode.SelectedItem.Value)
-                .AddThisId = txtAddThisId.Text
-                .FacebookAppId = txtFacebookAppId.Text
-                .EnablePlusOne = chkEnablePlusOne.Checked
-                .EnableTwitter = chkEnableTwitter.Checked
-                .EnableLinkedIn = chkEnableLinkedIN.Checked
+ Protected Sub cmdUpdateOptions_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdUpdateOptions.Click
+  Try
+   With Settings
+    .EntryDescriptionRequired = chkForceDescription.Checked
+    .SummaryMaxLength = CInt(txtSummaryLimit.Text)
+    .MaxImageWidth = CInt(txtMaxImageWidth.Text)
+    .RecentEntriesMax = CInt(dntxtbxRecentEntriesMax.Value)
+    .RecentRssEntriesMax = CInt(txtRecentRssEntriesMax.Text)
+    .EnableUploadOption = chkUploadOption.Checked
+    .ShowSummary = chkShowSummary.Checked
+    .ShowSeoFriendlyUrl = chkShowSeoFriendlyUrl.Checked
+    .PageBlogs = CInt(cmbPageBlogs.SelectedItem.Value)
+    .EnforceSummaryTruncation = chkEnforceSummaryTruncation.Checked
+    .IncludeBody = chkIncludeBody.Checked
+    .IncludeCategoriesInDescription = chkIncludeCategoriesInDescription.Checked
+    .IncludeTagsInDescription = chkIncludeTagsInDescription.Checked
+    .AllowSummaryHtml = chkAllowSummaryHtml.Checked
+    .AllowWLW = chkAllowWLW.Checked
+    .AllowMultipleCategories = chkAllowMultipleCategories.Checked
+    .UseWLWExcerpt = chkUseWLWExcerpt.Checked
+    .VocabularyId = Convert.ToInt32(ddlCatVocabRoot.SelectedValue)
+    .CommentMode = Convert.ToInt32(ddlCommentMode.SelectedItem.Value)
+    .SocialSharingMode = Convert.ToInt32(ddlSocialSharingMode.SelectedItem.Value)
+    .AddThisId = txtAddThisId.Text
+    .FacebookAppId = txtFacebookAppId.Text
+    .EnablePlusOne = chkEnablePlusOne.Checked
+    .EnableTwitter = chkEnableTwitter.Checked
+    .EnableLinkedIn = chkEnableLinkedIN.Checked
 
-                ' additional files
-                Dim fileList As String = ""
-                For Each itm As ListItem In cblHostFiles.Items
-                    If itm.Selected Then
-                        fileList &= "[H]" & itm.Value & ";"
-                    End If
-                Next
-                For Each itm As ListItem In cblPortalFiles.Items
-                    If itm.Selected Then
-                        fileList &= "[P]" & itm.Value & ";"
-                    End If
-                Next
-                .IncludeFiles = fileList
+    ' additional files
+    Dim fileList As String = ""
+    For Each itm As ListItem In cblHostFiles.Items
+     If itm.Selected Then
+      fileList &= "[H]" & itm.Value & ";"
+     End If
+    Next
+    For Each itm As ListItem In cblPortalFiles.Items
+     If itm.Selected Then
+      fileList &= "[P]" & itm.Value & ";"
+     End If
+    Next
+    .IncludeFiles = fileList
 
-                .UpdateSettings()
-            End With
+    .UpdateSettings()
+   End With
 
-            Response.Redirect(NavigateURL(), True)
-        Catch exc As Exception 'Module failed to load
-            ProcessModuleLoadException(Me, exc)
-        End Try
-    End Sub
+   Response.Redirect(NavigateURL(), True)
+  Catch exc As Exception 'Module failed to load
+   ProcessModuleLoadException(Me, exc)
+  End Try
+ End Sub
 
-    Protected Sub cmdGenerateLinks_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdGenerateLinks.Click
-        Utility.CreateAllEntryLinks(PortalId, , TabId)
-    End Sub
+ Protected Sub cmdGenerateLinks_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdGenerateLinks.Click
+  Utility.CreateAllEntryLinks(PortalId, , TabId)
+ End Sub
 
-    Protected Sub cmdMigrateChildblogs_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdMigrateChildblogs.Click
-        ' get sql
-        Dim assembly As System.Reflection.Assembly = System.Reflection.Assembly.GetExecutingAssembly()
-        Dim sql As String = ""
-        Using stream As IO.Stream = assembly.GetManifestResourceStream("DotNetNuke.Modules.Blog.ChildblogsToCategories.sql")
-            Using rdr As New IO.StreamReader(stream)
-                sql = rdr.ReadToEnd
-            End Using
-        End Using
-        sql = sql.Replace("@portalid", PortalId.ToString)
-
-        ' run the script
-        Dim res As String = DotNetNuke.Data.DataProvider.Instance().ExecuteScript(sql, False)
-
-        ' recalculate child blogs
-        Dim totalBlogs As Integer = (New BlogController).GetPortalBlogs(PortalId, True).Count
-        Dim parentBlogs As Integer = (New BlogController).GetPortalParentBlogs(PortalId).Count
-        lblChildBlogsStatus.Text = String.Format(GetString("lblChildBlogsStatus", LocalResourceFile), CInt(totalBlogs - parentBlogs))
-    End Sub
-
-    Protected Sub cmdUpdate_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdUpgrade.Click
-        Dim _CustomUpgrade As New Components.Upgrade.ModuleUpgrade
-        '_CustomUpgrade.MigrateTaxonomyFolksonomy()
-        _CustomUpgrade.CreateContentItems(ModuleContext.PortalId)
-    End Sub
+ Protected Sub cmdUpdate_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdUpgrade.Click
+  Dim _CustomUpgrade As New Components.Upgrade.ModuleUpgrade
+  '_CustomUpgrade.MigrateTaxonomyFolksonomy()
+  _CustomUpgrade.CreateContentItems(ModuleContext.PortalId)
+ End Sub
 
 #End Region
 
 #Region "Private Methods"
 
-    Private Sub PopulateDropDowns()
-        Dim objBlog As New BlogController
-        cmbPageBlogs.DataSource = objBlog.GetParentsChildBlogs(PortalId, -1, False)
-        cmbPageBlogs.DataBind()
-        cmbPageBlogs.Items.Insert(0, New ListItem("<" & GetString("Not_Specified", SharedResourceFile) & ">", "-1"))
-        Try
-            cmbPageBlogs.Items.FindByValue(CStr(BlogSettings.PageBlogs)).Selected = True
-        Catch
-        End Try
+ Private Sub PopulateDropDowns()
+  cmbPageBlogs.DataSource = BlogController.GetParentsChildBlogs(PortalId, -1, False)
+  cmbPageBlogs.DataBind()
+  cmbPageBlogs.Items.Insert(0, New ListItem("<" & GetString("Not_Specified", SharedResourceFile) & ">", "-1"))
+  Try
+   cmbPageBlogs.Items.FindByValue(CStr(Settings.PageBlogs)).Selected = True
+  Catch
+  End Try
 
-        ' calculate child blogs
-        Dim totalBlogs As Integer = objBlog.GetPortalBlogs(PortalId, True).Count
-        Dim parentBlogs As Integer = objBlog.GetPortalParentBlogs(PortalId).Count
-        Dim childBlogs As Integer = CInt(totalBlogs - parentBlogs)
+  ' calculate child blogs
+  Dim totalBlogs As Integer = BlogController.GetPortalBlogs(PortalId, True).Count
+  Dim parentBlogs As Integer = BlogController.GetPortalParentBlogs(PortalId).Count
 
-        If childBlogs < 1 Then
-            ' prevent those without child blogs from adding them (we want to remove in the future)
-            pnlAllowChildBlogs.Visible = False
-            chkAllowChildBlogs.Checked = False
-            pnlMigrateChildBlogs.Visible = False
-        Else
-            lblChildBlogsStatus.Text = String.Format(GetString("lblChildBlogsStatus", LocalResourceFile), childBlogs)
-        End If
+  ddlCatVocabRoot.DataSource = Terms.GetPortalVocabularies(ModuleContext.PortalId)
+  ddlCatVocabRoot.DataBind()
 
-        ddlCatVocabRoot.DataSource = Terms.GetPortalVocabularies(ModuleContext.PortalId)
-        ddlCatVocabRoot.DataBind()
+  Dim catli As New ListItem
+  catli.Text = Localization.GetString("NoneSpecified", LocalResourceFile)
+  catli.Value = "0"
+  ddlCatVocabRoot.Items.Insert(0, catli)
+ End Sub
 
-        Dim catli As New ListItem
-        catli.Text = Localization.GetString("NoneSpecified", LocalResourceFile)
-        catli.Value = "0"
-        ddlCatVocabRoot.Items.Insert(0, catli)
-    End Sub
-
-    Private Sub AddFolderToList(ByRef cbList As CheckBoxList, ByVal fullPath As String, ByVal relativePath As String)
-        If Not IO.Directory.Exists(fullPath) Then Exit Sub
-        Dim baseDir As New IO.DirectoryInfo(fullPath)
-        For Each d As IO.DirectoryInfo In baseDir.GetDirectories()
-            AddFolderToList(cbList, d.FullName, relativePath & d.Name & "/")
-        Next
-        For Each f As IO.FileInfo In baseDir.GetFiles()
-            cbList.Items.Add(New ListItem(relativePath & f.Name, relativePath & f.Name))
-        Next
-    End Sub
+ Private Sub AddFolderToList(ByRef cbList As CheckBoxList, ByVal fullPath As String, ByVal relativePath As String)
+  If Not IO.Directory.Exists(fullPath) Then Exit Sub
+  Dim baseDir As New IO.DirectoryInfo(fullPath)
+  For Each d As IO.DirectoryInfo In baseDir.GetDirectories()
+   AddFolderToList(cbList, d.FullName, relativePath & d.Name & "/")
+  Next
+  For Each f As IO.FileInfo In baseDir.GetFiles()
+   cbList.Items.Add(New ListItem(relativePath & f.Name, relativePath & f.Name))
+  Next
+ End Sub
 
 #End Region
 

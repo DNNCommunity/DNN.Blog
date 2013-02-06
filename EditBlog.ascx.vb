@@ -33,11 +33,6 @@ Partial Public Class EditBlog
  Inherits BlogModuleBase
 
 #Region "Private Members"
-
- Private m_oParentBlog As BlogInfo
- Private objBlog As BlogInfo
- Private m_oBlogSettings As Hashtable
-
 #End Region
 
 #Region " Controls "
@@ -48,58 +43,28 @@ Partial Public Class EditBlog
  Protected Overloads Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
   jQuery.RequestDnnPluginsRegistration()
 
-  Dim cntBlog As New BlogController
-  Dim objSecurity As ModuleSecurity = New ModuleSecurity(ModuleContext.ModuleId, ModuleContext.TabId)
-
-  If SpecificBlogId > 0 Then
-   objBlog = cntBlog.GetBlog(SpecificBlogId)
-
-   Dim isOwner As Boolean = (objBlog.UserID = ModuleContext.PortalSettings.UserId)
-
-   If (objSecurity.CanEditBlog(isOwner) = False) Then
-    Response.Redirect(NavigateURL("Access Denied"))
-   ElseIf objBlog.ParentBlogID > -1 Then
-    m_oParentBlog = cntBlog.GetBlog(objBlog.ParentBlogID)
-   End If
+  If Not Security.CanEdit Then
+   Response.Redirect(NavigateURL("Access Denied"))
   End If
 
-  If objBlog Is Nothing And Not (Request.Params("ParentBlogID") Is Nothing) And BlogSettings.AllowChildBlogs Then
-   If Int32.Parse(Request.Params("ParentBlogID")) > 0 Then
-    m_oParentBlog = cntBlog.GetBlog(Int32.Parse(Request.Params("ParentBlogID")))
-   End If
-  End If
-
-  If Not m_oParentBlog Is Nothing Then
-   Dim isOwner As Boolean = (m_oParentBlog.UserID = ModuleContext.PortalSettings.UserId)
-
-   If objSecurity.CanEditBlog(isOwner) Then
-    If objBlog Is Nothing Then
-     Me.ModuleConfiguration.ModuleTitle = Localization.GetString("msgCreateNewChildBlog", LocalResourceFile)
-    Else
-     Me.ModuleConfiguration.ModuleTitle = Localization.GetString("msgEditChildBlog", LocalResourceFile)
-    End If
-   Else
-    Response.Redirect(NavigateURL("Access Denied"))
-   End If
+  If Blog Is Nothing Then
+   Me.ModuleConfiguration.ModuleTitle = Localization.GetString("msgCreateBlog", LocalResourceFile)
+   Me.cmdGenerateLinks.Enabled = False
   Else
-   If objBlog Is Nothing Then
-    Me.ModuleConfiguration.ModuleTitle = Localization.GetString("msgCreateBlog", LocalResourceFile)
-    Me.cmdGenerateLinks.Enabled = False
-   Else
-    Me.ModuleConfiguration.ModuleTitle = Localization.GetString("msgEditBlog", LocalResourceFile)
-    Me.cmdGenerateLinks.Enabled = True
-   End If
+   Me.ModuleConfiguration.ModuleTitle = Localization.GetString("msgEditBlog", LocalResourceFile)
+   Me.cmdGenerateLinks.Enabled = True
   End If
+
  End Sub
 
  Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-  Try
-   If Not Page.IsPostBack Then
-    fsChildBlogs.Visible = BlogSettings.AllowChildBlogs
-    dnnSitePanelChildBlogs.Visible = BlogSettings.AllowChildBlogs
-    pnlComments.Visible = (BlogSettings.CommentMode = Constants.CommentMode.Default)
 
-    If Not BlogSettings.AllowWLW Then
+  Try
+
+   If Not Page.IsPostBack Then
+    pnlComments.Visible = (Settings.CommentMode = Constants.CommentMode.Default)
+
+    If Not Settings.AllowWLW Then
      lblMetaWeblogUrl.Visible = False
      lblMetaWeblogNotAvailable.Visible = True
     Else
@@ -108,53 +73,30 @@ Partial Public Class EditBlog
      lblMetaWeblogNotAvailable.Visible = False
     End If
 
-    If Not objBlog Is Nothing Then
-     txtTitle.Text = objBlog.Title
-     txtDescription.Text = objBlog.Description
-     chkPublic.Checked = objBlog.Public
-     rdoUserName.Items.FindByValue(objBlog.ShowFullName.ToString()).Selected = True
-     ddlAuthorMode.SelectedValue = objBlog.AuthorMode.ToString
+    If Not Blog Is Nothing Then
+     txtTitle.Text = Blog.Title
+     txtDescription.Text = Blog.Description
+     chkPublic.Checked = Blog.Public
+     rdoUserName.Items.FindByValue(Blog.ShowFullName.ToString()).Selected = True
+     ddlAuthorMode.SelectedValue = Blog.AuthorMode.ToString
 
-     chkAllowComments.Checked = objBlog.AllowComments
-     chkSyndicate.Checked = objBlog.Syndicated
-     If objBlog.SyndicationEmail Is Nothing Then
+     chkAllowComments.Checked = Blog.AllowComments
+     chkSyndicate.Checked = Blog.Syndicated
+     If Blog.SyndicationEmail Is Nothing Then
       txtSyndicationEmail.Text = ModuleContext.PortalSettings.UserInfo.Email
      Else
-      txtSyndicationEmail.Text = objBlog.SyndicationEmail
+      txtSyndicationEmail.Text = Blog.SyndicationEmail
      End If
      cmdDelete.Visible = True
-     cmdAddChildBlog.Enabled = BlogSettings.AllowChildBlogs
      If Not rdoUserName.SelectedItem Is Nothing Then rdoUserName.SelectedItem.Selected = False
 
-     lstChildBlogs.Attributes.Add("onclick", "if (this.selectedIndex > -1) { " & cmdEditChildBlog.ClientID & ".disabled = false; " & cmdDeleteChildBlog.ClientID & ".disabled = false; }")
-
-     If m_oParentBlog Is Nothing Then
-      Dim cntBlog As New BlogController
-
-      lstChildBlogs.DataTextField = "Title"
-      lstChildBlogs.DataValueField = "BlogID"
-      lstChildBlogs.DataSource = cntBlog.GetParentsChildBlogs(Me.PortalId, objBlog.BlogID, True)
-      lstChildBlogs.DataBind()
-     Else
-      dnnSitePanelChildBlogs.Visible = False
-     End If
-
-    ElseIf Not m_oParentBlog Is Nothing Then
-     If Not rdoUserName.SelectedItem Is Nothing Then rdoUserName.SelectedItem.Selected = False
-     rdoUserName.Items.FindByValue(m_oParentBlog.ShowFullName.ToString()).Selected = True
-
-     dnnSitePanelChildBlogs.Visible = False
     End If
 
     If Not Request.UrlReferrer Is Nothing Then
      ViewState("URLReferrer") = Request.UrlReferrer.ToString
     End If
 
-    If m_oParentBlog Is Nothing Then
-     hlCancel.NavigateUrl = ModuleContext.NavigateUrl(ModuleContext.TabId, "", False, "")
-    Else
-     hlCancel.NavigateUrl = Request.UrlReferrer.ToString
-    End If
+    hlCancel.NavigateUrl = ModuleContext.NavigateUrl(ModuleContext.TabId, "", False, "")
    End If
   Catch exc As Exception
    ProcessModuleLoadException(Me, exc)
@@ -169,9 +111,8 @@ Partial Public Class EditBlog
  ''' <remarks></remarks>
  Protected Sub cmdDelete_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdDelete.Click
   Try
-   If Not objBlog Is Nothing Then
-    Dim cntBlog As New BlogController
-    cntBlog.DeleteBlog(objBlog.BlogID, ModuleContext.PortalId)
+   If Not Blog Is Nothing Then
+    BlogController.DeleteBlog(Blog.BlogID, ModuleContext.PortalId)
    End If
    Response.Redirect(NavigateURL(), True)
   Catch exc As Exception
@@ -187,52 +128,7 @@ Partial Public Class EditBlog
  ''' <remarks></remarks>
  Protected Sub cmdUpdate_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdUpdate.Click
   If UpdateBlog() Then
-   If Not m_oParentBlog Is Nothing Then
-    Response.Redirect(EditUrl("BlogID", m_oParentBlog.BlogID.ToString(), "Edit_Blog"), True)
-   Else
-    Response.Redirect(Utility.AddTOQueryString(NavigateURL(), "BlogID", objBlog.BlogID.ToString()), True)
-   End If
-  End If
- End Sub
-
- ''' <summary>
- ''' 
- ''' </summary>
- ''' <param name="sender"></param>
- ''' <param name="e"></param>
- ''' <remarks></remarks>
- Protected Sub btnAddChildBlog_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdAddChildBlog.Click
-  If UpdateBlog() Then
-   Response.Redirect(EditUrl("ParentBlogID", objBlog.BlogID.ToString(), "Edit_Blog"))
-  End If
- End Sub
-
- ''' <summary>
- ''' 
- ''' </summary>
- ''' <param name="sender"></param>
- ''' <param name="e"></param>
- ''' <remarks></remarks>
- Protected Sub btnEditChildBlog_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdEditChildBlog.Click
-  If Not lstChildBlogs.SelectedItem Is Nothing Then
-   If UpdateBlog() Then
-    Response.Redirect(EditUrl("BlogID", lstChildBlogs.SelectedValue, "Edit_Blog"))
-   End If
-  End If
- End Sub
-
- ''' <summary>
- ''' 
- ''' </summary>
- ''' <param name="sender"></param>
- ''' <param name="e"></param>
- ''' <remarks></remarks>
- Protected Sub btnDeleteChildBlog_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdDeleteChildBlog.Click
-  If Not lstChildBlogs.SelectedItem Is Nothing Then
-   Dim cntBlog As New BlogController
-
-   cntBlog.DeleteBlog(CType(lstChildBlogs.SelectedValue, Integer), ModuleContext.PortalId)
-   lstChildBlogs.Items.Remove(lstChildBlogs.SelectedItem)
+   Response.Redirect(Utility.AddTOQueryString(NavigateURL(), "BlogID", Blog.BlogID.ToString()), True)
   End If
  End Sub
 
@@ -243,7 +139,7 @@ Partial Public Class EditBlog
  ''' <param name="e"></param>
  ''' <remarks></remarks>
  Protected Sub cmdGenerateLinks_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdGenerateLinks.Click
-  Utility.CreateAllEntryLinks(PortalId, objBlog.BlogID)
+  Utility.CreateAllEntryLinks(PortalId, Blog.BlogID)
  End Sub
 
 #End Region
@@ -253,35 +149,27 @@ Partial Public Class EditBlog
  Private Function UpdateBlog() As Boolean
   Try
    If Page.IsValid = True Then
-    If objBlog Is Nothing Then
-     objBlog = New BlogInfo
-     objBlog = CType(CBO.InitializeObject(objBlog, GetType(BlogInfo)), BlogInfo)
-     With objBlog
+    If Blog Is Nothing Then
+     Blog = New BlogInfo
+     With Blog
       .UserID = Me.UserId
       .PortalID = Me.PortalId
-      If Not m_oParentBlog Is Nothing Then
-       .ParentBlogID = m_oParentBlog.BlogID
-      End If
      End With
     End If
-    With objBlog
+    With Blog
      .Title = txtTitle.Text
      .Description = txtDescription.Text
      .Public = chkPublic.Checked
      .ShowFullName = CType(rdoUserName.SelectedItem.Value, Boolean)
      .AuthorMode = Convert.ToInt32(ddlAuthorMode.SelectedItem.Value)
-
      .AllowComments = chkAllowComments.Checked
      .Syndicated = chkSyndicate.Checked
      .SyndicationEmail = txtSyndicationEmail.Text
-
-     Dim cntBlog As New BlogController
-
-     If Null.IsNull(objBlog.BlogID) Then
-      .BlogID = cntBlog.AddBlog(objBlog)
-      If .Syndicated Then objBlog = cntBlog.GetBlog(.BlogID)
+     If Null.IsNull(Blog.BlogID) Then
+      .BlogID = BlogController.AddBlog(Blog)
+      'If .Syndicated Then Blog = BlogController.GetBlog(.BlogID)
      Else
-      cntBlog.UpdateBlog(objBlog)
+      BlogController.UpdateBlog(Blog)
      End If
     End With
     Return True

@@ -1,6 +1,7 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="ViewTags.ascx.vb" Inherits="DotNetNuke.Modules.Blog.ViewTags" %>
 <%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Register TagPrefix="dba" Assembly="DotNetNuke.Modules.Blog" Namespace="DotNetNuke.Modules.Blog" %>
+<h2>View Tags Control</h2>
 <asp:Panel ID="pnlTagList" runat="server" class="dnnForm blogViewTags dnnClear">
 	<div class="dnnLeft">
 		<ul class="qaRecentTags dnnClear">

@@ -13,57 +13,57 @@ Option Explicit On
 
 Partial Public Class ArchiveSettings
 
-    '''<summary>
-    '''lblDisplayMode control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblDisplayMode As Global.DotNetNuke.UI.UserControls.LabelControl
+ '''<summary>
+ '''lblDisplayMode control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lblDisplayMode As Global.System.Web.UI.UserControl
 
-    '''<summary>
-    '''ddlDisplayMode control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents ddlDisplayMode As Global.System.Web.UI.WebControls.DropDownList
+ '''<summary>
+ '''ddlDisplayMode control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents ddlDisplayMode As Global.System.Web.UI.WebControls.DropDownList
 
-    '''<summary>
-    '''lblListMode control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblListMode As Global.DotNetNuke.UI.UserControls.LabelControl
+ '''<summary>
+ '''lblListMode control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lblListMode As Global.System.Web.UI.UserControl
 
-    '''<summary>
-    '''ddlListMode control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents ddlListMode As Global.System.Web.UI.WebControls.DropDownList
+ '''<summary>
+ '''ddlListMode control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents ddlListMode As Global.System.Web.UI.WebControls.DropDownList
 
-    '''<summary>
-    '''lblLoadCss control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblLoadCss As Global.DotNetNuke.UI.UserControls.LabelControl
+ '''<summary>
+ '''lblLoadCss control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lblLoadCss As Global.System.Web.UI.UserControl
 
-    '''<summary>
-    '''rblLoadCss control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents rblLoadCss As Global.System.Web.UI.WebControls.RadioButtonList
+ '''<summary>
+ '''rblLoadCss control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents rblLoadCss As Global.System.Web.UI.WebControls.RadioButtonList
 End Class

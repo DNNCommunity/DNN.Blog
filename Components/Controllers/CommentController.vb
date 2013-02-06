@@ -24,56 +24,56 @@ Imports DotNetNuke.Modules.Blog.Components.Entities
 Namespace Components.Controllers
 
 
-    Public Class CommentController
+ Public Class CommentController
 
-        Public Function GetComment(ByVal commentID As Integer) As CommentInfo
+  Public Shared Function GetComment(ByVal commentID As Integer) As CommentInfo
 
-            Return CType(CBO.FillObject(DataProvider.Instance().GetComment(commentID), GetType(CommentInfo)), CommentInfo)
+   Return CType(CBO.FillObject(DataProvider.Instance().GetComment(commentID), GetType(CommentInfo)), CommentInfo)
 
-        End Function
+  End Function
 
-        Public Function ListComments(ByVal EntryID As Integer, ByVal ShowNonApproved As Boolean) As ArrayList
+  Public Shared Function ListComments(ByVal EntryID As Integer, ByVal ShowNonApproved As Boolean) As ArrayList
 
    Return CBO.FillCollection(DataProvider.Instance().GetCommentsByEntry(EntryID, ShowNonApproved), GetType(CommentInfo))
 
-        End Function
+  End Function
 
-        Public Function ListCommentsByBlog(ByVal BlogID As Integer, ByVal ShowNonApproved As Boolean, ByVal MaximumComments As Integer) As List(Of CommentInfo)
+  Public Shared Function ListCommentsByBlog(ByVal BlogID As Integer, ByVal ShowNonApproved As Boolean, ByVal MaximumComments As Integer) As List(Of CommentInfo)
 
    Return CBO.FillCollection(Of CommentInfo)(DataProvider.Instance().GetCommentsByBlog(BlogID, ShowNonApproved, MaximumComments))
 
-        End Function
+  End Function
 
-        Public Function ListCommentsByPortal(ByVal PortalID As Integer, ByVal ShowNonApproved As Boolean, ByVal MaximumComments As Integer) As List(Of CommentInfo)
+  Public Shared Function ListCommentsByPortal(ByVal PortalID As Integer, ByVal ShowNonApproved As Boolean, ByVal MaximumComments As Integer) As List(Of CommentInfo)
 
    Return CBO.FillCollection(Of CommentInfo)(DataProvider.Instance().GetCommentsByPortal(PortalID, ShowNonApproved, MaximumComments))
 
-        End Function
+  End Function
 
-        Public Function AddComment(ByVal objComment As CommentInfo) As Integer
+  Public Shared Function AddComment(ByVal objComment As CommentInfo) As Integer
 
-            Return CType(DataProvider.Instance().AddComment(objComment.EntryID, objComment.UserID, objComment.Title, objComment.Comment, objComment.Author, objComment.Approved, objComment.Website, objComment.Email, objComment.AddedDate), Integer)
+   Return CType(DataProvider.Instance().AddComment(objComment.EntryID, objComment.UserID, objComment.Title, objComment.Comment, objComment.Author, objComment.Approved, objComment.Website, objComment.Email, objComment.AddedDate), Integer)
 
-        End Function
+  End Function
 
-        Public Sub UpdateComment(ByVal objComment As CommentInfo)
+  Public Shared Sub UpdateComment(ByVal objComment As CommentInfo)
 
-            DataProvider.Instance().UpdateComment(objComment.CommentID, objComment.EntryID, objComment.UserID, objComment.Title, objComment.Comment, objComment.Author, objComment.Approved, objComment.Website, objComment.Email, objComment.AddedDate)
+   DataProvider.Instance().UpdateComment(objComment.CommentID, objComment.EntryID, objComment.UserID, objComment.Title, objComment.Comment, objComment.Author, objComment.Approved, objComment.Website, objComment.Email, objComment.AddedDate)
 
-        End Sub
+  End Sub
 
-        Public Sub DeleteComment(ByVal commentID As Integer)
+  Public Shared Sub DeleteComment(ByVal commentID As Integer)
 
-            DataProvider.Instance().DeleteComment(commentID)
+   DataProvider.Instance().DeleteComment(commentID)
 
-        End Sub
+  End Sub
 
-        Public Sub DeleteAllUnapproved(ByVal EntryID As Integer)
+  Public Shared Sub DeleteAllUnapproved(ByVal EntryID As Integer)
 
-            DataProvider.Instance().DeleteAllUnapproved(EntryID)
+   DataProvider.Instance().DeleteAllUnapproved(EntryID)
 
-        End Sub
+  End Sub
 
 
-    End Class
+ End Class
 End Namespace

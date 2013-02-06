@@ -22,92 +22,60 @@ Imports DotNetNuke.Entities.Content.Taxonomy
 
 Namespace Components.Entities
 
-    ''' <summary>
-    ''' This is our Info class that represents columns in our data store that are associated with the vw_DNNQA_Terms view (This extends the core API).
-    ''' </summary>
-    ''' <remarks>This could go into the core if everything (and the view) were based on Content Type.</remarks>
-    Public Class TermInfo
-        Inherits Term
+ ''' <summary>
+ ''' This is our Info class that represents columns in our data store that are associated with the vw_DNNQA_Terms view (This extends the core API).
+ ''' </summary>
+ ''' <remarks>This could go into the core if everything (and the view) were based on Content Type.</remarks>
+ Public Class TermInfo
+  Inherits Term
 
 #Region "Public Properties"
 
-        ''' <summary>
-        ''' The total number of times the term was used. 
-        ''' </summary>
-        ''' <remarks>This is a count generated in the stored procedure/view.</remarks>
-        Public Property TotalTermUsage() As Integer
-            Get
-                Return m_TotalTermUsage
-            End Get
-            Set(value As Integer)
-                m_TotalTermUsage = value
-            End Set
-        End Property
-        Private m_TotalTermUsage As Integer
+  ''' <summary>
+  ''' The total number of times the term was used. 
+  ''' </summary>
+  ''' <remarks>This is a count generated in the stored procedure/view.</remarks>
+  Public Property TotalTermUsage() As Integer
 
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        Public Property MonthTermUsage() As Integer
-            Get
-                Return m_MonthTermUsage
-            End Get
-            Set(value As Integer)
-                m_MonthTermUsage = value
-            End Set
-        End Property
-        Private m_MonthTermUsage As Integer
+  ''' <summary>
+  ''' 
+  ''' </summary>
+  Public Property MonthTermUsage() As Integer
 
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        Public Property WeekTermUsage() As Integer
-            Get
-                Return m_WeekTermUsage
-            End Get
-            Set(value As Integer)
-                m_WeekTermUsage = value
-            End Set
-        End Property
-        Private m_WeekTermUsage As Integer
+  ''' <summary>
+  ''' 
+  ''' </summary>
+  Public Property WeekTermUsage() As Integer
 
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        Public Property DayTermUsage() As Integer
-            Get
-                Return m_DayTermUsage
-            End Get
-            Set(value As Integer)
-                m_DayTermUsage = value
-            End Set
-        End Property
-        Private m_DayTermUsage As Integer
+  ''' <summary>
+  ''' 
+  ''' </summary>
+  Public Property DayTermUsage() As Integer
 
 #Region "IHydratable Implementation"
 
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' <param name="dr"></param>
-        Public Overrides Sub Fill(dr As System.Data.IDataReader)
-            'Call the base classes fill method to populate base class proeprties
-            MyBase.Fill(dr)
-            MyBase.FillInternal(dr)
+  ''' <summary>
+  ''' 
+  ''' </summary>
+  ''' <param name="dr"></param>
+  Public Overrides Sub Fill(dr As System.Data.IDataReader)
+   'Call the base classes fill method to populate base class proeprties
+   MyBase.Fill(dr)
+   MyBase.FillInternal(dr)
 
-            'TermId = Null.SetNullInteger(dr["TermId"]);
-            'Name = Null.SetNullString(dr["Name"]);
-            'Description = Null.SetNullString(dr["Description"]);
+   'TermId = Null.SetNullInteger(dr["TermId"]);
+   'Name = Null.SetNullString(dr["Name"]);
+   'Description = Null.SetNullString(dr["Description"]);
 
-            TotalTermUsage = Null.SetNullInteger(dr("TotalTermUsage"))
-            MonthTermUsage = Null.SetNullInteger(dr("MonthTermUsage"))
-            WeekTermUsage = Null.SetNullInteger(dr("WeekTermUsage"))
-            DayTermUsage = Null.SetNullInteger(dr("DayTermUsage"))
-        End Sub
-
-#End Region
+   TotalTermUsage = Null.SetNullInteger(dr("TotalTermUsage"))
+   MonthTermUsage = Null.SetNullInteger(dr("MonthTermUsage"))
+   WeekTermUsage = Null.SetNullInteger(dr("WeekTermUsage"))
+   DayTermUsage = Null.SetNullInteger(dr("DayTermUsage"))
+  End Sub
 
 #End Region
 
-    End Class
+#End Region
+
+ End Class
 End Namespace

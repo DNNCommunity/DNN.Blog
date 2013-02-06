@@ -21,70 +21,70 @@ Imports DotNetNuke.Modules.Blog.Components.Common
 
 Namespace Components.Settings
 
-    Public Class RosterSettings
+ Public Class RosterSettings
 
 #Region "Private Members"
 
-        Private _allSettings As Hashtable
-        Private _tabModuleId As Integer = -1
+  Private _allSettings As Hashtable
+  Private _tabModuleId As Integer = -1
 
-        Private _RosterDisplayMode As String = "List"
+  Private _RosterDisplayMode As String = "List"
 
 #End Region
 
 #Region "Constructors"
 
-        Public Sub New(ByVal TabModuleId As Integer)
-            _tabModuleId = TabModuleId
-            _allSettings = (New DotNetNuke.Entities.Modules.ModuleController).GetTabModuleSettings(_tabModuleId)
+  Public Sub New(ByVal TabModuleId As Integer)
+   _tabModuleId = TabModuleId
+   _allSettings = (New DotNetNuke.Entities.Modules.ModuleController).GetTabModuleSettings(_tabModuleId)
 
-            Globals.ReadValue(_allSettings, Constants.SettingRosterDisplayMode, RosterDisplayMode)
-        End Sub
+   _allSettings.ReadValue(Constants.SettingRosterDisplayMode, RosterDisplayMode)
+  End Sub
 
-        Public Shared Function GetRosterViewSettings(ByVal TabModuleId As Integer) As RosterSettings
-            Dim CacheKey As String = Constants.RosterSettingsCacheKey & TabModuleId.ToString
-            Dim bs As RosterSettings = CType(DotNetNuke.Common.Utilities.DataCache.GetCache(CacheKey), RosterSettings)
+  Public Shared Function GetRosterViewSettings(ByVal TabModuleId As Integer) As RosterSettings
+   Dim CacheKey As String = Constants.RosterSettingsCacheKey & TabModuleId.ToString
+   Dim bs As RosterSettings = CType(DotNetNuke.Common.Utilities.DataCache.GetCache(CacheKey), RosterSettings)
 
-            If bs Is Nothing Then
-                Dim timeOut As Int32 = Common.Constants.CACHE_TIMEOUT * Convert.ToInt32(DotNetNuke.Entities.Host.Host.PerformanceSetting)
-                bs = New RosterSettings(TabModuleId)
+   If bs Is Nothing Then
+    Dim timeOut As Int32 = Common.Constants.CACHE_TIMEOUT * Convert.ToInt32(DotNetNuke.Entities.Host.Host.PerformanceSetting)
+    bs = New RosterSettings(TabModuleId)
 
-                'Cache if timeout > 0 and settings are not null
-                If timeOut > 0 And bs IsNot Nothing Then
-                    DotNetNuke.Common.Utilities.DataCache.SetCache(CacheKey, bs, TimeSpan.FromMinutes(timeOut))
-                End If
-            End If
-            Return bs
-        End Function
+    'Cache if timeout > 0 and settings are not null
+    If timeOut > 0 And bs IsNot Nothing Then
+     DotNetNuke.Common.Utilities.DataCache.SetCache(CacheKey, bs, TimeSpan.FromMinutes(timeOut))
+    End If
+   End If
+   Return bs
+  End Function
 
 #End Region
 
 #Region "Public Members"
 
-        Public Overridable Sub UpdateSettings()
-            Dim objModules As New DotNetNuke.Entities.Modules.ModuleController
-            With objModules
-                .UpdateTabModuleSetting(_tabModuleId, Constants.SettingRosterDisplayMode, RosterDisplayMode)
-            End With
-            Dim CacheKey As String = Constants.RosterSettingsCacheKey & _tabModuleId.ToString
-            DotNetNuke.Common.Utilities.DataCache.RemoveCache(CacheKey)
-        End Sub
+  Public Overridable Sub UpdateSettings()
+   Dim objModules As New DotNetNuke.Entities.Modules.ModuleController
+   With objModules
+    .UpdateTabModuleSetting(_tabModuleId, Constants.SettingRosterDisplayMode, RosterDisplayMode)
+   End With
+   Dim CacheKey As String = Constants.RosterSettingsCacheKey & _tabModuleId.ToString
+   DotNetNuke.Common.Utilities.DataCache.RemoveCache(CacheKey)
+  End Sub
 
 #End Region
 
 #Region "Properties"
 
-        Public Property RosterDisplayMode() As String
-            Get
-                Return _RosterDisplayMode
-            End Get
-            Set(ByVal Value As String)
-                _RosterDisplayMode = Value
-            End Set
-        End Property
+  Public Property RosterDisplayMode() As String
+   Get
+    Return _RosterDisplayMode
+   End Get
+   Set(ByVal Value As String)
+    _RosterDisplayMode = Value
+   End Set
+  End Property
 
 #End Region
 
-    End Class
+ End Class
 
 End Namespace

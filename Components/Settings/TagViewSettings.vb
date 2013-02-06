@@ -21,82 +21,82 @@ Imports DotNetNuke.Modules.Blog.Components.Common
 
 Namespace Components.Settings
 
-    Public Class TagViewSettings
+ Public Class TagViewSettings
 
 #Region "Private Members"
 
-        Private _allSettings As Hashtable
-        Private _tabModuleId As Integer = -1
+  Private _allSettings As Hashtable
+  Private _tabModuleId As Integer = -1
 
-        Private _TagDisplayMode As String = "Cloud"
-        Private _CloudSkin As String = "Default"
+  Private _TagDisplayMode As String = "Cloud"
+  Private _CloudSkin As String = "Default"
 
 #End Region
 
 #Region "Constructors"
 
-        Public Sub New(ByVal TabModuleId As Integer)
-            _tabModuleId = TabModuleId
-            _allSettings = (New DotNetNuke.Entities.Modules.ModuleController).GetTabModuleSettings(_tabModuleId)
+  Public Sub New(ByVal TabModuleId As Integer)
+   _tabModuleId = TabModuleId
+   _allSettings = (New DotNetNuke.Entities.Modules.ModuleController).GetTabModuleSettings(_tabModuleId)
 
-            Globals.ReadValue(_allSettings, Constants.SettingTagDisplayMode, TagDisplayMode)
-            Globals.ReadValue(_allSettings, Constants.SettingCloudSkin, CloudSkin)
-        End Sub
+   _allSettings.ReadValue(Constants.SettingTagDisplayMode, TagDisplayMode)
+   _allSettings.ReadValue(Constants.SettingCloudSkin, CloudSkin)
+  End Sub
 
-        Public Shared Function GetTagViewSettings(ByVal TabModuleId As Integer) As TagViewSettings
-            Dim CacheKey As String = Constants.TagSettingsCacheKey & TabModuleId.ToString
-            Dim bs As TagViewSettings = CType(DotNetNuke.Common.Utilities.DataCache.GetCache(CacheKey), TagViewSettings)
+  Public Shared Function GetTagViewSettings(ByVal TabModuleId As Integer) As TagViewSettings
+   Dim CacheKey As String = Constants.TagSettingsCacheKey & TabModuleId.ToString
+   Dim bs As TagViewSettings = CType(DotNetNuke.Common.Utilities.DataCache.GetCache(CacheKey), TagViewSettings)
 
-            If bs Is Nothing Then
-                Dim timeOut As Int32 = Common.Constants.CACHE_TIMEOUT * Convert.ToInt32(DotNetNuke.Entities.Host.Host.PerformanceSetting)
-                bs = New TagViewSettings(TabModuleId)
+   If bs Is Nothing Then
+    Dim timeOut As Int32 = Common.Constants.CACHE_TIMEOUT * Convert.ToInt32(DotNetNuke.Entities.Host.Host.PerformanceSetting)
+    bs = New TagViewSettings(TabModuleId)
 
-                'Cache if timeout > 0 and settings are not null
-                If timeOut > 0 And bs IsNot Nothing Then
-                    DotNetNuke.Common.Utilities.DataCache.SetCache(CacheKey, bs, TimeSpan.FromMinutes(timeOut))
-                End If
-            End If
-            Return bs
-        End Function
+    'Cache if timeout > 0 and settings are not null
+    If timeOut > 0 And bs IsNot Nothing Then
+     DotNetNuke.Common.Utilities.DataCache.SetCache(CacheKey, bs, TimeSpan.FromMinutes(timeOut))
+    End If
+   End If
+   Return bs
+  End Function
 
 #End Region
 
 #Region "Public Members"
 
-        Public Overridable Sub UpdateSettings()
-            Dim objModules As New DotNetNuke.Entities.Modules.ModuleController
-            With objModules
-                .UpdateTabModuleSetting(_tabModuleId, Constants.SettingTagDisplayMode, TagDisplayMode)
-                .UpdateTabModuleSetting(_tabModuleId, Constants.SettingCloudSkin, CloudSkin)
-            End With
-            Dim CacheKey As String = Constants.TagSettingsCacheKey & _tabModuleId.ToString
-            DotNetNuke.Common.Utilities.DataCache.RemoveCache(CacheKey)
-        End Sub
+  Public Overridable Sub UpdateSettings()
+   Dim objModules As New DotNetNuke.Entities.Modules.ModuleController
+   With objModules
+    .UpdateTabModuleSetting(_tabModuleId, Constants.SettingTagDisplayMode, TagDisplayMode)
+    .UpdateTabModuleSetting(_tabModuleId, Constants.SettingCloudSkin, CloudSkin)
+   End With
+   Dim CacheKey As String = Constants.TagSettingsCacheKey & _tabModuleId.ToString
+   DotNetNuke.Common.Utilities.DataCache.RemoveCache(CacheKey)
+  End Sub
 
 #End Region
 
 #Region "Properties"
 
-        Public Property TagDisplayMode() As String
-            Get
-                Return _TagDisplayMode
-            End Get
-            Set(ByVal Value As String)
-                _TagDisplayMode = Value
-            End Set
-        End Property
+  Public Property TagDisplayMode() As String
+   Get
+    Return _TagDisplayMode
+   End Get
+   Set(ByVal Value As String)
+    _TagDisplayMode = Value
+   End Set
+  End Property
 
-        Public Property CloudSkin() As String
-            Get
-                Return _CloudSkin
-            End Get
-            Set(ByVal Value As String)
-                _CloudSkin = Value
-            End Set
-        End Property
+  Public Property CloudSkin() As String
+   Get
+    Return _CloudSkin
+   End Get
+   Set(ByVal Value As String)
+    _CloudSkin = Value
+   End Set
+  End Property
 
 #End Region
 
-    End Class
+ End Class
 
 End Namespace

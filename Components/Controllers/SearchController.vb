@@ -23,24 +23,24 @@ Imports DotNetNuke.Modules.Blog.Components.Entities
 
 Namespace Components.Controllers
 
-    Public Class SearchController
+ Public Class SearchController
 
-        Public Function SearchByKeywordByPortal(ByVal PortalID As Integer, ByVal SearchString As String, ByVal ShowNonPublic As Boolean, ByVal ShowNonPublished As Boolean) As List(Of EntryInfo)
+  Public Shared Function SearchByKeywordByPortal(ByVal PortalID As Integer, ByVal SearchString As String, ByVal ShowNonPublic As Boolean, ByVal ShowNonPublished As Boolean) As List(Of EntryInfo)
    Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().SearchByKeyWordAndPortal(PortalID, SearchString, ShowNonPublic, ShowNonPublished))
-        End Function
+  End Function
 
-        Public Function SearchByKeywordByBlog(ByVal BlogID As Integer, ByVal SearchString As String, ByVal ShowNonPublic As Boolean, ByVal ShowNonPublished As Boolean) As List(Of EntryInfo)
+  Public Shared Function SearchByKeywordByBlog(ByVal BlogID As Integer, ByVal SearchString As String, ByVal ShowNonPublic As Boolean, ByVal ShowNonPublished As Boolean) As List(Of EntryInfo)
    Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().SearchByKeyWordAndBlog(BlogID, SearchString, ShowNonPublic, ShowNonPublished))
-        End Function
+  End Function
 
-        Public Function SearchByPhraseByPortal(ByVal PortalID As Integer, ByVal SearchString As String, ByVal ShowNonPublic As Boolean, ByVal ShowNonPublished As Boolean) As List(Of EntryInfo)
+  Public Shared Function SearchByPhraseByPortal(ByVal PortalID As Integer, ByVal SearchString As String, ByVal ShowNonPublic As Boolean, ByVal ShowNonPublished As Boolean) As List(Of EntryInfo)
    Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().SearchByPhraseAndPortal(PortalID, SearchString, ShowNonPublic, ShowNonPublished))
-        End Function
+  End Function
 
-        Public Function SearchByPhraseByBlog(ByVal BlogID As Integer, ByVal SearchString As String, ByVal ShowNonPublic As Boolean, ByVal ShowNonPublished As Boolean) As List(Of EntryInfo)
+  Public Shared Function SearchByPhraseByBlog(ByVal BlogID As Integer, ByVal SearchString As String, ByVal ShowNonPublic As Boolean, ByVal ShowNonPublished As Boolean) As List(Of EntryInfo)
    Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().SearchByPhraseAndBlog(BlogID, SearchString, ShowNonPublic, ShowNonPublished))
-        End Function
+  End Function
 
-    End Class
+ End Class
 
 End Namespace

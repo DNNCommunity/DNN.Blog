@@ -1,6 +1,7 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="ViewCategories.ascx.vb" Inherits="DotNetNuke.Modules.Blog.ViewCategories" %>
 <%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Register TagPrefix="dba" Assembly="DotNetNuke.Modules.Blog" Namespace="DotNetNuke.Modules.Blog" %>
+<h2>View Categories Control</h2>
 <div class="dnnForm dnnBlogCategories">
 	<asp:Panel ID="pnlTreeview" runat="server">
 		<dnnweb:DnnTreeView id="dtCategories" runat="server" DataFieldID="TermID" DataFieldParentID="ParentTermID" DataTextField="Name" DataValueField="TermID" OnNodeDataBound="TvNodeItemDataBound" />

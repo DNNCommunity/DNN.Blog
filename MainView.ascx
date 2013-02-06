@@ -2,6 +2,8 @@
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Import Namespace="DotNetNuke.Services.Localization" %>
+
+<h2>Main View Control</h2>
 <div class="dnnClear bloggerMenu">
     <div class="dnnRight divBloggerBar" id="divBloggerBar">
         <ul class="buttonGroup">

@@ -1,5 +1,6 @@
 <%@ Control Language="vb" AutoEventWireup="false" CodeBehind="Archive.ascx.vb" Inherits="DotNetNuke.Modules.Blog.Archive" %>
 <%@ Import Namespace="DotNetNuke.Services.Localization" %>
+<h2>Archive Control</h2>
 <div class="dnnClear dnnArchive" id="blogArchive">
 	<asp:Panel ID="pnlCalendar" runat="server" Visible="false">
 		<asp:Calendar ID="calMonth" runat="server" CssClass="socialEvent-calendar" TitleStyle-CssClass="socialEvent-calendarTitle" 

@@ -3,6 +3,7 @@
 <%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" TagName="TextEditor" Src="~/controls/TextEditor.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
+<h2>Edit Entry Control</h2>
 <div class="dnnForm dnnBlogEditEntry dnnClear" id="dnnBlogEditEntry">
 	<h2 id="dnnSitePanel-BlogContent" class="dnnFormSectionHead"><a href="" class="dnnFormSectionExpanded"><%= LocalizeString("BlogContent")%></a></h2>
 	<fieldset>
@@ -25,10 +26,6 @@
 				<em><%= Localization.GetString("PublishTimeZoneNote", LocalResourceFile)%><br /><asp:Literal runat="server" ID="litTimezone" /></em>
 			</div>
 		</div>
-		<asp:Panel class="dnnFormItem" id="pnlChildBlogs" runat="server">
-			<dnn:Label ID="lblChildBlog" runat="server" controlname="cboChildBlogs" suffix=":" />
-			<asp:DropDownList ID="cboChildBlogs" runat="server" ResourceKey="cboChildBlogs.DataTextField" DataValueField="BlogID" DataTextField="Title" /> 
-		</asp:Panel>
 		<div class="dnnFormItem">
 			<dnn:Label ID="lblSummary" runat="server" controlname="txtDescription" suffix=":" />
 			<div class="dnnLeft">

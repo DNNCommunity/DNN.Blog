@@ -19,72 +19,74 @@
 '
 Imports DotNetNuke.Security
 Imports DotNetNuke.Security.Permissions
+Imports DotNetNuke.Modules.Blog.Components.Entities
+Imports DotNetNuke.Entities.Users
 
 Namespace Components.Common
 
     Public Class ModuleSecurity
+  Private Property HasEdit As Boolean = False
+  Private Property HasBlogger As Boolean = False
+  Private Property HasGhost As Boolean = False
+  Private Property IsOwner As Boolean = False
+  Private Property BlogAuthorMode As Integer
+  Private _userIsAdmin As Boolean = False
 
-        Private ReadOnly HasEdit As Boolean
-        Private ReadOnly HasBlogger As Boolean
-        Private ReadOnly HasGhost As Boolean
-
-        Public Sub New(ByVal moduleId As Integer, ByVal tabId As Integer)
+  Public Sub New(moduleId As Integer, tabId As Integer, blog As BlogInfo, user As UserInfo)
+   If blog IsNot Nothing Then
+    IsOwner = CBool(blog.UserID = user.UserID)
+    BlogAuthorMode = blog.AuthorMode
+   End If
+   _userIsAdmin = DotNetNuke.Security.PortalSecurity.IsInRole(DotNetNuke.Entities.Portals.PortalSettings.Current.AdministratorRoleName)
             Dim mc As New DotNetNuke.Entities.Modules.ModuleController
             Dim objMod As New DotNetNuke.Entities.Modules.ModuleInfo
-
             objMod = mc.GetModule(moduleId, tabId, False)
-
             If objMod Is Nothing Then
                 Return
             End If
-
             HasEdit = ModulePermissionController.CanEditModuleContent(objMod)
             HasBlogger = ModulePermissionController.HasModulePermission(objMod.ModulePermissions, Constants.BloggerPermission)
             HasGhost = ModulePermissionController.HasModulePermission(objMod.ModulePermissions, Constants.GhostWriterPermission)
         End Sub
 
-        Public Function CanCreateBlog() As Boolean
+  Public ReadOnly Property CanCreate() As Boolean
+   Get
             Return HasEdit Or HasBlogger
-        End Function
+   End Get
+  End Property
 
-        Public Function CanEditBlog(ByVal IsOwner As Boolean) As Boolean
+  Public ReadOnly Property CanEdit() As Boolean
+   Get
             Return HasEdit Or (HasBlogger AndAlso IsOwner)
-        End Function
+   End Get
+  End Property
 
-        Public Function CanAddEntry(ByVal IsOwner As Boolean, ByVal BlogAuthorMode As Integer) As Boolean
+  Public ReadOnly Property CanAddEntry() As Boolean
+   Get
             Return HasEdit Or (HasGhost AndAlso BlogAuthorMode = Constants.AuthorMode.GhostMode) Or (HasBlogger AndAlso IsOwner) Or (HasBlogger AndAlso BlogAuthorMode = Constants.AuthorMode.BloggerMode)
-        End Function
+   End Get
+  End Property
 
-        Public Function CanApproveComment() As Boolean
+  Public ReadOnly Property CanApproveComment() As Boolean
+   Get
             If HasEdit Or HasBlogger Or HasGhost Then
                 Return True
             Else
                 Return False
             End If
-        End Function
+   End Get
+  End Property
 
-        Public Function CanAddApprovedComment(ByVal AutoApprove As Boolean) As Boolean
-            If HasEdit Or HasBlogger Or HasGhost Then
-                Return True
-            Else
-                Return AutoApprove
-            End If
-        End Function
+  Public ReadOnly Property CanAddApprovedComment() As Boolean
+   Get
+    Return HasEdit Or HasBlogger Or HasGhost
+   End Get
+  End Property
 
-        <Obsolete("This method is deprecated, use specific functions instead (CanCreateBlog, CanEditBlog, CanAddEntry, etc.)")> _
-        Public Shared Function HasBlogPermission(ByVal UserID As Integer, ByVal BlogUserID As Integer, ByVal ModuleID As Integer) As Boolean
-            Dim PortalSettings As DotNetNuke.Entities.Portals.PortalSettings = CType(HttpContext.Current.Items("PortalSettings"), DotNetNuke.Entities.Portals.PortalSettings)
-            ' 11/19/2008 Rip Rowan
-            ' Added following 2 lines & replaced deprecated HasEditPermissions function
-            Dim mController As New DotNetNuke.Entities.Modules.ModuleController
-            Dim ModuleConfiguration As DotNetNuke.Entities.Modules.ModuleInfo = mController.GetModule(ModuleID, DotNetNuke.Common.Utilities.Null.NullInteger)
-
-            If ((UserID = BlogUserID And DotNetNuke.Security.PortalSecurity.HasNecessaryPermission(SecurityAccessLevel.Edit, PortalSettings, ModuleConfiguration)) Or DotNetNuke.Security.PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName)) Then
-                Return True
-            Else
-                Return False
-            End If
-        End Function
-
+  Public ReadOnly Property UserIsAdmin As Boolean
+   Get
+    Return _userIsAdmin
+   End Get
+  End Property
     End Class
 End Namespace

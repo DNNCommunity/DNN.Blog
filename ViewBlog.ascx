@@ -3,6 +3,7 @@
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls" %>
 <%@ Register TagPrefix="dba" Assembly="DotNetNuke.Modules.Blog" Namespace="DotNetNuke.Modules.Blog" %>
 <%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
+<h2>View Blog Control</h2>
 <div class="dnnClear dnnForm dnnViewBlog">
 	<asp:Panel ID="pnlBlogInfo" Visible="false" runat="server">
 		<div class="vbAuthor dnnClear">
@@ -54,12 +55,6 @@
 				</div>
 				<div class="dnnClear">
 					<div class="dnnLeft">
-						<div class="BlogCategories">
-							<label><%= Localization.GetString("lblCategories", LocalResourceFile)%></label>
-							<asp:HyperLink ID="lnkParentBlog" runat="server" />
-							<asp:Image ID="imgBlogParentSeparator" runat="server" ImageUrl="~/DesktopModules/Blog/images/folder_closed.gif" AlternateText="Parent Separator" />
-							<asp:HyperLink ID="lnkChildBlog" runat="server" />
-						</div>
 						<div class="BlogCategories">
 							<asp:Literal ID="litCategories" runat="server" />
 						</div>

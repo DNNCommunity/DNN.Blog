@@ -1,5 +1,6 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="ArchiveSettings.ascx.vb" Inherits="DotNetNuke.Modules.Blog.ArchiveSettings" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
+<h2>Archive Settings Control</h2>
 <div class="dnnForm dnnTagSettings dnnClear">
 	<div class="dnnFormItem">
 		<dnn:label id="lblDisplayMode" runat="server" controlname="ddlDisplayMode" suffix=":" />
