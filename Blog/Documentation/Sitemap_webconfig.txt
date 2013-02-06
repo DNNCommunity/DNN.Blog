@@ -1,7 +1,0 @@
-<sitemap defaultProvider="coreSitemapProvider">
-      <providers>
-        <clear />
-        <add name="coreSitemapProvider" type="DotNetNuke.SitemapProviders.CoreSitemapProvider, DotNetNuke.SitemapProviders.CoreSitemapProvider" providerPath="~\Providers\MembershipProviders\Sitemap\CoreSitemapProvider\" />
-        <add name="BlogEntrySitemapProvider" type="DotNetNuke.Modules.Blog.Providers.EntrySitemap, DotNetNuke.Modules.Blog" providerPath="~\DesktopModules\Blog\Providers\Sitemap\" />
-      </providers>
-    </sitemap>

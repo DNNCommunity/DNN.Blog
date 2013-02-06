@@ -1,7 +1,0 @@
-
-Tests/obj/*
-_ReSharper.DotNetNuke.Modules.Blog/*
-obj/*
-Tests/bin/*
-*.suo
-*.vbproj.user
