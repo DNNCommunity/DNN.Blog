@@ -1,0 +1,98 @@
+/*
+	Striped 1.0 by HTML5 Up!
+	html5up.net | @n33co
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+*/
+
+/*********************************************************************************/
+/* Basic                                                                         */
+/*********************************************************************************/
+
+	.pager
+	{
+		padding: 3em 0 0 0;
+	}
+
+		.pager .pages
+		{
+		}
+
+		.pager .previous
+		{
+			margin-right: 0.6em;
+		}
+
+		.pager .next
+		{
+			margin-left: 0.2em;
+		}
+
+		.pager .pages a
+		{
+			width: 2.75em;
+			height: 2.75em;
+			line-height: 2.75em;
+		}
+		
+		.pager .button
+		{
+			height: 2.75em;
+			padding-top: 0;
+			padding-bottom: 0;
+			line-height: 2.75em;
+		}
+
+/*********************************************************************************/
+/* Section/Article Types                                                         */
+/*********************************************************************************/
+
+	.is-post
+	{
+	}
+
+		.is-post .info
+		{
+		}
+
+			.is-post .info .stats
+			{
+			}
+			
+				.is-post .info .stats li a
+				{
+					border-radius: 0.4em;
+					opacity: 0.5;
+					-moz-transition: opacity .25s ease-in-out, background-color .25s ease-in-out;
+					-webkit-transition: opacity .25s ease-in-out, background-color .25s ease-in-out;
+					-o-transition: opacity .25s ease-in-out, background-color .25s ease-in-out;
+					-ms-transition: opacity .25s ease-in-out, background-color .25s ease-in-out;
+					transition: opacity .25s ease-in-out, background-color .25s ease-in-out;
+				}
+
+					.is-post .info .stats li:hover a
+					{
+						background-color: #f4f4f4;
+						opacity: 1.0;
+					}
+		
+/*********************************************************************************/
+/* Content                                                                       */
+/*********************************************************************************/
+		
+	#content
+	{
+		height: 100%;
+		box-shadow: 0 0 0.25em 0em rgba(0,0,0,0.25);
+	}
+
+	#content-inner
+	{
+		/*
+			This sets an upper limit to the width of your page content. Prevents
+			it from looking insane on super wide displays. By default I've set it
+			to the width of the sample post images, but you can change it to
+			whatever you like (or remote it entirely).
+		*/
+		max-width: 1038px;
+	}
+

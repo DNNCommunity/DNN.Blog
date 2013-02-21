@@ -1,4 +1,23 @@
-﻿<h2>[entry:title]</h2>
-<div>[entry:PublishedOnDate|D]</div>
-[subtemplate|entrythumbnail.html|entry:hasimage]
-<div>[entry:content]</div>
+﻿<div id="content" class="mobileUI-main-content">
+	<div id="content-inner">
+<article class="is-post is-post-excerpt">
+	<header>
+ [subtemplate|entrybanner.html|entry:hasimage]
+		<h2>[entry:title]</h2>
+		<span class="byline"></span>
+	</header>
+	<div class="info">
+		<span class="date"><span class="month">[entry:PublishedOnDate|MMM]<span></span></span> <span class="day">[entry:PublishedOnDate|dd]</span><span class="year">[entry:PublishedOnDate|yyyy]</span></span>
+		<ul class="stats">
+			<li><a href="#" class="link-icon24 link-icon24-1"></a></li>
+			<li><a href="#" class="link-icon24 link-icon24-2"></a></li>
+			<li><a href="#" class="link-icon24 link-icon24-3"></a></li>
+			<li><a href="#" class="link-icon24 link-icon24-4"></a></li>
+		</ul>
+	</div>
+	<div>
+		[entry:content]
+	</div>
+</article>
+ </div>
+</div>
