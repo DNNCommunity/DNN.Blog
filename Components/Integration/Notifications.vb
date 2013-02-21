@@ -25,6 +25,9 @@ Imports DotNetNuke.Modules.Blog.Entities
 Imports DotNetNuke.Entities.Users
 Imports DotNetNuke.Entities.Modules
 Imports System.Linq
+Imports DotNetNuke.Modules.Blog.Entities.Blogs
+Imports DotNetNuke.Modules.Blog.Entities.Entries
+Imports DotNetNuke.Modules.Blog.Security.Permissions
 
 Namespace Integration
 
@@ -39,32 +42,46 @@ Namespace Integration
   ''' <param name="summary"></param>
   ''' <param name="title"></param>
   ''' <remarks></remarks>
-  Friend Sub EntryPendingApproval(ByVal objBlog As BlogInfo, ByVal objEntry As EntryInfo, ByVal portalId As Integer, ByVal summary As String, ByVal title As String)
+  Friend Sub EntryPendingApproval(objBlog As BlogInfo, objEntry As EntryInfo, portalId As Integer, summary As String, title As String)
    Dim notificationType As NotificationType = NotificationsController.Instance.GetNotificationType(Common.Constants.NotificationPublishingTypeName)
 
-   Select Case objBlog.AuthorMode
-    'Case Common.Constants.AuthorMode.PersonalMode
-    '    ' should never happen
-    Case Common.Constants.AuthorMode.GhostMode
-     Dim notificationKey As String = String.Format("{0}:{1}:{2}", Common.Constants.ContentTypeName, objEntry.BlogID, objEntry.EntryID)
-     Dim objNotification As New Notification
+   If objBlog.MustApproveGhostPosts AndAlso objBlog.OwnerUserId <> objEntry.CreatedByUserId Then
 
-     objNotification.NotificationTypeID = notificationType.NotificationTypeId
-     objNotification.Subject = title
-     objNotification.Body = summary
-     objNotification.IncludeDismissAction = False
-     objNotification.SenderUserID = objEntry.CreatedUserId
-     objNotification.Context = notificationKey
+    Dim notificationKey As String = String.Format("{0}:{1}:{2}", Common.Constants.ContentTypeName, objEntry.BlogID, objEntry.ContentItemId)
+    Dim objNotification As New Notification
 
-     Dim objOwner As UserInfo = UserController.GetUserById(portalId, objBlog.UserID)
-     Dim colUsers As New List(Of UserInfo)
+    objNotification.NotificationTypeID = notificationType.NotificationTypeId
+    objNotification.Subject = title
+    objNotification.Body = summary
+    objNotification.IncludeDismissAction = False
+    objNotification.SenderUserID = objEntry.CreatedByUserId
+    objNotification.Context = notificationKey
 
-     colUsers.Add(objOwner)
+    Dim colUsers As New List(Of UserInfo)
+    colUsers.Add(UserController.GetUserById(portalId, objBlog.OwnerUserId))
+    Dim userIds As New List(Of Integer)
+    userIds.Add(objBlog.OwnerUserId)
+    For Each p As BlogPermissionInfo In objBlog.Permissions.Where(Function(bp)
+                                                                   Return bp.PermissionKey = "APPROVE"
+                                                                  End Function)
+     If Not String.IsNullOrEmpty(p.RoleName) Then
+      For Each u As UserInfo In (New DotNetNuke.Security.Roles.RoleController).GetUsersByRoleName(portalId, p.RoleName)
+       If Not userIds.Contains(u.UserID) Then
+        colUsers.Add(u)
+       End If
+      Next
+     End If
+     If p.UserId > -1 Then
+      If Not userIds.Contains(p.UserId) Then
+       colUsers.Add(UserController.GetUserById(portalId, p.UserId))
+      End If
+     End If
+    Next
 
-     NotificationsController.Instance.SendNotification(objNotification, portalId, Nothing, colUsers)
-    Case Else
-     ' All Bloggers mode (needs no notifications)
-   End Select
+    NotificationsController.Instance.SendNotification(objNotification, portalId, Nothing, colUsers)
+
+   End If
+
   End Sub
 
   ''' <summary>
@@ -73,109 +90,108 @@ Namespace Integration
   ''' <param name="blogId"></param>
   ''' <param name="entryId"></param>
   ''' <remarks></remarks>
-  Friend Sub RemoveEntryPendingNotification(ByVal blogId As Integer, ByVal entryId As Integer)
+  Friend Sub RemoveEntryPendingNotification(blogId As Integer, entryId As Integer)
    Dim notificationType As NotificationType = NotificationsController.Instance.GetNotificationType(Common.Constants.NotificationPublishingTypeName)
    Dim notificationKey As String = String.Format("{0}:{1}:{2}", Common.Constants.ContentTypeName, blogId, entryId)
    Dim objNotify As Notification = NotificationsController.Instance.GetNotificationByContext(notificationType.NotificationTypeId, notificationKey).SingleOrDefault
-
    If objNotify IsNot Nothing Then
     NotificationsController.Instance.DeleteAllNotificationRecipients(objNotify.NotificationID)
    End If
   End Sub
 
-  ''' <summary>
-  ''' This method will send a core notification to blog owners when a comment is pending approval.
-  ''' </summary>
-  ''' <param name="objComment"></param>
-  ''' <param name="objBlog"></param>
-  ''' <param name="objEntry"></param>
-  ''' <param name="portalId"></param>
-  ''' <param name="summary"></param>
-  ''' <param name="subject"></param>
-  ''' <remarks></remarks>
-  Friend Sub CommentPendingApproval(ByVal objComment As CommentInfo, ByVal objBlog As BlogInfo, ByVal objEntry As EntryInfo, ByVal portalId As Integer, ByVal summary As String, ByVal subject As String)
-   Dim notificationType As NotificationType = NotificationsController.Instance.GetNotificationType(Common.Constants.NotificationCommentApprovalTypeName)
+  ' ''' <summary>
+  ' ''' This method will send a core notification to blog owners when a comment is pending approval.
+  ' ''' </summary>
+  ' ''' <param name="objComment"></param>
+  ' ''' <param name="objBlog"></param>
+  ' ''' <param name="objEntry"></param>
+  ' ''' <param name="portalId"></param>
+  ' ''' <param name="summary"></param>
+  ' ''' <param name="subject"></param>
+  ' ''' <remarks></remarks>
+  'Friend Sub CommentPendingApproval(objComment As CommentInfo, objBlog As BlogInfo, objEntry As EntryInfo, portalId As Integer, summary As String, subject As String)
+  ' Dim notificationType As NotificationType = NotificationsController.Instance.GetNotificationType(Common.Constants.NotificationCommentApprovalTypeName)
 
-   Dim notificationKey As String = String.Format("{0}:{1}:{2}:{3}", Common.Constants.ContentTypeName + Common.Constants.NotificationCommentApprovalTypeName, objBlog.BlogID, objEntry.EntryID, objComment.CommentID)
-   Dim objNotification As New Notification
+  ' Dim notificationKey As String = String.Format("{0}:{1}:{2}:{3}", Common.Constants.ContentTypeName + Common.Constants.NotificationCommentApprovalTypeName, objBlog.BlogID, objEntry.EntryID, objComment.CommentID)
+  ' Dim objNotification As New Notification
 
-   Dim recipientId As Integer
-   Select Case objBlog.AuthorMode
-    Case Common.Constants.AuthorMode.BloggerMode
-     recipientId = objEntry.CreatedUserId
-    Case Else
-     recipientId = objBlog.UserID
-   End Select
+  ' Dim recipientId As Integer
+  ' Select Case objBlog.AuthorMode
+  '  Case Common.Constants.AuthorMode.BloggerMode
+  '   recipientId = objEntry.CreatedByUserId
+  '  Case Else
+  '   recipientId = objBlog.CreatedByUserId
+  ' End Select
 
-   objNotification.NotificationTypeID = notificationType.NotificationTypeId
-   objNotification.Subject = subject
-   objNotification.Body = summary
-   objNotification.IncludeDismissAction = True
-   objNotification.SenderUserID = objComment.UserID
-   objNotification.Context = notificationKey
+  ' objNotification.NotificationTypeID = notificationType.NotificationTypeId
+  ' objNotification.Subject = subject
+  ' objNotification.Body = summary
+  ' objNotification.IncludeDismissAction = True
+  ' objNotification.SenderUserID = objComment.UserID
+  ' objNotification.Context = notificationKey
 
-   Dim objOwner As UserInfo = UserController.GetUserById(portalId, recipientId)
-   Dim colUsers As New List(Of UserInfo)
+  ' Dim objOwner As UserInfo = UserController.GetUserById(portalId, recipientId)
+  ' Dim colUsers As New List(Of UserInfo)
 
-   colUsers.Add(objOwner)
+  ' colUsers.Add(objOwner)
 
-   NotificationsController.Instance.SendNotification(objNotification, portalId, Nothing, colUsers)
-  End Sub
+  ' NotificationsController.Instance.SendNotification(objNotification, portalId, Nothing, colUsers)
+  'End Sub
 
-  ''' <summary>
-  ''' Removes any notifications associated w/ a specific blog comment pending approval.
-  ''' </summary>
-  ''' <param name="blogId"></param>
-  ''' <param name="entryId"></param>
-  ''' <remarks></remarks>
-  Friend Sub RemoveCommentPendingNotification(ByVal blogId As Integer, ByVal entryId As Integer, ByVal commentId As Integer)
-   Dim notificationType As NotificationType = NotificationsController.Instance.GetNotificationType(Common.Constants.NotificationCommentApprovalTypeName)
-   Dim notificationKey As String = String.Format("{0}:{1}:{2}:{3}", Common.Constants.ContentTypeName + Common.Constants.NotificationCommentApprovalTypeName, blogId, entryId, commentId)
-   Dim objNotify As Notification = NotificationsController.Instance.GetNotificationByContext(notificationType.NotificationTypeId, notificationKey).SingleOrDefault
+  ' ''' <summary>
+  ' ''' Removes any notifications associated w/ a specific blog comment pending approval.
+  ' ''' </summary>
+  ' ''' <param name="blogId"></param>
+  ' ''' <param name="entryId"></param>
+  ' ''' <remarks></remarks>
+  'Friend Sub RemoveCommentPendingNotification(blogId As Integer, entryId As Integer, commentId As Integer)
+  ' Dim notificationType As NotificationType = NotificationsController.Instance.GetNotificationType(Common.Constants.NotificationCommentApprovalTypeName)
+  ' Dim notificationKey As String = String.Format("{0}:{1}:{2}:{3}", Common.Constants.ContentTypeName + Common.Constants.NotificationCommentApprovalTypeName, blogId, entryId, commentId)
+  ' Dim objNotify As Notification = NotificationsController.Instance.GetNotificationByContext(notificationType.NotificationTypeId, notificationKey).SingleOrDefault
 
-   If objNotify IsNot Nothing Then
-    NotificationsController.Instance.DeleteAllNotificationRecipients(objNotify.NotificationID)
-   End If
-  End Sub
+  ' If objNotify IsNot Nothing Then
+  '  NotificationsController.Instance.DeleteAllNotificationRecipients(objNotify.NotificationID)
+  ' End If
+  'End Sub
 
-  ''' <summary>
-  ''' This method will send a core notification to blog owners when a comment is added (they can only dismiss this notification)
-  ''' </summary>
-  ''' <param name="objComment"></param>
-  ''' <param name="objEntry"></param>
-  ''' <param name="objBlog"></param>
-  ''' <param name="portalId"></param>
-  ''' <param name="summary"></param>
-  ''' <param name="subject"></param>
-  ''' <remarks></remarks>
-  Friend Sub CommentAdded(ByVal objComment As CommentInfo, ByVal objEntry As EntryInfo, ByVal objBlog As BlogInfo, ByVal portalId As Integer, ByVal summary As String, ByVal subject As String)
-   Dim notificationType As NotificationType = NotificationsController.Instance.GetNotificationType(Common.Constants.NotificationCommentAddedTypeName)
+  ' ''' <summary>
+  ' ''' This method will send a core notification to blog owners when a comment is added (they can only dismiss this notification)
+  ' ''' </summary>
+  ' ''' <param name="objComment"></param>
+  ' ''' <param name="objEntry"></param>
+  ' ''' <param name="objBlog"></param>
+  ' ''' <param name="portalId"></param>
+  ' ''' <param name="summary"></param>
+  ' ''' <param name="subject"></param>
+  ' ''' <remarks></remarks>
+  'Friend Sub CommentAdded(objComment As CommentInfo, objEntry As EntryInfo, objBlog As BlogInfo, portalId As Integer, summary As String, subject As String)
+  ' Dim notificationType As NotificationType = NotificationsController.Instance.GetNotificationType(Common.Constants.NotificationCommentAddedTypeName)
 
-   Dim notificationKey As String = String.Format("{0}:{1}:{2}:{3}", Common.Constants.ContentTypeName + Common.Constants.NotificationCommentAddedTypeName, objBlog.BlogID, objEntry.EntryID, objComment.CommentID)
-   Dim objNotification As New Notification
+  ' Dim notificationKey As String = String.Format("{0}:{1}:{2}:{3}", Common.Constants.ContentTypeName + Common.Constants.NotificationCommentAddedTypeName, objBlog.BlogID, objEntry.EntryID, objComment.CommentID)
+  ' Dim objNotification As New Notification
 
-   Dim recipientId As Integer
-   Select Case objBlog.AuthorMode
-    Case Common.Constants.AuthorMode.BloggerMode
-     recipientId = objEntry.CreatedUserId
-    Case Else
-     recipientId = objBlog.UserID
-   End Select
+  ' Dim recipientId As Integer
+  ' Select Case objBlog.AuthorMode
+  '  Case Common.Constants.AuthorMode.BloggerMode
+  '   recipientId = objEntry.CreatedByUserId
+  '  Case Else
+  '   recipientId = objBlog.CreatedByUserId
+  ' End Select
 
-   objNotification.NotificationTypeID = notificationType.NotificationTypeId
-   objNotification.Subject = subject
-   objNotification.Body = summary
-   objNotification.IncludeDismissAction = True
-   objNotification.SenderUserID = objComment.UserID
-   objNotification.Context = notificationKey
+  ' objNotification.NotificationTypeID = notificationType.NotificationTypeId
+  ' objNotification.Subject = subject
+  ' objNotification.Body = summary
+  ' objNotification.IncludeDismissAction = True
+  ' objNotification.SenderUserID = objComment.UserID
+  ' objNotification.Context = notificationKey
 
-   Dim objOwner As UserInfo = UserController.GetUserById(portalId, recipientId)
-   Dim colUsers As New List(Of UserInfo)
+  ' Dim objOwner As UserInfo = UserController.GetUserById(portalId, recipientId)
+  ' Dim colUsers As New List(Of UserInfo)
 
-   colUsers.Add(objOwner)
+  ' colUsers.Add(objOwner)
 
-   NotificationsController.Instance.SendNotification(objNotification, portalId, Nothing, colUsers)
-  End Sub
+  ' NotificationsController.Instance.SendNotification(objNotification, portalId, Nothing, colUsers)
+  'End Sub
 
 #Region "Install Methods"
 

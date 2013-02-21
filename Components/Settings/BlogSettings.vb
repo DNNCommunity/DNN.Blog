@@ -18,7 +18,7 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 Imports System.Xml
-Imports DotNetNuke.Modules.Blog.Providers.Data
+Imports DotNetNuke.Modules.Blog.Data
 Imports DotNetNuke.Modules.Blog.Common
 Imports DotNetNuke.Common.Utilities
 
@@ -37,43 +37,24 @@ Namespace Settings
 #Region " Private Members "
 
   Private _allSettings As Hashtable
-  Private _SearchSummaryMaxLength As Integer = 255
-
-  Private _portalId As Integer = -1
-  Private _tabId As Integer = -1
 
 #End Region
 
 #Region " Constructors "
 
-  Public Sub New(ByVal PortalID As Integer, ByVal TabID As Integer)
-   Dim mc As New DotNetNuke.Entities.Modules.ModuleController
-   _portalId = PortalID
-   _tabId = TabID
-   _allSettings = New Hashtable
+  Public Sub New(PortalID As Integer, TabID As Integer)
 
-   Dim dr As IDataReader = DataProvider.Instance().GetSettings(PortalID, TabID)
-   While dr.Read()
-    _allSettings(dr.GetString(0)) = dr.GetValue(1)
-   End While
-   dr.Close()
-
-   _allSettings.ReadValue("PageBlogs", PageBlogs)
    _allSettings.ReadValue("EntryDescriptionRequired", EntryDescriptionRequired)
    _allSettings.ReadValue("SummaryMaxLength", SummaryMaxLength)
-   _allSettings.ReadValue("MaxImageWidth", MaxImageWidth)
    _allSettings.ReadValue("RecentEntriesMax", RecentEntriesMax)
    _allSettings.ReadValue("RecentRssEntriesMax", RecentRssEntriesMax)
    _allSettings.ReadValue("EnableUploadOption", EnableUploadOption)
-   _allSettings.ReadValue("ShowSummary", ShowSummary)
-   _allSettings.ReadValue("ShowSeoFriendlyUrl", ShowSeoFriendlyUrl)
    _allSettings.ReadValue("EnforceSummaryTruncation", EnforceSummaryTruncation)
    _allSettings.ReadValue("IncludeBody", IncludeBody)
    _allSettings.ReadValue("IncludeCategoriesInDescription", IncludeCategoriesInDescription)
    _allSettings.ReadValue("IncludeTagsInDescription", IncludeTagsInDescription)
    _allSettings.ReadValue("AllowSummaryHtml", AllowSummaryHtml)
    _allSettings.ReadValue("AllowWLW", AllowWLW)
-   _allSettings.ReadValue("IncludeFiles", IncludeFiles)
    _allSettings.ReadValue("SocialSharingMode", SocialSharingMode)
    _allSettings.ReadValue("AddThisId", AddThisId)
    _allSettings.ReadValue("FacebookAppId", FacebookAppId)
@@ -90,7 +71,7 @@ Namespace Settings
 
   End Sub
 
-  Public Shared Function GetBlogSettings(ByVal PortalId As Integer, ByVal TabId As Integer) As BlogSettings
+  Public Shared Function GetBlogSettings(PortalId As Integer, TabId As Integer) As BlogSettings
    Dim CacheKey As String = "BlogSettings" & PortalId.ToString & "-" & TabId.ToString
    Dim bs As BlogSettings = CType(DotNetNuke.Common.Utilities.DataCache.GetCache(CacheKey), BlogSettings)
    If bs Is Nothing Then
@@ -106,37 +87,6 @@ Namespace Settings
 
   Public Overridable Sub UpdateSettings()
    Dim objModules As New DotNetNuke.Entities.Modules.ModuleController
-   Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "PageBlogs", Me.PageBlogs.ToString)
-   Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "EntryDescriptionRequired", Me.EntryDescriptionRequired.ToString)
-   Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "SummaryMaxLength", Me.SummaryMaxLength.ToString)
-   Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "MaxImageWidth", Me.MaxImageWidth.ToString)
-   Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "RecentEntriesMax", Me.RecentEntriesMax.ToString)
-   Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "RecentRssEntriesMax", Me.RecentRssEntriesMax.ToString)
-   Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "EnableUploadOption", Me.EnableUploadOption.ToString)
-   Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "ShowSummary", Me.ShowSummary.ToString)
-   Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "ShowSeoFriendlyUrl", Me.ShowSeoFriendlyUrl.ToString)
-   Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "EnforceSummaryTruncation", Me.EnforceSummaryTruncation.ToString)
-   Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "IncludeBody", Me.IncludeBody.ToString)
-   Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "IncludeCategoriesInDescription", Me.IncludeCategoriesInDescription.ToString)
-   Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "IncludeTagsInDescription", Me.IncludeTagsInDescription.ToString)
-   Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "AllowSummaryHtml", Me.AllowSummaryHtml.ToString)
-   Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "AllowWLW", Me.AllowWLW.ToString)
-   Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "IncludeFiles", Me.IncludeFiles)
-   Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "SocialSharingMode", Me.SocialSharingMode.ToString)
-   Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "AddThisId", Me.AddThisId)
-   Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "FacebookAppId", Me.FacebookAppId)
-   Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "EnablePlusOne", Me.EnablePlusOne.ToString)
-   Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "EnableTwitter", Me.EnableTwitter.ToString)
-   Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "EnableLinkedIn", Me.EnableLinkedIn.ToString)
-   Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "CommentMode", Me.CommentMode.ToString)
-
-   ' WLW implementation parameters
-   Business.Utility.UpdateBlogModuleSetting(_portalId, -1, "AllowMultipleCategories", Me.AllowMultipleCategories.ToString)
-   Business.Utility.UpdateBlogModuleSetting(_portalId, -1, "UseWLWExcerpt", Me.UseWLWExcerpt.ToString)
-
-   ' We save this at 'global' and tab level so its available to WLW as well as normal module usage.
-   Business.Utility.UpdateBlogModuleSetting(_portalId, -1, "VocabularyId", Me.VocabularyId.ToString)
-   Business.Utility.UpdateBlogModuleSetting(_portalId, _tabId, "VocabularyId", Me.VocabularyId.ToString)
 
    ' Clear cache
    Dim tagsKey As String = Common.Constants.TermsKey + "1"

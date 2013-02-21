@@ -38,7 +38,7 @@ Namespace Settings
 
 #Region "Constructors"
 
-  Public Sub New(ByVal TabModuleId As Integer)
+  Public Sub New(TabModuleId As Integer)
    _tabModuleId = TabModuleId
    _allSettings = (New DotNetNuke.Entities.Modules.ModuleController).GetTabModuleSettings(_tabModuleId)
 
@@ -49,7 +49,7 @@ Namespace Settings
    _allSettings.ReadValue(Constants.SettingEnableArchiveCss, EnableArchiveCss)
   End Sub
 
-  Public Shared Function GetArchiveViewSettings(ByVal TabModuleId As Integer) As ArchiveViewSettings
+  Public Shared Function GetArchiveViewSettings(TabModuleId As Integer) As ArchiveViewSettings
    Dim CacheKey As String = Constants.ArchiveSettingsCacheKey & TabModuleId.ToString
    Dim bs As ArchiveViewSettings = CType(DotNetNuke.Common.Utilities.DataCache.GetCache(CacheKey), ArchiveViewSettings)
    If bs Is Nothing Then
@@ -82,7 +82,7 @@ Namespace Settings
    Get
     Return _ArchiveDisplayMode
    End Get
-   Set(ByVal Value As String)
+   Set(Value As String)
     _ArchiveDisplayMode = Value
    End Set
   End Property
@@ -91,7 +91,7 @@ Namespace Settings
    Get
     Return _ListDisplayMode
    End Get
-   Set(ByVal value As String)
+   Set(value As String)
     _ListDisplayMode = value
    End Set
   End Property
@@ -100,7 +100,7 @@ Namespace Settings
    Get
     Return _EnableArchiveCss
    End Get
-   Set(ByVal value As Boolean)
+   Set(value As Boolean)
     _EnableArchiveCss = value
    End Set
   End Property
@@ -109,7 +109,7 @@ Namespace Settings
    Get
     Return _CalendarMode
    End Get
-   Set(ByVal value As String)
+   Set(value As String)
     _CalendarMode = value
    End Set
   End Property
@@ -118,7 +118,7 @@ Namespace Settings
    Get
     Return _CalendarSkin
    End Get
-   Set(ByVal value As String)
+   Set(value As String)
     _CalendarSkin = value
    End Set
   End Property

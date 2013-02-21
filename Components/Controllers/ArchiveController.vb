@@ -32,11 +32,11 @@ Namespace Controllers
   ''' <param name="BlogID"></param>
   ''' <returns></returns>
   ''' <remarks>CP: Changed to generic lists instead of ArrayList</remarks>
-  Public Shared Function GetBlogMonths(ByVal PortalID As Integer, ByVal BlogID As Integer) As List(Of ArchiveMonths)
+  Public Shared Function GetBlogMonths(PortalID As Integer, BlogID As Integer) As List(Of ArchiveMonths)
    Return CBO.FillCollection(Of ArchiveMonths)(DataProvider.Instance().GetBlogMonths(PortalID, BlogID))
   End Function
 
-  Public Shared Function GetBlogDaysForMonth(ByVal PortalID As Integer, ByVal BlogID As Integer, ByVal BlogDate As Date) As List(Of ArchiveDays)
+  Public Shared Function GetBlogDaysForMonth(PortalID As Integer, BlogID As Integer, BlogDate As Date) As List(Of ArchiveDays)
    Return CBO.FillCollection(Of ArchiveDays)(DataProvider.Instance().GetBlogDaysForMonth(PortalID, BlogID, BlogDate))
   End Function
 

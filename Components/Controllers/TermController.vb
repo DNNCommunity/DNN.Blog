@@ -28,7 +28,7 @@ Namespace Controllers
 
  Public Class TermController
 
-  Public Shared Function GetTermsByContentType(ByVal portalId As Integer, ByVal vocabularyId As Integer) As List(Of TermInfo)
+  Public Shared Function GetTermsByContentType(portalId As Integer, vocabularyId As Integer) As List(Of TermInfo)
    DotNetNuke.Common.Requires.PropertyNotNegative("portalId", "", portalId)
    DotNetNuke.Common.Requires.PropertyNotNegative("vocabularyId", "", vocabularyId)
    Dim tagsKey As String = Common.Constants.TermsKey + vocabularyId.ToString
@@ -47,7 +47,7 @@ Namespace Controllers
    Return colTerms
   End Function
 
-  Public Shared Function GetTermsByContentItem(ByVal contentItemId As Integer, ByVal vocabularyId As Integer) As List(Of TermInfo)
+  Public Shared Function GetTermsByContentItem(contentItemId As Integer, vocabularyId As Integer) As List(Of TermInfo)
    DotNetNuke.Common.Requires.PropertyNotNegative("contentItemId", "", contentItemId)
 
    Dim contentItemKey As String = Common.Constants.ContentItemsKey + contentItemId.ToString() + "-" + vocabularyId.ToString

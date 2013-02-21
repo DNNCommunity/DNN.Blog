@@ -46,7 +46,7 @@ Namespace Upgrade
    Get
     Return _NewTermId
    End Get
-   Set(ByVal Value As Int32)
+   Set(Value As Int32)
     _NewTermId = Value
    End Set
   End Property
@@ -57,7 +57,7 @@ Namespace Upgrade
    Get
     Return _CatId
    End Get
-   Set(ByVal Value As Int32)
+   Set(Value As Int32)
     _CatId = Value
    End Set
   End Property
@@ -66,7 +66,7 @@ Namespace Upgrade
    Get
     Return _Category
    End Get
-   Set(ByVal Value As String)
+   Set(Value As String)
     _Category = Value
    End Set
   End Property
@@ -75,7 +75,7 @@ Namespace Upgrade
    Get
     Return _Cnt
    End Get
-   Set(ByVal Value As Int32)
+   Set(Value As Int32)
     _Cnt = Value
    End Set
   End Property
@@ -84,7 +84,7 @@ Namespace Upgrade
    Get
     Return _FullCat
    End Get
-   Set(ByVal Value As String)
+   Set(Value As String)
     _FullCat = Value
    End Set
   End Property
@@ -93,7 +93,7 @@ Namespace Upgrade
    Get
     Return _ParentId
    End Get
-   Set(ByVal Value As Int32)
+   Set(Value As Int32)
     _ParentId = Value
    End Set
   End Property
@@ -102,7 +102,7 @@ Namespace Upgrade
    Get
     Return _PortalId
    End Get
-   Set(ByVal Value As Int32)
+   Set(Value As Int32)
     _PortalId = Value
    End Set
   End Property
@@ -111,7 +111,7 @@ Namespace Upgrade
    Get
     Return _Slug
    End Get
-   Set(ByVal Value As String)
+   Set(Value As String)
     _Slug = Value
    End Set
   End Property
@@ -138,7 +138,7 @@ Namespace Upgrade
    Get
     Return _NewTermId
    End Get
-   Set(ByVal Value As Int32)
+   Set(Value As Int32)
     _NewTermId = Value
    End Set
   End Property
@@ -147,7 +147,7 @@ Namespace Upgrade
    Get
     Return _TagId
    End Get
-   Set(ByVal Value As Int32)
+   Set(Value As Int32)
     _TagId = Value
    End Set
   End Property
@@ -156,7 +156,7 @@ Namespace Upgrade
    Get
     Return _Active
    End Get
-   Set(ByVal Value As Boolean)
+   Set(Value As Boolean)
     _Active = Value
    End Set
   End Property
@@ -165,7 +165,7 @@ Namespace Upgrade
    Get
     Return _Cnt
    End Get
-   Set(ByVal Value As Int32)
+   Set(Value As Int32)
     _Cnt = Value
    End Set
   End Property
@@ -174,7 +174,7 @@ Namespace Upgrade
    Get
     Return _PortalId
    End Get
-   Set(ByVal Value As Int32)
+   Set(Value As Int32)
     _PortalId = Value
    End Set
   End Property
@@ -183,7 +183,7 @@ Namespace Upgrade
    Get
     Return _Slug
    End Get
-   Set(ByVal Value As String)
+   Set(Value As String)
     _Slug = Value
    End Set
   End Property
@@ -192,7 +192,7 @@ Namespace Upgrade
    Get
     Return _Tag
    End Get
-   Set(ByVal Value As String)
+   Set(Value As String)
     _Tag = Value
    End Set
   End Property
@@ -201,7 +201,7 @@ Namespace Upgrade
    Get
     Return _Weight
    End Get
-   Set(ByVal Value As Decimal)
+   Set(Value As Decimal)
     _Weight = Value
    End Set
   End Property
@@ -210,13 +210,13 @@ Namespace Upgrade
 
  Public Class ModuleUpgradeController
 
-  Public Shared Function GetEntryCategoriesForUpgrade(ByVal EntryID As Integer) As List(Of MigrateCategoryInfo)
+  Public Shared Function GetEntryCategoriesForUpgrade(EntryID As Integer) As List(Of MigrateCategoryInfo)
    Dim colCategories As List(Of MigrateCategoryInfo)
    colCategories = CBO.FillCollection(Of MigrateCategoryInfo)(DataProvider.Instance().GetCategoriesByEntry(EntryID))
    Return colCategories
   End Function
 
-  Public Shared Function GetEntryTagsForUpgrade(ByVal EntryID As Integer) As List(Of MigrateTagInfo)
+  Public Shared Function GetEntryTagsForUpgrade(EntryID As Integer) As List(Of MigrateTagInfo)
    Dim colTags As List(Of MigrateTagInfo)
    colTags = CBO.FillCollection(Of MigrateTagInfo)(DataProvider.Instance().GetTagsByEntry(EntryID))
    Return colTags

@@ -27,24 +27,22 @@ Namespace MetaWeblog
  Partial Class blogpostredirect
   Inherits System.Web.UI.Page
 
-  Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+  Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
 
    Dim intendedUrl As String = String.Empty
    Dim bStyleDetectionPost As Boolean = False
+   Dim moduleId As Integer = -1
+
+   Request.Params.ReadValue("ModuleId", moduleId)
+   Dim settings As ModuleSettings = ModuleSettings.GetModuleSettings(moduleId)
 
    ' Check to see if this is a style detection post.
-   Dim sSQL As String = "SELECT TempInstallUrl FROM {databaseOwner}{objectQualifier}Blog_MetaWeblogData"
-   Dim sURL As String = String.Empty
-   Dim dr As IDataReader = DirectCast(DataProvider.Instance().ExecuteSQL(sSQL), IDataReader)
-   While dr.Read()
-    sURL = dr("TempInstallUrl").ToString() + ""
-   End While
+   Dim sURL As String = settings.StyleDetectionUrl
 
-   If sURL <> String.Empty Then    'Style Detection Post
+   If Not String.IsNullOrEmpty(sURL) Then     'Style Detection Post
 
-    ' Delete the entry from the TempInstallUrl field in the database.
-    sSQL = "UPDATE {databaseOwner}{objectQualifier}Blog_MetaWeblogData SET TempInstallUrl = ''"
-    DataProvider.Instance().ExecuteSQL(sSQL)
+    settings.StyleDetectionUrl = ""
+    settings.UpdateSettings()
     Response.Redirect(sURL, False)
 
    Else                            'This is a regular post
@@ -63,12 +61,10 @@ Namespace MetaWeblog
       Response.Redirect(intendedUrl)
      End If
 
-     Dim portalId As Integer = -1
-     Request.Params.ReadValue("PortalId", portalId)
      Dim link As New HtmlGenericControl("link")
      link.Attributes.Add("rel", "wlwmanifest")
      link.Attributes.Add("type", "application/wlwmanifest+xml")
-     link.Attributes.Add("href", DotNetNuke.Common.Globals.ApplicationPath & Globals.ManifestFilePath(portalId))
+     link.Attributes.Add("href", DotNetNuke.Common.Globals.ApplicationPath & Globals.ManifestFilePath(moduleId))
      link.Visible = True
 
      phHead.Controls.Add(link)

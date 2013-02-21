@@ -160,10 +160,10 @@ Public Class Tags
  ' ''' <remarks>This is normally done behind the scenes by .net, implemented here for performance reasons.</remarks>
  '<Category("Action"), Description("Raised when the user clicks the subscribe button.")> _
  'Public Custom Event Subscribe As EventHandler
- '    AddHandler(ByVal value As EventHandler)
+ '    AddHandler( value As EventHandler)
  '        Events.[AddHandler](EventSubmitKey, value)
  '    End AddHandler
- '    RemoveHandler(ByVal value As EventHandler)
+ '    RemoveHandler( value As EventHandler)
  '        Events.[RemoveHandler](EventSubmitKey, value)
  '    End RemoveHandler
  'End Event

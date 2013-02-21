@@ -25,7 +25,7 @@ Imports DotNetNuke.Modules.Blog.Settings
 Partial Public Class ArchiveSettings
  Inherits DotNetNuke.Entities.Modules.ModuleSettingsBase
 
-#Region "Private Members"
+#Region " Private Members "
 
  Private _settings As ArchiveViewSettings
 
@@ -33,13 +33,13 @@ Partial Public Class ArchiveSettings
 
 #Region "Event Handlers"
 
- Protected Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Init
+ Protected Sub Page_Init(sender As Object, e As System.EventArgs) Handles Me.Init
   _settings = ArchiveViewSettings.GetArchiveViewSettings(TabModuleId)
  End Sub
 
 #End Region
 
-#Region "Base Methods"
+#Region " Base Methods "
 
  Public Overrides Sub LoadSettings()
   Try

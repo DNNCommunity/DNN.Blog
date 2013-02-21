@@ -20,30 +20,63 @@
 
 Imports System.Xml
 Imports DotNetNuke.Modules.Blog.Common
-Imports DotNetNuke.Modules.Blog.Settings
 
 Partial Public Class WLWManifest
  Inherits System.Web.UI.Page
 
 #Region " Private Members "
- Private _portalId As Integer = -1
+ Private _moduleId As Integer = -1
  Private _tabId As Integer = -1
 #End Region
 
 #Region " Event Handlers "
- Private Sub WLWManifest_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Init
-  Me.Request.Params.ReadValue("PortalId", _portalId)
+ Private Sub WLWManifest_Init(sender As Object, e As System.EventArgs) Handles Me.Init
+  Me.Request.Params.ReadValue("ModuleId", _moduleId)
  End Sub
 
- Protected Sub WLWManifest_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+ Protected Sub WLWManifest_Load(sender As Object, e As System.EventArgs) Handles Me.Load
 
   Response.Clear()
   Response.ClearContent()
   Response.ContentType = "application/xml"
 
-  Using xtw As New XmlTextWriter(Response.OutputStream, System.Text.Encoding.UTF8)
-   Dim bs As New BlogSettings(_portalId, -1)
-   bs.WriteWLWManifest(xtw)
+  Using output As New XmlTextWriter(Response.OutputStream, System.Text.Encoding.UTF8)
+   Dim bs As ModuleSettings = ModuleSettings.GetModuleSettings(_moduleId)
+
+   output.Formatting = Formatting.Indented
+   output.WriteStartDocument()
+   output.WriteStartElement("manifest")
+   output.WriteAttributeString("xmlns", "http://schemas.microsoft.com/wlw/manifest/weblog")
+   output.WriteStartElement("options")
+
+   output.WriteElementString("clientType", "Metaweblog")
+   output.WriteElementString("supportsMultipleCategories", bs.AllowMultipleCategories.ToYesNo)
+   output.WriteElementString("supportsCategories", CBool(bs.VocabularyId <> -1).ToYesNo)
+   output.WriteElementString("supportsCustomDate", "Yes")
+   output.WriteElementString("supportsKeywords", "Yes")
+   output.WriteElementString("supportsTrackbacks", "No")
+   output.WriteElementString("supportsEmbeds", "No")
+   output.WriteElementString("supportsAuthor", "No")
+   output.WriteElementString("supportsExcerpt", "Yes")
+   output.WriteElementString("supportsPassword", "No")
+   output.WriteElementString("supportsPages", "No")
+   output.WriteElementString("supportsPageParent", "No")
+   output.WriteElementString("supportsPageOrder", "No")
+   output.WriteElementString("supportsExtendedEntries", "Yes")
+   output.WriteElementString("supportsCommentPolicy", "Yes")
+   output.WriteElementString("supportsPingPolicy", "No")
+   output.WriteElementString("supportsPostAsDraft", "Yes")
+   output.WriteElementString("supportsFileUpload", "Yes")
+   output.WriteElementString("supportsSlug", "No")
+   output.WriteElementString("supportsHierarchicalCategories", "Yes")
+   output.WriteElementString("supportsCategoriesInline", "Yes")
+   output.WriteElementString("supportsNewCategories", bs.BloggersCanEditCategories.ToYesNo)
+   output.WriteElementString("supportsNewCategoriesInline", "No")
+
+   output.WriteEndElement() ' manifest
+   output.WriteEndElement() ' options
+   output.Flush()
+
   End Using
 
   Response.End()

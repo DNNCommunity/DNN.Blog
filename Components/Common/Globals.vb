@@ -22,66 +22,107 @@ Imports DotNetNuke.Entities.Modules
 
 Namespace Common
 
- Public Enum RssViews
-  None = 0
-  ArchivEntries = 1
-  BlogEntries = 2
-  RecentEntries = 3
-  SingleEntry = 4
- End Enum
-
  Public Class Globals
   Public Const glbSharedResourceFile As String = "DesktopModules/Blog/App_LocalResources/SharedResources"
 
-  Public Shared Function RemoveMarkup(ByVal input As String) As String
-   If String.IsNullOrEmpty(input) Then Return ""
-   Return Regex.Replace(input, "<[^>]+>", "")
+  Public Shared Function RemoveMarkup(input As String) As String
+   Return (New DotNetNuke.Security.PortalSecurity).InputFilter(input, DotNetNuke.Security.PortalSecurity.FilterFlag.NoMarkup)
   End Function
+
+#Region " Dates "
+  Public Shared Function FormatDate(ByVal [Date] As DateTime, Culture As String, ByVal DateFormat As String, ByVal TimeZone As TimeZoneInfo) As String
+   Return FormatDate([Date], Culture, DateFormat, TimeZone, False)
+  End Function
+  Public Shared Function FormatDate(ByVal [Date] As DateTime, Culture As String, ByVal DateFormat As String, ByVal TimeZone As TimeZoneInfo, ByVal ToUniversal As Boolean) As String
+   If String.IsNullOrEmpty(Culture) Then Culture = Threading.Thread.CurrentThread.CurrentCulture.Name
+   Dim dtf As System.Globalization.DateTimeFormatInfo = New System.Globalization.CultureInfo(Culture, False).DateTimeFormat
+   If ToUniversal = True Then
+    Dim dto As New DateTimeOffset([Date])
+    Return dto.ToUniversalTime.ToString(DateFormat, dtf)
+   Else
+    Dim dt As Date = AdjustedDate([Date], TimeZone)
+    Return dt.ToString(DateFormat, dtf)
+   End If
+  End Function
+
+  Public Shared Function AdjustedDate(ByVal [Date] As DateTime, ByVal TimeZone As TimeZoneInfo) As Date
+   Dim dto As New DateTimeOffset([Date])
+   Return TimeZoneInfo.ConvertTime(dto, TimeZone).DateTime
+  End Function
+
+  Public Shared Function DateFromUtc(ByVal [Date] As DateTime, ByVal TimeZone As TimeZoneInfo) As Date
+   Dim dto As New DateTimeOffset([Date], New TimeSpan(0))
+   Return TimeZoneInfo.ConvertTime(dto, TimeZone).DateTime
+  End Function
+
+  Public Shared Function ParseDate(ByVal DateString As String, ByVal Culture As String) As DateTime
+   Dim dtf As System.Globalization.DateTimeFormatInfo = New System.Globalization.CultureInfo(Culture, False).DateTimeFormat
+   Try
+    Return Date.Parse(DateString, dtf)
+   Catch ex As Exception
+    Return Nothing
+   End Try
+  End Function
+
+  Public Shared Function IsValidDate(ByVal DateString As String, ByVal Culture As String) As Boolean
+   Dim dtf As System.Globalization.DateTimeFormatInfo = New System.Globalization.CultureInfo(Culture, False).DateTimeFormat
+   Try
+    Dim oDate As Date = Date.Parse(DateString, dtf)
+    Return True
+   Catch ex As Exception
+    Return False
+   End Try
+  End Function
+
+#End Region
 
 #Region " Other "
-  Public Shared Function CYesNo(ByVal value As Boolean) As String
-   If value Then
-    Return "Yes"
-   Else
-    Return "No"
-   End If
-  End Function
-
-  Public Shared Sub AddModDef(ByVal PortalSettings As DotNetNuke.Entities.Portals.PortalSettings, ByVal ModuleDefID As Integer, ByVal TabID As Integer, ByVal paneName As String, ByVal position As Integer, ByVal title As String)
-
-   Dim objModuleDefinition As Definitions.ModuleDefinitionInfo = Definitions.ModuleDefinitionController.GetModuleDefinitionByID(ModuleDefID)
-   Dim objTabPermissions As Security.Permissions.TabPermissionCollection = Security.Permissions.TabPermissionController.GetTabPermissions(TabID, PortalSettings.PortalId)
-   Dim objModule As New ModuleInfo
-   objModule.Initialize(PortalSettings.PortalId)
-   objModule.PortalID = PortalSettings.PortalId
-   objModule.TabID = PortalSettings.ActiveTab.TabID
-   objModule.ModuleOrder = position
-   If title = "" Then
-    objModule.ModuleTitle = objModuleDefinition.FriendlyName
-   Else
-    objModule.ModuleTitle = title
-   End If
-   objModule.PaneName = paneName
-   objModule.ModuleDefID = objModuleDefinition.ModuleDefID
-   objModule.InheritViewPermissions = True
-
-   ' get the default module view permissions
-   Dim arrSystemModuleViewPermissions As ArrayList = (New DotNetNuke.Security.Permissions.PermissionController).GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", "VIEW")
-
-   objModule.AllTabs = False
-   objModule.Alignment = ""
-   Dim objModules As New ModuleController
-   objModules.AddModule(objModule)
-
-  End Sub
-
-  Public Shared Function GetLocalAddedTime(ByVal AddedDate As DateTime, ByVal PortalId As Integer, ByVal user As DotNetNuke.Entities.Users.UserInfo) As DateTime
+  Public Shared Function GetLocalAddedTime(AddedDate As DateTime, PortalId As Integer, user As DotNetNuke.Entities.Users.UserInfo) As DateTime
    Return TimeZoneInfo.ConvertTimeToUtc(AddedDate, user.Profile.PreferredTimeZone)
   End Function
 
-  Public Shared Function ManifestFilePath(portalId As Integer) As String
-   Return "/DesktopModules/Blog/WLWManifest.aspx?PortalID=" & portalId.ToString
+  Public Shared Function ManifestFilePath(moduleId As Integer) As String
+   Return "/DesktopModules/Blog/WLWManifest.aspx?ModuleId=" & moduleId.ToString
   End Function
+
+  Public Shared Function GetAString(Value As Object) As String
+   If Value Is Nothing Then
+    Return ""
+   Else
+    If Value Is DBNull.Value Then
+     Return ""
+    Else
+     Return CType(Value, String)
+    End If
+   End If
+  End Function
+
+  Public Shared Function ReadFile(ByVal fileName As String) As String
+   If Not IO.File.Exists(fileName) Then Return ""
+   Using sr As New IO.StreamReader(fileName)
+    Return sr.ReadToEnd
+   End Using
+  End Function
+
+  Public Shared Function FormatBoolean(ByVal value As Boolean, ByVal format As String) As String
+   If String.IsNullOrEmpty(format) Then
+    Return value.ToString
+   End If
+   If format.Contains(";") Then
+    If value Then
+     Return Left(format, format.IndexOf(";"))
+    Else
+     Return Mid(format, format.IndexOf(";") + 2)
+    End If
+   End If
+   Return value.ToString
+  End Function
+
+  Public Shared Sub SetSummary(ByRef entry As Entities.Entries.EntryInfo, settings As ModuleSettings)
+   entry.Summary = entry.Content
+   entry.Summary = (New DotNetNuke.Security.PortalSecurity).InputFilter(entry.Summary, DotNetNuke.Security.PortalSecurity.FilterFlag.NoMarkup) ' we can't auto shorten HTML as it risks creating invalid HTML
+   entry.Summary = Left(entry.Summary, settings.AutoGeneratedSummaryLength)
+  End Sub
 #End Region
 
  End Class

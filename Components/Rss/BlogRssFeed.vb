@@ -19,14 +19,14 @@
 '
 
 Imports System.Xml
-Imports DotNetNuke.Modules.Blog.Providers.Data
 Imports DotNetNuke.Modules.Blog.Business
-Imports DotNetNuke.Modules.Blog.Controllers
 Imports DotNetNuke.Modules.Blog.Common
 Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.Common
+Imports DotNetNuke.Modules.Blog.Data
 Imports DotNetNuke.Modules.Blog.Settings
-Imports DotNetNuke.Modules.Blog.Entities
+Imports DotNetNuke.Modules.Blog.Entities.Blogs
+Imports DotNetNuke.Modules.Blog.Entities.Entries
 
 Namespace Rss
 
@@ -83,7 +83,7 @@ Namespace Rss
 
 #Region "Constructors"
 
-  Public Sub New(ByVal moduleConfiguration As DotNetNuke.Entities.Modules.ModuleInfo, ByVal request As HttpRequest, ByVal rssView As RssViews)
+  Public Sub New(moduleConfiguration As DotNetNuke.Entities.Modules.ModuleInfo, request As HttpRequest, rssView As RssViews)
    ' Set variables
    _blogSettings = BlogSettings.GetBlogSettings(moduleConfiguration.PortalID, moduleConfiguration.TabID)
    _moduleId = moduleConfiguration.ModuleID
@@ -100,7 +100,7 @@ Namespace Rss
    ' Read request
    _requestUrl = request.Url
    request.Params.ReadValue("rssid", _rssId)
-   _blog = BlogController.GetBlog(_rssId)
+   _blog = BlogsController.GetBlog(_rssId)
    request.Params.ReadValue("rssentryid", _rssEntryId)
    request.Params.ReadValue("rssdate", _rssDate)
    If _rssDate <> "" Then
@@ -117,7 +117,7 @@ Namespace Rss
 
 #End Region
 
-#Region "Public Methods"
+#Region " Public Methods "
 
   Public Function WriteRssToString() As String
    Dim sb As New StringBuilder
@@ -131,7 +131,7 @@ Namespace Rss
    xtw.Flush()
   End Sub
 
-  Public Sub WriteRss(ByVal fileName As String)
+  Public Sub WriteRss(fileName As String)
    Dim xtw As New XmlTextWriter(fileName, Encoding.UTF8)
    WriteRss(xtw)
    xtw.Flush()
@@ -239,14 +239,14 @@ Namespace Rss
     Case RssViews.BlogEntries
      If Not _blog Is Nothing Then
       Dim isOwner As Boolean
-      isOwner = _blog.UserID = _userId
+      isOwner = _blog.CreatedByUserId = _userId
       dr = DataProvider.Instance().GetEntriesByBlog(_rssId, Date.UtcNow, _blogSettings.RecentRssEntriesMax, 0, _security.CanAddEntry, _security.CanAddEntry)
      End If
     Case RssViews.ArchivEntries
      Dim m_dBlogDate As Date
      If _blog IsNot Nothing Then
       Dim isOwner As Boolean
-      isOwner = _blog.UserID = _userId
+      isOwner = _blog.CreatedByUserId = _userId
       dr = DataProvider.Instance().GetEntriesByBlog(_rssId, m_dBlogDate.ToUniversalTime, _blogSettings.RecentRssEntriesMax, 1, _security.CanAddEntry, _security.CanAddEntry)
      Else
       dr = DataProvider.Instance().GetEntriesByPortal(_portalSettings.PortalId, m_dBlogDate.ToUniversalTime, Nothing, _blogSettings.RecentRssEntriesMax, 1, _security.UserIsAdmin, _security.UserIsAdmin)
@@ -281,7 +281,7 @@ Namespace Rss
 
 #Region "Private Methods"
 
-  Private Sub WriteItem(ByRef writer As XmlTextWriter, ByVal ir As IDataReader)
+  Private Sub WriteItem(ByRef writer As XmlTextWriter, ir As IDataReader)
    Dim EntryId As Integer = CInt(ir.Item("EntryId"))
    Dim PermaLink As String = HttpUtility.HtmlDecode(CStr(ir.Item("PermaLink")))
 
@@ -296,7 +296,7 @@ Namespace Rss
     Description = Utility.RewriteRefs(HttpUtility.HtmlDecode(CStr(ir.Item("Description"))))
    End If
 
-   Dim colTags As List(Of TermInfo) = TermController.GetTermsByContentItem(EntryId, 1)
+   Dim colTags As List(Of Term) = TermController.GetTermsByContentItem(EntryId, 1)
    If _includeTagsInDescription Then
     For Each c As TermInfo In colTags
      Description &= "<div class=""tags"">" & Localization.GetString("Tags", Common.Globals.glbSharedResourceFile) & ": <a href=" & NavigateURL(_tabId, False, _portalSettings, "", "tagid=" + c.TermId.ToString) & ">" & c.Name & "</a></div>"
@@ -347,11 +347,11 @@ Namespace Rss
    writer.WriteEndElement()
   End Sub
 
-  Public Sub WriteElement(ByRef output As XmlTextWriter, ByVal elementName As String, ByVal ir As IDataReader, ByVal columnName As String, ByVal required As Boolean)
+  Public Sub WriteElement(ByRef output As XmlTextWriter, elementName As String, ir As IDataReader, columnName As String, required As Boolean)
    WriteElement(output, elementName, ir, columnName, required, "")
   End Sub
 
-  Public Sub WriteElement(ByRef output As XmlTextWriter, ByVal elementName As String, ByVal ir As IDataReader, ByVal columnName As String, ByVal required As Boolean, ByVal nsPrefix As String)
+  Public Sub WriteElement(ByRef output As XmlTextWriter, elementName As String, ir As IDataReader, columnName As String, required As Boolean, nsPrefix As String)
    Try
     WriteElement(output, elementName, CStr(ir.Item(columnName)), required, nsPrefix)
    Catch ex As Exception
@@ -361,7 +361,7 @@ Namespace Rss
    End Try
   End Sub
 
-  Public Sub WriteElement(ByRef output As XmlTextWriter, ByVal elementName As String, ByVal value As String, ByVal required As Boolean, ByVal nsPrefix As String)
+  Public Sub WriteElement(ByRef output As XmlTextWriter, elementName As String, value As String, required As Boolean, nsPrefix As String)
    If nsPrefix = "" Then
     output.WriteElementString(elementName, value)
    Else

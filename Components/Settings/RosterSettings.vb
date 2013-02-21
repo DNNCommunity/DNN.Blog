@@ -34,14 +34,14 @@ Namespace Settings
 
 #Region "Constructors"
 
-  Public Sub New(ByVal TabModuleId As Integer)
+  Public Sub New(TabModuleId As Integer)
    _tabModuleId = TabModuleId
    _allSettings = (New DotNetNuke.Entities.Modules.ModuleController).GetTabModuleSettings(_tabModuleId)
 
    _allSettings.ReadValue(Constants.SettingRosterDisplayMode, RosterDisplayMode)
   End Sub
 
-  Public Shared Function GetRosterViewSettings(ByVal TabModuleId As Integer) As RosterSettings
+  Public Shared Function GetRosterViewSettings(TabModuleId As Integer) As RosterSettings
    Dim CacheKey As String = Constants.RosterSettingsCacheKey & TabModuleId.ToString
    Dim bs As RosterSettings = CType(DotNetNuke.Common.Utilities.DataCache.GetCache(CacheKey), RosterSettings)
 
@@ -78,7 +78,7 @@ Namespace Settings
    Get
     Return _RosterDisplayMode
    End Get
-   Set(ByVal Value As String)
+   Set(Value As String)
     _RosterDisplayMode = Value
    End Set
   End Property

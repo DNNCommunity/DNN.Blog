@@ -34,7 +34,7 @@ Partial Public Class ViewTags
 
 #Region "Event Handlers"
 
- Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+ Protected Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
   jQuery.RequestUIRegistration()
   ClientResourceManager.RegisterScript(Page, TemplateSourceDirectory + "/js/jquery.qatooltip.js")
   ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js")
@@ -42,7 +42,7 @@ Partial Public Class ViewTags
   _settings = TagViewSettings.GetTagViewSettings(TabModuleId)
  End Sub
 
- Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+ Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
   Dim colTags As List(Of TermInfo)
   colTags = TermController.GetTermsByContentType(ModuleContext.PortalId, 1) ' the 1 ensures tags only
 

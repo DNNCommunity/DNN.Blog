@@ -5,7 +5,7 @@ Namespace Common
 
 #Region " Collection Read Extensions "
   <System.Runtime.CompilerServices.Extension()>
-  Public Sub ReadValue(ByRef ValueTable As Hashtable, ByVal ValueName As String, ByRef Variable As Integer)
+  Public Sub ReadValue(ByRef ValueTable As Hashtable, ValueName As String, ByRef Variable As Integer)
    If Not ValueTable.Item(ValueName) Is Nothing Then
     Try
      Variable = CType(ValueTable.Item(ValueName), Integer)
@@ -15,7 +15,7 @@ Namespace Common
   End Sub
 
   <System.Runtime.CompilerServices.Extension()>
-  Public Sub ReadValue(ByRef ValueTable As Hashtable, ByVal ValueName As String, ByRef Variable As Long)
+  Public Sub ReadValue(ByRef ValueTable As Hashtable, ValueName As String, ByRef Variable As Long)
    If Not ValueTable.Item(ValueName) Is Nothing Then
     Try
      Variable = CType(ValueTable.Item(ValueName), Long)
@@ -25,7 +25,7 @@ Namespace Common
   End Sub
 
   <System.Runtime.CompilerServices.Extension()>
-  Public Sub ReadValue(ByRef ValueTable As Hashtable, ByVal ValueName As String, ByRef Variable As String)
+  Public Sub ReadValue(ByRef ValueTable As Hashtable, ValueName As String, ByRef Variable As String)
    If Not ValueTable.Item(ValueName) Is Nothing Then
     Try
      Variable = CType(ValueTable.Item(ValueName), String)
@@ -35,7 +35,7 @@ Namespace Common
   End Sub
 
   <System.Runtime.CompilerServices.Extension()>
-  Public Sub ReadValue(ByRef ValueTable As Hashtable, ByVal ValueName As String, ByRef Variable As Boolean)
+  Public Sub ReadValue(ByRef ValueTable As Hashtable, ValueName As String, ByRef Variable As Boolean)
    If Not ValueTable.Item(ValueName) Is Nothing Then
     Try
      Variable = CType(ValueTable.Item(ValueName), Boolean)
@@ -45,7 +45,7 @@ Namespace Common
   End Sub
 
   <System.Runtime.CompilerServices.Extension()>
-  Public Sub ReadValue(ByRef ValueTable As Hashtable, ByVal ValueName As String, ByRef Variable As Date)
+  Public Sub ReadValue(ByRef ValueTable As Hashtable, ValueName As String, ByRef Variable As Date)
    If Not ValueTable.Item(ValueName) Is Nothing Then
     Try
      Variable = CType(ValueTable.Item(ValueName), Date)
@@ -55,7 +55,7 @@ Namespace Common
   End Sub
 
   <System.Runtime.CompilerServices.Extension()>
-  Public Sub ReadValue(ByRef ValueTable As Hashtable, ByVal ValueName As String, ByRef Variable As TimeSpan)
+  Public Sub ReadValue(ByRef ValueTable As Hashtable, ValueName As String, ByRef Variable As TimeSpan)
    If Not ValueTable.Item(ValueName) Is Nothing Then
     Try
      Variable = TimeSpan.Parse(CType(ValueTable.Item(ValueName), String))
@@ -65,7 +65,7 @@ Namespace Common
   End Sub
 
   <System.Runtime.CompilerServices.Extension()>
-  Public Sub ReadValue(ByRef ValueTable As NameValueCollection, ByVal ValueName As String, ByRef Variable As Integer)
+  Public Sub ReadValue(ByRef ValueTable As NameValueCollection, ValueName As String, ByRef Variable As Integer)
    If Not ValueTable.Item(ValueName) Is Nothing Then
     Try
      Variable = CType(ValueTable.Item(ValueName), Integer)
@@ -75,7 +75,7 @@ Namespace Common
   End Sub
 
   <System.Runtime.CompilerServices.Extension()>
-  Public Sub ReadValue(ByRef ValueTable As NameValueCollection, ByVal ValueName As String, ByRef Variable As Long)
+  Public Sub ReadValue(ByRef ValueTable As NameValueCollection, ValueName As String, ByRef Variable As Long)
    If Not ValueTable.Item(ValueName) Is Nothing Then
     Try
      Variable = CType(ValueTable.Item(ValueName), Long)
@@ -85,7 +85,7 @@ Namespace Common
   End Sub
 
   <System.Runtime.CompilerServices.Extension()>
-  Public Sub ReadValue(ByRef ValueTable As NameValueCollection, ByVal ValueName As String, ByRef Variable As String)
+  Public Sub ReadValue(ByRef ValueTable As NameValueCollection, ValueName As String, ByRef Variable As String)
    If Not ValueTable.Item(ValueName) Is Nothing Then
     Try
      Variable = CType(ValueTable.Item(ValueName), String)
@@ -95,7 +95,7 @@ Namespace Common
   End Sub
 
   <System.Runtime.CompilerServices.Extension()>
-  Public Sub ReadValue(ByRef ValueTable As NameValueCollection, ByVal ValueName As String, ByRef Variable As Boolean)
+  Public Sub ReadValue(ByRef ValueTable As NameValueCollection, ValueName As String, ByRef Variable As Boolean)
    If Not ValueTable.Item(ValueName) Is Nothing Then
     Try
      Variable = CType(ValueTable.Item(ValueName), Boolean)
@@ -111,7 +111,7 @@ Namespace Common
   End Sub
 
   <System.Runtime.CompilerServices.Extension()>
-  Public Sub ReadValue(ByRef ValueTable As NameValueCollection, ByVal ValueName As String, ByRef Variable As Date)
+  Public Sub ReadValue(ByRef ValueTable As NameValueCollection, ValueName As String, ByRef Variable As Date)
    If Not ValueTable.Item(ValueName) Is Nothing Then
     Try
      Variable = CType(ValueTable.Item(ValueName), Date)
@@ -121,7 +121,7 @@ Namespace Common
   End Sub
 
   <System.Runtime.CompilerServices.Extension()>
-  Public Sub ReadValue(ByRef ValueTable As NameValueCollection, ByVal ValueName As String, ByRef Variable As TimeSpan)
+  Public Sub ReadValue(ByRef ValueTable As NameValueCollection, ValueName As String, ByRef Variable As TimeSpan)
    If Not ValueTable.Item(ValueName) Is Nothing Then
     Try
      Variable = TimeSpan.Parse(CType(ValueTable.Item(ValueName), String))
@@ -131,7 +131,7 @@ Namespace Common
   End Sub
 
   <System.Runtime.CompilerServices.Extension()>
-  Public Sub ReadValue(ByVal ValueTable As Dictionary(Of String, String), ByVal ValueName As String, ByRef Variable As Integer)
+  Public Sub ReadValue(ValueTable As Dictionary(Of String, String), ValueName As String, ByRef Variable As Integer)
    If ValueTable.ContainsKey(ValueName) Then
     Try
      Variable = CType(ValueTable.Item(ValueName), Integer)
@@ -141,7 +141,7 @@ Namespace Common
   End Sub
 
   <System.Runtime.CompilerServices.Extension()>
-  Public Sub ReadValue(ByVal ValueTable As Dictionary(Of String, String), ByVal ValueName As String, ByRef Variable As String)
+  Public Sub ReadValue(ValueTable As Dictionary(Of String, String), ValueName As String, ByRef Variable As String)
    If ValueTable.ContainsKey(ValueName) Then
     Try
      Variable = CType(ValueTable.Item(ValueName), String)
@@ -151,7 +151,7 @@ Namespace Common
   End Sub
 
   <System.Runtime.CompilerServices.Extension()>
-  Public Sub ReadValue(ByVal ValueTable As Dictionary(Of String, String), ByVal ValueName As String, ByRef Variable As Boolean)
+  Public Sub ReadValue(ValueTable As Dictionary(Of String, String), ValueName As String, ByRef Variable As Boolean)
    If ValueTable.ContainsKey(ValueName) Then
     Try
      Variable = CType(ValueTable.Item(ValueName), Boolean)
@@ -161,7 +161,7 @@ Namespace Common
   End Sub
 
   <System.Runtime.CompilerServices.Extension()>
-  Public Sub ReadValue(ByVal ValueTable As Dictionary(Of String, String), ByVal ValueName As String, ByRef Variable As Date)
+  Public Sub ReadValue(ValueTable As Dictionary(Of String, String), ValueName As String, ByRef Variable As Date)
    If ValueTable.ContainsKey(ValueName) Then
     Try
      Variable = CType(ValueTable.Item(ValueName), Date)
@@ -171,7 +171,7 @@ Namespace Common
   End Sub
 
   <System.Runtime.CompilerServices.Extension()>
-  Public Sub ReadValue(ByVal ValueTable As Dictionary(Of String, String), ByVal ValueName As String, ByRef Variable As TimeSpan)
+  Public Sub ReadValue(ValueTable As Dictionary(Of String, String), ValueName As String, ByRef Variable As TimeSpan)
    If ValueTable.ContainsKey(ValueName) Then
     Try
      Variable = TimeSpan.Parse(CType(ValueTable.Item(ValueName), String))
@@ -188,6 +188,15 @@ Namespace Common
     Return 1
    Else
     Return 0
+   End If
+  End Function
+
+  <System.Runtime.CompilerServices.Extension()>
+  Public Function ToYesNo(var As Boolean) As String
+   If var Then
+    Return "Yes"
+   Else
+    Return "No"
    End If
   End Function
 

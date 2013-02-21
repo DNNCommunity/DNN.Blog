@@ -46,11 +46,11 @@ Partial Class ViewCategories
 
 #Region "Event Handlers"
 
- Protected Overloads Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+ Protected Overloads Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
   _settings = CategoryViewSettings.GetCategoryViewSettings(TabModuleId)
  End Sub
 
- Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+ Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
   If _settings.TreeSkin <> "" Then
    dtCategories.Skin = _settings.TreeSkin
   End If
@@ -64,7 +64,7 @@ Partial Class ViewCategories
 
     If Request.Params("catid") IsNot Nothing Then
      Dim catId As Integer = Convert.ToInt32(Request.Params("catid"))
-     Dim objNode As RadTreeNode = dtCategories.FindNodeByValue(catId.ToString())
+     Dim objNode As RadTreeNode = dtCategories.FindNodeue(catId.ToString())
      If objNode IsNot Nothing Then
       objNode.Selected = True
       objNode.ExpandParentNodes()

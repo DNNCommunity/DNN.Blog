@@ -25,19 +25,19 @@ Namespace Controllers
 
  Public Class SearchController
 
-  Public Shared Function SearchByKeywordByPortal(ByVal PortalID As Integer, ByVal SearchString As String, ByVal ShowNonPublic As Boolean, ByVal ShowNonPublished As Boolean) As List(Of EntryInfo)
+  Public Shared Function SearchByKeywordByPortal(PortalID As Integer, SearchString As String, ShowNonPublic As Boolean, ShowNonPublished As Boolean) As List(Of EntryInfo)
    Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().SearchByKeyWordAndPortal(PortalID, SearchString, ShowNonPublic, ShowNonPublished))
   End Function
 
-  Public Shared Function SearchByKeywordByBlog(ByVal BlogID As Integer, ByVal SearchString As String, ByVal ShowNonPublic As Boolean, ByVal ShowNonPublished As Boolean) As List(Of EntryInfo)
+  Public Shared Function SearchByKeywordByBlog(BlogID As Integer, SearchString As String, ShowNonPublic As Boolean, ShowNonPublished As Boolean) As List(Of EntryInfo)
    Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().SearchByKeyWordAndBlog(BlogID, SearchString, ShowNonPublic, ShowNonPublished))
   End Function
 
-  Public Shared Function SearchByPhraseByPortal(ByVal PortalID As Integer, ByVal SearchString As String, ByVal ShowNonPublic As Boolean, ByVal ShowNonPublished As Boolean) As List(Of EntryInfo)
+  Public Shared Function SearchByPhraseByPortal(PortalID As Integer, SearchString As String, ShowNonPublic As Boolean, ShowNonPublished As Boolean) As List(Of EntryInfo)
    Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().SearchByPhraseAndPortal(PortalID, SearchString, ShowNonPublic, ShowNonPublished))
   End Function
 
-  Public Shared Function SearchByPhraseByBlog(ByVal BlogID As Integer, ByVal SearchString As String, ByVal ShowNonPublic As Boolean, ByVal ShowNonPublished As Boolean) As List(Of EntryInfo)
+  Public Shared Function SearchByPhraseByBlog(BlogID As Integer, SearchString As String, ShowNonPublic As Boolean, ShowNonPublished As Boolean) As List(Of EntryInfo)
    Return CBO.FillCollection(Of EntryInfo)(DataProvider.Instance().SearchByPhraseAndBlog(BlogID, SearchString, ShowNonPublic, ShowNonPublished))
   End Function
 

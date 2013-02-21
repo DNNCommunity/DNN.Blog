@@ -30,17 +30,6 @@ Namespace Common
    ShowTotalUsage = 4
   End Enum
 
-  Public Enum AuthorMode
-   PersonalMode = 0
-   GhostMode = 1
-   BloggerMode = 2
-  End Enum
-
-  Public Enum CommentMode
-   None = -1
-   [Default] = 0
-  End Enum
-
   Public Enum SocialSharingMode
    None = -1
    [Default] = 0
@@ -62,6 +51,19 @@ Namespace Common
   Public Const BloggerPermission As String = "BLOGGER"
   Public Const GhostWriterPermission As String = "GHOSTWRITER"
 
+  Public Const glbAppName As String = "Blog"
+  Public Const glbRoleNothing As Integer = -4
+  Public Const glbUserNothing As Integer = -10
+  Public Const glbImageHandlerPath As String = "~/DesktopModules/Blog/BlogImage.ashx"
+  Public Const glbPermittedFileExtensions As String = ".jpg,.png,.gif,.bmp,"
+  Public Const glbTemplatesPath As String = "~/DesktopModules/Blog/Templates/"
+
+  Public Enum BlogPermissionTypes
+   EDIT = 0
+   ADD = 1
+   APPROVE = 2
+  End Enum
+
 #Region "Caching"
 
   ''' <summary>
@@ -82,7 +84,7 @@ Namespace Common
 
 #End Region
 
-#Region "Module Settings"
+#Region " Module Settings"
 
   Public Const SettingArchiveDisplayMode As String = "BLOG_ARCHIVE_DISPLAYMODE"
   Public Const SettingListDisplayMode As String = "BLOG_ARCHIVE_LISTMODE"

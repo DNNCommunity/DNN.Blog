@@ -60,7 +60,7 @@ Namespace Upgrade
     End If
 
     ' deal w/ category/tag migration
-    colEntries = EntryController.RetrieveTaxonomyRelatedPosts()
+    colEntries = EntriesController.RetrieveTaxonomyRelatedPosts()
     message = MigrateTaxonomy(colEntries, message)
 
     Return message
@@ -70,7 +70,7 @@ Namespace Upgrade
    End Try
   End Function
 
-  Friend Function MigrateTaxonomy(ByVal colEntries As List(Of EntryInfo), ByVal message As String) As String
+  Friend Function MigrateTaxonomy(colEntries As List(Of EntryInfo), message As String) As String
    Dim countContentItems As Integer = 0
    Dim countCategories As Integer = 0
    Dim countTags As Integer = 0
@@ -224,7 +224,7 @@ Namespace Upgrade
       ' update content item
       objEntry.Terms.Clear()
       objEntry.Terms.AddRange(entryTerms)
-      EntryController.UpdateEntry(objEntry, objEntry.TabID, portalId, currentVocabId)
+      EntriesController.UpdateEntry(objEntry, objEntry.TabID, portalId, currentVocabId)
      End If
     Next
     message += "Migrated " + countContentItems.ToString() + " content items. " & vbCrLf & vbCrLf
@@ -233,8 +233,8 @@ Namespace Upgrade
    Return message
   End Function
 
-  Friend Sub CreateContentItems(ByVal portalId As Integer)
-   Dim colEntries As List(Of EntryInfo) = EntryController.GetAllEntriesByPortal(portalId)
+  Friend Sub CreateContentItems(portalId As Integer)
+   Dim colEntries As List(Of EntryInfo) = EntriesController.GetAllEntriesByPortal(portalId)
 
    For Each objEntry As EntryInfo In colEntries
     If objEntry.ContentItemId < 1 Then
@@ -242,7 +242,7 @@ Namespace Upgrade
      Dim objContentItem As ContentItem = cntTaxonomy.CreateContentItem(objEntry, objEntry.TabID)
      objEntry.ContentItemId = objContentItem.ContentItemId
 
-     EntryController.UpdateEntry(objEntry, objEntry.TabID, portalId, 1)
+     EntriesController.UpdateEntry(objEntry, objEntry.TabID, portalId, 1)
     End If
    Next
   End Sub

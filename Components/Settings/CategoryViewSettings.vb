@@ -35,7 +35,7 @@ Namespace Settings
 
 #Region "Constructors"
 
-  Public Sub New(ByVal TabModuleId As Integer)
+  Public Sub New(TabModuleId As Integer)
    _tabModuleId = TabModuleId
    _allSettings = (New DotNetNuke.Entities.Modules.ModuleController).GetTabModuleSettings(_tabModuleId)
 
@@ -43,7 +43,7 @@ Namespace Settings
    _allSettings.ReadValue(Constants.SettingCategoryTreeSkin, TreeSkin)
   End Sub
 
-  Public Shared Function GetCategoryViewSettings(ByVal TabModuleId As Integer) As CategoryViewSettings
+  Public Shared Function GetCategoryViewSettings(TabModuleId As Integer) As CategoryViewSettings
    Dim CacheKey As String = Constants.CategorySettingsCacheKey & TabModuleId.ToString
    Dim bs As CategoryViewSettings = CType(DotNetNuke.Common.Utilities.DataCache.GetCache(CacheKey), CategoryViewSettings)
 
@@ -81,7 +81,7 @@ Namespace Settings
    Get
     Return _CategoryDisplayMode
    End Get
-   Set(ByVal Value As String)
+   Set(Value As String)
     _CategoryDisplayMode = Value
    End Set
   End Property
@@ -90,7 +90,7 @@ Namespace Settings
    Get
     Return _TreeSkin
    End Get
-   Set(ByVal Value As String)
+   Set(Value As String)
     _TreeSkin = Value
    End Set
   End Property

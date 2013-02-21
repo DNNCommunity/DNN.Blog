@@ -20,7 +20,6 @@
 
 Imports System
 Imports DotNetNuke.Modules.Blog.Business
-Imports DotNetNuke.Modules.Blog.Controllers
 Imports DotNetNuke.Modules.Blog.Common
 Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Services.Exceptions.Exceptions
@@ -30,13 +29,14 @@ Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.Modules.Blog.Integration
 Imports DotNetNuke.Modules.Blog.Entities
 Imports System.Linq
+Imports DotNetNuke.Modules.Blog.Entities.Entries
 
 Partial Public Class ModuleOptions
  Inherits BlogModuleBase
 
 #Region "Event Handlers"
 
- Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+ Protected Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
   Try
    jQuery.RequestDnnPluginsRegistration()
 
@@ -68,7 +68,7 @@ Partial Public Class ModuleOptions
     chkEnableTwitter.Checked = Settings.EnableTwitter
     chkEnableLinkedIN.Checked = Settings.EnableLinkedIn
 
-    Dim colEntries As List(Of EntryInfo) = EntryController.GetAllEntriesByPortal(ModuleContext.PortalId, True, True)
+    Dim colEntries As List(Of EntryInfo) = EntriesController.GetAllEntriesByPortal(ModuleContext.PortalId, True, True)
     If colEntries IsNot Nothing Then
      Dim colNoContentItems As List(Of EntryInfo) = colEntries.Where(Function(t) t.ContentItemId < 1).ToList()
      cmdUpgrade.Visible = colNoContentItems.Count > 0
@@ -100,7 +100,7 @@ Partial Public Class ModuleOptions
   End Try
  End Sub
 
- Protected Sub cmdUpdateOptions_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdUpdateOptions.Click
+ Protected Sub cmdUpdateOptions_Click(sender As Object, e As System.EventArgs) Handles cmdUpdateOptions.Click
   Try
    With Settings
     .EntryDescriptionRequired = chkForceDescription.Checked
@@ -152,11 +152,11 @@ Partial Public Class ModuleOptions
   End Try
  End Sub
 
- Protected Sub cmdGenerateLinks_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdGenerateLinks.Click
+ Protected Sub cmdGenerateLinks_Click(sender As Object, e As System.EventArgs) Handles cmdGenerateLinks.Click
   Utility.CreateAllEntryLinks(PortalId, , TabId)
  End Sub
 
- Protected Sub cmdUpdate_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdUpgrade.Click
+ Protected Sub cmdUpdate_Click(sender As Object, e As System.EventArgs) Handles cmdUpgrade.Click
   Dim _CustomUpgrade As New Upgrade.ModuleUpgrade
   '_CustomUpgrade.MigrateTaxonomyFolksonomy()
   _CustomUpgrade.CreateContentItems(ModuleContext.PortalId)
@@ -171,7 +171,7 @@ Partial Public Class ModuleOptions
   cmbPageBlogs.DataBind()
   cmbPageBlogs.Items.Insert(0, New ListItem("<" & GetString("Not_Specified", SharedResourceFile) & ">", "-1"))
   Try
-   cmbPageBlogs.Items.FindByValue(CStr(Settings.PageBlogs)).Selected = True
+   cmbPageBlogs.Items.Findue(CStr(Settings.PageBlogs)).Selected = True
   Catch
   End Try
 
@@ -188,7 +188,7 @@ Partial Public Class ModuleOptions
   ddlCatVocabRoot.Items.Insert(0, catli)
  End Sub
 
- Private Sub AddFolderToList(ByRef cbList As CheckBoxList, ByVal fullPath As String, ByVal relativePath As String)
+ Private Sub AddFolderToList(ByRef cbList As CheckBoxList, fullPath As String, relativePath As String)
   If Not IO.Directory.Exists(fullPath) Then Exit Sub
   Dim baseDir As New IO.DirectoryInfo(fullPath)
   For Each d As IO.DirectoryInfo In baseDir.GetDirectories()

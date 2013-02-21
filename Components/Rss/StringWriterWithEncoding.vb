@@ -31,7 +31,7 @@ Namespace Rss
 
   Private _encoding As System.Text.Encoding
 
-  Public Sub New(ByVal builder As StringBuilder, ByVal encoding As System.Text.Encoding)
+  Public Sub New(builder As StringBuilder, encoding As System.Text.Encoding)
    MyBase.New(builder)
    _encoding = encoding
   End Sub

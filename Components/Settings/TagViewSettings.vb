@@ -35,7 +35,7 @@ Namespace Settings
 
 #Region "Constructors"
 
-  Public Sub New(ByVal TabModuleId As Integer)
+  Public Sub New(TabModuleId As Integer)
    _tabModuleId = TabModuleId
    _allSettings = (New DotNetNuke.Entities.Modules.ModuleController).GetTabModuleSettings(_tabModuleId)
 
@@ -43,7 +43,7 @@ Namespace Settings
    _allSettings.ReadValue(Constants.SettingCloudSkin, CloudSkin)
   End Sub
 
-  Public Shared Function GetTagViewSettings(ByVal TabModuleId As Integer) As TagViewSettings
+  Public Shared Function GetTagViewSettings(TabModuleId As Integer) As TagViewSettings
    Dim CacheKey As String = Constants.TagSettingsCacheKey & TabModuleId.ToString
    Dim bs As TagViewSettings = CType(DotNetNuke.Common.Utilities.DataCache.GetCache(CacheKey), TagViewSettings)
 
@@ -81,7 +81,7 @@ Namespace Settings
    Get
     Return _TagDisplayMode
    End Get
-   Set(ByVal Value As String)
+   Set(Value As String)
     _TagDisplayMode = Value
    End Set
   End Property
@@ -90,7 +90,7 @@ Namespace Settings
    Get
     Return _CloudSkin
    End Get
-   Set(ByVal Value As String)
+   Set(Value As String)
     _CloudSkin = Value
    End Set
   End Property

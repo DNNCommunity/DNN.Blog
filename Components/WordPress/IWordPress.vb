@@ -32,7 +32,7 @@ Namespace WordPress
  Public Interface IWordPress
 
   <XmlRpcMethod("wp.getCategories", Description:="Retrieves the categories for a blog using the Wordpress API. Returns an array of category Infos.")> _
-  Function getCategories(ByVal blogid As String, ByVal username As String, ByVal password As String) As CategoryInfo()
+  Function getCategories(blogid As String, username As String, password As String) As CategoryInfo()
 
  End Interface
 

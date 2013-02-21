@@ -32,22 +32,22 @@ Namespace MetaWeblog
  Public Interface IMetaWeblog
 
   <XmlRpcMethod("metaWeblog.editPost", Description:="Updates and existing post to a designated blog using the metaWeblog API. Returns true if completed.")>
-  Function editPost(ByVal postid As String, ByVal username As String, ByVal password As String, ByVal post As Post, ByVal publish As Boolean) As Boolean
+  Function editPost(postid As String, username As String, password As String, post As Post, publish As Boolean) As Boolean
 
   <XmlRpcMethod("metaWeblog.getCategories", Description:="Retrieves a list of valid Categories for a post using the metaWeblog API. Returns the metaWeblog Categories struct collection.")>
-  Function getCategories(ByVal blogid As String, ByVal username As String, ByVal password As String) As MetaWebLogCategoryInfo()
+  Function getCategories(blogid As String, username As String, password As String) As MetaWebLogCategoryInfo()
 
   <XmlRpcMethod("metaWeblog.getPost", Description:="Retrieves an existing post using the metaWeblog API. Returns the metaWeblog struct.")>
-  Function getPost(ByVal postid As String, ByVal username As String, ByVal password As String) As Post
+  Function getPost(postid As String, username As String, password As String) As Post
 
   <XmlRpcMethod("metaWeblog.getRecentPosts", Description:="Retrieves a list of the most recent existing post using the metaWeblog API. Returns the metaWeblog struct collection.")>
-  Function getRecentPosts(ByVal blogid As String, ByVal username As String, ByVal password As String, ByVal numberOfPosts As Integer) As Post()
+  Function getRecentPosts(blogid As String, username As String, password As String, numberOfPosts As Integer) As Post()
 
   <XmlRpcMethod("metaWeblog.newPost", Description:="Makes a new post to a designated blog using the metaWeblog API. Returns postid as a string.")>
-  Function newPost(ByVal blogid As String, ByVal username As String, ByVal password As String, ByVal post As Post, ByVal publish As Boolean) As String
+  Function newPost(blogid As String, username As String, password As String, post As Post, publish As Boolean) As String
 
   <XmlRpcMethod("metaWeblog.newMediaObject", Description:="Uploads an image, movie, song, or other media using the metaWeblog API. Returns the metaObject struct.")>
-  Function newMediaObject(ByVal blogid As String, ByVal username As String, ByVal password As String, ByVal mediaobject As mediaObject) As mediaObjectInfo
+  Function newMediaObject(blogid As String, username As String, password As String, mediaobject As mediaObject) As mediaObjectInfo
 
  End Interface
 

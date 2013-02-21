@@ -23,6 +23,7 @@ Option Explicit On
 Imports DotNetNuke.Modules.Blog.Entities
 Imports DotNetNuke.Services.Journal
 Imports System.Linq
+Imports DotNetNuke.Modules.Blog.Entities.Entries
 
 Namespace Integration
 
@@ -39,8 +40,8 @@ Namespace Integration
   ''' <param name="journalUserId"></param>
   ''' <param name="url"></param>
   ''' <remarks></remarks>
-  Friend Sub AddBlogEntryToJournal(ByVal objEntry As EntryInfo, ByVal portalId As Integer, ByVal tabId As Integer, ByVal journalUserId As Integer, ByVal url As String)
-   Dim objectKey As String = Common.Constants.ContentTypeName + "_" + Common.Constants.ContentTypeName + "_" + String.Format("{0}:{1}", objEntry.BlogID, objEntry.EntryID)
+  Friend Sub AddBlogEntryToJournal(objEntry As EntryInfo, portalId As Integer, tabId As Integer, journalUserId As Integer, url As String)
+   Dim objectKey As String = Common.Constants.ContentTypeName + "_" + Common.Constants.ContentTypeName + "_" + String.Format("{0}:{1}", objEntry.BlogID, objEntry.ContentItemId)
    Dim ji As JournalItem = JournalController.Instance.GetJournalItemByKey(portalId, objectKey)
 
    If Not ji Is Nothing Then
@@ -56,7 +57,7 @@ Namespace Integration
    ji.Title = objEntry.Title
    ji.ItemData = New ItemData()
    ji.ItemData.Url = url
-   ji.Summary = objEntry.Description
+   ji.Summary = objEntry.Summary
    ji.Body = Nothing
    ji.JournalTypeId = GetBlogJournalTypeID(portalId)
    ji.ObjectKey = objectKey
@@ -72,7 +73,7 @@ Namespace Integration
   ''' <param name="entryId"></param>
   ''' <param name="portalId"></param>
   ''' <remarks></remarks>
-  Friend Sub RemoveBlogEntryFromJournal(ByVal blogId As Integer, ByVal entryId As Integer, ByVal portalId As Integer)
+  Friend Sub RemoveBlogEntryFromJournal(blogId As Integer, entryId As Integer, portalId As Integer)
    Dim objectKey As String = Common.Constants.ContentTypeName + "_" + Common.Constants.ContentTypeName + "_" + String.Format("{0}:{1}", blogId, entryId)
    JournalController.Instance.DeleteJournalItemByKey(portalId, objectKey)
   End Sub
@@ -86,8 +87,8 @@ Namespace Integration
   ''' <param name="tabId"></param>
   ''' <param name="journalUserId"></param>
   ''' <param name="url"></param>
-  Friend Sub AddCommentToJournal(ByVal objEntry As EntryInfo, ByVal objComment As Entities.CommentInfo, ByVal portalId As Integer, ByVal tabId As Integer, ByVal journalUserId As Integer, ByVal url As String)
-   Dim objectKey As String = Common.Constants.ContentTypeName + "_" + Common.Constants.JournalCommentTypeName + "_" + String.Format("{0}:{1}", objEntry.EntryID.ToString(), objComment.CommentID.ToString())
+  Friend Sub AddCommentToJournal(objEntry As EntryInfo, objComment As Entities.CommentInfo, portalId As Integer, tabId As Integer, journalUserId As Integer, url As String)
+   Dim objectKey As String = Common.Constants.ContentTypeName + "_" + Common.Constants.JournalCommentTypeName + "_" + String.Format("{0}:{1}", objEntry.ContentItemId.ToString(), objComment.CommentID.ToString())
    Dim ji As JournalItem = JournalController.Instance.GetJournalItemByKey(portalId, objectKey)
    If Not ji Is Nothing Then
     JournalController.Instance.DeleteJournalItemByKey(portalId, objectKey)

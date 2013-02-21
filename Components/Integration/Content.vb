@@ -20,13 +20,13 @@
 Option Strict On
 Option Explicit On
 
-Imports DotNetNuke.Modules.Blog.Controllers
+Imports DotNetNuke.Modules.Blog
 Imports DotNetNuke.Modules.Blog.Common
 Imports DotNetNuke.Entities.Content
 Imports DotNetNuke.Entities.Content.Common
 Imports System.Linq
 Imports DotNetNuke.Common.Utilities
-Imports DotNetNuke.Modules.Blog.Entities
+Imports DotNetNuke.Modules.Blog.Entities.Entries
 
 Namespace Integration
 
@@ -43,7 +43,7 @@ Namespace Integration
   ''' <param name="tabId"></param>
   ''' <returns></returns>
   ''' <remarks>Once created, a thread is immediately updated (thread = content item). Will handlescontent type check too.</remarks>
-  Friend Function CreateContentItem(ByVal objEntry As EntryInfo, ByVal tabId As Integer) As ContentItem
+  Friend Function CreateContentItem(objEntry As EntryInfo, tabId As Integer) As ContentItem
    Dim typeController As IContentTypeController = New ContentTypeController
    Dim colContentTypes As IQueryable(Of ContentType) = (From t In typeController.GetContentTypes() Where t.ContentType = Constants.ContentTypeName Select t)
    Dim ContentTypeID As Integer
@@ -55,10 +55,10 @@ Namespace Integration
    End If
 
    Dim objContent As New ContentItem
-   objContent.Content = objEntry.Entry
+   objContent.Content = objEntry.Content
    objContent.ContentTypeId = ContentTypeID
    objContent.Indexed = False
-   objContent.ContentKey = "EntryId=" + objEntry.EntryID.ToString()
+   objContent.ContentKey = "Post=" + objEntry.ContentItemId.ToString()
    objContent.ModuleID = objEntry.ModuleID
    objContent.TabID = objEntry.TabID
 
@@ -77,14 +77,14 @@ Namespace Integration
   ''' <param name="objEntry"></param>
   ''' <param name="tabId"></param>
   ''' <remarks></remarks>
-  Friend Sub UpdateContentItem(ByVal objEntry As EntryInfo, ByVal tabId As Integer, ByVal portalId As Integer)
+  Friend Sub UpdateContentItem(objEntry As EntryInfo, tabId As Integer, portalId As Integer)
    Dim objContent As New ContentItem
    objContent = Util.GetContentController().GetContentItem(objEntry.ContentItemId)
 
    If objContent Is Nothing Then
     Return
    End If
-   objContent.Content = objEntry.Entry
+   objContent.Content = objEntry.Content
    objContent.TabID = tabId
    objContent.ModuleID = objEntry.ModuleID
 
@@ -99,7 +99,7 @@ Namespace Integration
   ''' Deletes a content item from the data store (via core API).
   ''' </summary>
   ''' <param name="contentItemId"></param>
-  Friend Shared Sub DeleteContentItem(ByVal contentItemId As Integer)
+  Friend Shared Sub DeleteContentItem(contentItemId As Integer)
    If contentItemId <= Null.NullInteger Then
     Return
    End If

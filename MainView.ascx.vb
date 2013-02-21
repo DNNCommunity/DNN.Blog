@@ -43,7 +43,7 @@ Partial Public Class MainView
 
 #Region " Private Methods "
 
- Private Function resolveParams(ByVal params As System.Collections.Specialized.NameValueCollection) As String
+ Private Function resolveParams(params As System.Collections.Specialized.NameValueCollection) As String
   Dim sRet As String = BlogModuleBase.CONTROL_VIEW_VIEWBLOG
   RssView = RssViews.None
   If Not Request.Params("EntryId") Is Nothing And Request.Params("BlogDate") Is Nothing Then
@@ -144,8 +144,8 @@ Partial Public Class MainView
     For intItem = 0 To PortalSettings.ActiveTab.Panes.Count - 1
      ddPane.Items.Add(Convert.ToString(PortalSettings.ActiveTab.Panes(intItem)))
     Next intItem
-    If Not ddPane.Items.FindByValue(DotNetNuke.Common.Globals.glbDefaultPane) Is Nothing Then
-     ddPane.Items.FindByValue(DotNetNuke.Common.Globals.glbDefaultPane).Selected = True
+    If Not ddPane.Items.Findue(DotNetNuke.Common.Globals.glbDefaultPane) Is Nothing Then
+     ddPane.Items.Findue(DotNetNuke.Common.Globals.glbDefaultPane).Selected = True
     End If
     ddPosition.Items.Clear()
     ddPosition.Items.Add(New ListItem(GetString("Top", "admin/controlpanel/App_LocalResources/iconbar"), "0"))
@@ -179,12 +179,12 @@ Partial Public Class MainView
 
 #Region " Event Handlers "
 
- Protected Overloads Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+ Protected Overloads Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
   LoadModuleControl()
   BuildUserDash()
  End Sub
 
- Protected Sub cmdAdd_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdAdd.Click
+ Protected Sub cmdAdd_Click(sender As Object, e As System.EventArgs) Handles cmdAdd.Click
   If (Convert.ToInt32(ddModuleDef.SelectedValue) = -1) Then Exit Sub
   Globals.AddModDef(PortalSettings, CInt(ddModuleDef.SelectedValue), TabId, ddPane.SelectedValue, CInt(ddPosition.SelectedValue), txtTitle.Text.Trim)
   Me.Response.Redirect(DotNetNuke.Common.NavigateURL(), False)

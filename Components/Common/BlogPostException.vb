@@ -3,7 +3,7 @@
   Inherits Exception
 
   Private _resourceKey As String
-  Public Sub New(ByVal resourceKey As String, ByVal defaultMessage As String)
+  Public Sub New(resourceKey As String, defaultMessage As String)
    MyBase.New(defaultMessage)
    _resourceKey = resourceKey
   End Sub
@@ -12,7 +12,7 @@
    Get
     Return _resourceKey
    End Get
-   Set(ByVal Value As String)
+   Set(Value As String)
     _resourceKey = Value
    End Set
   End Property

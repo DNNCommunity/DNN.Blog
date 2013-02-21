@@ -33,7 +33,7 @@ Partial Public Class ViewTagsSettings
 
 #Region "Event Handlers"
 
- Protected Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Init
+ Protected Sub Page_Init(sender As Object, e As System.EventArgs) Handles Me.Init
   _settings = TagViewSettings.GetTagViewSettings(TabModuleId)
  End Sub
 

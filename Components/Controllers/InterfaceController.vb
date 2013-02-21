@@ -30,7 +30,8 @@ Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Entities.Users
 Imports DotNetNuke.Modules.Blog.Settings
 Imports DotNetNuke.Services
-Imports DotNetNuke.Modules.Blog.Entities
+Imports DotNetNuke.Modules.Blog.Entities.Blogs
+Imports DotNetNuke.Modules.Blog.Entities.Entries
 
 Namespace Controllers
 

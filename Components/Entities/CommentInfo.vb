@@ -47,7 +47,7 @@ Namespace Entities
   Public Sub New()
   End Sub
 
-  Public Sub New(ByVal commentID As Integer, ByVal EntryID As Integer, ByVal email As String, ByVal comment As String, ByVal addedDate As DateTime, ByVal userID As Integer, ByVal userName As String, ByVal userFullName As String)
+  Public Sub New(commentID As Integer, EntryID As Integer, email As String, comment As String, addedDate As DateTime, userID As Integer, userName As String, userFullName As String)
    Me.CommentID = commentID
    Me.EntryID = EntryID
    Me.Email = email
@@ -61,7 +61,7 @@ Namespace Entities
    Get
     Return _commentID
    End Get
-   Set(ByVal Value As Integer)
+   Set(Value As Integer)
     _commentID = Value
    End Set
   End Property
@@ -70,7 +70,7 @@ Namespace Entities
    Get
     Return _EntryID
    End Get
-   Set(ByVal Value As Integer)
+   Set(Value As Integer)
     _EntryID = Value
    End Set
   End Property
@@ -79,7 +79,7 @@ Namespace Entities
    Get
     Return _email
    End Get
-   Set(ByVal Value As String)
+   Set(Value As String)
     _email = Value
    End Set
   End Property
@@ -88,7 +88,7 @@ Namespace Entities
    Get
     Return _Title
    End Get
-   Set(ByVal Value As String)
+   Set(Value As String)
     _Title = Value
    End Set
   End Property
@@ -97,7 +97,7 @@ Namespace Entities
    Get
     Return _comment
    End Get
-   Set(ByVal Value As String)
+   Set(Value As String)
     _comment = Value
    End Set
   End Property
@@ -106,7 +106,7 @@ Namespace Entities
    Get
     Return _addedDate
    End Get
-   Set(ByVal Value As DateTime)
+   Set(Value As DateTime)
     _addedDate = Value
    End Set
   End Property
@@ -115,7 +115,7 @@ Namespace Entities
    Get
     Return _userID
    End Get
-   Set(ByVal Value As Integer)
+   Set(Value As Integer)
     _userID = Value
    End Set
   End Property
@@ -131,7 +131,7 @@ Namespace Entities
       Return _userName
     End Select
    End Get
-   Set(ByVal Value As String)
+   Set(Value As String)
     _userName = Value
    End Set
   End Property
@@ -140,7 +140,7 @@ Namespace Entities
    Get
     Return _userFullName
    End Get
-   Set(ByVal Value As String)
+   Set(Value As String)
     _userFullName = Value
    End Set
   End Property
@@ -149,7 +149,7 @@ Namespace Entities
    Get
     Return _Author
    End Get
-   Set(ByVal Value As String)
+   Set(Value As String)
     _Author = Value
    End Set
   End Property
@@ -158,7 +158,7 @@ Namespace Entities
    Get
     Return _Approved
    End Get
-   Set(ByVal Value As Boolean)
+   Set(Value As Boolean)
     _Approved = Value
    End Set
   End Property
@@ -166,7 +166,7 @@ Namespace Entities
    Get
     Return _Website
    End Get
-   Set(ByVal Value As String)
+   Set(Value As String)
     _Website = Value
    End Set
   End Property
@@ -178,7 +178,7 @@ Namespace Entities
    End Get
   End Property
 
-  Public Function GetProperty(ByVal strPropertyName As String, ByVal strFormat As String, ByVal formatProvider As System.Globalization.CultureInfo, ByVal AccessingUser As UserInfo, ByVal AccessLevel As Scope, ByRef PropertyNotFound As Boolean) As String Implements IPropertyAccess.GetProperty
+  Public Function GetProperty(strPropertyName As String, strFormat As String, formatProvider As System.Globalization.CultureInfo, AccessingUser As UserInfo, AccessLevel As Scope, ByRef PropertyNotFound As Boolean) As String Implements IPropertyAccess.GetProperty
 
    Dim OutputFormat As String = String.Empty
    If strFormat = String.Empty Then

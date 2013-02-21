@@ -25,6 +25,7 @@ Imports DotNetNuke.Entities.Content.Common
 Imports DotNetNuke.Entities.Content.Taxonomy
 Imports System.Linq
 Imports DotNetNuke.Modules.Blog.Entities
+Imports DotNetNuke.Modules.Blog.Entities.Entries
 
 Namespace Integration
 
@@ -40,7 +41,7 @@ Namespace Integration
   ''' <param name="objThread"></param>
   ''' <param name="objContent"></param>
   ''' <remarks></remarks>
-  Friend Sub ManageEntryTerms(ByVal objThread As EntryInfo, ByVal objContent As ContentItem)
+  Friend Sub ManageEntryTerms(objThread As EntryInfo, objContent As ContentItem)
    RemoveEntryTerms(objContent)
 
    For Each term As DotNetNuke.Entities.Content.Taxonomy.Term In objThread.Terms
@@ -53,7 +54,7 @@ Namespace Integration
   ''' </summary>
   ''' <param name="objContent"></param>
   ''' <remarks></remarks>
-  Friend Sub RemoveEntryTerms(ByVal objContent As ContentItem)
+  Friend Sub RemoveEntryTerms(objContent As ContentItem)
    Util.GetTermController().RemoveTermsFromContent(objContent)
   End Sub
 
@@ -64,7 +65,7 @@ Namespace Integration
   ''' <param name="vocabularyId"></param>
   ''' <returns></returns>
   ''' <remarks></remarks>
-  Friend Shared Function CreateAndReturnTerm(ByVal name As String, ByVal vocabularyId As Integer) As Term
+  Friend Shared Function CreateAndReturnTerm(name As String, vocabularyId As Integer) As Term
    Dim termController As ITermController = DotNetNuke.Entities.Content.Common.Util.GetTermController()
    Dim existantTerm As Term = termController.GetTermsByVocabulary(vocabularyId).Where(Function(t) t.Name.ToLower() = name.ToLower()).FirstOrDefault()
    If existantTerm IsNot Nothing Then
@@ -80,7 +81,7 @@ Namespace Integration
        }
   End Function
 
-  Friend Shared Function CreateAndReturnTerm(ByVal name As String, ByVal vocabularyId As Integer, ByVal parentId As Integer) As Term
+  Friend Shared Function CreateAndReturnTerm(name As String, vocabularyId As Integer, parentId As Integer) As Term
    Dim termController As ITermController = DotNetNuke.Entities.Content.Common.Util.GetTermController()
    Dim colTerms As IQueryable(Of Term) = termController.GetTermsByVocabulary(vocabularyId).Where(Function(t) t.Name.ToLower() = name.ToLower())
    Dim existingTerm As Term = colTerms.Where(Function(s) s.VocabularyId = vocabularyId).SingleOrDefault

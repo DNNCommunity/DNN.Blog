@@ -1,104 +1,42 @@
-/* typical blog content (head, body, links, etc.) seen in multiple views */
-.blogSeparator{padding:8px;}
-.BlogCategories label{font-weight: bold;}
-.vbAuthor{padding:8px;  -webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;background:#efefef;border:1px #ccc solid;}
-	.vbAuthor img{padding-right: 6px;}
-	.vbaImage{text-align:center;}
-.vbHeader{padding-bottom:20px;}
-.vbBody{padding-bottom:12px;padding-bottom:12px;}
-.vbHeader img{padding:2px;}
-.BlogTopics {background-image:url(images/Tag_16X16_Standard.png);background-repeat:no-repeat;display:inline-block;padding-left: 24px;padding-bottom: 0px;}
-.BlogCategories{padding-bottom: 8px;}
-.BlogComments {background-image:url(images/comment.gif);background-position:left;background-repeat:no-repeat;	padding-left: 24px;}
-.BlogTrackback {background-image:url(images/blog_trackback.png);background-repeat:no-repeat;padding-left:24px;}
-.BlogPermalink {background-image:url(images/blog_permalink.png);background-repeat:no-repeat;padding-left:24px;}
-.BlogPrint {background-image:url(images/blog_print.png);background-repeat:no-repeat;margin-left:8px;padding-left:24px;}
-.BlogEditLink {background-image:url(images/blog_edit_link.png);background-repeat:no-repeat;margin-left:8px;padding-left:24px;}
-.BlogCopyright {font-size:10px;}
-.BlogImageList {line-height:20px;vertical-align:middle;}
-/* Comments */
-.blogComments{width:100%;border: 1px solid #e3e3e3;}
-.commentAuthor{padding:8px;}
-	.ccAuthor{font-style:italic;padding-bottom:4px;}
-.commentContent{padding:8px;}
-.commentMod{padding:8px;}
-.blogSeparate{padding-bottom:2px;}
-/* Tagify */
-.ui-menu {width: 225px;}
-.tagify-container {width: 350px;height: 100px;border: 1px solid #CCC;background-color: #FFF;border-radius: 2px;font-family: Verdana, sans-serif;font-size: 12px;overflow: auto;}
-	.tagify-container > span {display: inline-block;padding: 3px 5px;margin: 3px;border-radius: 2px;border: 1px solid #EEE;background-color: #E4E4E4;color: #000;}
-	.tagify-container > span > a {padding-left: 5px;color: #eb1414;text-decoration: none;font-weight: bold;border: 0px none;}
-	.tagify-container > input {border: 0px none;width: 350px;}
-	.tagify-container > input:focus {outline: none;}
-/* end tagify */
-/* ----- jquery-ui autocomplete ----- */
-ul.ui-autocomplete{overflow:hidden;clear:both;}
-.ui-autocomplete { position: absolute; cursor: default; }
-.ui-autocomplete-loading { background: white; }
-.dateFix input, .dateFix textarea{float: none;}
-/* workarounds */
-* html .ui-autocomplete { width:1px; } /* without this, the menu expands to 100% in IE6 */
-/* Menu */
-.ui-menu {list-style:none; padding: 1px; display:block;}
-.ui-menu .ui-menu {margin-top: -3px;}
-.ui-menu .ui-menu-item { cursor: pointer; background: #e3e3e3; margin:0px; padding: 2px; width: 100%; }
-.ui-menu .ui-menu-item a { text-decoration:none;display:block;color:#007CBC !important;font-weight:bold;font-size:1.1em;padding-top:0.4em;}
-.ui-menu .ui-menu-item a.ui-state-hover, .ui-menu .ui-menu-item a.ui-state-active { }
-/* Tagging */
-ul.qaRecentTags, ul.qaRecentTags li{list-style:none;margin:0px 0px 0px -8px;padding:0px 0px 5px 0px;min-height: 28px;width: 188px;}
-.rtTag{line-height: 14px;float: left;}
-	a.tag{background:#E4E4E4;padding:2px 8px 3px 8px;text-transform:lowercase;bottom:auto;-webkit-border-radius:10px;-moz-border-radius:10px;border-radius:10px;font-size:11px;margin:2px 2px 6px 0px;text-shadow:1px 1px 1px #f1f1f1;}
-	a.tag:hover{background:#555;text-decoration:none;color:white;text-shadow:none;}
-ul.dnnBlogAuthorActions, ul.dnnBlogAuthorActions li{list-style:none;margin:0px 0px 0px -10px;padding:0px 0px 0px 0px;}
-/* -- Tooltip (tag menu) -- */
-.qaTooltip{display:block;text-align:right;margin:0 8px 8px 0;float:left;}
-.tag-menu{max-width:30em;z-index:25;width:275px;overflow:hidden;line-height:1.4;text-align:left;border-bottom:1px #DADADA solid;border-right:1px #DADADA solid;background:#555;
-	-moz-border-radius:4px;border-radius:4px;padding:0.8em 1em 0.8em 1em;font-weight:normal;display:block;position:absolute;color:#f1f1f1;text-shadow:0px 1px 1px #000;}
-	.tag-menu a, .tag-menu a:link, .tag-menu a:visited{color:#fff;margin:0px 5px;text-decoration:underline;}
-		.tag-menu a:hover{text-decoration:none}
-.tag-menu .tm-heading{font-weight:bold;border-bottom:1px solid #727272;padding-bottom:8px;margin-bottom:8px;}
-.tag-menu .tm-description{line-height:13px;font-size:11px;margin-bottom:8px;}
-.tag-menu .tm-description p{margin-bottom:8px;}
-/* -- end Tooltip -- */
-/* social area */
-ul.qaSocialActions{clear:both;margin:0px;padding:0px;min-height: 28px;}
-ul.qaSocialActions, ul.qaSocialActions li{list-style:none;padding:0px;}
-	ul.qaSocialActions li {display:block;float:left;padding:4px;}
-.connect_widget_not_connected_text{display:none !important; /*to hide the counter!*/}
-.fb_edge_widget_with_comment iframe{width:47px !important;}
-/* but make the span that holds the comment box larger */
-span.fb_edge_comment_widget.fb_iframe_widget iframe{width:401px !important;}
-/* end social area */
-.percentRight{float: right;padding-left: 4px}
-/* Category Selection, overrides Telerik */
-ul.rlbList {list-style:none;}
-
-
-
-.divMainViewDialog{padding: 16px;}
-.ui-dialog.ui-widget{border:5px #ccc solid;background:#fff;-webkit-box-shadow: 0px 0px 20px 5px #999;-moz-box-shadow: 0px 0px 20px 5px #999;box-shadow: 0px 0px 20px 5px #999;-webkit-border-radius: 8px;-moz-border-radius: 8px;border-radius: 8px;}
-.ui-dialog-titlebar{padding:1.1em 1.2em;position:relative;background:#4E4E4E;background:-moz-linear-gradient(top, #4E4E4E 0%, #282828 100%);overflow:hidden;
-				background:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#4E4E4E), color-stop(100%,#282828));filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#4E4E4E', endColorstr='#282828',GradientType=0);
-				color:#fff;font-weight:bold;text-shadow:0px 1px 1px #000;cursor:move;-webkit-border-top-left-radius: 4px;-webkit-border-top-right-radius: 4px;-webkit-border-bottom-right-radius: 0px;
-				-webkit-border-bottom-left-radius: 0px;-moz-border-radius-topleft: 4px;-moz-border-radius-topright: 4px;-moz-border-radius-bottomright: 0px;-moz-border-radius-bottomleft: 0px;border-top-left-radius: 4px;
-				border-top-right-radius: 4px;border-bottom-right-radius: 0px;border-bottom-left-radius: 0px;font-size:14px;}
-	a.ui-dialog-titlebar-close.ui-corner-all{text-indent: -9999em;display: block;position: absolute;right: 10px;top: 10px;background: url(../../images/close-icn.png) no-repeat;height: 24px;width: 24px;}
-		
-
-/* Button Group Styles */
-		
-	/* Remove corners and add dividers to buttons in button group */
-	.buttonGroup .dnnTertiaryAction{
-		margin:0; -webkit-border-radius:0; -moz-border-radius:0; border-radius:0;
-		border-left:1px solid #fcfcfc; /*light*/
-		border-right:1px solid #c7c7c7; /*dark*/
-	}		
-	.buttonGroup .dnnTertiaryAction.active{border-right:1px solid #666;}
-	.buttonGroup .dnnTertiaryAction:active{border-left:1px solid #444;}
-	.buttonGroup .dnnTertiaryAction.disabled:hover{border-left:1px solid #fcfcfc; /*light*/}		
-
-.bloggerMenu{padding-bottom: 6px;}
-	.bloggerMenu ul, .bloggerMenu li{display:block;list-style-type:none;float:right;padding-left: 2px;margin:0;}
-	
-		.selectDrop {position:relative;z-index:1; width:auto;}
-		 .selectDrop .dnnTertiaryAction span{padding-right:5px;}
+﻿@font-face {
+    font-family: 'EntypoRegular';
+    src: url('images/entypo.eot');
+    src: url('images/entypo.eot?#iefix') format('embedded-opentype'),
+         url('images/entypo.woff') format('woff'),
+         url('images/entypo.ttf') format('truetype'),
+         url('images/entypo.svg#EntypoRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+a.entypoButton, a.entypoButton:link, a.entypoButton:visited, input.entypoButton
+{
+ font-family: EntypoRegular !important;
+ font-size: 5em;
+ text-decoration: none;
+ color: #666;
+ padding: 4px;
+}
+input.entypoButton 
+{
+ border-width: 0;
+ margin: 0;
+ margin-top:-14px;
+ cursor: pointer;
+}
+a.entypoButton:hover, a.entypoButton:active
+{
+ color: #000;
+}
+span.entypoIcon
+{
+ font-family: EntypoRegular !important;
+ color: #666;
+}
+.icon16
+{
+ font-size: 3em !important;
+}
+a.iconLink, a.iconLink:link, a.iconLink:hover, a.iconLink:visited, a.iconLink:active
+{
+ text-decoration: none;
+}

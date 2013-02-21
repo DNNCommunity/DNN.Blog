@@ -1,0 +1,322 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="valDescription.ErrorMessage" xml:space="preserve">
+    <value>Description is required</value>
+  </data>
+  <data name="lblCopyright.Text" xml:space="preserve">
+    <value>Copyright</value>
+  </data>
+  <data name="lblSummary.Text" xml:space="preserve">
+    <value>Summary</value>
+  </data>
+  <data name="lblTitle.Text" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="lblAttachmentDescription.Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="lblEntryDate.Text" xml:space="preserve">
+    <value>Entry Date (local time)</value>
+  </data>
+  <data name="secLinkedFiles.Text" xml:space="preserve">
+    <value>Linked Files</value>
+  </data>
+  <data name="lblDescription.Text" xml:space="preserve">
+    <value>Blog</value>
+  </data>
+  <data name="ModuleHelp.Text" xml:space="preserve">
+    <value>&lt;h1&gt;Blog - Edit Entry&lt;/h1&gt;
+&lt;p&gt;Here is where the user can create, edit and delete blog posts.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Entry date&lt;/b&gt;&lt;br /&gt;This is the date when the entry will be published. This date can be the actual date, a future date or a past date. If a future date is used, the entry will not be displayed until the date is met.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Parent blog&lt;/b&gt;&lt;br /&gt;If child blogs have been created under the parent blog, here the user can chose if the entry should be posted under one of those blogs. It is possible to post the entry to the parent blog as well.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Title&lt;/b&gt;&lt;br /&gt;This is the entry title, that will be displayed in the entry list and at the top of the entry itself.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Summary&lt;/b&gt;&lt;br /&gt;The summary may feature a sinthetic abstract of the entry content&lt;/p&gt;&lt;p&gt;&lt;b&gt;Blog&lt;/b&gt;&lt;br /&gt;Here is added the entry content.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Published&lt;/b&gt;&lt;br /&gt;The entry will not be displayed until this checkbox is checked. This is useful when the entry is still a draft, and needs to be finished before being displayed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Allow users to comment on this entry&lt;/b&gt;&lt;br /&gt;Here the blog owner can override the blog settings and decide if his/her readers will be allowed to post comments on this specific entry.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Display copyright notice at the bottom of your entry&lt;/b&gt;&lt;br /&gt;if checked, the copyright notice entered in Blog Settings is shown at the end of the entry.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Trackback Url&lt;/b&gt;&lt;br /&gt;This field is available only if Trackback auto discovery is not selected under Blog Settings. This is the URL that will be notified of the Trackback.&lt;/p&gt;</value>
+  </data>
+  <data name="valTitle.ErrorMessage" xml:space="preserve">
+    <value>Title is required</value>
+  </data>
+  <data name="lblAllowComments.Help" xml:space="preserve">
+    <value>Allow users to comment on this entry (overrides Blog Setting)</value>
+  </data>
+  <data name="valEntry.ErrorMessage" xml:space="preserve">
+    <value>Entry is Required</value>
+  </data>
+  <data name="lblDisplayCopyright.Help" xml:space="preserve">
+    <value>If checked, displays a copyright notice at the bottom of your entry.</value>
+  </data>
+  <data name="valUpload.ErrorMessage" xml:space="preserve">
+    <value>The File [FILENAME] Is A Restricted File Type for Images. Valid File Types Include JPG, GIF and PNG&lt;br&gt;</value>
+  </data>
+  <data name="lblAddAttachment.Text" xml:space="preserve">
+    <value>Attachment</value>
+  </data>
+  <data name="msgCopyright.Text" xml:space="preserve">
+    <value>Copyright ©</value>
+  </data>
+  <data name="btnUploadAttachment.Text" xml:space="preserve">
+    <value>Upload</value>
+  </data>
+  <data name="valEntryDateData.ErrorMessage" xml:space="preserve">
+    <value>Entry Date is not a valid date</value>
+  </data>
+  <data name="lnkDeleteFile.AlternateText" xml:space="preserve">
+    <value>Delete File !</value>
+  </data>
+  <data name="cboChildBlogs.DataTextField" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="msgEnsureDeleteFile.Text" xml:space="preserve">
+    <value>Are you really sure to delete the file</value>
+  </data>
+  <data name="btnUploadPicture.Text" xml:space="preserve">
+    <value>Upload</value>
+  </data>
+  <data name="valEntryDate.ErrorMessage" xml:space="preserve">
+    <value>Entry Date is required</value>
+  </data>
+  <data name="lblAltText.Text" xml:space="preserve">
+    <value>Alt Text</value>
+  </data>
+  <data name="lblAddPicture.Text" xml:space="preserve">
+    <value>Picture</value>
+  </data>
+  <data name="secEntryOptions.Text" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="lblEntryOptions.Text" xml:space="preserve">
+    <value>Entry Options</value>
+  </data>
+  <data name="secUploadOption.Text" xml:space="preserve">
+    <value>Upload Options</value>
+  </data>
+  <data name="lblChildBlog.Text" xml:space="preserve">
+    <value>Parent Blog</value>
+  </data>
+  <data name="txtDescriptionOptional.Text" xml:space="preserve">
+    <value>(The summary is optional, if you choose to not supply one, a short summary will be generated from your entry.)</value>
+  </data>
+  <data name="msgAddBlogEntry.Text" xml:space="preserve">
+    <value>Add blog entry</value>
+  </data>
+  <data name="msgEditBlogEntry.Text" xml:space="preserve">
+    <value>Edit blog entry</value>
+  </data>
+  <data name="lblTrackbackUrl.Text" xml:space="preserve">
+    <value>Trackback Url</value>
+  </data>
+  <data name="Filename.Header" xml:space="preserve">
+    <value>File Name</value>
+  </data>
+  <data name="lblCategories.Text" xml:space="preserve">
+    <value>Categories</value>
+  </data>
+  <data name="lblTags.Text" xml:space="preserve">
+    <value>Tags</value>
+  </data>
+  <data name="Published.Status" xml:space="preserve">
+    <value>This post has been published</value>
+  </data>
+  <data name="UnPublished.Status" xml:space="preserve">
+    <value>This entry is still a draft: it will not be visible to readers until it is published.</value>
+  </data>
+  <data name="SaveAndOffline.Text" xml:space="preserve">
+    <value>Save and take offline</value>
+  </data>
+  <data name="Save.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="SaveAndOffline.Confirm" xml:space="preserve">
+    <value>This will save your changes and take the post offline. Other users will not be able to see it any longer. Do you wish to continue?</value>
+  </data>
+  <data name="SaveAndPublish.Text" xml:space="preserve">
+    <value>Save and publish</value>
+  </data>
+  <data name="SaveAsDraft.Text" xml:space="preserve">
+    <value>Save as draft</value>
+  </data>
+  <data name="BlogContent.Text" xml:space="preserve">
+    <value>Content</value>
+  </data>
+  <data name="lblAllowComments.Text" xml:space="preserve">
+    <value>Enable Comments</value>
+  </data>
+  <data name="lblDisplayCopyright.Text" xml:space="preserve">
+    <value>Display Copyright</value>
+  </data>
+  <data name="AddTags.Text" xml:space="preserve">
+    <value>start typing to associate tags</value>
+  </data>
+  <data name="lblEntryTime.Text" xml:space="preserve">
+    <value>Post Time (Local)</value>
+  </data>
+  <data name="lblTimezone.Text" xml:space="preserve">
+    <value>Timezone</value>
+  </data>
+  <data name="valEntryTime.ErrorMessage" xml:space="preserve">
+    <value>Please enter a correct time</value>
+  </data>
+  <data name="reqEntryTime.ErrorMessage" xml:space="preserve">
+    <value>A time is required</value>
+  </data>
+  <data name="lblPublishDate.Text" xml:space="preserve">
+    <value>Publish Date</value>
+  </data>
+  <data name="PublishTimeZoneNote.Text" xml:space="preserve">
+    <value>The publish date is based on your profile timezone of: </value>
+  </data>
+  <data name="cmdDraft.Text" xml:space="preserve">
+    <value>Save Draft</value>
+  </data>
+  <data name="cmdPublish.Text" xml:space="preserve">
+    <value>Publish</value>
+  </data>
+  <data name="ControlTitle_edit_entry.Text" xml:space="preserve">
+    <value>Entry Editing</value>
+  </data>
+  <data name="lblBlog.Help" xml:space="preserve">
+    <value>Select blog to use for this post</value>
+  </data>
+  <data name="lblBlog.Text" xml:space="preserve">
+    <value>Blog</value>
+  </data>
+  <data name="About.Text" xml:space="preserve">
+    <value>Summary and Image</value>
+  </data>
+  <data name="Publishing.Text" xml:space="preserve">
+    <value>Publishing</value>
+  </data>
+  <data name="lblContent.Text" xml:space="preserve">
+    <value>Contents</value>
+  </data>
+  <data name="lblPublished.Help" xml:space="preserve">
+    <value>Select to publish. Deselect to unpublish (i.e. to make invisible to others).</value>
+  </data>
+  <data name="lblPublished.Text" xml:space="preserve">
+    <value>Published</value>
+  </data>
+  <data name="cmdImageRemove.Text" xml:space="preserve">
+    <value>Remove Image</value>
+  </data>
+  <data name="lblImage.Help" xml:space="preserve">
+    <value>You can specify an image to be associated with this blog.</value>
+  </data>
+  <data name="lblImage.Text" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="cmdSave.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+</root>

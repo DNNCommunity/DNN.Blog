@@ -21,7 +21,6 @@ Option Strict On
 Option Explicit On
 
 Imports DotNetNuke.Modules.Blog.Common
-Imports DotNetNuke.Modules.Blog.Controllers
 Imports System.Globalization
 Imports System.Runtime.Serialization
 Imports System.Runtime.Serialization.Json
@@ -30,7 +29,8 @@ Imports System.Net.Http
 Imports System.Web.Http
 Imports DotNetNuke.Web.Api
 Imports DotNetNuke.Services.Social.Notifications
-Imports DotNetNuke.Modules.Blog.Entities
+Imports DotNetNuke.Modules.Blog.Entities.Blogs
+Imports DotNetNuke.Modules.Blog.Entities.Entries
 
 Namespace Services
 
@@ -50,7 +50,7 @@ Namespace Services
    Dim notify As Notification = NotificationsController.Instance.GetNotification(notificationId)
    ParsePublishKey(notify.Context)
 
-   Dim objBlog As BlogInfo = BlogController.GetBlog(BlogId)
+   Dim objBlog As BlogInfo = BlogsController.GetBlog(BlogId)
 
    If objBlog Is Nothing Then
     Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
@@ -60,14 +60,14 @@ Namespace Services
     ' this should never happen (only if they changed modes)
     Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
    ElseIf objBlog.AuthorMode = Constants.AuthorMode.GhostMode Then
-    Dim isOwner As Boolean = objBlog.UserID = UserInfo.UserID
+    Dim isOwner As Boolean = objBlog.CreatedByUserId = UserInfo.UserID
 
     ' NOTE: we need to allow more than just the owner (think of admin)
     If Not isOwner Then
      Return Request.CreateResponse(HttpStatusCode.Unauthorized, New With {.Result = "error"})
     End If
 
-    Dim objEntry As EntryInfo = EntryController.GetEntry(EntryId, PortalSettings.PortalId)
+    Dim objEntry As EntryInfo = EntriesController.GetEntry(EntryId)
 
     If objEntry Is Nothing Then
      Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
@@ -75,11 +75,11 @@ Namespace Services
 
     objEntry.Published = True
     'CP TO DO: This shouldn't assume vocab = 1
-    EntryController.UpdateEntry(objEntry, objEntry.TabID, PortalSettings.PortalId, 1)
+    EntriesController.UpdateEntry(objEntry, UserInfo.UserID)
    Else
     ' blogger mode
-    Dim isOwner As Boolean = objBlog.UserID = UserInfo.UserID
-    Dim objEntry As EntryInfo = EntryController.GetEntry(EntryId, PortalSettings.PortalId)
+    Dim isOwner As Boolean = objBlog.CreatedByUserId = UserInfo.UserID
+    Dim objEntry As EntryInfo = EntriesController.GetEntry(EntryId)
 
     If objEntry Is Nothing Then
      Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
@@ -90,7 +90,7 @@ Namespace Services
     If objSecurity.CanAddEntry Then
      objEntry.Published = True
      'CP TO DO: This shouldn't assume vocab = 1
-     EntryController.UpdateEntry(objEntry, objEntry.TabID, PortalSettings.PortalId, 1)
+     EntriesController.UpdateEntry(objEntry, UserInfo.UserID)
     Else
      Return Request.CreateResponse(HttpStatusCode.Unauthorized, New With {.Result = "error"})
     End If
@@ -104,7 +104,7 @@ Namespace Services
   Public Function DeleteEntry(notificationId As Integer) As HttpResponseMessage
    Dim notify As Notification = NotificationsController.Instance.GetNotification(notificationId)
    ParsePublishKey(notify.Context)
-   Dim objBlog As BlogInfo = BlogController.GetBlog(BlogId)
+   Dim objBlog As BlogInfo = BlogsController.GetBlog(BlogId)
 
    If objBlog Is Nothing Then
     Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
@@ -114,24 +114,24 @@ Namespace Services
     ' this should never happen (only if they changed modes)
     Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
    ElseIf objBlog.AuthorMode = Constants.AuthorMode.GhostMode Then
-    Dim isOwner As Boolean = objBlog.UserID = UserInfo.UserID
+    Dim isOwner As Boolean = objBlog.CreatedByUserId = UserInfo.UserID
 
     ' NOTE: we need to allow more than just the owner (think of admin)
     If Not isOwner Then
      Return Request.CreateResponse(HttpStatusCode.Unauthorized, New With {.Result = "error"})
     End If
 
-    Dim objEntry As EntryInfo = EntryController.GetEntry(EntryId, PortalSettings.PortalId)
+    Dim objEntry As EntryInfo = EntriesController.GetEntry(EntryId)
 
     If objEntry Is Nothing Then
      Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
     End If
     'CP TO DO: This shouldn't assume vocab = 1
-    EntryController.DeleteEntry(EntryId, objEntry.ContentItemId, objBlog.BlogID, PortalSettings.PortalId, 1)
+    EntriesController.DeleteEntry(EntryId, objEntry.ContentItemId, objBlog.BlogID, PortalSettings.PortalId, 1)
    Else
     ' blogger mode
-    Dim isOwner As Boolean = objBlog.UserID = UserInfo.UserID
-    Dim objEntry As EntryInfo = EntryController.GetEntry(EntryId, PortalSettings.PortalId)
+    Dim isOwner As Boolean = objBlog.CreatedByUserId = UserInfo.UserID
+    Dim objEntry As EntryInfo = EntriesController.GetEntry(EntryId)
 
     If objEntry Is Nothing Then
      Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
@@ -141,7 +141,7 @@ Namespace Services
 
     If objSecurity.CanAddEntry Then
      'CP TO DO: This shouldn't assume vocab = 1
-     EntryController.DeleteEntry(EntryId, objEntry.ContentItemId, objBlog.BlogID, PortalSettings.PortalId, 1)
+     EntriesController.DeleteEntry(EntryId, objEntry.ContentItemId, objBlog.BlogID, PortalSettings.PortalId, 1)
     Else
      Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
     End If
@@ -155,15 +155,15 @@ Namespace Services
    Dim notify As Notification = NotificationsController.Instance.GetNotification(notificationId)
    ParseCommentKey(notify.Context)
 
-   Dim objBlog As BlogInfo = BlogController.GetBlog(BlogId)
+   Dim objBlog As BlogInfo = BlogsController.GetBlog(BlogId)
 
    If objBlog Is Nothing Then
     Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
    End If
 
-   Dim isOwner As Boolean = objBlog.UserID = UserInfo.UserID
+   Dim isOwner As Boolean = objBlog.CreatedByUserId = UserInfo.UserID
 
-   Dim objEntry As EntryInfo = EntryController.GetEntry(EntryId, PortalSettings.PortalId)
+   Dim objEntry As EntryInfo = EntriesController.GetEntry(EntryId)
 
    If objEntry Is Nothing Then
     Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
@@ -193,15 +193,15 @@ Namespace Services
    Dim notify As Notification = NotificationsController.Instance.GetNotification(notificationId)
    ParseCommentKey(notify.Context)
 
-   Dim objBlog As BlogInfo = BlogController.GetBlog(BlogId)
+   Dim objBlog As BlogInfo = BlogsController.GetBlog(BlogId)
 
    If objBlog Is Nothing Then
     Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
    End If
 
-   Dim isOwner As Boolean = objBlog.UserID = UserInfo.UserID
+   Dim isOwner As Boolean = objBlog.CreatedByUserId = UserInfo.UserID
 
-   Dim objEntry As EntryInfo = EntryController.GetEntry(EntryId, PortalSettings.PortalId)
+   Dim objEntry As EntryInfo = EntriesController.GetEntry(EntryId)
 
    If objEntry Is Nothing Then
     Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
@@ -227,7 +227,7 @@ Namespace Services
    Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = "success"})
   End Function
 
-#Region "Private Methods"
+#Region " Private Methods "
 
   Private Sub ParsePublishKey(key As String)
    Dim keys() As String = key.Split(CChar(":"))
