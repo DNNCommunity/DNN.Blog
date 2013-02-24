@@ -106,7 +106,7 @@ Namespace Integration
    objNotification.Subject = subject
    objNotification.Body = summary
    objNotification.IncludeDismissAction = True
-   objNotification.SenderUserID = objComment.UserID
+   objNotification.SenderUserID = objComment.CreatedByUserID
    objNotification.Context = notificationKey
 
    Dim objOwner As UserInfo = UserController.GetUserById(portalId, recipientId)
@@ -159,7 +159,7 @@ Namespace Integration
    objNotification.Subject = subject
    objNotification.Body = summary
    objNotification.IncludeDismissAction = True
-   objNotification.SenderUserID = objComment.UserID
+   objNotification.SenderUserID = objComment.CreatedByUserID
    objNotification.Context = notificationKey
 
    Dim objOwner As UserInfo = UserController.GetUserById(portalId, recipientId)

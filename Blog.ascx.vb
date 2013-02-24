@@ -106,6 +106,8 @@ Public Class Blog
   End With
   vtContents.DataBind()
 
+  ctlComments.ClonePropertiesFrom(Me)
+
  End Sub
 #End Region
 

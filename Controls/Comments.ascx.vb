@@ -12,6 +12,7 @@ Namespace Controls
 
 #Region " Private Properties "
   Private Property SelectedCommentId As Integer = -1
+  Public Shadows Property LocalResourceFile As String = "~/DesktopModules/Blog/Controls/App_LocalResources/Comments.ascx.resx"
 #End Region
 
 #Region " Event Handlers "
@@ -42,7 +43,7 @@ Namespace Controls
      Else
       objComment = New CommentInfo
       objComment.ContentItemId = Entry.ContentItemId
-      objComment.UserID = Me.UserId
+      objComment.CreatedByUserID = Me.UserId
      End If
 
      objComment.Comment = Server.HtmlEncode((New PortalSecurity).InputFilter(txtComment.Text, PortalSecurity.FilterFlag.NoProfanity))
@@ -84,11 +85,11 @@ Namespace Controls
     lnkEditComment.Visible = Security.CanApproveEntry Or Security.CanEditEntry
     lnkDeleteComment.Visible = lnkEditComment.Visible
 
-    Dim objUser As UserInfo = UserController.GetUserById(ModuleContext.PortalId, objComment.UserID)
+    Dim objUser As UserInfo = UserController.GetUserById(ModuleContext.PortalId, objComment.CreatedByUserID)
 
     If objUser IsNot Nothing Then
      hlUser.NavigateUrl = DotNetNuke.Common.Globals.UserProfileURL(objUser.UserID)
-     imgUser.ImageUrl = Control.ResolveUrl("~/profilepic.ashx?userid=" + objComment.UserID.ToString + "&w=" + "50" + "&h=" + "50")
+     imgUser.ImageUrl = Control.ResolveUrl("~/profilepic.ashx?userid=" + objComment.CreatedByUserID.ToString + "&w=" + "50" + "&h=" + "50")
      hlCommentAuthor.Text = objUser.DisplayName
      hlCommentAuthor.NavigateUrl = DotNetNuke.Common.Globals.UserProfileURL(objUser.UserID)
     Else
@@ -98,7 +99,7 @@ Namespace Controls
      hlCommentAuthor.NavigateUrl = DotNetNuke.Common.Globals.UserProfileURL(-1)
     End If
 
-    lblCommentDate.Text = Common.Globals.CalculateDateForDisplay(objComment.AddedDate)
+    lblCommentDate.Text = Common.Globals.CalculateDateForDisplay(objComment.CreatedOnDate)
     Dim comment As String = objComment.Comment
     Dim matches As MatchCollection = New Regex("(?<!["">])((http|https|ftp)\://.+?)(?=\s|$)").Matches(comment)
 
@@ -134,7 +135,7 @@ Namespace Controls
      BindCommentsList()
     Case "deletecomment"
      Dim comment As CommentInfo = CommentsController.GetComment(Int32.Parse(CType(e.CommandArgument, String)))
-     If Security.CanEditEntry Or Security.CanApproveComment Or comment.UserID = UserId Then
+     If Security.CanEditEntry Or Security.CanApproveComment Or comment.CreatedByUserID = UserId Then
       CommentsController.DeleteComment(Blog.BlogID, comment)
       BindCommentsList()
      End If
@@ -144,7 +145,7 @@ Namespace Controls
   Protected Sub cmdDeleteComment_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdDeleteComment.Click
    Dim comment As CommentInfo = CommentsController.GetComment(SelectedCommentId)
    If SelectedCommentId > -1 Then
-    If Security.CanEditEntry Or Security.CanApproveComment Or comment.UserID = UserId Then
+    If Security.CanEditEntry Or Security.CanApproveComment Or comment.CreatedByUserID = UserId Then
      CommentsController.DeleteComment(Blog.BlogID, comment)
     End If
     SelectedCommentId = -1

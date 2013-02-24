@@ -214,6 +214,7 @@
     <Compile Include="Components\Entities\Comments\CommentInfo_Properties.vb" />
     <Compile Include="Components\Entities\Comments\CommentsController_CRUD.vb" />
     <Compile Include="Components\Entities\Comments\CommentsController_FK.vb" />
+    <Compile Include="Components\Entities\Comments\CommentsController.vb" />
     <Compile Include="Components\Security\ContextSecurity.vb" />
     <Compile Include="Components\Common\ModuleSettings.vb" />
     <Compile Include="Components\Data\DataProvider_CMD.vb" />
@@ -392,6 +393,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_LocalResources\BlogImport.ascx.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Controls\App_LocalResources\Comments.ascx.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

@@ -29,6 +29,24 @@ Namespace Common
  Public Class BlogContextBase
   Inherits PortalModuleBase
 
+#Region " Public Methods "
+  Public Sub ClonePropertiesFrom(contextBase As BlogContextBase)
+   With contextBase
+    Me.ModuleConfiguration = contextBase.ModuleConfiguration
+    Me.BlogId = contextBase.BlogId
+    Me.Blog = contextBase.Blog
+    Me.ContentItemId = contextBase.ContentItemId
+    Me.Entry = contextBase.Entry
+    Me.BlogMapPath = contextBase.BlogMapPath
+    Me.EntryMapPath = contextBase.EntryMapPath
+    Me.OutputAdditionalFiles = contextBase.OutputAdditionalFiles
+    Me.Settings = contextBase.Settings
+    Me.ViewSettings = contextBase.ViewSettings
+    Me.Security = contextBase.Security
+   End With
+  End Sub
+#End Region
+
 #Region " Public Properties "
   Public Property BlogId As Integer = -1
   Public Property ContentItemId As Integer = -1
