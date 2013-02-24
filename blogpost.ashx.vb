@@ -708,14 +708,13 @@ Public Class BlogPost
  End Sub
 
  Private Sub PublishToJournal(newEntry As EntryInfo)
-  Dim cntIntegration As New Integration.Journal()
   Dim journalUserId As Integer
   If newEntry.CreatedByUserId <> UserInfo.UserID AndAlso Not Blog.PublishAsOwner Then
    journalUserId = UserInfo.UserID
   Else
    journalUserId = Blog.OwnerUserId
   End If
-  cntIntegration.AddBlogEntryToJournal(newEntry, PortalId, newEntry.TabID, journalUserId, newEntry.PermaLink(PortalSettings))
+  Integration.JournalController.AddBlogEntryToJournal(newEntry, PortalId, newEntry.TabID, journalUserId, newEntry.PermaLink(PortalSettings))
  End Sub
 #End Region
 

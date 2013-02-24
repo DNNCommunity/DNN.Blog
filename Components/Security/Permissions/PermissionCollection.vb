@@ -12,6 +12,8 @@ Namespace Security.Permissions
    Me.Add("ADD", New PermissionInfo With {.PermissionId = BlogPermissionTypes.ADD, .PermissionKey = "ADD"})
    Me.Add("EDIT", New PermissionInfo With {.PermissionId = BlogPermissionTypes.EDIT, .PermissionKey = "EDIT"})
    Me.Add("APPROVE", New PermissionInfo With {.PermissionId = BlogPermissionTypes.APPROVE, .PermissionKey = "APPROVE"})
+   Me.Add("ADDCOMMENT", New PermissionInfo With {.PermissionId = BlogPermissionTypes.ADDCOMMENT, .PermissionKey = "ADDCOMMENT"})
+   Me.Add("APPROVECOMMENT", New PermissionInfo With {.PermissionId = BlogPermissionTypes.APPROVECOMMENT, .PermissionKey = "APPROVECOMMENT"})
   End Sub
 
   Public Function GetById(id As Integer) As PermissionInfo
@@ -22,6 +24,10 @@ Namespace Security.Permissions
      Return Me("EDIT")
     Case BlogPermissionTypes.APPROVE
      Return Me("APPROVE")
+    Case BlogPermissionTypes.ADDCOMMENT
+     Return Me("ADDCOMMENT")
+    Case BlogPermissionTypes.APPROVECOMMENT
+     Return Me("APPROVECOMMENT")
    End Select
    Return Nothing
   End Function

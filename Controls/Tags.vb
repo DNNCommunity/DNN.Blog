@@ -28,50 +28,27 @@ Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.UI.Modules
 Imports DotNetNuke.Modules.Blog.Entities
 
-''' <summary>
-''' 
-''' </summary>
 <DefaultProperty("Terms"), Themeable(False)> _
 <ToolboxData("<{0}:Tags runat=server> </{0}:Tags>")> _
 Public Class Tags
  Inherits CompositeDataBoundControl
 
-#Region "Private Members"
-
+#Region " Private Members "
  Private _cmdSubscribe As LinkButton
  Private _htTags As Hashtable
-
  Private Shared ReadOnly EventSubmitKey As New Object()
 
  ''' <summary>
  ''' A collection of terms to be rendered by the control.
  ''' </summary>
- <Browsable(False)> _
+ <Browsable(False)>
  Private Property Terms() As List(Of TermInfo)
-  Get
-   Return m_Terms
-  End Get
-  Set(value As List(Of TermInfo))
-   m_Terms = value
-  End Set
- End Property
- Private m_Terms As List(Of TermInfo)
-
 #End Region
 
-#Region "Constructors"
-
- ''' <summary>
- ''' 
- ''' </summary>
- Public Sub New()
-
- End Sub
-
+#Region " Constructors "
 #End Region
 
-#Region "Public Properties"
-
+#Region " Public Properties "
  ''' <summary>
  ''' This provides a full path to the shared resource file for localization. 
  ''' </summary>
@@ -81,31 +58,12 @@ Public Class Tags
   End Get
  End Property
 
- <Browsable(False)> _
+ <Browsable(False)>
  Public Property ModContext() As ModuleInstanceContext
-  Get
-   Return m_ModContext
-  End Get
-  Set(value As ModuleInstanceContext)
-   m_ModContext = value
-  End Set
- End Property
- Private m_ModContext As ModuleInstanceContext
-
  Public Property CountMode() As Common.Constants.TagMode
-  Get
-   Return m_CountMode
-  End Get
-  Set(value As Common.Constants.TagMode)
-   m_CountMode = value
-  End Set
- End Property
- Private m_CountMode As Common.Constants.TagMode
-
 #End Region
 
-#Region "Event Handlers"
-
+#Region " Event Handlers "
  Protected Overrides Function CreateChildControls(dataSource As IEnumerable, dataBinding As Boolean) As Integer
   Controls.Clear()
 
@@ -119,29 +77,8 @@ Public Class Tags
     Terms = DirectCast(dataSource, List(Of TermInfo))
 
     For Each term As TermInfo In Terms
-     _cmdSubscribe = New LinkButton() With { _
-      .CausesValidation = False, _
-      .CssClass = "" _
-     }
-
-     '_cmdSubscribe.Command += SubscribeCommand()
-
-     '              Dim colUserSubs = Controller.GetUserSubscriptions(ModContext.PortalId, ModContext.PortalSettings.UserId)
-     '              Dim term1 = term
-     'Dim objSub = ( _
-     '	Where t.TermId = term1.TermId).SingleOrDefault()
-     '              If objSub Is Nothing Then
-     '                  _cmdSubscribe.CommandName = "subscribe"
-     '                  _cmdSubscribe.Text = Localization.GetString("Subscribe.Text", SharedResourceFile)
-     '                  _cmdSubscribe.CommandArgument = term.TermId.ToString()
-     '              Else
-     '                  _cmdSubscribe.Text = Localization.GetString("Unsubscribe.Text", SharedResourceFile)
-     '                  _cmdSubscribe.CommandName = "unsubscribe"
-     '                  _cmdSubscribe.CommandArgument = objSub.SubscriptionId.ToString()
-     '              End If
-
+     _cmdSubscribe = New LinkButton() With {.CausesValidation = False, .CssClass = ""}
      count += 1
-
      If Not _htTags.ContainsKey(term.TermId) Then
       _htTags.Add(term.TermId, _cmdSubscribe)
       Controls.Add(_cmdSubscribe)
@@ -154,43 +91,6 @@ Public Class Tags
   Return count
  End Function
 
- ' ''' <summary>
- ' ''' The Vote event.
- ' ''' </summary>
- ' ''' <remarks>This is normally done behind the scenes by .net, implemented here for performance reasons.</remarks>
- '<Category("Action"), Description("Raised when the user clicks the subscribe button.")> _
- 'Public Custom Event Subscribe As EventHandler
- '    AddHandler( value As EventHandler)
- '        Events.[AddHandler](EventSubmitKey, value)
- '    End AddHandler
- '    RemoveHandler( value As EventHandler)
- '        Events.[RemoveHandler](EventSubmitKey, value)
- '    End RemoveHandler
- 'End Event
-
- ' ''' <summary>
- ' ''' 
- ' ''' </summary>
- ' ''' <param name="source"></param>
- ' ''' <param name="e"></param>
- 'Protected Sub SubscribeCommand(source As Object, e As CommandEventArgs)
- '    RaiseEvent SubscribeClick(Me, e)
- '    Dim control = DirectCast(source, LinkButton)
- '    Dim action = e.CommandName
- '    Dim id = Convert.ToInt32(e.CommandArgument)
-
- '    Select Case action
- '        Case "subscribe"
- '            SubscribeUser(id, False)
- '            control.Text = Localization.GetString("Unsubscribe.Text", SharedResourceFile)
- '            Exit Select
- '        Case Else
- '            SubscribeUser(id, True)
- '            control.Text = Localization.GetString("Subscribe.Text", SharedResourceFile)
- '            Exit Select
- '    End Select
- 'End Sub
-
  ''' <summary>
  ''' This method renders the entire user interface for this control.
  ''' </summary>
@@ -199,9 +99,6 @@ Public Class Tags
   If Terms IsNot Nothing Then
    For Each term As TermInfo In Terms
     Dim link As String = DotNetNuke.Common.NavigateURL(ModContext.TabId, "", "tagid=" & term.TermId)
-    'Dim detaillink = Links.ViewTagDetail(ModContext, term.Name)
-    ''var historylink = Links.ViewTagHistory(ModContext, term.Name);
-    'Dim improvelink = Links.EditTag(ModContext, term.Name)
 
     ' <div>
     writer.AddAttribute(HtmlTextWriterAttribute.[Class], "qaTooltip")
@@ -230,13 +127,6 @@ Public Class Tags
     writer.AddAttribute(HtmlTextWriterAttribute.[Class], "tm-sub-links")
     writer.AddAttribute(HtmlTextWriterAttribute.Style, "float:right;")
     writer.RenderBeginTag(HtmlTextWriterTag.Span)
-    'If ModContext.PortalSettings.UserId > 0 Then
-    '    _cmdSubscribe = DirectCast(_htTags(term.TermId), LinkButton)
-    '    ' <a />
-    '    '''/ we register this here so that the tooltip is updated after the event action is taken.
-    '    'AJAX.RegisterPostBackControl(_cmdSubscribe);
-    '    _cmdSubscribe.RenderControl(writer)
-    'End If
     ' </span>
     writer.RenderEndTag()
     ' </span>
@@ -253,36 +143,6 @@ Public Class Tags
     ' <span>
     writer.AddAttribute(HtmlTextWriterAttribute.[Class], "tm-links")
     writer.RenderBeginTag(HtmlTextWriterTag.Span)
-
-    'writer.AddAttribute(HtmlTextWriterAttribute.Href, link);
-    'writer.RenderBeginTag(HtmlTextWriterTag.A);
-    'writer.Write(Localization.GetString("browse.Text", SharedResourceFile));
-    'writer.RenderEndTag();
-
-    '' <a />
-    'writer.AddAttribute(HtmlTextWriterAttribute.Href, detaillink)
-    'writer.RenderBeginTag(HtmlTextWriterTag.A)
-    'writer.Write(Localization.GetString("about.Text", SharedResourceFile))
-    'writer.RenderEndTag()
-
-
-    'writer.AddAttribute(HtmlTextWriterAttribute.Href, historylink);
-    'writer.RenderBeginTag(HtmlTextWriterTag.A);
-    'writer.Write(Localization.GetString("history.Text", SharedResourceFile));
-    'writer.RenderEndTag();
-
-    '' <span>
-    'writer.AddAttribute(HtmlTextWriterAttribute.[Class], "tm-links")
-    'writer.AddAttribute(HtmlTextWriterAttribute.Style, "float:right;")
-    'writer.RenderBeginTag(HtmlTextWriterTag.Span)
-    '' <a />
-    'writer.AddAttribute(HtmlTextWriterAttribute.Href, improvelink)
-    'writer.RenderBeginTag(HtmlTextWriterTag.A)
-    'writer.Write(Localization.GetString("improve.Text", SharedResourceFile))
-    'writer.RenderEndTag()
-    '' '' </span>
-    ''writer.RenderEndTag()
-
     ' </span>
     writer.RenderEndTag()
     ' </div>
@@ -317,34 +177,9 @@ Public Class Tags
    Next
   End If
  End Sub
-
 #End Region
 
-#Region "Private Methods"
-
- ' ''' <summary>
- ' ''' 
- ' ''' </summary>
- ' ''' <param name="id"></param>
- ' ''' <param name="remove"></param>
- 'Private Sub SubscribeUser(id As Integer, remove As Boolean)
- '    If id <= 0 OrElse ModContext.PortalSettings.UserId <= 0 Then
- '        Return
- '    End If
- '    If remove Then
- '        Controller.DeleteSubscription(ModContext.PortalId, id)
- '    Else
- '        Dim objSub = New SubscriptionInfo() With { _
- '         .PortalId = ModContext.PortalId, _
- '         .UserId = ModContext.PortalSettings.UserId, _
- '         .TermId = id, _
- '         .CreatedOnDate = DateTime.Now, _
- '         .SubscriptionType = CInt(Constants.SubscriptionType.InstantTerm) _
- '        }
- '        Controller.AddSubscription(objSub)
- '    End If
- 'End Sub
-
+#Region " Private Methods "
 #End Region
 
 End Class

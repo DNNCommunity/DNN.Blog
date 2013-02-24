@@ -39,4 +39,13 @@ Partial Public Class Blog
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
  Protected WithEvents vtContents As Global.DotNetNuke.Modules.Blog.Templating.ViewTemplate
+
+ '''<summary>
+ '''ctlComments control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents ctlComments As Global.DotNetNuke.Modules.Blog.Controls.Comments
 End Class

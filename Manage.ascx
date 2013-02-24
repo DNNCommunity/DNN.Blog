@@ -23,7 +23,7 @@
     <tr class="dnnGridItem">
      <td><a href="<%# EditUrl("Blog", Eval("BlogId"), "BlogEdit") %>" class="icon16 entypoButton" title="Edit">&#9998;</a></td>
      <td><a href="<%# EditUrl("Blog", Eval("BlogId"), "BlogImport") %>" class="icon16 entypoButton" title="Import">&#59200;</a></td>
-     <td><a href="<%# EditUrl("Blog", Eval("BlogId"), "BlogEdit") %>" class="icon16 entypoButton" title="Export">&#59201;</a></td>
+     <td><a href="<%# EditUrl("Blog", Eval("BlogId"), "BlogExport") %>" class="icon16 entypoButton" title="Export">&#59201;</a></td>
      <td><%# Eval("Title") %></td>
      <td><%# Eval("DisplayName") %></td>
     </tr>
@@ -45,7 +45,7 @@
     <Columns>
      <dnn:DnnGridTemplateColumn>
       <ItemTemplate>
-       <a href="<%# EditUrl("Post", Eval("ContentItemId"), "EntryEdit") %>" class="icon16 entypoButton">&#9998;</a>
+       <a href="<%# EditUrl("Post", Eval("ContentItemId"), "EntryEdit") %>" class="icon16 entypoButton" title="Edit">&#9998;</a>
       </ItemTemplate>
      </dnn:DnnGridTemplateColumn>
      <dnn:DnnGridTemplateColumn>

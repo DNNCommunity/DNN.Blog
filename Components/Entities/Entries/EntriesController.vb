@@ -65,28 +65,12 @@ Namespace Entities.Entries
 
 #Region "Private Methods"
   ''' <summary>
-  ''' This completes the things necessary for creating a content item in the data store.
-  ''' </summary>
-  ''' <param name="objEntry"></param>
-  ''' <param name="tabId"></param>
-  ''' <returns></returns>
-  ''' <remarks></remarks>
-  Private Shared Function CompleteEntryCreation(objEntry As EntryInfo, tabId As Integer) As Integer
-   Dim cntTaxonomy As New Content()
-   Dim objContentItem As ContentItem = cntTaxonomy.CreateContentItem(objEntry, tabId)
-   Return objContentItem.ContentItemId
-  End Function
-
-  ''' <summary>
   ''' Handles any content item/taxonomy updates, then deals w/ cache clearing (if applicable)
   ''' </summary>
   ''' <param name="objEntry"></param>
   ''' <param name="tabId"></param>
   ''' <remarks></remarks>
   Private Shared Sub CompleteEntryUpdate(objEntry As EntryInfo, tabId As Integer, portalId As Integer, vocabularyId As Integer)
-   Dim cntTaxonomy As New Content()
-   cntTaxonomy.UpdateContentItem(objEntry, tabId, portalId)
-
    ' Clear Cache
    Dim tagsKey As String = Common.Constants.TermsKey + "1"
    DataCache.RemoveCache(tagsKey)
@@ -101,10 +85,8 @@ Namespace Entities.Entries
   End Sub
 
   Private Shared Sub CompleteEntryDelete(contentItemId As Integer, blogId As Integer, entryId As Integer, portalId As Integer, vocabularyId As Integer)
-   Content.DeleteContentItem(contentItemId)
 
-   Dim cntJournal As New Integration.Journal()
-   cntJournal.RemoveBlogEntryFromJournal(blogId, entryId, portalId)
+   JournalController.RemoveBlogEntryFromJournal(blogId, entryId, portalId)
 
    ' Clear Cache
    Dim tagsKey As String = Common.Constants.TermsKey + "1"

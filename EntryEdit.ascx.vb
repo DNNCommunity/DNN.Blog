@@ -16,6 +16,7 @@ Imports DotNetNuke.Modules.Blog.Entities.Entries
 Imports DotNetNuke.Services.Localization
 Imports Telerik.Web.UI
 Imports DotNetNuke.Modules.Blog.Common.Globals
+Imports DotNetNuke.Modules.Blog.Integration
 
 Public Class EntryEdit
  Inherits BlogModuleBase
@@ -315,20 +316,17 @@ Public Class EntryEdit
 
     If (Entry.Published) Then
 
-     Dim cntIntegration As New Integration.Journal()
      Dim journalUrl As String = Entry.PermaLink(PortalSettings)
      Dim journalUserId As Integer = UserId
      If Blog.PublishAsOwner Then journalUserId = Blog.OwnerUserId
-     cntIntegration.AddBlogEntryToJournal(Entry, ModuleContext.PortalId, ModuleContext.TabId, journalUserId, journalUrl)
-     Dim cntNotifications As New Integration.Notifications
-     cntNotifications.RemoveEntryPendingNotification(Blog.BlogID, Entry.ContentItemId)
+     JournalController.AddBlogEntryToJournal(Entry, ModuleContext.PortalId, ModuleContext.TabId, journalUserId, journalUrl)
+     NotificationController.RemoveEntryPendingNotification(Blog.BlogID, Entry.ContentItemId)
 
     ElseIf Blog.MustApproveGhostPosts And UserId <> Blog.OwnerUserId Then
 
-     Dim cntNotifications As New Integration.Notifications
      Dim title As String = Localization.GetString("ApprovePostNotifyBody", Constants.SharedResourceFileName)
      Dim summary As String = "<a target='_blank' href='" + Entry.PermaLink(PortalSettings) + "'>" + Entry.Title + "</a>"
-     cntNotifications.EntryPendingApproval(Blog, Entry, ModuleContext.PortalId, summary, title)
+     NotificationController.EntryPendingApproval(Blog, Entry, ModuleContext.PortalId, summary, title)
 
     End If
 

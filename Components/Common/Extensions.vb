@@ -179,6 +179,66 @@ Namespace Common
     End Try
    End If
   End Sub
+
+  <System.Runtime.CompilerServices.Extension()>
+  Public Sub ReadValue(ByRef ValueTable As StateBag, ValueName As String, ByRef Variable As Integer)
+   If Not ValueTable.Item(ValueName) Is Nothing Then
+    Try
+     Variable = CType(ValueTable.Item(ValueName), Integer)
+    Catch ex As Exception
+    End Try
+   End If
+  End Sub
+
+  <System.Runtime.CompilerServices.Extension()>
+  Public Sub ReadValue(ByRef ValueTable As StateBag, ValueName As String, ByRef Variable As Long)
+   If Not ValueTable.Item(ValueName) Is Nothing Then
+    Try
+     Variable = CType(ValueTable.Item(ValueName), Long)
+    Catch ex As Exception
+    End Try
+   End If
+  End Sub
+
+  <System.Runtime.CompilerServices.Extension()>
+  Public Sub ReadValue(ByRef ValueTable As StateBag, ValueName As String, ByRef Variable As String)
+   If Not ValueTable.Item(ValueName) Is Nothing Then
+    Try
+     Variable = CType(ValueTable.Item(ValueName), String)
+    Catch ex As Exception
+    End Try
+   End If
+  End Sub
+
+  <System.Runtime.CompilerServices.Extension()>
+  Public Sub ReadValue(ByRef ValueTable As StateBag, ValueName As String, ByRef Variable As Boolean)
+   If Not ValueTable.Item(ValueName) Is Nothing Then
+    Try
+     Variable = CType(ValueTable.Item(ValueName), Boolean)
+    Catch ex As Exception
+    End Try
+   End If
+  End Sub
+
+  <System.Runtime.CompilerServices.Extension()>
+  Public Sub ReadValue(ByRef ValueTable As StateBag, ValueName As String, ByRef Variable As Date)
+   If Not ValueTable.Item(ValueName) Is Nothing Then
+    Try
+     Variable = CType(ValueTable.Item(ValueName), Date)
+    Catch ex As Exception
+    End Try
+   End If
+  End Sub
+
+  <System.Runtime.CompilerServices.Extension()>
+  Public Sub ReadValue(ByRef ValueTable As StateBag, ValueName As String, ByRef Variable As TimeSpan)
+   If Not ValueTable.Item(ValueName) Is Nothing Then
+    Try
+     Variable = TimeSpan.Parse(CType(ValueTable.Item(ValueName), String))
+    Catch ex As Exception
+    End Try
+   End If
+  End Sub
 #End Region
 
 #Region " Conversion Extensions "

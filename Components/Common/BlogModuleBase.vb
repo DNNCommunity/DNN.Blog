@@ -27,70 +27,8 @@ Imports DotNetNuke.Services.Tokens
 Namespace Common
 
  Public Class BlogModuleBase
-  Inherits PortalModuleBase
+  Inherits BlogContextBase
   Implements IPropertyAccess
-
-#Region " Public Members "
-#End Region
-
-#Region " Public Methods "
-#End Region
-
-#Region " Public Properties "
-  Public Property BlogId As Integer = -1
-  Public Property ContentItemId As Integer = -1
-  Public Property Blog As Entities.Blogs.BlogInfo = Nothing
-  Public Property Entry As Entities.Entries.EntryInfo = Nothing
-  Public Property BlogMapPath As String = ""
-  Public Property EntryMapPath As String = ""
-  Public Property OutputAdditionalFiles As Boolean
-
-  Private _uiTimezone As TimeZoneInfo = Nothing
-  Public ReadOnly Property UiTimeZone As TimeZoneInfo
-   Get
-    If _uiTimezone Is Nothing Then
-     _uiTimezone = ModuleContext.PortalSettings.TimeZone
-     If UserInfo.Profile.PreferredTimeZone IsNot Nothing Then
-      _uiTimezone = UserInfo.Profile.PreferredTimeZone
-     End If
-    End If
-    Return _uiTimezone
-   End Get
-  End Property
-
-  Private _settings As ModuleSettings
-  Public Shadows Property Settings() As ModuleSettings
-   Get
-    If _settings Is Nothing Then _settings = ModuleSettings.GetModuleSettings(ModuleId)
-    Return _settings
-   End Get
-   Set(ByVal value As ModuleSettings)
-    _settings = value
-   End Set
-  End Property
-
-  Private _viewSettings As ViewSettings
-  Public Property ViewSettings() As ViewSettings
-   Get
-    If _viewSettings Is Nothing Then _viewSettings = ViewSettings.GetViewSettings(TabModuleId)
-    Return _viewSettings
-   End Get
-   Set(ByVal value As ViewSettings)
-    _viewSettings = value
-   End Set
-  End Property
-
-  Private _security As ContextSecurity
-  Public Property Security() As ContextSecurity
-   Get
-    If _security Is Nothing Then _security = New ContextSecurity(ModuleId, TabId, Blog, UserInfo)
-    Return _security
-   End Get
-   Set(ByVal value As ContextSecurity)
-    _security = value
-   End Set
-  End Property
-#End Region
 
 #Region " Event Handlers "
   Protected Sub Page_Init(sender As Object, e As EventArgs) Handles Me.Init

@@ -62,6 +62,8 @@ Namespace Common
    EDIT = 0
    ADD = 1
    APPROVE = 2
+   ADDCOMMENT = 3
+   APPROVECOMMENT = 4
   End Enum
 
 #Region "Caching"

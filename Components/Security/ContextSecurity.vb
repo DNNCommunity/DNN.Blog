@@ -27,10 +27,12 @@ Imports DotNetNuke.Modules.Blog.Common.Constants
 Namespace Security
 
  Public Class ContextSecurity
-  Private Property IsOwner As Boolean = False
+  Public Property IsOwner As Boolean = False
   Private _canAdd As Boolean = False
   Private _canEdit As Boolean = False
   Private _canApprove As Boolean = False
+  Private _canAddComment As Boolean = False
+  Private _canApproveComment As Boolean = False
   Private _userIsAdmin As Boolean = False
   Private _isBlogger As Boolean = False
   Private _isEditor As Boolean = False
@@ -81,9 +83,21 @@ Namespace Security
    End Get
   End Property
 
+  Public ReadOnly Property CanAddComment() As Boolean
+   Get
+    Return _canAddComment Or IsOwner Or UserIsAdmin
+   End Get
+  End Property
+
   Public ReadOnly Property CanApproveEntry() As Boolean
    Get
     Return _canApprove Or IsOwner Or UserIsAdmin
+   End Get
+  End Property
+
+  Public ReadOnly Property CanApproveComment() As Boolean
+   Get
+    Return _canApproveComment Or IsOwner Or UserIsAdmin
    End Get
   End Property
 
