@@ -24,6 +24,7 @@ Imports DotNetNuke.Modules.Blog.Entities
 Imports DotNetNuke.Services.Journal
 Imports System.Linq
 Imports DotNetNuke.Modules.Blog.Entities.Entries
+Imports DotNetNuke.Modules.Blog.Entities.Blogs
 
 Namespace Integration
 
@@ -86,7 +87,7 @@ Namespace Integration
   ''' <param name="tabId"></param>
   ''' <param name="journalUserId"></param>
   ''' <param name="url"></param>
-  Public Shared Sub AddCommentToJournal(objEntry As EntryInfo, objComment As Entities.Comments.CommentInfo, portalId As Integer, tabId As Integer, journalUserId As Integer, url As String)
+  Public Shared Sub AddOrUpdateCommentInJournal(objBlog As BlogInfo, objEntry As EntryInfo, objComment As Entities.Comments.CommentInfo, portalId As Integer, tabId As Integer, journalUserId As Integer, url As String)
    Dim objectKey As String = Common.Constants.ContentTypeName + "_" + Common.Constants.JournalCommentTypeName + "_" + String.Format("{0}:{1}", objEntry.ContentItemId.ToString(), objComment.CommentID.ToString())
    Dim ji As JournalItem = DotNetNuke.Services.Journal.JournalController.Instance.GetJournalItemByKey(portalId, objectKey)
    If Not ji Is Nothing Then
@@ -102,13 +103,20 @@ Namespace Integration
    ji.Title = objEntry.Title
    ji.ItemData = New ItemData()
    ji.ItemData.Url = url
-   ji.Summary = "" ' objComment.Comment
+   ji.Summary = objComment.Comment
    ji.Body = Nothing
    ji.JournalTypeId = GetCommentJournalTypeID(portalId)
    ji.ObjectKey = objectKey
    ji.SecuritySet = "E,"
 
    DotNetNuke.Services.Journal.JournalController.Instance.SaveJournalItem(ji, tabId)
+
+   If objBlog.OwnerUserId = journalUserId Then
+    Dim title As String = Services.Localization.Localization.GetString("CommentAddedNotify", Common.Constants.SharedResourceFileName)
+    Dim summary As String = "<a target='_blank' href='" + url + "'>" + objEntry.Title + "</a>"
+    NotificationController.CommentAdded(objComment, objEntry, objBlog, portalId, summary, title)
+   End If
+
   End Sub
 
   ''' <summary>

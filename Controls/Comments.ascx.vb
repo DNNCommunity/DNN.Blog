@@ -20,11 +20,9 @@ Namespace Controls
   End Sub
 
   Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-
    If Not Me.IsPostBack Then
     BindCommentsList()
    End If
-
   End Sub
 
   Private Sub Page_PreRender(sender As Object, e As System.EventArgs) Handles Me.PreRender
@@ -51,23 +49,10 @@ Namespace Controls
      objComment.Approved = Security.CanApproveComment
 
      If objComment.CommentID > -1 Then
-      CommentsController.UpdateComment(objComment)
-      If objComment.Approved Then
-       JournalController.AddCommentToJournal(Entry, objComment, ModuleContext.PortalId, ModuleContext.TabId, objComment.UserID, Entry.PermaLink(PortalSettings))
-      End If
+      CommentsController.UpdateComment(Blog, Entry, objComment)
      Else
-      objComment.CommentID = CommentsController.AddComment(objComment)
-      If objComment.Approved Then
-       JournalController.AddCommentToJournal(Entry, objComment, ModuleContext.PortalId, ModuleContext.TabId, ModuleContext.PortalSettings.UserId, Entry.PermaLink(PortalSettings))
-       If Not Security.IsOwner Then
-        Dim title As String = Localization.GetString("CommentAddedNotify", Common.Constants.SharedResourceFileName)
-        Dim summary As String = "<a target='_blank' href='" + Entry.PermaLink(PortalSettings) + "'>" + Entry.Title + "</a>"
-        NotificationController.CommentAdded(objComment, Entry, Blog, ModuleContext.PortalId, summary, title)
-       End If
-      Else
-       Dim title As String = Localization.GetString("CommentPendingNotify", Common.Constants.SharedResourceFileName)
-       Dim summary As String = "<a target='_blank' href='" + Entry.PermaLink(PortalSettings) + "'>" + Entry.Title + "</a><br />" + objComment.Comment
-       NotificationController.CommentPendingApproval(objComment, Blog, Entry, ModuleContext.PortalId, summary, title)
+      objComment.CommentID = CommentsController.AddComment(Blog, Entry, objComment)
+      If Not objComment.Approved Then
        UI.Skins.Skin.AddModuleMessage(Me, Localization.GetString("CommentPendingApproval", LocalResourceFile), ModuleMessage.ModuleMessageType.BlueInfo)
       End If
      End If
@@ -141,24 +126,27 @@ Namespace Controls
       SelectedCommentId = oComment.CommentID
       cmdAddComment.Text = Localization.GetString("msgUpdateComment", LocalResourceFile)
       cmdDeleteComment.Visible = True
-      NotificationController.RemoveCommentPendingNotification(Blog.BlogID, oComment.ContentItemId, oComment.CommentID)
      End If
     Case "approvecomment"
-     Dim oComment As CommentInfo = CommentsController.GetComment(Int32.Parse(CType(e.CommandArgument, String)))
-     oComment.Approved = True
-     CommentsController.UpdateComment(oComment)
-     NotificationController.RemoveCommentPendingNotification(Blog.BlogID, oComment.ContentItemId, oComment.CommentID)
+     If Security.CanApproveComment Then
+      CommentsController.ApproveComment(Blog.BlogID, CommentsController.GetComment(Int32.Parse(CType(e.CommandArgument, String))))
+     End If
      BindCommentsList()
     Case "deletecomment"
-     CommentsController.DeleteComment(Int32.Parse(CType(e.CommandArgument, String)))
-     NotificationController.RemoveCommentPendingNotification(Blog.BlogID, Entry.ContentItemId, Int32.Parse(CType(e.CommandArgument, String)))
-     BindCommentsList()
+     Dim comment As CommentInfo = CommentsController.GetComment(Int32.Parse(CType(e.CommandArgument, String)))
+     If Security.CanEditEntry Or Security.CanApproveComment Or comment.UserID = UserId Then
+      CommentsController.DeleteComment(Blog.BlogID, comment)
+      BindCommentsList()
+     End If
    End Select
   End Sub
 
   Protected Sub cmdDeleteComment_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdDeleteComment.Click
+   Dim comment As CommentInfo = CommentsController.GetComment(SelectedCommentId)
    If SelectedCommentId > -1 Then
-    CommentsController.DeleteComment(SelectedCommentId)
+    If Security.CanEditEntry Or Security.CanApproveComment Or comment.UserID = UserId Then
+     CommentsController.DeleteComment(Blog.BlogID, comment)
+    End If
     SelectedCommentId = -1
     BindCommentsList()
    End If
