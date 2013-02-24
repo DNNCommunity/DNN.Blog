@@ -34,7 +34,7 @@ Namespace Controls
    Try
     valComment.Enabled = True
 
-    If (txtComment.Text.Length > 0) And (ModuleContext.PortalSettings.UserId > 0) Then
+    If (txtComment.Text.Length > 0) Then
      Dim objComment As New CommentInfo
 
      If SelectedCommentId > -1 Then
@@ -162,8 +162,8 @@ Namespace Controls
    Else
     lstComments.DataSource = CommentsController.GetCommentsByContentItem(Entry.ContentItemId, Security.CanApproveEntry)
     lstComments.DataBind()
-    lblComments.Text = String.Format(Localization.GetString("lblComments", LocalResourceFile), lstComments.Items.Count)
     txtComment.Text = ""
+    lblComments.Text = String.Format(Localization.GetString("lblComments", LocalResourceFile), lstComments.Items.Count)
     cmdAddComment.Text = Localization.GetString("msgAddComment", LocalResourceFile)
     cmdDeleteComment.Visible = False
    End If

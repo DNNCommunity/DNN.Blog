@@ -2,9 +2,9 @@
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls" %>
 <%@ Register TagPrefix="dba" Assembly="DotNetNuke.Modules.Blog" Namespace="DotNetNuke.Modules.Blog" %>
 <%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
-	<asp:Panel ID="pnlComments" runat="server" Visible="False">
+	<asp:Panel ID="pnlComments" runat="server">
 		<a id="Comments" name="Comments"></a>
-		<h3 class="BlogComments"><a id="linkAddComment" href="#AddComment"><asp:Label ID="lblComments" runat="server" /></a></h3>
+		<h3 class="BlogComments"><asp:Label ID="lblComments" runat="server" /></h3>
 		<asp:DataList ID="lstComments" runat="server" Width="100%">
 			<ItemTemplate>
 				<div class="blogComments dnnClear">
@@ -42,9 +42,6 @@
 				</ul>
 			</fieldset>
 		</div>
-		<ul class="dnnActions" id="ulAddComment">
-			<li><asp:Literal ID="litAddComment" runat="server" /></li>
-		</ul>
 		<asp:TextBox ID="txtClientIP" runat="server" Visible="false" />
 	</asp:Panel>
 </div>
@@ -52,20 +49,6 @@
  /*globals jQuery, window, Sys */
  (function ($, Sys) {
   function setupDnnQuestions() {
-   $("#CommentForm").hide();
-   $("#linkAdd").click(function () {
-    $("#CommentForm").show('highlight', '', 200, '');
-    $("#linkAdd").hide();
-    $("#ulAddComment").hide();
-    return true;
-   });
-   $("#linkAddComment").click(function () {
-    $("#CommentForm").show('highlight', '', 200, '');
-    $("#linkAdd").hide();
-    $("#ulAddComment").hide();
-    return true;
-   });
-
    $('.dnnBlogCommentDelete').dnnConfirm({
     text: '<%= LocalizeString("DeleteItem") %>',
     yesText: '<%= Localization.GetString("Yes.Text", Localization.SharedResourceFile) %>',
@@ -84,12 +67,6 @@
     noText: '<%= Localization.GetString("No.Text", Localization.SharedResourceFile) %>',
     title: '<%= Localization.GetString("Confirm.Text", Localization.SharedResourceFile) %>'
    });
-
-   //            $("#linkAdd").click(function () {
-   //                $("#CommentForm").show('highlight', '', 500, '');
-   //                $("#linkAdd").hide();
-   //                return false;
-   //            });
 
    var po = document.createElement('script');
    po.type = 'text/javascript';

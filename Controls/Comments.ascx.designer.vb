@@ -87,15 +87,6 @@ Namespace Controls
   Protected WithEvents cmdDeleteComment As Global.System.Web.UI.WebControls.LinkButton
 
   '''<summary>
-  '''litAddComment control.
-  '''</summary>
-  '''<remarks>
-  '''Auto-generated field.
-  '''To modify move field declaration from designer file to code-behind file.
-  '''</remarks>
-  Protected WithEvents litAddComment As Global.System.Web.UI.WebControls.Literal
-
-  '''<summary>
   '''txtClientIP control.
   '''</summary>
   '''<remarks>
