@@ -82,7 +82,7 @@ Namespace Common
   ''' <returns></returns>
   ''' <remarks>This method is currently used by comments only.</remarks>
   Public Shared Function CalculateDateForDisplay(utcDate As DateTime) As String
-   Dim utcTimeDifference As TimeSpan = Services.SystemDateTime.SystemDateTime.GetCurrentTimeUtc() - utcDate
+   Dim utcTimeDifference As TimeSpan = DotNetNuke.Services.SystemDateTime.SystemDateTime.GetCurrentTimeUtc() - utcDate
 
    If utcTimeDifference.TotalSeconds < 60 Then
     Return CInt(utcTimeDifference.TotalSeconds).ToString() + GetString("secondsago", Constants.SharedResourceFileName)

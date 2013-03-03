@@ -112,7 +112,7 @@ Namespace Integration
    DotNetNuke.Services.Journal.JournalController.Instance.SaveJournalItem(ji, tabId)
 
    If objBlog.OwnerUserId = journalUserId Then
-    Dim title As String = Services.Localization.Localization.GetString("CommentAddedNotify", Common.Constants.SharedResourceFileName)
+    Dim title As String = DotNetNuke.Services.Localization.Localization.GetString("CommentAddedNotify", Common.Constants.SharedResourceFileName)
     Dim summary As String = "<a target='_blank' href='" + url + "'>" + objEntry.Title + "</a>"
     NotificationController.CommentAdded(objComment, objEntry, objBlog, portalId, summary, title)
    End If

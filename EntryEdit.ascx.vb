@@ -320,7 +320,7 @@ Public Class EntryEdit
      Dim journalUserId As Integer = UserId
      If Blog.PublishAsOwner Then journalUserId = Blog.OwnerUserId
      JournalController.AddBlogEntryToJournal(Entry, ModuleContext.PortalId, ModuleContext.TabId, journalUserId, journalUrl)
-     NotificationController.RemoveEntryPendingNotification(Blog.BlogID, Entry.ContentItemId)
+     NotificationController.RemoveEntryPendingNotification(ModuleId, Blog.BlogID, Entry.ContentItemId)
 
     ElseIf Blog.MustApproveGhostPosts And UserId <> Blog.OwnerUserId Then
 

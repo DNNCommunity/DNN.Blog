@@ -215,6 +215,7 @@
     <Compile Include="Components\Entities\Comments\CommentsController_CRUD.vb" />
     <Compile Include="Components\Entities\Comments\CommentsController_FK.vb" />
     <Compile Include="Components\Entities\Comments\CommentsController.vb" />
+    <Compile Include="Components\Integration\NotificationKey.vb" />
     <Compile Include="Components\Security\ContextSecurity.vb" />
     <Compile Include="Components\Common\ModuleSettings.vb" />
     <Compile Include="Components\Data\DataProvider_CMD.vb" />
@@ -255,6 +256,8 @@
     <Compile Include="Components\MetaWeblog\IMetaWeblog.vb" />
     <Compile Include="Components\MoveableType\IMoveableType.vb" />
     <Compile Include="Components\Rss\StringWriterWithEncoding.vb" />
+    <Compile Include="Components\Services\BlogRouteMapper.vb" />
+    <Compile Include="Components\Integration\Services\NotificationServiceController.vb" />
     <Compile Include="Components\Templating\BlogTokenReplace.vb" />
     <Compile Include="Components\Templating\CustomParameters.vb" />
     <Compile Include="Components\Templating\GenericTokenReplace.vb" />
@@ -368,7 +371,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Components\Controllers\" />
-    <Folder Include="Components\Services\" />
     <Folder Include="Components\Settings\" />
     <Folder Include="Components\Upgrade\" />
     <Folder Include="Templates\_default\css\" />

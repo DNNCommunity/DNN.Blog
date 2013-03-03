@@ -130,13 +130,13 @@ Namespace Controls
      End If
     Case "approvecomment"
      If Security.CanApproveComment Then
-      CommentsController.ApproveComment(Blog.BlogID, CommentsController.GetComment(Int32.Parse(CType(e.CommandArgument, String))))
+      CommentsController.ApproveComment(ModuleId, Blog.BlogID, CommentsController.GetComment(Int32.Parse(CType(e.CommandArgument, String))))
      End If
      BindCommentsList()
     Case "deletecomment"
      Dim comment As CommentInfo = CommentsController.GetComment(Int32.Parse(CType(e.CommandArgument, String)))
      If Security.CanEditEntry Or Security.CanApproveComment Or comment.CreatedByUserID = UserId Then
-      CommentsController.DeleteComment(Blog.BlogID, comment)
+      CommentsController.DeleteComment(ModuleId, Blog.BlogID, comment)
       BindCommentsList()
      End If
    End Select
@@ -146,7 +146,7 @@ Namespace Controls
    Dim comment As CommentInfo = CommentsController.GetComment(SelectedCommentId)
    If SelectedCommentId > -1 Then
     If Security.CanEditEntry Or Security.CanApproveComment Or comment.CreatedByUserID = UserId Then
-     CommentsController.DeleteComment(Blog.BlogID, comment)
+     CommentsController.DeleteComment(ModuleId, Blog.BlogID, comment)
     End If
     SelectedCommentId = -1
     BindCommentsList()
