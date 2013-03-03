@@ -45,17 +45,26 @@
     <Columns>
      <dnn:DnnGridTemplateColumn>
       <ItemTemplate>
-       <a href="<%# EditUrl("Post", Eval("ContentItemId"), "EntryEdit") %>" class="icon16 entypoButton" title="Edit">&#9998;</a>
+       <a href="<%# EditUrl("Post", Eval("ContentItemId"), "EntryEdit") %>" 
+          class="icon16 entypoButton" 
+          title="Edit"
+          style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Entries.EntryInfo).Blog.CanEdit, "inline", "none") %>">&#9998;</a>
       </ItemTemplate>
      </dnn:DnnGridTemplateColumn>
      <dnn:DnnGridTemplateColumn>
       <ItemTemplate>
-       <a href="#" class="icon16 entypoButton">&#59177;</a>
+       <a href="<%# EditUrl("Post", Eval("ContentItemId"), "EntryEdit") %>" 
+          class="icon16 entypoButton" 
+          title="Delete"
+          style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Entries.EntryInfo).Blog.CanEdit, "inline", "none") %>">&#59177;</a>
       </ItemTemplate>
      </dnn:DnnGridTemplateColumn>
      <dnn:DnnGridTemplateColumn>
       <ItemTemplate>
-       <a href="#" class="icon16 entypoButton">&#128077;</a>
+       <a href="<%# EditUrl("Post", Eval("ContentItemId"), "EntryEdit") %>" 
+          class="icon16 entypoButton" 
+          title="Approve"
+          style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Entries.EntryInfo).Blog.CanApprove AND NOT CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Entries.EntryInfo).Published, "inline", "none") %>">&#128077;</a>
       </ItemTemplate>
      </dnn:DnnGridTemplateColumn>
      <dnn:DnnGridTemplateColumn HeaderText="Date">

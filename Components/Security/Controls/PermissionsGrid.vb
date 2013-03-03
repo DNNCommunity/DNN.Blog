@@ -3,6 +3,7 @@ Imports System.Web.UI
 Imports System.Web.UI.WebControls
 Imports System.Collections
 Imports System.Data
+Imports System.Linq
 Imports DotNetNuke.Security.Roles
 Imports DotNetNuke.UI.WebControls
 Imports DotNetNuke.Common
@@ -27,7 +28,7 @@ Namespace Security.Controls
   Private WithEvents cmdUser As LinkButton
   Private dgUserPermissions As DataGrid
 
-#Region "Private Members"
+#Region " Private Members "
 
   Private _dtRolePermissions As New DataTable
   Private _dtUserPermissions As New DataTable
@@ -38,9 +39,9 @@ Namespace Security.Controls
 
 #End Region
 
-#Region "Public Properties"
+#Region " Public Properties "
 
-#Region "DataGrid Properties"
+#Region " DataGrid Properties "
 
   Public ReadOnly Property AlternatingItemStyle() As TableItemStyle
    Get
@@ -114,6 +115,7 @@ Namespace Security.Controls
    End Get
   End Property
 
+  Public Property IncludeAdministratorRole As Boolean = True
 #End Region
 
   ''' -----------------------------------------------------------------------------
@@ -252,7 +254,7 @@ Namespace Security.Controls
   End Property
 #End Region
 
-#Region "Abstract Methods"
+#Region " Abstract Methods "
 
   ''' -----------------------------------------------------------------------------
   ''' <summary>
@@ -266,7 +268,7 @@ Namespace Security.Controls
 
 #End Region
 
-#Region "Private Methods"
+#Region " Private Methods "
 
   ''' -----------------------------------------------------------------------------
   ''' <summary>
@@ -425,11 +427,18 @@ Namespace Security.Controls
    End If
 
    If RoleGroupId > -2 Then
-    '_roles = objRoleController.GetRolesByGroup(PortalController.GetCurrentPortalSettings.PortalId, RoleGroupId)
     _roles = DotNetNuke.Security.Roles.RoleProvider.Instance.GetRolesByGroup(PortalController.GetCurrentPortalSettings.PortalId, RoleGroupId)
    Else
-    '_roles = objRoleController.GetPortalRoles(PortalController.GetCurrentPortalSettings.PortalId)
     _roles = DotNetNuke.Security.Roles.RoleProvider.Instance.GetRoles(PortalController.GetCurrentPortalSettings.PortalId)
+   End If
+   If Not IncludeAdministratorRole Then
+    Dim newList As New ArrayList
+    For Each r As RoleInfo In _roles
+     If r.RoleID <> AdministratorRoleId Then
+      newList.Add(r)
+     End If
+    Next
+    _roles = newList
    End If
 
    If RoleGroupId < 0 Then
@@ -534,7 +543,7 @@ Namespace Security.Controls
 
 #End Region
 
-#Region "Protected Methods"
+#Region " Protected Methods "
 
   ''' -----------------------------------------------------------------------------
   ''' <summary>
@@ -907,7 +916,7 @@ Namespace Security.Controls
 
 #End Region
 
-#Region "Event Handlers"
+#Region " Event Handlers "
 
   ''' -----------------------------------------------------------------------------
   ''' <summary>

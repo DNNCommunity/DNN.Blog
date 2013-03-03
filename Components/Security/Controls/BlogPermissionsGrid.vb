@@ -15,7 +15,7 @@ Namespace Security.Controls
  Public Class BlogPermissionsGrid
   Inherits PermissionsGrid
 
-#Region "Private Members"
+#Region " Private Members "
 
   Private _InheritViewPermissionsFromParent As Boolean = False
   Private _BlogID As Integer = -1
@@ -28,7 +28,7 @@ Namespace Security.Controls
 
 #End Region
 
-#Region "Public Properties"
+#Region " Public Properties "
   Public Property UserIsAdmin() As Boolean
    Get
     Return _userIsAdmin
@@ -107,7 +107,7 @@ Namespace Security.Controls
   End Property
 #End Region
 
-#Region "Private Methods"
+#Region " Private Methods "
 
   ''' -----------------------------------------------------------------------------
   ''' <summary>
@@ -193,7 +193,7 @@ Namespace Security.Controls
 
 #End Region
 
-#Region "Protected Methods"
+#Region " Protected Methods "
 
   ''' -----------------------------------------------------------------------------
   ''' <summary>
@@ -229,7 +229,7 @@ Namespace Security.Controls
   ''' -----------------------------------------------------------------------------
   Protected Overrides Function GetEnabled(objPerm As PermissionInfo, user As DotNetNuke.Entities.Users.UserInfo, column As Integer) As Boolean
 
-    Return True
+   Return True
 
   End Function
 
@@ -563,7 +563,7 @@ Namespace Security.Controls
   End Sub
 #End Region
 
-#Region "Public Methods"
+#Region " Public Methods "
 
   ''' -----------------------------------------------------------------------------
   ''' <summary>

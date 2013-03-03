@@ -199,12 +199,18 @@
     <value>Delete the blog post, it will not be published and will not be available for future edits.</value>
   </data>
   <data name="ADD.Permission" xml:space="preserve">
-    <value>Add</value>
+    <value>Add Post</value>
   </data>
   <data name="APPROVE.Permission" xml:space="preserve">
-    <value>Approve</value>
+    <value>Approve Post</value>
   </data>
   <data name="EDIT.Permission" xml:space="preserve">
-    <value>Edit</value>
+    <value>Edit Post</value>
+  </data>
+  <data name="ADDCOMMENT.Permission" xml:space="preserve">
+    <value>Add Comment</value>
+  </data>
+  <data name="APPROVECOMMENT.Permission" xml:space="preserve">
+    <value>Approve Comment</value>
   </data>
 </root>

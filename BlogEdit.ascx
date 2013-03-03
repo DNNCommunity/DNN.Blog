@@ -76,7 +76,7 @@
    <div class="dnnFormItem">
     <dnn:Label ID="lblPermissions" runat="server" controlname="chkSyndicate" suffix=":" />
     <div style="float:left;width:400px;">
-     <blog:BlogPermissionsGrid runat="server" id="ctlPermissions" />
+     <blog:BlogPermissionsGrid runat="server" id="ctlPermissions" IncludeAdministratorRole="False" />
     </div>
    </div>
   </fieldset>
