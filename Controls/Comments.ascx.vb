@@ -17,7 +17,14 @@ Namespace Controls
 
 #Region " Event Handlers "
   Private Sub Page_Init(sender As Object, e As System.EventArgs) Handles Me.Init
+
    ViewState.ReadValue("SelectedCommentId", SelectedCommentId)
+
+   DotNetNuke.Framework.jQuery.RequestDnnPluginsRegistration()
+   DotNetNuke.Framework.ServicesFramework.Instance.RequestAjaxScriptSupport()
+   DotNetNuke.Framework.ServicesFramework.Instance.RequestAjaxAntiForgerySupport()
+   Web.Client.ClientResourceManagement.ClientResourceManager.RegisterScript(Page, TemplateSourceDirectory + "/../js/dotnetnuke.blog.js")
+
   End Sub
 
   Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -74,16 +81,13 @@ Namespace Controls
     Dim imgUser As System.Web.UI.WebControls.Image = CType(e.Item.FindControl("imgUser"), System.Web.UI.WebControls.Image)
     Dim hlUser As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("hlUser"), System.Web.UI.WebControls.HyperLink)
     Dim hlCommentAuthor As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("hlCommentAuthor"), System.Web.UI.WebControls.HyperLink)
-    Dim lnkEditComment As System.Web.UI.WebControls.ImageButton = CType(e.Item.FindControl("lnkEditComment"), System.Web.UI.WebControls.ImageButton)
-    Dim lnkApproveComment As System.Web.UI.WebControls.ImageButton = CType(e.Item.FindControl("lnkApproveComment"), System.Web.UI.WebControls.ImageButton)
+    Dim lnkEditComment As System.Web.UI.WebControls.Button = CType(e.Item.FindControl("lnkEditComment"), System.Web.UI.WebControls.Button)
     Dim lblCommentDate As System.Web.UI.WebControls.Label = CType(e.Item.FindControl("lblCommentDate"), System.Web.UI.WebControls.Label)
-    Dim lnkDeleteComment As System.Web.UI.WebControls.ImageButton = CType(e.Item.FindControl("lnkDeleteComment"), System.Web.UI.WebControls.ImageButton)
     Dim litComment As System.Web.UI.WebControls.Literal = CType(e.Item.FindControl("txtCommentBody"), Literal)
 
     Dim objComment As CommentInfo = CType(e.Item.DataItem, CommentInfo)
 
     lnkEditComment.Visible = Security.CanApproveEntry Or Security.CanEditEntry
-    lnkDeleteComment.Visible = lnkEditComment.Visible
 
     Dim objUser As UserInfo = UserController.GetUserById(ModuleContext.PortalId, objComment.CreatedByUserID)
 
@@ -109,11 +113,6 @@ Namespace Controls
     comment.Replace(System.Environment.NewLine, "<br />")
     litComment.Text = comment
 
-    If Not objComment.Approved Then
-     lnkApproveComment.Visible = True
-    Else
-     lnkApproveComment.Visible = False
-    End If
    End If
   End Sub
 

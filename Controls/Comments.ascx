@@ -7,7 +7,7 @@
 		<h3 class="BlogComments"><asp:Label ID="lblComments" runat="server" /></h3>
 		<asp:DataList ID="lstComments" runat="server" Width="100%">
 			<ItemTemplate>
-				<div class="blogComments dnnClear">
+				<div class="blogComments dnnClear" id="commentDiv<%# DataBinder.Eval(Container.DataItem, "CommentID") %>">
 					<div class="commentAuthor dnnLeft">
 						<asp:HyperLink ID="hlUser" runat="server"><asp:Image ID="imgUser" runat="server" /></asp:HyperLink>
 					</div>
@@ -15,9 +15,16 @@
 						<div class="ccAuthor"><asp:HyperLink ID="hlCommentAuthor" runat="server" />&nbsp;<asp:Label ID="lblCommentDate" runat="server" /></div>
 						<div><p><asp:Literal runat="server" ID="txtCommentBody"></asp:Literal></p></div>
 						<div class="commentMod dnnRight">
-							<asp:ImageButton ID="lnkEditComment" runat="server" Visible="false" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="EditComment" ImageUrl="~/images/edit.gif" resourcekey="cmdEdit" />
-							<asp:ImageButton ID="lnkApproveComment" runat="server" Visible="false" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="ApproveComment" ImageUrl="~/desktopmodules/Blog/images/blog_accept.png" CausesValidation="false" resourcekey="cmdApprove" />
-							<asp:ImageButton ID="lnkDeleteComment" runat="server" Visible="false" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="DeleteComment" ImageUrl="~/images/delete.gif" CausesValidation="false" CssClass="dnnBlogCommentDelete" resourcekey="cmdDelete" />
+       <asp:Button ID="lnkEditComment" runat="server" Visible="false" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="EditComment" Text="&#9998;" CssClass="icon16 entypoButton" />
+       <a href="#" onclick="blogModule.approveComment(<%=BlogID%>, <%# DataBinder.Eval(Container.DataItem, "CommentID") %>, function() {$('#cmdApproveComment<%# DataBinder.Eval(Container.DataItem, "CommentID") %>').hide()});return false;" 
+          id="cmdApproveComment<%# DataBinder.Eval(Container.DataItem, "CommentID") %>"
+          class="icon16 entypoButton" 
+          title="Approve"
+          style="display:<%# IIF(NOT CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Comments.CommentInfo).Approved AND Security.CanApproveComment, "inline", "none") %>">&#128077;</a>
+       <a href="#" onclick="blogModule.deleteComment(<%=BlogID%>, <%# DataBinder.Eval(Container.DataItem, "CommentID") %>, function() {$('#commentDiv<%# DataBinder.Eval(Container.DataItem, "CommentID") %>').hide()});return false;" 
+          class="icon16 entypoButton" 
+          title="Delete"
+          style="display:<%# IIF(Security.CanApproveComment, "inline", "none") %>">&#59177;</a>
 						</div>
 					</div>
 				</div>
@@ -46,7 +53,14 @@
 	</asp:Panel>
 </div>
 <script language="javascript" type="text/javascript">
- /*globals jQuery, window, Sys */
+ var blogModule
+ jQuery(function ($) {
+  blogModule = new BlogModule($, {
+    serverErrorText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ServerError"))%>',
+    serverErrorWithDescriptionText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ServerErrorWithDescription"))%>'
+   },
+   $.dnnSF(<%=ModuleId %>))
+ });
  (function ($, Sys) {
   function setupDnnQuestions() {
    $('.dnnBlogCommentDelete').dnnConfirm({

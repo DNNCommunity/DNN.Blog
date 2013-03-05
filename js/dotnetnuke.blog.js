@@ -47,7 +47,7 @@
   });
  };
 
- this.approveComment = function (blogId, commentId, success) {
+ this.deleteComment = function (blogId, commentId, success) {
   $.ajax({
    type: "POST",
    url: commentsServicepath + "Delete",
