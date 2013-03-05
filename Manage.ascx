@@ -38,30 +38,25 @@
   </p>
  </div>
  <div id="Posts" class="dnnClear">
+  <div class="coreMessaging" id="blogEntriesError" />
   <dnn:DNNGrid id="grdEntries" autogeneratecolumns="false" cssclass="dnnGrid dnnSecurityRolesGrid"
    runat="server" allowpaging="True" allowcustompaging="True" enableviewstate="True"
    onneeddatasource="GetEntries">
    <MasterTableView>
     <Columns>
-     <dnn:DnnGridTemplateColumn>
+     <dnn:DnnGridTemplateColumn HeaderText="Actions">
+      <ItemStyle Width="90px"></ItemStyle>
       <ItemTemplate>
        <a href="<%# EditUrl("Post", Eval("ContentItemId"), "EntryEdit") %>" 
           class="icon16 entypoButton" 
           title="Edit"
           style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Entries.EntryInfo).Blog.CanEdit, "inline", "none") %>">&#9998;</a>
-      </ItemTemplate>
-     </dnn:DnnGridTemplateColumn>
-     <dnn:DnnGridTemplateColumn>
-      <ItemTemplate>
        <a href="<%# EditUrl("Post", Eval("ContentItemId"), "EntryEdit") %>" 
           class="icon16 entypoButton" 
           title="Delete"
           style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Entries.EntryInfo).Blog.CanEdit, "inline", "none") %>">&#59177;</a>
-      </ItemTemplate>
-     </dnn:DnnGridTemplateColumn>
-     <dnn:DnnGridTemplateColumn>
-      <ItemTemplate>
-       <a href="<%# EditUrl("Post", Eval("ContentItemId"), "EntryEdit") %>" 
+       <a href="#" onclick="blogModule.approveEntry(<%# Eval("BlogID") %>, <%# Eval("ContentItemID") %>, function() {$('#cmdApproveEntry<%# Eval("ContentItemID") %>').hide();$('#approveTick<%# Eval("ContentItemID") %>').text('&#10003;')});return false;" 
+          id="cmdApproveEntry<%# Eval("ContentItemID") %>"
           class="icon16 entypoButton" 
           title="Approve"
           style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Entries.EntryInfo).Blog.CanApprove AND NOT CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Entries.EntryInfo).Published, "inline", "none") %>">&#128077;</a>
@@ -74,8 +69,9 @@
      </dnn:DnnGridTemplateColumn>
      <dnn:DnnGridBoundColumn datafield="Title" headertext="Title"/>
      <dnn:DnnGridTemplateColumn HeaderText="Published">
+      <ItemStyle Width="30px" HorizontalAlign="Center"></ItemStyle>
       <ItemTemplate>
-       <span class="entypoIcon icon16"><%# IIf(Eval("Published"), "&#10003;", "&#10060;")%></span>
+       <span class="entypoIcon icon16" id="approveTick<%# Eval("ContentItemID") %>"><%# IIf(Eval("Published"), "&#10003;", "&#10060;")%></span>
       </ItemTemplate>
      </dnn:DnnGridTemplateColumn>
      <dnn:DnnGridTemplateColumn HeaderText="Blog">
@@ -92,7 +88,13 @@
 </div>
 
 <script type="text/javascript">
+ var blogModule
  jQuery(function ($) {
   $('#tabs').dnnTabs();
+  blogModule = new BlogModule($, {
+    serverErrorText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ServerError"))%>',
+    serverErrorWithDescriptionText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ServerErrorWithDescription"))%>'
+   },
+   $.dnnSF(<%=ModuleId %>))
  });
 </script>

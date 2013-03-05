@@ -34,6 +34,7 @@ Imports DotNetNuke.Modules.Blog.Entities.Entries
 Imports DotNetNuke.Modules.Blog.Entities.Comments
 Imports DotNetNuke.Modules.Blog.Security
 Imports DotNetNuke.Modules.Blog.Integration
+Imports DotNetNuke.Modules.Blog.Services
 
 Namespace Integration.Services
 
@@ -58,7 +59,9 @@ Namespace Integration.Services
 #End Region
 
 #Region " Service Methods "
-  <DnnAuthorize()>
+  <HttpPost()>
+  <BlogAuthorizeAttribute(DotNetNuke.Modules.Blog.Services.SecurityAccessLevel.ApprovePost)>
+  <ValidateAntiForgeryToken()>
   Public Function ApproveEntry(postData As NotificationDTO) As HttpResponseMessage
    Dim notify As Notification = NotificationsController.Instance.GetNotification(postData.NotificationId)
    ParsePublishKey(notify.Context)
@@ -73,7 +76,9 @@ Namespace Integration.Services
    Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = "success"})
   End Function
 
-  <DnnAuthorize()>
+  <HttpPost()>
+  <BlogAuthorizeAttribute(DotNetNuke.Modules.Blog.Services.SecurityAccessLevel.EditPost)>
+  <ValidateAntiForgeryToken()>
   Public Function DeleteEntry(postData As NotificationDTO) As HttpResponseMessage
    Dim notify As Notification = NotificationsController.Instance.GetNotification(postData.NotificationId)
    ParsePublishKey(notify.Context)
@@ -87,7 +92,9 @@ Namespace Integration.Services
    Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = "success"})
   End Function
 
-  <DnnAuthorize()>
+  <HttpPost()>
+  <BlogAuthorizeAttribute(DotNetNuke.Modules.Blog.Services.SecurityAccessLevel.ApproveComment)>
+  <ValidateAntiForgeryToken()>
   Public Function ApproveComment(postData As NotificationDTO) As HttpResponseMessage
    Dim notify As Notification = NotificationsController.Instance.GetNotification(postData.NotificationId)
    ParseCommentKey(notify.Context)
@@ -101,7 +108,9 @@ Namespace Integration.Services
    Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = "success"})
   End Function
 
-  <DnnAuthorize()>
+  <HttpPost()>
+  <BlogAuthorizeAttribute(DotNetNuke.Modules.Blog.Services.SecurityAccessLevel.ApproveComment)>
+  <ValidateAntiForgeryToken()>
   Public Function DeleteComment(postData As NotificationDTO) As HttpResponseMessage
    Dim notify As Notification = NotificationsController.Instance.GetNotification(postData.NotificationId)
    ParseCommentKey(notify.Context)

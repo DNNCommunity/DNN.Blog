@@ -129,4 +129,25 @@
   <data name="Edit.Text" xml:space="preserve">
     <value>Edit</value>
   </data>
+  <data name="ServerError.Text" xml:space="preserve">
+    <value>An error occurred while processing the request. Please try again later.</value>
+  </data>
+  <data name="ServerErrorWithDescription.Text" xml:space="preserve">
+    <value>An error occurred while processing the request: </value>
+  </data>
+  <data name="Blog.Header" xml:space="preserve">
+    <value>Blog</value>
+  </data>
+  <data name="Date.Header" xml:space="preserve">
+    <value>Publish On</value>
+  </data>
+  <data name="Published.Header" xml:space="preserve">
+    <value>Published</value>
+  </data>
+  <data name="Title.Header" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="Actions.Header" xml:space="preserve">
+    <value>Actions</value>
+  </data>
 </root>

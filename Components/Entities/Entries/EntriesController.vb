@@ -29,6 +29,26 @@ Namespace Entities.Entries
 
  Partial Public Class EntriesController
 
+  Public Shared Sub PublishEntry(entry As EntryInfo, publish As Boolean, publishedByUser As Integer)
+   If entry.Published = publish Then Exit Sub
+   entry.Published = publish
+   UpdateEntry(entry, publishedByUser)
+   If publish Then
+    Dim blog As BlogInfo = BlogsController.GetBlog(entry.BlogID, publishedByUser)
+    Dim journalUrl As String = entry.PermaLink(DotNetNuke.Entities.Portals.PortalSettings.Current)
+    Dim journalUserId As Integer = publishedByUser
+    If Blog.PublishAsOwner Then journalUserId = Blog.OwnerUserId
+    JournalController.AddBlogEntryToJournal(entry, DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, DotNetNuke.Entities.Portals.PortalSettings.Current.ActiveTab.TabID, journalUserId, journalUrl)
+    NotificationController.RemoveEntryPendingNotification(blog.ModuleID, blog.BlogID, entry.ContentItemId)
+   End If
+  End Sub
+
+  Public Shared Sub DeleteEntry(entry As EntryInfo)
+   DataProvider.Instance().DeleteEntry(entry.ContentItemId)
+   Dim blog As BlogInfo = BlogsController.GetBlog(entry.BlogID, -1)
+   NotificationController.RemoveEntryPendingNotification(blog.ModuleID, blog.BlogID, entry.ContentItemId)
+  End Sub
+
   Public Shared Sub DeleteEntry(contentItemId As Integer, blogId As Integer, portalId As Integer, vocabularyId As Integer)
    DataProvider.Instance().DeleteEntry(contentItemId)
    'CompleteEntryDelete(contentItemId, blogId, entryId, portalId, vocabularyId)

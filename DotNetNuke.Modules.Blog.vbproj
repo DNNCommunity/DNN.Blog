@@ -145,6 +145,7 @@
     <Content Include="BlogTerms.asmx" />
     <Content Include="BlogEdit.ascx" />
     <Content Include="Controls\Comments.ascx" />
+    <Content Include="js\dotnetnuke.blog.js" />
     <Content Include="Manage.ascx" />
     <Content Include="EntryEdit.ascx" />
     <Content Include="js\jquery.qaplaceholder.js" />
@@ -256,8 +257,11 @@
     <Compile Include="Components\MetaWeblog\IMetaWeblog.vb" />
     <Compile Include="Components\MoveableType\IMoveableType.vb" />
     <Compile Include="Components\Rss\StringWriterWithEncoding.vb" />
+    <Compile Include="Components\Services\BlogAuthorizeAttribute.vb" />
     <Compile Include="Components\Services\BlogRouteMapper.vb" />
     <Compile Include="Components\Integration\Services\NotificationServiceController.vb" />
+    <Compile Include="Components\Services\CommentController.vb" />
+    <Compile Include="Components\Services\EntryController.vb" />
     <Compile Include="Components\Templating\BlogTokenReplace.vb" />
     <Compile Include="Components\Templating\CustomParameters.vb" />
     <Compile Include="Components\Templating\GenericTokenReplace.vb" />

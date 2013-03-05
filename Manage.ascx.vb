@@ -11,7 +11,9 @@ Public Class Manage
  Private Sub Page_Init1(sender As Object, e As System.EventArgs) Handles Me.Init
 
   DotNetNuke.Framework.jQuery.RequestDnnPluginsRegistration()
+  DotNetNuke.Framework.ServicesFramework.Instance.RequestAjaxScriptSupport()
   DotNetNuke.Framework.ServicesFramework.Instance.RequestAjaxAntiForgerySupport()
+  Web.Client.ClientResourceManagement.ClientResourceManager.RegisterScript(Page, TemplateSourceDirectory + "/js/dotnetnuke.blog.js")
 
  End Sub
 
