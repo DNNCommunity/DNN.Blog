@@ -9,20 +9,29 @@
 			<ItemTemplate>
 				<div class="blogComments dnnClear" id="commentDiv<%# DataBinder.Eval(Container.DataItem, "CommentID") %>">
 					<div class="commentAuthor dnnLeft">
-						<asp:HyperLink ID="hlUser" runat="server"><asp:Image ID="imgUser" runat="server" /></asp:HyperLink>
+      <a href="<%# DotNetNuke.Common.Globals.UserProfileURL(DataBinder.Eval(Container.DataItem, "CreatedByUserID")) %>" title="<%# DataBinder.Eval(Container.DataItem, "DisplayName") %>">
+       <img src="<%# DotNetNuke.Common.Globals.UserProfilePicFormattedUrl.Replace("{0}", DataBinder.Eval(Container.DataItem, "CreatedByUserID")).replace("{1}", "50").replace("{2}", "50") %>" alt="<%# DataBinder.Eval(Container.DataItem, "DisplayName") %>" />
+      </a>
 					</div>
 					<div class="commentContent">
-						<div class="ccAuthor"><asp:HyperLink ID="hlCommentAuthor" runat="server" />&nbsp;<asp:Label ID="lblCommentDate" runat="server" /></div>
-						<div><p><asp:Literal runat="server" ID="txtCommentBody"></asp:Literal></p></div>
+						<div class="ccAuthor">
+       <a href="<%# DotNetNuke.Common.Globals.UserProfileURL(DataBinder.Eval(Container.DataItem, "CreatedByUserID")) %>"><%# DataBinder.Eval(Container.DataItem, "DisplayName") %>
+       </a>
+       &nbsp;
+       <abbr title="<%# CDATE(DataBinder.Eval(Container.DataItem, "CreatedOnDate")).ToString("u") %>" class="commenttimeago"></abbr>
+      </div>
+						<div>
+       <%# System.Text.RegularExpressions.Regex.Replace(DataBinder.Eval(Container.DataItem, "Comment"), "(?<!["">])((http|https|ftp)\://.+?)(?=\s|$)", "<a rel=""nofollow"" href=""$1"">$1</a>").Replace(System.Environment.NewLine, "<br />")%>
+      </div>
 						<div class="commentMod dnnRight">
-       <asp:Button ID="lnkEditComment" runat="server" Visible="false" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="EditComment" Text="&#9998;" CssClass="icon16 entypoButton" />
+       <asp:Button ID="lnkEditComment" runat="server" Visible='<%# Security.CanApproveComment.ToString() %>' CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="EditComment" Text="&#9998;" CssClass="icon16 entypoButton" />
        <a href="#" onclick="blogModule.approveComment(<%=BlogID%>, <%# DataBinder.Eval(Container.DataItem, "CommentID") %>, function() {$('#cmdApproveComment<%# DataBinder.Eval(Container.DataItem, "CommentID") %>').hide()});return false;" 
           id="cmdApproveComment<%# DataBinder.Eval(Container.DataItem, "CommentID") %>"
-          class="icon16 entypoButton" 
+          class="icon16 entypoButton approveComment" 
           title="Approve"
           style="display:<%# IIF(NOT CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Comments.CommentInfo).Approved AND Security.CanApproveComment, "inline", "none") %>">&#128077;</a>
        <a href="#" onclick="blogModule.deleteComment(<%=BlogID%>, <%# DataBinder.Eval(Container.DataItem, "CommentID") %>, function() {$('#commentDiv<%# DataBinder.Eval(Container.DataItem, "CommentID") %>').hide()});return false;" 
-          class="icon16 entypoButton" 
+          class="icon16 entypoButton deleteComment" 
           title="Delete"
           style="display:<%# IIF(Security.CanApproveComment, "inline", "none") %>">&#59177;</a>
 						</div>
@@ -59,62 +68,19 @@
     serverErrorText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ServerError"))%>',
     serverErrorWithDescriptionText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ServerErrorWithDescription"))%>'
    },
-   $.dnnSF(<%=ModuleId %>))
- });
- (function ($, Sys) {
-  function setupDnnQuestions() {
-   $('.dnnBlogCommentDelete').dnnConfirm({
-    text: '<%= LocalizeString("DeleteItem") %>',
+   $.dnnSF(<%=ModuleId %>));
+  $('.approveComment').dnnConfirm({
+    text: '<%= LocalizeString("ApproveComment") %>',
     yesText: '<%= Localization.GetString("Yes.Text", Localization.SharedResourceFile) %>',
     noText: '<%= Localization.GetString("No.Text", Localization.SharedResourceFile) %>',
     title: '<%= Localization.GetString("Confirm.Text", Localization.SharedResourceFile) %>'
    });
-   $('.dnnBlogDeleteAllComments').dnnConfirm({
-    text: '<%= LocalizeString("msgDeleteAllUnapproved") %>',
+  $('.deleteComment').dnnConfirm({
+    text: '<%= LocalizeString("DeleteComment") %>',
     yesText: '<%= Localization.GetString("Yes.Text", Localization.SharedResourceFile) %>',
     noText: '<%= Localization.GetString("No.Text", Localization.SharedResourceFile) %>',
     title: '<%= Localization.GetString("Confirm.Text", Localization.SharedResourceFile) %>'
    });
-   $('.dnnBlogAddComment').dnnConfirm({
-    text: '<%= LocalizeString("cmdAddCommentMessage") %>',
-    yesText: '<%= Localization.GetString("Yes.Text", Localization.SharedResourceFile) %>',
-    noText: '<%= Localization.GetString("No.Text", Localization.SharedResourceFile) %>',
-    title: '<%= Localization.GetString("Confirm.Text", Localization.SharedResourceFile) %>'
-   });
-
-   var po = document.createElement('script');
-   po.type = 'text/javascript';
-   po.async = true;
-   po.src = 'https://apis.google.com/js/plusone.js';
-   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-
-   !function (d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (!d.getElementById(id)) {
-     js = d.createElement(s); js.id = id; js.src = "//platform.twitter.com/widgets.js";
-     fjs.parentNode.insertBefore(js, fjs);
-    }
-   } (document, "script", "twitter-wjs");
-
-   !function (d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
-    fjs.parentNode.insertBefore(js, fjs);
-   } (document, 'script', 'facebook-jssdk');
-  }
-
-  $(document).ready(function () {
-   setupDnnQuestions();
-   Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
-    setupDnnQuestions();
-
-    twttr.widgets.load();
-    FB.XFBML.parse();
-    IN.parse();
-   });
-  });
-
+  $("abbr.commenttimeago").timeago();
  } (jQuery, window.Sys));
 </script>

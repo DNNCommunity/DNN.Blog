@@ -12,7 +12,6 @@ Namespace Controls
 
 #Region " Private Properties "
   Private Property SelectedCommentId As Integer = -1
-  Public Shadows Property LocalResourceFile As String = "~/DesktopModules/Blog/Controls/App_LocalResources/Comments.ascx.resx"
 #End Region
 
 #Region " Event Handlers "
@@ -24,10 +23,12 @@ Namespace Controls
    DotNetNuke.Framework.ServicesFramework.Instance.RequestAjaxScriptSupport()
    DotNetNuke.Framework.ServicesFramework.Instance.RequestAjaxAntiForgerySupport()
    Web.Client.ClientResourceManagement.ClientResourceManager.RegisterScript(Page, TemplateSourceDirectory + "/../js/dotnetnuke.blog.js")
+   Web.Client.ClientResourceManagement.ClientResourceManager.RegisterScript(Page, TemplateSourceDirectory + "/../js/jquery.timeago.js")
 
   End Sub
 
   Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+   LocalResourceFile = "~/DesktopModules/Blog/Controls/App_LocalResources/Comments.ascx.resx"
    If Not Me.IsPostBack Then
     BindCommentsList()
    End If
@@ -72,50 +73,6 @@ Namespace Controls
    End Try
   End Sub
 
-  Protected Sub lstComments_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataListItemEventArgs) Handles lstComments.ItemDataBound
-   If (e.Item.ItemType = ListItemType.AlternatingItem) Or (e.Item.ItemType = ListItemType.Item) Then
-    If (e.Item.DataItem Is Nothing) Or (Blog Is Nothing) Then
-     Return
-    End If
-
-    Dim imgUser As System.Web.UI.WebControls.Image = CType(e.Item.FindControl("imgUser"), System.Web.UI.WebControls.Image)
-    Dim hlUser As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("hlUser"), System.Web.UI.WebControls.HyperLink)
-    Dim hlCommentAuthor As System.Web.UI.WebControls.HyperLink = CType(e.Item.FindControl("hlCommentAuthor"), System.Web.UI.WebControls.HyperLink)
-    Dim lnkEditComment As System.Web.UI.WebControls.Button = CType(e.Item.FindControl("lnkEditComment"), System.Web.UI.WebControls.Button)
-    Dim lblCommentDate As System.Web.UI.WebControls.Label = CType(e.Item.FindControl("lblCommentDate"), System.Web.UI.WebControls.Label)
-    Dim litComment As System.Web.UI.WebControls.Literal = CType(e.Item.FindControl("txtCommentBody"), Literal)
-
-    Dim objComment As CommentInfo = CType(e.Item.DataItem, CommentInfo)
-
-    lnkEditComment.Visible = Security.CanApproveEntry Or Security.CanEditEntry
-
-    Dim objUser As UserInfo = UserController.GetUserById(ModuleContext.PortalId, objComment.CreatedByUserID)
-
-    If objUser IsNot Nothing Then
-     hlUser.NavigateUrl = DotNetNuke.Common.Globals.UserProfileURL(objUser.UserID)
-     imgUser.ImageUrl = Control.ResolveUrl("~/profilepic.ashx?userid=" + objComment.CreatedByUserID.ToString + "&w=" + "50" + "&h=" + "50")
-     hlCommentAuthor.Text = objUser.DisplayName
-     hlCommentAuthor.NavigateUrl = DotNetNuke.Common.Globals.UserProfileURL(objUser.UserID)
-    Else
-     hlUser.NavigateUrl = DotNetNuke.Common.Globals.UserProfileURL(-1)
-     imgUser.ImageUrl = Control.ResolveUrl("~/profilepic.ashx?userid=-1&w=" + "50" + "&h=" + "50")
-     hlCommentAuthor.Text = Localization.GetString("Anonymous", LocalResourceFile)
-     hlCommentAuthor.NavigateUrl = DotNetNuke.Common.Globals.UserProfileURL(-1)
-    End If
-
-    lblCommentDate.Text = Common.Globals.CalculateDateForDisplay(objComment.CreatedOnDate)
-    Dim comment As String = objComment.Comment
-    Dim matches As MatchCollection = New Regex("(?<!["">])((http|https|ftp)\://.+?)(?=\s|$)").Matches(comment)
-
-    For Each m As Match In matches
-     comment = comment.Replace(m.Value, "<a rel=""nofollow"" href=""" + m.Value + """>" + m.Value + "</a>")
-    Next
-    comment.Replace(System.Environment.NewLine, "<br />")
-    litComment.Text = comment
-
-   End If
-  End Sub
-
   Protected Sub lstComments_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataListCommandEventArgs) Handles lstComments.ItemCommand
    Select Case e.CommandName.ToLower
     Case "editcomment"
@@ -126,17 +83,6 @@ Namespace Controls
       SelectedCommentId = oComment.CommentID
       cmdAddComment.Text = Localization.GetString("msgUpdateComment", LocalResourceFile)
       cmdDeleteComment.Visible = True
-     End If
-    Case "approvecomment"
-     If Security.CanApproveComment Then
-      CommentsController.ApproveComment(ModuleId, Blog.BlogID, CommentsController.GetComment(Int32.Parse(CType(e.CommandArgument, String))))
-     End If
-     BindCommentsList()
-    Case "deletecomment"
-     Dim comment As CommentInfo = CommentsController.GetComment(Int32.Parse(CType(e.CommandArgument, String)))
-     If Security.CanEditEntry Or Security.CanApproveComment Or comment.CreatedByUserID = UserId Then
-      CommentsController.DeleteComment(ModuleId, Blog.BlogID, comment)
-      BindCommentsList()
      End If
    End Select
   End Sub

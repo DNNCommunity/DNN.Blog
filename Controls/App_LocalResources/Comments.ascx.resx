@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="valComment.ErrorMessage" xml:space="preserve">
     <value>Comment is required</value>
@@ -253,5 +253,11 @@
   </data>
   <data name="Anonymous.Text" xml:space="preserve">
     <value>Anonymous</value>
+  </data>
+  <data name="ApproveComment.Text" xml:space="preserve">
+    <value>Approve this comment?</value>
+  </data>
+  <data name="DeleteComment.Text" xml:space="preserve">
+    <value>Delete this comment?</value>
   </data>
 </root>
