@@ -178,7 +178,7 @@
       <DependentUpon>BlogTerms.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Components\Blogger\IBlogger.vb" />
+    <Compile Include="Components\Services\WLW\Blogger\IBlogger.vb" />
     <Compile Include="Components\BlogML\BlogMLBlogExtendedProperties.vb" />
     <Compile Include="Components\BlogML\BlogMLResource.vb" />
     <Compile Include="Components\BlogML\BlogMLWriterBase.vb" />
@@ -255,8 +255,8 @@
     <Compile Include="Components\Security\Permissions\PermissionCollection.vb" />
     <Compile Include="Components\Security\Permissions\PermissionInfo_Properties.vb" />
     <Compile Include="Components\Security\Permissions\PermissionsController.vb" />
-    <Compile Include="Components\MetaWeblog\IMetaWeblog.vb" />
-    <Compile Include="Components\MoveableType\IMoveableType.vb" />
+    <Compile Include="Components\Services\WLW\MetaWeblog\IMetaWeblog.vb" />
+    <Compile Include="Components\Services\WLW\MoveableType\IMoveableType.vb" />
     <Compile Include="Components\Rss\StringWriterWithEncoding.vb" />
     <Compile Include="Components\Services\BlogAuthorizeAttribute.vb" />
     <Compile Include="Components\Services\BlogRouteMapper.vb" />
@@ -277,7 +277,7 @@
     <Compile Include="Components\Templating\ViewTemplate.vb">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Components\WordPress\IWordPress.vb" />
+    <Compile Include="Components\Services\WLW\WordPress\IWordPress.vb" />
     <Compile Include="Controls\Comments.ascx.designer.vb">
       <DependentUpon>Comments.ascx</DependentUpon>
     </Compile>

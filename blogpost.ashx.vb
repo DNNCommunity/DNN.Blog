@@ -21,7 +21,7 @@
 Imports System
 Imports System.Data
 Imports System.Text.RegularExpressions
-Imports DotNetNuke.Modules.Blog.Blogger
+Imports DotNetNuke.Modules.Blog.Services.WLW.Blogger
 Imports DotNetNuke.Modules.Blog.Common
 Imports DotNetNuke.Data
 Imports DotNetNuke.Entities.Portals
@@ -34,9 +34,9 @@ Imports System.IO
 Imports System.Web
 Imports DotNetNuke.Entities.Content.Taxonomy
 Imports System.Linq
-Imports DotNetNuke.Modules.Blog.WordPress
-Imports DotNetNuke.Modules.Blog.MoveableType
-Imports DotNetNuke.Modules.Blog.MetaWeblog
+Imports DotNetNuke.Modules.Blog.Services.WLW.WordPress
+Imports DotNetNuke.Modules.Blog.Services.WLW.MoveableType
+Imports DotNetNuke.Modules.Blog.Services.WLW.MetaWeblog
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
 Imports DotNetNuke.Modules.Blog.Entities.Entries
 Imports DotNetNuke.Modules.Blog.Common.Extensions
@@ -125,14 +125,14 @@ Public Class BlogPost
 
  End Function
 
- Public Function getCategories_WordPress(blogid As String, username As String, password As String) As WordPress.CategoryInfo() Implements IWordPress.getCategories
+ Public Function getCategories_WordPress(blogid As String, username As String, password As String) As Services.WLW.WordPress.CategoryInfo() Implements IWordPress.getCategories
   InitializeMethodCall(username, password, blogid, "")
   RequireAccessPermission()
 
   If Settings.VocabularyId > 1 Then
    Dim termController As ITermController = DotNetNuke.Entities.Content.Common.Util.GetTermController()
    Dim colCategories As IQueryable(Of Term) = termController.GetTermsByVocabulary(Settings.VocabularyId)
-   Dim res(colCategories.Count - 1) As WordPress.CategoryInfo
+   Dim res(colCategories.Count - 1) As Services.WLW.WordPress.CategoryInfo
    Dim i As Integer = 0
    For Each objTerm As Term In colCategories
     res(i).categoryId = objTerm.TermId
@@ -356,17 +356,17 @@ Public Class BlogPost
 
  End Function
 
- Public Function getWPCategories(blogid As String, username As String, password As String) As MetaWeblog.CategoryInfo()
+ Public Function getWPCategories(blogid As String, username As String, password As String) As Services.WLW.MetaWeblog.CategoryInfo()
   InitializeMethodCall(username, password, blogid, "")
   RequireAccessPermission()
 
-  Dim categories As New List(Of MetaWeblog.CategoryInfo)
+  Dim categories As New List(Of Services.WLW.MetaWeblog.CategoryInfo)
   Try
    If Settings.VocabularyId > 1 Then
     Dim termController As ITermController = DotNetNuke.Entities.Content.Common.Util.GetTermController()
     Dim colCategories As IQueryable(Of Term) = termController.GetTermsByVocabulary(Settings.VocabularyId)
     For Each objTerm As Term In colCategories
-     categories.Add(New MetaWeblog.CategoryInfo() With {.categoryId = objTerm.TermId.ToString, .categoryName = objTerm.Name, .description = objTerm.Description, .htmlUrl = "http://google.com", .parentId = objTerm.ParentTermId.ToString, .rssUrl = "http://google.com"})
+     categories.Add(New Services.WLW.MetaWeblog.CategoryInfo() With {.categoryId = objTerm.TermId.ToString, .categoryName = objTerm.Name, .description = objTerm.Description, .htmlUrl = "http://google.com", .parentId = objTerm.ParentTermId.ToString, .rssUrl = "http://google.com"})
     Next
    End If
   Catch ex As BlogPostException
@@ -387,13 +387,13 @@ Public Class BlogPost
   InitializeMethodCall(username, password, blogid, "")
   RequireAccessPermission()
 
-  Dim categories As New List(Of MetaWeblog.MetaWebLogCategoryInfo)
+  Dim categories As New List(Of Services.WLW.MetaWeblog.MetaWebLogCategoryInfo)
   Try
    If Settings.VocabularyId > 1 Then
     Dim termController As ITermController = DotNetNuke.Entities.Content.Common.Util.GetTermController()
     Dim colCategories As IQueryable(Of Term) = termController.GetTermsByVocabulary(Settings.VocabularyId)
     For Each objTerm As Term In colCategories
-     categories.Add(New MetaWeblog.MetaWebLogCategoryInfo() With {.description = objTerm.Description, .htmlUrl = "http://google.com", .rssUrl = "http://google.com"})
+     categories.Add(New Services.WLW.MetaWeblog.MetaWebLogCategoryInfo() With {.description = objTerm.Description, .htmlUrl = "http://google.com", .rssUrl = "http://google.com"})
     Next
    End If
   Catch ex As BlogPostException

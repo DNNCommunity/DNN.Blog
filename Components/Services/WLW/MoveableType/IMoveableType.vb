@@ -20,7 +20,7 @@
 
 Imports CookComputing.XmlRpc
 
-Namespace MoveableType
+Namespace Services.WLW.MoveableType
 
  ''' <summary>
  ''' Interface for Moveable Type methods that WLW uses

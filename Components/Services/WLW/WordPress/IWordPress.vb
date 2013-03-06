@@ -20,7 +20,7 @@
 
 Imports CookComputing.XmlRpc
 
-Namespace WordPress
+Namespace Services.WLW.WordPress
 
  ''' <summary>
  ''' Interface for Wordpress methods that WLW uses

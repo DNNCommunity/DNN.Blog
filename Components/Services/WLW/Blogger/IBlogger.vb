@@ -20,7 +20,7 @@
 
 Imports CookComputing.XmlRpc
 
-Namespace Blogger
+Namespace Services.WLW.Blogger
 
  ''' <summary>
  ''' Interface for Blogger Methods that WLW uses
