@@ -10,12 +10,12 @@
 				<div class="blogComments dnnClear" id="commentDiv<%# DataBinder.Eval(Container.DataItem, "CommentID") %>">
 					<div class="commentAuthor dnnLeft">
       <a href="<%# DotNetNuke.Common.Globals.UserProfileURL(DataBinder.Eval(Container.DataItem, "CreatedByUserID")) %>" title="<%# DataBinder.Eval(Container.DataItem, "DisplayName") %>">
-       <img src="<%# DotNetNuke.Common.Globals.UserProfilePicFormattedUrl.Replace("{0}", DataBinder.Eval(Container.DataItem, "CreatedByUserID")).replace("{1}", "50").replace("{2}", "50") %>" alt="<%# DataBinder.Eval(Container.DataItem, "DisplayName") %>" />
+       <img src="<%# IIF(DataBinder.Eval(Container.DataItem, "CreatedByUserID")=-1, ResolveUrl("~/images/spacer.gif"), DotNetNuke.Common.Globals.UserProfilePicFormattedUrl.Replace("{0}", DataBinder.Eval(Container.DataItem, "CreatedByUserID")).replace("{1}", "50").replace("{2}", "50")) %>" alt="<%# DataBinder.Eval(Container.DataItem, "DisplayName") %>" width="50" height="50" />
       </a>
 					</div>
 					<div class="commentContent">
 						<div class="ccAuthor">
-       <a href="<%# DotNetNuke.Common.Globals.UserProfileURL(DataBinder.Eval(Container.DataItem, "CreatedByUserID")) %>"><%# DataBinder.Eval(Container.DataItem, "DisplayName") %>
+       <a href="<%# DotNetNuke.Common.Globals.UserProfileURL(DataBinder.Eval(Container.DataItem, "CreatedByUserID")) %>"><%# IIf(DataBinder.Eval(Container.DataItem, "CreatedByUserID") = -1, LocalizeString("Anonymous"), DataBinder.Eval(Container.DataItem, "DisplayName"))%>
        </a>
        &nbsp;
        <abbr title="<%# CDATE(DataBinder.Eval(Container.DataItem, "CreatedOnDate")).ToString("u") %>" class="commenttimeago"></abbr>
@@ -25,12 +25,12 @@
       </div>
 						<div class="commentMod dnnRight">
        <asp:Button ID="lnkEditComment" runat="server" Visible='<%# Security.CanApproveComment.ToString() %>' CommandArgument='<%# DataBinder.Eval(Container.DataItem, "CommentID") %>' CommandName="EditComment" Text="&#9998;" CssClass="icon16 entypoButton" />
-       <a href="#" onclick="blogModule.approveComment(<%=BlogID%>, <%# DataBinder.Eval(Container.DataItem, "CommentID") %>, function() {$('#cmdApproveComment<%# DataBinder.Eval(Container.DataItem, "CommentID") %>').hide()});return false;" 
+       <a href="#" onclick="if (confirm('<%= LocalizeString("ApproveComment") %>')) {blogModule.approveComment(<%=BlogID%>, <%# DataBinder.Eval(Container.DataItem, "CommentID") %>, function() {$('#cmdApproveComment<%# DataBinder.Eval(Container.DataItem, "CommentID") %>').hide()})};return false;" 
           id="cmdApproveComment<%# DataBinder.Eval(Container.DataItem, "CommentID") %>"
           class="icon16 entypoButton approveComment" 
           title="Approve"
           style="display:<%# IIF(NOT CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Comments.CommentInfo).Approved AND Security.CanApproveComment, "inline", "none") %>">&#128077;</a>
-       <a href="#" onclick="blogModule.deleteComment(<%=BlogID%>, <%# DataBinder.Eval(Container.DataItem, "CommentID") %>, function() {$('#commentDiv<%# DataBinder.Eval(Container.DataItem, "CommentID") %>').hide()});return false;" 
+       <a href="#" onclick="if (confirm('<%= LocalizeString("DeleteComment") %>')) {blogModule.deleteComment(<%=BlogID%>, <%# DataBinder.Eval(Container.DataItem, "CommentID") %>, function() {$('#commentDiv<%# DataBinder.Eval(Container.DataItem, "CommentID") %>').hide()})};return false;" 
           class="icon16 entypoButton deleteComment" 
           title="Delete"
           style="display:<%# IIF(Security.CanApproveComment, "inline", "none") %>">&#59177;</a>
@@ -64,23 +64,12 @@
 <script language="javascript" type="text/javascript">
  var blogModule
  jQuery(function ($) {
+  dnn.setVar("sf_tabId", '<%=TabId %>'); /* fix for some funkyness where this var was not set by DNN */
   blogModule = new BlogModule($, {
     serverErrorText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ServerError"))%>',
     serverErrorWithDescriptionText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ServerErrorWithDescription"))%>'
    },
    $.dnnSF(<%=ModuleId %>));
-  $('.approveComment').dnnConfirm({
-    text: '<%= LocalizeString("ApproveComment") %>',
-    yesText: '<%= Localization.GetString("Yes.Text", Localization.SharedResourceFile) %>',
-    noText: '<%= Localization.GetString("No.Text", Localization.SharedResourceFile) %>',
-    title: '<%= Localization.GetString("Confirm.Text", Localization.SharedResourceFile) %>'
-   });
-  $('.deleteComment').dnnConfirm({
-    text: '<%= LocalizeString("DeleteComment") %>',
-    yesText: '<%= Localization.GetString("Yes.Text", Localization.SharedResourceFile) %>',
-    noText: '<%= Localization.GetString("No.Text", Localization.SharedResourceFile) %>',
-    title: '<%= Localization.GetString("Confirm.Text", Localization.SharedResourceFile) %>'
-   });
   $("abbr.commenttimeago").timeago();
  } (jQuery, window.Sys));
 </script>

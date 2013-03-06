@@ -176,6 +176,33 @@ Partial Public Class BlogEdit
  Protected WithEvents chkAllowComments As Global.System.Web.UI.WebControls.CheckBox
 
  '''<summary>
+ '''pnlAnonymousComments control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents pnlAnonymousComments As Global.System.Web.UI.WebControls.Panel
+
+ '''<summary>
+ '''lblAllowAnonymousComments control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lblAllowAnonymousComments As Global.System.Web.UI.UserControl
+
+ '''<summary>
+ '''chkAllowAnonymousComments control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents chkAllowAnonymousComments As Global.System.Web.UI.WebControls.CheckBox
+
+ '''<summary>
  '''lblSyndicate control.
  '''</summary>
  '''<remarks>

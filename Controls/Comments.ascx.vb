@@ -12,6 +12,7 @@ Namespace Controls
 
 #Region " Private Properties "
   Private Property SelectedCommentId As Integer = -1
+  Public Property AllowAnonymousComments As Boolean = False
 #End Region
 
 #Region " Event Handlers "
@@ -31,6 +32,9 @@ Namespace Controls
    LocalResourceFile = "~/DesktopModules/Blog/Controls/App_LocalResources/Comments.ascx.resx"
    If Not Me.IsPostBack Then
     BindCommentsList()
+   End If
+   If Not AllowAnonymousComments AndAlso UserInfo.UserID = -1 Then
+    pnlAddComment.Visible = False
    End If
   End Sub
 

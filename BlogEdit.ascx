@@ -48,6 +48,10 @@
     <dnn:Label ID="lblAllowComments" runat="server" controlname="chkAllowComments" suffix=":" />
     <asp:CheckBox ID="chkAllowComments" runat="server" />
    </asp:Panel>
+   <asp:Panel ID="pnlAnonymousComments" runat="server" CssClass="dnnFormItem">
+    <dnn:Label ID="lblAllowAnonymousComments" runat="server" controlname="chkAllowAnonymousComments" suffix=":" />
+    <asp:CheckBox ID="chkAllowAnonymousComments" runat="server" />
+   </asp:Panel>
    <div class="dnnFormItem">
     <dnn:Label ID="lblSyndicate" runat="server" controlname="chkSyndicate" suffix=":" />
     <asp:CheckBox ID="chkSyndicate" runat="server" />

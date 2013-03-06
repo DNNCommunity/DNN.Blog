@@ -9,6 +9,7 @@ Imports DotNetNuke.Entities.Users
 
 Imports DotNetNuke.Modules.Blog.Security
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
+Imports DotNetNuke.Services.Social.Notifications
 
 Namespace Services
 
@@ -32,6 +33,7 @@ Namespace Services
 
 #Region " Properties "
   Public Property BlogId As Integer = -1
+  Public Property NotificationId As Integer = -1
   Public Property AccessLevel As SecurityAccessLevel
   Public Property UserInfo As UserInfo
   Public Property Security As ContextSecurity
@@ -53,6 +55,7 @@ Namespace Services
    If AccessLevel = SecurityAccessLevel.Anonymous Then Return True ' save time by not going through the code below
 
    HttpContext.Current.Request.Params.ReadValue("blogId", BlogId)
+   HttpContext.Current.Request.Params.ReadValue("NotificationId", NotificationId)
    Dim moduleId As Integer = context.ActionContext.Request.FindModuleId
    Dim tabId As Integer = context.ActionContext.Request.FindTabId
    If Not HttpContextSource.Current.Request.IsAuthenticated Then
@@ -61,6 +64,11 @@ Namespace Services
     Dim portalSettings As DotNetNuke.Entities.Portals.PortalSettings = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings()
     UserInfo = UserController.GetCachedUser(portalSettings.PortalId, HttpContextSource.Current.User.Identity.Name)
     If UserInfo Is Nothing Then UserInfo = New UserInfo
+   End If
+   If NotificationId > -1 Then
+    Dim notify As Notification = NotificationsController.Instance.GetNotification(NotificationId)
+    Dim nKey As New Integration.NotificationKey(notify.Context)
+    BlogId = nKey.BlogId
    End If
    Dim blog As BlogInfo = BlogsController.GetBlog(BlogId, UserInfo.UserID)
    If blog Is Nothing Then Return False

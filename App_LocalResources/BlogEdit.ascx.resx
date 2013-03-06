@@ -238,7 +238,7 @@
   <data name="cmdGenerateLinks.Text" xml:space="preserve">
     <value>Regenerate Blog Permalinks</value>
   </data>
-  <data name="lblAnonymousComments.Text" xml:space="preserve">
+  <data name="lblAllowAnonymousComments.Text" xml:space="preserve">
     <value>Comments by Unauthenticated Users</value>
   </data>
   <data name="lblUsersComments.Text" xml:space="preserve">
@@ -268,7 +268,7 @@
   <data name="lblMetaWeblogNotAvailable.Text" xml:space="preserve">
     <value>MetaWeblog clients integration has been disabled</value>
   </data>
-  <data name="lblAnonymousComments.Help" xml:space="preserve">
+  <data name="lblAllowAnonymousComments.Help" xml:space="preserve">
     <value>These are users who are either not logged into the website or they are not members of the community (in other words, anonymous).</value>
   </data>
   <data name="lblCaptcha.Help" xml:space="preserve">

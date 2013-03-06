@@ -1,6 +1,6 @@
 ﻿function BlogModule($, settings, servicesFramework) {
- var baseServicepath = servicesFramework.getServiceRoot('Blog') + 'Entry/';
- var commentsServicepath = servicesFramework.getServiceRoot('Blog') + 'Comment/';
+ var baseServicepath = appPath + servicesFramework.getServiceRoot('Blog') + 'Entry/';
+ var commentsServicepath = appPath + servicesFramework.getServiceRoot('Blog') + 'Comment/';
 
  this.approveEntry = function (blogId, entryId, success) {
   $.ajax({

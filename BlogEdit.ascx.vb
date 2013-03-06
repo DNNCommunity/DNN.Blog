@@ -38,6 +38,7 @@ Public Class BlogEdit
    txtDescription.Text = Blog.Description
    chkPublic.Checked = Blog.Published
    chkAllowComments.Checked = Blog.AllowComments
+   chkAllowAnonymousComments.Checked = Blog.AllowAnonymousComments
    chkSyndicate.Checked = Blog.Syndicated
    If Blog.SyndicationEmail Is Nothing Then
     txtSyndicationEmail.Text = ModuleContext.PortalSettings.UserInfo.Email
@@ -93,6 +94,7 @@ Public Class BlogEdit
      .Description = txtDescription.Text
      .Published = chkPublic.Checked
      .AllowComments = chkAllowComments.Checked
+     .AllowAnonymousComments = chkAllowAnonymousComments.Checked
      .Syndicated = chkSyndicate.Checked
      .SyndicationEmail = txtSyndicationEmail.Text
      .IncludeImagesInFeed = chkIncludeImagesInFeed.Checked

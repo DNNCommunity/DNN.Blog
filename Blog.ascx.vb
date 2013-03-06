@@ -107,6 +107,9 @@ Public Class Blog
   vtContents.DataBind()
 
   ctlComments.ClonePropertiesFrom(Me)
+  If Blog IsNot Nothing Then
+   ctlComments.AllowAnonymousComments = Blog.AllowAnonymousComments
+  End If
 
  End Sub
 #End Region

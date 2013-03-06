@@ -54,7 +54,6 @@ Namespace Integration.Services
   Private Property Entry As EntryInfo = Nothing
   Private Property CommentId As Integer = -1
   Private Property Comment As CommentInfo = Nothing
-  Private Property Security As ContextSecurity = Nothing
 
 #End Region
 
@@ -68,10 +67,8 @@ Namespace Integration.Services
    If Blog Is Nothing Or Entry Is Nothing Then
     Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
    End If
-   If Security.CanApproveEntry Then
-    Entry.Published = True
-    EntriesController.UpdateEntry(Entry, UserInfo.UserID)
-   End If
+   Entry.Published = True
+   EntriesController.UpdateEntry(Entry, UserInfo.UserID)
    NotificationsController.Instance().DeleteNotification(postData.NotificationId)
    Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = "success"})
   End Function
@@ -85,9 +82,7 @@ Namespace Integration.Services
    If Blog Is Nothing Or Entry Is Nothing Then
     Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
    End If
-   If Security.CanApproveEntry Then
-    EntriesController.DeleteEntry(ContentItemId)
-   End If
+   EntriesController.DeleteEntry(ContentItemId)
    NotificationsController.Instance().DeleteNotification(postData.NotificationId)
    Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = "success"})
   End Function
@@ -101,9 +96,7 @@ Namespace Integration.Services
    If Blog Is Nothing Or Entry Is Nothing Or Comment Is Nothing Then
     Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
    End If
-   If Security.CanApproveComment Then
-    CommentsController.ApproveComment(BlogModuleId, BlogId, Comment)
-   End If
+   CommentsController.ApproveComment(BlogModuleId, BlogId, Comment)
    NotificationsController.Instance().DeleteNotification(postData.NotificationId)
    Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = "success"})
   End Function
@@ -117,9 +110,7 @@ Namespace Integration.Services
    If Blog Is Nothing Or Entry Is Nothing Or Comment Is Nothing Then
     Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
    End If
-   If Security.CanApproveComment Then
-    CommentsController.DeleteComment(BlogModuleId, BlogId, Comment)
-   End If
+   CommentsController.DeleteComment(BlogModuleId, BlogId, Comment)
    NotificationsController.Instance().DeleteNotification(postData.NotificationId)
    Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = "success"})
   End Function
@@ -133,7 +124,6 @@ Namespace Integration.Services
    ContentItemId = nKey.ContentItemId
    Blog = BlogsController.GetBlog(BlogId, UserInfo.UserID)
    Entry = EntriesController.GetEntry(ContentItemId, BlogModuleId)
-   Security = New ContextSecurity(BlogModuleId, -1, Blog, UserInfo)
   End Sub
 
   Private Sub ParseCommentKey(key As String)
@@ -145,7 +135,6 @@ Namespace Integration.Services
    Blog = BlogsController.GetBlog(BlogId, UserInfo.UserID)
    Entry = EntriesController.GetEntry(ContentItemId, BlogModuleId)
    Comment = CommentsController.GetComment(CommentId)
-   Security = New ContextSecurity(BlogModuleId, -1, Blog, UserInfo)
   End Sub
 #End Region
 
