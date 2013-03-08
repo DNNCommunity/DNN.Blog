@@ -9,7 +9,6 @@ Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Framework
 Imports System.Linq
-Imports DotNetNuke.Entities.Content.Taxonomy
 Imports DotNetNuke.Modules.Blog.File
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
 Imports DotNetNuke.Modules.Blog.Entities.Entries
@@ -17,6 +16,7 @@ Imports DotNetNuke.Services.Localization
 Imports Telerik.Web.UI
 Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.Integration
+Imports DotNetNuke.Modules.Blog.Entities.Terms
 
 Public Class EntryEdit
  Inherits BlogModuleBase
@@ -103,8 +103,8 @@ Public Class EntryEdit
 
     ' Categories
     If Settings.VocabularyId > 0 Then
-     Dim termController As ITermController = DotNetNuke.Entities.Content.Common.Util.GetTermController()
-     Dim colCategories As IQueryable(Of Term) = termController.GetTermsByVocabulary(Settings.VocabularyId)
+     Dim termController As DotNetNuke.Entities.Content.Taxonomy.ITermController = DotNetNuke.Entities.Content.Common.Util.GetTermController()
+     Dim colCategories As IQueryable(Of DotNetNuke.Entities.Content.Taxonomy.Term) = termController.GetTermsByVocabulary(Settings.VocabularyId)
      dtCategories.DataSource = colCategories
      dtCategories.DataBind()
     Else
@@ -169,7 +169,7 @@ Public Class EntryEdit
       imgEntryImage.Visible = False
       cmdImageRemove.Visible = False
      End If
-     For Each t As Term In Entry.Terms
+     For Each t As TermInfo In Entry.Terms
       If t.VocabularyId = 1 Then
        txtTags.Text = txtTags.Text + t.Name + ","
       Else
@@ -289,18 +289,14 @@ Public Class EntryEdit
 
     ' Categories, Tags
     Dim userEnteredTerms As Array = txtTags.Text.Trim.Split(","c)
-    Dim terms As New List(Of Term)
-    For Each s As String In userEnteredTerms
-     If s.Length > 0 Then
-      Dim newTerm As Term = Integration.Terms.CreateAndReturnTerm(s, 1)
-      terms.Add(newTerm)
-     End If
-    Next
+    Dim terms As New List(Of TermInfo)
+    terms.AddRange(TermsController.GetTermList(ModuleId, txtTags.Text.Trim, 1, True))
     If Settings.VocabularyId > 0 Then
+     Dim checkedBoxes As New List(Of String)
      For Each t As Telerik.Web.UI.RadTreeNode In dtCategories.CheckedNodes
-      Dim objTerm As Term = Integration.Terms.GetTermById(Convert.ToInt32(t.Value), Settings.VocabularyId)
-      terms.Add(objTerm)
+      checkedBoxes.Add(t.Value)
      Next
+     terms.AddRange(TermsController.GetTermList(ModuleId, checkedBoxes, Settings.VocabularyId, False))
     End If
     Entry.Terms.Clear()
     Entry.Terms.AddRange(terms)

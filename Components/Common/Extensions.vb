@@ -1,4 +1,5 @@
 ﻿Imports System.Linq
+Imports DotNetNuke.Modules.Blog.Entities.Terms
 
 Namespace Common
  Module Extensions
@@ -275,7 +276,7 @@ Namespace Common
   End Function
 
   <System.Runtime.CompilerServices.Extension()>
-  Public Function ToStringArray(terms As List(Of Entities.TermInfo)) As String()
+  Public Function ToStringArray(terms As List(Of TermInfo)) As String()
    Return terms.Select(Function(x)
                         Return x.Name
                        End Function).ToArray

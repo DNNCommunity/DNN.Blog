@@ -179,6 +179,7 @@
       <DependentUpon>BlogTerms.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Components\Entities\Terms\TermsController.vb" />
     <Compile Include="Components\Services\WLW\Blogger\IBlogger.vb" />
     <Compile Include="Components\BlogML\BlogMLBlogExtendedProperties.vb" />
     <Compile Include="Components\BlogML\BlogMLResource.vb" />
@@ -240,10 +241,9 @@
     <Compile Include="Components\Entities\Entries\EntryInfo_Interfaces.vb" />
     <Compile Include="Components\Entities\Entries\EntryInfo_Properties.vb" />
     <Compile Include="Components\Entities\Entries\EntryInfo.vb" />
-    <Compile Include="Components\Entities\TermInfo.vb" />
+    <Compile Include="Components\Entities\Terms\TermInfo.vb" />
     <Compile Include="Components\Integration\JournalController.vb" />
     <Compile Include="Components\Integration\NotificationController.vb" />
-    <Compile Include="Components\Integration\Terms.vb" />
     <Compile Include="Components\Security\BlogUser.vb" />
     <Compile Include="Components\Security\Controls\BlogPermissionsGrid.vb" />
     <Compile Include="Components\Security\Controls\PermissionsGrid.vb" />
@@ -286,7 +286,6 @@
       <DependentUpon>Comments.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Controls\Tags.vb" />
     <Compile Include="Components\File\FileController.vb" />
     <Compile Include="BlogEdit.ascx.designer.vb">
       <DependentUpon>BlogEdit.ascx</DependentUpon>

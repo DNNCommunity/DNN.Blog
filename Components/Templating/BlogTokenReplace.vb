@@ -23,6 +23,7 @@ Imports DotNetNuke.Entities.Users
 Imports DotNetNuke.Services.Tokens
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
 Imports DotNetNuke.Modules.Blog.Entities.Entries
+Imports DotNetNuke.Modules.Blog.Entities.Terms
 
 Namespace Templating
  Public Class BlogTokenReplace
@@ -67,6 +68,19 @@ Namespace Templating
    Me.PropertySource("settings") = settings
    Me.PropertySource("entry") = entry
    Me.PropertySource("blog") = entry.Blog
+
+  End Sub
+
+  Public Sub New(blogModule As BlogModuleBase, settings As Common.ModuleSettings, entry As EntryInfo, term As TermInfo)
+   MyBase.new(Scope.DefaultSettings)
+
+   Me.ModuleInfo = blogModule.ModuleConfiguration
+   Me.UseObjectLessExpression = False
+   Me.PropertySource("query") = blogModule
+   Me.PropertySource("settings") = settings
+   Me.PropertySource("entry") = entry
+   Me.PropertySource("blog") = entry.Blog
+   Me.PropertySource("term") = term
 
   End Sub
 

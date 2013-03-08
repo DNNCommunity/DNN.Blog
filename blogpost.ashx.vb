@@ -41,6 +41,7 @@ Imports DotNetNuke.Modules.Blog.Entities.Blogs
 Imports DotNetNuke.Modules.Blog.Entities.Entries
 Imports DotNetNuke.Modules.Blog.Common.Extensions
 Imports DotNetNuke.Modules.Blog.Security
+Imports DotNetNuke.Modules.Blog.Entities.Terms
 
 ''' <summary>
 ''' Implements the MetaBlog API.
@@ -78,7 +79,7 @@ Public Class BlogPost
   Dim blogs As New List(Of BlogInfoStruct)
   Try
    For Each blog As BlogInfo In BlogsController.GetBlogsByModule(ModuleId, UserInfo.UserID).Values.Where(Function(b)
-                                                                                                          Return b.CreatedByUserId = UserInfo.UserID Or b.CanAdd Or b.CanEdit
+                                                                                                          Return b.CreatedByUserID = UserInfo.UserID Or b.CanAdd Or b.CanEdit
                                                                                                          End Function).ToList
     blogs.Add(New BlogInfoStruct() With {.blogid = blog.BlogID.ToString, .blogName = blog.Title, .url = GetRedirectUrl(TabId)})
    Next
@@ -167,7 +168,7 @@ Public Class BlogPost
   InitializeMethodCall(username, password, "", postid)
   RequireEditPermission()
 
-  Dim colCategories As List(Of Term)
+  Dim colCategories As List(Of TermInfo)
   colCategories = Entry.Terms
   Dim res(colCategories.Count - 1) As Category
   Dim i As Integer = 0
@@ -687,20 +688,10 @@ Public Class BlogPost
 
 #Region " Data Handling Methods "
  Private Sub AddCategoriesAndKeyWords(ByRef newEntry As EntryInfo, post As Post)
-  Dim terms As New List(Of Term)
-  For Each s As String In post.mt_keywords.Replace(";", ",").Split(","c)
-   If s.Length > 0 Then
-    Dim newTerm As Term = Integration.Terms.CreateAndReturnTerm(s.Trim, 1)
-    terms.Add(newTerm)
-   End If
-  Next
+  Dim terms As New List(Of TermInfo)
+  terms.AddRange(TermsController.GetTermList(ModuleId, post.mt_keywords, 1, True))
   If Settings.VocabularyId > 1 Then
-   For Each s As String In post.categories
-    If s.Length > 0 Then
-     Dim newTerm As Term = Integration.Terms.CreateAndReturnTerm(s.Trim, Settings.VocabularyId)
-     terms.Add(newTerm)
-    End If
-   Next
+   terms.AddRange(TermsController.GetTermList(ModuleId, post.categories.ToList, Settings.VocabularyId, False))
   End If
   newEntry.Terms.Clear()
   newEntry.Terms.AddRange(terms)
@@ -709,7 +700,7 @@ Public Class BlogPost
 
  Private Sub PublishToJournal(newEntry As EntryInfo)
   Dim journalUserId As Integer
-  If newEntry.CreatedByUserId <> UserInfo.UserID AndAlso Not Blog.PublishAsOwner Then
+  If newEntry.CreatedByUserID <> UserInfo.UserID AndAlso Not Blog.PublishAsOwner Then
    journalUserId = UserInfo.UserID
   Else
    journalUserId = Blog.OwnerUserId

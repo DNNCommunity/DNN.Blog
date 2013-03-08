@@ -5,6 +5,7 @@ Imports DotNetNuke.Entities.Modules.Actions
 Imports DotNetNuke.Modules.Blog.Templating
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
 Imports DotNetNuke.Modules.Blog.Entities.Entries
+Imports DotNetNuke.Modules.Blog.Entities.Terms
 
 Public Class Blog
  Inherits BlogModuleBase
@@ -46,7 +47,7 @@ Public Class Blog
  End Sub
 
  Private Sub cmdBlog_Click(sender As Object, e As System.EventArgs) Handles cmdBlog.Click
-  If  BlogId <> -1 Then
+  If BlogId <> -1 Then
    Response.Redirect(EditUrl("Blog", BlogId.ToString, "EntryEdit"), False)
   Else
    Response.Redirect(EditUrl("EntryEdit"), False)
@@ -60,16 +61,6 @@ Public Class Blog
  Private Sub vtContents_GetData(ByVal DataSource As String, ByVal Parameters As Dictionary(Of String, String), ByRef Replacers As System.Collections.Generic.List(Of GenericTokenReplace), ByRef Arguments As System.Collections.Generic.List(Of String())) Handles vtContents.GetData
 
   Select Case DataSource.ToLower
-
-   Case "entries"
-
-    Parameters.ReadValue("pagesize", _pageSize)
-    If _pageSize < 1 Then _pageSize = 10 ' we will not list "all entries"
-    Dim entryList As IEnumerable(Of EntryInfo) = EntriesController.GetEntries(ModuleId, BlogId, 1, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId).Values
-    _usePaging = True
-    For Each e As EntryInfo In entryList
-     Replacers.Add(New BlogTokenReplace(Me, Settings, e))
-    Next
 
    Case "blogs"
 
@@ -93,6 +84,25 @@ Public Class Blog
       Replacers.Add(New BlogTokenReplace(Me, Settings, b))
      Next
     End If
+
+   Case "entries"
+
+    Parameters.ReadValue("pagesize", _pageSize)
+    If _pageSize < 1 Then _pageSize = 10 ' we will not list "all entries"
+    Dim entryList As IEnumerable(Of EntryInfo) = EntriesController.GetEntries(ModuleId, BlogId, 1, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId).Values
+    _usePaging = True
+    For Each e As EntryInfo In entryList
+     Replacers.Add(New BlogTokenReplace(Me, Settings, e))
+    Next
+
+   Case "keywords"
+
+    If Entry IsNot Nothing Then
+     For Each t As TermInfo In Entry.Terms
+      Replacers.Add(New BlogTokenReplace(Me, Settings, Entry, t))
+     Next
+    End If
+    _usePaging = False
 
   End Select
 

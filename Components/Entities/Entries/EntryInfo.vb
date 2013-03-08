@@ -19,6 +19,7 @@
 '
 Imports System
 Imports System.Data
+Imports System.Linq
 Imports System.Xml
 Imports System.Xml.Schema
 Imports System.Xml.Serialization
@@ -27,13 +28,23 @@ Imports DotNetNuke.Entities.Modules
 Imports DotNetNuke.Services.Tokens
 Imports DotNetNuke.Entities.Users
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
+Imports DotNetNuke.Modules.Blog.Entities.Terms
 
 Namespace Entities.Entries
 
  Partial Public Class EntryInfo
 
-  Public Property EntryCategories As List(Of TermInfo)
-  Public Property EntryTags As List(Of TermInfo)
+  Public ReadOnly Property EntryCategories As List(Of TermInfo)
+   Get
+    Return Terms.Where(Function(t) t.VocabularyId <> 1).ToList
+   End Get
+  End Property
+
+  Public ReadOnly Property EntryTags As List(Of TermInfo)
+   Get
+    Return Terms.Where(Function(t) t.VocabularyId = 1).ToList
+   End Get
+  End Property
 
   Public Function PermaLink(portalSettings As DotNetNuke.Entities.Portals.PortalSettings) As String
    Return PermaLink(portalSettings.ActiveTab, portalSettings.PortalAlias.HTTPAlias)
@@ -47,6 +58,19 @@ Namespace Entities.Entries
    End If
    Return _permaLink
   End Function
+
+  Private _terms As List(Of TermInfo)
+  Public Shadows Property Terms() As List(Of TermInfo)
+   Get
+    If _terms Is Nothing Then
+     _terms = TermsController.GetTermsByEntry(ContentItemId, Blog.ModuleID)
+    End If
+    Return _terms
+   End Get
+   Set(ByVal value As List(Of TermInfo))
+    _terms = value
+   End Set
+  End Property
 
   Private _blog As BlogInfo = Nothing
   Public Property Blog() As BlogInfo

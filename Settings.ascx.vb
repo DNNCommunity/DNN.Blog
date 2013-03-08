@@ -30,7 +30,7 @@
 
   If Not Me.IsPostBack Then
 
-   ddVocabularyId.DataSource = Integration.Terms.GetPortalVocabularies(PortalId)
+   ddVocabularyId.DataSource = Common.Globals.GetPortalVocabularies(PortalId)
    ddVocabularyId.DataBind()
    ddVocabularyId.Items.Insert(0, New ListItem(LocalizeString("NoneSpecified"), "-1"))
 

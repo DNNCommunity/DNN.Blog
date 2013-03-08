@@ -17,9 +17,10 @@
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 ' DEALINGS IN THE SOFTWARE.
 '
-
+Imports System.Linq
 Imports DotNetNuke.Entities.Modules
 Imports DotNetNuke.Services.Localization.Localization
+Imports DotNetNuke.Entities.Content.Taxonomy
 
 Namespace Common
 
@@ -176,6 +177,13 @@ Namespace Common
 
   Public Shared Function removeHtmlTags(ByVal inputString As String) As String
    Return (New DotNetNuke.Security.PortalSecurity).InputFilter(inputString, DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting Or DotNetNuke.Security.PortalSecurity.FilterFlag.NoMarkup)
+  End Function
+
+  Friend Shared Function GetPortalVocabularies(portalId As Integer) As List(Of Vocabulary)
+   Dim cntVocab As IVocabularyController = DotNetNuke.Entities.Content.Common.Util.GetVocabularyController()
+   Dim colVocabularies As IQueryable(Of Vocabulary) = cntVocab.GetVocabularies()
+   Dim portalVocabularies As IQueryable(Of Vocabulary) = From v In colVocabularies Where v.ScopeTypeId = 2 And v.ScopeId = portalId
+   Return portalVocabularies.ToList()
   End Function
 #End Region
 
