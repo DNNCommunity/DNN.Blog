@@ -20,10 +20,7 @@ Namespace Controls
 
    ViewState.ReadValue("SelectedCommentId", SelectedCommentId)
 
-   DotNetNuke.Framework.jQuery.RequestDnnPluginsRegistration()
-   DotNetNuke.Framework.ServicesFramework.Instance.RequestAjaxScriptSupport()
-   DotNetNuke.Framework.ServicesFramework.Instance.RequestAjaxAntiForgerySupport()
-   Web.Client.ClientResourceManagement.ClientResourceManager.RegisterScript(Page, TemplateSourceDirectory + "/../js/dotnetnuke.blog.js")
+   CType(Me.Parent, BlogModuleBase).AddBlogService()
    Web.Client.ClientResourceManagement.ClientResourceManager.RegisterScript(Page, TemplateSourceDirectory + "/../js/jquery.timeago.js")
 
   End Sub

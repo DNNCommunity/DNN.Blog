@@ -51,11 +51,14 @@
           class="icon16 entypoButton" 
           title="Edit"
           style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Entries.EntryInfo).Blog.CanEdit, "inline", "none") %>">&#9998;</a>
-       <a href="<%# EditUrl("Post", Eval("ContentItemId"), "EntryEdit") %>" 
+       <a href="#" 
+          onclick="if (confirm('<%= LocalizeString("DeleteEntry") %>')) {blogService.deleteEntry(<%# Eval("BlogID") %>, <%# Eval("ContentItemID") %>, function() {$('#cmdDeleteEntry<%# Eval("ContentItemID") %>').parent().parent().hide()})};return false;"
+          id="cmdDeleteEntry<%# Eval("ContentItemID") %>"
           class="icon16 entypoButton" 
           title="Delete"
           style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Entries.EntryInfo).Blog.CanEdit, "inline", "none") %>">&#59177;</a>
-       <a href="#" onclick="blogModule.approveEntry(<%# Eval("BlogID") %>, <%# Eval("ContentItemID") %>, function() {$('#cmdApproveEntry<%# Eval("ContentItemID") %>').hide();$('#approveTick<%# Eval("ContentItemID") %>').text('&#10003;')});return false;" 
+       <a href="#" 
+          onclick="if (confirm('<%= LocalizeString("ApproveEntry") %>')) {blogService.approveEntry(<%# Eval("BlogID") %>, <%# Eval("ContentItemID") %>, function() {$('#cmdApproveEntry<%# Eval("ContentItemID") %>').hide();$('#approveTick<%# Eval("ContentItemID") %>').text('&#10003;')})};return false;" 
           id="cmdApproveEntry<%# Eval("ContentItemID") %>"
           class="icon16 entypoButton" 
           title="Approve"
@@ -87,14 +90,11 @@
  </div>
 </div>
 
+<div id="blogServiceErrorBox">
+</div>
+
 <script type="text/javascript">
- var blogModule
  jQuery(function ($) {
   $('#tabs').dnnTabs();
-  blogModule = new BlogModule($, {
-    serverErrorText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ServerError"))%>',
-    serverErrorWithDescriptionText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ServerErrorWithDescription"))%>'
-   },
-   $.dnnSF(<%=ModuleId %>))
  });
 </script>

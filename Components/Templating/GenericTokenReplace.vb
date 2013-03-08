@@ -4,26 +4,30 @@ Namespace Templating
  Public Class GenericTokenReplace
   Inherits TokenReplace
 
-  Public Sub New(ByVal AccessLevel As DotNetNuke.Services.Tokens.Scope)
+  Public Sub New(accessLevel As DotNetNuke.Services.Tokens.Scope)
    MyBase.New(Scope.DefaultSettings)
   End Sub
 
-  Public Shadows Function ReplaceTokens(ByVal strSourceText As String) As String
+  Public Sub New(accessLevel As DotNetNuke.Services.Tokens.Scope, moduleId As Integer)
+   MyBase.New(Scope.DefaultSettings, moduleId)
+  End Sub
+
+  Public Shadows Function ReplaceTokens(strSourceText As String) As String
    strSourceText = strSourceText.Replace("\[", "{{").Replace("\]", "}}")
    Return MyBase.ReplaceTokens(strSourceText).Replace("{{", "[").Replace("}}", "]")
   End Function
 
-  Public Shadows Function ReplaceTokens(ByVal strSourceText As String, ByVal ParamArray additionalParameters As String()) As String
+  Public Shadows Function ReplaceTokens(strSourceText As String, ParamArray additionalParameters As String()) As String
    strSourceText = strSourceText.Replace("\[", "{{").Replace("\]", "}}")
    Me.PropertySource("custom") = New CustomParameters(additionalParameters)
    Return MyBase.ReplaceTokens(strSourceText).Replace("{{", "[").Replace("}}", "]")
   End Function
 
-  Public Sub AddCustomParameters(ByVal ParamArray additionalParameters As String())
+  Public Sub AddCustomParameters(ParamArray additionalParameters As String())
    Me.PropertySource("custom") = New CustomParameters(additionalParameters)
   End Sub
 
-  Public Sub AddResources(ByVal TemplateFileMapPath As String)
+  Public Sub AddResources(TemplateFileMapPath As String)
    Me.PropertySource("resx") = New Resources(TemplateFileMapPath)
   End Sub
 

@@ -23,6 +23,7 @@ Public Class Blog
 
   cmdManageBlogs.Visible = Security.IsBlogger Or Security.CanApproveEntry
   cmdBlog.Visible = Security.CanAddEntry
+  cmdEditPost.Visible = (Entry IsNot Nothing) And Security.CanEditEntry
 
  End Sub
 
@@ -45,13 +46,15 @@ Public Class Blog
  End Sub
 
  Private Sub cmdBlog_Click(sender As Object, e As System.EventArgs) Handles cmdBlog.Click
-  If Entry IsNot Nothing Then
-   Response.Redirect(EditUrl("Entry", ContentItemId.ToString, "EntryEdit"), False)
-  ElseIf BlogId <> -1 Then
+  If  BlogId <> -1 Then
    Response.Redirect(EditUrl("Blog", BlogId.ToString, "EntryEdit"), False)
   Else
    Response.Redirect(EditUrl("EntryEdit"), False)
   End If
+ End Sub
+
+ Private Sub cmdEditPost_Click(sender As Object, e As System.EventArgs) Handles cmdEditPost.Click
+  Response.Redirect(EditUrl("Post", ContentItemId.ToString, "EntryEdit"), False)
  End Sub
 
  Private Sub vtContents_GetData(ByVal DataSource As String, ByVal Parameters As Dictionary(Of String, String), ByRef Replacers As System.Collections.Generic.List(Of GenericTokenReplace), ByRef Arguments As System.Collections.Generic.List(Of String())) Handles vtContents.GetData

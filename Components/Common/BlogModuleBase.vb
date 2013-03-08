@@ -89,6 +89,25 @@ Namespace Common
   End Property
 #End Region
 
+#Region " Public Methods "
+  Public Sub AddBlogService()
+
+   DotNetNuke.Framework.jQuery.RequestDnnPluginsRegistration()
+   DotNetNuke.Framework.ServicesFramework.Instance.RequestAjaxScriptSupport()
+   DotNetNuke.Framework.ServicesFramework.Instance.RequestAjaxAntiForgerySupport()
+   Web.Client.ClientResourceManagement.ClientResourceManager.RegisterScript(Page, ResolveUrl("~/DesktopModules/Blog/js/dotnetnuke.blog.js"))
+
+   ' Load initialization snippet
+   Dim scriptBlock As String = Common.Globals.ReadFile(DotNetNuke.Common.ApplicationMapPath & "\DesktopModules\Blog\js\dotnetnuke.blog.pagescript.js")
+   Dim tr As New Templating.GenericTokenReplace(Scope.DefaultSettings, ModuleId)
+   tr.AddResources(DotNetNuke.Common.ApplicationMapPath & "\DesktopModules\Blog\App_LocalResources\SharedResources.resx")
+   scriptBlock = tr.ReplaceTokens(scriptBlock)
+   scriptBlock = "<script type=""text/javascript"">" & vbCrLf & "//<![CDATA[" & vbCrLf & scriptBlock & vbCrLf & "//]]>" & vbCrLf & "</script>"
+   Page.ClientScript.RegisterClientScriptBlock(Me.GetType, "BlogServiceScript", scriptBlock)
+
+  End Sub
+#End Region
+
  End Class
 
 End Namespace

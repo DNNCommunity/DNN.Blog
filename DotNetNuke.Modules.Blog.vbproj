@@ -146,6 +146,7 @@
     <Content Include="BlogEdit.ascx" />
     <Content Include="Controls\Comments.ascx" />
     <Content Include="js\dotnetnuke.blog.js" />
+    <Content Include="js\dotnetnuke.blog.pagescript.js" />
     <Content Include="js\jquery.timeago.js" />
     <Content Include="Manage.ascx" />
     <Content Include="EntryEdit.ascx" />

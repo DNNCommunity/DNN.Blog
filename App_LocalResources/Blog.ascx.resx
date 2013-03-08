@@ -138,4 +138,7 @@
   <data name="cmdEdit.Text" xml:space="preserve">
     <value>Edit</value>
   </data>
+  <data name="cmdEditPost.Text" xml:space="preserve">
+    <value>Edit Post</value>
+  </data>
 </root>

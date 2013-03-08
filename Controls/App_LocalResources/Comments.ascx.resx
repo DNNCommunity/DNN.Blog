@@ -254,9 +254,6 @@
   <data name="Anonymous.Text" xml:space="preserve">
     <value>Anonymous</value>
   </data>
-  <data name="ApproveComment.Text" xml:space="preserve">
-    <value>Approve this comment?</value>
-  </data>
   <data name="DeleteComment.Text" xml:space="preserve">
     <value>Delete this comment?</value>
   </data>

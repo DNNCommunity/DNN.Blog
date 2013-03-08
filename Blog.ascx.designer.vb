@@ -23,6 +23,15 @@ Partial Public Class Blog
  Protected WithEvents cmdManageBlogs As Global.System.Web.UI.WebControls.LinkButton
 
  '''<summary>
+ '''cmdEditPost control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents cmdEditPost As Global.System.Web.UI.WebControls.LinkButton
+
+ '''<summary>
  '''cmdBlog control.
  '''</summary>
  '''<remarks>

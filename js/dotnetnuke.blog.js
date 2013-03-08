@@ -1,6 +1,6 @@
-﻿function BlogModule($, settings, servicesFramework) {
- var baseServicepath = appPath + servicesFramework.getServiceRoot('Blog') + 'Entry/';
- var commentsServicepath = appPath + servicesFramework.getServiceRoot('Blog') + 'Comment/';
+﻿function BlogService($, settings, servicesFramework) {
+ var baseServicepath = servicesFramework.getServiceRoot('Blog') + 'Entry/';
+ var commentsServicepath = servicesFramework.getServiceRoot('Blog') + 'Comment/';
 
  this.approveEntry = function (blogId, entryId, success) {
   $.ajax({
@@ -13,7 +13,7 @@
     success();
    }
   }).fail(function (xhr, status) {
-   displayMessage("#blogEntriesError", settings.serverErrorWithDescription + eval("(" + xhr.responseText + ")").ExceptionMessage, "dnnFormWarning");
+   displayMessage("#blogServiceErrorBox", settings.serverErrorWithDescription + eval("(" + xhr.responseText + ")").ExceptionMessage, "dnnFormWarning");
   });
  };
 
@@ -28,7 +28,7 @@
     success();
    }
   }).fail(function (xhr, status) {
-   displayMessage("#blogEntriesError", settings.serverErrorWithDescription + eval("(" + xhr.responseText + ")").ExceptionMessage, "dnnFormWarning");
+   displayMessage("#blogServiceErrorBox", settings.serverErrorWithDescription + eval("(" + xhr.responseText + ")").ExceptionMessage, "dnnFormWarning");
   });
  };
 
@@ -43,7 +43,7 @@
     success();
    }
   }).fail(function (xhr, status) {
-   displayMessage("#blogEntriesError", settings.serverErrorWithDescription + eval("(" + xhr.responseText + ")").ExceptionMessage, "dnnFormWarning");
+   displayMessage("#blogServiceErrorBox", settings.serverErrorWithDescription + eval("(" + xhr.responseText + ")").ExceptionMessage, "dnnFormWarning");
   });
  };
 
@@ -58,8 +58,18 @@
     success();
    }
   }).fail(function (xhr, status) {
-   displayMessage("#blogEntriesError", settings.serverErrorWithDescription + eval("(" + xhr.responseText + ")").ExceptionMessage, "dnnFormWarning");
+   displayMessage("#blogServiceErrorBox", settings.serverErrorWithDescription + eval("(" + xhr.responseText + ")").ExceptionMessage, "dnnFormWarning");
   });
  };
 
 }
+
+function displayMessage(placeholderSelector, message, cssclass) {
+ var messageNode = $("<div/>")
+                .addClass('dnnFormMessage ' + cssclass)
+                .text(message);
+ $(containerElement + " " + placeholderSelector).prepend(messageNode);
+ messageNode.fadeOut(3000, 'easeInExpo', function () {
+  messageNode.remove();
+ });
+};

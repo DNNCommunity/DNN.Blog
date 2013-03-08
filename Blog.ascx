@@ -3,6 +3,7 @@
 <%@ Register TagPrefix="blog" TagName="comments" Src="controls/Comments.ascx" %>
 
 <asp:LinkButton runat="server" ID="cmdManageBlogs" resourcekey="cmdManageBlogs" Visible="false" CssClass="dnnSecondaryAction" />
+<asp:LinkButton runat="server" ID="cmdEditPost" resourcekey="cmdEditPost" Visible="false" CssClass="dnnSecondaryAction" />
 <asp:LinkButton runat="server" ID="cmdBlog" resourcekey="cmdBlog" Visible="false" CssClass="dnnPrimaryAction" />
 <a href="#" id="wlwlink" title="<%=LocalizeString("WLW.Link") %>" style="float:right"><img src="<%=ResolveUrl("~/DesktopModules/Blog/images/Windows_Live_Writer_logo.png")%>" width="16" height="16" border="0" /></a>
 

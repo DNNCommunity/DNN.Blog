@@ -213,4 +213,10 @@
   <data name="APPROVECOMMENT.Permission" xml:space="preserve">
     <value>Approve Comment</value>
   </data>
+  <data name="ServerError.Text" xml:space="preserve">
+    <value>An error occurred while processing the request. Please try again later.</value>
+  </data>
+  <data name="ServerErrorWithDescription.Text" xml:space="preserve">
+    <value>An error occurred while processing the request: </value>
+  </data>
 </root>
