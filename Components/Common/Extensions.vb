@@ -281,6 +281,20 @@ Namespace Common
                         Return x.Name
                        End Function).ToArray
   End Function
+
+  <System.Runtime.CompilerServices.Extension()>
+  Public Function ToTermIDString(terms As List(Of TermInfo)) As String
+   Return ToTermIDString(terms, ";")
+  End Function
+
+  <System.Runtime.CompilerServices.Extension()>
+  Public Function ToTermIDString(terms As List(Of TermInfo), separator As String) As String
+   Dim res As New List(Of String)
+   For Each t As TermInfo In terms
+    res.Add(t.TermId.ToString)
+   Next
+   Return String.Join(separator, res.ToArray)
+  End Function
 #End Region
 
  End Module
