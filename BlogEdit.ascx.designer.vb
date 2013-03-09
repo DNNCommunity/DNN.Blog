@@ -68,6 +68,24 @@ Partial Public Class BlogEdit
  Protected WithEvents valTitleDescription As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
  '''<summary>
+ '''lblLocale control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lblLocale As Global.System.Web.UI.UserControl
+
+ '''<summary>
+ '''ddLocale control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents ddLocale As Global.System.Web.UI.WebControls.DropDownList
+
+ '''<summary>
  '''lblImage control.
  '''</summary>
  '''<remarks>

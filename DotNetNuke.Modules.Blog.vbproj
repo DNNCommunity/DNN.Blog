@@ -376,9 +376,6 @@
     <Content Include="App_LocalResources\ViewCategoriesSettings.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Components\Controllers\" />
-    <Folder Include="Components\Settings\" />
-    <Folder Include="Components\Upgrade\" />
     <Folder Include="Templates\_default\css\" />
     <Folder Include="Templates\_default\images\" />
     <Folder Include="Templates\_default\jsblocks\" />

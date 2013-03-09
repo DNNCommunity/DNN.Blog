@@ -25,6 +25,10 @@
 		<asp:CheckBox ID="chkAllowWLW" runat="server" />
 	</div>
 	<div class="dnnFormItem">
+		<dnn:label id="lblAllowAllLocales" runat="server" controlname="chkAllowAllLocales" suffix=":" />
+		<asp:CheckBox ID="chkAllowAllLocales" runat="server" />
+	</div>
+	<div class="dnnFormItem">
 		<dnn:label id="lblEmail" runat="server" controlname="txtEmail" suffix=":" />
 		<asp:TextBox runat="server" ID="txtEmail" />
 	</div>

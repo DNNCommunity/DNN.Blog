@@ -57,6 +57,7 @@
   chkAllowHtmlSummary.Checked = Settings.AllowHtmlSummary
   chkAllowMultipleCategories.Checked = Settings.AllowMultipleCategories
   chkAllowWLW.Checked = Settings.AllowWLW
+  chkAllowAllLocales.Checked = Settings.AllowAllLocales
   txtEmail.Text = Settings.Email
   txtWLWRecentEntriesMax.Text = Settings.WLWRecentEntriesMax.ToString
   Try
@@ -78,6 +79,7 @@
   Settings.AllowWLW = chkAllowWLW.Checked
   Settings.Email = txtEmail.Text
   Settings.WLWRecentEntriesMax = txtWLWRecentEntriesMax.Text.ToInt
+  Settings.AllowAllLocales = chkAllowAllLocales.Checked
   Settings.VocabularyId = ddVocabularyId.SelectedValue.ToInt
   Settings.UpdateSettings()
 

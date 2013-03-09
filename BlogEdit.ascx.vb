@@ -36,6 +36,19 @@ Public Class BlogEdit
    If Blog Is Nothing Then Blog = New BlogInfo ' initialize fields
    txtTitle.Text = Blog.Title
    txtDescription.Text = Blog.Description
+   If Settings.AllowAllLocales Then
+    ddLocale.DataSource = System.Globalization.CultureInfo.GetCultures(Globalization.CultureTypes.SpecificCultures)
+    ddLocale.DataValueField = "Name"
+   Else
+    ddLocale.DataSource = DotNetNuke.Services.Localization.LocaleController.Instance.GetLocales(PortalId).Values
+    ddLocale.DataValueField = "Code"
+   End If
+   ddLocale.DataBind()
+   ddLocale.Items.Insert(0, New ListItem(LocalizeString("DefaultLanguage.Option"), ""))
+   Try
+    ddLocale.Items.FindByValue(Blog.Locale).Selected = True
+   Catch ex As Exception
+   End Try
    chkPublic.Checked = Blog.Published
    chkAllowComments.Checked = Blog.AllowComments
    chkAllowAnonymousComments.Checked = Blog.AllowAnonymousComments
@@ -92,6 +105,7 @@ Public Class BlogEdit
     With Blog
      .Title = txtTitle.Text
      .Description = txtDescription.Text
+     .Locale = ddLocale.SelectedValue
      .Published = chkPublic.Checked
      .AllowComments = chkAllowComments.Checked
      .AllowAnonymousComments = chkAllowAnonymousComments.Checked

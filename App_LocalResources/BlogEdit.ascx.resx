@@ -364,4 +364,13 @@
   <data name="lblPublishAsOwner.Text" xml:space="preserve">
     <value>Publish As Owner</value>
   </data>
+  <data name="DefaultLanguage.Option" xml:space="preserve">
+    <value>&lt; Site Default Language &gt;</value>
+  </data>
+  <data name="lblLocale.Help" xml:space="preserve">
+    <value>Select the language this blog will be written in</value>
+  </data>
+  <data name="lblLocale.Text" xml:space="preserve">
+    <value>Language</value>
+  </data>
 </root>

@@ -104,6 +104,24 @@ Partial Public Class Settings
  Protected WithEvents chkAllowWLW As Global.System.Web.UI.WebControls.CheckBox
 
  '''<summary>
+ '''lblAllowAllLocales control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lblAllowAllLocales As Global.System.Web.UI.UserControl
+
+ '''<summary>
+ '''chkAllowAllLocales control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents chkAllowAllLocales As Global.System.Web.UI.WebControls.CheckBox
+
+ '''<summary>
  '''lblEmail control.
  '''</summary>
  '''<remarks>

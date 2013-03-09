@@ -174,4 +174,10 @@
   <data name="NoneSpecified.Text" xml:space="preserve">
     <value>&lt; None Specified &gt;</value>
   </data>
+  <data name="lblAllowAllLocales.Help" xml:space="preserve">
+    <value>If selected users can opt that their blog is in a language that is not part of the portal languages set. Otherwise it is restricted to one of the portal languages.</value>
+  </data>
+  <data name="lblAllowAllLocales.Text" xml:space="preserve">
+    <value>Allow All Languages</value>
+  </data>
 </root>

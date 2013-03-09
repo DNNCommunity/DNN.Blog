@@ -21,6 +21,10 @@
      CssClass="dnnFormError" />
    </div>
    <div class="dnnFormItem">
+    <dnn:Label ID="lblLocale" runat="server" controlname="ddLocale" suffix=":" />
+    <asp:DropDownList ID="ddLocale" runat="server" DataTextField="NativeName" />
+   </div>
+   <div class="dnnFormItem">
     <dnn:Label ID="lblImage" runat="server" controlname="fileImage" suffix=":" />
     <div style="float:left;">
     <asp:Image runat="server" ID="imgBlogImage" /><br /><br />
