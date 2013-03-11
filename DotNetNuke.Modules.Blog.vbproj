@@ -266,6 +266,8 @@
     <Compile Include="Components\Integration\Services\NotificationServiceController.vb" />
     <Compile Include="Components\Services\CommentController.vb" />
     <Compile Include="Components\Services\EntryController.vb" />
+    <Compile Include="Components\Templating\BaseCustomTokenReplace.vb" />
+    <Compile Include="Components\Templating\BaseTokenReplace.vb" />
     <Compile Include="Components\Templating\BlogTokenReplace.vb" />
     <Compile Include="Components\Templating\CustomParameters.vb" />
     <Compile Include="Components\Templating\GenericTokenReplace.vb" />
@@ -277,6 +279,7 @@
     <Compile Include="Components\Templating\TemplateSetting.vb" />
     <Compile Include="Components\Templating\TemplateSettings.vb" />
     <Compile Include="Components\Templating\TemplateSettingValue.vb" />
+    <Compile Include="Components\Templating\TokenReplace.vb" />
     <Compile Include="Components\Templating\ViewTemplate.vb">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
