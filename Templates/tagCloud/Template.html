@@ -1,7 +1,11 @@
-﻿<div id="blog_tagCloud" style="height:350px;"></div>
+﻿<div id="blog_tagCloud[module:moduleid]" style="height:350px;"></div>
 <script type="text/javascript">
- var blog_tags = [
+var blog_tags = [
  [subtemplate|Tag.html|tags]
  {}
- ];
- </script>
+];
+$(function () {
+ $("#blog_tagCloud[module:moduleid]").width($("#blog_tagCloud[module:moduleid]").parent().width());
+ $("#blog_tagCloud[module:moduleid]").jQCloud(blog_tags);
+});
+</script>

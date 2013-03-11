@@ -1,6 +1,7 @@
 ﻿function BlogService($, settings, servicesFramework) {
  var baseServicepath = servicesFramework.getServiceRoot('Blog') + 'Entry/';
  var commentsServicepath = servicesFramework.getServiceRoot('Blog') + 'Comment/';
+ var modulesServicepath = servicesFramework.getServiceRoot('Blog') + 'Modules/';
 
  this.approveEntry = function (blogId, entryId, success) {
   $.ajax({
@@ -53,6 +54,21 @@
    url: commentsServicepath + "Delete",
    beforeSend: servicesFramework.setModuleHeaders,
    data: { blogId: blogId, commentId: commentId }
+  }).done(function (data) {
+   if (success != undefined) {
+    success();
+   }
+  }).fail(function (xhr, status) {
+   displayMessage("#blogServiceErrorBox", settings.serverErrorWithDescription + eval("(" + xhr.responseText + ")").ExceptionMessage, "dnnFormWarning");
+  });
+ };
+
+ this.addModule = function (paneName, position, title, template, showManagementPanel, success) {
+  $.ajax({
+   type: "POST",
+   url: modulesServicepath + "Add",
+   beforeSend: servicesFramework.setModuleHeaders,
+   data: { paneName: paneName, position: position, title: title, template: template, showManagementPanel: showManagementPanel }
   }).done(function (data) {
    if (success != undefined) {
     success();

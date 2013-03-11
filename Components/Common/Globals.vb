@@ -185,30 +185,6 @@ Namespace Common
    Dim portalVocabularies As IQueryable(Of Vocabulary) = From v In colVocabularies Where v.ScopeTypeId = 2 And v.ScopeId = portalId
    Return portalVocabularies.ToList()
   End Function
-
-  Public Shared Sub CopyModule(portalId As Integer, tabID As Integer, moduleDefID As Integer, paneName As String, position As Integer, title As String, settings As ViewSettings)
-
-   Dim objModule As New ModuleInfo
-   objModule.Initialize(portalId)
-   objModule.PortalID = portalId
-   objModule.TabID = tabID
-   objModule.ModuleOrder = position
-   If title = "" Then
-    objModule.ModuleTitle = "Blog"
-   Else
-    objModule.ModuleTitle = title
-   End If
-   objModule.PaneName = paneName
-   objModule.ModuleDefID = moduleDefID
-   objModule.InheritViewPermissions = True
-   objModule.AllTabs = False
-   objModule.Alignment = ""
-
-   Dim objModules As New ModuleController
-   objModule.ModuleID = objModules.AddModule(objModule)
-   settings.UpdateSettings(objModule.TabModuleID)
-
-  End Sub
 #End Region
 
  End Class

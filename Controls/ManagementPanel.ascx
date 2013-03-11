@@ -33,7 +33,7 @@
   </div>
   <div class="dnnRight">
    <a href="#" class="dnnSecondaryAction" onclick="$('#<%=pnlCopyModule.ClientId %>').dialog('close')"><%=LocalizeString("cmdCancel") %></a>
-   <asp:LinkButton runat="server" ID="cmdAdd" resourcekey="cmdAdd" CssClass="dnnPrimaryAction" />
+   <a href="<%= NavigateUrl() %>" id="cmdAdd<%=ModuleId %>" class="dnnPrimaryAction"><%=LocalizeString("cmdAdd") %></a>
   </div>
  </div>
 </div>
@@ -70,6 +70,9 @@
    $('#<%=pnlCopyModule.ClientId %>').dialog('open');
    return false;
   });
+ $('#cmdAdd<%=ModuleId %>').click(function () {
+  blogService.addModule($('#<%=ddPane.ClientId %>').val(), $('#<%=ddPosition.ClientId %>').val(), $('#<%=txtTitle.ClientId %>').val(), $('#<%=ddTemplate.ClientId %>').val(), $('#<%=chkShowManagementPanel.ClientId %>').is(":checked"));
+ });
 <% End If %>
   var $dialogSearch = $('<div class="dnnDialog"></div>')
 		.html('<input type="text" id="txtSearch" style="width:95%"></input><br/><%=LocalizeString("SearchIn") %>&nbsp;<input type="checkbox" id="scopeTitle<%=ModuleId %>" value="1" checked="1" /><%=LocalizeString("Title") %><input type="checkbox" id="scopeContents<%=ModuleId %>" value="1" /><%=LocalizeString("Contents") %>')

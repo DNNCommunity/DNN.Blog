@@ -166,14 +166,5 @@ Namespace Controls
   '''To modify move field declaration from designer file to code-behind file.
   '''</remarks>
   Protected WithEvents ddPosition As Global.System.Web.UI.WebControls.DropDownList
-
-  '''<summary>
-  '''cmdAdd control.
-  '''</summary>
-  '''<remarks>
-  '''Auto-generated field.
-  '''To modify move field declaration from designer file to code-behind file.
-  '''</remarks>
-  Protected WithEvents cmdAdd As Global.System.Web.UI.WebControls.LinkButton
  End Class
 End Namespace

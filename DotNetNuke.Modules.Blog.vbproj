@@ -182,6 +182,7 @@
     </Compile>
     <Compile Include="Components\Common\ModuleUrls.vb" />
     <Compile Include="Components\Entities\Terms\TermsController.vb" />
+    <Compile Include="Components\Services\ModulesController.vb" />
     <Compile Include="Components\Services\WLW\Blogger\IBlogger.vb" />
     <Compile Include="Components\BlogML\BlogMLBlogExtendedProperties.vb" />
     <Compile Include="Components\BlogML\BlogMLResource.vb" />
