@@ -356,6 +356,7 @@
     <Content Include="Blog.ascx" />
     <Content Include="module.css" />
     <Content Include="Settings.ascx" />
+    <Content Include="Templates\_default\TermBanner.html" />
     <Content Include="Templates\_default\Tag.html" />
     <Content Include="Templates\_default\EntryBanner.html" />
     <Content Include="Templates\_default\List.html" />

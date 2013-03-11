@@ -121,16 +121,13 @@
     <value>Blog!</value>
   </data>
   <data name="cmdManageBlogs.Text" xml:space="preserve">
-    <value>Manage Blogs</value>
+    <value>Manage</value>
   </data>
   <data name="EditContent.Action" xml:space="preserve">
     <value>Manage Blogs</value>
   </data>
   <data name="WLW.Help" xml:space="preserve">
     <value>Use this link in Windows Live Writer to connect to this blog</value>
-  </data>
-  <data name="WLW.Link" xml:space="preserve">
-    <value>WLW Link</value>
   </data>
   <data name="WLW.Text" xml:space="preserve">
     <value>Windows Live Writer Link</value>
@@ -140,5 +137,23 @@
   </data>
   <data name="cmdEditPost.Text" xml:space="preserve">
     <value>Edit Post</value>
+  </data>
+  <data name="RSS.Text" xml:space="preserve">
+    <value>RSS</value>
+  </data>
+  <data name="Search.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="Cancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Contents.Text" xml:space="preserve">
+    <value>Contents</value>
+  </data>
+  <data name="SearchIn.Text" xml:space="preserve">
+    <value>Search In: </value>
+  </data>
+  <data name="Title.Text" xml:space="preserve">
+    <value>Title</value>
   </data>
 </root>

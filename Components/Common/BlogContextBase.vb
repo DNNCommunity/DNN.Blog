@@ -57,6 +57,8 @@ Namespace Common
   Public Property BlogMapPath As String = ""
   Public Property EntryMapPath As String = ""
   Public Property OutputAdditionalFiles As Boolean
+  Public Property BaseUrl As String = ""
+  Public Property BaseUrlPlusEnding As String = ""
 
   Private _uiTimezone As TimeZoneInfo = Nothing
   Public ReadOnly Property UiTimeZone As TimeZoneInfo

@@ -56,6 +56,16 @@ Namespace Common
    If ContentItemId > -1 Then EntryMapPath = PortalSettings.HomeDirectoryMapPath & String.Format("\Blog\Files\{0}\{1}\", BlogId, ContentItemId)
    If EntryMapPath <> "" AndAlso Not IO.Directory.Exists(EntryMapPath) Then IO.Directory.CreateDirectory(EntryMapPath)
    If TermId > -1 Then Term = Entities.Terms.TermsController.GetTerm(TermId, ModuleId)
+   Dim params As New List(Of String)
+   If BlogId > -1 Then params.Add("Blog=" & BlogId.ToString)
+   If ContentItemId > -1 Then params.Add("Post=" & ContentItemId.ToString)
+   If TermId > -1 Then params.Add("Term=" & TermId.ToString)
+   BaseUrl = DotNetNuke.Common.NavigateURL(TabId, "", params.ToArray)
+   If BaseUrl.Contains("?") Then
+    BaseUrlPlusEnding = BaseUrl & "&"
+   Else
+    BaseUrlPlusEnding = BaseUrl & "?"
+   End If
 
   End Sub
 #End Region
@@ -78,6 +88,10 @@ Namespace Common
      Return CBool(BlogId > -1).ToString(formatProvider)
     Case "postselected"
      Return CBool(ContentItemId > -1).ToString(formatProvider)
+    Case "baseurl"
+     Return BaseUrl
+    Case "baseurlplusending"
+     Return BaseUrlPlusEnding
     Case Else
      If Me.Request.Params(strPropertyName) IsNot Nothing Then
       Return Me.Request.Params(strPropertyName)

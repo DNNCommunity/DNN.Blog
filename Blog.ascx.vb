@@ -18,8 +18,10 @@ Public Class Blog
  Private _reqPage As Integer = 0
  Private _usePaging As Boolean = False
  Private _endDate As Date = Date.Now
+ Private _search As String = ""
 #End Region
 
+#Region " Event Handlers "
  Private Sub Page_Init1(sender As Object, e As System.EventArgs) Handles Me.Init
 
   cmdManageBlogs.Visible = Security.IsBlogger Or Security.CanApproveEntry
@@ -38,6 +40,7 @@ Public Class Blog
   DotNetNuke.Framework.jQuery.RequestUIRegistration()
   Me.Request.Params.ReadValue("Page", _reqPage)
   Me.Request.Params.ReadValue("EndDate", _endDate)
+  Me.Request.Params.ReadValue("search", _search)
   DataBind()
 
  End Sub
@@ -57,7 +60,9 @@ Public Class Blog
  Private Sub cmdEditPost_Click(sender As Object, e As System.EventArgs) Handles cmdEditPost.Click
   Response.Redirect(EditUrl("Post", ContentItemId.ToString, "EntryEdit"), False)
  End Sub
+#End Region
 
+#Region " Template Data Retrieval "
  Private Sub vtContents_GetData(ByVal DataSource As String, ByVal Parameters As Dictionary(Of String, String), ByRef Replacers As System.Collections.Generic.List(Of GenericTokenReplace), ByRef Arguments As System.Collections.Generic.List(Of String())) Handles vtContents.GetData
 
   Select Case DataSource.ToLower
@@ -90,7 +95,17 @@ Public Class Blog
     Parameters.ReadValue("pagesize", _pageSize)
     If _pageSize < 1 Then _pageSize = 10 ' we will not list "all entries"
     Dim entryList As IEnumerable(Of EntryInfo)
-    If Term Is Nothing Then
+    If Not String.IsNullOrEmpty(_search) Then
+     Dim searchTitle As Boolean = False
+     Dim searchContents As Boolean = False
+     Request.Params.ReadValue("t", searchTitle)
+     Request.Params.ReadValue("c", searchContents)
+     If Term Is Nothing Then
+      entryList = EntriesController.SearchEntries(ModuleId, BlogId, _search, searchTitle, searchContents, 1, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId).Values
+     Else
+      entryList = EntriesController.SearchEntriesByTerm(ModuleId, BlogId, TermId, _search, searchTitle, searchContents, 1, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId).Values
+     End If
+    ElseIf Term Is Nothing Then
      entryList = EntriesController.GetEntries(ModuleId, BlogId, 1, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId).Values
     Else
      entryList = EntriesController.GetEntriesByTerm(ModuleId, BlogId, TermId, 1, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId).Values
@@ -112,6 +127,7 @@ Public Class Blog
   End Select
 
  End Sub
+#End Region
 
 #Region " Overrides "
  Public Overrides Sub DataBind()
