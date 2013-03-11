@@ -43,6 +43,7 @@ Namespace Common
     Me.Settings = contextBase.Settings
     Me.ViewSettings = contextBase.ViewSettings
     Me.Security = contextBase.Security
+    Me.ModuleUrls = contextBase.ModuleUrls
    End With
   End Sub
 #End Region
@@ -57,8 +58,7 @@ Namespace Common
   Public Property BlogMapPath As String = ""
   Public Property EntryMapPath As String = ""
   Public Property OutputAdditionalFiles As Boolean
-  Public Property BaseUrl As String = ""
-  Public Property BaseUrlPlusEnding As String = ""
+  Public Property ModuleUrls As ModuleUrls = Nothing
 
   Private _uiTimezone As TimeZoneInfo = Nothing
   Public ReadOnly Property UiTimeZone As TimeZoneInfo
@@ -76,7 +76,13 @@ Namespace Common
   Private _settings As ModuleSettings
   Public Shadows Property Settings() As ModuleSettings
    Get
-    If _settings Is Nothing Then _settings = ModuleSettings.GetModuleSettings(ModuleId)
+    If _settings Is Nothing Then
+     If ViewSettings.BlogModuleId = -1 Then
+      _settings = ModuleSettings.GetModuleSettings(ModuleId)
+     Else
+      _settings = ModuleSettings.GetModuleSettings(ViewSettings.BlogModuleId)
+     End If
+    End If
     Return _settings
    End Get
    Set(ByVal value As ModuleSettings)

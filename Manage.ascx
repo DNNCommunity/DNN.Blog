@@ -1,12 +1,54 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="Manage.ascx.vb" Inherits="DotNetNuke.Modules.Blog.Manage" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
+<%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <div class="dnnForm" id="tabs">
  <ul class="dnnAdminTabNav">
+  <li runat="server" id="SettingsHeader"><a href="#<%=SettingsTab.ClientId%>">Settings</a></li>
   <li><a href="#Blogs">Blogs</a></li>
   <li><a href="#Posts">Posts</a></li>
   <li><a href="#Categories">Categories</a></li>
  </ul>
+ <div id="SettingsTab" class="dnnClear" runat="server">
+<fieldset>
+	<div class="dnnFormItem">
+		<dnn:label id="lblAllowMultipleCategories" runat="server" controlname="chkAllowMultipleCategories" suffix=":" />
+		<asp:CheckBox ID="chkAllowMultipleCategories" runat="server" />
+	</div>
+	<div class="dnnFormItem">
+		<dnn:label id="lblAllowHtmlSummary" runat="server" controlname="chkAllowHtmlSummary" suffix=":" />
+		<asp:CheckBox ID="chkAllowHtmlSummary" runat="server" />
+	</div>
+	<div class="dnnFormItem">
+		<dnn:label id="lblAllowAttachments" runat="server" controlname="chkAllowAttachments" suffix=":" />
+		<asp:CheckBox ID="chkAllowAttachments" runat="server" />
+	</div>
+	<div class="dnnFormItem">
+		<dnn:label id="lblAllowWLW" runat="server" controlname="chkAllowWLW" suffix=":" />
+		<asp:CheckBox ID="chkAllowWLW" runat="server" />
+	</div>
+	<div class="dnnFormItem">
+		<dnn:label id="lblAllowAllLocales" runat="server" controlname="chkAllowAllLocales" suffix=":" />
+		<asp:CheckBox ID="chkAllowAllLocales" runat="server" />
+	</div>
+	<div class="dnnFormItem">
+		<dnn:label id="lblEmail" runat="server" controlname="txtEmail" suffix=":" />
+		<asp:TextBox runat="server" ID="txtEmail" />
+	</div>
+	<div class="dnnFormItem">
+		<dnn:label id="lblVocabularyId" runat="server" controlname="ddVocabularyId" suffix=":" />
+		<asp:DropDownList ID="ddVocabularyId" runat="server" DataValueField="VocabularyID" DataTextField="Name" />
+	</div>
+	<div class="dnnFormItem">
+		<dnn:label id="lblWLWRecentEntriesMax" runat="server" controlname="txtWLWRecentEntriesMax" suffix=":" />
+		<asp:TextBox runat="server" ID="txtWLWRecentEntriesMax" />
+	</div>
+</fieldset>
+  <p>
+   <asp:LinkButton runat="server" ID="cmdCancelSettings" resourcekey="cmdCancel" CssClass="dnnSecondaryAction" />
+   <asp:LinkButton runat="server" ID="cmdUpdateSettings" resourcekey="cmdUpdate" CssClass="dnnPrimaryAction" />
+  </p>
+ </div>
  <div id="Blogs" class="dnnClear">
   <asp:DataList runat="server" ID="dlBlogs">
    <HeaderTemplate>

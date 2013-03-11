@@ -29,7 +29,7 @@ Public Class BlogEdit
     lblMetaWeblogNotAvailable.Visible = True
    Else
     lblMetaWeblogUrl.Visible = True
-    lblMetaWeblogUrl.Text = "http://" & Request.Url.Host & ControlPath & String.Format("blogpost.ashx?portalid={0}&tabid={1}&moduleid={2}", PortalId, TabId, ModuleId)
+    lblMetaWeblogUrl.Text = "http://" & Request.Url.Host & ControlPath & String.Format("blogpost.ashx?portalid={0}&tabid={1}&moduleid={2}", PortalId, TabId, Settings.ModuleId)
     lblMetaWeblogNotAvailable.Visible = False
    End If
 
@@ -61,7 +61,7 @@ Public Class BlogEdit
    chkIncludeImagesInFeed.Checked = Blog.IncludeImagesInFeed
    cmdDelete.Visible = CBool(BlogId <> -1)
    If Not String.IsNullOrEmpty(Blog.Image) Then
-    imgBlogImage.ImageUrl = ResolveUrl(Common.Constants.glbImageHandlerPath) & String.Format("?TabId={0}&ModuleId={1}&Blog={2}&w=100&h=100&c=1&key={3}", TabId, ModuleId, BlogId, Blog.Image)
+    imgBlogImage.ImageUrl = ResolveUrl(Common.Constants.glbImageHandlerPath) & String.Format("?TabId={0}&ModuleId={1}&Blog={2}&w=100&h=100&c=1&key={3}", TabId, Settings.ModuleId, BlogId, Blog.Image)
     imgBlogImage.Visible = True
     cmdImageRemove.Visible = True
    Else
@@ -98,7 +98,7 @@ Public Class BlogEdit
     If Blog Is Nothing Then
      Blog = New BlogInfo
      With Blog
-      .ModuleID = ModuleId
+      .ModuleID = Settings.ModuleId
       .OwnerUserId = Me.UserId
      End With
     End If

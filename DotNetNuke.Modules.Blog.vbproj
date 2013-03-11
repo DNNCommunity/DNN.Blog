@@ -145,6 +145,7 @@
     <Content Include="BlogTerms.asmx" />
     <Content Include="BlogEdit.ascx" />
     <Content Include="Controls\Comments.ascx" />
+    <Content Include="Controls\ManagementPanel.ascx" />
     <Content Include="js\dotnetnuke.blog.js" />
     <Content Include="js\dotnetnuke.blog.pagescript.js" />
     <Content Include="js\jquery.timeago.js" />
@@ -179,6 +180,7 @@
       <DependentUpon>BlogTerms.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Components\Common\ModuleUrls.vb" />
     <Compile Include="Components\Entities\Terms\TermsController.vb" />
     <Compile Include="Components\Services\WLW\Blogger\IBlogger.vb" />
     <Compile Include="Components\BlogML\BlogMLBlogExtendedProperties.vb" />
@@ -294,6 +296,13 @@
       <DependentUpon>BlogEdit.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Controls\ManagementPanel.ascx.designer.vb">
+      <DependentUpon>ManagementPanel.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ManagementPanel.ascx.vb">
+      <DependentUpon>ManagementPanel.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Manage.ascx.designer.vb">
       <DependentUpon>Manage.ascx</DependentUpon>
     </Compile>
@@ -318,11 +327,11 @@
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="Components\Data\DataProvider.vb" />
     <Compile Include="Components\Data\SqlDataProvider.vb" />
-    <Compile Include="Settings.ascx.designer.vb">
-      <DependentUpon>Settings.ascx</DependentUpon>
+    <Compile Include="Controls\ViewSettings.ascx.designer.vb">
+      <DependentUpon>ViewSettings.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Settings.ascx.vb">
-      <DependentUpon>Settings.ascx</DependentUpon>
+    <Compile Include="Controls\ViewSettings.ascx.vb">
+      <DependentUpon>ViewSettings.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="WLWManifest.aspx.designer.vb">
@@ -355,7 +364,13 @@
     <Content Include="js\md5.js" />
     <Content Include="Blog.ascx" />
     <Content Include="module.css" />
-    <Content Include="Settings.ascx" />
+    <Content Include="Controls\ViewSettings.ascx" />
+    <Content Include="Templates\tagCloud\css\jqcloud.css" />
+    <Content Include="Templates\tagCloud\js\jqcloud-1.0.3.min.js" />
+    <Content Include="Templates\tagCloud\Tag.html" />
+    <Content Include="Templates\tagCloud\template.css" />
+    <Content Include="Templates\tagCloud\Template.html" />
+    <Content Include="Templates\tagCloud\template.js" />
     <Content Include="Templates\_default\TermBanner.html" />
     <Content Include="Templates\_default\Tag.html" />
     <Content Include="Templates\_default\EntryBanner.html" />
@@ -377,6 +392,9 @@
     <Content Include="App_LocalResources\ViewCategoriesSettings.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Templates\tagCloud\images\" />
+    <Folder Include="Templates\tagCloud\jsblocks\" />
+    <Folder Include="Templates\tagCloud\resx\" />
     <Folder Include="Templates\_default\css\" />
     <Folder Include="Templates\_default\images\" />
     <Folder Include="Templates\_default\jsblocks\" />
@@ -393,7 +411,7 @@
     <Content Include="BlogImage.ashx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_LocalResources\Settings.ascx.resx">
+    <Content Include="Controls\App_LocalResources\ViewSettings.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
@@ -402,6 +420,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Controls\App_LocalResources\Comments.ascx.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Controls\App_LocalResources\ManagementPanel.ascx.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

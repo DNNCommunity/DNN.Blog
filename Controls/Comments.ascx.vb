@@ -92,7 +92,7 @@ Namespace Controls
    Dim comment As CommentInfo = CommentsController.GetComment(SelectedCommentId)
    If SelectedCommentId > -1 Then
     If Security.CanEditEntry Or Security.CanApproveComment Or comment.CreatedByUserID = UserId Then
-     CommentsController.DeleteComment(ModuleId, Blog.BlogID, comment)
+     CommentsController.DeleteComment(Settings.ModuleId, Blog.BlogID, comment)
     End If
     SelectedCommentId = -1
     BindCommentsList()

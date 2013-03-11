@@ -50,18 +50,18 @@ Public Class EntryEdit
 
   Try
 
-   jQuery.RequestDnnPluginsRegistration()
+   'jQuery.RequestDnnPluginsRegistration()
+   DotNetNuke.Framework.jQuery.RegisterJQueryUI(Page)
    ClientResourceManager.RegisterScript(Page, TemplateSourceDirectory + "/js/jquery.tagify.js")
-   ClientResourceManager.RegisterScript(Page, TemplateSourceDirectory + "/js/jquery.qaplaceholder.js")
 
    If Not Me.IsPostBack Then
     Dim blogList As IEnumerable(Of BlogInfo) = Nothing
     If Security.IsEditor Then
-     blogList = BlogsController.GetBlogsByModule(ModuleId, UserId).Values
+     blogList = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId).Values
     Else
-     blogList = BlogsController.GetBlogsByModule(ModuleId, UserId).Values.Where(Function(b)
-                                                                                 Return b.OwnerUserId = UserId Or (b.CanAdd And Security.CanAddEntry) Or (b.CanEdit And Security.CanEditEntry And ContentItemId > -1)
-                                                                                End Function)
+     blogList = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId).Values.Where(Function(b)
+                                                                                          Return b.OwnerUserId = UserId Or (b.CanAdd And Security.CanAddEntry) Or (b.CanEdit And Security.CanEditEntry And ContentItemId > -1)
+                                                                                         End Function)
     End If
     ddBlog.DataSource = blogList
     ddBlog.DataBind()
@@ -77,7 +77,7 @@ Public Class EntryEdit
      Else
       Blog = BlogsController.GetBlog(ddBlog.Items(0).Value.ToInt, UserId)
      End If
-     Security = New Modules.Blog.Security.ContextSecurity(ModuleId, TabId, Blog, UserInfo)
+     Security = New Modules.Blog.Security.ContextSecurity(Settings.ModuleId, TabId, Blog, UserInfo)
     End If
     If ContentItemId > -1 Then
      ddBlog.Enabled = False ' we're not going to allow someone to change the blog to which the post belongs - at least, not yet
@@ -162,7 +162,7 @@ Public Class EntryEdit
       txtDescriptionText.Text = Entry.Summary
      End If
      If Not String.IsNullOrEmpty(Entry.Image) Then
-      imgEntryImage.ImageUrl = ResolveUrl(Common.Constants.glbImageHandlerPath) & String.Format("?TabId={0}&ModuleId={1}&Blog={2}&Post={3}&w=100&h=100&c=1&key={4}", TabId, ModuleId, BlogId, ContentItemId, Entry.Image)
+      imgEntryImage.ImageUrl = ResolveUrl(Common.Constants.glbImageHandlerPath) & String.Format("?TabId={0}&ModuleId={1}&Blog={2}&Post={3}&w=100&h=100&c=1&key={4}", TabId, Settings.ModuleId, BlogId, ContentItemId, Entry.Image)
       imgEntryImage.Visible = True
       cmdImageRemove.Visible = True
      Else
@@ -219,7 +219,7 @@ Public Class EntryEdit
     If BlogId = -1 OrElse Blog.BlogID <> ddBlog.SelectedValue.ToInt Then
      BlogId = ddBlog.SelectedValue.ToInt
      Blog = BlogsController.GetBlog(BlogId, UserId)
-     Security = New Modules.Blog.Security.ContextSecurity(ModuleId, TabId, Blog, UserInfo)
+     Security = New Modules.Blog.Security.ContextSecurity(Settings.ModuleId, TabId, Blog, UserInfo)
     End If
     If ContentItemId = -1 And Not Security.CanAddEntry Then Throw New Exception("You can't add posts to this blog")
     If ContentItemId <> -1 And Not Security.CanEditEntry Then Throw New Exception("You're not allowed to edit this post")
@@ -290,13 +290,13 @@ Public Class EntryEdit
     ' Categories, Tags
     Dim userEnteredTerms As Array = txtTags.Text.Trim.Split(","c)
     Dim terms As New List(Of TermInfo)
-    terms.AddRange(TermsController.GetTermList(ModuleId, txtTags.Text.Trim, 1, True))
+    terms.AddRange(TermsController.GetTermList(Settings.ModuleId, txtTags.Text.Trim, 1, True))
     If Settings.VocabularyId > 0 Then
      Dim checkedBoxes As New List(Of String)
      For Each t As Telerik.Web.UI.RadTreeNode In dtCategories.CheckedNodes
       checkedBoxes.Add(t.Value)
      Next
-     terms.AddRange(TermsController.GetTermList(ModuleId, checkedBoxes, Settings.VocabularyId, False))
+     terms.AddRange(TermsController.GetTermList(Settings.ModuleId, checkedBoxes, Settings.VocabularyId, False))
     End If
     Entry.Terms.Clear()
     Entry.Terms.AddRange(terms)
@@ -316,7 +316,7 @@ Public Class EntryEdit
      Dim journalUserId As Integer = UserId
      If Blog.PublishAsOwner Then journalUserId = Blog.OwnerUserId
      JournalController.AddBlogEntryToJournal(Entry, ModuleContext.PortalId, ModuleContext.TabId, journalUserId, journalUrl)
-     NotificationController.RemoveEntryPendingNotification(ModuleId, Blog.BlogID, Entry.ContentItemId)
+     NotificationController.RemoveEntryPendingNotification(Settings.ModuleId, Blog.BlogID, Entry.ContentItemId)
 
     ElseIf Blog.MustApproveGhostPosts And UserId <> Blog.OwnerUserId Then
 
@@ -358,7 +358,7 @@ Public Class EntryEdit
 
  Private Sub ddBlog_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles ddBlog.SelectedIndexChanged
   Blog = BlogsController.GetBlog(ddBlog.SelectedItem.Value.ToInt, UserId)
-  Security = New Modules.Blog.Security.ContextSecurity(ModuleId, TabId, Blog, UserInfo)
+  Security = New Modules.Blog.Security.ContextSecurity(Settings.ModuleId, TabId, Blog, UserInfo)
   If Blog.MustApproveGhostPosts AndAlso Not Security.CanApproveEntry Then
    chkPublished.Checked = False
    chkPublished.Enabled = False

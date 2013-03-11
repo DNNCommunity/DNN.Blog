@@ -106,12 +106,6 @@
     noText: '<%= Localization.GetString("No.Text", Localization.SharedResourceFile) %>',
     title: '<%= Localization.GetString("Confirm.Text", Localization.SharedResourceFile) %>'
    });
-   $('.dnnSaveOffline').dnnConfirm({
-    text: '<%= LocalizeString("SaveAndOffline.Confirm") %>',
-    yesText: '<%= Localization.GetString("Yes.Text", Localization.SharedResourceFile) %>',
-    noText: '<%= Localization.GetString("No.Text", Localization.SharedResourceFile) %>',
-    title: '<%= Localization.GetString("Confirm.Text", Localization.SharedResourceFile) %>'
-   });
 
    function split(val) {
     return val.split(/,\s*/);

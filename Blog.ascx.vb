@@ -22,19 +22,7 @@ Public Class Blog
 #End Region
 
 #Region " Event Handlers "
- Private Sub Page_Init1(sender As Object, e As System.EventArgs) Handles Me.Init
-
-  cmdManageBlogs.Visible = Security.IsBlogger Or Security.CanApproveEntry
-  cmdBlog.Visible = Security.CanAddEntry
-  cmdEditPost.Visible = (Entry IsNot Nothing) And Security.CanEditEntry
-
- End Sub
-
  Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-
-  If Entry IsNot Nothing Then
-   cmdBlog.Text = LocalizeString("cmdEdit")
-  End If
 
   DotNetNuke.Framework.jQuery.RequestRegistration()
   DotNetNuke.Framework.jQuery.RequestUIRegistration()
@@ -43,22 +31,6 @@ Public Class Blog
   Me.Request.Params.ReadValue("search", _search)
   DataBind()
 
- End Sub
-
- Private Sub cmdManageBlogs_Click(sender As Object, e As System.EventArgs) Handles cmdManageBlogs.Click
-  Response.Redirect(EditUrl("Manage"), False)
- End Sub
-
- Private Sub cmdBlog_Click(sender As Object, e As System.EventArgs) Handles cmdBlog.Click
-  If BlogId <> -1 Then
-   Response.Redirect(EditUrl("Blog", BlogId.ToString, "EntryEdit"), False)
-  Else
-   Response.Redirect(EditUrl("EntryEdit"), False)
-  End If
- End Sub
-
- Private Sub cmdEditPost_Click(sender As Object, e As System.EventArgs) Handles cmdEditPost.Click
-  Response.Redirect(EditUrl("Post", ContentItemId.ToString, "EntryEdit"), False)
  End Sub
 #End Region
 
@@ -69,9 +41,9 @@ Public Class Blog
 
    Case "blogs"
 
-    Dim blogList As IEnumerable(Of BlogInfo) = BlogsController.GetBlogsByModule(ModuleId, UserId).Values.Where(Function(b)
-                                                                                                                Return b.Published = True
-                                                                                                               End Function).OrderBy(Function(b) b.Title)
+    Dim blogList As IEnumerable(Of BlogInfo) = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId).Values.Where(Function(b)
+                                                                                                                         Return b.Published = True
+                                                                                                                        End Function).OrderBy(Function(b) b.Title)
     Parameters.ReadValue("pagesize", _pageSize)
     If _pageSize > 0 Then
      _usePaging = True
@@ -101,25 +73,55 @@ Public Class Blog
      Request.Params.ReadValue("t", searchTitle)
      Request.Params.ReadValue("c", searchContents)
      If Term Is Nothing Then
-      entryList = EntriesController.SearchEntries(ModuleId, BlogId, _search, searchTitle, searchContents, 1, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId).Values
+      entryList = EntriesController.SearchEntries(Settings.ModuleId, BlogId, _search, searchTitle, searchContents, 1, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId).Values
      Else
-      entryList = EntriesController.SearchEntriesByTerm(ModuleId, BlogId, TermId, _search, searchTitle, searchContents, 1, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId).Values
+      entryList = EntriesController.SearchEntriesByTerm(Settings.ModuleId, BlogId, TermId, _search, searchTitle, searchContents, 1, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId).Values
      End If
     ElseIf Term Is Nothing Then
-     entryList = EntriesController.GetEntries(ModuleId, BlogId, 1, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId).Values
+     entryList = EntriesController.GetEntries(Settings.ModuleId, BlogId, 1, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId).Values
     Else
-     entryList = EntriesController.GetEntriesByTerm(ModuleId, BlogId, TermId, 1, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId).Values
+     entryList = EntriesController.GetEntriesByTerm(Settings.ModuleId, BlogId, TermId, 1, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId).Values
     End If
     _usePaging = True
     For Each e As EntryInfo In entryList
      Replacers.Add(New BlogTokenReplace(Me, Settings, e))
     Next
 
-   Case "keywords"
+   Case "terms"
 
     If Entry IsNot Nothing Then
      For Each t As TermInfo In Entry.Terms
       Replacers.Add(New BlogTokenReplace(Me, Settings, Entry, t))
+     Next
+    Else
+     For Each t As TermInfo In TermsController.GetTermsByModule(Settings.ModuleId)
+      Replacers.Add(New BlogTokenReplace(Me, Settings, Nothing, t))
+     Next
+    End If
+    _usePaging = False
+
+   Case "keywords", "tags"
+
+    If Entry IsNot Nothing Then
+     For Each t As TermInfo In Entry.EntryTags
+      Replacers.Add(New BlogTokenReplace(Me, Settings, Entry, t))
+     Next
+    Else
+     For Each t As TermInfo In TermsController.GetTermsByModule(Settings.ModuleId).Where(Function(x) x.VocabularyId = 1).ToList
+      Replacers.Add(New BlogTokenReplace(Me, Settings, Nothing, t))
+     Next
+    End If
+    _usePaging = False
+
+   Case "categories"
+
+    If Entry IsNot Nothing Then
+     For Each t As TermInfo In Entry.EntryCategories
+      Replacers.Add(New BlogTokenReplace(Me, Settings, Entry, t))
+     Next
+    Else
+     For Each t As TermInfo In TermsController.GetTermsByModule(Settings.ModuleId).Where(Function(x) x.VocabularyId <> 1).ToList
+      Replacers.Add(New BlogTokenReplace(Me, Settings, Nothing, t))
      Next
     End If
     _usePaging = False
@@ -144,6 +146,9 @@ Public Class Blog
   If Blog IsNot Nothing Then
    ctlComments.AllowAnonymousComments = Blog.AllowAnonymousComments
   End If
+
+  ctlManagement.Visible = ViewSettings.ShowManagementPanel
+  ctlManagement.ClonePropertiesFrom(Me)
 
  End Sub
 #End Region

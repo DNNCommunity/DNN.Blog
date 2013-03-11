@@ -33,6 +33,11 @@ Namespace Common
     Return _portalTemplatesMapPath
    End Get
   End Property
+  Public ReadOnly Property ModuleId As Integer
+   Get
+    Return _moduleId
+   End Get
+  End Property
 #End Region
 
 #Region " Constructors "

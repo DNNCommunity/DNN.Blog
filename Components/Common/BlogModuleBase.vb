@@ -42,12 +42,16 @@ Namespace Common
    script.AppendLine("</script>")
    UI.Utilities.ClientAPI.RegisterClientScriptBlock(Page, "blogAppPath", script.ToString)
 
-   Settings = ModuleSettings.GetModuleSettings(ModuleId)
+   If ViewSettings.BlogModuleId = -1 Then
+    Settings = ModuleSettings.GetModuleSettings(ModuleConfiguration.ModuleID)
+   Else
+    Settings = ModuleSettings.GetModuleSettings(ViewSettings.BlogModuleId)
+   End If
 
    Request.Params.ReadValue("Blog", BlogId)
    Request.Params.ReadValue("Post", ContentItemId)
    Request.Params.ReadValue("Term", TermId)
-   If ContentItemId > -1 Then Entry = Entities.Entries.EntriesController.GetEntry(ContentItemId, ModuleId)
+   If ContentItemId > -1 Then Entry = Entities.Entries.EntriesController.GetEntry(ContentItemId, Settings.ModuleId)
    If BlogId > -1 And Entry IsNot Nothing AndAlso Entry.BlogID <> BlogId Then Entry = Nothing ' double check in case someone is hacking to retrieve an entry from another blog
    If BlogId = -1 And Entry IsNot Nothing Then BlogId = Entry.BlogID
    If BlogId > -1 Then Blog = Entities.Blogs.BlogsController.GetBlog(BlogId, UserInfo.UserID)
@@ -55,17 +59,13 @@ Namespace Common
    If BlogMapPath <> "" AndAlso Not IO.Directory.Exists(BlogMapPath) Then IO.Directory.CreateDirectory(BlogMapPath)
    If ContentItemId > -1 Then EntryMapPath = PortalSettings.HomeDirectoryMapPath & String.Format("\Blog\Files\{0}\{1}\", BlogId, ContentItemId)
    If EntryMapPath <> "" AndAlso Not IO.Directory.Exists(EntryMapPath) Then IO.Directory.CreateDirectory(EntryMapPath)
-   If TermId > -1 Then Term = Entities.Terms.TermsController.GetTerm(TermId, ModuleId)
+   If TermId > -1 Then Term = Entities.Terms.TermsController.GetTerm(TermId, Settings.ModuleId)
+   ' set urls for use in module
    Dim params As New List(Of String)
    If BlogId > -1 Then params.Add("Blog=" & BlogId.ToString)
    If ContentItemId > -1 Then params.Add("Post=" & ContentItemId.ToString)
    If TermId > -1 Then params.Add("Term=" & TermId.ToString)
-   BaseUrl = DotNetNuke.Common.NavigateURL(TabId, "", params.ToArray)
-   If BaseUrl.Contains("?") Then
-    BaseUrlPlusEnding = BaseUrl & "&"
-   Else
-    BaseUrlPlusEnding = BaseUrl & "?"
-   End If
+   ModuleUrls = New ModuleUrls(TabId, BlogId, ContentItemId, TermId)
 
   End Sub
 #End Region
@@ -88,10 +88,6 @@ Namespace Common
      Return CBool(BlogId > -1).ToString(formatProvider)
     Case "postselected"
      Return CBool(ContentItemId > -1).ToString(formatProvider)
-    Case "baseurl"
-     Return BaseUrl
-    Case "baseurlplusending"
-     Return BaseUrlPlusEnding
     Case Else
      If Me.Request.Params(strPropertyName) IsNot Nothing Then
       Return Me.Request.Params(strPropertyName)

@@ -117,67 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="lblAllowAttachments.Help" xml:space="preserve">
-    <value>If selected bloggers can upload files for a blog post</value>
-  </data>
-  <data name="lblAllowAttachments.Text" xml:space="preserve">
-    <value>Allow Attachments</value>
-  </data>
-  <data name="lblAllowHtmlSummary.Help" xml:space="preserve">
-    <value>If selected bloggers can write HTML for the summary. If not selected only plain text is allowed.</value>
-  </data>
-  <data name="lblAllowHtmlSummary.Text" xml:space="preserve">
-    <value>Allow HTML Summary</value>
-  </data>
-  <data name="lblAllowMultipleCategories.Help" xml:space="preserve">
-    <value>Allow bloggers to select more than one category for their posts</value>
-  </data>
-  <data name="lblAllowMultipleCategories.Text" xml:space="preserve">
-    <value>Allow Multiple Categories</value>
-  </data>
-  <data name="lblAllowWLW.Help" xml:space="preserve">
-    <value>If selected bloggers may connect and blog using Windows Live Writer</value>
-  </data>
-  <data name="lblAllowWLW.Text" xml:space="preserve">
-    <value>Allow Windows Live Writer</value>
-  </data>
-  <data name="lblEmail.Help" xml:space="preserve">
-    <value>This email address will be used in the RSS feed as the 'managing editor' of the blogs in this module</value>
-  </data>
-  <data name="lblEmail.Text" xml:space="preserve">
-    <value>Email</value>
-  </data>
   <data name="lblTemplate.Help" xml:space="preserve">
     <value>Select template to render for this module</value>
   </data>
   <data name="lblTemplate.Text" xml:space="preserve">
     <value>Template</value>
   </data>
-  <data name="lblUseSummary.Help" xml:space="preserve">
-    <value>When selected users can define a summary for their post. In Windows Live Writer bloggers can specify an 'excerpt' which does the same.</value>
+  <data name="lblBlogModuleId.Help" xml:space="preserve">
+    <value>Select the blogs to show in this module from the list of blog modules on this site. If not selected then this module will manage its own blogs.</value>
   </data>
-  <data name="lblUseSummary.Text" xml:space="preserve">
-    <value>Use Summary</value>
+  <data name="lblBlogModuleId.Text" xml:space="preserve">
+    <value>Parent Blog Module</value>
   </data>
-  <data name="lblVocabularyId.Help" xml:space="preserve">
-    <value>Select the vocabulary to use for storing the categories of this module and all its blogs</value>
+  <data name="lblShowManagementPanel.Help" xml:space="preserve">
+    <value>If selected the management panel will show up at the top of this module</value>
   </data>
-  <data name="lblVocabularyId.Text" xml:space="preserve">
-    <value>Category Vocabulary</value>
+  <data name="lblShowManagementPanel.Text" xml:space="preserve">
+    <value>Show Management Panel</value>
   </data>
-  <data name="lblWLWRecentEntriesMax.Help" xml:space="preserve">
-    <value>This is the maximum number of (recent) blog posts that can be downloaded by Windows Live Writer for editing.</value>
-  </data>
-  <data name="lblWLWRecentEntriesMax.Text" xml:space="preserve">
-    <value>WLW Max Recent Entries</value>
-  </data>
-  <data name="NoneSpecified.Text" xml:space="preserve">
-    <value>&lt; None Specified &gt;</value>
-  </data>
-  <data name="lblAllowAllLocales.Help" xml:space="preserve">
-    <value>If selected users can opt that their blog is in a language that is not part of the portal languages set. Otherwise it is restricted to one of the portal languages.</value>
-  </data>
-  <data name="lblAllowAllLocales.Text" xml:space="preserve">
-    <value>Allow All Languages</value>
+  <data name="NoParent.Text" xml:space="preserve">
+    <value>&lt; This module has its own content &gt;</value>
   </data>
 </root>

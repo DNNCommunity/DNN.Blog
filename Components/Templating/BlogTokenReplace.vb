@@ -16,6 +16,7 @@ Namespace Templating
    Me.ModuleInfo = blogModule.ModuleConfiguration
    Me.UseObjectLessExpression = False
    Me.PropertySource("query") = blogModule
+   Me.PropertySource("urls") = blogModule.ModuleUrls
    Me.PropertySource("settings") = settings
    If blogModule.Blog IsNot Nothing Then
     Me.PropertySource("blog") = blogModule.Blog
@@ -35,6 +36,7 @@ Namespace Templating
    Me.ModuleInfo = blogModule.ModuleConfiguration
    Me.UseObjectLessExpression = False
    Me.PropertySource("query") = blogModule
+   Me.PropertySource("urls") = blogModule.ModuleUrls
    Me.PropertySource("settings") = settings
    Me.PropertySource("blog") = blog
    If blogModule.Entry IsNot Nothing Then
@@ -52,6 +54,7 @@ Namespace Templating
    Me.ModuleInfo = blogModule.ModuleConfiguration
    Me.UseObjectLessExpression = False
    Me.PropertySource("query") = blogModule
+   Me.PropertySource("urls") = blogModule.ModuleUrls
    Me.PropertySource("settings") = settings
    Me.PropertySource("entry") = entry
    Me.PropertySource("blog") = entry.Blog
@@ -67,9 +70,14 @@ Namespace Templating
    Me.ModuleInfo = blogModule.ModuleConfiguration
    Me.UseObjectLessExpression = False
    Me.PropertySource("query") = blogModule
+   Me.PropertySource("urls") = blogModule.ModuleUrls
    Me.PropertySource("settings") = settings
-   Me.PropertySource("entry") = entry
-   Me.PropertySource("blog") = entry.Blog
+   If entry IsNot Nothing Then
+    Me.PropertySource("entry") = entry
+    Me.PropertySource("blog") = entry.Blog
+   ElseIf blogModule.Blog IsNot Nothing Then
+    Me.PropertySource("blog") = blogModule.Blog
+   End If
    Me.PropertySource("term") = term
    If blogModule.Term IsNot Nothing Then
     Me.PropertySource("selectedterm") = blogModule.Term
