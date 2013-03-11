@@ -89,7 +89,12 @@ Public Class Blog
 
     Parameters.ReadValue("pagesize", _pageSize)
     If _pageSize < 1 Then _pageSize = 10 ' we will not list "all entries"
-    Dim entryList As IEnumerable(Of EntryInfo) = EntriesController.GetEntries(ModuleId, BlogId, 1, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId).Values
+    Dim entryList As IEnumerable(Of EntryInfo)
+    If Term Is Nothing Then
+     entryList = EntriesController.GetEntries(ModuleId, BlogId, 1, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId).Values
+    Else
+     entryList = EntriesController.GetEntriesByTerm(ModuleId, BlogId, TermId, 1, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId).Values
+    End If
     _usePaging = True
     For Each e As EntryInfo In entryList
      Replacers.Add(New BlogTokenReplace(Me, Settings, e))

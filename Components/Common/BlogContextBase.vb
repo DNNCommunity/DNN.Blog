@@ -50,8 +50,10 @@ Namespace Common
 #Region " Public Properties "
   Public Property BlogId As Integer = -1
   Public Property ContentItemId As Integer = -1
+  Public Property TermId As Integer = -1
   Public Property Blog As Entities.Blogs.BlogInfo = Nothing
   Public Property Entry As Entities.Entries.EntryInfo = Nothing
+  Public Property Term As Entities.Terms.TermInfo = Nothing
   Public Property BlogMapPath As String = ""
   Public Property EntryMapPath As String = ""
   Public Property OutputAdditionalFiles As Boolean

@@ -46,6 +46,7 @@ Namespace Common
 
    Request.Params.ReadValue("Blog", BlogId)
    Request.Params.ReadValue("Post", ContentItemId)
+   Request.Params.ReadValue("Term", TermId)
    If ContentItemId > -1 Then Entry = Entities.Entries.EntriesController.GetEntry(ContentItemId, ModuleId)
    If BlogId > -1 And Entry IsNot Nothing AndAlso Entry.BlogID <> BlogId Then Entry = Nothing ' double check in case someone is hacking to retrieve an entry from another blog
    If BlogId = -1 And Entry IsNot Nothing Then BlogId = Entry.BlogID
@@ -54,6 +55,7 @@ Namespace Common
    If BlogMapPath <> "" AndAlso Not IO.Directory.Exists(BlogMapPath) Then IO.Directory.CreateDirectory(BlogMapPath)
    If ContentItemId > -1 Then EntryMapPath = PortalSettings.HomeDirectoryMapPath & String.Format("\Blog\Files\{0}\{1}\", BlogId, ContentItemId)
    If EntryMapPath <> "" AndAlso Not IO.Directory.Exists(EntryMapPath) Then IO.Directory.CreateDirectory(EntryMapPath)
+   If TermId > -1 Then Term = Entities.Terms.TermsController.GetTerm(TermId, ModuleId)
 
   End Sub
 #End Region
@@ -77,7 +79,11 @@ Namespace Common
     Case "postselected"
      Return CBool(ContentItemId > -1).ToString(formatProvider)
     Case Else
-     PropertyNotFound = True
+     If Me.Request.Params(strPropertyName) IsNot Nothing Then
+      Return Me.Request.Params(strPropertyName)
+     Else
+      PropertyNotFound = True
+     End If
    End Select
    Return DotNetNuke.Common.Utilities.Null.NullString
   End Function

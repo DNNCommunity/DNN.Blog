@@ -25,6 +25,10 @@ Imports DotNetNuke.Entities.Content.Taxonomy
 Namespace Entities.Terms
  Public Class TermsController
 
+  Public Shared Function GetTerm(termId As Integer, moduleId As Integer) As TermInfo
+   Return CType(CBO.FillObject(Data.DataProvider.Instance().GetTerm(termId, moduleId), GetType(TermInfo)), TermInfo)
+  End Function
+
   Public Shared Function GetTermsByEntry(contentItemId As Int32, moduleId As Int32) As List(Of TermInfo)
    Return DotNetNuke.Common.Utilities.CBO.FillCollection(Of TermInfo)(Data.DataProvider.Instance.GetTermsByEntry(contentItemId, moduleId))
   End Function

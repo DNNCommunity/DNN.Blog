@@ -62,7 +62,7 @@ Namespace Templating
     Contents = Templating.GetTemplateFile(_ViewMapPath & _FileName)
     If String.IsNullOrEmpty(Contents) Then Return ""
     ' Expand subtemplates
-    ' Simple conditional template e.g. [subtemplate|Flight.html|flight:isgood|comparevalue]
+    ' Simple conditional template e.g. [subtemplate|Widget.html|widget:isgood|True]
     Contents = Regex.Replace(_Contents, "(?i)\[subtemplate\|([^|\]]+)\|([^:|\]]+):([^|\]]+)\|?([^|\]]+)?\](?-i)", AddressOf ReplaceConditionalTemplate)
     ' e.g. [subtemplate|Flight.html|flights|pagesize=6]
     Contents = Regex.Replace(Contents, "(?i)\[subtemplate\|([^|\]]+)\|([^|\]]+)\|?([^|\]]+)?\](?-i)", AddressOf ReplaceSubtemplates)
@@ -97,7 +97,6 @@ Namespace Templating
     Select Case shouldRender
      Case "false", "no", "0"
       Return ""
-     Case Else
     End Select
    End If
 

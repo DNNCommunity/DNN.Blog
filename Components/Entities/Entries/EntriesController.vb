@@ -82,8 +82,36 @@ Namespace Entities.Entries
 
   End Function
 
+  Public Shared Function GetEntriesByTerm(moduleId As Int32, blogID As Int32, termId As Integer, published As Integer, endDate As Date, authorUserId As Int32, pageIndex As Int32, pageSize As Int32, orderBy As String, ByRef totalRecords As Integer, userId As Integer) As Dictionary(Of Integer, EntryInfo)
 
-#Region "Private Methods"
+   If pageIndex < 0 Then
+    pageIndex = 0
+    pageSize = Integer.MaxValue
+   End If
+
+   Dim res As New Dictionary(Of Integer, EntryInfo)
+   Using ir As IDataReader = DataProvider.Instance().GetEntriesByTerm(moduleId, blogID, termId, published, endDate, authorUserId, pageIndex, pageSize, orderBy)
+    res = DotNetNuke.Common.Utilities.CBO.FillDictionary(Of Integer, EntryInfo)("ContentItemID", ir, False)
+    If blogID = -1 Then
+     Dim blogs As Dictionary(Of Integer, BlogInfo) = BlogsController.GetBlogsByModule(moduleId, userId)
+     For Each e As EntryInfo In res.Values
+      e.Blog = blogs(e.BlogID)
+     Next
+    Else
+     Dim blog As BlogInfo = BlogsController.GetBlog(blogID, userId)
+     For Each e As EntryInfo In res.Values
+      e.Blog = blog
+     Next
+    End If
+    ir.NextResult()
+    totalRecords = DotNetNuke.Common.Globals.GetTotalRecords(ir)
+   End Using
+   Return res
+
+  End Function
+
+
+#Region " Private Methods "
   ''' <summary>
   ''' Handles any content item/taxonomy updates, then deals w/ cache clearing (if applicable)
   ''' </summary>

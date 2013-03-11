@@ -28,12 +28,11 @@ Namespace Entities.Terms
   Implements IHydratable
   Implements IPropertyAccess
 
-#Region "Public Properties"
+#Region " Public Properties "
   Public Property TotalPosts() As Integer
 #End Region
 
-
-#Region "IHydratable Implementation"
+#Region " IHydratable Implementation "
   Public Overrides Sub Fill(dr As System.Data.IDataReader)
    MyBase.Fill(dr)
    MyBase.FillInternal(dr)
