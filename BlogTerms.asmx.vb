@@ -46,7 +46,7 @@ Public Class BlogTerms
                 Where (t.Name.IndexOfAny(DisallowedCharacters.ToCharArray()) = -1)
                 Select t.Name)
 
-  'Dim terms As IQueryable = Entities.Content.Common.Util.GetTermController().GetTermsByVocabulary(1).Where(Function(t) t.Name.ToLower().Contains(searchTerm.ToLower())).Where(Function(t) t.Name.IndexOfAny(Constants.DisallowedCharacters.ToCharArray()) = -1).[Select](Function(term) term.Name)
+  'Dim terms As IQueryable = Entities.Content.Common.Util.GetTermController().GetTermsByVocabulary(1).Where(Function(t) t.Name.ToLower().Contains(searchTerm.ToLower())).Where(Function(t) t.Name.IndexOfAny(DisallowedCharacters.ToCharArray()) = -1).[Select](Function(term) term.Name)
   Return colTerms.ToJson()
  End Function
 

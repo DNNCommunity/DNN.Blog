@@ -1,4 +1,4 @@
-﻿Imports DotNetNuke.Modules.Blog.Common.Constants
+﻿Imports DotNetNuke.Modules.Blog.Security.Security
 
 Namespace Security.Permissions
 

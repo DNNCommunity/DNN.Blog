@@ -182,6 +182,8 @@
     </Compile>
     <Compile Include="Components\Common\ModuleUrls.vb" />
     <Compile Include="Components\Entities\Terms\TermsController.vb" />
+    <Compile Include="Components\Integration\Integration.vb" />
+    <Compile Include="Components\Security\Security.vb" />
     <Compile Include="Components\Services\ModulesController.vb" />
     <Compile Include="Components\Services\WLW\Blogger\IBlogger.vb" />
     <Compile Include="Components\BlogML\BlogMLBlogExtendedProperties.vb" />
@@ -208,8 +210,7 @@
     <Compile Include="Components\Common\BlogModuleBase.vb">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Components\Common\BlogPostException.vb" />
-    <Compile Include="Components\Common\Constants.vb" />
+    <Compile Include="Components\Services\WLW\BlogPostException.vb" />
     <Compile Include="Components\Common\BlogContextBase.vb">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -292,7 +293,7 @@
       <DependentUpon>Comments.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Components\File\FileController.vb" />
+    <Compile Include="Components\Integration\FileController.vb" />
     <Compile Include="BlogEdit.ascx.designer.vb">
       <DependentUpon>BlogEdit.ascx</DependentUpon>
     </Compile>

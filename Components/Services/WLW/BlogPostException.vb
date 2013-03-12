@@ -1,4 +1,4 @@
-﻿Namespace Common
+﻿Namespace Services.WLW
  Public Class BlogPostException
   Inherits Exception
 

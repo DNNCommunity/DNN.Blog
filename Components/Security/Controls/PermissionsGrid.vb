@@ -12,6 +12,7 @@ Imports DotNetNuke.Entities.Users
 Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.Modules.Blog.Security.Permissions
+Imports DotNetNuke.Modules.Blog.Common.Globals
 
 Namespace Security.Controls
 
@@ -489,7 +490,7 @@ Namespace Security.Controls
     columnTemplate.EnabledField = objPermission.PermissionKey & "_Enabled"
     checkCol.ItemTemplate = columnTemplate
     Dim locName As String = ""
-    locName = Localization.GetString(objPermission.PermissionKey + ".Permission", Common.Constants.SharedResourceFileName)
+    locName = Localization.GetString(objPermission.PermissionKey + ".Permission", SharedResourceFileName)
     If locName Is Nothing Then
      locName = objPermission.PermissionKey
     End If
@@ -527,7 +528,7 @@ Namespace Security.Controls
      columnTemplate.EnabledField = objPermission.PermissionKey & "_Enabled"
      checkCol.ItemTemplate = columnTemplate
      Dim locName As String = ""
-     locName = Localization.GetString(objPermission.PermissionKey + ".Permission", Common.Constants.SharedResourceFileName)
+     locName = Localization.GetString(objPermission.PermissionKey + ".Permission", SharedResourceFileName)
      If locName Is Nothing Then
       locName = objPermission.PermissionKey
      End If

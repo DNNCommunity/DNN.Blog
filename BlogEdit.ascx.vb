@@ -2,6 +2,7 @@
 Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
+Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Framework
 
 Public Class BlogEdit
@@ -61,7 +62,7 @@ Public Class BlogEdit
    chkIncludeImagesInFeed.Checked = Blog.IncludeImagesInFeed
    cmdDelete.Visible = CBool(BlogId <> -1)
    If Not String.IsNullOrEmpty(Blog.Image) Then
-    imgBlogImage.ImageUrl = ResolveUrl(Common.Constants.glbImageHandlerPath) & String.Format("?TabId={0}&ModuleId={1}&Blog={2}&w=100&h=100&c=1&key={3}", TabId, Settings.ModuleId, BlogId, Blog.Image)
+    imgBlogImage.ImageUrl = ResolveUrl(glbImageHandlerPath) & String.Format("?TabId={0}&ModuleId={1}&Blog={2}&w=100&h=100&c=1&key={3}", TabId, Settings.ModuleId, BlogId, Blog.Image)
     imgBlogImage.Visible = True
     cmdImageRemove.Visible = True
    Else
@@ -125,7 +126,7 @@ Public Class BlogEdit
 
     If fileImage.HasFile Then
      Dim extension As String = IO.Path.GetExtension(fileImage.FileName).ToLower
-     If Common.Constants.glbPermittedFileExtensions.IndexOf(extension & ",") > -1 Then
+     If glbPermittedFileExtensions.IndexOf(extension & ",") > -1 Then
       Dim saveDir As String = PortalSettings.HomeDirectoryMapPath & String.Format("\Blog\Files\{0}\", BlogId)
       If Not IO.Directory.Exists(saveDir) Then IO.Directory.CreateDirectory(saveDir)
       If Blog.Image <> "" Then

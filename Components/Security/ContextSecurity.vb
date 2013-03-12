@@ -21,8 +21,9 @@ Imports DotNetNuke.Security
 Imports DotNetNuke.Security.Permissions
 Imports DotNetNuke.Modules.Blog.Entities
 Imports DotNetNuke.Entities.Users
+Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
-Imports DotNetNuke.Modules.Blog.Common.Constants
+Imports DotNetNuke.Modules.Blog.Security.Security
 
 Namespace Security
 
@@ -66,7 +67,7 @@ Namespace Security
    Dim objMod As New DotNetNuke.Entities.Modules.ModuleInfo
    objMod = mc.GetModule(moduleId, tabId, False)
    If objMod IsNot Nothing Then
-    _isBlogger = ModulePermissionController.HasModulePermission(objMod.ModulePermissions, Common.Constants.BloggerPermission)
+    _isBlogger = ModulePermissionController.HasModulePermission(objMod.ModulePermissions, BloggerPermission)
     _isEditor = ModulePermissionController.HasModulePermission(objMod.ModulePermissions, "EDIT")
    End If
   End Sub

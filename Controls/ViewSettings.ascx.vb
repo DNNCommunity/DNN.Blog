@@ -1,4 +1,6 @@
-﻿Namespace Controls
+﻿Imports DotNetNuke.Modules.Blog.Common.Globals
+
+Namespace Controls
  Public Class ViewSettings
   Inherits DotNetNuke.Entities.Modules.ModuleSettingsBase
 
@@ -39,7 +41,7 @@
 
     ddTemplate.Items.Clear()
     ddTemplate.Items.Add(New ListItem("Default [System]", "[G]_default"))
-    For Each d As IO.DirectoryInfo In (New IO.DirectoryInfo(HttpContext.Current.Server.MapPath(DotNetNuke.Common.ResolveUrl(Common.Constants.glbTemplatesPath)))).GetDirectories
+    For Each d As IO.DirectoryInfo In (New IO.DirectoryInfo(HttpContext.Current.Server.MapPath(DotNetNuke.Common.ResolveUrl(glbTemplatesPath)))).GetDirectories
      If d.Name <> "_default" Then
       ddTemplate.Items.Add(New ListItem(d.Name & " [System]", "[G]" & d.Name))
      End If

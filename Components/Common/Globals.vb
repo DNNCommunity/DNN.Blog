@@ -25,11 +25,15 @@ Imports DotNetNuke.Entities.Content.Taxonomy
 Namespace Common
 
  Public Class Globals
-  Public Const glbSharedResourceFile As String = "DesktopModules/Blog/App_LocalResources/SharedResources"
 
-  Public Shared Function RemoveMarkup(input As String) As String
-   Return (New DotNetNuke.Security.PortalSecurity).InputFilter(input, DotNetNuke.Security.PortalSecurity.FilterFlag.NoMarkup)
-  End Function
+#Region " Constants "
+  Public Const SharedResourceFileName As String = "~/DesktopModules/Blog/App_LocalResources/SharedResources.resx"
+  Public Const glbAppName As String = "Blog"
+  Public Const glbImageHandlerPath As String = "~/DesktopModules/Blog/BlogImage.ashx"
+  Public Const glbPermittedFileExtensions As String = ".jpg,.png,.gif,.bmp,"
+  Public Const glbTemplatesPath As String = "~/DesktopModules/Blog/Templates/"
+  Public Const BloggerPermission As String = "BLOGGER"
+#End Region
 
 #Region " Dates "
   Public Shared Function FormatDate([Date] As DateTime, Culture As String, DateFormat As String, TimeZone As TimeZoneInfo) As String
@@ -76,62 +80,12 @@ Namespace Common
    End Try
   End Function
 
-  ''' <summary>
-  ''' This method takes a UTC date and compares it against the current UTC to return a friendly format (ie. 10 seconds ago)
-  ''' </summary>
-  ''' <param name="utcDate"></param>
-  ''' <returns></returns>
-  ''' <remarks>This method is currently used by comments only.</remarks>
-  Public Shared Function CalculateDateForDisplay(utcDate As DateTime) As String
-   Dim utcTimeDifference As TimeSpan = DotNetNuke.Services.SystemDateTime.SystemDateTime.GetCurrentTimeUtc() - utcDate
-
-   If utcTimeDifference.TotalSeconds < 60 Then
-    Return CInt(utcTimeDifference.TotalSeconds).ToString() + GetString("secondsago", Constants.SharedResourceFileName)
-   End If
-   If utcTimeDifference.TotalMinutes < 60 Then
-    If utcTimeDifference.TotalMinutes < 2 Then
-     Return CInt(utcTimeDifference.TotalMinutes).ToString() + GetString("minuteago", Constants.SharedResourceFileName)
-    End If
-    Return CInt(utcTimeDifference.TotalMinutes).ToString() + GetString("minutesago", Constants.SharedResourceFileName)
-   End If
-   If utcTimeDifference.TotalHours < 24 Then
-    If utcTimeDifference.TotalHours < 2 Then
-     Return CInt(utcTimeDifference.TotalHours).ToString() + GetString("hourago", Constants.SharedResourceFileName)
-    End If
-    Return CInt(utcTimeDifference.TotalHours).ToString() + GetString("hoursago", Constants.SharedResourceFileName)
-   End If
-
-   If utcTimeDifference.TotalDays < 7 Then
-    If utcTimeDifference.TotalDays < 2 Then
-     Return CInt(utcTimeDifference.TotalDays).ToString() + GetString("dayago", Constants.SharedResourceFileName)
-    End If
-    Return CInt(utcTimeDifference.TotalDays).ToString() + GetString("daysago", Constants.SharedResourceFileName)
-   End If
-
-   If utcTimeDifference.TotalDays < 30 Then
-    If utcTimeDifference.TotalDays < 14 Then
-     Return CInt((utcTimeDifference.TotalDays) / 7).ToString() + GetString("weekago", Constants.SharedResourceFileName)
-    End If
-    Return CInt((utcTimeDifference.TotalDays) / 7).ToString() + GetString("weeksago", Constants.SharedResourceFileName)
-   End If
-
-   If utcTimeDifference.TotalDays < 180 Then
-    If utcTimeDifference.TotalDays < 60 Then
-     Return CInt((utcTimeDifference.TotalDays) / 30).ToString() + GetString("monthago", Constants.SharedResourceFileName)
-    End If
-    Return CInt((utcTimeDifference.TotalDays) / 30).ToString() + GetString("monthsago", Constants.SharedResourceFileName)
-   End If
-
-   ' anything else (this is the only time we have to personalize it to the user)
-   Return utcDate.ToShortDateString()
+  Public Shared Function GetLocalAddedTime(AddedDate As DateTime, PortalId As Integer, user As DotNetNuke.Entities.Users.UserInfo) As DateTime
+   Return TimeZoneInfo.ConvertTimeToUtc(AddedDate, user.Profile.PreferredTimeZone)
   End Function
 #End Region
 
 #Region " Other "
-  Public Shared Function GetLocalAddedTime(AddedDate As DateTime, PortalId As Integer, user As DotNetNuke.Entities.Users.UserInfo) As DateTime
-   Return TimeZoneInfo.ConvertTimeToUtc(AddedDate, user.Profile.PreferredTimeZone)
-  End Function
-
   Public Shared Function ManifestFilePath(moduleId As Integer) As String
    Return "/DesktopModules/Blog/WLWManifest.aspx?ModuleId=" & moduleId.ToString
   End Function

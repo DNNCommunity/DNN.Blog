@@ -167,42 +167,6 @@ Namespace Entities.Entries
   End Function
 
 #Region " Private Methods "
-  ''' <summary>
-  ''' Handles any content item/taxonomy updates, then deals w/ cache clearing (if applicable)
-  ''' </summary>
-  ''' <param name="objEntry"></param>
-  ''' <param name="tabId"></param>
-  ''' <remarks></remarks>
-  Private Shared Sub CompleteEntryUpdate(objEntry As EntryInfo, tabId As Integer, portalId As Integer, vocabularyId As Integer)
-   ' Clear Cache
-   Dim tagsKey As String = Common.Constants.TermsKey + "1"
-   DataCache.RemoveCache(tagsKey)
-   Dim contentItemKey As String = Common.Constants.ContentItemsKey + objEntry.ContentItemId.ToString() + "-" + "1"
-   DataCache.RemoveCache(contentItemKey)
-   Dim contentItemCatKey As String = Common.Constants.ContentItemsKey + objEntry.ContentItemId.ToString() + "-" + vocabularyId.ToString()
-   DataCache.RemoveCache(contentItemCatKey)
-   Dim categoriesKey As String = Common.Constants.TermsKey + vocabularyId.ToString()
-   DataCache.RemoveCache(categoriesKey)
-   Dim portalKey As String = Common.Constants.PortalBlogsCacheKey & CStr(portalId)
-   DataCache.RemoveCache(portalKey)
-  End Sub
-
-  Private Shared Sub CompleteEntryDelete(contentItemId As Integer, blogId As Integer, entryId As Integer, portalId As Integer, vocabularyId As Integer)
-
-   JournalController.RemoveBlogEntryFromJournal(blogId, entryId, portalId)
-
-   ' Clear Cache
-   Dim tagsKey As String = Common.Constants.TermsKey + "1"
-   DataCache.RemoveCache(tagsKey)
-   Dim contentItemKey As String = Common.Constants.ContentItemsKey + contentItemId.ToString() + "-" + "1"
-   DataCache.RemoveCache(contentItemKey)
-   Dim contentItemCatKey As String = Common.Constants.ContentItemsKey + contentItemId.ToString() + "-" + vocabularyId.ToString()
-   DataCache.RemoveCache(contentItemCatKey)
-   Dim categoriesKey As String = Common.Constants.TermsKey + vocabularyId.ToString()
-   DataCache.RemoveCache(categoriesKey)
-   Dim portalKey As String = Common.Constants.PortalBlogsCacheKey & CStr(portalId)
-   DataCache.RemoveCache(portalKey)
-  End Sub
 #End Region
 
  End Class

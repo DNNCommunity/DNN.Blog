@@ -23,7 +23,7 @@ Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Modules.Blog.Entities
 Imports DotNetNuke.Modules.Blog.Entities.Entries
 
-Namespace File
+Namespace Integration
 
  Public Class FileController
 

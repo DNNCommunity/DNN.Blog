@@ -1,6 +1,7 @@
 ﻿Imports System.Xml
 Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Services.Tokens
+Imports DotNetNuke.Modules.Blog.Common.Globals
 
 Namespace Common
  Public Class ModuleSettings
@@ -90,12 +91,6 @@ Namespace Common
 #Region " Public Members "
   Public Overridable Sub UpdateSettings()
 
-   ' Clear cache
-   Dim tagsKey As String = Common.Constants.TermsKey + "1"
-   DataCache.RemoveCache(tagsKey)
-   Dim categoriesKey As String = Common.Constants.TermsKey + VocabularyId.ToString()
-   DataCache.RemoveCache(categoriesKey)
-
    Dim objModules As New DotNetNuke.Entities.Modules.ModuleController
    objModules.UpdateModuleSetting(_moduleId, "Email", Email)
    objModules.UpdateModuleSetting(_moduleId, "AllowHtmlSummary", AllowHtmlSummary.ToString)
@@ -141,7 +136,7 @@ Namespace Common
     Case "apppath"
      Return DotNetNuke.Common.ApplicationPath
     Case "imagehandlerpath"
-     Return DotNetNuke.Common.ResolveUrl(Common.Constants.glbImageHandlerPath)
+     Return DotNetNuke.Common.ResolveUrl(glbImageHandlerPath)
     Case Else
      PropertyNotFound = True
    End Select

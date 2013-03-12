@@ -34,6 +34,8 @@ Imports System.IO
 Imports System.Web
 Imports DotNetNuke.Entities.Content.Taxonomy
 Imports System.Linq
+Imports DotNetNuke.Modules.Blog.Common.Globals
+Imports DotNetNuke.Modules.Blog.Services.WLW
 Imports DotNetNuke.Modules.Blog.Services.WLW.WordPress
 Imports DotNetNuke.Modules.Blog.Services.WLW.MoveableType
 Imports DotNetNuke.Modules.Blog.Services.WLW.MetaWeblog
@@ -477,7 +479,7 @@ Public Class BlogPost
   'post.mt_allow_pings
   post.categories = entry.EntryCategories.ToStringArray
   post.description = HttpUtility.HtmlDecode(entry.Content)
-  post.dateCreated = Globals.GetLocalAddedTime(entry.CreatedOnDate, PortalSettings.PortalId, UserInfo)
+  post.dateCreated = GetLocalAddedTime(entry.CreatedOnDate, PortalSettings.PortalId, UserInfo)
   post.pubDate = entry.PublishedOnDate
   post.date_created_gmt = entry.PublishedOnDate
   'post.mt_text_more =
@@ -510,9 +512,9 @@ Public Class BlogPost
   If Settings.AllowHtmlSummary Then
    entry.Summary = HttpUtility.HtmlEncode(post.mt_excerpt)
   Else
-   entry.Summary = Globals.RemoveMarkup(post.mt_excerpt)
+   entry.Summary = removeHtmlTags(post.mt_excerpt)
   End If
-  If entry.Summary = "" Then Globals.SetSummary(entry, Settings)
+  If entry.Summary = "" Then SetSummary(entry, Settings)
   If post.dateCreated.Year > 1 Then
    ' WLW manages the TZ offset automatically
    entry.PublishedOnDate = post.dateCreated

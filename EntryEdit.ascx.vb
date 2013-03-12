@@ -162,7 +162,7 @@ Public Class EntryEdit
       txtDescriptionText.Text = Entry.Summary
      End If
      If Not String.IsNullOrEmpty(Entry.Image) Then
-      imgEntryImage.ImageUrl = ResolveUrl(Common.Constants.glbImageHandlerPath) & String.Format("?TabId={0}&ModuleId={1}&Blog={2}&Post={3}&w=100&h=100&c=1&key={4}", TabId, Settings.ModuleId, BlogId, ContentItemId, Entry.Image)
+      imgEntryImage.ImageUrl = ResolveUrl(glbImageHandlerPath) & String.Format("?TabId={0}&ModuleId={1}&Blog={2}&Post={3}&w=100&h=100&c=1&key={4}", TabId, Settings.ModuleId, BlogId, ContentItemId, Entry.Image)
       imgEntryImage.Visible = True
       cmdImageRemove.Visible = True
      Else
@@ -262,7 +262,7 @@ Public Class EntryEdit
     ' Image
     If fileImage.HasFile Then
      Dim extension As String = IO.Path.GetExtension(fileImage.FileName).ToLower
-     If Common.Constants.glbPermittedFileExtensions.IndexOf(extension & ",") > -1 Then
+     If glbPermittedFileExtensions.IndexOf(extension & ",") > -1 Then
       Dim saveDir As String = PortalSettings.HomeDirectoryMapPath & String.Format("\Blog\Files\{0}\{1}\", BlogId, ContentItemId)
       If Not IO.Directory.Exists(saveDir) Then IO.Directory.CreateDirectory(saveDir)
       If Entry.Image <> "" Then
@@ -320,7 +320,7 @@ Public Class EntryEdit
 
     ElseIf Blog.MustApproveGhostPosts And UserId <> Blog.OwnerUserId Then
 
-     Dim title As String = Localization.GetString("ApprovePostNotifyBody", Constants.SharedResourceFileName)
+     Dim title As String = Localization.GetString("ApprovePostNotifyBody", SharedResourceFileName)
      Dim summary As String = "<a target='_blank' href='" + Entry.PermaLink(PortalSettings) + "'>" + Entry.Title + "</a>"
      NotificationController.EntryPendingApproval(Blog, Entry, ModuleContext.PortalId, summary, title)
 

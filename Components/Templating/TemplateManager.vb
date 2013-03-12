@@ -19,14 +19,15 @@
 '
 
 Imports DotNetNuke.Entities.Portals
+Imports DotNetNuke.Modules.Blog.Common.Globals
 
 Namespace Templating
  Public Class TemplateManager
 
   Public Sub New(portalsettings As PortalSettings, template As String)
    If template.StartsWith("[G]") Then
-    TemplatePath = DotNetNuke.Common.ResolveUrl(Common.Constants.glbTemplatesPath) & Mid(template, 4) & "/"
-    TemplateMapPath = HttpContext.Current.Server.MapPath(DotNetNuke.Common.ResolveUrl(Common.Constants.glbTemplatesPath)) & Mid(template, 4) & "\"
+    TemplatePath = DotNetNuke.Common.ResolveUrl(glbTemplatesPath) & Mid(template, 4) & "/"
+    TemplateMapPath = HttpContext.Current.Server.MapPath(DotNetNuke.Common.ResolveUrl(glbTemplatesPath)) & Mid(template, 4) & "\"
    Else
     TemplatePath = portalsettings.HomeDirectory & "/Blog/Templates/" & Mid(template, 4) & "/"
     TemplateMapPath = portalsettings.HomeDirectoryMapPath & "\Blog\Templates\" & Mid(template, 4) & "\"

@@ -15,6 +15,7 @@ Namespace Security
 #Region " Private Members "
 #End Region
 
+#Region " Constructors "
   Public Sub New()
    LoadUser(Nothing)
   End Sub
@@ -61,6 +62,7 @@ Namespace Security
    End If
 
   End Sub
+#End Region
 
 #Region " Public Properties "
   Public Property IsAdministrator As Boolean = False

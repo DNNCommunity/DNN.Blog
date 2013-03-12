@@ -8,7 +8,7 @@ Imports DotNetNuke.Entities.Users
 
 Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.Modules.Blog.Security.Permissions
-Imports DotNetNuke.Modules.Blog.Common.Constants
+Imports DotNetNuke.Modules.Blog.Security.Security
 
 Namespace Security.Controls
 

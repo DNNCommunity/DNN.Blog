@@ -1,4 +1,5 @@
 ﻿Imports DotNetNuke.Services.Localization.Localization
+Imports DotNetNuke.Modules.Blog.Common.Globals
 
 Namespace Controls
  Public Class ManagementPanel
@@ -12,6 +13,7 @@ Namespace Controls
     cmdBlog.Visible = Security.CanAddEntry
     cmdEditPost.Visible = (Entry IsNot Nothing) And Security.CanEditEntry
     cmdCopyModule.Visible = Security.IsEditor
+    pnlCopyModule.Visible = Security.IsEditor
     wlwlink.Title = LocalizeString("WLW")
     wlwlink.Visible = Security.CanAddEntry
     If Entry IsNot Nothing Then
@@ -20,7 +22,7 @@ Namespace Controls
     If Security.IsEditor Then
      ddTemplate.Items.Clear()
      ddTemplate.Items.Add(New ListItem("Default [System]", "[G]_default"))
-     For Each d As IO.DirectoryInfo In (New IO.DirectoryInfo(HttpContext.Current.Server.MapPath(DotNetNuke.Common.ResolveUrl(Common.Constants.glbTemplatesPath)))).GetDirectories
+     For Each d As IO.DirectoryInfo In (New IO.DirectoryInfo(HttpContext.Current.Server.MapPath(DotNetNuke.Common.ResolveUrl(glbTemplatesPath)))).GetDirectories
       If d.Name <> "_default" Then
        ddTemplate.Items.Add(New ListItem(d.Name & " [System]", "[G]" & d.Name))
       End If
