@@ -15,10 +15,6 @@
    <dnn:label id="lblTemplate" runat="server" controlname="ddTemplate" suffix=":" />
    <asp:DropDownList runat="server" ID="ddTemplate" />
   </div>			
-	 <div class="dnnFormItem">
-		 <dnn:label id="lblShowManagementPanel" runat="server" controlname="chkShowManagementPanel" suffix=":" />
-		 <asp:CheckBox ID="chkShowManagementPanel" runat="server" />
-	 </div>
   <div class="dnnFormItem">
    <dnn:Label ID="lblTitle" runat="server" Suffix=":" />
    <asp:TextBox runat="server" ID="txtTitle" />
@@ -71,7 +67,7 @@
    return false;
   });
  $('#cmdAdd<%=ModuleId %>').click(function () {
-  blogService.addModule($('#<%=ddPane.ClientId %>').val(), $('#<%=ddPosition.ClientId %>').val(), $('#<%=txtTitle.ClientId %>').val(), $('#<%=ddTemplate.ClientId %>').val(), $('#<%=chkShowManagementPanel.ClientId %>').is(":checked"));
+  blogService.addModule($('#<%=ddPane.ClientId %>').val(), $('#<%=ddPosition.ClientId %>').val(), $('#<%=txtTitle.ClientId %>').val(), $('#<%=ddTemplate.ClientId %>').val());
  });
 <% End If %>
   var $dialogSearch = $('<div class="dnnDialog"></div>')

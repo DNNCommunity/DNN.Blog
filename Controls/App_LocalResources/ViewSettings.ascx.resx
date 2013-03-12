@@ -138,4 +138,10 @@
   <data name="NoParent.Text" xml:space="preserve">
     <value>&lt; This module has its own content &gt;</value>
   </data>
+  <data name="lblShowComments.Help" xml:space="preserve">
+    <value>If selected the comments are shown on this module</value>
+  </data>
+  <data name="lblShowComments.Text" xml:space="preserve">
+    <value>Show Comments</value>
+  </data>
 </root>

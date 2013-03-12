@@ -171,12 +171,6 @@
   <data name="lblPane.Text" xml:space="preserve">
     <value>Pane</value>
   </data>
-  <data name="lblShowManagementPanel.Help" xml:space="preserve">
-    <value>If selected the management panel will show up at the top of this module</value>
-  </data>
-  <data name="lblShowManagementPanel.Text" xml:space="preserve">
-    <value>Show Management Panel</value>
-  </data>
   <data name="lblTemplate.Help" xml:space="preserve">
     <value>Select template to render for this module</value>
   </data>

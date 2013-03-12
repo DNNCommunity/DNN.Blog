@@ -64,6 +64,7 @@ Namespace Controls
    Catch ex As Exception
    End Try
    chkShowManagementPanel.Checked = ViewSettings.ShowManagementPanel
+   chkShowComments.Checked = ViewSettings.ShowComments
    Try
     ddTemplate.Items.FindByValue(ViewSettings.Template).Selected = True
    Catch ex As Exception
@@ -75,6 +76,7 @@ Namespace Controls
 
    ViewSettings.BlogModuleId = CInt(ddBlogModuleId.SelectedValue)
    ViewSettings.ShowManagementPanel = chkShowManagementPanel.Checked
+   ViewSettings.ShowComments = chkShowComments.Checked
    ViewSettings.Template = ddTemplate.SelectedValue
    ViewSettings.UpdateSettings()
 

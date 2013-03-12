@@ -63,12 +63,12 @@
   });
  };
 
- this.addModule = function (paneName, position, title, template, showManagementPanel, success) {
+ this.addModule = function (paneName, position, title, template, success) {
   $.ajax({
    type: "POST",
    url: modulesServicepath + "Add",
    beforeSend: servicesFramework.setModuleHeaders,
-   data: { paneName: paneName, position: position, title: title, template: template, showManagementPanel: showManagementPanel }
+   data: { paneName: paneName, position: position, title: title, template: template }
   }).done(function (data) {
    if (success != undefined) {
     success();

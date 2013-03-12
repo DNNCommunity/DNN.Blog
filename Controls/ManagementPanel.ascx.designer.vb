@@ -96,24 +96,6 @@ Namespace Controls
   Protected WithEvents ddTemplate As Global.System.Web.UI.WebControls.DropDownList
 
   '''<summary>
-  '''lblShowManagementPanel control.
-  '''</summary>
-  '''<remarks>
-  '''Auto-generated field.
-  '''To modify move field declaration from designer file to code-behind file.
-  '''</remarks>
-  Protected WithEvents lblShowManagementPanel As Global.System.Web.UI.UserControl
-
-  '''<summary>
-  '''chkShowManagementPanel control.
-  '''</summary>
-  '''<remarks>
-  '''Auto-generated field.
-  '''To modify move field declaration from designer file to code-behind file.
-  '''</remarks>
-  Protected WithEvents chkShowManagementPanel As Global.System.Web.UI.WebControls.CheckBox
-
-  '''<summary>
   '''lblTitle control.
   '''</summary>
   '''<remarks>

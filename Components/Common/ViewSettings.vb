@@ -12,6 +12,7 @@ Namespace Common
 #Region " Properties "
   Public Property Template As String = "[G]_default"
   Public Property ShowManagementPanel As Boolean = True
+  Public Property ShowComments As Boolean = True
   Public Property BlogModuleId As Integer = -1
 #End Region
 
@@ -22,6 +23,7 @@ Namespace Common
    _allSettings = (New DotNetNuke.Entities.Modules.ModuleController).GetTabModuleSettings(tabModuleId)
    _allSettings.ReadValue("Template", Template)
    _allSettings.ReadValue("ShowManagementPanel", ShowManagementPanel)
+   _allSettings.ReadValue("ShowComments", ShowComments)
    _allSettings.ReadValue("BlogModuleId", BlogModuleId)
 
   End Sub
@@ -47,6 +49,7 @@ Namespace Common
    Dim objModules As New DotNetNuke.Entities.Modules.ModuleController
    objModules.UpdateTabModuleSetting(tabModuleId, "Template", Template)
    objModules.UpdateTabModuleSetting(tabModuleId, "ShowManagementPanel", ShowManagementPanel.ToString)
+   objModules.UpdateTabModuleSetting(tabModuleId, "ShowComments", ShowComments.ToString)
    objModules.UpdateTabModuleSetting(tabModuleId, "BlogModuleId", BlogModuleId.ToString)
 
    Dim CacheKey As String = "TabModuleSettings" & tabModuleId.ToString
