@@ -2,7 +2,7 @@
 Imports System.Linq
 Imports DotNetNuke.Modules.Blog.Entities.Entries
 Imports DotNetNuke.Web.UI.WebControls
-Imports DotNetNuke.Modules.Blog.Common
+Imports DotNetNuke.Modules.Blog.Common.Globals
 
 Public Class Manage
  Inherits BlogModuleBase
@@ -34,7 +34,7 @@ Public Class Manage
 
  Private Sub cmdUpdateSettings_Click(sender As Object, e As System.EventArgs) Handles cmdUpdateSettings.Click
   Settings.AllowAttachments = chkAllowAttachments.Checked
-  Settings.AllowHtmlSummary = chkAllowHtmlSummary.Checked
+  Settings.SummaryModel = CType(ddSummaryModel.SelectedValue.ToInt, SummaryType)
   Settings.AllowMultipleCategories = chkAllowMultipleCategories.Checked
   Settings.AllowWLW = chkAllowWLW.Checked
   Settings.Email = txtEmail.Text
@@ -53,7 +53,10 @@ Public Class Manage
   If Security.IsEditor Then
    dlBlogs.DataSource = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId).Values
    chkAllowAttachments.Checked = Settings.AllowAttachments
-   chkAllowHtmlSummary.Checked = Settings.AllowHtmlSummary
+   Try
+    ddSummaryModel.Items.FindByValue(CInt(Settings.SummaryModel).ToString).Selected = True
+   Catch ex As Exception
+   End Try
    chkAllowMultipleCategories.Checked = Settings.AllowMultipleCategories
    chkAllowWLW.Checked = Settings.AllowWLW
    chkAllowAllLocales.Checked = Settings.AllowAllLocales

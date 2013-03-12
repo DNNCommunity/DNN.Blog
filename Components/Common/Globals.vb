@@ -33,6 +33,12 @@ Namespace Common
   Public Const glbPermittedFileExtensions As String = ".jpg,.png,.gif,.bmp,"
   Public Const glbTemplatesPath As String = "~/DesktopModules/Blog/Templates/"
   Public Const BloggerPermission As String = "BLOGGER"
+
+  Public Enum SummaryType
+   PlainTextIndependent = 0
+   HtmlIndependent = 1
+   HtmlPrecedesPost = 2
+  End Enum
 #End Region
 
 #Region " Dates "

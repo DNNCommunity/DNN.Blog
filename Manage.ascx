@@ -16,8 +16,12 @@
 		<asp:CheckBox ID="chkAllowMultipleCategories" runat="server" />
 	</div>
 	<div class="dnnFormItem">
-		<dnn:label id="lblAllowHtmlSummary" runat="server" controlname="chkAllowHtmlSummary" suffix=":" />
-		<asp:CheckBox ID="chkAllowHtmlSummary" runat="server" />
+		<dnn:label id="lblSummaryModel" runat="server" controlname="ddSummaryModel" suffix=":" />
+  <asp:DropDownList ID="ddSummaryModel" runat="server">
+   <asp:ListItem Value="0" ResourceKey="PlainTextIndependent.Opt" />
+   <asp:ListItem Value="1" ResourceKey="HtmlIndependent.Opt" />
+   <asp:ListItem Value="2" ResourceKey="HtmlPrecedesPost.Opt" />
+  </asp:DropDownList>
 	</div>
 	<div class="dnnFormItem">
 		<dnn:label id="lblAllowAttachments" runat="server" controlname="chkAllowAttachments" suffix=":" />

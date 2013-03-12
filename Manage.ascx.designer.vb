@@ -50,22 +50,22 @@ Partial Public Class Manage
  Protected WithEvents chkAllowMultipleCategories As Global.System.Web.UI.WebControls.CheckBox
 
  '''<summary>
- '''lblAllowHtmlSummary control.
+ '''lblSummaryModel control.
  '''</summary>
  '''<remarks>
  '''Auto-generated field.
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
- Protected WithEvents lblAllowHtmlSummary As Global.System.Web.UI.UserControl
+ Protected WithEvents lblSummaryModel As Global.System.Web.UI.UserControl
 
  '''<summary>
- '''chkAllowHtmlSummary control.
+ '''ddSummaryModel control.
  '''</summary>
  '''<remarks>
  '''Auto-generated field.
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
- Protected WithEvents chkAllowHtmlSummary As Global.System.Web.UI.WebControls.CheckBox
+ Protected WithEvents ddSummaryModel As Global.System.Web.UI.WebControls.DropDownList
 
  '''<summary>
  '''lblAllowAttachments control.

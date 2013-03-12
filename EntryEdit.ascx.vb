@@ -9,7 +9,6 @@ Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Framework
 Imports System.Linq
-Imports DotNetNuke.Modules.Blog.File
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
 Imports DotNetNuke.Modules.Blog.Entities.Entries
 Imports DotNetNuke.Services.Localization
@@ -45,12 +44,10 @@ Public Class EntryEdit
 #End Region
 
 #Region " Event Handlers "
-
  Protected Overloads Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
 
   Try
 
-   'jQuery.RequestDnnPluginsRegistration()
    DotNetNuke.Framework.jQuery.RegisterJQueryUI(Page)
    ClientResourceManager.RegisterScript(Page, TemplateSourceDirectory + "/js/jquery.tagify.js")
 
@@ -112,13 +109,18 @@ Public Class EntryEdit
     End If
 
     ' Summary
-    If Settings.AllowHtmlSummary Then
-     txtDescription.Visible = True
-     txtDescriptionText.Visible = False
-    Else
-     txtDescription.Visible = False
-     txtDescriptionText.Visible = True
-    End If
+    Select Case Settings.SummaryModel
+     Case SummaryType.HtmlIndependent
+      txtDescription.Visible = True
+      txtDescriptionText.Visible = False
+     Case SummaryType.HtmlPrecedesPost
+      txtDescription.Visible = True
+      txtDescriptionText.Visible = False
+      lblSummaryPrecedingWarning.Visible = True
+     Case Else ' plain text
+      txtDescription.Visible = False
+      txtDescriptionText.Visible = True
+    End Select
 
     ' Buttons
     If BlogId > -1 Then
@@ -132,9 +134,11 @@ Public Class EntryEdit
 
     If Not Entry Is Nothing Then
 
+     Dim entryBody As New PostBodyAndSummary(Entry, Settings.SummaryModel)
+
      ' Content
      txtTitle.Text = HttpUtility.HtmlDecode(Entry.Title)
-     teBlogEntry.Text = Server.HtmlDecode(Entry.Content)
+     teBlogEntry.Text = entryBody.Body
 
      ' Publishing
      chkPublished.Checked = Entry.Published
@@ -156,11 +160,12 @@ Public Class EntryEdit
      tpEntryTime.SelectedDate = publishDate
 
      ' Summary, Image, Categories, Tags
-     If Settings.AllowHtmlSummary Then
-      txtDescription.Text = Entry.Summary
-     Else
-      txtDescriptionText.Text = Entry.Summary
-     End If
+     Select Case Settings.SummaryModel
+      Case SummaryType.PlainTextIndependent
+       txtDescriptionText.Text = entryBody.Summary
+      Case Else ' plain text
+       txtDescription.Text = entryBody.Summary
+     End Select
      If Not String.IsNullOrEmpty(Entry.Image) Then
       imgEntryImage.ImageUrl = ResolveUrl(glbImageHandlerPath) & String.Format("?TabId={0}&ModuleId={1}&Blog={2}&Post={3}&w=100&h=100&c=1&key={4}", TabId, Settings.ModuleId, BlogId, ContentItemId, Entry.Image)
       imgEntryImage.Visible = True
@@ -226,10 +231,16 @@ Public Class EntryEdit
 
     Dim firstPublish As Boolean = CBool((Not Entry.Published) And chkPublished.Checked)
 
-    ' Contents
+    ' Contents and summary
     Entry.BlogID = BlogId
     Entry.Title = txtTitle.Text
-    Entry.Content = teBlogEntry.Text
+    Dim entryBody As New PostBodyAndSummary(teBlogEntry.Text)
+    If Settings.SummaryModel = SummaryType.PlainTextIndependent Then
+     entryBody.Summary = removeHtmlTags(Trim(txtDescriptionText.Text))
+    Else
+     entryBody.Summary = Trim(txtDescription.Text)
+    End If
+    entryBody.WriteToEntry(Entry, Settings.SummaryModel, False)
 
     ' Publishing
     Entry.Published = chkPublished.Checked
@@ -243,15 +254,6 @@ Public Class EntryEdit
     Entry.PublishedOnDate = Entry.PublishedOnDate.AddHours(hour)
     Entry.PublishedOnDate = Entry.PublishedOnDate.AddMinutes(minute)
     Entry.PublishedOnDate = TimeZoneInfo.ConvertTimeToUtc(Entry.PublishedOnDate, UiTimeZone)
-
-    ' Summary
-    If Settings.AllowHtmlSummary Then
-     Entry.Summary = Trim(txtDescription.Text)
-    Else
-     Entry.Summary = (New DotNetNuke.Security.PortalSecurity).InputFilter(Trim(txtDescriptionText.Text), DotNetNuke.Security.PortalSecurity.FilterFlag.NoMarkup)
-    End If
-    If Entry.Summary = "&lt;p&gt;&amp;#160;&lt;/p&gt;" Then Entry.Summary = ""
-    If Entry.Summary = "" Then Common.Globals.SetSummary(Entry, Settings)
 
     ' Add if new
     If ContentItemId = -1 Then
@@ -398,15 +400,12 @@ Public Class EntryEdit
 #End Region
 
 #Region " Private Methods "
-
  Private Function CreateCopyRight() As String
   Return GetString("msgCopyright", LocalResourceFile) & Date.UtcNow.Year & " " & Blog.DisplayName
  End Function
-
 #End Region
 
 #Region " Upload Feature Methods "
-
  Private Sub DeleteAllFiles()
   Try
    System.IO.Directory.Delete(FileController.getEntryDir(Me.FilePath, Entry), True)

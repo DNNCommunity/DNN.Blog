@@ -10,6 +10,7 @@
 		<dnn:Label ID="lblTitle" runat="server" controlname="treeCategories" suffix=":" CssClass="dnnLeft" /><br />
 		<asp:TextBox ID="txtTitle" runat="server" CssClass="dnnFormRequired" Width="98%" />
 		<asp:RequiredFieldValidator ID="valTitle" runat="server" ResourceKey="valTitle.ErrorMessage" Display="Dynamic" ControlToValidate="txtTitle" CssClass="dnnFormError" />
+  <asp:Label runat="server" ID="lblSummaryPrecedingWarning" resourcekey="lblSummaryPrecedingWarning" Visible="false" CssClass="dnnFormMessage dnnFormWarning" />
   <dnn:Label ID="lblContent" runat="server" controlname="teBlogEntry" suffix=":" CssClass="dnnLeft" /><br />
 		<dnn:texteditor id="teBlogEntry" runat="server" width="100%" height="400" />
 	</fieldset>

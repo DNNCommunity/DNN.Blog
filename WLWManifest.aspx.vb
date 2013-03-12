@@ -57,12 +57,13 @@ Partial Public Class WLWManifest
    output.WriteElementString("supportsTrackbacks", "No")
    output.WriteElementString("supportsEmbeds", "No")
    output.WriteElementString("supportsAuthor", "No")
-   output.WriteElementString("supportsExcerpt", "Yes")
+   output.WriteElementString("supportsExcerpt", (CBool(bs.SummaryModel = Globals.SummaryType.PlainTextIndependent)).ToYesNo)
    output.WriteElementString("supportsPassword", "No")
    output.WriteElementString("supportsPages", "No")
    output.WriteElementString("supportsPageParent", "No")
    output.WriteElementString("supportsPageOrder", "No")
-   output.WriteElementString("supportsExtendedEntries", "Yes")
+   output.WriteElementString("supportsEmptyTitles", "No")
+   output.WriteElementString("supportsExtendedEntries", (CBool(bs.SummaryModel = Globals.SummaryType.HtmlPrecedesPost)).ToYesNo)
    output.WriteElementString("supportsCommentPolicy", "Yes")
    output.WriteElementString("supportsPingPolicy", "No")
    output.WriteElementString("supportsPostAsDraft", "Yes")
@@ -72,9 +73,10 @@ Partial Public Class WLWManifest
    output.WriteElementString("supportsCategoriesInline", "Yes")
    output.WriteElementString("supportsNewCategories", bs.BloggersCanEditCategories.ToYesNo)
    output.WriteElementString("supportsNewCategoriesInline", "No")
+   output.WriteElementString("requiresXHTML", "Yes")
 
-   output.WriteEndElement() ' manifest
    output.WriteEndElement() ' options
+   output.WriteEndElement() ' manifest
    output.Flush()
 
   End Using

@@ -59,6 +59,15 @@ Partial Public Class EntryEdit
  Protected WithEvents valTitle As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
  '''<summary>
+ '''lblSummaryPrecedingWarning control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lblSummaryPrecedingWarning As Global.System.Web.UI.WebControls.Label
+
+ '''<summary>
  '''lblContent control.
  '''</summary>
  '''<remarks>

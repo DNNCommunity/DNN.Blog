@@ -319,4 +319,7 @@
   <data name="cmdSave.Text" xml:space="preserve">
     <value>Save</value>
   </data>
+  <data name="lblSummaryPrecedingWarning.Text" xml:space="preserve">
+    <value>Note that the summary precedes the article body! You edit them independently on this page but they are merged to form the article body when someone views the full article.</value>
+  </data>
 </root>

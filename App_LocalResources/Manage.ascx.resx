@@ -168,12 +168,6 @@
   <data name="lblAllowAttachments.Text" xml:space="preserve">
     <value>Allow Attachments</value>
   </data>
-  <data name="lblAllowHtmlSummary.Help" xml:space="preserve">
-    <value>If selected bloggers can write HTML for the summary. If not selected only plain text is allowed.</value>
-  </data>
-  <data name="lblAllowHtmlSummary.Text" xml:space="preserve">
-    <value>Allow HTML Summary</value>
-  </data>
   <data name="lblAllowMultipleCategories.Help" xml:space="preserve">
     <value>Allow bloggers to select more than one category for their posts</value>
   </data>
@@ -212,5 +206,20 @@
   </data>
   <data name="NoneSpecified.Text" xml:space="preserve">
     <value>&lt; None Specified &gt;</value>
+  </data>
+  <data name="HtmlIndependent.Opt" xml:space="preserve">
+    <value>HTML independent from body of post</value>
+  </data>
+  <data name="HtmlPrecedesPost.Opt" xml:space="preserve">
+    <value>HTML precedes post</value>
+  </data>
+  <data name="PlainTextIndependent.Opt" xml:space="preserve">
+    <value>Plain text independent from body of post</value>
+  </data>
+  <data name="lblSummaryModel.Help" xml:space="preserve">
+    <value>Select how you want the summary to behave and what format it should be</value>
+  </data>
+  <data name="lblSummaryModel.Text" xml:space="preserve">
+    <value>Summary Model</value>
   </data>
 </root>

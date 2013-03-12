@@ -181,6 +181,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Components\Common\ModuleUrls.vb" />
+    <Compile Include="Components\Common\PostBodyAndSummary.vb" />
     <Compile Include="Components\Entities\Terms\TermsController.vb" />
     <Compile Include="Components\Integration\Integration.vb" />
     <Compile Include="Components\Security\Security.vb" />

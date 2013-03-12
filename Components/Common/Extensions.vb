@@ -1,4 +1,5 @@
 ﻿Imports System.Linq
+Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.Entities.Terms
 
 Namespace Common
@@ -50,6 +51,16 @@ Namespace Common
    If Not ValueTable.Item(ValueName) Is Nothing Then
     Try
      Variable = CType(ValueTable.Item(ValueName), Date)
+    Catch ex As Exception
+    End Try
+   End If
+  End Sub
+
+  <System.Runtime.CompilerServices.Extension()>
+  Public Sub ReadValue(ByRef ValueTable As Hashtable, ValueName As String, ByRef Variable As SummaryType)
+   If Not ValueTable.Item(ValueName) Is Nothing Then
+    Try
+     Variable = CType(CType(ValueTable.Item(ValueName), Integer), SummaryType)
     Catch ex As Exception
     End Try
    End If

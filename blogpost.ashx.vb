@@ -473,59 +473,48 @@ Public Class BlogPost
 
 #Region " Post/Entry Conversion Methods "
  Public Function ToPost(entry As EntryInfo) As Post
+
   Dim post As New Post
+  Dim entryBody As New PostBodyAndSummary(entry, Settings.SummaryModel)
+  entryBody.WriteToPost(post, Settings.SummaryModel)
 
   post.mt_allow_comments = entry.AllowComments.ToInt
-  'post.mt_allow_pings
   post.categories = entry.EntryCategories.ToStringArray
-  post.description = HttpUtility.HtmlDecode(entry.Content)
   post.dateCreated = GetLocalAddedTime(entry.CreatedOnDate, PortalSettings.PortalId, UserInfo)
   post.pubDate = entry.PublishedOnDate
   post.date_created_gmt = entry.PublishedOnDate
-  'post.mt_text_more =
   post.postid = entry.ContentItemId.ToString
   post.mt_keywords = String.Join(",", entry.EntryTags.ToStringArray)
   post.link = entry.PermaLink(PortalSettings)
   post.permalink = entry.PermaLink(PortalSettings)
-  'post.mt_tb_ping_urls =
   post.title = entry.Title
-  'post.wp_slug =
-  'post.wp_password =
-  'post.wp_page_parent_id =
-  'post.wp_page_order =
-  'post.wp_author_id =
-  post.mt_excerpt = HttpUtility.HtmlDecode(entry.Summary)
-  'post.mt_tb_ping_urls =
   post.publish = entry.Published
 
   Return post
+
  End Function
 
  Public Function ToEntry(post As Post) As EntryInfo
+
   Dim entry As New EntryInfo
+  Dim postBody As New PostBodyAndSummary(post, Settings.SummaryModel)
+  postBody.WriteToEntry(entry, Settings.SummaryModel, True)
+
   If Not String.IsNullOrEmpty(post.postid) Then
    entry.ContentItemId = post.postid.ToInt
   End If
   entry.BlogID = BlogId
   entry.Title = post.title
-  entry.Content = HttpUtility.HtmlEncode(post.description)
-  If Settings.AllowHtmlSummary Then
-   entry.Summary = HttpUtility.HtmlEncode(post.mt_excerpt)
-  Else
-   entry.Summary = removeHtmlTags(post.mt_excerpt)
-  End If
-  If entry.Summary = "" Then SetSummary(entry, Settings)
   If post.dateCreated.Year > 1 Then
    ' WLW manages the TZ offset automatically
    entry.PublishedOnDate = post.dateCreated
   End If
   entry.Published = post.publish
   entry.AllowComments = post.mt_allow_comments.ToBool
-  'entry.PermaLink = post.permalink
-  'entry.CreatedByUserId = UserInfo.UserID
   entry.TabID = TabId
   entry.ModuleID = ModuleId
   Return entry
+
  End Function
 #End Region
 
