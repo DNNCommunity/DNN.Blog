@@ -49,7 +49,7 @@ Namespace Templating
    Dim args As New List(Of String())
    Dim params As New Dictionary(Of String, String)
 
-   RaiseEvent GetData("", params, dataSrc, args)
+   RaiseEvent GetData("", params, dataSrc, args, Nothing)
    If dataSrc.Count > 0 Then
     Template = New Template(ViewMapPath, "Template.html", dataSrc(0), Nothing)
    Else
@@ -61,11 +61,11 @@ Namespace Templating
 #End Region
 
 #Region " Events "
-  Private Sub Template_GetData(ByVal DataSource As String, ByVal Parameters As Dictionary(Of String, String), ByRef Replacers As List(Of GenericTokenReplace), ByRef Arguments As List(Of String()))
-   RaiseEvent GetData(DataSource, Parameters, Replacers, Arguments)
+  Private Sub Template_GetData(ByVal DataSource As String, ByVal Parameters As Dictionary(Of String, String), ByRef Replacers As List(Of GenericTokenReplace), ByRef Arguments As List(Of String()), callingObject As Object)
+   RaiseEvent GetData(DataSource, Parameters, Replacers, Arguments, callingObject)
   End Sub
 
-  Public Event GetData(ByVal DataSource As String, ByVal Parameters As Dictionary(Of String, String), ByRef Replacers As List(Of GenericTokenReplace), ByRef Arguments As List(Of String()))
+  Public Event GetData(ByVal DataSource As String, ByVal Parameters As Dictionary(Of String, String), ByRef Replacers As List(Of GenericTokenReplace), ByRef Arguments As List(Of String()), callingObject As Object)
 #End Region
 
 #Region " Event Handlers "

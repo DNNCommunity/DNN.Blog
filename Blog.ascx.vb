@@ -35,7 +35,7 @@ Public Class Blog
 #End Region
 
 #Region " Template Data Retrieval "
- Private Sub vtContents_GetData(ByVal DataSource As String, ByVal Parameters As Dictionary(Of String, String), ByRef Replacers As System.Collections.Generic.List(Of GenericTokenReplace), ByRef Arguments As System.Collections.Generic.List(Of String())) Handles vtContents.GetData
+ Private Sub vtContents_GetData(ByVal DataSource As String, ByVal Parameters As Dictionary(Of String, String), ByRef Replacers As System.Collections.Generic.List(Of GenericTokenReplace), ByRef Arguments As System.Collections.Generic.List(Of String()), callingObject As Object) Handles vtContents.GetData
 
   Select Case DataSource.ToLower
 
@@ -89,7 +89,11 @@ Public Class Blog
 
    Case "terms"
 
-    If Entry IsNot Nothing Then
+    If callingObject IsNot Nothing AndAlso TypeOf callingObject Is EntryInfo Then
+     For Each t As TermInfo In CType(callingObject, EntryInfo).Terms
+      Replacers.Add(New BlogTokenReplace(Me, Settings, Entry, t))
+     Next
+    ElseIf Entry IsNot Nothing Then
      For Each t As TermInfo In Entry.Terms
       Replacers.Add(New BlogTokenReplace(Me, Settings, Entry, t))
      Next
@@ -102,7 +106,11 @@ Public Class Blog
 
    Case "keywords", "tags"
 
-    If Entry IsNot Nothing Then
+    If callingObject IsNot Nothing AndAlso TypeOf callingObject Is EntryInfo Then
+     For Each t As TermInfo In CType(callingObject, EntryInfo).EntryTags
+      Replacers.Add(New BlogTokenReplace(Me, Settings, Entry, t))
+     Next
+    ElseIf Entry IsNot Nothing Then
      For Each t As TermInfo In Entry.EntryTags
       Replacers.Add(New BlogTokenReplace(Me, Settings, Entry, t))
      Next
@@ -115,7 +123,11 @@ Public Class Blog
 
    Case "categories"
 
-    If Entry IsNot Nothing Then
+    If callingObject IsNot Nothing AndAlso TypeOf callingObject Is EntryInfo Then
+     For Each t As TermInfo In CType(callingObject, EntryInfo).EntryCategories
+      Replacers.Add(New BlogTokenReplace(Me, Settings, Entry, t))
+     Next
+    ElseIf Entry IsNot Nothing Then
      For Each t As TermInfo In Entry.EntryCategories
       Replacers.Add(New BlogTokenReplace(Me, Settings, Entry, t))
      Next

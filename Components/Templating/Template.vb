@@ -29,11 +29,11 @@ Namespace Templating
 #End Region
 
 #Region " Events "
-  Private Sub Template_GetData(ByVal DataSource As String, ByVal Parameters As Dictionary(Of String, String), ByRef Replacers As List(Of GenericTokenReplace), ByRef Arguments As List(Of String()))
-   RaiseEvent GetData(DataSource, Parameters, Replacers, Arguments)
+  Private Sub Template_GetData(ByVal DataSource As String, ByVal Parameters As Dictionary(Of String, String), ByRef Replacers As List(Of GenericTokenReplace), ByRef Arguments As List(Of String()), callingObject As Object)
+   RaiseEvent GetData(DataSource, Parameters, Replacers, Arguments, callingObject)
   End Sub
 
-  Public Event GetData(ByVal DataSource As String, ByVal Parameters As Dictionary(Of String, String), ByRef Replacers As List(Of GenericTokenReplace), ByRef Arguments As List(Of String()))
+  Public Event GetData(ByVal DataSource As String, ByVal Parameters As Dictionary(Of String, String), ByRef Replacers As List(Of GenericTokenReplace), ByRef Arguments As List(Of String()), callingObject As Object)
 #End Region
 
 #Region " Constructors "
@@ -125,7 +125,7 @@ Namespace Templating
 
    Dim dataSrc As New List(Of GenericTokenReplace)
    Dim args As New List(Of String())
-   RaiseEvent GetData(datasource, params, dataSrc, args)
+   RaiseEvent GetData(datasource, params, dataSrc, args, Replacer.PrimaryObject)
 
    Dim res As New StringBuilder
    Dim totalItems As Integer = dataSrc.Count

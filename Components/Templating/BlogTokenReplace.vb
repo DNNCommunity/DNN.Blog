@@ -33,6 +33,7 @@ Namespace Templating
   Public Sub New(blogModule As BlogModuleBase, settings As Common.ModuleSettings, blog As BlogInfo)
    MyBase.new(Scope.DefaultSettings)
 
+   Me.PrimaryObject = blog
    Me.ModuleInfo = blogModule.ModuleConfiguration
    Me.UseObjectLessExpression = False
    Me.PropertySource("query") = blogModule
@@ -51,6 +52,7 @@ Namespace Templating
   Public Sub New(blogModule As BlogModuleBase, settings As Common.ModuleSettings, entry As EntryInfo)
    MyBase.new(Scope.DefaultSettings)
 
+   Me.PrimaryObject = entry
    Me.ModuleInfo = blogModule.ModuleConfiguration
    Me.UseObjectLessExpression = False
    Me.PropertySource("query") = blogModule
@@ -67,6 +69,7 @@ Namespace Templating
   Public Sub New(blogModule As BlogModuleBase, settings As Common.ModuleSettings, entry As EntryInfo, term As TermInfo)
    MyBase.new(Scope.DefaultSettings)
 
+   Me.PrimaryObject = term
    Me.ModuleInfo = blogModule.ModuleConfiguration
    Me.UseObjectLessExpression = False
    Me.PropertySource("query") = blogModule

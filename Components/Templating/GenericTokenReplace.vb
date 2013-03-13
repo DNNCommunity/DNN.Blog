@@ -4,6 +4,8 @@ Namespace Templating
  Public Class GenericTokenReplace
   Inherits TokenReplace
 
+  Public Property PrimaryObject As Object = Nothing
+
   Public Sub New(accessLevel As DotNetNuke.Services.Tokens.Scope)
    MyBase.New(Scope.DefaultSettings)
   End Sub
