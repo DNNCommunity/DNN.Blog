@@ -1,1 +1,227 @@
-﻿
+﻿.ModBlogC *
+{
+ -moz-box-sizing: border-box;
+ -webkit-box-sizing: border-box;
+ -o-box-sizing: border-box;
+ -ms-box-sizing: border-box;
+ box-sizing: border-box;
+}
+
+.ModBlogC .blog-main-content
+{
+ padding: 3em 5em 8em 5em;
+}
+
+.ModBlogC .is-post
+{
+ position: relative;
+ min-height: 300px;
+}
+
+.ModBlogC .is-post header
+{
+ padding: 2.75em 0 0 0;
+ margin: 0 0 3em 0;
+}
+
+.ModBlogC .is-post h2
+{
+ font-size: 3.25em;
+ line-height: 1.25em;
+}
+.ModBlogC .is-post h2 a, .ModBlogC .is-post h2 a:visited
+{
+ text-decoration: none;
+ color: #222;
+}
+.ModBlogC .is-post h2 a:hover
+{
+ color: #666;
+}
+
+.ModBlogC .is-post .byline
+{
+ font-weight: 300;
+ display: block;
+ margin-top: 1em;
+ color: #999;
+ font-size: 2.25em;
+ line-height: 1.5em;
+ position: relative;
+ top: -0.65em;
+ margin-bottom: -0.65em;
+}
+
+.ModBlogC .is-post p, .ModBlogC .is-post ul, .ModBlogC .is-post ol, .ModBlogC .is-post dl, .ModBlogC .is-post table
+{
+ margin-bottom: 1em;
+}
+
+.ModBlogC .is-post section, .ModBlogC article.is-post
+{
+ margin-bottom: 3em;
+}
+
+.ModBlogC .is-post section > :last-child, .ModBlogC article.is-post > :last-child, .ModBlogC .is-post section > .inner > :last-child, .ModBlogC article.is-post > .inner > :last-child, .ModBlogC .is-post section:last-child, .ModBlogC article.is-post:last-child
+{
+ margin-bottom: 0;
+}
+
+.ModBlogC .is-post .image
+{
+ display: inline-block;
+}
+
+.ModBlogC .is-post .image img
+{
+ display: block;
+ width: 100%;
+}
+
+.ModBlogC .is-post .image-full
+{
+ display: block;
+ width: 100%;
+ margin: 0 0 2em 0;
+}
+
+.ModBlogC .is-post .info .stats
+{
+ margin: 0;
+}
+
+.ModBlogC .is-post .info .stats a
+{
+ font-size: 0.8em;
+ text-decoration: none;
+ color: #1b252a;
+ font-weight: 700;
+}
+
+.ModBlogC .is-post .info
+{
+ position: absolute;
+ background-color: #eee;
+ width: 5.5em;
+ overflow: hidden;
+ left: -10.5em;
+ top: 0;
+ padding: 1.5em 1em 1.5em 1em;
+ border-radius: 0.4em;
+ box-shadow: 0 0 0.25em 0em rgba(0,0,0,0.25);
+}
+
+.ModBlogC .is-post .info:after
+{
+ content: '';
+ display: block;
+ position: absolute;
+ left: 0;
+ top: 0;
+ width: 100%;
+ height: 100%;
+ opacity: 0.5;
+ z-index: 0;
+}
+
+.ModBlogC .is-post .info .date
+{
+ position: relative;
+ z-index: 1;
+ font-family: 'Open Sans Condensed' , sans-serif;
+ font-weight: 400;
+ text-align: center;
+ display: block;
+ font-size: 1.5em;
+ color: #999;
+ border-bottom: solid 1px #ddd;
+ padding: 0 0 1em 0;
+ margin: 0 0 0.75em 0;
+}
+
+.ModBlogC .is-post .info .date .year
+{
+ display: block;
+ padding: 0.75em 0 0 0;
+ font-size: 0.9em;
+ font-weight: 700;
+}
+
+.ModBlogC .is-post .info .date .day
+{
+ display: block;
+ margin: 0.45em 0 0 0;
+ font-size: 1.5em;
+ font-weight: 700;
+ color: #1b252a;
+}
+
+.ModBlogC .is-post .info .stats
+{
+ position: relative;
+ z-index: 1;
+}
+
+.ModBlogC .is-post .info .stats li
+{
+ margin: 0.35em 0 0 0;
+ list-style-type: none;
+}
+
+.ModBlogC .is-post .info .stats li a
+{
+ display: block;
+ text-align: right;
+}
+
+.ModBlogC .is-post .pager
+{
+}
+
+.ModBlogC .is-post .pager .pages
+{
+ display: inline-block;
+ font-family: 'Open Sans Condensed' , sans-serif;
+ font-weight: 700;
+}
+
+.ModBlogC .is-post .pager .pages span
+{
+ display: inline-block;
+ width: 1.5em;
+ text-align: center;
+ margin: 0 0.4em 0 0;
+}
+
+.ModBlogC .is-post .pager .pages a
+{
+ cursor: pointer;
+ display: inline-block;
+ text-align: center;
+ text-decoration: none;
+ color: inherit;
+ background-color: #e8e8e8;
+ color: #565656;
+ margin: 0 0.4em 0 0;
+ border-radius: 0.4em;
+ -moz-transition: background-color .25s ease-in-out;
+ -webkit-transition: background-color .25s ease-in-out;
+ -o-transition: background-color .25s ease-in-out;
+ -ms-transition: background-color .25s ease-in-out;
+ transition: background-color .25s ease-in-out;
+ box-shadow: inset 0 0.075em 0.25em 0 rgba(0,0,0,0.1);
+}
+
+.ModBlogC .is-post .pager .pages a:hover
+{
+ background-color: #dadada;
+}
+
+.ModBlogC .is-post .pager .pages a.active
+{
+ background-color: #364050;
+ color: #fff;
+ box-shadow: none;
+ text-shadow: -1px -1px 0px rgba(0,0,0,0.5);
+}
+
