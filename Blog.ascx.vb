@@ -77,14 +77,14 @@ Public Class Blog
      Dim publishValue As Integer = 1
      If searchUnpublished Then publishValue = -1
      If Term Is Nothing Then
-      entryList = EntriesController.SearchEntries(Settings.ModuleId, BlogId, _search, searchTitle, searchContents, publishValue, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId).Values
+      entryList = EntriesController.SearchEntries(Settings.ModuleId, BlogId, _search, searchTitle, searchContents, publishValue, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, Security.UserIsAdmin).Values
      Else
-      entryList = EntriesController.SearchEntriesByTerm(Settings.ModuleId, BlogId, TermId, _search, searchTitle, searchContents, publishValue, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId).Values
+      entryList = EntriesController.SearchEntriesByTerm(Settings.ModuleId, BlogId, TermId, _search, searchTitle, searchContents, publishValue, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, Security.UserIsAdmin).Values
      End If
     ElseIf Term Is Nothing Then
-     entryList = EntriesController.GetEntries(Settings.ModuleId, BlogId, 1, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId).Values
+     entryList = EntriesController.GetEntries(Settings.ModuleId, BlogId, -1, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, Security.UserIsAdmin).Values
     Else
-     entryList = EntriesController.GetEntriesByTerm(Settings.ModuleId, BlogId, TermId, 1, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId).Values
+     entryList = EntriesController.GetEntriesByTerm(Settings.ModuleId, BlogId, TermId, -1, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, Security.UserIsAdmin).Values
     End If
     _usePaging = True
     For Each e As EntryInfo In entryList

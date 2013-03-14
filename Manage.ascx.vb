@@ -81,7 +81,7 @@ Public Class Manage
 
  Public Sub GetEntries()
 
-  grdEntries.DataSource = EntriesController.GetEntries(Settings.ModuleId, -1, -1, Now, -1, grdEntries.CurrentPageIndex, grdEntries.PageSize, "PUBLISHEDONDATE DESC", _totalEntries, UserId).Values
+  grdEntries.DataSource = EntriesController.GetEntries(Settings.ModuleId, -1, -1, Now, -1, grdEntries.CurrentPageIndex, grdEntries.PageSize, "PUBLISHEDONDATE DESC", _totalEntries, UserId, Security.UserIsAdmin).Values
   grdEntries.VirtualItemCount = _totalEntries
 
  End Sub
