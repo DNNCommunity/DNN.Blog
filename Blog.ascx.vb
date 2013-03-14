@@ -70,12 +70,16 @@ Public Class Blog
     If Not String.IsNullOrEmpty(_search) Then
      Dim searchTitle As Boolean = False
      Dim searchContents As Boolean = False
+     Dim searchUnpublished As Boolean = False
      Request.Params.ReadValue("t", searchTitle)
      Request.Params.ReadValue("c", searchContents)
+     Request.Params.ReadValue("u", searchUnpublished)
+     Dim publishValue As Integer = 1
+     If searchUnpublished Then publishValue = -1
      If Term Is Nothing Then
-      entryList = EntriesController.SearchEntries(Settings.ModuleId, BlogId, _search, searchTitle, searchContents, 1, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId).Values
+      entryList = EntriesController.SearchEntries(Settings.ModuleId, BlogId, _search, searchTitle, searchContents, publishValue, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId).Values
      Else
-      entryList = EntriesController.SearchEntriesByTerm(Settings.ModuleId, BlogId, TermId, _search, searchTitle, searchContents, 1, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId).Values
+      entryList = EntriesController.SearchEntriesByTerm(Settings.ModuleId, BlogId, TermId, _search, searchTitle, searchContents, publishValue, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId).Values
      End If
     ElseIf Term Is Nothing Then
      entryList = EntriesController.GetEntries(Settings.ModuleId, BlogId, 1, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId).Values

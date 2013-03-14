@@ -71,13 +71,13 @@
  });
 <% End If %>
   var $dialogSearch = $('<div class="dnnDialog"></div>')
-		.html('<input type="text" id="txtSearch" style="width:95%"></input><br/><%=LocalizeString("SearchIn") %>&nbsp;<input type="checkbox" id="scopeTitle<%=ModuleId %>" value="1" checked="1" /><%=LocalizeString("Title") %><input type="checkbox" id="scopeContents<%=ModuleId %>" value="1" /><%=LocalizeString("Contents") %>')
+		.html('<input type="text" id="txtSearch" style="width:95%"></input><br/><%=LocalizeString("SearchIn") %>&nbsp;<input type="checkbox" id="scopeTitle<%=ModuleId %>" value="1" checked="1" /><%=LocalizeString("Title") %><input type="checkbox" id="scopeContents<%=ModuleId %>" value="1" /><%=LocalizeString("Contents") %><% If Security.CanAddEntry %><input type="checkbox" id="chkUnpublished<%=ModuleId %>" value="1" /><%=LocalizeString("Unpublished") %><% End If %>')
 		.dialog({
 		 autoOpen: false,
 		 resizable: false,
 		 dialogClass: 'dnnFormPopup dnnClear',
 		 title: '<%=LocalizeString("Search") %>',
-		 height: 260,
+		 height: 210,
 		 width: 500,
 		 open: function (e) {
 		  $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeString("Search") %>")').addClass('dnnPrimaryAction');
@@ -101,6 +101,9 @@
       }
       if ($('#scopeContents<%=ModuleId %>').is(':checked')) {
        url += '&c=1'
+      }
+      if ($('#chkUnpublished<%=ModuleId %>').is(':checked')) {
+       url += '&u=1'
       }
       window.location.href = encodeURI(url);
      }

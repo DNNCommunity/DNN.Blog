@@ -1,13 +1,4 @@
-﻿.ModBlogC *
-{
- -moz-box-sizing: border-box;
- -webkit-box-sizing: border-box;
- -o-box-sizing: border-box;
- -ms-box-sizing: border-box;
- box-sizing: border-box;
-}
-
-.ModBlogC .blog-main-content
+﻿.ModBlogC .blog-main-content
 {
  padding: 3em 5em 8em 5em;
 }
@@ -100,6 +91,11 @@
 
 .ModBlogC .is-post .info
 {
+ -moz-box-sizing: border-box;
+ -webkit-box-sizing: border-box;
+ -o-box-sizing: border-box;
+ -ms-box-sizing: border-box;
+ box-sizing: border-box;
  position: absolute;
  background-color: #eee;
  width: 5.5em;

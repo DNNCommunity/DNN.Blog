@@ -183,4 +183,7 @@
   <data name="lblTitle.Text" xml:space="preserve">
     <value>Title</value>
   </data>
+  <data name="Unpublished.Text" xml:space="preserve">
+    <value>Also Unpublished</value>
+  </data>
 </root>
