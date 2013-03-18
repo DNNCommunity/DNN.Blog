@@ -236,7 +236,7 @@ Public Class EntryEdit
     Entry.Title = txtTitle.Text
     Dim entryBody As New PostBodyAndSummary(teBlogEntry.Text)
     If Settings.SummaryModel = SummaryType.PlainTextIndependent Then
-     entryBody.Summary = removeHtmlTags(Trim(txtDescriptionText.Text))
+     entryBody.Summary = RemoveHtmlTags(Trim(txtDescriptionText.Text))
     Else
      entryBody.Summary = Trim(txtDescription.Text)
     End If

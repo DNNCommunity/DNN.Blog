@@ -24,6 +24,7 @@ Imports System.Xml
 Imports System.Xml.Schema
 Imports System.Xml.Serialization
 Imports DotNetNuke.Common.Utilities
+Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Entities.Modules
 Imports DotNetNuke.Services.Tokens
 Imports DotNetNuke.Entities.Users
@@ -46,15 +47,19 @@ Namespace Entities.Entries
    End Get
   End Property
 
+  Public Function PermaLink() As String
+   Return PermaLink(DotNetNuke.Entities.Portals.PortalSettings.Current.ActiveTab)
+  End Function
+
   Public Function PermaLink(portalSettings As DotNetNuke.Entities.Portals.PortalSettings) As String
-   Return PermaLink(portalSettings.ActiveTab, portalSettings.PortalAlias.HTTPAlias)
+   Return PermaLink(portalSettings.ActiveTab)
   End Function
 
   Private _permaLink As String = ""
-  Public Function PermaLink(tab As DotNetNuke.Entities.Tabs.TabInfo, portalAlias As String) As String
+  Public Function PermaLink(tab As DotNetNuke.Entities.Tabs.TabInfo) As String
    If String.IsNullOrEmpty(_permaLink) Then
-    ' _permaLink = DotNetNuke.Services.Url.FriendlyUrl.FriendlyUrlProvider.Instance.FriendlyUrl(tab, DotNetNuke.Common.NavigateURL(tab.TabID, "", New String() {"Post=" & ContentItemId.ToString}), Title, portalAlias)
-    _permaLink = DotNetNuke.Common.NavigateURL(tab.TabID, "", New String() {"Post=" & ContentItemId.ToString})
+    _permaLink = ApplicationURL(tab.tabId) & "&Post=" & ContentItemId.ToString
+    _permaLink = FriendlyUrl(tab, _permaLink, Title)
    End If
    Return _permaLink
   End Function

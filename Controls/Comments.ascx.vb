@@ -80,7 +80,7 @@ Namespace Controls
      valComment.Enabled = False
      Dim oComment As CommentInfo = CommentsController.GetComment(Int32.Parse(CType(e.CommandArgument, String)))
      If Not oComment Is Nothing Then
-      txtComment.Text = Common.Globals.removeHtmlTags(Server.HtmlDecode(oComment.Comment))
+      txtComment.Text = Common.Globals.RemoveHtmlTags(Server.HtmlDecode(oComment.Comment))
       SelectedCommentId = oComment.CommentID
       cmdAddComment.Text = Localization.GetString("msgUpdateComment", LocalResourceFile)
       cmdDeleteComment.Visible = True

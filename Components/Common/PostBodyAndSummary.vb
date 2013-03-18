@@ -47,7 +47,7 @@ Namespace Common
     End If
    End If
    If Summary = "&lt;p&gt;&amp;#160;&lt;/p&gt;" Then Summary = "" ' an empty editor in DNN returns this
-   If summaryModel = SummaryType.PlainTextIndependent Then Summary = removeHtmlTags(Summary)
+   If summaryModel = SummaryType.PlainTextIndependent Then Summary = RemoveHtmlTags(Summary)
    If summaryModel = SummaryType.HtmlPrecedesPost Then
     Body = Summary & Body
    End If
