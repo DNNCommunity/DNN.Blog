@@ -54,7 +54,7 @@ Namespace Entities.Terms
     Dim existantTerm As TermInfo = vocab.Where(Function(t) t.Name.ToLower() = name.ToLower()).FirstOrDefault()
     If existantTerm IsNot Nothing Then
      res.Add(existantTerm)
-    ElseIf autoCreate Then
+    ElseIf autoCreate And name <> "" Then
      Dim termId As Integer = DotNetNuke.Entities.Content.Common.Util.GetTermController().AddTerm(New Term(vocabularyId) With {.Name = name})
      res.Add(New TermInfo With {.Description = "", .Name = name, .ParentTermId = 0, .TermId = termId, .TotalPosts = 0, .Weight = 0})
     End If

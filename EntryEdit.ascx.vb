@@ -255,17 +255,26 @@ Public Class EntryEdit
     Entry.PublishedOnDate = Entry.PublishedOnDate.AddMinutes(minute)
     Entry.PublishedOnDate = TimeZoneInfo.ConvertTimeToUtc(Entry.PublishedOnDate, UiTimeZone)
 
-    ' Add if new
-    If ContentItemId = -1 Then
-     Entry.ContentItemId = EntriesController.AddEntry(Entry, UserId)
-     ContentItemId = Entry.ContentItemId
+    ' Categories, Tags
+    Dim userEnteredTerms As Array = txtTags.Text.Trim.Split(","c)
+    Dim terms As New List(Of TermInfo)
+    terms.AddRange(TermsController.GetTermList(Settings.ModuleId, txtTags.Text.Trim, 1, True))
+    If Settings.VocabularyId > 0 Then
+     Dim checkedBoxes As New List(Of String)
+     For Each t As Telerik.Web.UI.RadTreeNode In dtCategories.CheckedNodes
+      checkedBoxes.Add(t.Value)
+     Next
+     terms.AddRange(TermsController.GetTermList(Settings.ModuleId, checkedBoxes, Settings.VocabularyId, False))
     End If
+    Entry.Terms.Clear()
+    Entry.Terms.AddRange(terms)
 
     ' Image
+    Dim saveDir As String = PortalSettings.HomeDirectoryMapPath & String.Format("\Blog\Files\{0}\{1}\", BlogId, ContentItemId)
+    Dim savedFile As String = ""
     If fileImage.HasFile Then
      Dim extension As String = IO.Path.GetExtension(fileImage.FileName).ToLower
      If glbPermittedFileExtensions.IndexOf(extension & ",") > -1 Then
-      Dim saveDir As String = PortalSettings.HomeDirectoryMapPath & String.Format("\Blog\Files\{0}\{1}\", BlogId, ContentItemId)
       If Not IO.Directory.Exists(saveDir) Then IO.Directory.CreateDirectory(saveDir)
       If Entry.Image <> "" Then
        ' remove old images
@@ -284,24 +293,11 @@ Public Class EntryEdit
        Next
       End If
       Dim newFileName As String = Guid.NewGuid.ToString("D")
-      fileImage.SaveAs(saveDir & newFileName & IO.Path.GetExtension(fileImage.FileName).ToLower)
+      savedFile = saveDir & newFileName & IO.Path.GetExtension(fileImage.FileName).ToLower
+      fileImage.SaveAs(savedFile)
       Entry.Image = newFileName
      End If
     End If
-
-    ' Categories, Tags
-    Dim userEnteredTerms As Array = txtTags.Text.Trim.Split(","c)
-    Dim terms As New List(Of TermInfo)
-    terms.AddRange(TermsController.GetTermList(Settings.ModuleId, txtTags.Text.Trim, 1, True))
-    If Settings.VocabularyId > 0 Then
-     Dim checkedBoxes As New List(Of String)
-     For Each t As Telerik.Web.UI.RadTreeNode In dtCategories.CheckedNodes
-      checkedBoxes.Add(t.Value)
-     Next
-     terms.AddRange(TermsController.GetTermList(Settings.ModuleId, checkedBoxes, Settings.VocabularyId, False))
-    End If
-    Entry.Terms.Clear()
-    Entry.Terms.AddRange(terms)
 
     ' Final Security Check
     If Blog.MustApproveGhostPosts AndAlso Not Security.CanApproveEntry Then
@@ -309,8 +305,19 @@ Public Class EntryEdit
      firstPublish = False
     End If
 
-    ' Final Update
-    EntriesController.UpdateEntry(Entry, UserId)
+    ' Add if new, otherwise update
+    If ContentItemId = -1 Then
+     Entry.ContentItemId = EntriesController.AddEntry(Entry, UserId)
+     ContentItemId = Entry.ContentItemId
+     If savedFile <> "" Then ' move file if it was saved
+      saveDir = PortalSettings.HomeDirectoryMapPath & String.Format("\Blog\Files\{0}\{1}\", BlogId, ContentItemId)
+      IO.Directory.CreateDirectory(saveDir)
+      Dim dest As String = saveDir & Entry.Image & IO.Path.GetExtension(fileImage.FileName).ToLower
+      IO.File.Move(savedFile, dest)
+     End If
+    Else
+     EntriesController.UpdateEntry(Entry, UserId)
+    End If
 
     If (Entry.Published) Then
 
