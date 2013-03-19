@@ -37,7 +37,7 @@ Public Class Manage
   Settings.SummaryModel = CType(ddSummaryModel.SelectedValue.ToInt, SummaryType)
   Settings.AllowMultipleCategories = chkAllowMultipleCategories.Checked
   Settings.AllowWLW = chkAllowWLW.Checked
-  Settings.Email = txtEmail.Text
+  Settings.RssEmail = txtEmail.Text
   Settings.WLWRecentEntriesMax = txtWLWRecentEntriesMax.Text.ToInt
   Settings.AllowAllLocales = chkAllowAllLocales.Checked
   Settings.VocabularyId = ddVocabularyId.SelectedValue.ToInt
@@ -60,7 +60,7 @@ Public Class Manage
    chkAllowMultipleCategories.Checked = Settings.AllowMultipleCategories
    chkAllowWLW.Checked = Settings.AllowWLW
    chkAllowAllLocales.Checked = Settings.AllowAllLocales
-   txtEmail.Text = Settings.Email
+   txtEmail.Text = Settings.RssEmail
    txtWLWRecentEntriesMax.Text = Settings.WLWRecentEntriesMax.ToString
    ddVocabularyId.DataSource = Common.Globals.GetPortalVocabularies(PortalId)
    ddVocabularyId.DataBind()

@@ -33,6 +33,7 @@ Imports DotNetNuke.Modules.Blog.Entities.Entries
 Imports DotNetNuke.Modules.Blog.Security
 Imports DotNetNuke.Modules.Blog.Integration
 Imports DotNetNuke.Entities.Modules
+Imports DotNetNuke.Modules.Blog.Rss
 
 Namespace Services
 
@@ -47,24 +48,10 @@ Namespace Services
   <DnnModuleAuthorize(accesslevel:=DotNetNuke.Security.SecurityAccessLevel.View)>
   <ActionName("Get")>
   Public Function GetRss() As HttpResponseMessage
-   Dim BlogId As Integer = -1
-   Dim TermId As Integer = -1
    Dim queryString As NameValueCollection = HttpUtility.ParseQueryString(Me.Request.RequestUri.Query)
-   queryString.ReadValue("Blog", BlogId)
-   queryString.ReadValue("Term", TermId)
-
-
-
-   Dim entryList As IEnumerable(Of EntryInfo)
-   Dim totalRecords As Integer = -1
-   Dim recordsToSend As Integer = 10
-   If TermId > -1 Then
-    entryList = EntriesController.GetEntriesByTerm(ActiveModule.ModuleID, BlogId, TermId, -1, Date.Now, -1, 0, recordsToSend, "PUBLISHEDONDATE DESC", totalRecords, UserInfo.UserID, False).Values
-   Else
-    entryList = EntriesController.GetEntries(ActiveModule.ModuleID, BlogId, -1, Date.Now, -1, 0, recordsToSend, "PUBLISHEDONDATE DESC", totalRecords, UserInfo.UserID, False).Values
-   End If
-
-
+   Dim feed As New BlogRssFeed(ActiveModule.ModuleID, queryString)
+   HttpContext.Current.Response.WriteFile(feed.CacheFile)
+   Return Request.CreateResponse(HttpStatusCode.OK, "")
   End Function
 #End Region
 

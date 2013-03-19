@@ -5,6 +5,8 @@ Namespace Controls
  Public Class ManagementPanel
   Inherits BlogContextBase
 
+  Public Property RssLink As String = ""
+
   Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
    LocalResourceFile = "~/DesktopModules/Blog/Controls/App_LocalResources/ManagementPanel.ascx.resx"
@@ -41,6 +43,10 @@ Namespace Controls
      ddPosition.Items.Add(New ListItem(GetString("Bottom", "admin/controlpanel/App_LocalResources/iconbar"), "-1"))
     End If
    End If
+   RssLink = ResolveUrl(glbServicesPath) & "RSS/Get"
+   RssLink &= String.Format("?tabid={0}&moduleid={1}", TabId, ModuleId)
+   If Blog IsNot Nothing Then RssLink &= String.Format("&blog={0}", BlogId)
+   If Term IsNot Nothing Then RssLink &= String.Format("&term={0}", TermId)
 
   End Sub
 

@@ -1,7 +1,10 @@
 ﻿Imports System.Xml
+Imports DotNetNuke.Common.Globals
+Imports DotNetNuke.Entities.Modules
 Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.Entities.Entries
 Imports DotNetNuke.Modules.Blog.Entities.Terms
+Imports DotNetNuke.Modules.Blog.Entities.Blogs
 
 Namespace Rss
  Public Class BlogRssFeed
@@ -17,29 +20,135 @@ Namespace Rss
   Private Const nsMediaFull As String = "http://search.yahoo.com/mrss/"
   Private Const nsDublinPre As String = "dc"
   Private Const nsDublinFull As String = "http://purl.org/dc/elements/1.1/"
+  Private Const nsContentPre As String = "content"
+  Private Const nsContentFull As String = "http://purl.org/rss/1.0/modules/content/"
 #End Region
 
 #Region " Properties "
+  Public Property Settings As ModuleSettings = Nothing
+  Public Property PortalSettings As DotNetNuke.Entities.Portals.PortalSettings = Nothing
   Public Property Entries As IEnumerable(Of EntryInfo) = Nothing
+  Public Property CacheFile As String = ""
+  Public Property IsCached As Boolean = False
+  Public Property ImageHandlerUrl As String = ""
+
+  ' Requested Properties
+  Public Property TermId As Integer = -1
+  Public Property BlogId As Integer = -1
+  Public Property RecordsToSend As Integer = 20
+  Public Property Search As String = ""
+  Public Property SearchTitle As Boolean = True
+  Public Property SearchContents As Boolean = False
+  Public Property ImageWidth As Integer = 144
+  Public Property ImageHeight As Integer = 96
+  Public Property IncludeContents As Boolean = False
+
+  ' Feed Properties
+  Public Property IsSearchFeed As Boolean = False
+  Public Property Blog As BlogInfo = Nothing
+  Public Property Term As TermInfo = Nothing
   Public Property Title As String = ""
   Public Property Description As String = ""
   Public Property Link As String = ""
   Public Property FeedEmail As String = ""
   Public Property Language As String = ""
   Public Property Copyright As String = ""
-  Public Property Term As TermInfo = Nothing
 #End Region
 
 #Region " Constructors "
-  Public Sub New(moduleId As Integer, blogId As Integer, termId As Integer, recordsToSend As Integer)
+  Public Sub New(moduleId As Integer, reqParams As NameValueCollection)
 
-   Dim totalRecords As Integer = -1
-   If termId > -1 Then
-    Entries = EntriesController.GetEntriesByTerm(moduleId, blogId, termId, 1, Date.Now, -1, 0, recordsToSend, "PUBLISHEDONDATE DESC", totalRecords, -1, False).Values
+   ' Initialize Settings
+   Settings = ModuleSettings.GetModuleSettings(moduleId)
+   PortalSettings = DotNetNuke.Entities.Portals.PortalSettings.Current
+   RecordsToSend = Settings.RssDefaultNrItems
+   ImageWidth = Settings.RssImageWidth
+   ImageHeight = Settings.RssImageHeight
+   ImageHandlerUrl = ResolveUrl(glbImageHandlerPath)
+
+   ' Read Request Values
+   reqParams.ReadValue("blog", BlogId)
+   reqParams.ReadValue("blogid", BlogId)
+   reqParams.ReadValue("term", TermId)
+   reqParams.ReadValue("termid", TermId)
+   If Settings.RssMaxNrItems > 0 Then
+    reqParams.ReadValue("recs", RecordsToSend)
+    If RecordsToSend > Settings.RssMaxNrItems Then RecordsToSend = Settings.RssMaxNrItems
+   End If
+   If Settings.RssImageSizeAllowOverride Then
+    reqParams.ReadValue("w", ImageWidth)
+    reqParams.ReadValue("h", ImageHeight)
+   End If
+   If Settings.RssAllowContentInFeed Then
+    reqParams.ReadValue("body", IncludeContents)
+   End If
+   reqParams.ReadValue("search", Search)
+   reqParams.ReadValue("t", SearchTitle)
+   reqParams.ReadValue("c", SearchContents)
+
+   ' Start Filling In Feed Properties
+   If Search <> "" Then IsSearchFeed = True
+   If BlogId > -1 Then Blog = BlogsController.GetBlog(BlogId, -1)
+   If TermId > -1 Then Term = TermsController.GetTerm(TermId, moduleId)
+   If Blog Is Nothing Then
+    Dim m As ModuleInfo = (New ModuleController).GetModule(moduleId)
+    If m IsNot Nothing Then
+     Title = m.ModuleTitle
+    End If
+    FeedEmail = Settings.RssEmail
+    Copyright = Settings.RssDefaultCopyright
    Else
-    Entries = EntriesController.GetEntries(moduleId, blogId, 1, Date.Now, -1, 0, recordsToSend, "PUBLISHEDONDATE DESC", totalRecords, -1, False).Values
+    Title = Blog.Title
+    Description = Blog.Description
+    FeedEmail = Blog.Email
+    'Copyright=Blog.
+   End If
+   If Term IsNot Nothing Then
+    Title &= " - " & Term.Name
+   End If
+   If IsSearchFeed Then
+    Title = "DNN Blog Search " & Title
+    Description &= String.Format(" - Searching '{0}'", Search)
+   End If
+   Link = ApplicationURL()
+   If Blog IsNot Nothing Then Link &= String.Format("&blog={0}", BlogId)
+   If Term IsNot Nothing Then Link &= String.Format("&term={0}", TermId)
+   If RecordsToSend <> Settings.RssDefaultNrItems Then Link &= String.Format("&recs={0}", RecordsToSend)
+   If ImageWidth <> Settings.RssImageWidth Then Link &= String.Format("&w={0}", ImageWidth)
+   If ImageHeight <> Settings.RssImageHeight Then Link &= String.Format("&h={0}", ImageHeight)
+   If IncludeContents Then Link &= "&body=true"
+   If IsSearchFeed Then Link &= String.Format("&search={0}&t={1}&c={2}", HttpUtility.UrlEncode(Search), SearchTitle, SearchContents)
+   CacheFile = Link.Substring(Link.IndexOf("?"c) + 1).Replace("&", "+").Replace("=", "-")
+   CacheFile = String.Format("{0}\Blog\RssCache\{1}.resources", PortalSettings.HomeDirectoryMapPath, CacheFile)
+   Link = FriendlyUrl(PortalSettings.ActiveTab, Link, Title)
+
+   ' Check Cache
+   If IO.File.Exists(CacheFile) Then
+    Dim f As New IO.FileInfo(CacheFile)
+    If f.LastWriteTime.AddMinutes(Settings.RssTtl) > Now Then IsCached = True
+   Else
+    Dim pth As String = IO.Path.GetDirectoryName(CacheFile)
+    If Not IO.Directory.Exists(pth) Then IO.Directory.CreateDirectory(pth)
    End If
 
+   If Not IsCached Then
+    ' Load Posts
+    Dim totalRecords As Integer = -1
+    If IsSearchFeed Then
+     If Term IsNot Nothing Then
+      Entries = EntriesController.SearchEntriesByTerm(moduleId, BlogId, TermId, Search, SearchTitle, SearchContents, 1, Date.Now, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", totalRecords, -1, False).Values
+     Else
+      Entries = EntriesController.SearchEntries(moduleId, BlogId, Search, SearchTitle, SearchContents, 1, Date.Now, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", totalRecords, -1, False).Values
+     End If
+    Else
+     If Term IsNot Nothing Then
+      Entries = EntriesController.GetEntriesByTerm(moduleId, BlogId, TermId, 1, Date.Now, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", totalRecords, -1, False).Values
+     Else
+      Entries = EntriesController.GetEntries(moduleId, BlogId, 1, Date.Now, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", totalRecords, -1, False).Values
+     End If
+    End If
+    WriteRss(CacheFile)
+   End If
   End Sub
 #End Region
 
@@ -51,26 +160,29 @@ Namespace Rss
   End Function
 
   Public Sub WriteRss(ByRef output As IO.Stream)
-   Dim xtw As New XmlTextWriter(output, Encoding.UTF8)
-   WriteRss(xtw)
-   xtw.Flush()
+   Using xtw As New XmlTextWriter(output, Encoding.UTF8)
+    WriteRss(xtw)
+    xtw.Flush()
+   End Using
   End Sub
 
   Public Sub WriteRss(fileName As String)
-   Dim xtw As New XmlTextWriter(fileName, Encoding.UTF8)
-   WriteRss(xtw)
-   xtw.Flush()
-   xtw.Close()
+   Using fs As New IO.FileStream(fileName, IO.FileMode.OpenOrCreate, IO.FileAccess.Write)
+    Using xtw As New XmlTextWriter(fs, Encoding.UTF8)
+     WriteRss(xtw)
+     xtw.Flush()
+    End Using
+   End Using
   End Sub
 
   Public Sub WriteRss(ByRef output As StringBuilder)
-   Dim sw As New StringWriterWithEncoding(output, Encoding.UTF8)
-   Dim xtw As New XmlTextWriter(sw)
-   WriteRss(xtw)
-   xtw.Flush()
-   xtw.Close()
-   sw.Flush()
-   sw.Close()
+   Using sw As New StringWriterWithEncoding(output, Encoding.UTF8)
+    Using xtw As New XmlTextWriter(sw)
+     WriteRss(xtw)
+     xtw.Flush()
+    End Using
+    sw.Flush()
+   End Using
   End Sub
 
   Public Sub WriteRss(ByRef output As XmlTextWriter)
@@ -80,9 +192,10 @@ Namespace Rss
    output.WriteStartElement("rss")
    output.WriteAttributeString("version", "2.0")
    output.WriteAttributeString("xmlns", nsBlogPre, Nothing, nsBlogFull)
-   output.WriteAttributeString("xmlns", nsSlashPre, Nothing, nsSlashFull)
+   'output.WriteAttributeString("xmlns", nsSlashPre, Nothing, nsSlashFull)
    output.WriteAttributeString("xmlns", nsAtomPre, Nothing, nsAtomFull)
    output.WriteAttributeString("xmlns", nsMediaPre, Nothing, nsMediaFull)
+   If IncludeContents Then output.WriteAttributeString("xmlns", nsContentPre, Nothing, nsContentFull)
    output.WriteStartElement("channel")
 
    ' Write the channel header block
@@ -90,24 +203,25 @@ Namespace Rss
    output.WriteElementString("link", Link)
    output.WriteElementString("description", Description)
    ' optional elements
-   output.WriteElementString("language", Language)
-   output.WriteElementString("copyright", Copyright)
-   output.WriteElementString("managingEditor", FeedEmail)
-   output.WriteElementString("webMaster", FeedEmail)
+   If Language <> "" Then output.WriteElementString("language", Language)
+   If Copyright <> "" Then output.WriteElementString("copyright", Copyright)
+   If FeedEmail <> "" Then output.WriteElementString("managingEditor", FeedEmail)
    output.WriteElementString("pubDate", Now.ToString("r"))
    output.WriteElementString("lastBuildDate", Now.ToString("r"))
    If Term IsNot Nothing Then
     output.WriteElementString("category", Term.Name)
    End If
    output.WriteElementString("generator", "DotNetNuke Blog RSS Generator Version " & CType(System.Reflection.Assembly.GetExecutingAssembly.GetName.Version.ToString, String))
-   output.WriteElementString("ttl", "")
-   output.WriteStartElement("image")
-   output.WriteElementString("url", "")
-   output.WriteElementString("title", "")
-   output.WriteElementString("link", "")
-   output.WriteElementString("width", "88") ' default 88 max 144
-   output.WriteElementString("height", "31") ' default 31 max 400
-   output.WriteEndElement() ' image
+   output.WriteElementString("ttl", Settings.RssTtl.ToString)
+   If Blog IsNot Nothing AndAlso (Blog.IncludeImagesInFeed And Blog.Image <> "") Then
+    output.WriteStartElement("image")
+    output.WriteElementString("url", ImageHandlerUrl & String.Format("?TabId={0}&ModuleId={1}&Blog={2}&w={4}&h={5}&c=1&key={3}", PortalSettings.ActiveTab.TabID, Settings.ModuleId, BlogId, Blog.Image, ImageWidth, ImageHeight))
+    output.WriteElementString("title", Title)
+    output.WriteElementString("link", Link)
+    output.WriteElementString("width", ImageWidth.ToString) ' default 88 max 144
+    output.WriteElementString("height", ImageHeight.ToString) ' default 31 max 400
+    output.WriteEndElement() ' image
+   End If
    ' extended elements
    output.WriteStartElement(nsAtomPre, "link", nsAtomFull)
    output.WriteAttributeString("href", HttpContext.Current.Request.Url.PathAndQuery)
@@ -122,7 +236,6 @@ Namespace Rss
    output.WriteEndElement() ' channel
    output.WriteEndElement() ' rss
    output.Flush()
-   output.Close()
 
   End Sub
 #End Region
@@ -135,7 +248,7 @@ Namespace Rss
    ' core data
    writer.WriteElementString("title", item.Title)
    writer.WriteElementString("link", item.PermaLink)
-   writer.WriteElementString("description", RemoveHtmlTags(item.Summary))
+   writer.WriteElementString("description", RemoveHtmlTags(HttpUtility.HtmlDecode(item.Summary)))
    ' optional elements
    writer.WriteElementString("author", "")
    ' category
@@ -143,11 +256,20 @@ Namespace Rss
    'writer.WriteElementString("guid", item.Title)
    writer.WriteElementString("pubDate", item.PublishedOnDate.ToString("r"))
    ' extensions
-   writer.WriteStartElement(nsMediaPre, "thumbnail", nsMediaFull)
-   writer.WriteAttributeString("width", "self")
-   writer.WriteAttributeString("height", "self")
-   writer.WriteAttributeString("url", "self")
-   writer.WriteEndElement() ' thumbnail
+   If item.Blog.IncludeImagesInFeed And item.Image <> "" Then
+    writer.WriteStartElement(nsMediaPre, "thumbnail", nsMediaFull)
+    writer.WriteAttributeString("width", ImageWidth.ToString)
+    writer.WriteAttributeString("height", ImageHeight.ToString)
+    writer.WriteAttributeString("url", ImageHandlerUrl & String.Format("?TabId={0}&ModuleId={1}&Blog={2}&Post={3}&w={5}&h={6}&c=1&key={4}", PortalSettings.ActiveTab.TabID, Settings.ModuleId, item.BlogID, item.ContentItemId, item.Image, ImageWidth, ImageHeight))
+    writer.WriteEndElement() ' thumbnail
+   End If
+   If IncludeContents Then
+    writer.WriteStartElement(nsContentPre, "encoded", nsContentFull)
+    writer.WriteCData(HttpUtility.HtmlDecode(item.Content))
+    writer.WriteEndElement() ' content:encoded
+   End If
+   ' Blog Extensions
+   writer.WriteElementString(nsBlogPre, "publishedon", nsBlogFull, item.PublishedOnDate.ToString("u"))
 
    writer.WriteEndElement() ' item
 

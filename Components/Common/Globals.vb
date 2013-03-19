@@ -32,6 +32,7 @@ Namespace Common
   Public Const glbImageHandlerPath As String = "~/DesktopModules/Blog/BlogImage.ashx"
   Public Const glbPermittedFileExtensions As String = ".jpg,.png,.gif,.bmp,"
   Public Const glbTemplatesPath As String = "~/DesktopModules/Blog/Templates/"
+  Public Const glbServicesPath As String = "~/DesktopModules/Blog/API/"
   Public Const BloggerPermission As String = "BLOGGER"
 
   Public Enum SummaryType
@@ -136,6 +137,7 @@ Namespace Common
   End Sub
 
   Public Shared Function RemoveHtmlTags(inputString As String) As String
+   inputString = Regex.Replace(inputString, "<[^>]+>", "")
    Return (New DotNetNuke.Security.PortalSecurity).InputFilter(inputString, DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting Or DotNetNuke.Security.PortalSecurity.FilterFlag.NoMarkup)
   End Function
 
