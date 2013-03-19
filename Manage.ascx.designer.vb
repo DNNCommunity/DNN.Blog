@@ -122,24 +122,6 @@ Partial Public Class Manage
  Protected WithEvents chkAllowAllLocales As Global.System.Web.UI.WebControls.CheckBox
 
  '''<summary>
- '''lblEmail control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents lblEmail As Global.System.Web.UI.UserControl
-
- '''<summary>
- '''txtEmail control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents txtEmail As Global.System.Web.UI.WebControls.TextBox
-
- '''<summary>
  '''lblVocabularyId control.
  '''</summary>
  '''<remarks>
@@ -174,6 +156,168 @@ Partial Public Class Manage
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
  Protected WithEvents txtWLWRecentEntriesMax As Global.System.Web.UI.WebControls.TextBox
+
+ '''<summary>
+ '''lblRssDefaultNrItems control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lblRssDefaultNrItems As Global.System.Web.UI.UserControl
+
+ '''<summary>
+ '''txtRssDefaultNrItems control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents txtRssDefaultNrItems As Global.System.Web.UI.WebControls.TextBox
+
+ '''<summary>
+ '''lblRssMaxNrItems control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lblRssMaxNrItems As Global.System.Web.UI.UserControl
+
+ '''<summary>
+ '''txtRssMaxNrItems control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents txtRssMaxNrItems As Global.System.Web.UI.WebControls.TextBox
+
+ '''<summary>
+ '''lblRssTtl control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lblRssTtl As Global.System.Web.UI.UserControl
+
+ '''<summary>
+ '''txtRssTtl control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents txtRssTtl As Global.System.Web.UI.WebControls.TextBox
+
+ '''<summary>
+ '''lblEmail control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lblEmail As Global.System.Web.UI.UserControl
+
+ '''<summary>
+ '''txtEmail control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents txtEmail As Global.System.Web.UI.WebControls.TextBox
+
+ '''<summary>
+ '''lblRssDefaultCopyright control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lblRssDefaultCopyright As Global.System.Web.UI.UserControl
+
+ '''<summary>
+ '''txtRssDefaultCopyright control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents txtRssDefaultCopyright As Global.System.Web.UI.WebControls.TextBox
+
+ '''<summary>
+ '''lblRssAllowContentInFeed control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lblRssAllowContentInFeed As Global.System.Web.UI.UserControl
+
+ '''<summary>
+ '''chkRssAllowContentInFeed control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents chkRssAllowContentInFeed As Global.System.Web.UI.WebControls.CheckBox
+
+ '''<summary>
+ '''lblRssImageWidth control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lblRssImageWidth As Global.System.Web.UI.UserControl
+
+ '''<summary>
+ '''txtRssImageWidth control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents txtRssImageWidth As Global.System.Web.UI.WebControls.TextBox
+
+ '''<summary>
+ '''lblRssImageHeight control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lblRssImageHeight As Global.System.Web.UI.UserControl
+
+ '''<summary>
+ '''txtRssImageHeight control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents txtRssImageHeight As Global.System.Web.UI.WebControls.TextBox
+
+ '''<summary>
+ '''lblRssImageSizeAllowOverride control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lblRssImageSizeAllowOverride As Global.System.Web.UI.UserControl
+
+ '''<summary>
+ '''chkRssImageSizeAllowOverride control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents chkRssImageSizeAllowOverride As Global.System.Web.UI.WebControls.CheckBox
 
  '''<summary>
  '''cmdCancelSettings control.

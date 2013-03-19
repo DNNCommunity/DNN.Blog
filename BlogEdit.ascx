@@ -61,13 +61,20 @@
     <asp:CheckBox ID="chkSyndicate" runat="server" />
    </div>
    <div class="dnnFormItem">
-    <dnn:Label ID="lblSyndicationEmail" runat="server" controlname="txtSyndicationEmail"
-     suffix=":" />
+    <dnn:Label ID="lblSyndicationEmail" runat="server" controlname="txtSyndicationEmail" suffix=":" />
     <asp:TextBox ID="txtSyndicationEmail" runat="server" />
+   </div>
+   <div class="dnnFormItem">
+    <dnn:Label ID="lblCopyright" runat="server" controlname="txtCopyright" suffix=":" />
+    <asp:TextBox ID="txtCopyright" runat="server" Width="400" />
    </div>
    <div class="dnnFormItem">
     <dnn:Label ID="lblIncludeImagesInFeed" runat="server" controlname="chkIncludeImagesInFeed" suffix=":" />
     <asp:CheckBox ID="chkIncludeImagesInFeed" runat="server" />
+   </div>
+   <div class="dnnFormItem">
+    <dnn:Label ID="lblIncludeAuthorInFeed" runat="server" controlname="chkIncludeAuthorInFeed" suffix=":" />
+    <asp:CheckBox ID="chkIncludeAuthorInFeed" runat="server" />
    </div>
   </fieldset>
   <h2 id="dnnSitePanel-GhostOptions" class="dnnFormSectionHead">

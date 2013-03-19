@@ -47,6 +47,9 @@ Namespace Controls
    RssLink &= String.Format("?tabid={0}&moduleid={1}", TabId, ModuleId)
    If Blog IsNot Nothing Then RssLink &= String.Format("&blog={0}", BlogId)
    If Term IsNot Nothing Then RssLink &= String.Format("&term={0}", TermId)
+   If Not String.IsNullOrEmpty(SearchString) Then
+    RssLink &= String.Format("&search={0}&t={1}&c={2}", HttpUtility.UrlEncode(SearchString), SearchTitle, SearchContents)
+   End If
 
   End Sub
 
@@ -66,13 +69,5 @@ Namespace Controls
    Response.Redirect(EditUrl("Post", ContentItemId.ToString, "EntryEdit"), False)
   End Sub
 
-  'Private Sub cmdAdd_Click(sender As Object, e As System.EventArgs) Handles cmdAdd.Click
-  ' Dim newSettings As New Common.ViewSettings(TabModuleId)
-  ' newSettings.BlogModuleId = Settings.ModuleId
-  ' newSettings.Template = ddTemplate.SelectedValue
-  ' newSettings.ShowManagementPanel = chkShowManagementPanel.Checked
-  ' Common.Globals.CopyModule(PortalId, TabId, Me.ModuleConfiguration.ModuleDefID, ddPane.SelectedValue, CInt(ddPosition.SelectedValue), txtTitle.Text.Trim, newSettings)
-  ' Me.Response.Redirect(DotNetNuke.Common.NavigateURL(), False)
-  'End Sub
  End Class
 End Namespace

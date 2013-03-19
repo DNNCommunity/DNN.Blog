@@ -60,6 +60,8 @@ Public Class BlogEdit
     txtSyndicationEmail.Text = Blog.SyndicationEmail
    End If
    chkIncludeImagesInFeed.Checked = Blog.IncludeImagesInFeed
+   chkIncludeAuthorInFeed.Checked = Blog.IncludeAuthorInFeed
+   txtCopyright.Text = Blog.Copyright
    cmdDelete.Visible = CBool(BlogId <> -1)
    If Not String.IsNullOrEmpty(Blog.Image) Then
     imgBlogImage.ImageUrl = ResolveUrl(glbImageHandlerPath) & String.Format("?TabId={0}&ModuleId={1}&Blog={2}&w=100&h=100&c=1&key={3}", TabId, Settings.ModuleId, BlogId, Blog.Image)
@@ -113,6 +115,8 @@ Public Class BlogEdit
      .Syndicated = chkSyndicate.Checked
      .SyndicationEmail = txtSyndicationEmail.Text
      .IncludeImagesInFeed = chkIncludeImagesInFeed.Checked
+     .IncludeAuthorInFeed = chkIncludeAuthorInFeed.Checked
+     .Copyright = txtCopyright.Text.Trim
      .MustApproveGhostPosts = chkMustApproveGhostPosts.Checked
      .PublishAsOwner = chkPublishAsOwner.Checked
      .Permissions = ctlPermissions.Permissions

@@ -10,6 +10,7 @@
   <li><a href="#Categories">Categories</a></li>
  </ul>
  <div id="SettingsTab" class="dnnClear" runat="server">
+<h2 id="H1" class="dnnFormSectionHead"><a href="" class="dnnFormSectionExpanded"><%= LocalizeString("General")%></a></h2>
 <fieldset>
 	<div class="dnnFormItem">
 		<dnn:label id="lblAllowMultipleCategories" runat="server" controlname="chkAllowMultipleCategories" suffix=":" />
@@ -36,16 +37,51 @@
 		<asp:CheckBox ID="chkAllowAllLocales" runat="server" />
 	</div>
 	<div class="dnnFormItem">
-		<dnn:label id="lblEmail" runat="server" controlname="txtEmail" suffix=":" />
-		<asp:TextBox runat="server" ID="txtEmail" />
-	</div>
-	<div class="dnnFormItem">
 		<dnn:label id="lblVocabularyId" runat="server" controlname="ddVocabularyId" suffix=":" />
 		<asp:DropDownList ID="ddVocabularyId" runat="server" DataValueField="VocabularyID" DataTextField="Name" />
 	</div>
 	<div class="dnnFormItem">
 		<dnn:label id="lblWLWRecentEntriesMax" runat="server" controlname="txtWLWRecentEntriesMax" suffix=":" />
 		<asp:TextBox runat="server" ID="txtWLWRecentEntriesMax" />
+	</div>
+</fieldset>
+<h2 id="H2" class="dnnFormSectionHead"><a href="" class="dnnFormSectionExpanded"><%= LocalizeString("RSS")%></a></h2>
+<fieldset>
+	<div class="dnnFormItem">
+		<dnn:label id="lblRssDefaultNrItems" runat="server" controlname="txtRssDefaultNrItems" suffix=":" />
+		<asp:TextBox runat="server" ID="txtRssDefaultNrItems" Width="50" />
+	</div>
+	<div class="dnnFormItem">
+		<dnn:label id="lblRssMaxNrItems" runat="server" controlname="txtRssMaxNrItems" suffix=":" />
+		<asp:TextBox runat="server" ID="txtRssMaxNrItems" Width="50" />
+	</div>
+	<div class="dnnFormItem">
+		<dnn:label id="lblRssTtl" runat="server" controlname="txtRssTtl" suffix=":" />
+		<asp:TextBox runat="server" ID="txtRssTtl" Width="50" />
+	</div>
+	<div class="dnnFormItem">
+		<dnn:label id="lblEmail" runat="server" controlname="txtEmail" suffix=":" />
+		<asp:TextBox runat="server" ID="txtEmail" />
+	</div>
+	<div class="dnnFormItem">
+		<dnn:label id="lblRssDefaultCopyright" runat="server" controlname="txtRssDefaultCopyright" suffix=":" />
+		<asp:TextBox runat="server" ID="txtRssDefaultCopyright" Width="50" />
+	</div>
+	<div class="dnnFormItem">
+		<dnn:label id="lblRssAllowContentInFeed" runat="server" controlname="chkRssAllowContentInFeed" suffix=":" />
+		<asp:CheckBox ID="chkRssAllowContentInFeed" runat="server" />
+	</div>
+	<div class="dnnFormItem">
+		<dnn:label id="lblRssImageWidth" runat="server" controlname="txtRssImageWidth" suffix=":" />
+		<asp:TextBox runat="server" ID="txtRssImageWidth" Width="50" />
+	</div>
+	<div class="dnnFormItem">
+		<dnn:label id="lblRssImageHeight" runat="server" controlname="txtRssImageHeight" suffix=":" />
+		<asp:TextBox runat="server" ID="txtRssImageHeight" Width="50" />
+	</div>
+	<div class="dnnFormItem">
+		<dnn:label id="lblRssImageSizeAllowOverride" runat="server" controlname="chkRssImageSizeAllowOverride" suffix=":" />
+		<asp:CheckBox ID="chkRssImageSizeAllowOverride" runat="server" />
 	</div>
 </fieldset>
   <p>

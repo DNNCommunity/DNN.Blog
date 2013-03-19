@@ -22,6 +22,8 @@ Namespace Rss
   Private Const nsDublinFull As String = "http://purl.org/dc/elements/1.1/"
   Private Const nsContentPre As String = "content"
   Private Const nsContentFull As String = "http://purl.org/rss/1.0/modules/content/"
+  Private Const nsOpenSearchPre As String = "os"
+  Private Const nsOpenSearchFull As String = "http://opensearch.a9.com/spec/opensearchrss/1.0/"
 #End Region
 
 #Region " Properties "
@@ -31,6 +33,7 @@ Namespace Rss
   Public Property CacheFile As String = ""
   Public Property IsCached As Boolean = False
   Public Property ImageHandlerUrl As String = ""
+  Public Property TotalRecords As Integer = -1
 
   ' Requested Properties
   Public Property TermId As Integer = -1
@@ -101,7 +104,7 @@ Namespace Rss
     Title = Blog.Title
     Description = Blog.Description
     FeedEmail = Blog.Email
-    'Copyright=Blog.
+    Copyright = Regex.Replace(Blog.Copyright, "(?i)\[year\](?-i)", Now.ToString("yyyy"))
    End If
    If Term IsNot Nothing Then
     Title &= " - " & Term.Name
@@ -133,18 +136,17 @@ Namespace Rss
 
    If Not IsCached Then
     ' Load Posts
-    Dim totalRecords As Integer = -1
     If IsSearchFeed Then
      If Term IsNot Nothing Then
-      Entries = EntriesController.SearchEntriesByTerm(moduleId, BlogId, TermId, Search, SearchTitle, SearchContents, 1, Date.Now, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", totalRecords, -1, False).Values
+      Entries = EntriesController.SearchEntriesByTerm(moduleId, BlogId, TermId, Search, SearchTitle, SearchContents, 1, Date.Now, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
      Else
-      Entries = EntriesController.SearchEntries(moduleId, BlogId, Search, SearchTitle, SearchContents, 1, Date.Now, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", totalRecords, -1, False).Values
+      Entries = EntriesController.SearchEntries(moduleId, BlogId, Search, SearchTitle, SearchContents, 1, Date.Now, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
      End If
     Else
      If Term IsNot Nothing Then
-      Entries = EntriesController.GetEntriesByTerm(moduleId, BlogId, TermId, 1, Date.Now, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", totalRecords, -1, False).Values
+      Entries = EntriesController.GetEntriesByTerm(moduleId, BlogId, TermId, 1, Date.Now, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
      Else
-      Entries = EntriesController.GetEntries(moduleId, BlogId, 1, Date.Now, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", totalRecords, -1, False).Values
+      Entries = EntriesController.GetEntries(moduleId, BlogId, 1, Date.Now, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
      End If
     End If
     WriteRss(CacheFile)
@@ -195,6 +197,7 @@ Namespace Rss
    'output.WriteAttributeString("xmlns", nsSlashPre, Nothing, nsSlashFull)
    output.WriteAttributeString("xmlns", nsAtomPre, Nothing, nsAtomFull)
    output.WriteAttributeString("xmlns", nsMediaPre, Nothing, nsMediaFull)
+   If IsSearchFeed Then output.WriteAttributeString("xmlns", nsOpenSearchPre, Nothing, nsOpenSearchFull)
    If IncludeContents Then output.WriteAttributeString("xmlns", nsContentPre, Nothing, nsContentFull)
    output.WriteStartElement("channel")
 
@@ -228,6 +231,11 @@ Namespace Rss
    output.WriteAttributeString("rel", "self")
    output.WriteAttributeString("type", "application/rss+xml")
    output.WriteEndElement() ' atom:link
+   If IsSearchFeed Then
+    output.WriteElementString(nsOpenSearchPre, "totalResults", nsOpenSearchFull, TotalRecords.ToString)
+    output.WriteElementString(nsOpenSearchPre, "startIndex", nsOpenSearchFull, "0")
+    output.WriteElementString(nsOpenSearchPre, "itemsPerPage", nsOpenSearchFull, RecordsToSend.ToString)
+   End If
 
    For Each e As EntryInfo In Entries
     WriteItem(output, e)
@@ -250,10 +258,11 @@ Namespace Rss
    writer.WriteElementString("link", item.PermaLink)
    writer.WriteElementString("description", RemoveHtmlTags(HttpUtility.HtmlDecode(item.Summary)))
    ' optional elements
-   writer.WriteElementString("author", "")
-   ' category
-   ' enclosure
-   'writer.WriteElementString("guid", item.Title)
+   If item.Blog.IncludeAuthorInFeed Then writer.WriteElementString("author", String.Format("{0} ({1})", item.Email, item.DisplayName))
+   For Each t As TermInfo In TermsController.GetTermsByEntry(item.ContentItemId, Settings.ModuleId)
+    writer.WriteElementString("category", t.Name)
+   Next
+   writer.WriteElementString("guid", String.Format("post={0}", item.ContentItemId))
    writer.WriteElementString("pubDate", item.PublishedOnDate.ToString("r"))
    ' extensions
    If item.Blog.IncludeImagesInFeed And item.Image <> "" Then

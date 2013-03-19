@@ -51,6 +51,10 @@ Namespace Common
    Request.Params.ReadValue("Blog", BlogId)
    Request.Params.ReadValue("Post", ContentItemId)
    Request.Params.ReadValue("Term", TermId)
+   Request.Params.ReadValue("search", SearchString)
+   Request.Params.ReadValue("t", SearchTitle)
+   Request.Params.ReadValue("c", SearchContents)
+   Request.Params.ReadValue("u", SearchUnpublished)
    If ContentItemId > -1 Then Entry = Entities.Entries.EntriesController.GetEntry(ContentItemId, Settings.ModuleId)
    If BlogId > -1 And Entry IsNot Nothing AndAlso Entry.BlogID <> BlogId Then Entry = Nothing ' double check in case someone is hacking to retrieve an entry from another blog
    If BlogId = -1 And Entry IsNot Nothing Then BlogId = Entry.BlogID

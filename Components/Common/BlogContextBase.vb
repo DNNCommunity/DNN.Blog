@@ -44,6 +44,10 @@ Namespace Common
     Me.ViewSettings = contextBase.ViewSettings
     Me.Security = contextBase.Security
     Me.ModuleUrls = contextBase.ModuleUrls
+    Me.SearchString = contextBase.SearchString
+    Me.SearchTitle = contextBase.SearchTitle
+    Me.SearchContents = contextBase.SearchContents
+    Me.SearchUnpublished = contextBase.SearchUnpublished
    End With
   End Sub
 #End Region
@@ -59,6 +63,10 @@ Namespace Common
   Public Property EntryMapPath As String = ""
   Public Property OutputAdditionalFiles As Boolean
   Public Property ModuleUrls As ModuleUrls = Nothing
+  Public Property SearchString As String = ""
+  Public Property SearchTitle As Boolean = True
+  Public Property SearchContents As Boolean = False
+  Public Property SearchUnpublished As Boolean = False
 
   Private _uiTimezone As TimeZoneInfo = Nothing
   Public ReadOnly Property UiTimeZone As TimeZoneInfo

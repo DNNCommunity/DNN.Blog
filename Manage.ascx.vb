@@ -37,10 +37,18 @@ Public Class Manage
   Settings.SummaryModel = CType(ddSummaryModel.SelectedValue.ToInt, SummaryType)
   Settings.AllowMultipleCategories = chkAllowMultipleCategories.Checked
   Settings.AllowWLW = chkAllowWLW.Checked
-  Settings.RssEmail = txtEmail.Text
   Settings.WLWRecentEntriesMax = txtWLWRecentEntriesMax.Text.ToInt
   Settings.AllowAllLocales = chkAllowAllLocales.Checked
   Settings.VocabularyId = ddVocabularyId.SelectedValue.ToInt
+  Settings.RssAllowContentInFeed = chkRssAllowContentInFeed.Checked
+  Settings.RssDefaultCopyright = txtRssDefaultCopyright.Text
+  Settings.RssDefaultNrItems = Integer.Parse(txtRssDefaultNrItems.Text)
+  Settings.RssEmail = txtEmail.Text
+  Settings.RssImageHeight = Integer.Parse(txtRssImageHeight.Text)
+  Settings.RssImageWidth = Integer.Parse(txtRssImageWidth.Text)
+  Settings.RssImageSizeAllowOverride = chkRssImageSizeAllowOverride.Checked
+  Settings.RssMaxNrItems = Integer.Parse(txtRssMaxNrItems.Text)
+  Settings.RssTtl = Integer.Parse(txtRssTtl.Text)
   Settings.UpdateSettings()
   Response.Redirect(DotNetNuke.Common.NavigateURL(TabId), False)
  End Sub
@@ -60,7 +68,17 @@ Public Class Manage
    chkAllowMultipleCategories.Checked = Settings.AllowMultipleCategories
    chkAllowWLW.Checked = Settings.AllowWLW
    chkAllowAllLocales.Checked = Settings.AllowAllLocales
+
+   chkRssAllowContentInFeed.Checked = Settings.RssAllowContentInFeed
+   txtRssDefaultCopyright.Text = Settings.RssDefaultCopyright
+   txtRssDefaultNrItems.Text = Settings.RssDefaultNrItems.ToString
    txtEmail.Text = Settings.RssEmail
+   txtRssImageHeight.Text = Settings.RssImageHeight.ToString
+   txtRssImageWidth.Text = Settings.RssImageWidth.ToString
+   chkRssImageSizeAllowOverride.Checked = Settings.RssImageSizeAllowOverride
+   txtRssMaxNrItems.Text = Settings.RssMaxNrItems.ToString
+   txtRssTtl.Text = Settings.RssTtl.ToString
+
    txtWLWRecentEntriesMax.Text = Settings.WLWRecentEntriesMax.ToString
    ddVocabularyId.DataSource = Common.Globals.GetPortalVocabularies(PortalId)
    ddVocabularyId.DataBind()

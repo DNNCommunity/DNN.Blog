@@ -222,4 +222,58 @@
   <data name="lblSummaryModel.Text" xml:space="preserve">
     <value>Summary Model</value>
   </data>
+  <data name="General.Text" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="lblRssAllowContentInFeed.Help" xml:space="preserve">
+    <value>If selected the feed request can optionally retrieve the contents of the blog posts by specifying 'body=true' in the querystring</value>
+  </data>
+  <data name="lblRssAllowContentInFeed.Text" xml:space="preserve">
+    <value>Allow Content In Feed</value>
+  </data>
+  <data name="lblRssDefaultCopyright.Help" xml:space="preserve">
+    <value>If specified then this is the default copyright for feeds. It can be overridden by a blog's own copyright setting.</value>
+  </data>
+  <data name="lblRssDefaultCopyright.Text" xml:space="preserve">
+    <value>Default Copyright</value>
+  </data>
+  <data name="lblRssDefaultNrItems.Help" xml:space="preserve">
+    <value>The nr of posts that the RSS feed will show if no other amount is requested</value>
+  </data>
+  <data name="lblRssDefaultNrItems.Text" xml:space="preserve">
+    <value>Default Nr Items</value>
+  </data>
+  <data name="lblRssImageHeight.Help" xml:space="preserve">
+    <value>The RSS feed can include images (both for the entire feed as for individual posts). If it does, specify here what the height is of the images that will be sent.</value>
+  </data>
+  <data name="lblRssImageHeight.Text" xml:space="preserve">
+    <value>Image Height</value>
+  </data>
+  <data name="lblRssImageSizeAllowOverride.Help" xml:space="preserve">
+    <value>Allow an RSS request to override the size of the images through the 'w' and 'h' querystring parameters.</value>
+  </data>
+  <data name="lblRssImageSizeAllowOverride.Text" xml:space="preserve">
+    <value>Allow Image Size Override</value>
+  </data>
+  <data name="lblRssImageWidth.Help" xml:space="preserve">
+    <value>The RSS feed can include images (both for the entire feed as for individual posts). If it does, specify here what the width is of the images that will be sent.</value>
+  </data>
+  <data name="lblRssImageWidth.Text" xml:space="preserve">
+    <value>Image Width</value>
+  </data>
+  <data name="lblRssMaxNrItems.Help" xml:space="preserve">
+    <value>The maximum nr posts can a RSS feed display using the 'recs' querystring parameter. If this is negative the nr of posts cannot be changed.</value>
+  </data>
+  <data name="lblRssMaxNrItems.Text" xml:space="preserve">
+    <value>Max Nr Items</value>
+  </data>
+  <data name="lblRssTtl.Help" xml:space="preserve">
+    <value>Time (in minutes) that a feed will be cached internally before being refreshed</value>
+  </data>
+  <data name="lblRssTtl.Text" xml:space="preserve">
+    <value>TTL</value>
+  </data>
+  <data name="RSS.Text" xml:space="preserve">
+    <value>RSS Settings</value>
+  </data>
 </root>
