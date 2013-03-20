@@ -28,6 +28,7 @@ Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Entities.Modules
 Imports DotNetNuke.Services.Tokens
 Imports DotNetNuke.Entities.Users
+Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
 Imports DotNetNuke.Modules.Blog.Entities.Terms
 
@@ -59,7 +60,7 @@ Namespace Entities.Entries
   Public Function PermaLink(tab As DotNetNuke.Entities.Tabs.TabInfo) As String
    If String.IsNullOrEmpty(_permaLink) Then
     _permaLink = ApplicationURL(tab.tabId) & "&Post=" & ContentItemId.ToString
-    _permaLink = FriendlyUrl(tab, _permaLink, Title)
+    _permaLink = FriendlyUrl(tab, _permaLink, GetSafePageName(Title))
    End If
    Return _permaLink
   End Function

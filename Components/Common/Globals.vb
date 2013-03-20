@@ -147,6 +147,10 @@ Namespace Common
    Dim portalVocabularies As IQueryable(Of Vocabulary) = From v In colVocabularies Where v.ScopeTypeId = 2 And v.ScopeId = portalId
    Return portalVocabularies.ToList()
   End Function
+
+  Public Shared Function GetSafePageName(pageName As String) As String
+   Return Regex.Replace(Regex.Replace(pageName, "[^\w^\d]", "-").Trim("-"c), "-+", "-")
+  End Function
 #End Region
 
  End Class
