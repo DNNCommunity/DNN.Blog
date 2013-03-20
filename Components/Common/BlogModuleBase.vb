@@ -70,6 +70,9 @@ Namespace Common
    If ContentItemId > -1 Then params.Add("Post=" & ContentItemId.ToString)
    If TermId > -1 Then params.Add("Term=" & TermId.ToString)
    ModuleUrls = New ModuleUrls(TabId, BlogId, ContentItemId, TermId)
+   If Not Settings.ShowAllLocales Then
+    ShowLocale = Threading.Thread.CurrentThread.CurrentCulture.Name
+   End If
 
   End Sub
 #End Region

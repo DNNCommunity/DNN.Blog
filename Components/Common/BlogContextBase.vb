@@ -48,6 +48,7 @@ Namespace Common
     Me.SearchTitle = contextBase.SearchTitle
     Me.SearchContents = contextBase.SearchContents
     Me.SearchUnpublished = contextBase.SearchUnpublished
+    Me.ShowLocale = contextBase.ShowLocale
    End With
   End Sub
 #End Region
@@ -67,6 +68,7 @@ Namespace Common
   Public Property SearchTitle As Boolean = True
   Public Property SearchContents As Boolean = False
   Public Property SearchUnpublished As Boolean = False
+  Public Property ShowLocale As String = ""
 
   Private _uiTimezone As TimeZoneInfo = Nothing
   Public ReadOnly Property UiTimeZone As TimeZoneInfo

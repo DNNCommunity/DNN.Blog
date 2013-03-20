@@ -45,7 +45,6 @@ Public Class BlogEdit
     ddLocale.DataValueField = "Code"
    End If
    ddLocale.DataBind()
-   ddLocale.Items.Insert(0, New ListItem(LocalizeString("DefaultLanguage.Option"), ""))
    Try
     ddLocale.Items.FindByValue(Blog.Locale).Selected = True
    Catch ex As Exception

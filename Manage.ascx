@@ -37,6 +37,10 @@
 		<asp:CheckBox ID="chkAllowAllLocales" runat="server" />
 	</div>
 	<div class="dnnFormItem">
+		<dnn:label id="lblShowAllLocales" runat="server" controlname="chkShowAllLocales" suffix=":" />
+		<asp:CheckBox ID="chkShowAllLocales" runat="server" />
+	</div>
+	<div class="dnnFormItem">
 		<dnn:label id="lblVocabularyId" runat="server" controlname="ddVocabularyId" suffix=":" />
 		<asp:DropDownList ID="ddVocabularyId" runat="server" DataValueField="VocabularyID" DataTextField="Name" />
 	</div>

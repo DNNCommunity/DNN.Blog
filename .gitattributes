@@ -1,6 +1,6 @@
-*.txt           text
-*.vb			text
-*.cs			text
+*.txt           text diff
+*.vb			eol=crlf diff encoding=utf-8
+*.cs			text diff
 *.vcproj        eol=crlf
 *.sh            eol=lf
 *.jpg           -text

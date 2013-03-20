@@ -50,6 +50,7 @@ Namespace Controls
    If Not String.IsNullOrEmpty(SearchString) Then
     RssLink &= String.Format("&search={0}&t={1}&c={2}", HttpUtility.UrlEncode(SearchString), SearchTitle, SearchContents)
    End If
+   If ShowLocale <> "" Then RssLink &= String.Format("&language={0}", ShowLocale)
 
   End Sub
 

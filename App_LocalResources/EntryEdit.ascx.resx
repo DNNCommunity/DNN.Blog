@@ -322,4 +322,10 @@
   <data name="lblSummaryPrecedingWarning.Text" xml:space="preserve">
     <value>Note that the summary precedes the article body! You edit them independently on this page but they are merged to form the article body when someone views the full article.</value>
   </data>
+  <data name="lblLocale.Help" xml:space="preserve">
+    <value>Select the language this post is written in.</value>
+  </data>
+  <data name="lblLocale.Text" xml:space="preserve">
+    <value>Language</value>
+  </data>
 </root>

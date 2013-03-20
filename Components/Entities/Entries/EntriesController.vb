@@ -54,7 +54,7 @@ Namespace Entities.Entries
    'CompleteEntryDelete(contentItemId, blogId, entryId, portalId, vocabularyId)
   End Sub
 
-  Public Shared Function GetEntries(moduleId As Int32, blogID As Int32, published As Integer, endDate As Date, authorUserId As Int32, pageIndex As Int32, pageSize As Int32, orderBy As String, ByRef totalRecords As Integer, userId As Integer, userIsAdmin As Boolean) As Dictionary(Of Integer, EntryInfo)
+  Public Shared Function GetEntries(moduleId As Int32, blogID As Int32, published As Integer, locale As String, endDate As Date, authorUserId As Int32, pageIndex As Int32, pageSize As Int32, orderBy As String, ByRef totalRecords As Integer, userId As Integer, userIsAdmin As Boolean) As Dictionary(Of Integer, EntryInfo)
 
    If pageIndex < 0 Then
     pageIndex = 0
@@ -62,7 +62,7 @@ Namespace Entities.Entries
    End If
 
    Dim res As New Dictionary(Of Integer, EntryInfo)
-   Using ir As IDataReader = DataProvider.Instance().GetEntries(moduleId, blogID, userId, userIsAdmin, published, endDate, authorUserId, pageIndex, pageSize, orderBy)
+   Using ir As IDataReader = DataProvider.Instance().GetEntries(moduleId, blogID, userId, userIsAdmin, published, locale, endDate, authorUserId, pageIndex, pageSize, orderBy)
     res = DotNetNuke.Common.Utilities.CBO.FillDictionary(Of Integer, EntryInfo)("ContentItemID", ir, False)
     If blogID = -1 Then
      Dim blogs As Dictionary(Of Integer, BlogInfo) = BlogsController.GetBlogsByModule(moduleId, userId)
@@ -82,7 +82,7 @@ Namespace Entities.Entries
 
   End Function
 
-  Public Shared Function GetEntriesByTerm(moduleId As Int32, blogID As Int32, termId As Integer, published As Integer, endDate As Date, authorUserId As Int32, pageIndex As Int32, pageSize As Int32, orderBy As String, ByRef totalRecords As Integer, userId As Integer, userIsAdmin As Boolean) As Dictionary(Of Integer, EntryInfo)
+  Public Shared Function GetEntriesByTerm(moduleId As Int32, blogID As Int32, termId As Integer, published As Integer, locale As String, endDate As Date, authorUserId As Int32, pageIndex As Int32, pageSize As Int32, orderBy As String, ByRef totalRecords As Integer, userId As Integer, userIsAdmin As Boolean) As Dictionary(Of Integer, EntryInfo)
 
    If pageIndex < 0 Then
     pageIndex = 0
@@ -90,7 +90,7 @@ Namespace Entities.Entries
    End If
 
    Dim res As New Dictionary(Of Integer, EntryInfo)
-   Using ir As IDataReader = DataProvider.Instance().GetEntriesByTerm(moduleId, blogID, userId, userIsAdmin, termId, published, endDate, authorUserId, pageIndex, pageSize, orderBy)
+   Using ir As IDataReader = DataProvider.Instance().GetEntriesByTerm(moduleId, blogID, userId, userIsAdmin, termId, published, locale, endDate, authorUserId, pageIndex, pageSize, orderBy)
     res = DotNetNuke.Common.Utilities.CBO.FillDictionary(Of Integer, EntryInfo)("ContentItemID", ir, False)
     If blogID = -1 Then
      Dim blogs As Dictionary(Of Integer, BlogInfo) = BlogsController.GetBlogsByModule(moduleId, userId)
@@ -110,7 +110,7 @@ Namespace Entities.Entries
 
   End Function
 
-  Public Shared Function SearchEntries(moduleId As Int32, blogID As Int32, searchText As String, searchTitle As Boolean, searchContents As Boolean, published As Integer, endDate As Date, authorUserId As Int32, pageIndex As Int32, pageSize As Int32, orderBy As String, ByRef totalRecords As Integer, userId As Integer, userIsAdmin As Boolean) As Dictionary(Of Integer, EntryInfo)
+  Public Shared Function SearchEntries(moduleId As Int32, blogID As Int32, searchText As String, searchTitle As Boolean, searchContents As Boolean, published As Integer, locale As String, endDate As Date, authorUserId As Int32, pageIndex As Int32, pageSize As Int32, orderBy As String, ByRef totalRecords As Integer, userId As Integer, userIsAdmin As Boolean) As Dictionary(Of Integer, EntryInfo)
 
    If pageIndex < 0 Then
     pageIndex = 0
@@ -118,7 +118,7 @@ Namespace Entities.Entries
    End If
 
    Dim res As New Dictionary(Of Integer, EntryInfo)
-   Using ir As IDataReader = DataProvider.Instance().SearchEntries(moduleId, blogID, userId, userIsAdmin, searchText, searchTitle, searchContents, published, endDate, authorUserId, pageIndex, pageSize, orderBy)
+   Using ir As IDataReader = DataProvider.Instance().SearchEntries(moduleId, blogID, userId, userIsAdmin, searchText, searchTitle, searchContents, published, locale, endDate, authorUserId, pageIndex, pageSize, orderBy)
     res = DotNetNuke.Common.Utilities.CBO.FillDictionary(Of Integer, EntryInfo)("ContentItemID", ir, False)
     If blogID = -1 Then
      Dim blogs As Dictionary(Of Integer, BlogInfo) = BlogsController.GetBlogsByModule(moduleId, userId)
@@ -138,7 +138,7 @@ Namespace Entities.Entries
 
   End Function
 
-  Public Shared Function SearchEntriesByTerm(moduleId As Int32, blogID As Int32, termId As Integer, searchText As String, searchTitle As Boolean, searchContents As Boolean, published As Integer, endDate As Date, authorUserId As Int32, pageIndex As Int32, pageSize As Int32, orderBy As String, ByRef totalRecords As Integer, userId As Integer, userIsAdmin As Boolean) As Dictionary(Of Integer, EntryInfo)
+  Public Shared Function SearchEntriesByTerm(moduleId As Int32, blogID As Int32, termId As Integer, searchText As String, searchTitle As Boolean, searchContents As Boolean, published As Integer, locale As String, endDate As Date, authorUserId As Int32, pageIndex As Int32, pageSize As Int32, orderBy As String, ByRef totalRecords As Integer, userId As Integer, userIsAdmin As Boolean) As Dictionary(Of Integer, EntryInfo)
 
    If pageIndex < 0 Then
     pageIndex = 0
@@ -146,7 +146,7 @@ Namespace Entities.Entries
    End If
 
    Dim res As New Dictionary(Of Integer, EntryInfo)
-   Using ir As IDataReader = DataProvider.Instance().SearchEntriesByTerm(moduleId, blogID, userId, userIsAdmin, termId, searchText, searchTitle, searchContents, published, endDate, authorUserId, pageIndex, pageSize, orderBy)
+   Using ir As IDataReader = DataProvider.Instance().SearchEntriesByTerm(moduleId, blogID, userId, userIsAdmin, termId, searchText, searchTitle, searchContents, published, locale, endDate, authorUserId, pageIndex, pageSize, orderBy)
     res = DotNetNuke.Common.Utilities.CBO.FillDictionary(Of Integer, EntryInfo)("ContentItemID", ir, False)
     If blogID = -1 Then
      Dim blogs As Dictionary(Of Integer, BlogInfo) = BlogsController.GetBlogsByModule(moduleId, userId)

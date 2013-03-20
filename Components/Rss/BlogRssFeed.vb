@@ -88,6 +88,7 @@ Namespace Rss
    reqParams.ReadValue("search", Search)
    reqParams.ReadValue("t", SearchTitle)
    reqParams.ReadValue("c", SearchContents)
+   reqParams.ReadValue("language", Language)
 
    ' Start Filling In Feed Properties
    If Search <> "" Then IsSearchFeed = True
@@ -120,10 +121,18 @@ Namespace Rss
    If ImageWidth <> Settings.RssImageWidth Then Link &= String.Format("&w={0}", ImageWidth)
    If ImageHeight <> Settings.RssImageHeight Then Link &= String.Format("&h={0}", ImageHeight)
    If IncludeContents Then Link &= "&body=true"
+   If Language <> "" Then Link &= String.Format("&language={0}", Language)
    If IsSearchFeed Then Link &= String.Format("&search={0}&t={1}&c={2}", HttpUtility.UrlEncode(Search), SearchTitle, SearchContents)
    CacheFile = Link.Substring(Link.IndexOf("?"c) + 1).Replace("&", "+").Replace("=", "-")
    CacheFile = String.Format("{0}\Blog\RssCache\{1}.resources", PortalSettings.HomeDirectoryMapPath, CacheFile)
    Link = FriendlyUrl(PortalSettings.ActiveTab, Link, Title)
+   If Language = "" Then
+    If Blog IsNot Nothing AndAlso Not String.IsNullOrEmpty(Blog.Locale) Then
+     Language = Blog.Locale
+    Else
+     Language = PortalSettings.DefaultLanguage
+    End If
+   End If
 
    ' Check Cache
    If IO.File.Exists(CacheFile) Then
@@ -138,15 +147,15 @@ Namespace Rss
     ' Load Posts
     If IsSearchFeed Then
      If Term IsNot Nothing Then
-      Entries = EntriesController.SearchEntriesByTerm(moduleId, BlogId, TermId, Search, SearchTitle, SearchContents, 1, Date.Now, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
+      Entries = EntriesController.SearchEntriesByTerm(moduleId, BlogId, TermId, Search, SearchTitle, SearchContents, 1, Language, Date.Now, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
      Else
-      Entries = EntriesController.SearchEntries(moduleId, BlogId, Search, SearchTitle, SearchContents, 1, Date.Now, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
+      Entries = EntriesController.SearchEntries(moduleId, BlogId, Search, SearchTitle, SearchContents, 1, Language, Date.Now, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
      End If
     Else
      If Term IsNot Nothing Then
-      Entries = EntriesController.GetEntriesByTerm(moduleId, BlogId, TermId, 1, Date.Now, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
+      Entries = EntriesController.GetEntriesByTerm(moduleId, BlogId, TermId, 1, Language, Date.Now, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
      Else
-      Entries = EntriesController.GetEntries(moduleId, BlogId, 1, Date.Now, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
+      Entries = EntriesController.GetEntries(moduleId, BlogId, 1, Language, Date.Now, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
      End If
     End If
     WriteRss(CacheFile)

@@ -45,6 +45,10 @@
 	</fieldset>
 	<h2 id="H2" class="dnnFormSectionHead"><a href="" class="dnnFormSectionExpanded"><%= LocalizeString("About")%></a></h2>
 	<fieldset>
+  <div class="dnnFormItem">
+   <dnn:Label ID="lblLocale" runat="server" controlname="ddLocale" suffix=":" />
+   <asp:DropDownList ID="ddLocale" runat="server" DataTextField="NativeName" />
+  </div>
 		<div class="dnnFormItem">
 			<dnn:Label ID="lblSummary" runat="server" controlname="txtDescription" suffix=":" />
 			<div class="dnnLeft">

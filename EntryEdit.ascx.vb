@@ -108,6 +108,15 @@ Public Class EntryEdit
      pnlCategories.Visible = False
     End If
 
+    If Settings.AllowAllLocales Then
+     ddLocale.DataSource = System.Globalization.CultureInfo.GetCultures(Globalization.CultureTypes.SpecificCultures)
+     ddLocale.DataValueField = "Name"
+    Else
+     ddLocale.DataSource = DotNetNuke.Services.Localization.LocaleController.Instance.GetLocales(PortalId).Values
+     ddLocale.DataValueField = "Code"
+    End If
+    ddLocale.DataBind()
+
     ' Summary
     Select Case Settings.SummaryModel
      Case SummaryType.HtmlIndependent
@@ -160,6 +169,10 @@ Public Class EntryEdit
      tpEntryTime.SelectedDate = publishDate
 
      ' Summary, Image, Categories, Tags
+     Try
+      ddLocale.Items.FindByValue(Entry.Locale).Selected = True
+     Catch ex As Exception
+     End Try
      Select Case Settings.SummaryModel
       Case SummaryType.PlainTextIndependent
        txtDescriptionText.Text = entryBody.Summary
@@ -188,6 +201,10 @@ Public Class EntryEdit
 
     Else
 
+     Try
+      ddLocale.Items.FindByValue(Blog.Locale).Selected = True
+     Catch ex As Exception
+     End Try
      ' Publishing
      chkAllowComments.Checked = Blog.AllowComments
      ' Date
@@ -268,6 +285,8 @@ Public Class EntryEdit
     End If
     Entry.Terms.Clear()
     Entry.Terms.AddRange(terms)
+
+    Entry.Locale = ddLocale.SelectedValue
 
     ' Image
     Dim saveDir As String = PortalSettings.HomeDirectoryMapPath & String.Format("\Blog\Files\{0}\{1}\", BlogId, ContentItemId)

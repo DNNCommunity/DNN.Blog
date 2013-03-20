@@ -39,6 +39,7 @@ Public Class Manage
   Settings.AllowWLW = chkAllowWLW.Checked
   Settings.WLWRecentEntriesMax = txtWLWRecentEntriesMax.Text.ToInt
   Settings.AllowAllLocales = chkAllowAllLocales.Checked
+  Settings.ShowAllLocales = chkShowAllLocales.Checked
   Settings.VocabularyId = ddVocabularyId.SelectedValue.ToInt
   Settings.RssAllowContentInFeed = chkRssAllowContentInFeed.Checked
   Settings.RssDefaultCopyright = txtRssDefaultCopyright.Text
@@ -68,6 +69,7 @@ Public Class Manage
    chkAllowMultipleCategories.Checked = Settings.AllowMultipleCategories
    chkAllowWLW.Checked = Settings.AllowWLW
    chkAllowAllLocales.Checked = Settings.AllowAllLocales
+   chkShowAllLocales.Checked = Settings.ShowAllLocales
 
    chkRssAllowContentInFeed.Checked = Settings.RssAllowContentInFeed
    txtRssDefaultCopyright.Text = Settings.RssDefaultCopyright
@@ -99,7 +101,7 @@ Public Class Manage
 
  Public Sub GetEntries()
 
-  grdEntries.DataSource = EntriesController.GetEntries(Settings.ModuleId, -1, -1, Now, -1, grdEntries.CurrentPageIndex, grdEntries.PageSize, "PUBLISHEDONDATE DESC", _totalEntries, UserId, Security.UserIsAdmin).Values
+  grdEntries.DataSource = EntriesController.GetEntries(Settings.ModuleId, -1, -1, "", Now, -1, grdEntries.CurrentPageIndex, grdEntries.PageSize, "PUBLISHEDONDATE DESC", _totalEntries, UserId, Security.UserIsAdmin).Values
   grdEntries.VirtualItemCount = _totalEntries
 
  End Sub

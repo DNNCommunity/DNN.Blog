@@ -212,6 +212,24 @@ Partial Public Class EntryEdit
  Protected WithEvents litTimezone As Global.System.Web.UI.WebControls.Literal
 
  '''<summary>
+ '''lblLocale control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lblLocale As Global.System.Web.UI.UserControl
+
+ '''<summary>
+ '''ddLocale control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents ddLocale As Global.System.Web.UI.WebControls.DropDownList
+
+ '''<summary>
  '''lblSummary control.
  '''</summary>
  '''<remarks>
