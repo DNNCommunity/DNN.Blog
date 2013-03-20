@@ -43,29 +43,12 @@ Namespace Common
 #End Region
 
 #Region " Dates "
-  Public Shared Function FormatDate([Date] As DateTime, Culture As String, DateFormat As String, TimeZone As TimeZoneInfo) As String
-   Return FormatDate([Date], Culture, DateFormat, TimeZone, False)
-  End Function
-  Public Shared Function FormatDate([Date] As DateTime, Culture As String, DateFormat As String, TimeZone As TimeZoneInfo, ToUniversal As Boolean) As String
-   If String.IsNullOrEmpty(Culture) Then Culture = Threading.Thread.CurrentThread.CurrentCulture.Name
-   Dim dtf As System.Globalization.DateTimeFormatInfo = New System.Globalization.CultureInfo(Culture, False).DateTimeFormat
-   If ToUniversal = True Then
-    Dim dto As New DateTimeOffset([Date])
-    Return dto.ToUniversalTime.ToString(DateFormat, dtf)
-   Else
-    Dim dt As Date = AdjustedDate([Date], TimeZone)
-    Return dt.ToString(DateFormat, dtf)
-   End If
+  Public Shared Function UtcToLocalTime(utcTime As Date, TimeZone As TimeZoneInfo) As Date
+   Return TimeZoneInfo.ConvertTimeFromUtc(utcTime, TimeZone)
   End Function
 
-  Public Shared Function AdjustedDate([Date] As DateTime, TimeZone As TimeZoneInfo) As Date
-   Dim dto As New DateTimeOffset([Date])
-   Return TimeZoneInfo.ConvertTime(dto, TimeZone).DateTime
-  End Function
-
-  Public Shared Function DateFromUtc([Date] As DateTime, TimeZone As TimeZoneInfo) As Date
-   Dim dto As New DateTimeOffset([Date], New TimeSpan(0))
-   Return TimeZoneInfo.ConvertTime(dto, TimeZone).DateTime
+  Public Shared Function UtcToLocalTime(utcTime As Date) As Date
+   Return Date.SpecifyKind(utcTime, DateTimeKind.Utc).ToLocalTime
   End Function
 
   Public Shared Function ParseDate(DateString As String, Culture As String) As DateTime

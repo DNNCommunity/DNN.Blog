@@ -159,10 +159,7 @@ Public Class EntryEdit
      End If
      ' Date
      litTimezone.Text = UiTimeZone.DisplayName
-     Dim n As DateTime = AdjustedDate(Entry.PublishedOnDate, UiTimeZone)
-     Dim publishDate As DateTime = n
-     Dim timeOffset As TimeSpan = UiTimeZone.BaseUtcOffset
-     publishDate = publishDate.Add(timeOffset)
+     Dim publishDate As DateTime = UtcToLocalTime(Entry.PublishedOnDate, UiTimeZone)
      dpEntryDate.Culture = Threading.Thread.CurrentThread.CurrentUICulture
      dpEntryDate.SelectedDate = publishDate
      tpEntryTime.Culture = Threading.Thread.CurrentThread.CurrentUICulture
@@ -209,11 +206,11 @@ Public Class EntryEdit
      chkAllowComments.Checked = Blog.AllowComments
      ' Date
      litTimezone.Text = UiTimeZone.DisplayName
-     Dim n As Date = AdjustedDate(DateTime.Now, UiTimeZone)
+     Dim publishDate As Date = UtcToLocalTime(DateTime.Now.ToUniversalTime, UiTimeZone)
      dpEntryDate.Culture = Threading.Thread.CurrentThread.CurrentUICulture
-     dpEntryDate.SelectedDate = n.Date
+     dpEntryDate.SelectedDate = publishDate
      tpEntryTime.Culture = Threading.Thread.CurrentThread.CurrentUICulture
-     tpEntryTime.SelectedDate = AdjustedDate(DateTime.Now, UiTimeZone)
+     tpEntryTime.SelectedDate = publishDate
 
     End If
 
