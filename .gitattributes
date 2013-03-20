@@ -1,0 +1,6 @@
+*.txt           text
+*.vb			text
+*.cs			text
+*.vcproj        eol=crlf
+*.sh            eol=lf
+*.jpg           -text
