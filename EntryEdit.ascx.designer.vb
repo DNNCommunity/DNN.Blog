@@ -59,6 +59,24 @@ Partial Public Class EntryEdit
  Protected WithEvents valTitle As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
  '''<summary>
+ '''lblSummary control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lblSummary As Global.System.Web.UI.UserControl
+
+ '''<summary>
+ '''txtDescriptionText control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents txtDescriptionText As Global.System.Web.UI.WebControls.TextBox
+
+ '''<summary>
  '''lblSummaryPrecedingWarning control.
  '''</summary>
  '''<remarks>
@@ -66,15 +84,6 @@ Partial Public Class EntryEdit
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
  Protected WithEvents lblSummaryPrecedingWarning As Global.System.Web.UI.WebControls.Label
-
- '''<summary>
- '''lblContent control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents lblContent As Global.System.Web.UI.UserControl
 
  '''<summary>
  '''pnlPublished control.
@@ -228,24 +237,6 @@ Partial Public Class EntryEdit
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
  Protected WithEvents ddLocale As Global.System.Web.UI.WebControls.DropDownList
-
- '''<summary>
- '''lblSummary control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents lblSummary As Global.System.Web.UI.UserControl
-
- '''<summary>
- '''txtDescriptionText control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents txtDescriptionText As Global.System.Web.UI.WebControls.TextBox
 
  '''<summary>
  '''lblImage control.

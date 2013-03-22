@@ -286,7 +286,7 @@ Public Class EntryEdit
     Entry.Locale = ddLocale.SelectedValue
 
     ' Image
-    Dim saveDir As String = PortalSettings.HomeDirectoryMapPath & String.Format("\Blog\Files\{0}\{1}\", BlogId, ContentItemId)
+    Dim saveDir As String = GetPostDirectoryMapPath(Entry)
     Dim savedFile As String = ""
     If fileImage.HasFile Then
      Dim extension As String = IO.Path.GetExtension(fileImage.FileName).ToLower
@@ -326,7 +326,7 @@ Public Class EntryEdit
      Entry.ContentItemId = EntriesController.AddEntry(Entry, UserId)
      ContentItemId = Entry.ContentItemId
      If savedFile <> "" Then ' move file if it was saved
-      saveDir = PortalSettings.HomeDirectoryMapPath & String.Format("\Blog\Files\{0}\{1}\", BlogId, ContentItemId)
+      saveDir = GetPostDirectoryMapPath(Entry)
       IO.Directory.CreateDirectory(saveDir)
       Dim dest As String = saveDir & Entry.Image & IO.Path.GetExtension(fileImage.FileName).ToLower
       IO.File.Move(savedFile, dest)

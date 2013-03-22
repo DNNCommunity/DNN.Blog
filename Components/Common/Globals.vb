@@ -76,6 +76,13 @@ Namespace Common
 #End Region
 
 #Region " Other "
+  Public Shared Function GetPostDirectoryMapPath(post As Entities.Entries.EntryInfo) As String
+   Return String.Format("{0}Blog\Files\{1}\{2}\", DotNetNuke.Entities.Portals.PortalSettings.Current.HomeDirectoryMapPath, post.BlogID, post.ContentItemId)
+  End Function
+  Public Shared Function GetPostDirectoryPath(post As Entities.Entries.EntryInfo) As String
+   Return String.Format("{0}Blog/Files/{1}/{2}/", DotNetNuke.Entities.Portals.PortalSettings.Current.HomeDirectory, post.BlogID, post.ContentItemId)
+  End Function
+
   Public Shared Function ManifestFilePath(moduleId As Integer) As String
    Return "/DesktopModules/Blog/WLWManifest.aspx?ModuleId=" & moduleId.ToString
   End Function

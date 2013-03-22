@@ -247,9 +247,6 @@
   <data name="SaveAsDraft.Text" xml:space="preserve">
     <value>Save as draft</value>
   </data>
-  <data name="BlogContent.Text" xml:space="preserve">
-    <value>Content</value>
-  </data>
   <data name="lblAllowComments.Text" xml:space="preserve">
     <value>Enable Comments</value>
   </data>
@@ -292,14 +289,8 @@
   <data name="lblBlog.Text" xml:space="preserve">
     <value>Blog</value>
   </data>
-  <data name="About.Text" xml:space="preserve">
-    <value>Summary and Image</value>
-  </data>
   <data name="Publishing.Text" xml:space="preserve">
-    <value>Publishing</value>
-  </data>
-  <data name="lblContent.Text" xml:space="preserve">
-    <value>Contents</value>
+    <value>Publishing Details</value>
   </data>
   <data name="lblPublished.Help" xml:space="preserve">
     <value>Select to publish. Deselect to unpublish (i.e. to make invisible to others).</value>
@@ -327,5 +318,14 @@
   </data>
   <data name="lblLocale.Text" xml:space="preserve">
     <value>Language</value>
+  </data>
+  <data name="Content.Text" xml:space="preserve">
+    <value>Contents</value>
+  </data>
+  <data name="Metadata.Text" xml:space="preserve">
+    <value>Metadata</value>
+  </data>
+  <data name="Title.Text" xml:space="preserve">
+    <value>Title and Summary</value>
   </data>
 </root>

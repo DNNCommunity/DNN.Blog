@@ -1,5 +1,6 @@
 ﻿Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Services.Localization
+Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.BlogML.Xml
 Imports DotNetNuke.Modules.Blog.Entities.Entries
 
@@ -95,11 +96,28 @@ Public Class BlogImport
       If entry.Title <> "" And entry.Content <> "" Then
        entry.ContentItemId = EntriesController.AddEntry(entry, UserId)
        strReport.AppendFormat("Added {0}" & vbCrLf, entry.Title)
+       ' import resources
+       If post.Attachments.Count > 0 Then
+        Dim postDir As String = GetPostDirectoryMapPath(entry)
+        Dim postPath As String = GetPostDirectoryPath(entry)
+        IO.Directory.CreateDirectory(postDir)
+        For Each att As BlogMLAttachment In post.Attachments
+         If att.Embedded And att.Data IsNot Nothing Then
+          Dim filename As String = att.Path
+          If filename = "" Then filename = att.Url
+          filename = filename.Replace("/", "\")
+          If filename.IndexOf("\") > 0 Then filename = filename.Substring(filename.LastIndexOf("\") + 1)
+          IO.File.WriteAllBytes(postDir & filename, att.Data)
+          entry.Content = entry.Content.Replace(filename, postPath & filename)
+          If Not String.IsNullOrEmpty(entry.Summary) Then entry.Summary = entry.Summary.Replace(filename, postPath & filename)
+         End If
+        Next
+       End If
+       EntriesController.UpdateEntry(entry, UserId)
       End If
      Next
      txtReport.Text = strReport.ToString
     End If
-
    Case 2 ' report
     Response.Redirect(EditUrl("Manage"), False)
   End Select

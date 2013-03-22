@@ -3,18 +3,25 @@
 <%@ Register TagPrefix="dnn" TagName="TextEditor" Src="~/controls/TextEditor.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <div class="dnnForm dnnBlogEditEntry dnnClear" id="dnnBlogEditEntry">
-	<h2 id="dnnSitePanel-BlogContent" class="dnnFormSectionHead"><a href="" class="dnnFormSectionExpanded"><%= LocalizeString("BlogContent")%></a></h2>
+	<h2 id="dnnSitePanel-BlogContent" class="dnnFormSectionHead"><a href="" class="dnnFormSectionExpanded"><%= LocalizeString("Title")%></a></h2>
 	<fieldset>
 		<dnn:Label ID="lblBlog" runat="server" controlname="ddBlog" suffix=":" CssClass="dnnLeft" /><br />
   <asp:DropDownList runat="server" ID="ddBlog" DataTextField="Title" DataValueField="BlogID" Width="100%" AutoPostBack="true" />
+
 		<dnn:Label ID="lblTitle" runat="server" controlname="treeCategories" suffix=":" CssClass="dnnLeft" /><br />
 		<asp:TextBox ID="txtTitle" runat="server" CssClass="dnnFormRequired" Width="98%" />
 		<asp:RequiredFieldValidator ID="valTitle" runat="server" ResourceKey="valTitle.ErrorMessage" Display="Dynamic" ControlToValidate="txtTitle" CssClass="dnnFormError" />
+
+		<dnn:Label ID="lblSummary" runat="server" controlname="txtDescription" suffix=":" CssClass="dnnLeft" /><br />
+		<dnn:texteditor id="txtDescription" runat="server" width="100%" height="250" />
+		<asp:TextBox runat="server" ID="txtDescriptionText" Width="100%" Height="250" TextMode="MultiLine" Visible="false" />
+	</fieldset>
+	<h2 id="H1" class="dnnFormSectionHead"><a href="" class="dnnFormSectionExpanded"><%= LocalizeString("Content")%></a></h2>
+	<fieldset>
   <asp:Label runat="server" ID="lblSummaryPrecedingWarning" resourcekey="lblSummaryPrecedingWarning" Visible="false" CssClass="dnnFormMessage dnnFormWarning" />
-  <dnn:Label ID="lblContent" runat="server" controlname="teBlogEntry" suffix=":" CssClass="dnnLeft" /><br />
 		<dnn:texteditor id="teBlogEntry" runat="server" width="100%" height="400" />
 	</fieldset>
-	<h2 id="H1" class="dnnFormSectionHead"><a href="" class="dnnFormSectionExpanded"><%= LocalizeString("Publishing")%></a></h2>
+	<h2 id="H3" class="dnnFormSectionHead"><a href="" class="dnnFormSectionExpanded"><%= LocalizeString("Publishing")%></a></h2>
 	<fieldset>
 		<asp:Panel ID="pnlPublished" runat="server" class="dnnFormItem">
 			<dnn:Label ID="lblPublished" runat="server" controlname="chkPublished" suffix=":" />
@@ -43,27 +50,20 @@
    <em><%= LocalizeString("PublishTimeZoneNote")%>&nbsp;<asp:Literal runat="server" ID="litTimezone" /></em>
 		</div>
 	</fieldset>
-	<h2 id="H2" class="dnnFormSectionHead"><a href="" class="dnnFormSectionExpanded"><%= LocalizeString("About")%></a></h2>
+	<h2 id="H2" class="dnnFormSectionHead"><a href="" class="dnnFormSectionExpanded"><%= LocalizeString("Metadata")%></a></h2>
 	<fieldset>
   <div class="dnnFormItem">
    <dnn:Label ID="lblLocale" runat="server" controlname="ddLocale" suffix=":" />
    <asp:DropDownList ID="ddLocale" runat="server" DataTextField="NativeName" />
   </div>
-		<div class="dnnFormItem">
-			<dnn:Label ID="lblSummary" runat="server" controlname="txtDescription" suffix=":" />
-			<div class="dnnLeft">
-				<dnn:texteditor id="txtDescription" runat="server" width="450" height="300" />
-				<asp:TextBox runat="server" ID="txtDescriptionText" Width="450" Height="200" TextMode="MultiLine" Visible="false" />
-			</div>
-		</div>
-   <div class="dnnFormItem">
-    <dnn:Label ID="lblImage" runat="server" controlname="fileImage" suffix=":" />
-    <div style="float:left;">
-    <asp:Image runat="server" ID="imgEntryImage" /><br /><br />
-    <asp:FileUpload runat="server" ID="fileImage" Width="300" />&nbsp;
-    <asp:LinkButton runat="server" ID="cmdImageRemove" resourcekey="cmdImageRemove" cssclass="dnnSecondaryAction" />
-    </div>
+  <div class="dnnFormItem">
+   <dnn:Label ID="lblImage" runat="server" controlname="fileImage" suffix=":" />
+   <div style="float:left;">
+   <asp:Image runat="server" ID="imgEntryImage" /><br /><br />
+   <asp:FileUpload runat="server" ID="fileImage" Width="300" />&nbsp;
+   <asp:LinkButton runat="server" ID="cmdImageRemove" resourcekey="cmdImageRemove" cssclass="dnnSecondaryAction" />
    </div>
+  </div>
 		<asp:Panel ID="pnlCategories" runat="server" class="dnnFormItem">
 			<dnn:Label ID="lblCategories" ResourceKey="lblCategories" runat="server" controlname="dtCategories" suffix=":" />
 			<div class="dnnLeft">
