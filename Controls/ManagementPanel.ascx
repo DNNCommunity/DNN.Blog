@@ -49,7 +49,7 @@
 		});
 		$('#<%=wlwlink.ClientId %>').click(function () {
    $dialogWLW.dialog('open');
-   $('#txtWLWLink<%=ModuleId %>').val('http://<%= Request.Url.Host & ControlPath & String.Format("blogpost.ashx?portalid={0}&tabid={1}&moduleid={2}", PortalId, TabId, ModuleId) %>').select();
+   $('#txtWLWLink<%=ModuleId %>').val('http://<%= Request.Url.Host & DotNetNuke.Common.Globals.ApplicationPath & String.Format("/DesktopModules/Blog/blogpost.ashx?portalid={0}&tabid={1}&moduleid={2}", PortalId, TabId, ModuleId) %>').select();
    return false;
   });
 <% End If %>

@@ -250,7 +250,7 @@ Public Class BlogPost
 
   Try
    ' Check to see if this a style detection post.
-   styleDetectionPost = (post.title.Length > 116 AndAlso post.title.Substring(80, 36) = "3bfe001a-32de-4114-a6b4-4005b770f6d7")
+   styleDetectionPost = post.title.Contains("3bfe001a-32de-4114-a6b4-4005b770f6d7")
 
    ' Check to see if a styleId is passed through the QueryString
    ' however, we'll only do this if we are creating a post for style detection.
@@ -261,15 +261,16 @@ Public Class BlogPost
    End If
 
    ' Add the new entry
-   MakeImagesRelative(post)
    Dim newEntry As EntryInfo = ToEntry(post)
    If Blog.MustApproveGhostPosts And Not Security.CanApproveEntry Then
     newEntry.Published = False
    Else
     newEntry.Published = publish
    End If
-   EntriesController.AddEntry(newEntry, TabId)
-   ProcessItemImages(newEntry, PortalSettings.HomeDirectoryMapPath & "Blog")
+   EntriesController.AddEntry(newEntry, UserInfo.UserID)
+
+   HandleAttachments(newEntry)
+   EntriesController.UpdateEntry(newEntry, UserInfo.UserID)
 
    ' Add keywords and categories
    If Not styleDetectionPost Then
@@ -310,15 +311,18 @@ Public Class BlogPost
 
   Dim success As Boolean = False
   Try
-   MakeImagesRelative(post)
+   post.postid = postid
    Dim newEntry As EntryInfo = ToEntry(post)
-   ProcessItemImages(newEntry, PortalSettings.HomeDirectoryMapPath & "Blog")
    AddCategoriesAndKeyWords(newEntry, post)
    If Blog.MustApproveGhostPosts And Not Security.CanApproveEntry Then
     newEntry.Published = False
    Else
     newEntry.Published = publish
    End If
+
+   HandleAttachments(newEntry)
+   EntriesController.UpdateEntry(newEntry, UserInfo.UserID)
+
    If (Not Entry.Published) And newEntry.Published Then
     ' First published
     PublishToJournal(newEntry)
@@ -418,44 +422,28 @@ Public Class BlogPost
   RequireAddPermission()
 
   Dim info As mediaObjectInfo
+  info.url = ""
+
   Try
 
-   Dim virtualPath As String
-   Dim mediaObjectName As String = String.Empty
-   Dim fullFilePathAndName As String = String.Empty
-   info.url = ""
+   Dim strExtension As String = IO.Path.GetExtension(mediaobject.name)
+   If Not Settings.AllowAttachments Or String.IsNullOrEmpty(strExtension) OrElse Not DotNetNuke.Entities.Host.Host.AllowedExtensionWhitelist.IsAllowedExtension(strExtension) Then
+    Throw New XmlRpcFaultException(0, GetString("SaveError", String.Format("File {0} refused. Uploading this type of file is not allowed.", mediaobject.name)))
+   End If
+   Dim newMediaObjectName As String = Guid.NewGuid.ToString("D") & strExtension
+   Dim fullFilePathAndName As String = GetTempPostDirectoryMapPath(Me.BlogId) & newMediaObjectName
+   IO.Directory.CreateDirectory(IO.Path.GetDirectoryName(fullFilePathAndName))
 
-   Try
-
-    ' Shorten WindowsLiveWriter and create one file name.
-    mediaObjectName = mediaobject.name.Replace("WindowsLiveWriter", "WLW")
-    mediaObjectName = mediaObjectName.Replace("/", "-").Replace(" ", "_")
-    mediaObjectName = HttpContext.Current.Server.UrlEncode(mediaObjectName)
-
-    ' Check permitted file types
-    Dim strExtension As String = Path.GetExtension(mediaObjectName).Replace(".", "")
-    If String.IsNullOrEmpty(strExtension) OrElse Not DotNetNuke.Entities.Host.Host.AllowedExtensionWhitelist.IsAllowedExtension(strExtension) Then
-     Throw New XmlRpcFaultException(0, GetString("SaveError", String.Format("File {0} refused. Uploading this type of file is not allowed.", mediaObjectName)))
-    End If
-
-    virtualPath = "Blog/Files/" & blogid.ToString() & "/_temp_images/" & mediaObjectName
-
-    fullFilePathAndName = PortalSettings.HomeDirectoryMapPath + virtualPath.Replace("/", "\")
-    IO.Directory.CreateDirectory(IO.Path.GetDirectoryName(fullFilePathAndName))
-
-    Using output As New FileStream(fullFilePathAndName, FileMode.Create)
-     Using bw As New BinaryWriter(output)
-      bw.Write(mediaobject.bits)
-     End Using
+   Using output As New FileStream(fullFilePathAndName, FileMode.Create)
+    Using bw As New BinaryWriter(output)
+     bw.Write(mediaobject.bits)
     End Using
+   End Using
 
-   Catch exc As IOException
-    Throw New XmlRpcFaultException(0, GetString("ImageSaveError", "An error occurred while saving an image related to this blog post."))
-   End Try
-   Dim finalUrl As String = PortalSettings.HomeDirectory.Replace("\", "/")
+   info.url = GetTempPostDirectoryPath(Me.BlogId) & newMediaObjectName
 
-   finalUrl = finalUrl & virtualPath
-   info.url = finalUrl
+  Catch exc As IOException
+   Throw New XmlRpcFaultException(0, GetString("ImageSaveError", "An error occurred while saving an image related to this blog post."))
   Catch ex As BlogPostException
    LogException(ex)
    Throw New XmlRpcFaultException(0, GetString(ex.ResourceKey, ex.Message))
@@ -700,178 +688,38 @@ Public Class BlogPost
  End Sub
 #End Region
 
-#Region " Image Handling Methods "
- Private Sub MakeImagesRelative(ByRef post As Post)
-  ' Check first to see if we're running on a port other than port 80
-  Dim port As String = Context.Request.Url.Port.ToString()
-  If port <> "80" Then
-   port = ":" & port
+#Region " Attachment Handling Methods "
+ Private Sub HandleAttachments(ByRef newEntry As EntryInfo)
+
+  ' Handle attachments
+  Dim contents As String = newEntry.Content
+  If Not String.IsNullOrEmpty(newEntry.Summary) Then contents &= newEntry.Summary
+  Dim d As New IO.DirectoryInfo(GetTempPostDirectoryMapPath(Me.BlogId))
+  Dim targetDir As String = GetPostDirectoryMapPath(newEntry)
+  If Not IO.Directory.Exists(targetDir) Then
+   IO.Directory.CreateDirectory(targetDir)
   Else
-   port = String.Empty
-  End If
-
-  Dim urlDomain As String = Context.Request.Url.Host & port
-  Dim options As RegexOptions = RegexOptions.IgnoreCase Or RegexOptions.Singleline
-  Dim expression As String = "((?:src|href)\s*?=\s*?"")http[s]*://" + urlDomain
-  If Not String.IsNullOrEmpty(post.mt_excerpt) Then
-   post.mt_excerpt = Regex.Replace(post.mt_excerpt, expression, "$1", options)
-  End If
-  If Not String.IsNullOrEmpty(post.description) Then
-   post.description = Regex.Replace(post.description, expression, "$1", options)
-  End If
-  If Not String.IsNullOrEmpty(post.mt_text_more) Then
-   post.mt_text_more = Regex.Replace(post.mt_text_more, expression, "$1", options)
-  End If
- End Sub
-
- Private Sub ProcessItemImages(ByRef entry As EntryInfo, rootPath As String)
-  Dim imageUrls As New ArrayList
-
-  Try
-
-   ' When the newMediaObject method of the MetaWeblog API is called, we don't 
-   ' have enough information to specify the blog entry id for the image path.
-   ' So, we place the images in a folder named _temp_images until the 
-   ' EditItem method is called (which calls this procedure).  EditItem contains
-   ' the item parameter which has an itemId corresponding to the Entry Id of the 
-   ' blog post.  We'll replace _temp_images with this EntryId and we'll 
-   ' move the images to the right folder.  In order to move the images to the right
-   ' folder, we'll use Regex to find the images in the post.
-
-   Dim regexSrc As String = "<img[^>]+?_temp_images/.*?>"
-   Dim regexHref As String = "<a[^>]+?(?:png|jpg|jpeg|gif)[^>]+?>[^<]*?<img[^>]+?src=""[^""]+?""[^>]+>[^<]*?</a>"
-   ' Note that the inner Regex patterns required a group named 'src'
-   Dim regexInnerSrc As String = "src=""(?<src>[^""]+?)"""
-   Dim regexInnerHref As String = "href=""(?<src>[^""]+?)"""
-
-   Dim options As RegexOptions = RegexOptions.IgnoreCase Or RegexOptions.Singleline
-   Dim input As String = HttpUtility.HtmlDecode(entry.Summary + entry.Content)
-
-   If Not String.IsNullOrEmpty(input) Then
-    FindImageMatch(input, regexSrc, regexInnerSrc, options, imageUrls)
-    FindImageMatch(input, regexHref, regexInnerHref, options, imageUrls)
-   End If
-
-   ' OK, now that we have the matches stored in the imageUrls Arraylist, we'll use this to 
-   ' move the images to the right location.  
-
-   For Each url As String In imageUrls
-    Try
-     Dim moveFromPath As String = HttpContext.Current.Server.MapPath(url)
-
-
-     Dim moveToPath As String = moveFromPath.Replace("_temp_images", entry.ContentItemId.ToString())
-     Dim moveToFolderPath As String = moveToPath.Substring(0, moveToPath.LastIndexOf("\"))
-     ' Make sure the directory exists
-     If Not Directory.Exists(moveToFolderPath) Then
-      ' No problem, we'll just create it!
-      Directory.CreateDirectory(moveToFolderPath)
-     End If
-     ' File may already have been moved.  We'll check first to see.
-     ' Files will haev already been moved in the case where an entry is
-     ' reposted from Windows Live Writer.
-     If System.IO.File.Exists(moveFromPath) AndAlso IsValidImageLocation(moveFromPath, rootPath) Then
-      'Check to see if we need to overwrite an existing image
-      If System.IO.File.Exists(moveToPath) Then
-       System.IO.File.Delete(moveToPath)
-      End If
-      System.IO.File.Move(moveFromPath, moveToPath)
-     End If
-    Catch ex As Exception
-     ' We'll log the error and fail silently so we can attempt to save the other 
-     ' images.  
-     DotNetNuke.Services.Exceptions.Exceptions.LogException(ex)
-    End Try
-   Next
-
-   ' Check for any non-image files left behind
-   For Each tempFile As Match In Regex.Matches(HttpUtility.HtmlDecode(entry.Content), """([^""]*_temp_images/[^""]*)""")
-    Try
-     Dim moveFromPath As String = HttpContext.Current.Server.MapPath(tempFile.Groups(1).Value)
-     Dim strExtension As String = Path.GetExtension(moveFromPath).Replace(".", "")
-     If IsValidImageLocation(moveFromPath, rootPath) Then
-      If Not String.IsNullOrEmpty(strExtension) AndAlso DotNetNuke.Entities.Host.Host.AllowedExtensionWhitelist.IsAllowedExtension(strExtension) Then
-       Dim moveToPath As String = moveFromPath.Replace("_temp_images", entry.ContentItemId.ToString())
-       Dim moveToFolderPath As String = moveToPath.Substring(0, moveToPath.LastIndexOf("\"))
-       ' Make sure the directory exists
-       If Not Directory.Exists(moveToFolderPath) Then
-        ' No problem, we'll just create it!
-        Directory.CreateDirectory(moveToFolderPath)
-       End If
-       ' File may already have been moved.  We'll check first to see.
-       ' Files will haev already been moved in the case where an entry is
-       ' reposted from Windows Live Writer.
-       If System.IO.File.Exists(moveFromPath) Then
-        'Check to see if we need to overwrite an existing image
-        If System.IO.File.Exists(moveToPath) Then
-         System.IO.File.Delete(moveToPath)
-        End If
-        System.IO.File.Move(moveFromPath, moveToPath)
-       End If
-      Else ' we have to delete the file
-       System.IO.File.Delete(moveFromPath)
-      End If
-     End If
-    Catch ex As Exception
-     ' We'll log the error and fail silently so we can attempt to save the other 
-     ' images.  
-     DotNetNuke.Services.Exceptions.Exceptions.LogException(ex)
-    End Try
-   Next
-
-   ' Clean up old files
-   Try
-    Dim path As String = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings.HomeDirectoryMapPath & "Blog\Files\" & entry.BlogID.ToString & "\_temp_images"
-    ' we need to make sure the directory exists
-    If IO.Directory.Exists(path) Then
-     Dim colFiles As Array = New IO.DirectoryInfo(path).GetFiles()
-
-     If colFiles IsNot Nothing Then
-      For Each f As IO.FileInfo In (colFiles)
-       If f.CreationTime < Now.AddHours(-1) Then
-        Try
-         f.Delete()
-        Catch ex1 As Exception
-         DotNetNuke.Services.Exceptions.Exceptions.LogException(ex1)
-        End Try
-       End If
-      Next
-     End If
+   For Each f As String In IO.Directory.GetFiles(targetDir) ' remove deprecated files
+    If Not contents.Contains(IO.Path.GetFileName(f)) Then
+     Try
+      IO.File.Delete(f)
+     Catch ex As Exception
+      ' we're not too bothered if this doesn't succeed
+     End Try
     End If
-   Catch ex As Exception
-    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex)
-   End Try
+   Next
+  End If
+  If d.Exists Then
+   For Each f As IO.FileInfo In d.GetFiles
+    If contents.Contains(f.Name) Then
+     f.MoveTo(targetDir & f.Name)
+    End If
+   Next
+  End If
+  newEntry.Content = newEntry.Content.Replace(String.Format("Blog/Files/{0}/_temp_images/", Me.BlogId), String.Format("Blog/Files/{0}/{1}/", Me.BlogId, newEntry.ContentItemId))
+  If Not String.IsNullOrEmpty(newEntry.Summary) Then newEntry.Summary = newEntry.Summary.Replace(String.Format("Blog/Files/{0}/_temp_images/", Me.BlogId), String.Format("Blog/Files/{0}/{1}/", Me.BlogId, newEntry.ContentItemId))
 
-   ' Finally, we'll update the URLs
-   If Not String.IsNullOrEmpty(entry.Content) Then
-    entry.Content = entry.Content.Replace("_temp_images", entry.ContentItemId.ToString())
-   End If
-   If Not String.IsNullOrEmpty(entry.Summary) Then
-    entry.Summary = entry.Summary.Replace("_temp_images", entry.ContentItemId.ToString())
-   End If
-   'Yes!  We made it!!  'The images should be tucked in bed
-  Catch ex As Exception
-   DotNetNuke.Services.Exceptions.Exceptions.LogException(ex)
-  End Try
  End Sub
-
- Private Sub FindImageMatch(input As String, sRegex As String, regexInner As String, options As RegexOptions, imageUrls As ArrayList)
-  Dim matches As MatchCollection = Regex.Matches(input, sRegex, options)
-  For Each match As Match In matches
-   ' extract the src attribute from the image
-   Dim regexSrc As String = regexInner
-   input = match.Value
-   Dim src As Match = Regex.Match(input, regexSrc, options)
-   If Not src Is Nothing AndAlso src.Groups("src").Captures.Count > 0 Then
-    ' We have an image Url
-    imageUrls.Add(src.Groups("src").Captures(0).Value)
-   End If
-  Next
- End Sub
-
- Private Shared Function IsValidImageLocation(path As String, rootpath As String) As Boolean
-  Return path.StartsWith(rootpath)
- End Function
 #End Region
 
 End Class
