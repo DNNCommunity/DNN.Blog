@@ -351,20 +351,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_LocalResources\Archive.ascx.resx" />
-    <Content Include="App_LocalResources\BlogList.ascx.resx" />
-    <Content Include="App_LocalResources\blogpost.ascx.resx" />
     <Content Include="App_LocalResources\BlogEdit.ascx.resx" />
     <Content Include="App_LocalResources\EntryEdit.ascx.resx" />
-    <Content Include="App_LocalResources\MainView.ascx.resx" />
-    <Content Include="App_LocalResources\ModuleOptions.ascx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="App_LocalResources\Trackback.aspx.resx" />
-    <Content Include="App_LocalResources\ViewBlog.ascx.resx" />
-    <Content Include="App_LocalResources\ViewEntry.ascx.resx" />
     <Content Include="App_LocalResources\SharedResources.resx" />
-    <Content Include="App_LocalResources\ViewTagsSettings.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="blogpost.ashx" />
@@ -389,15 +378,6 @@
     <Content Include="Templates\_default\template.css" />
     <Content Include="Templates\_default\Template.html" />
     <Content Include="WLWManifest.aspx" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="App_LocalResources\ViewCategories.ascx.resx" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="App_LocalResources\ArchiveSettings.ascx.resx" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="App_LocalResources\ViewCategoriesSettings.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Templates\tagCloud\images\" />

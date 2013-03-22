@@ -117,48 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="cmdAdd.Text" xml:space="preserve">
-    <value>Add</value>
-  </data>
-  <data name="msgEditChildBlog.Text" xml:space="preserve">
-    <value>Edit Child Blog</value>
-  </data>
-  <data name="lblTimeZone.Text" xml:space="preserve">
-    <value>Time Zone</value>
-  </data>
-  <data name="lblSyndicateIndependant.Text" xml:space="preserve">
-    <value>Syndicate Independantly</value>
-  </data>
   <data name="lblTitle.Text" xml:space="preserve">
     <value>Title</value>
-  </data>
-  <data name="lblDateFormat.Text" xml:space="preserve">
-    <value>Date Format</value>
   </data>
   <data name="lblDescription.Text" xml:space="preserve">
     <value>Description</value>
   </data>
-  <data name="ChildBlogsDesc.Text" xml:space="preserve">
-    <value>If you would like to break your blog up into different categories, this is 
-				where you define them. Having&amp;nbsp;Child-Blogs allows you to create 
-				sub-blogs&amp;nbsp;within your blog. Each one has its own options for publication 
-				and can be syndicated separately from your root blog.</value>
-  </data>
-  <data name="msgDeleteChildBlog.Text" xml:space="preserve">
-    <value>Are you sure you want to delete this child blog ?</value>
-  </data>
   <data name="ModuleHelp.Text" xml:space="preserve">
     <value>&lt;h1&gt;Blog - Edit Blog&lt;/h1&gt;
 &lt;p&gt;These options control the main blog features.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Title&lt;/b&gt;&lt;br /&gt;This is the display title for your blog. It will display at the top of your entry list and in the blog directory.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Description&lt;/b&gt;&lt;br /&gt;This is a brief summary description of your blog. It's a good place to describe your intentions with your blog and what information readers can expect.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Make this blog public&lt;/b&gt;&lt;br /&gt;If checked, all the visitors who have view permissions to the page will be able to read the blog. If unchecked, the blog will be visible only to the blog owner.&lt;/p&gt;&lt;p&gt;&lt;b&gt;When displaying your identity use&lt;/b&gt;&lt;br /&gt;This setting controls the name that will be displayed as the author of the content. Two options are available: the DNN user name or the user's full name.&lt;/p&gt;&lt;p&gt;&lt;b&gt;MetaWeblog Options&lt;/b&gt;&lt;br /&gt;The displayed URL is to be used to connect to your blog using a MetaWeblog enabled client such as Windows Live Writer or Word 2007. The tabid parameter may be changed as needed if this blog appears on a different tab.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Comment Options&lt;/b&gt;&lt;br /&gt;These options control the comment related settings. Comments may be added by registered users, Unauthenticated users or from other blogs as Trackback comments. The blog owner has three options: Allow, Disallow or Require Approval. If Allow is checked, the comments will be displayed as soon as they are added. If Disallow is checked, comments will be disabled. If Require Approval is checked, the comments will need to be approved by the blog owner before being displayed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Send mail notification after comments and trackbacks are posted&lt;/b&gt;&lt;br /&gt;If checked, the blog owner will receive an email whenever a comment is added to a blog post.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Use CAPTCHA for comments&lt;/b&gt;&lt;br /&gt;If checked, this will enable a security check when adding comments to avoid spamming.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Trackback Auto Discovery (Client Mode)&lt;/b&gt;&lt;br /&gt;If checked, the module will scan the entry post when it is added in search of trackback links and attempt to send them a trackback comment.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Syndication Options&lt;/b&gt;&lt;br /&gt;Here the blog owner can decide if make an RSS feed available to the visitors for the blog. If checked, an RSS icon with the corresponding link will be displayed besides the blog title in the blog list. The blog owner may also decide to include an email in the "ManagingEditor" field of the RSS feed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Date and Time Options&lt;/b&gt;&lt;br /&gt;These options control how date and time are displayed within your blog. This setting effects all categories and entries within your blog.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Regenerate Blog PermaLinks&lt;/b&gt;&lt;br /&gt;This link can be used after the Friendly URLs setting has been changed for the site. When clicked, the module will scann all the entries and attempt to regenerate all the permalinks according to any cahnges to the Friendly URLs settings and to the entry titles.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Child Blogs&lt;/b&gt;&lt;br /&gt;If you would like to break your blog up into different categories, this is where you define them. Having Child-Blogs allows you to create sub-blogs within your blog. Each one has its own options for publication and can be syndicated separately from your root blog.&lt;/p&gt;</value>
-  </data>
-  <data name="lblCulture.Text" xml:space="preserve">
-    <value>Culture</value>
-  </data>
-  <data name="rdoUserName_UserName.Text" xml:space="preserve">
-    <value>Username</value>
-  </data>
-  <data name="lblUserIdentity.Text" xml:space="preserve">
-    <value>Name Format</value>
   </data>
   <data name="valTitleDescription.ErrorMessage" xml:space="preserve">
     <value>Description is required</value>
@@ -166,104 +133,25 @@
   <data name="lblSyndicate.Text" xml:space="preserve">
     <value>Syndicate Blog</value>
   </data>
-  <data name="rdoUserName_FullName.Text" xml:space="preserve">
-    <value>Display Name</value>
-  </data>
-  <data name="lblChildBlogs.Text" xml:space="preserve">
-    <value>Child Blogs</value>
-  </data>
   <data name="lblPublic.Text" xml:space="preserve">
     <value>Make Public</value>
-  </data>
-  <data name="lblOptions.Text" xml:space="preserve">
-    <value>About</value>
   </data>
   <data name="lblTitle.Help" xml:space="preserve">
     <value>This is the display title for your blog. It will display at the top of your 
 			entry list and in the blog directory.</value>
   </data>
-  <data name="lblSyndicationOptions.Text" xml:space="preserve">
-    <value>Syndication Options</value>
-  </data>
-  <data name="msgCreateBlog.Text" xml:space="preserve">
-    <value>Create new Blog</value>
-  </data>
   <data name="lblSyndicationEmail.Help" xml:space="preserve">
     <value>Use this email for the "Managing Editor" rss field.</value>
-  </data>
-  <data name="lblDateTime.Help" xml:space="preserve">
-    <value>These options control how date and time are displayed within your blog. This 
-			setting effects all categories and entries within your blog.</value>
   </data>
   <data name="lblDescription.Help" xml:space="preserve">
     <value>This is a brief summary description of your blog. It's a good place to describe 
 			your intentions with your blog and what information readers can expect.</value>
   </data>
-  <data name="msgEditBlog.Text" xml:space="preserve">
-    <value>Edit Blog</value>
-  </data>
-  <data name="msgCreateNewChildBlog.Text" xml:space="preserve">
-    <value>Create new Child Blog</value>
-  </data>
   <data name="valTitle.ErrorMessage" xml:space="preserve">
     <value>Title is required</value>
   </data>
-  <data name="msgDeleteBlog.Text" xml:space="preserve">
-    <value>Are you sure you want to delete this blog ?</value>
-  </data>
-  <data name="lblAutoTrackbacks.Text" xml:space="preserve">
-    <value>Trackback Auto Discovery (Client Mode)</value>
-  </data>
-  <data name="chkAutoTrackbacks.Help" xml:space="preserve">
-    <value>If you enable this option an auto discovery for trackbacks will be done while saving your blog entry</value>
-  </data>
-  <data name="lblCaptcha.Text" xml:space="preserve">
-    <value>Require CAPTCHA</value>
-  </data>
-  <data name="lblCommentOptions.Text" xml:space="preserve">
-    <value>Comments &amp; Syndication</value>
-  </data>
-  <data name="lblTrackbackOptions.Help" xml:space="preserve">
-    <value>These options control the Trackback related settings.</value>
-  </data>
-  <data name="lblMetaWeblogOptions.Text" xml:space="preserve">
-    <value>MetaWeblog Options</value>
-  </data>
-  <data name="lblRegenerate.Text" xml:space="preserve">
-    <value>Regenerate Blog PermaLinks</value>
-  </data>
-  <data name="lblRegenerate.Help" xml:space="preserve">
-    <value>Regenerate all blog permalinks.  This link can be used after the Friendly URLs setting has been changed for the site.</value>
-  </data>
-  <data name="cmdGenerateLinks.Text" xml:space="preserve">
-    <value>Regenerate Blog Permalinks</value>
-  </data>
   <data name="lblAllowAnonymousComments.Text" xml:space="preserve">
     <value>Comments by Unauthenticated Users</value>
-  </data>
-  <data name="lblUsersComments.Text" xml:space="preserve">
-    <value>Comments by Registered Users</value>
-  </data>
-  <data name="rdoComments_Allow.Text" xml:space="preserve">
-    <value>Allow</value>
-  </data>
-  <data name="rdoComments_Disallow.Text" xml:space="preserve">
-    <value>Disallow</value>
-  </data>
-  <data name="rdoComments_RequireApproval.Text" xml:space="preserve">
-    <value>Require approval</value>
-  </data>
-  <data name="lblTrackbacks.Text" xml:space="preserve">
-    <value>Trackback Comments</value>
-  </data>
-  <data name="txtTweetTemplate.Text" xml:space="preserve">
-    <value>Blogged: {title} - {url}</value>
-  </data>
-  <data name="lblAvailableTokens.Text" xml:space="preserve">
-    <value>Available Tokens:</value>
-  </data>
-  <data name="lblChildBlogsOff.Text" xml:space="preserve">
-    <value>Child blogs have been switched off by the administrator. Please use categories instead. You can still edit existing child blogs but you won't be able to add new ones.</value>
   </data>
   <data name="lblMetaWeblogNotAvailable.Text" xml:space="preserve">
     <value>MetaWeblog clients integration has been disabled</value>
@@ -271,56 +159,17 @@
   <data name="lblAllowAnonymousComments.Help" xml:space="preserve">
     <value>These are users who are either not logged into the website or they are not members of the community (in other words, anonymous).</value>
   </data>
-  <data name="lblCaptcha.Help" xml:space="preserve">
-    <value>If checked, site visitors will have to enter a CAPTCHA when posting a comment.</value>
-  </data>
-  <data name="lblMetaWebBlog.Help" xml:space="preserve">
-    <value>Use the following URL to connect to your blog using a MetaWeblog enabled client such as Windows Live Writer or Word 2007.  Change the tabid parameter as needed if this blog appears on a different tab.</value>
-  </data>
-  <data name="lblMetaWebBlog.Text" xml:space="preserve">
-    <value>MetaWeblog URL</value>
-  </data>
   <data name="lblPublic.Help" xml:space="preserve">
     <value>If checked, site visitors will be able to view your blog entries (if they can view the blog page/module). </value>
   </data>
   <data name="lblSyndicate.Help" xml:space="preserve">
     <value>If checked, the blog will be available to other site visitors via RSS.</value>
   </data>
-  <data name="lblSyndicateIndependant.Help" xml:space="preserve">
-    <value>If not checked it will be syndicated as a category of the parent blog.</value>
-  </data>
   <data name="lblSyndicationEmail.Text" xml:space="preserve">
     <value>Syndication Email</value>
   </data>
-  <data name="lblTimeOptions.Text" xml:space="preserve">
-    <value>Date, Time &amp; Culture</value>
-  </data>
-  <data name="lblTrackbacks.Help" xml:space="preserve">
-    <value>See http://en.wikipedia.org/wiki/Trackback for futher details. </value>
-  </data>
-  <data name="lblUserIdentity.Help" xml:space="preserve">
-    <value>The format your name will be displayed when users are viewing your blog entries (on the site or via syndication).</value>
-  </data>
-  <data name="lblUsersComments.Help" xml:space="preserve">
-    <value>These are users who are known to this website and logged in when commenting (members of the community). </value>
-  </data>
-  <data name="lblAuthorMode.Help" xml:space="preserve">
-    <value>Personal (default) - Grants only the blog owner permission to post to this blog, Ghost Writer - Enables the owner and ghost writers the ability to post but all posts will appear to be authored by the blog owner, 3 - All Bloggers - All bloggers (not ghost writers) are permitted to post to this blog and will be credited as the entry authors.</value>
-  </data>
-  <data name="lblAuthorMode.Text" xml:space="preserve">
-    <value>Authoring Mode</value>
-  </data>
-  <data name="BloggerMode.Text" xml:space="preserve">
-    <value>All Bloggers</value>
-  </data>
-  <data name="ControlTitle_edit_blog.Text" xml:space="preserve">
-    <value>Individual Blog Settings</value>
-  </data>
-  <data name="GhostMode.Text" xml:space="preserve">
-    <value>Ghost Writer</value>
-  </data>
-  <data name="PersonalMode.Text" xml:space="preserve">
-    <value>Personal</value>
+  <data name="ControlTitle_blogedit.Text" xml:space="preserve">
+    <value>Edit Blog</value>
   </data>
   <data name="lblAllowComments.Help" xml:space="preserve">
     <value>If checked, registered users will be permitted to post comments (how this is done is controlled at the module level).</value>
@@ -342,9 +191,6 @@
   </data>
   <data name="lblIncludeImagesInFeed.Text" xml:space="preserve">
     <value>Include Images In Feed</value>
-  </data>
-  <data name="lblGhostOptions.Text" xml:space="preserve">
-    <value>Ghostwriting Options</value>
   </data>
   <data name="lblMustApproveGhostPosts.Help" xml:space="preserve">
     <value>If selected all posts written by someone else than the blog's owner must be approved by someone who has approval permissions or the owner.</value>

@@ -120,7 +120,7 @@
     return split(term).pop();
    }
 
-   var myTextArea = $('#<%= txtTags.ClientID  %>').tagify({ delimiters: [9, 13, 44, 59, 188], addTagPrompt: '<%= Localization.GetString("AddTags", LocalResourceFile) %>' }); // tab, return, comma, semicolon
+   var myTextArea = $('#<%= txtTags.ClientID  %>').tagify({ delimiters: [9, 13, 44, 59, 188], addTagPrompt: '<%= LocalizeString("AddTags") %>' }); // tab, return, comma, semicolon
    myTextArea.tagify('inputField').autocomplete({
     source: function (request, response) {
      $.ajax({

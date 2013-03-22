@@ -63,7 +63,7 @@ Namespace Controls
      Else
       objComment.CommentID = CommentsController.AddComment(Blog, Entry, objComment)
       If Not objComment.Approved Then
-       UI.Skins.Skin.AddModuleMessage(Me, Localization.GetString("CommentPendingApproval", LocalResourceFile), ModuleMessage.ModuleMessageType.BlueInfo)
+       UI.Skins.Skin.AddModuleMessage(Me, LocalizeString("CommentPendingApproval"), ModuleMessage.ModuleMessageType.BlueInfo)
       End If
      End If
      txtComment.Text = String.Empty
@@ -82,7 +82,7 @@ Namespace Controls
      If Not oComment Is Nothing Then
       txtComment.Text = Common.Globals.RemoveHtmlTags(Server.HtmlDecode(oComment.Comment))
       SelectedCommentId = oComment.CommentID
-      cmdAddComment.Text = Localization.GetString("msgUpdateComment", LocalResourceFile)
+      cmdAddComment.Text = LocalizeString("msgUpdateComment")
       cmdDeleteComment.Visible = True
      End If
    End Select
@@ -109,8 +109,8 @@ Namespace Controls
     lstComments.DataSource = CommentsController.GetCommentsByContentItem(Entry.ContentItemId, Security.CanApproveEntry)
     lstComments.DataBind()
     txtComment.Text = ""
-    lblComments.Text = String.Format(Localization.GetString("lblComments", LocalResourceFile), lstComments.Items.Count)
-    cmdAddComment.Text = Localization.GetString("msgAddComment", LocalResourceFile)
+    lblComments.Text = String.Format(LocalizeString("lblComments"), lstComments.Items.Count)
+    cmdAddComment.Text = LocalizeString("msgAddComment")
     cmdDeleteComment.Visible = False
    End If
   End Sub

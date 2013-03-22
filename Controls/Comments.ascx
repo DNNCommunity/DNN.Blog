@@ -28,11 +28,11 @@
       <a href="#" onclick="blogService.approveComment(<%=BlogID%>, <%# DataBinder.Eval(Container.DataItem, "CommentID") %>, function() {$('#cmdApproveComment<%# DataBinder.Eval(Container.DataItem, "CommentID") %>').hide()});return false;" 
          id="cmdApproveComment<%# DataBinder.Eval(Container.DataItem, "CommentID") %>"
          class="icon16 entypoButton approveComment" 
-         title="Approve"
+         title="<%= LocalizeString("Approve") %>"
          style="display:<%# IIF(NOT CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Comments.CommentInfo).Approved AND Security.CanApproveComment, "inline", "none") %>">&#128077;</a>
       <a href="#" onclick="if (confirm('<%= LocalizeString("DeleteComment") %>')) {blogService.deleteComment(<%=BlogID%>, <%# DataBinder.Eval(Container.DataItem, "CommentID") %>, function() {$('#commentDiv<%# DataBinder.Eval(Container.DataItem, "CommentID") %>').hide()})};return false;" 
          class="icon16 entypoButton deleteComment" 
-         title="Delete"
+         title="<%= LocalizeString("Delete") %>"
          style="display:<%# IIF(Security.CanApproveComment, "inline", "none") %>">&#59177;</a>
 					</div>
 				</div>
@@ -53,8 +53,8 @@
 				<dd><asp:TextBox ID="txtComment" runat="server" TextMode="MultiLine" Rows="8" Width="100%" /></dd>
 			</dl>
 			<ul class="dnnActions">
-				<li><asp:LinkButton ID="cmdAddComment" runat="server" CssClass="dnnPrimaryAction" /></li>
-				<li><asp:LinkButton ID="cmdDeleteComment" runat="server" ResourceKey="cmdDelete" CssClass="dnnSecondaryAction" Visible="False" /></li>
+				<li><asp:LinkButton ID="cmdAddComment" runat="server" CssClass="dnnPrimaryAction" ResourceKey="cmdAddComment" /></li>
+				<li><asp:LinkButton ID="cmdDeleteComment" runat="server" ResourceKey="cmdDeleteComment" CssClass="dnnSecondaryAction" Visible="False" /></li>
 			</ul>
 		</fieldset>
 	</div>

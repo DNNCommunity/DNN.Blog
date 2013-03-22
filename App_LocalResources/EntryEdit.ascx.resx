@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="valDescription.ErrorMessage" xml:space="preserve">
-    <value>Description is required</value>
-  </data>
   <data name="lblCopyright.Text" xml:space="preserve">
     <value>Copyright</value>
   </data>
@@ -128,18 +125,6 @@
   </data>
   <data name="lblTitle.Text" xml:space="preserve">
     <value>Title</value>
-  </data>
-  <data name="lblAttachmentDescription.Text" xml:space="preserve">
-    <value>Description</value>
-  </data>
-  <data name="lblEntryDate.Text" xml:space="preserve">
-    <value>Entry Date (local time)</value>
-  </data>
-  <data name="secLinkedFiles.Text" xml:space="preserve">
-    <value>Linked Files</value>
-  </data>
-  <data name="lblDescription.Text" xml:space="preserve">
-    <value>Blog</value>
   </data>
   <data name="ModuleHelp.Text" xml:space="preserve">
     <value>&lt;h1&gt;Blog - Edit Entry&lt;/h1&gt;
@@ -157,95 +142,11 @@
   <data name="lblDisplayCopyright.Help" xml:space="preserve">
     <value>If checked, displays a copyright notice at the bottom of your entry.</value>
   </data>
-  <data name="valUpload.ErrorMessage" xml:space="preserve">
-    <value>The File [FILENAME] Is A Restricted File Type for Images. Valid File Types Include JPG, GIF and PNG&lt;br&gt;</value>
-  </data>
-  <data name="lblAddAttachment.Text" xml:space="preserve">
-    <value>Attachment</value>
-  </data>
-  <data name="msgCopyright.Text" xml:space="preserve">
-    <value>Copyright ©</value>
-  </data>
-  <data name="btnUploadAttachment.Text" xml:space="preserve">
-    <value>Upload</value>
-  </data>
-  <data name="valEntryDateData.ErrorMessage" xml:space="preserve">
-    <value>Entry Date is not a valid date</value>
-  </data>
-  <data name="lnkDeleteFile.AlternateText" xml:space="preserve">
-    <value>Delete File !</value>
-  </data>
-  <data name="cboChildBlogs.DataTextField" xml:space="preserve">
-    <value>Title</value>
-  </data>
-  <data name="msgEnsureDeleteFile.Text" xml:space="preserve">
-    <value>Are you really sure to delete the file</value>
-  </data>
-  <data name="btnUploadPicture.Text" xml:space="preserve">
-    <value>Upload</value>
-  </data>
-  <data name="valEntryDate.ErrorMessage" xml:space="preserve">
-    <value>Entry Date is required</value>
-  </data>
-  <data name="lblAltText.Text" xml:space="preserve">
-    <value>Alt Text</value>
-  </data>
-  <data name="lblAddPicture.Text" xml:space="preserve">
-    <value>Picture</value>
-  </data>
-  <data name="secEntryOptions.Text" xml:space="preserve">
-    <value>Options</value>
-  </data>
-  <data name="lblEntryOptions.Text" xml:space="preserve">
-    <value>Entry Options</value>
-  </data>
-  <data name="secUploadOption.Text" xml:space="preserve">
-    <value>Upload Options</value>
-  </data>
-  <data name="lblChildBlog.Text" xml:space="preserve">
-    <value>Parent Blog</value>
-  </data>
-  <data name="txtDescriptionOptional.Text" xml:space="preserve">
-    <value>(The summary is optional, if you choose to not supply one, a short summary will be generated from your entry.)</value>
-  </data>
-  <data name="msgAddBlogEntry.Text" xml:space="preserve">
-    <value>Add blog entry</value>
-  </data>
-  <data name="msgEditBlogEntry.Text" xml:space="preserve">
-    <value>Edit blog entry</value>
-  </data>
-  <data name="lblTrackbackUrl.Text" xml:space="preserve">
-    <value>Trackback Url</value>
-  </data>
-  <data name="Filename.Header" xml:space="preserve">
-    <value>File Name</value>
-  </data>
   <data name="lblCategories.Text" xml:space="preserve">
     <value>Categories</value>
   </data>
   <data name="lblTags.Text" xml:space="preserve">
     <value>Tags</value>
-  </data>
-  <data name="Published.Status" xml:space="preserve">
-    <value>This post has been published</value>
-  </data>
-  <data name="UnPublished.Status" xml:space="preserve">
-    <value>This entry is still a draft: it will not be visible to readers until it is published.</value>
-  </data>
-  <data name="SaveAndOffline.Text" xml:space="preserve">
-    <value>Save and take offline</value>
-  </data>
-  <data name="Save.Text" xml:space="preserve">
-    <value>Save</value>
-  </data>
-  <data name="SaveAndOffline.Confirm" xml:space="preserve">
-    <value>This will save your changes and take the post offline. Other users will not be able to see it any longer. Do you wish to continue?</value>
-  </data>
-  <data name="SaveAndPublish.Text" xml:space="preserve">
-    <value>Save and publish</value>
-  </data>
-  <data name="SaveAsDraft.Text" xml:space="preserve">
-    <value>Save as draft</value>
   </data>
   <data name="lblAllowComments.Text" xml:space="preserve">
     <value>Enable Comments</value>
@@ -256,32 +157,11 @@
   <data name="AddTags.Text" xml:space="preserve">
     <value>start typing to associate tags</value>
   </data>
-  <data name="lblEntryTime.Text" xml:space="preserve">
-    <value>Post Time (Local)</value>
-  </data>
-  <data name="lblTimezone.Text" xml:space="preserve">
-    <value>Timezone</value>
-  </data>
-  <data name="valEntryTime.ErrorMessage" xml:space="preserve">
-    <value>Please enter a correct time</value>
-  </data>
-  <data name="reqEntryTime.ErrorMessage" xml:space="preserve">
-    <value>A time is required</value>
-  </data>
   <data name="lblPublishDate.Text" xml:space="preserve">
     <value>Publish Date</value>
   </data>
-  <data name="PublishTimeZoneNote.Text" xml:space="preserve">
-    <value>The publish date is based on your profile timezone of: </value>
-  </data>
-  <data name="cmdDraft.Text" xml:space="preserve">
-    <value>Save Draft</value>
-  </data>
-  <data name="cmdPublish.Text" xml:space="preserve">
-    <value>Publish</value>
-  </data>
-  <data name="ControlTitle_edit_entry.Text" xml:space="preserve">
-    <value>Entry Editing</value>
+  <data name="ControlTitle_entryedit.Text" xml:space="preserve">
+    <value>Edit Post</value>
   </data>
   <data name="lblBlog.Help" xml:space="preserve">
     <value>Select blog to use for this post</value>
@@ -327,5 +207,8 @@
   </data>
   <data name="Title.Text" xml:space="preserve">
     <value>Title and Summary</value>
+  </data>
+  <data name="PublishTimeZoneNote.Text" xml:space="preserve">
+    <value>The publish date is based on your profile timezone of: </value>
   </data>
 </root>

@@ -163,7 +163,7 @@
     <value>Allow All Languages</value>
   </data>
   <data name="lblAllowAttachments.Help" xml:space="preserve">
-    <value>If selected bloggers can upload files for a blog post</value>
+    <value>If selected bloggers can upload files for a blog post using Windows Live Writer. If not then uploading will be blocked.</value>
   </data>
   <data name="lblAllowAttachments.Text" xml:space="preserve">
     <value>Allow Attachments</value>
@@ -185,12 +185,6 @@
   </data>
   <data name="lblEmail.Text" xml:space="preserve">
     <value>Email</value>
-  </data>
-  <data name="lblUseSummary.Help" xml:space="preserve">
-    <value>When selected users can define a summary for their post. In Windows Live Writer bloggers can specify an 'excerpt' which does the same.</value>
-  </data>
-  <data name="lblUseSummary.Text" xml:space="preserve">
-    <value>Use Summary</value>
   </data>
   <data name="lblVocabularyId.Help" xml:space="preserve">
     <value>Select the vocabulary to use for storing the categories of this module and all its blogs</value>
