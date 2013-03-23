@@ -342,13 +342,6 @@
       <DependentUpon>ViewSettings.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="WLWManifest.aspx.designer.vb">
-      <DependentUpon>WLWManifest.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="WLWManifest.aspx.vb">
-      <DependentUpon>WLWManifest.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_LocalResources\BlogEdit.ascx.resx" />
@@ -377,7 +370,6 @@
     <Content Include="Templates\_default\EntryThumbnail.html" />
     <Content Include="Templates\_default\template.css" />
     <Content Include="Templates\_default\Template.html" />
-    <Content Include="WLWManifest.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Templates\tagCloud\images\" />

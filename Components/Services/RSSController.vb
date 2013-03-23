@@ -28,6 +28,7 @@ Imports System.Net
 Imports System.Net.Http
 Imports System.Web.Http
 Imports DotNetNuke.Web.Api
+Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
 Imports DotNetNuke.Modules.Blog.Entities.Entries
 Imports DotNetNuke.Modules.Blog.Security
@@ -48,10 +49,11 @@ Namespace Services
   <DnnModuleAuthorize(accesslevel:=DotNetNuke.Security.SecurityAccessLevel.View)>
   <ActionName("Get")>
   Public Function GetRss() As HttpResponseMessage
+   Dim res As New HttpResponseMessage(HttpStatusCode.OK)
    Dim queryString As NameValueCollection = HttpUtility.ParseQueryString(Me.Request.RequestUri.Query)
    Dim feed As New BlogRssFeed(ActiveModule.ModuleID, queryString)
-   HttpContext.Current.Response.WriteFile(feed.CacheFile)
-   Return Request.CreateResponse(HttpStatusCode.OK, "")
+   res.Content = New StringContent(ReadFile(feed.CacheFile), System.Text.Encoding.UTF8, "application/xml")
+   Return res
   End Function
 #End Region
 

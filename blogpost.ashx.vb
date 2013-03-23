@@ -84,7 +84,7 @@ Public Class BlogPost
    For Each blog As BlogInfo In BlogsController.GetBlogsByModule(ModuleId, UserInfo.UserID).Values.Where(Function(b)
                                                                                                           Return b.CreatedByUserID = UserInfo.UserID Or b.CanAdd Or b.CanEdit
                                                                                                          End Function).ToList
-    blogs.Add(New BlogInfoStruct() With {.blogid = blog.BlogID.ToString, .blogName = blog.Title, .url = GetRedirectUrl(TabId)})
+    blogs.Add(New BlogInfoStruct() With {.blogid = blog.BlogID.ToString, .blogName = blog.Title, .url = GetRedirectUrl(TabId, blog.ModuleID)})
    Next
   Catch mex As BlogPostException
    Throw New XmlRpcFaultException(0, GetString(mex.ResourceKey, mex.Message))
@@ -659,12 +659,12 @@ Public Class BlogPost
   Return retValue
  End Function
 
- Private Function GetRedirectUrl(TabId As Integer) As String
+ Private Function GetRedirectUrl(tabId As Integer, moduleId As Integer) As String
   Dim appPath As String = HttpContext.Current.Request.ApplicationPath
   If appPath = "/" Then
    appPath = String.Empty
   End If
-  Dim returnUrl As String = appPath + "/DesktopModules/Blog/blogpostredirect.aspx?tab=" + TabId.ToString
+  Dim returnUrl As String = appPath + String.Format("/DesktopModules/Blog/blogpostredirect.aspx?tab={0}&ModuleId={1}", tabId, moduleId)
   Return returnUrl
  End Function
 #End Region

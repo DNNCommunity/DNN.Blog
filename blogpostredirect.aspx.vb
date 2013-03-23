@@ -20,7 +20,7 @@
 
 Imports DotNetNuke.Data
 Imports DotNetNuke.Modules.Blog.MetaWeblog
-Imports DotNetNuke.Modules.Blog.Common
+Imports DotNetNuke.Modules.Blog.Common.Globals
 
 Namespace MetaWeblog
 
@@ -32,8 +32,10 @@ Namespace MetaWeblog
    Dim intendedUrl As String = String.Empty
    Dim bStyleDetectionPost As Boolean = False
    Dim moduleId As Integer = -1
+   Dim tabId As Integer = -1
 
    Request.Params.ReadValue("ModuleId", moduleId)
+   Request.Params.ReadValue("tab", tabId)
    Dim settings As ModuleSettings = ModuleSettings.GetModuleSettings(moduleId)
 
    ' Check to see if this is a style detection post.
@@ -64,7 +66,7 @@ Namespace MetaWeblog
      Dim link As New HtmlGenericControl("link")
      link.Attributes.Add("rel", "wlwmanifest")
      link.Attributes.Add("type", "application/wlwmanifest+xml")
-     link.Attributes.Add("href", DotNetNuke.Common.Globals.ApplicationPath & Globals.ManifestFilePath(moduleId))
+     link.Attributes.Add("href", ResolveUrl(ManifestFilePath(tabId, moduleId)))
      link.Visible = True
 
      phHead.Controls.Add(link)

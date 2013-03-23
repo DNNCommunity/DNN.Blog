@@ -33,6 +33,8 @@ Imports DotNetNuke.Modules.Blog.Entities.Entries
 Imports DotNetNuke.Modules.Blog.Security
 Imports DotNetNuke.Modules.Blog.Integration
 Imports DotNetNuke.Entities.Modules
+Imports System.Xml
+Imports System.Net.Http.Formatting
 
 Namespace Services
 
@@ -83,6 +85,63 @@ Namespace Services
    newSettings.UpdateSettings(objModule.TabModuleID)
 
    Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = "success"})
+
+  End Function
+
+  <HttpGet()>
+  <AllowAnonymous()>
+  <ActionName("Manifest")>
+  Public Function GetManifest() As HttpResponseMessage
+
+   Dim res As New HttpResponseMessage(HttpStatusCode.OK)
+
+   Using out As New IO.StringWriter
+    Using output As New XmlTextWriter(out)
+     Dim bs As ModuleSettings = ModuleSettings.GetModuleSettings(ActiveModule.ModuleID)
+
+     output.Formatting = Formatting.Indented
+     output.WriteStartDocument()
+     output.WriteStartElement("manifest")
+     output.WriteAttributeString("xmlns", "http://schemas.microsoft.com/wlw/manifest/weblog")
+     output.WriteStartElement("options")
+
+     output.WriteElementString("clientType", "Metaweblog")
+     output.WriteElementString("supportsMultipleCategories", bs.AllowMultipleCategories.ToYesNo)
+     output.WriteElementString("supportsCategories", CBool(bs.VocabularyId <> -1).ToYesNo)
+     output.WriteElementString("supportsCustomDate", "Yes")
+     output.WriteElementString("supportsKeywords", "Yes")
+     output.WriteElementString("supportsTrackbacks", "No")
+     output.WriteElementString("supportsEmbeds", "No")
+     output.WriteElementString("supportsAuthor", "No")
+     output.WriteElementString("supportsExcerpt", (CBool(bs.SummaryModel = Globals.SummaryType.PlainTextIndependent)).ToYesNo)
+     output.WriteElementString("supportsPassword", "No")
+     output.WriteElementString("supportsPages", "No")
+     output.WriteElementString("supportsPageParent", "No")
+     output.WriteElementString("supportsPageOrder", "No")
+     output.WriteElementString("supportsEmptyTitles", "No")
+     output.WriteElementString("supportsExtendedEntries", (CBool(bs.SummaryModel = Globals.SummaryType.HtmlPrecedesPost)).ToYesNo)
+     output.WriteElementString("supportsCommentPolicy", "Yes")
+     output.WriteElementString("supportsPingPolicy", "No")
+     output.WriteElementString("supportsPostAsDraft", "Yes")
+     output.WriteElementString("supportsFileUpload", "Yes")
+     output.WriteElementString("supportsSlug", "No")
+     output.WriteElementString("supportsHierarchicalCategories", "Yes")
+     output.WriteElementString("supportsCategoriesInline", "Yes")
+     output.WriteElementString("supportsNewCategories", bs.BloggersCanEditCategories.ToYesNo)
+     output.WriteElementString("supportsNewCategoriesInline", "No")
+     output.WriteElementString("requiresXHTML", "Yes")
+
+     output.WriteEndElement() ' options
+     output.WriteEndElement() ' manifest
+     output.Flush()
+
+    End Using
+
+    res.Content = New StringContent(out.ToString, System.Text.Encoding.UTF8, "application/xml")
+
+   End Using
+
+   Return res
 
   End Function
 #End Region
