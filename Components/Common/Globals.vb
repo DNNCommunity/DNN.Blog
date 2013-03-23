@@ -76,11 +76,23 @@ Namespace Common
 #End Region
 
 #Region " Other "
+  Public Shared Function GetBlogDirectoryMapPath(blogId As Integer) As String
+   Return String.Format("{0}Blog\Files\{1}\", DotNetNuke.Entities.Portals.PortalSettings.Current.HomeDirectoryMapPath, blogId)
+  End Function
+  Public Shared Function GetBlogDirectoryPath(blogId As Integer) As String
+   Return String.Format("{0}Blog/Files/{1}/", DotNetNuke.Entities.Portals.PortalSettings.Current.HomeDirectory, blogId)
+  End Function
+  Public Shared Function GetPostDirectoryMapPath(blogId As Integer, postId As Integer) As String
+   Return String.Format("{0}Blog\Files\{1}\{2}\", DotNetNuke.Entities.Portals.PortalSettings.Current.HomeDirectoryMapPath, blogId, postId)
+  End Function
+  Public Shared Function GetPostDirectoryPath(blogId As Integer, postId As Integer) As String
+   Return String.Format("{0}Blog/Files/{1}/{2}/", DotNetNuke.Entities.Portals.PortalSettings.Current.HomeDirectory, blogId, postId)
+  End Function
   Public Shared Function GetPostDirectoryMapPath(post As Entities.Entries.EntryInfo) As String
-   Return String.Format("{0}Blog\Files\{1}\{2}\", DotNetNuke.Entities.Portals.PortalSettings.Current.HomeDirectoryMapPath, post.BlogID, post.ContentItemId)
+   Return GetPostDirectoryMapPath(post.BlogID, post.ContentItemId)
   End Function
   Public Shared Function GetPostDirectoryPath(post As Entities.Entries.EntryInfo) As String
-   Return String.Format("{0}Blog/Files/{1}/{2}/", DotNetNuke.Entities.Portals.PortalSettings.Current.HomeDirectory, post.BlogID, post.ContentItemId)
+   Return GetPostDirectoryPath(post.BlogID, post.ContentItemId)
   End Function
   Public Shared Function GetTempPostDirectoryMapPath(blogId As Integer) As String
    Return String.Format("{0}Blog\Files\{1}\_temp_images\", DotNetNuke.Entities.Portals.PortalSettings.Current.HomeDirectoryMapPath, blogId)
@@ -147,6 +159,25 @@ Namespace Common
   Public Shared Function GetSafePageName(pageName As String) As String
    Return Regex.Replace(Regex.Replace(pageName, "[^\w^\d]", "-").Trim("-"c), "-+", "-")
   End Function
+
+  Public Shared Sub RemoveOldTimeStampedFiles(dir As IO.DirectoryInfo)
+   Dim today As String = Date.Now.ToString("yyyy-MM-dd")
+   Dim deleteList As New List(Of String)
+   For Each f As IO.FileInfo In dir.GetFiles
+    Dim m As Match = Regex.Match(f.Name, "^(\d\d\d\d-\d\d-\d\d)-")
+    If m.Success Then
+     If m.Groups(1).Value < today Then
+      deleteList.Add(f.FullName)
+     End If
+    End If
+   Next
+   For Each f As String In deleteList
+    Try
+     IO.File.Delete(f)
+    Catch ex As Exception
+    End Try
+   Next
+  End Sub
 #End Region
 
  End Class

@@ -1,5 +1,6 @@
 ﻿Imports System.Web
 Imports System.Web.Services
+Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
 Imports DotNetNuke.Modules.Blog.Entities.Entries
 Imports DotNetNuke.Entities.Portals
@@ -32,9 +33,9 @@ Public Class BlogImage
   Try
    Dim path As String = ""
    If EntryId > -1 Then ' we're looking for an entry's image
-    path = PortalSettings.HomeDirectoryMapPath & String.Format("\Blog\Files\{0}\{1}\", BlogId, EntryId)
+    path = GetPostDirectoryMapPath(BlogId, EntryId)
    ElseIf BlogId > -1 Then ' we're looking for a blog's image
-    path = PortalSettings.HomeDirectoryMapPath & String.Format("\Blog\Files\{0}\", BlogId)
+    path = GetBlogDirectoryMapPath(BlogId)
    End If
    Dim files() As String = IO.Directory.GetFiles(path, String.Format("{0}-{1}-{2}-{3}.*", Key, Width, Height, Crop))
    If files.Length > 0 Then

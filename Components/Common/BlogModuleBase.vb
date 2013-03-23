@@ -21,6 +21,7 @@
 Imports DotNetNuke.Web.Client.ClientResourceManagement
 Imports DotNetNuke.Entities.Modules
 Imports DotNetNuke.Framework
+Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.Security
 Imports DotNetNuke.Services.Tokens
 
@@ -59,9 +60,9 @@ Namespace Common
    If BlogId > -1 And Entry IsNot Nothing AndAlso Entry.BlogID <> BlogId Then Entry = Nothing ' double check in case someone is hacking to retrieve an entry from another blog
    If BlogId = -1 And Entry IsNot Nothing Then BlogId = Entry.BlogID
    If BlogId > -1 Then Blog = Entities.Blogs.BlogsController.GetBlog(BlogId, UserInfo.UserID)
-   If BlogId > -1 Then BlogMapPath = PortalSettings.HomeDirectoryMapPath & String.Format("\Blog\Files\{0}\", BlogId)
+   If BlogId > -1 Then BlogMapPath = GetBlogDirectoryMapPath(BlogId)
    If BlogMapPath <> "" AndAlso Not IO.Directory.Exists(BlogMapPath) Then IO.Directory.CreateDirectory(BlogMapPath)
-   If ContentItemId > -1 Then EntryMapPath = PortalSettings.HomeDirectoryMapPath & String.Format("\Blog\Files\{0}\{1}\", BlogId, ContentItemId)
+   If ContentItemId > -1 Then EntryMapPath = GetPostDirectoryMapPath(BlogId, ContentItemId)
    If EntryMapPath <> "" AndAlso Not IO.Directory.Exists(EntryMapPath) Then IO.Directory.CreateDirectory(EntryMapPath)
    If TermId > -1 Then Term = Entities.Terms.TermsController.GetTerm(TermId, Settings.ModuleId)
    ' set urls for use in module

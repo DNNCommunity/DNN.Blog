@@ -188,22 +188,6 @@ Public Class BlogPost
 
  Public Function setPostCategories(postid As String, username As String, password As String, categories As Category()) As Boolean Implements IMoveableType.setPostCategories
   ' The set is handled in the saving
-  'InitializeMethodCall(username, password)
-
-  'Dim EntriesController As New EntriesController
-  'Dim objEntry As EntryInfo = EntriesController.GetEntry(Convert.ToInt32(postid), _portalSettings.PortalId)
-  'Dim terms As New List(Of Term)
-
-  'For Each t As Category In categories
-  '    Dim objTerm As Term = Integration.Terms.GetTermById(Convert.ToInt32(t.categoryId), _blogSettings.VocabularyId)
-  '    terms.Add(objTerm)
-  'Next
-
-  'objEntry.Terms.Clear()
-  'objEntry.Terms.AddRange(terms)
-
-  'EntriesController.UpdateEntry(objEntry, _tabId, _portalSettings.PortalId, _blogSettings.VocabularyId)
-
   Return True
  End Function
 
@@ -213,8 +197,9 @@ Public Class BlogPost
 
   Dim posts As New List(Of Post)
   Try
-   Dim arEntries As List(Of EntryInfo) = EntriesController.GetEntriesByBlog(CInt(blogid), 1, Settings.WLWRecentEntriesMax, "PublishedOnDate DESC")
-   For Each entry As EntryInfo In arEntries
+   Dim totalRecs As Integer
+   Dim arEntries As Dictionary(Of Integer, EntryInfo) = EntriesController.GetEntriesByBlog(ModuleId, CInt(blogid), UserInfo.UserID, 1, Settings.WLWRecentEntriesMax, "PublishedOnDate DESC", totalRecs)
+   For Each entry As EntryInfo In arEntries.Values
     posts.Add(ToPost(entry))
    Next
   Catch ex As BlogPostException

@@ -25,7 +25,7 @@ Namespace BlogML.Xml
     m_ContentType = Value
    End Set
   End Property
-  Private m_ContentType As ContentTypes
+  Private m_ContentType As ContentTypes = ContentTypes.Text
 
   ' Encoded Text
   <XmlText()> _

@@ -130,7 +130,7 @@ Public Class BlogEdit
     If fileImage.HasFile Then
      Dim extension As String = IO.Path.GetExtension(fileImage.FileName).ToLower
      If glbPermittedFileExtensions.IndexOf(extension & ",") > -1 Then
-      Dim saveDir As String = PortalSettings.HomeDirectoryMapPath & String.Format("\Blog\Files\{0}\", BlogId)
+      Dim saveDir As String = GetBlogDirectoryMapPath(BlogId)
       If Not IO.Directory.Exists(saveDir) Then IO.Directory.CreateDirectory(saveDir)
       If Blog.Image <> "" Then
        ' remove old images
@@ -167,7 +167,7 @@ Public Class BlogEdit
   If Blog IsNot Nothing Then
    If Blog.Image <> "" Then
     ' remove old images
-    Dim saveDir As String = PortalSettings.HomeDirectoryMapPath & String.Format("\Blog\Files\{0}\", BlogId)
+    Dim saveDir As String = GetBlogDirectoryMapPath(BlogId)
     Dim imagesToDelete As New List(Of String)
     Dim d As New IO.DirectoryInfo(saveDir)
     For Each f As IO.FileInfo In d.GetFiles

@@ -186,6 +186,7 @@
     <Compile Include="Components\Integration\Integration.vb" />
     <Compile Include="Components\Rss\BlogRssFeed.vb" />
     <Compile Include="Components\Security\Security.vb" />
+    <Compile Include="Components\Services\BlogController.vb" />
     <Compile Include="Components\Services\RSSController.vb" />
     <Compile Include="Components\Services\ModulesController.vb" />
     <Compile Include="Components\Services\WLW\Blogger\IBlogger.vb" />
@@ -244,7 +245,6 @@
     <Compile Include="Components\Entities\Blogs\BlogsController_FK.vb" />
     <Compile Include="Components\Entities\Comments\CommentInfo.vb" />
     <Compile Include="Components\Entities\Entries\EntriesController_CRUD.vb" />
-    <Compile Include="Components\Entities\Entries\EntriesController_FK.vb" />
     <Compile Include="Components\Entities\Entries\EntryInfo_Interfaces.vb" />
     <Compile Include="Components\Entities\Entries\EntryInfo_Properties.vb" />
     <Compile Include="Components\Entities\Entries\EntryInfo.vb" />

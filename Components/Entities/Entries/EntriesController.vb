@@ -110,6 +110,34 @@ Namespace Entities.Entries
 
   End Function
 
+  Public Shared Function GetEntriesByBlog(moduleId As Int32, blogID As Int32, userId As Int32, pageIndex As Int32, pageSize As Int32, orderBy As String, ByRef totalRecords As Integer) As Dictionary(Of Integer, EntryInfo)
+
+   If pageIndex < 0 Then
+    pageIndex = 0
+    pageSize = Integer.MaxValue
+   End If
+
+   Dim res As New Dictionary(Of Integer, EntryInfo)
+   Using ir As IDataReader = DataProvider.Instance().GetEntriesByBlog(blogID, pageIndex, pageSize, orderBy)
+    res = DotNetNuke.Common.Utilities.CBO.FillDictionary(Of Integer, EntryInfo)("ContentItemID", ir, False)
+    If blogID = -1 Then
+     Dim blogs As Dictionary(Of Integer, BlogInfo) = BlogsController.GetBlogsByModule(moduleId, userId)
+     For Each e As EntryInfo In res.Values
+      e.Blog = blogs(e.BlogID)
+     Next
+    Else
+     Dim blog As BlogInfo = BlogsController.GetBlog(blogID, userId)
+     For Each e As EntryInfo In res.Values
+      e.Blog = blog
+     Next
+    End If
+    ir.NextResult()
+    totalRecords = DotNetNuke.Common.Globals.GetTotalRecords(ir)
+   End Using
+   Return res
+
+  End Function
+
   Public Shared Function SearchEntries(moduleId As Int32, blogID As Int32, searchText As String, searchTitle As Boolean, searchContents As Boolean, published As Integer, locale As String, endDate As Date, authorUserId As Int32, pageIndex As Int32, pageSize As Int32, orderBy As String, ByRef totalRecords As Integer, userId As Integer, userIsAdmin As Boolean) As Dictionary(Of Integer, EntryInfo)
 
    If pageIndex < 0 Then

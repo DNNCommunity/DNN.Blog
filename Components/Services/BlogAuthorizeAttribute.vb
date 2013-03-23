@@ -18,12 +18,14 @@ Namespace Services
   Anonymous = 0
   Admin = 1
   ViewModule = 2
-  EditModule = 3
-  AddPost = 4
-  EditPost = 5
-  ApprovePost = 6
-  AddComment = 7
-  ApproveComment = 8
+  EditModule = 4
+  AddPost = 8
+  EditPost = 16
+  ApprovePost = 32
+  AddComment = 64
+  ApproveComment = 128
+  Blogger = 256
+  Owner = 512
  End Enum
 #End Region
 
@@ -74,32 +76,27 @@ Namespace Services
    If blog Is Nothing Then Return False
    Security = New ContextSecurity(moduleId, tabId, blog, UserInfo)
 
-   Select Case AccessLevel
-    Case SecurityAccessLevel.Admin
-     Return Security.UserIsAdmin
-    Case SecurityAccessLevel.ViewModule
-     Try
-      Return DotNetNuke.Security.Permissions.ModulePermissionController.CanViewModule(context.ActionContext.Request.FindModuleInfo())
-     Catch ex As Exception
-      Return False
-     End Try
-    Case SecurityAccessLevel.EditModule
-     Try
-      Return DotNetNuke.Security.Permissions.ModulePermissionController.HasModulePermission(context.ActionContext.Request.FindModuleInfo().ModulePermissions, "EDIT")
-     Catch ex As Exception
-      Return False
-     End Try
-    Case SecurityAccessLevel.AddPost
-     Return Security.CanAddEntry
-    Case SecurityAccessLevel.EditPost
-     Return Security.CanEditEntry
-    Case SecurityAccessLevel.ApprovePost
-     Return Security.CanApproveEntry
-    Case SecurityAccessLevel.AddComment
-     Return Security.CanAddComment
-    Case SecurityAccessLevel.ApproveComment
-     Return Security.CanApproveComment
-   End Select
+   If (AccessLevel And SecurityAccessLevel.Admin) = SecurityAccessLevel.Admin AndAlso Security.UserIsAdmin Then
+    Return True
+   ElseIf (AccessLevel And SecurityAccessLevel.ViewModule) = SecurityAccessLevel.ViewModule AndAlso DotNetNuke.Security.Permissions.ModulePermissionController.CanViewModule(context.ActionContext.Request.FindModuleInfo()) Then
+    Return True
+   ElseIf (AccessLevel And SecurityAccessLevel.EditModule) = SecurityAccessLevel.EditModule AndAlso DotNetNuke.Security.Permissions.ModulePermissionController.HasModulePermission(context.ActionContext.Request.FindModuleInfo().ModulePermissions, "EDIT") Then
+    Return True
+   ElseIf (AccessLevel And SecurityAccessLevel.AddPost) = SecurityAccessLevel.AddPost AndAlso Security.CanAddEntry Then
+    Return True
+   ElseIf (AccessLevel And SecurityAccessLevel.EditPost) = SecurityAccessLevel.EditPost AndAlso Security.CanEditEntry Then
+    Return True
+   ElseIf (AccessLevel And SecurityAccessLevel.ApprovePost) = SecurityAccessLevel.ApprovePost AndAlso Security.CanApproveEntry Then
+    Return True
+   ElseIf (AccessLevel And SecurityAccessLevel.AddComment) = SecurityAccessLevel.AddComment AndAlso Security.CanAddComment Then
+    Return True
+   ElseIf (AccessLevel And SecurityAccessLevel.ApproveComment) = SecurityAccessLevel.ApproveComment AndAlso Security.CanApproveComment Then
+    Return True
+   ElseIf (AccessLevel And SecurityAccessLevel.Blogger) = SecurityAccessLevel.Blogger AndAlso Security.IsBlogger Then
+    Return True
+   ElseIf (AccessLevel And SecurityAccessLevel.Owner) = SecurityAccessLevel.Owner AndAlso Security.IsOwner Then
+    Return True
+   End If
 
    Return False
 

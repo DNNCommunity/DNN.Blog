@@ -282,4 +282,16 @@
   <data name="lblBloggersCanEditCategories.Text" xml:space="preserve">
     <value>Bloggers Can Edit Categories</value>
   </data>
+  <data name="Export.Text" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="Cancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Download.Text" xml:space="preserve">
+    <value>Download BlogML File</value>
+  </data>
+  <data name="Export.Help" xml:space="preserve">
+    <value>Upon clicking on the 'Export' button, the module will attempt to pack all this blog's posts into an XML file (BlogML format) that you can subsequently download through a link that will appear just below.</value>
+  </data>
 </root>

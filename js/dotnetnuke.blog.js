@@ -2,6 +2,7 @@
  var baseServicepath = servicesFramework.getServiceRoot('Blog') + 'Entry/';
  var commentsServicepath = servicesFramework.getServiceRoot('Blog') + 'Comment/';
  var modulesServicepath = servicesFramework.getServiceRoot('Blog') + 'Modules/';
+ var blogServicepath = servicesFramework.getServiceRoot('Blog') + 'Blog/';
 
  this.approveEntry = function (blogId, entryId, success) {
   $.ajax({
@@ -72,6 +73,21 @@
   }).done(function (data) {
    if (success != undefined) {
     success();
+   }
+  }).fail(function (xhr, status) {
+   displayMessage("#blogServiceErrorBox", settings.serverErrorWithDescription + eval("(" + xhr.responseText + ")").ExceptionMessage, "dnnFormWarning");
+  });
+ };
+
+ this.exportBlog = function (blogId, success) {
+  $.ajax({
+   type: "POST",
+   url: blogServicepath + "Export",
+   beforeSend: servicesFramework.setModuleHeaders,
+   data: { blogId: blogId }
+  }).done(function (data) {
+   if (success != undefined) {
+    success(data.Result);
    }
   }).fail(function (xhr, status) {
    displayMessage("#blogServiceErrorBox", settings.serverErrorWithDescription + eval("(" + xhr.responseText + ")").ExceptionMessage, "dnnFormWarning");

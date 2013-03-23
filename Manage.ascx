@@ -113,7 +113,7 @@
     <tr class="dnnGridItem">
      <td><a href="<%# EditUrl("Blog", Eval("BlogId"), "BlogEdit") %>" class="icon16 entypoButton" title="Edit">&#9998;</a></td>
      <td><a href="<%# EditUrl("Blog", Eval("BlogId"), "BlogImport") %>" class="icon16 entypoButton" title="Import">&#59200;</a></td>
-     <td><a href="<%# EditUrl("Blog", Eval("BlogId"), "BlogExport") %>" class="icon16 entypoButton" title="Export">&#59201;</a></td>
+     <td><a href="#" class="icon16 entypoButton exportlink" title="Export" data-blogid="<%# Eval("BlogId") %>">&#59201;</a></td>
      <td><%# Eval("Title") %></td>
      <td><%# Eval("DisplayName") %></td>
     </tr>
@@ -184,7 +184,47 @@
 </div>
 
 <script type="text/javascript">
- jQuery(function ($) {
-  $('#tabs').dnnTabs();
+(function ($, Sys) {
+ $('#tabs').dnnTabs();
+ var selectedBlog;
+ var $dialogexport = $('<div class="dnnDialog"></div>')
+		.html('<p><%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Export.Help")) %></p><p><a id="blogMLDownloadLink" style=""><%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Download")) %></a></p>')
+		.dialog({
+		 autoOpen: false,
+		 resizable: false,
+		 dialogClass: 'dnnFormPopup dnnClear',
+		 title: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Export")) %>',
+		 height: 250,
+		 width: 500,
+		 open: function (e) {
+		  $('#blogMLDownloadLink').hide();
+		  $('.ui-dialog-buttonpane').find('button:contains("<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Export")) %>")').addClass('dnnPrimaryAction');
+		  $('.ui-dialog-buttonpane').find('button:contains("<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Cancel")) %>")').addClass('dnnSecondaryAction');
+		 },
+		 buttons: [
+    {
+     text: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Cancel")) %>',
+     click: function () {
+      $(this).dialog("close");
+     }
+    },
+    {
+     text: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Export")) %>',
+     click: function () {
+      $('.ui-dialog-buttonpane').find('button:contains("<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Export")) %>")').attr("disabled", "disabled");
+      blogService.exportBlog(selectedBlog, function (returnValue) {
+       $('.ui-dialog-buttonpane').find('button:contains("<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Export")) %>")').removeAttr("disabled");
+       $('#blogMLDownloadLink').attr('href', returnValue);
+       $('#blogMLDownloadLink').show();
+      });
+     }
+    }
+    ]
+		});
+ $('.exportlink').click(function () {
+  selectedBlog = $(this).attr('data-blogid');
+  $dialogexport.dialog('open');
+  return false;
  });
+} (jQuery, window.Sys));
 </script>
