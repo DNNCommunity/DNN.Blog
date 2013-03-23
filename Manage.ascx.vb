@@ -41,6 +41,7 @@ Public Class Manage
   Settings.AllowAllLocales = chkAllowAllLocales.Checked
   Settings.ShowAllLocales = chkShowAllLocales.Checked
   Settings.VocabularyId = ddVocabularyId.SelectedValue.ToInt
+  Settings.BloggersCanEditCategories = chkBloggersCanEditCategories.Checked
   Settings.RssAllowContentInFeed = chkRssAllowContentInFeed.Checked
   Settings.RssDefaultCopyright = txtRssDefaultCopyright.Text
   Settings.RssDefaultNrItems = Integer.Parse(txtRssDefaultNrItems.Text)
@@ -89,6 +90,7 @@ Public Class Manage
     ddVocabularyId.Items.FindByValue(Settings.VocabularyId.ToString).Selected = True
    Catch ex As Exception
    End Try
+   chkBloggersCanEditCategories.Checked = Settings.BloggersCanEditCategories
   Else
    dlBlogs.DataSource = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId).Values.Where(Function(b)
                                                                                                   Return b.OwnerUserId = UserId

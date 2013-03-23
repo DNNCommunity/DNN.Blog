@@ -45,6 +45,10 @@
 		<asp:DropDownList ID="ddVocabularyId" runat="server" DataValueField="VocabularyID" DataTextField="Name" />
 	</div>
 	<div class="dnnFormItem">
+		<dnn:label id="lblBloggersCanEditCategories" runat="server" controlname="chkBloggersCanEditCategories" suffix=":" />
+		<asp:CheckBox ID="chkBloggersCanEditCategories" runat="server" />
+	</div>
+	<div class="dnnFormItem">
 		<dnn:label id="lblWLWRecentEntriesMax" runat="server" controlname="txtWLWRecentEntriesMax" suffix=":" />
 		<asp:TextBox runat="server" ID="txtWLWRecentEntriesMax" />
 	</div>

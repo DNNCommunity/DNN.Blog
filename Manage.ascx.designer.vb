@@ -158,6 +158,24 @@ Partial Public Class Manage
  Protected WithEvents ddVocabularyId As Global.System.Web.UI.WebControls.DropDownList
 
  '''<summary>
+ '''lblBloggersCanEditCategories control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lblBloggersCanEditCategories As Global.System.Web.UI.UserControl
+
+ '''<summary>
+ '''chkBloggersCanEditCategories control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents chkBloggersCanEditCategories As Global.System.Web.UI.WebControls.CheckBox
+
+ '''<summary>
  '''lblWLWRecentEntriesMax control.
  '''</summary>
  '''<remarks>

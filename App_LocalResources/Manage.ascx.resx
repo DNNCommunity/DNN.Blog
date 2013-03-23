@@ -276,4 +276,10 @@
   <data name="lblShowAllLocales.Text" xml:space="preserve">
     <value>Show All Languages</value>
   </data>
+  <data name="lblBloggersCanEditCategories.Help" xml:space="preserve">
+    <value>If selected bloggers can add to the category tree and change/delete categories of the selected category tree.</value>
+  </data>
+  <data name="lblBloggersCanEditCategories.Text" xml:space="preserve">
+    <value>Bloggers Can Edit Categories</value>
+  </data>
 </root>
