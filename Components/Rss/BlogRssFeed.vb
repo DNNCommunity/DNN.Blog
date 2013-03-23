@@ -147,15 +147,15 @@ Namespace Rss
     ' Load Posts
     If IsSearchFeed Then
      If Term IsNot Nothing Then
-      Entries = EntriesController.SearchEntriesByTerm(moduleId, BlogId, TermId, Search, SearchTitle, SearchContents, 1, Language, Date.Now, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
+      Entries = EntriesController.SearchEntriesByTerm(moduleId, BlogId, TermId, Search, SearchTitle, SearchContents, 1, Language, Date.Now.ToUniversalTime, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
      Else
-      Entries = EntriesController.SearchEntries(moduleId, BlogId, Search, SearchTitle, SearchContents, 1, Language, Date.Now, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
+      Entries = EntriesController.SearchEntries(moduleId, BlogId, Search, SearchTitle, SearchContents, 1, Language, Date.Now.ToUniversalTime, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
      End If
     Else
      If Term IsNot Nothing Then
-      Entries = EntriesController.GetEntriesByTerm(moduleId, BlogId, TermId, 1, Language, Date.Now, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
+      Entries = EntriesController.GetEntriesByTerm(moduleId, BlogId, TermId, 1, Language, Date.Now.ToUniversalTime, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
      Else
-      Entries = EntriesController.GetEntries(moduleId, BlogId, 1, Language, Date.Now, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
+      Entries = EntriesController.GetEntries(moduleId, BlogId, 1, Language, Date.Now.ToUniversalTime, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
      End If
     End If
     WriteRss(CacheFile)

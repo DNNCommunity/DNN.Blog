@@ -73,6 +73,7 @@ Public Class BlogPost
  Private Property Entry As EntryInfo = Nothing
  Private Property UnAuthorized As Boolean = True
  Private Property Security As ContextSecurity = Nothing
+ Private Property UserTimeZone As TimeZoneInfo = Nothing
 
 #Region " Method Implementations "
  Public Function getUsersBlogs(appKey As String, username As String, password As String) As BlogInfoStruct() Implements IBlogger.getUsersBlogs
@@ -494,8 +495,7 @@ Public Class BlogPost
   entry.BlogID = BlogId
   entry.Title = post.title
   If post.dateCreated.Year > 1 Then
-   ' WLW manages the TZ offset automatically
-   entry.PublishedOnDate = post.dateCreated
+   entry.PublishedOnDate = TimeZoneInfo.ConvertTimeToUtc(post.dateCreated, UserTimeZone)
   End If
   entry.Published = post.publish
   entry.AllowComments = post.mt_allow_comments.ToBool
@@ -595,6 +595,10 @@ Public Class BlogPost
    If Me.BlogId > -1 Then
     Blog = BlogsController.GetBlog(Me.BlogId, UserInfo.UserID)
     Security = New ContextSecurity(ModuleId, TabId, Blog, UserInfo)
+   End If
+   UserTimeZone = PortalSettings.TimeZone
+   If UserInfo.Profile.PreferredTimeZone IsNot Nothing Then
+    UserTimeZone = UserInfo.Profile.PreferredTimeZone
    End If
   Catch ex As Exception
    LogException(ex)

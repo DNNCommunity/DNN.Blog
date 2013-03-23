@@ -17,7 +17,7 @@ Public Class Blog
  Private _totalRecords As Integer = 0
  Private _reqPage As Integer = 0
  Private _usePaging As Boolean = False
- Private _endDate As Date = Date.Now
+ Private _endDate As Date = Date.Now.ToUniversalTime
 #End Region
 
 #Region " Event Handlers "
