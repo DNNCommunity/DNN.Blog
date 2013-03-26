@@ -146,14 +146,13 @@
     <Content Include="BlogEdit.ascx" />
     <Content Include="Controls\Comments.ascx" />
     <Content Include="Controls\ManagementPanel.ascx" />
+    <Content Include="js\tag-it.pagescript.js" />
     <Content Include="js\dotnetnuke.blog.js" />
     <Content Include="js\dotnetnuke.blog.pagescript.js" />
     <Content Include="js\jquery.timeago.js" />
+    <Content Include="js\tag-it.min.js" />
     <Content Include="Manage.ascx" />
     <Content Include="EntryEdit.ascx" />
-    <Content Include="js\jquery.qaplaceholder.js" />
-    <Content Include="js\jquery.qatooltip.js" />
-    <Content Include="js\jquery.tagify.js" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BlogImage.ashx.vb">
@@ -189,6 +188,7 @@
     <Compile Include="Components\Services\BlogController.vb" />
     <Compile Include="Components\Services\RSSController.vb" />
     <Compile Include="Components\Services\ModulesController.vb" />
+    <Compile Include="Components\Services\TermsController.vb" />
     <Compile Include="Components\Services\WLW\Blogger\IBlogger.vb" />
     <Compile Include="Components\BlogML\BlogMLBlogExtendedProperties.vb" />
     <Compile Include="Components\BlogML\BlogMLResource.vb" />
@@ -311,6 +311,7 @@
       <DependentUpon>ManagementPanel.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Controls\TagEdit.vb" />
     <Compile Include="Manage.ascx.designer.vb">
       <DependentUpon>Manage.ascx</DependentUpon>
     </Compile>
@@ -351,7 +352,6 @@
   <ItemGroup>
     <Content Include="blogpost.ashx" />
     <Content Include="blogpostredirect.aspx" />
-    <Content Include="js\md5.js" />
     <Content Include="Blog.ascx" />
     <Content Include="module.css" />
     <Content Include="Controls\ViewSettings.ascx" />

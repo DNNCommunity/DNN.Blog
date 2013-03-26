@@ -89,7 +89,7 @@ Namespace Services
 
   Private Sub AddCategories(ByRef TargetBlogML As BlogMLBlog)
    If Settings.VocabularyId > -1 Then
-    For Each c As TermInfo In TermsController.GetTermsByVocabulary(ActiveModule.ModuleID, Settings.VocabularyId)
+    For Each c As TermInfo In Entities.Terms.TermsController.GetTermsByVocabulary(ActiveModule.ModuleID, Settings.VocabularyId).Values
      Dim categoryML As New BlogMLCategory
      categoryML.Approved = True
      categoryML.DateCreated = c.CreatedOnDate

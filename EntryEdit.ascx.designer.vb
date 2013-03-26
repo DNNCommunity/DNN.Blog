@@ -311,13 +311,13 @@ Partial Public Class EntryEdit
  Protected WithEvents lblTags As Global.System.Web.UI.UserControl
 
  '''<summary>
- '''txtTags control.
+ '''ctlTags control.
  '''</summary>
  '''<remarks>
  '''Auto-generated field.
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
- Protected WithEvents txtTags As Global.System.Web.UI.WebControls.TextBox
+ Protected WithEvents ctlTags As Global.DotNetNuke.Modules.Blog.Controls.TagEdit
 
  '''<summary>
  '''cmdSave control.

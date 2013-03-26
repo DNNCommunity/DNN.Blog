@@ -37,8 +37,10 @@ Namespace Entities.Terms
    Return DotNetNuke.Common.Utilities.CBO.FillCollection(Of TermInfo)(Data.DataProvider.Instance.GetTermsByModule(moduleId))
   End Function
 
-  Public Shared Function GetTermsByVocabulary(moduleId As Int32, vocabularyId As Int32) As List(Of TermInfo)
-   Return DotNetNuke.Common.Utilities.CBO.FillCollection(Of TermInfo)(Data.DataProvider.Instance.GetTermsByVocabulary(moduleId, vocabularyId))
+  Public Shared Function GetTermsByVocabulary(moduleId As Int32, vocabularyId As Int32) As Dictionary(Of String, TermInfo)
+   Dim res As New Dictionary(Of String, TermInfo)(StringComparer.CurrentCultureIgnoreCase)
+   DotNetNuke.Common.Utilities.CBO.FillDictionary(Of String, TermInfo)("Name", Data.DataProvider.Instance.GetTermsByVocabulary(moduleId, vocabularyId), res)
+   Return res
   End Function
 
   Public Shared Function GetTermList(moduleId As Integer, termList As String, vocabularyId As Integer, autoCreate As Boolean) As List(Of TermInfo)
@@ -47,16 +49,17 @@ Namespace Entities.Terms
   End Function
 
   Public Shared Function GetTermList(moduleId As Integer, termList As List(Of String), vocabularyId As Integer, autoCreate As Boolean) As List(Of TermInfo)
-   Dim vocab As List(Of TermInfo) = GetTermsByVocabulary(moduleId, vocabularyId)
+   Dim vocab As Dictionary(Of String, TermInfo) = GetTermsByVocabulary(moduleId, vocabularyId)
    Dim res As New List(Of TermInfo)
    For Each termName As String In termList
     Dim name As String = termName
-    Dim existantTerm As TermInfo = vocab.Where(Function(t) t.Name.ToLower() = name.ToLower()).FirstOrDefault()
+    Dim existantTerm As TermInfo = Nothing
+    If vocab.ContainsKey(name) Then existantTerm = vocab(name)
     If existantTerm IsNot Nothing Then
      res.Add(existantTerm)
     ElseIf autoCreate And name <> "" Then
      Dim termId As Integer = DotNetNuke.Entities.Content.Common.Util.GetTermController().AddTerm(New Term(vocabularyId) With {.Name = name})
-     res.Add(New TermInfo With {.Description = "", .Name = name, .ParentTermId = 0, .TermId = termId, .TotalPosts = 0, .Weight = 0})
+     res.Add(New TermInfo(name) With {.Description = "", .ParentTermId = 0, .TermId = termId, .TotalPosts = 0, .Weight = 0})
     End If
    Next
    Return res

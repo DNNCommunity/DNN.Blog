@@ -211,4 +211,7 @@
   <data name="PublishTimeZoneNote.Text" xml:space="preserve">
     <value>The publish date is based on your profile timezone of: </value>
   </data>
+  <data name="ctlTags.PlaceholderText" xml:space="preserve">
+    <value>Enter the tags for this post here ...</value>
+  </data>
 </root>

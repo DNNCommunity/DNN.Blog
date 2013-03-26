@@ -28,6 +28,17 @@ Namespace Entities.Terms
   Implements IHydratable
   Implements IPropertyAccess
 
+#Region " Constructors "
+  Public Sub New()
+  End Sub
+  Public Sub New(name As String)
+   Me.Description = ""
+   Me.Name = name
+   Me.ParentTermId = 0
+   Me.TermId = -1
+  End Sub
+#End Region
+
 #Region " Public Properties "
   Public Property TotalPosts() As Integer
 #End Region

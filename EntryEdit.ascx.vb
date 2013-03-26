@@ -48,8 +48,7 @@ Public Class EntryEdit
 
   Try
 
-   DotNetNuke.Framework.jQuery.RegisterJQueryUI(Page)
-   ClientResourceManager.RegisterScript(Page, TemplateSourceDirectory + "/js/jquery.tagify.js")
+   ctlTags.ModuleConfiguration = Me.ModuleConfiguration
 
    If Not Me.IsPostBack Then
     Dim blogList As IEnumerable(Of BlogInfo) = Nothing
@@ -95,8 +94,6 @@ Public Class EntryEdit
   Try
 
    If Not Page.IsPostBack Then
-
-    ' todo: uploads
 
     ' Categories
     If Settings.VocabularyId > 0 Then
@@ -184,9 +181,10 @@ Public Class EntryEdit
       imgEntryImage.Visible = False
       cmdImageRemove.Visible = False
      End If
+     ctlTags.Terms = Entry.EntryTags
      For Each t As TermInfo In Entry.Terms
       If t.VocabularyId = 1 Then
-       txtTags.Text = txtTags.Text + t.Name + ","
+       'txtTags.Text = txtTags.Text + t.Name + ","
       Else
        Dim objNode As RadTreeNode = dtCategories.FindNodeByValue(t.TermId.ToString())
        If objNode IsNot Nothing Then
@@ -270,9 +268,9 @@ Public Class EntryEdit
     Entry.PublishedOnDate = TimeZoneInfo.ConvertTimeToUtc(Entry.PublishedOnDate, UiTimeZone)
 
     ' Categories, Tags
-    Dim userEnteredTerms As Array = txtTags.Text.Trim.Split(","c)
     Dim terms As New List(Of TermInfo)
-    terms.AddRange(TermsController.GetTermList(Settings.ModuleId, txtTags.Text.Trim, 1, True))
+    ctlTags.CreateMissingTerms()
+    terms.AddRange(ctlTags.Terms)
     If Settings.VocabularyId > 0 Then
      Dim checkedBoxes As New List(Of String)
      For Each t As Telerik.Web.UI.RadTreeNode In dtCategories.CheckedNodes

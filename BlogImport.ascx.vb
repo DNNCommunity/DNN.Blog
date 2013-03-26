@@ -119,6 +119,10 @@ Public Class BlogImport
      txtReport.Text = strReport.ToString
     End If
    Case 2 ' report
+    Try
+     IO.File.Delete(BlogMapPath & "import.resources")
+    Catch ex As Exception
+    End Try
     Response.Redirect(EditUrl("Manage"), False)
   End Select
  End Sub

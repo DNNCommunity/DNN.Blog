@@ -2,6 +2,7 @@
 <%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" TagName="TextEditor" Src="~/controls/TextEditor.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
+<%@ Register TagPrefix="blog" Namespace="DotNetNuke.Modules.Blog.Controls" Assembly="DotNetNuke.Modules.Blog" %>
 <div class="dnnForm dnnBlogEditEntry dnnClear" id="dnnBlogEditEntry">
 	<h2 id="dnnSitePanel-BlogContent" class="dnnFormSectionHead"><a href="" class="dnnFormSectionExpanded"><%= LocalizeString("Title")%></a></h2>
 	<fieldset>
@@ -70,11 +71,10 @@
 				<dnnweb:DnnTreeView id="dtCategories" runat="server" CheckBoxes="true" DataFieldID="TermID" DataFieldParentID="ParentTermID" DataTextField="Name" DataValueField="TermID" />
 			</div>    
 		</asp:Panel>
-		<div class="dnnFormItem">
-			<dnn:Label ID="lblTags" runat="server" controlname="txtTags" suffix=":" />
-			<div>
-				<asp:TextBox ID="txtTags" runat="server" />	
-			</div>
+  <div class="dnnClear"></div>
+		<div style="display:block">
+			<dnn:Label ID="lblTags" runat="server" controlname="txtTags" suffix=":" /><div></div>
+			<blog:TagEdit ID="ctlTags" runat="server" width="500px" AllowSpaces="True" />	
 		</div>
 	</fieldset>
 
@@ -90,20 +90,11 @@
 <asp:CustomValidator ID="valEntry" EnableClientScript="False" runat="server" ResourceKey="valEntry.ErrorMessage" Display="None" />
 <asp:CustomValidator ID="valUpload" EnableClientScript="False" runat="server" Display="None" />
 <script language="javascript" type="text/javascript">
- /*globals jQuery, window, Sys */
  (function ($, Sys) {
-  function setupDnnEditBlogEntry() {
+
+  $(document).ready(function () {
+
    $('#dnnBlogEditEntry').dnnPanels();
-
-
-   $("#catAvailable").draggable();
-   $("#catSelected").droppable({
-    drop: function (event, ui) {
-     $(this)
-					.addClass("ui-state-highlight");
-    }
-   });
-
 
    $('.dnnEntryDelete').dnnConfirm({
     text: '<%= LocalizeString("DeleteItem") %>',
@@ -112,50 +103,7 @@
     title: '<%= Localization.GetString("Confirm.Text", Localization.SharedResourceFile) %>'
    });
 
-   function split(val) {
-    return val.split(/,\s*/);
-   }
-
-   function extractLast(term) {
-    return split(term).pop();
-   }
-
-   var myTextArea = $('#<%= txtTags.ClientID  %>').tagify({ delimiters: [9, 13, 44, 59, 188], addTagPrompt: '<%= LocalizeString("AddTags") %>' }); // tab, return, comma, semicolon
-   myTextArea.tagify('inputField').autocomplete({
-    source: function (request, response) {
-     $.ajax({
-      type: "POST",
-      url: '<%= ResolveUrl("~/DesktopModules/Blog/BlogTerms.asmx/SearchTags")%>',
-      data: "{'searchTerm' : '" + extractLast(request.term) + "'}",
-      contentType: "application/json",
-      dataType: "json",
-      success: function (data) {
-       var suggestions = [];
-       mydata = data;
-       $.each($.parseJSON(data.d), function (i, val) {
-        suggestions.push(val);
-       });
-       response(suggestions);
-      }
-     });
-    },
-    minLength: 2,
-    close: function (event, ui) { myTextArea.tagify('add'); myTextArea.tagify('serialize'); }
-   });
-  };
-
-  $(document).ready(function () {
-   setupDnnEditBlogEntry();
-   Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
-    setupDnnEditBlogEntry();
-   });
   });
 
  } (jQuery, window.Sys));
 </script>  
-<script language="javascript" type="text/javascript">
- function serializeTags(source, args) {
-  $('#<%= txtTags.ClientID %>').tagify('serialize');
-  args.IsValid = true;
- };
-</script>
