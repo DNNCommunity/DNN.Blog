@@ -146,7 +146,7 @@
     <Content Include="BlogEdit.ascx" />
     <Content Include="Controls\Comments.ascx" />
     <Content Include="Controls\ManagementPanel.ascx" />
-    <Content Include="js\tag-it.pagescript.js" />
+    <EmbeddedResource Include="Controls\TagEdit.JS.CodeBlock.txt" />
     <Content Include="js\dotnetnuke.blog.js" />
     <Content Include="js\dotnetnuke.blog.pagescript.js" />
     <Content Include="js\jquery.timeago.js" />

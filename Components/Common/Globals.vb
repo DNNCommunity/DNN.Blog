@@ -124,6 +124,16 @@ Namespace Common
    End Using
   End Function
 
+  Public Shared Function GetResource(resourceName As String) As String
+   Dim res As String = ""
+   Using stream As IO.Stream = System.Reflection.Assembly.GetExecutingAssembly.GetManifestResourceStream(resourceName)
+    Using rdr As New IO.StreamReader(stream)
+     res = rdr.ReadToEnd
+    End Using
+   End Using
+   Return res
+  End Function
+
   Public Shared Function FormatBoolean(value As Boolean, format As String) As String
    If String.IsNullOrEmpty(format) Then
     Return value.ToString

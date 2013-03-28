@@ -47,7 +47,7 @@ Namespace Controls
      Next
     End If
    End If
-   Dim pagescript As String = ReadFile(DotNetNuke.Common.ApplicationMapPath & "\DesktopModules\Blog\js\tag-it.pagescript.js")
+   Dim pagescript As String = GetResource("DotNetNuke.Modules.Blog.TagEdit.JS.CodeBlock.txt")
    pagescript = pagescript.Replace("[ID]", ListClientID)
    pagescript = pagescript.Replace("[ModuleId]", ModuleConfiguration.ModuleID.ToString)
    pagescript = pagescript.Replace("[TabId]", ModuleConfiguration.TabID.ToString)
