@@ -2,6 +2,7 @@
 Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.Entities.Terms
 Imports DotNetNuke.Entities.Content.Taxonomy
+Imports DotNetNuke.Web.Client.ClientResourceManagement
 
 Namespace Controls
  Public Class TagEdit
@@ -12,10 +13,6 @@ Namespace Controls
 #End Region
 
 #Region " Public Properties "
-  ''' <summary>
-  ''' A collection of terms to be rendered by the control.
-  ''' </summary>
-  <Browsable(False)>
   Public Property Terms As List(Of TermInfo)
   Public Property ModuleConfiguration As DotNetNuke.Entities.Modules.ModuleInfo = Nothing
   Public Property VocabularyId As Integer = 1
@@ -26,8 +23,9 @@ Namespace Controls
 #Region " Event Handlers "
   Private Sub TagEdit_Init(sender As Object, e As System.EventArgs) Handles Me.Init
    DotNetNuke.Framework.jQuery.RegisterJQueryUI(Page)
-   Web.Client.ClientResourceManagement.ClientResourceManager.RegisterScript(Page, ResolveUrl("~/DesktopModules/Blog/js/tag-it.min.js"))
+   ClientResourceManager.RegisterScript(Page, ResolveUrl("~/DesktopModules/Blog/js/tag-it.min.js"))
    If Me.CssClass = "" Then Me.CssClass = "tagit-control"
+   ClientResourceManager.RegisterStyleSheet(Page, ResolveUrl("~/DesktopModules/Blog/css/tagit.css"), Web.Client.FileOrder.Css.ModuleCss)
   End Sub
 
   Private Sub TagEdit_Load(sender As Object, e As System.EventArgs) Handles Me.Load
@@ -36,7 +34,8 @@ Namespace Controls
     ' read return values
     Terms = New List(Of TermInfo)
     Dim vocab As Dictionary(Of String, TermInfo) = TermsController.GetTermsByVocabulary(ModuleConfiguration.ModuleID, VocabularyId)
-    Dim tagList As String = Me.Page.Request.Params(ClientID)
+    Dim tagList As String = ""
+    Me.Page.Request.Params.ReadValue(ClientID, tagList)
     If Not String.IsNullOrEmpty(tagList) Then
      For Each t As String In tagList.Split(","c)
       If vocab.ContainsKey(t) Then

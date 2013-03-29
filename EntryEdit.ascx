@@ -68,7 +68,7 @@
 		<asp:Panel ID="pnlCategories" runat="server" class="dnnFormItem">
 			<dnn:Label ID="lblCategories" ResourceKey="lblCategories" runat="server" controlname="dtCategories" suffix=":" />
 			<div class="dnnLeft">
-				<dnnweb:DnnTreeView id="dtCategories" runat="server" CheckBoxes="true" DataFieldID="TermID" DataFieldParentID="ParentTermID" DataTextField="Name" DataValueField="TermID" />
+    <blog:CategorySelect ID="ctlCategories" runat="server" />
 			</div>    
 		</asp:Panel>
   <div class="dnnClear"></div>

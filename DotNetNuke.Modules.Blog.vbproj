@@ -147,8 +147,13 @@
     <Content Include="Controls\Comments.ascx" />
     <Content Include="Controls\ManagementPanel.ascx" />
     <EmbeddedResource Include="Controls\TagEdit.JS.CodeBlock.txt" />
+    <EmbeddedResource Include="Controls\CategorySelect.JS.CodeBlock.txt" />
+    <Content Include="css\dynatree.css" />
+    <Content Include="css\tagit.css" />
     <Content Include="js\dotnetnuke.blog.js" />
     <Content Include="js\dotnetnuke.blog.pagescript.js" />
+    <Content Include="js\jquery.dynatree.min.js" />
+    <Content Include="js\jquery.dynatree.pagescript.js" />
     <Content Include="js\jquery.timeago.js" />
     <Content Include="js\tag-it.min.js" />
     <Content Include="Manage.ascx" />
@@ -289,6 +294,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Components\Services\WLW\WordPress\IWordPress.vb" />
+    <Compile Include="Controls\CategorySelect.vb" />
     <Compile Include="Controls\Comments.ascx.designer.vb">
       <DependentUpon>Comments.ascx</DependentUpon>
     </Compile>

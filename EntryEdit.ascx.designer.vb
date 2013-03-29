@@ -293,13 +293,13 @@ Partial Public Class EntryEdit
  Protected WithEvents lblCategories As Global.System.Web.UI.UserControl
 
  '''<summary>
- '''dtCategories control.
+ '''ctlCategories control.
  '''</summary>
  '''<remarks>
  '''Auto-generated field.
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
- Protected WithEvents dtCategories As Global.DotNetNuke.Web.UI.WebControls.DnnTreeView
+ Protected WithEvents ctlCategories As Global.DotNetNuke.Modules.Blog.Controls.CategorySelect
 
  '''<summary>
  '''lblTags control.

@@ -49,6 +49,8 @@ Public Class EntryEdit
   Try
 
    ctlTags.ModuleConfiguration = Me.ModuleConfiguration
+   ctlCategories.ModuleConfiguration = Me.ModuleConfiguration
+   ctlCategories.VocabularyId = Settings.VocabularyId
 
    If Not Me.IsPostBack Then
     Dim blogList As IEnumerable(Of BlogInfo) = Nothing
@@ -96,12 +98,7 @@ Public Class EntryEdit
    If Not Page.IsPostBack Then
 
     ' Categories
-    If Settings.VocabularyId > 0 Then
-     Dim termController As DotNetNuke.Entities.Content.Taxonomy.ITermController = DotNetNuke.Entities.Content.Common.Util.GetTermController()
-     Dim colCategories As IQueryable(Of DotNetNuke.Entities.Content.Taxonomy.Term) = termController.GetTermsByVocabulary(Settings.VocabularyId)
-     dtCategories.DataSource = colCategories
-     dtCategories.DataBind()
-    Else
+    If Settings.VocabularyId < 1 Then
      pnlCategories.Visible = False
     End If
 
@@ -182,17 +179,7 @@ Public Class EntryEdit
       cmdImageRemove.Visible = False
      End If
      ctlTags.Terms = Entry.EntryTags
-     For Each t As TermInfo In Entry.Terms
-      If t.VocabularyId = 1 Then
-       'txtTags.Text = txtTags.Text + t.Name + ","
-      Else
-       Dim objNode As RadTreeNode = dtCategories.FindNodeByValue(t.TermId.ToString())
-       If objNode IsNot Nothing Then
-        objNode.Checked = True
-        objNode.ExpandParentNodes()
-       End If
-      End If
-     Next
+     ctlCategories.SelectedCategories = Entry.EntryCategories
 
     Else
 
@@ -271,13 +258,7 @@ Public Class EntryEdit
     Dim terms As New List(Of TermInfo)
     ctlTags.CreateMissingTerms()
     terms.AddRange(ctlTags.Terms)
-    If Settings.VocabularyId > 0 Then
-     Dim checkedBoxes As New List(Of String)
-     For Each t As Telerik.Web.UI.RadTreeNode In dtCategories.CheckedNodes
-      checkedBoxes.Add(t.Value)
-     Next
-     terms.AddRange(TermsController.GetTermList(Settings.ModuleId, checkedBoxes, Settings.VocabularyId, False))
-    End If
+    terms.AddRange(ctlCategories.SelectedCategories)
     Entry.Terms.Clear()
     Entry.Terms.AddRange(terms)
 
