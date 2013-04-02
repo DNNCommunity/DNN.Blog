@@ -128,7 +128,7 @@
   </p>
  </div>
  <div id="Posts" class="dnnClear">
-  <div class="coreMessaging" id="blogEntriesError" />
+  <div class="coreMessaging" id="blogEntriesError"></div>
   <dnn:DNNGrid id="grdEntries" autogeneratecolumns="false" cssclass="dnnGrid dnnSecurityRolesGrid"
    runat="server" allowpaging="True" allowcustompaging="True" enableviewstate="True"
    onneeddatasource="GetEntries">
@@ -177,6 +177,12 @@
   </dnn:DNNGrid>
  </div>
  <div id="Categories" class="dnnClear">
+  <div class="dnnLeft">
+   <textarea id="txtNewCategories" rows="10" cols="60"></textarea>
+  </div>
+  <div id="categoryTree" class="dnnLeft">
+  </div>
+  <asp:HiddenField runat="server" ID="treeState" />
  </div>
 </div>
 
@@ -226,5 +232,9 @@
   $dialogexport.dialog('open');
   return false;
  });
+ $('#categoryTree').dynatree({
+   checkbox: false
+  <%= DotNetNuke.Modules.Blog.Entities.Terms.TermsController.GetCategoryTreeAsJson(Vocabulary) %>
+ })
 } (jQuery, window.Sys));
 </script>

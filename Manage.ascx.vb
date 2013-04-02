@@ -2,6 +2,7 @@
 Imports System.Linq
 Imports DotNetNuke.Modules.Blog.Entities.Entries
 Imports DotNetNuke.Web.UI.WebControls
+Imports DotNetNuke.Web.Client.ClientResourceManagement
 Imports DotNetNuke.Modules.Blog.Common.Globals
 
 Public Class Manage
@@ -11,6 +12,8 @@ Public Class Manage
 
  Private Sub Page_Init1(sender As Object, e As System.EventArgs) Handles Me.Init
   AddBlogService()
+  ClientResourceManager.RegisterScript(Page, ResolveUrl("~/DesktopModules/Blog/js/jquery.dynatree.min.js"))
+  ClientResourceManager.RegisterStyleSheet(Page, ResolveUrl("~/DesktopModules/Blog/css/dynatree.css"), Web.Client.FileOrder.Css.ModuleCss)
  End Sub
 
  Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load

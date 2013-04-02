@@ -83,9 +83,7 @@ Namespace Controls
    For Each c As TermInfo In SelectedCategories
     selectedIds.Add(c.TermId)
    Next
-   Dim childTreeBuilder As New StringBuilder
-   GetCategoryTree(childTreeBuilder, -1, selectedIds)
-   Dim childTree As String = childTreeBuilder.ToString
+   Dim childTree As String = TermsController.GetCategoryTreeAsJson(Vocabulary, selectedIds)
 
    Dim pagescript As String = GetResource("DotNetNuke.Modules.Blog.CategorySelect.JS.CodeBlock.txt")
    pagescript = pagescript.Replace("[ID]", MainControlId)
@@ -93,40 +91,6 @@ Namespace Controls
    pagescript = pagescript.Replace("[StorageControlId]", StorageControlId)
    Me.Page.ClientScript.RegisterClientScriptBlock(GetType(String), ClientID, pagescript, True)
 
-  End Sub
-#End Region
-
-#Region " Private Methods "
-  Private Sub GetCategoryTree(out As StringBuilder, parentId As Integer, selectedIds As List(Of Integer))
-   Dim selection As IEnumerable(Of TermInfo)
-   If parentId = -1 Then
-    selection = Vocabulary.Values.Where(Function(t)
-                                         Return CBool(t.ParentTermId Is Nothing)
-                                        End Function)
-   Else
-    selection = Vocabulary.Values.Where(Function(t)
-                                         Return t.ParentTermId IsNot Nothing AndAlso CBool(t.ParentTermId = parentId)
-                                        End Function)
-   End If
-
-   If selection.Count > 0 Then
-    out.Append(", children: [")
-    Dim first As Boolean = True
-    For Each cat As TermInfo In selection
-     If Not first Then out.Append(",")
-     out.Append("{")
-     out.Append(String.Format("title: '{0}',", cat.Name))
-     out.Append(String.Format("key: '{0}',", cat.TermId))
-     out.Append("icon: false,")
-     out.Append("expand: true,")
-     out.Append("isFolder: true,")
-     out.Append(String.Format("select: {0}", IIf(selectedIds.Contains(cat.TermId), "true", "false")))
-     GetCategoryTree(out, cat.TermId, selectedIds)
-     out.Append("}")
-     first = False
-    Next
-    out.Append("]")
-   End If
   End Sub
 #End Region
 

@@ -408,4 +408,13 @@ Partial Public Class Manage
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
  Protected WithEvents grdEntries As Global.DotNetNuke.Web.UI.WebControls.DnnGrid
+
+ '''<summary>
+ '''treeState control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents treeState As Global.System.Web.UI.WebControls.HiddenField
 End Class

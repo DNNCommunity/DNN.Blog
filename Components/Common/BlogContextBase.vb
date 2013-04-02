@@ -23,6 +23,7 @@ Imports DotNetNuke.Entities.Modules
 Imports DotNetNuke.Framework
 Imports DotNetNuke.Modules.Blog.Security
 Imports DotNetNuke.Services.Tokens
+Imports DotNetNuke.Modules.Blog.Entities.Terms
 
 Namespace Common
 
@@ -49,6 +50,7 @@ Namespace Common
     Me.SearchContents = contextBase.SearchContents
     Me.SearchUnpublished = contextBase.SearchUnpublished
     Me.ShowLocale = contextBase.ShowLocale
+    Me.Vocabulary = contextBase.Vocabulary
    End With
   End Sub
 #End Region
@@ -119,6 +121,22 @@ Namespace Common
    End Get
    Set(ByVal value As ContextSecurity)
     _security = value
+   End Set
+  End Property
+
+  Private _Vocabulary As Dictionary(Of String, TermInfo)
+  Public Property Vocabulary() As Dictionary(Of String, TermInfo)
+   Get
+    If _Vocabulary Is Nothing Then
+     _Vocabulary = TermsController.GetTermsByVocabulary(ModuleConfiguration.ModuleID, Settings.VocabularyId)
+     If _Vocabulary Is Nothing Then
+      _Vocabulary = New Dictionary(Of String, TermInfo)
+     End If
+    End If
+    Return _Vocabulary
+   End Get
+   Set(ByVal value As Dictionary(Of String, TermInfo))
+    _Vocabulary = value
    End Set
   End Property
 #End Region
