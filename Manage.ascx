@@ -234,7 +234,36 @@
  });
  $('#categoryTree').dynatree({
    checkbox: false
-  <%= DotNetNuke.Modules.Blog.Entities.Terms.TermsController.GetCategoryTreeAsJson(Vocabulary) %>
+  <%= DotNetNuke.Modules.Blog.Entities.Terms.TermsController.GetCategoryTreeAsJson(Vocabulary) %>,
+    dnd: {
+      onDragStart: function(node) {
+        return true;
+      },
+      onDragStop: function(node) {
+      },
+      autoExpandMS: 1000,
+      preventVoidMoves: true, // Prevent dropping nodes 'before self', etc.
+      onDragEnter: function(node, sourceNode) {
+        return true;
+      },
+      onDragOver: function(node, sourceNode, hitMode) {
+        // Prevent dropping a parent below it's own child
+        if(node.isDescendantOf(sourceNode)){
+          return false;
+        }
+        // Prohibit creating childs in non-folders (only sorting allowed)
+        if( !node.data.isFolder && hitMode === "over" ){
+          return "after";
+        }
+      },
+      onDrop: function(node, sourceNode, hitMode, ui, draggable) {
+        sourceNode.move(node, hitMode);
+        var tree = $("#categoryTree").dynatree("getTree");
+        $('#<%= treeState.ClientID %>').val(JSON.stringify(tree.toDict()));
+      },
+      onDragLeave: function(node, sourceNode) {
+      }
+    }
  })
 } (jQuery, window.Sys));
 </script>
