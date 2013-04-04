@@ -1,4 +1,4 @@
-﻿Imports DotNetNuke.Modules.Blog.Entities.Entries
+﻿Imports DotNetNuke.Modules.Blog.Entities.Posts
 Imports DotNetNuke.Modules.Blog.Common.Globals
 
 Namespace Common
@@ -12,12 +12,12 @@ Namespace Common
    Me.Body = body
   End Sub
 
-  Public Sub New(entry As EntryInfo, summaryModel As SummaryType)
-   Body = HttpUtility.HtmlDecode(entry.Content)
+  Public Sub New(Post As PostInfo, summaryModel As SummaryType)
+   Body = HttpUtility.HtmlDecode(Post.Content)
    If summaryModel = SummaryType.PlainTextIndependent Then
-    Summary = entry.Summary
+    Summary = Post.Summary
    Else
-    Summary = HttpUtility.HtmlDecode(entry.Summary)
+    Summary = HttpUtility.HtmlDecode(Post.Summary)
    End If
    If summaryModel = SummaryType.HtmlPrecedesPost Then
     Body = Body.Substring(Summary.Length)
@@ -39,7 +39,7 @@ Namespace Common
 #End Region
 
 #Region " Writing "
-  Public Sub WriteToEntry(ByRef entry As EntryInfo, summaryModel As SummaryType, htmlEncode As Boolean)
+  Public Sub WriteToPost(ByRef Post As PostInfo, summaryModel As SummaryType, htmlEncode As Boolean)
    If htmlEncode Then
     Body = HttpUtility.HtmlEncode(Body)
     If Not summaryModel = SummaryType.PlainTextIndependent Then
@@ -51,8 +51,8 @@ Namespace Common
    If summaryModel = SummaryType.HtmlPrecedesPost Then
     Body = Summary & Body
    End If
-   entry.Content = Body
-   entry.Summary = Summary
+   Post.Content = Body
+   Post.Summary = Summary
   End Sub
 
   Public Sub WriteToPost(ByRef post As Services.WLW.MetaWeblog.Post, summaryModel As SummaryType)

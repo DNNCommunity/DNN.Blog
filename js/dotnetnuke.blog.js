@@ -1,15 +1,15 @@
 ﻿function BlogService($, settings, servicesFramework) {
- var baseServicepath = servicesFramework.getServiceRoot('Blog') + 'Entry/';
+ var baseServicepath = servicesFramework.getServiceRoot('Blog') + 'Post/';
  var commentsServicepath = servicesFramework.getServiceRoot('Blog') + 'Comment/';
  var modulesServicepath = servicesFramework.getServiceRoot('Blog') + 'Modules/';
  var blogServicepath = servicesFramework.getServiceRoot('Blog') + 'Blog/';
 
- this.approveEntry = function (blogId, entryId, success) {
+ this.approvePost = function (blogId, PostId, success) {
   $.ajax({
    type: "POST",
    url: baseServicepath + "Approve",
    beforeSend: servicesFramework.setModuleHeaders,
-   data: { blogId: blogId, entryId: entryId }
+   data: { blogId: blogId, PostId: PostId }
   }).done(function (data) {
    if (success != undefined) {
     success();
@@ -19,12 +19,12 @@
   });
  };
 
- this.deleteEntry = function (blogId, entryId, success) {
+ this.deletePost = function (blogId, PostId, success) {
   $.ajax({
    type: "POST",
    url: baseServicepath + "Delete",
    beforeSend: servicesFramework.setModuleHeaders,
-   data: { blogId: blogId, entryId: entryId }
+   data: { blogId: blogId, PostId: PostId }
   }).done(function (data) {
    if (success != undefined) {
     success();

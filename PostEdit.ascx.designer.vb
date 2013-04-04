@@ -11,7 +11,7 @@ Option Strict On
 Option Explicit On
 
 
-Partial Public Class EntryEdit
+Partial Public Class PostEdit
 
  '''<summary>
  '''lblBlog control.
@@ -194,22 +194,22 @@ Partial Public Class EntryEdit
  Protected WithEvents lblPublishDate As Global.System.Web.UI.UserControl
 
  '''<summary>
- '''dpEntryDate control.
+ '''dpPostDate control.
  '''</summary>
  '''<remarks>
  '''Auto-generated field.
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
- Protected WithEvents dpEntryDate As Global.DotNetNuke.Web.UI.WebControls.DnnDatePicker
+ Protected WithEvents dpPostDate As Global.DotNetNuke.Web.UI.WebControls.DnnDatePicker
 
  '''<summary>
- '''tpEntryTime control.
+ '''tpPostTime control.
  '''</summary>
  '''<remarks>
  '''Auto-generated field.
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
- Protected WithEvents tpEntryTime As Global.DotNetNuke.Web.UI.WebControls.DnnTimePicker
+ Protected WithEvents tpPostTime As Global.DotNetNuke.Web.UI.WebControls.DnnTimePicker
 
  '''<summary>
  '''litTimezone control.
@@ -248,13 +248,13 @@ Partial Public Class EntryEdit
  Protected WithEvents lblImage As Global.System.Web.UI.UserControl
 
  '''<summary>
- '''imgEntryImage control.
+ '''imgPostImage control.
  '''</summary>
  '''<remarks>
  '''Auto-generated field.
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
- Protected WithEvents imgEntryImage As Global.System.Web.UI.WebControls.Image
+ Protected WithEvents imgPostImage As Global.System.Web.UI.WebControls.Image
 
  '''<summary>
  '''fileImage control.
@@ -356,13 +356,13 @@ Partial Public Class EntryEdit
  Protected WithEvents valSummary As Global.System.Web.UI.WebControls.ValidationSummary
 
  '''<summary>
- '''valEntry control.
+ '''valPost control.
  '''</summary>
  '''<remarks>
  '''Auto-generated field.
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
- Protected WithEvents valEntry As Global.System.Web.UI.WebControls.CustomValidator
+ Protected WithEvents valPost As Global.System.Web.UI.WebControls.CustomValidator
 
  '''<summary>
  '''valUpload control.

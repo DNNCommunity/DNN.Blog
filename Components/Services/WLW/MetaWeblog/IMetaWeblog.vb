@@ -75,21 +75,21 @@ Namespace Services.WLW.MetaWeblog
  Public Structure Post
 
   ''' <summary>
-  ''' The date to publish the blog entry.
+  ''' The date to publish the blog Post.
   ''' </summary>
   ''' <remarks></remarks>
-  <XmlRpcMember("pubDate", description:="The date to publish the blog entry.")>
+  <XmlRpcMember("pubDate", description:="The date to publish the blog Post.")>
   Public pubDate As DateTime
 
   ''' <summary>
-  ''' The GMT DateTime value when the blog entry was created.
+  ''' The GMT DateTime value when the blog Post was created.
   ''' </summary>
   ''' <remarks></remarks>
-  <XmlRpcMember("date_created_gmt", description:="The GMT DateTime value when the blog entry was created.")>
+  <XmlRpcMember("date_created_gmt", description:="The GMT DateTime value when the blog Post was created.")>
   Public date_created_gmt As DateTime
 
   ''' <summary>
-  ''' The DateTime value when the blog entry was created.
+  ''' The DateTime value when the blog Post was created.
   ''' </summary>
   ''' <remarks></remarks>
   <XmlRpcMissingMapping(MappingAction.[Error])>
@@ -205,7 +205,7 @@ Namespace Services.WLW.MetaWeblog
   Public mt_excerpt As String
 
   ''' <summary>
-  ''' Only utilized if the supportsExtendedEntries entity is set to yes in the manifest file.
+  ''' Only utilized if the supportsExtendedPosts entity is set to yes in the manifest file.
   ''' </summary>
   ''' <remarks></remarks>
   Public mt_text_more As String

@@ -11,14 +11,14 @@ Namespace Controls
 
    LocalResourceFile = "~/DesktopModules/Blog/Controls/App_LocalResources/ManagementPanel.ascx.resx"
    If Not Me.IsPostBack Then
-    cmdManageBlogs.Visible = Security.IsBlogger Or Security.CanApproveEntry
-    cmdBlog.Visible = Security.CanAddEntry
-    cmdEditPost.Visible = (Entry IsNot Nothing) And Security.CanEditEntry
+    cmdManageBlogs.Visible = Security.IsBlogger Or Security.CanApprovePost
+    cmdBlog.Visible = Security.CanAddPost
+    cmdEditPost.Visible = (Post IsNot Nothing) And Security.CanEditPost
     cmdCopyModule.Visible = Security.IsEditor
     pnlCopyModule.Visible = Security.IsEditor
     wlwlink.Title = LocalizeString("WLW")
-    wlwlink.Visible = Security.CanAddEntry
-    If Entry IsNot Nothing Then
+    wlwlink.Visible = Security.CanAddPost
+    If Post IsNot Nothing Then
      cmdBlog.Text = LocalizeString("cmdEdit")
     End If
     If Security.IsEditor Then
@@ -60,14 +60,14 @@ Namespace Controls
 
   Private Sub cmdBlog_Click(sender As Object, e As System.EventArgs) Handles cmdBlog.Click
    If BlogId <> -1 Then
-    Response.Redirect(EditUrl("Blog", BlogId.ToString, "EntryEdit"), False)
+    Response.Redirect(EditUrl("Blog", BlogId.ToString, "PostEdit"), False)
    Else
-    Response.Redirect(EditUrl("EntryEdit"), False)
+    Response.Redirect(EditUrl("PostEdit"), False)
    End If
   End Sub
 
   Private Sub cmdEditPost_Click(sender As Object, e As System.EventArgs) Handles cmdEditPost.Click
-   Response.Redirect(EditUrl("Post", ContentItemId.ToString, "EntryEdit"), False)
+   Response.Redirect(EditUrl("Post", ContentItemId.ToString, "PostEdit"), False)
   End Sub
 
  End Class

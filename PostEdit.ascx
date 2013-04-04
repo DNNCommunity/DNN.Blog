@@ -1,9 +1,9 @@
-﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="EntryEdit.ascx.vb" Inherits="DotNetNuke.Modules.Blog.EntryEdit" %>
+﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="PostEdit.ascx.vb" Inherits="DotNetNuke.Modules.Blog.PostEdit" %>
 <%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" TagName="TextEditor" Src="~/controls/TextEditor.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="blog" Namespace="DotNetNuke.Modules.Blog.Controls" Assembly="DotNetNuke.Modules.Blog" %>
-<div class="dnnForm dnnBlogEditEntry dnnClear" id="dnnBlogEditEntry">
+<div class="dnnForm dnnBlogEditPost dnnClear" id="dnnBlogEditPost">
 	<h2 id="dnnSitePanel-BlogContent" class="dnnFormSectionHead"><a href="" class="dnnFormSectionExpanded"><%= LocalizeString("Title")%></a></h2>
 	<fieldset>
 		<dnn:Label ID="lblBlog" runat="server" controlname="ddBlog" suffix=":" CssClass="dnnLeft" /><br />
@@ -20,7 +20,7 @@
 	<h2 id="H1" class="dnnFormSectionHead"><a href="" class="dnnFormSectionExpanded"><%= LocalizeString("Content")%></a></h2>
 	<fieldset>
   <asp:Label runat="server" ID="lblSummaryPrecedingWarning" resourcekey="lblSummaryPrecedingWarning" Visible="false" CssClass="dnnFormMessage dnnFormWarning" />
-		<dnn:texteditor id="teBlogEntry" runat="server" width="100%" height="400" />
+		<dnn:texteditor id="teBlogPost" runat="server" width="100%" height="400" />
 	</fieldset>
 	<h2 id="H3" class="dnnFormSectionHead"><a href="" class="dnnFormSectionExpanded"><%= LocalizeString("Publishing")%></a></h2>
 	<fieldset>
@@ -41,10 +41,10 @@
 			<asp:TextBox ID="txtCopyright" runat="server" />
 		</asp:Panel>
 		<div class="dnnFormItem">
-			<dnn:Label ID="lblPublishDate" runat="server" ControlName="dpEntryDate" Suffix=":" />
+			<dnn:Label ID="lblPublishDate" runat="server" ControlName="dpPostDate" Suffix=":" />
 			<div class="dnnLeft">
-				<dnnweb:DnnDatePicker ID="dpEntryDate" runat="server" CssClass="dateFix" />
-				<dnnweb:DnnTimePicker ID="tpEntryTime" runat="server" TimeView-Columns="4" ShowPopupOnFocus="true" CssClass="dateFix" />
+				<dnnweb:DnnDatePicker ID="dpPostDate" runat="server" CssClass="dateFix" />
+				<dnnweb:DnnTimePicker ID="tpPostTime" runat="server" TimeView-Columns="4" ShowPopupOnFocus="true" CssClass="dateFix" />
 			</div>
 		</div>
 		<div class="dnnClear" style="padding:10px 0px;">
@@ -60,7 +60,7 @@
   <div class="dnnFormItem">
    <dnn:Label ID="lblImage" runat="server" controlname="fileImage" suffix=":" />
    <div style="float:left;">
-   <asp:Image runat="server" ID="imgEntryImage" /><br /><br />
+   <asp:Image runat="server" ID="imgPostImage" /><br /><br />
    <asp:FileUpload runat="server" ID="fileImage" Width="300" />&nbsp;
    <asp:LinkButton runat="server" ID="cmdImageRemove" resourcekey="cmdImageRemove" cssclass="dnnSecondaryAction" />
    </div>
@@ -81,22 +81,22 @@
 	<ul class="dnnActions">
 		<li><asp:LinkButton ID="cmdSave" runat="server" CssClass="dnnPrimaryAction" resourcekey="cmdSave" /></li>
 		<li><asp:HyperLink ID="hlCancel" ResourceKey="cmdCancel" runat="server" CssClass="dnnSecondaryAction" /></li>
-		<li><asp:LinkButton ID="cmdDelete" ResourceKey="cmdDelete" runat="server" CssClass="dnnSecondaryAction dnnEntryDelete" CausesValidation="False" Visible="False" /></li>
+		<li><asp:LinkButton ID="cmdDelete" ResourceKey="cmdDelete" runat="server" CssClass="dnnSecondaryAction dnnPostDelete" CausesValidation="False" Visible="False" /></li>
 	</ul>
 	<div class="dnnFormItem">
 		<asp:ValidationSummary ID="valSummary" CssClass="dnnFormMessage dnnFormValidationSummary" EnableClientScript="False" runat="server" DisplayMode="BulletList" />
 	</div>
 </div>
-<asp:CustomValidator ID="valEntry" EnableClientScript="False" runat="server" ResourceKey="valEntry.ErrorMessage" Display="None" />
+<asp:CustomValidator ID="valPost" EnableClientScript="False" runat="server" ResourceKey="valPost.ErrorMessage" Display="None" />
 <asp:CustomValidator ID="valUpload" EnableClientScript="False" runat="server" Display="None" />
 <script language="javascript" type="text/javascript">
  (function ($, Sys) {
 
   $(document).ready(function () {
 
-   $('#dnnBlogEditEntry').dnnPanels();
+   $('#dnnBlogEditPost').dnnPanels();
 
-   $('.dnnEntryDelete').dnnConfirm({
+   $('.dnnPostDelete').dnnConfirm({
     text: '<%= LocalizeString("DeleteItem") %>',
     yesText: '<%= Localization.GetString("Yes.Text", Localization.SharedResourceFile) %>',
     noText: '<%= Localization.GetString("No.Text", Localization.SharedResourceFile) %>',

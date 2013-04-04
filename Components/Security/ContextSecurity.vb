@@ -72,13 +72,13 @@ Namespace Security
    End If
   End Sub
 
-  Public ReadOnly Property CanEditEntry() As Boolean
+  Public ReadOnly Property CanEditPost() As Boolean
    Get
     Return _canEdit Or IsOwner Or UserIsAdmin
    End Get
   End Property
 
-  Public ReadOnly Property CanAddEntry() As Boolean
+  Public ReadOnly Property CanAddPost() As Boolean
    Get
     Return _canAdd Or IsOwner Or UserIsAdmin
    End Get
@@ -90,7 +90,7 @@ Namespace Security
    End Get
   End Property
 
-  Public ReadOnly Property CanApproveEntry() As Boolean
+  Public ReadOnly Property CanApprovePost() As Boolean
    Get
     Return _canApprove Or IsOwner Or UserIsAdmin
    End Get

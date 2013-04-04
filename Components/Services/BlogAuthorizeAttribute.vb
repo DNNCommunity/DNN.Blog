@@ -82,11 +82,11 @@ Namespace Services
     Return True
    ElseIf (AccessLevel And SecurityAccessLevel.EditModule) = SecurityAccessLevel.EditModule AndAlso DotNetNuke.Security.Permissions.ModulePermissionController.HasModulePermission(context.ActionContext.Request.FindModuleInfo().ModulePermissions, "EDIT") Then
     Return True
-   ElseIf (AccessLevel And SecurityAccessLevel.AddPost) = SecurityAccessLevel.AddPost AndAlso Security.CanAddEntry Then
+   ElseIf (AccessLevel And SecurityAccessLevel.AddPost) = SecurityAccessLevel.AddPost AndAlso Security.CanAddPost Then
     Return True
-   ElseIf (AccessLevel And SecurityAccessLevel.EditPost) = SecurityAccessLevel.EditPost AndAlso Security.CanEditEntry Then
+   ElseIf (AccessLevel And SecurityAccessLevel.EditPost) = SecurityAccessLevel.EditPost AndAlso Security.CanEditPost Then
     Return True
-   ElseIf (AccessLevel And SecurityAccessLevel.ApprovePost) = SecurityAccessLevel.ApprovePost AndAlso Security.CanApproveEntry Then
+   ElseIf (AccessLevel And SecurityAccessLevel.ApprovePost) = SecurityAccessLevel.ApprovePost AndAlso Security.CanApprovePost Then
     Return True
    ElseIf (AccessLevel And SecurityAccessLevel.AddComment) = SecurityAccessLevel.AddComment AndAlso Security.CanAddComment Then
     Return True

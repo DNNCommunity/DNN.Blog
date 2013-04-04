@@ -171,14 +171,14 @@
   <data name="ApproveComment_Desc.Text" xml:space="preserve">
     <value>Approve the comment and make it available for immediate viewing.</value>
   </data>
-  <data name="ApproveEntry.Text" xml:space="preserve">
+  <data name="ApprovePost.Text" xml:space="preserve">
     <value>Approve</value>
   </data>
-  <data name="ApproveEntry_Desc.Text" xml:space="preserve">
+  <data name="ApprovePost_Desc.Text" xml:space="preserve">
     <value>Approve the blog post, it will be viewable online once the publish date has been reached (if it is in the future, live immediately if in the past).</value>
   </data>
   <data name="ApprovePostNotifyBody.Text" xml:space="preserve">
-    <value>A new blog entry is pending approval</value>
+    <value>A new blog Post is pending approval</value>
   </data>
   <data name="CommentAddedNotify.Text" xml:space="preserve">
     <value>A new comment has been added</value>
@@ -192,10 +192,10 @@
   <data name="DeleteComment_Desc.Text" xml:space="preserve">
     <value>Delete the comment, it will not be published and will not be available for future edits.</value>
   </data>
-  <data name="DeleteEntry.Text" xml:space="preserve">
+  <data name="DeletePost.Text" xml:space="preserve">
     <value>Delete</value>
   </data>
-  <data name="DeleteEntry_Desc.Text" xml:space="preserve">
+  <data name="DeletePost_Desc.Text" xml:space="preserve">
     <value>Delete the blog post, it will not be published and will not be available for future edits.</value>
   </data>
   <data name="ADD.Permission" xml:space="preserve">

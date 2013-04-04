@@ -33,7 +33,6 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyProduct("http://www.dotnetnuke.com")> 
 <Assembly: AssemblyCopyright("Copyright 2002-2012 by DotNetNuke.")> 
 <Assembly: AssemblyTrademark("DotNetNuke")> 
-<Assembly: CLSCompliant(True)> 
 
 ' Version information for an assembly consists of the following four values:
 '

@@ -32,17 +32,17 @@ Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
 Imports DotNetNuke.Modules.Blog.Entities.Terms
 
-Namespace Entities.Entries
+Namespace Entities.Posts
 
- Partial Public Class EntryInfo
+ Partial Public Class PostInfo
 
-  Public ReadOnly Property EntryCategories As List(Of TermInfo)
+  Public ReadOnly Property PostCategories As List(Of TermInfo)
    Get
     Return Terms.Where(Function(t) t.VocabularyId <> 1).ToList
    End Get
   End Property
 
-  Public ReadOnly Property EntryTags As List(Of TermInfo)
+  Public ReadOnly Property PostTags As List(Of TermInfo)
    Get
     Return Terms.Where(Function(t) t.VocabularyId = 1).ToList
    End Get
@@ -69,7 +69,7 @@ Namespace Entities.Entries
   Public Shadows Property Terms() As List(Of TermInfo)
    Get
     If _terms Is Nothing Then
-     _terms = TermsController.GetTermsByEntry(ContentItemId, Blog.ModuleID)
+     _terms = TermsController.GetTermsByPost(ContentItemId, Blog.ModuleID)
     End If
     Return _terms
    End Get

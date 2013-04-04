@@ -10,14 +10,14 @@ Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Framework
 Imports System.Linq
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
-Imports DotNetNuke.Modules.Blog.Entities.Entries
+Imports DotNetNuke.Modules.Blog.Entities.Posts
 Imports DotNetNuke.Services.Localization
 Imports Telerik.Web.UI
 Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.Integration
 Imports DotNetNuke.Modules.Blog.Entities.Terms
 
-Public Class EntryEdit
+Public Class PostEdit
  Inherits BlogModuleBase
 
 #Region " Public Properties "
@@ -39,7 +39,7 @@ Public Class EntryEdit
 #Region " Controls "
 
  Protected WithEvents txtDescription As DotNetNuke.UI.UserControls.TextEditor
- Protected WithEvents teBlogEntry As DotNetNuke.UI.UserControls.TextEditor
+ Protected WithEvents teBlogPost As DotNetNuke.UI.UserControls.TextEditor
 
 #End Region
 
@@ -58,7 +58,7 @@ Public Class EntryEdit
      blogList = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId).Values
     Else
      blogList = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId).Values.Where(Function(b)
-                                                                                          Return b.OwnerUserId = UserId Or (b.CanAdd And Security.CanAddEntry) Or (b.CanEdit And Security.CanEditEntry And ContentItemId > -1)
+                                                                                          Return b.OwnerUserId = UserId Or (b.CanAdd And Security.CanAddPost) Or (b.CanEdit And Security.CanEditPost And ContentItemId > -1)
                                                                                          End Function)
     End If
     ddBlog.DataSource = blogList
@@ -82,7 +82,7 @@ Public Class EntryEdit
     End If
    End If
 
-   If Not Security.CanAddEntry Then
+   If Not Security.CanAddPost Then
     Response.Redirect(NavigateURL("Access Denied"))
    End If
 
@@ -133,53 +133,53 @@ Public Class EntryEdit
     Else
      hlCancel.NavigateUrl = ModuleContext.NavigateUrl(ModuleContext.TabId, "", False, "")
     End If
-    cmdDelete.Visible = CBool(Entry IsNot Nothing)
+    cmdDelete.Visible = CBool(Post IsNot Nothing)
 
-    If Not Entry Is Nothing Then
+    If Not Post Is Nothing Then
 
-     Dim entryBody As New PostBodyAndSummary(Entry, Settings.SummaryModel)
+     Dim PostBody As New PostBodyAndSummary(Post, Settings.SummaryModel)
 
      ' Content
-     txtTitle.Text = HttpUtility.HtmlDecode(Entry.Title)
-     teBlogEntry.Text = entryBody.Body
+     txtTitle.Text = HttpUtility.HtmlDecode(Post.Title)
+     teBlogPost.Text = PostBody.Body
 
      ' Publishing
-     chkPublished.Checked = Entry.Published
-     chkAllowComments.Checked = Entry.AllowComments
-     chkDisplayCopyright.Checked = Entry.DisplayCopyright
+     chkPublished.Checked = Post.Published
+     chkAllowComments.Checked = Post.AllowComments
+     chkDisplayCopyright.Checked = Post.DisplayCopyright
      If chkDisplayCopyright.Checked Then
       pnlCopyright.Visible = True
-      txtCopyright.Text = Entry.Copyright
+      txtCopyright.Text = Post.Copyright
      End If
      ' Date
      litTimezone.Text = UiTimeZone.DisplayName
-     Dim publishDate As DateTime = UtcToLocalTime(Entry.PublishedOnDate, UiTimeZone)
-     dpEntryDate.Culture = Threading.Thread.CurrentThread.CurrentUICulture
-     dpEntryDate.SelectedDate = publishDate
-     tpEntryTime.Culture = Threading.Thread.CurrentThread.CurrentUICulture
-     tpEntryTime.SelectedDate = publishDate
+     Dim publishDate As DateTime = UtcToLocalTime(Post.PublishedOnDate, UiTimeZone)
+     dpPostDate.Culture = Threading.Thread.CurrentThread.CurrentUICulture
+     dpPostDate.SelectedDate = publishDate
+     tpPostTime.Culture = Threading.Thread.CurrentThread.CurrentUICulture
+     tpPostTime.SelectedDate = publishDate
 
      ' Summary, Image, Categories, Tags
      Try
-      ddLocale.Items.FindByValue(Entry.Locale).Selected = True
+      ddLocale.Items.FindByValue(Post.Locale).Selected = True
      Catch ex As Exception
      End Try
      Select Case Settings.SummaryModel
       Case SummaryType.PlainTextIndependent
-       txtDescriptionText.Text = entryBody.Summary
+       txtDescriptionText.Text = PostBody.Summary
       Case Else ' plain text
-       txtDescription.Text = entryBody.Summary
+       txtDescription.Text = PostBody.Summary
      End Select
-     If Not String.IsNullOrEmpty(Entry.Image) Then
-      imgEntryImage.ImageUrl = ResolveUrl(glbImageHandlerPath) & String.Format("?TabId={0}&ModuleId={1}&Blog={2}&Post={3}&w=100&h=100&c=1&key={4}", TabId, Settings.ModuleId, BlogId, ContentItemId, Entry.Image)
-      imgEntryImage.Visible = True
+     If Not String.IsNullOrEmpty(Post.Image) Then
+      imgPostImage.ImageUrl = ResolveUrl(glbImageHandlerPath) & String.Format("?TabId={0}&ModuleId={1}&Blog={2}&Post={3}&w=100&h=100&c=1&key={4}", TabId, Settings.ModuleId, BlogId, ContentItemId, Post.Image)
+      imgPostImage.Visible = True
       cmdImageRemove.Visible = True
      Else
-      imgEntryImage.Visible = False
+      imgPostImage.Visible = False
       cmdImageRemove.Visible = False
      End If
-     ctlTags.Terms = Entry.EntryTags
-     ctlCategories.SelectedCategories = Entry.EntryCategories
+     ctlTags.Terms = Post.PostTags
+     ctlCategories.SelectedCategories = Post.PostCategories
 
     Else
 
@@ -192,15 +192,15 @@ Public Class EntryEdit
      ' Date
      litTimezone.Text = UiTimeZone.DisplayName
      Dim publishDate As Date = UtcToLocalTime(DateTime.Now.ToUniversalTime, UiTimeZone)
-     dpEntryDate.Culture = Threading.Thread.CurrentThread.CurrentUICulture
-     dpEntryDate.SelectedDate = publishDate
-     tpEntryTime.Culture = Threading.Thread.CurrentThread.CurrentUICulture
-     tpEntryTime.SelectedDate = publishDate
+     dpPostDate.Culture = Threading.Thread.CurrentThread.CurrentUICulture
+     dpPostDate.SelectedDate = publishDate
+     tpPostTime.Culture = Threading.Thread.CurrentThread.CurrentUICulture
+     tpPostTime.SelectedDate = publishDate
 
     End If
 
     ' Security
-    If Blog.MustApproveGhostPosts AndAlso Not Security.CanApproveEntry Then
+    If Blog.MustApproveGhostPosts AndAlso Not Security.CanApprovePost Then
      chkPublished.Checked = False
      chkPublished.Enabled = False
     End If
@@ -219,64 +219,64 @@ Public Class EntryEdit
 
    If Page.IsValid = True Then
 
-    If Entry Is Nothing Then Entry = New EntryInfo
+    If Post Is Nothing Then Post = New PostInfo
     If BlogId = -1 OrElse Blog.BlogID <> ddBlog.SelectedValue.ToInt Then
      BlogId = ddBlog.SelectedValue.ToInt
      Blog = BlogsController.GetBlog(BlogId, UserId)
      Security = New Modules.Blog.Security.ContextSecurity(Settings.ModuleId, TabId, Blog, UserInfo)
     End If
-    If ContentItemId = -1 And Not Security.CanAddEntry Then Throw New Exception("You can't add posts to this blog")
-    If ContentItemId <> -1 And Not Security.CanEditEntry Then Throw New Exception("You're not allowed to edit this post")
+    If ContentItemId = -1 And Not Security.CanAddPost Then Throw New Exception("You can't add posts to this blog")
+    If ContentItemId <> -1 And Not Security.CanEditPost Then Throw New Exception("You're not allowed to edit this post")
 
-    Dim firstPublish As Boolean = CBool((Not Entry.Published) And chkPublished.Checked)
+    Dim firstPublish As Boolean = CBool((Not Post.Published) And chkPublished.Checked)
 
     ' Contents and summary
-    Entry.BlogID = BlogId
-    Entry.Title = txtTitle.Text
-    Dim entryBody As New PostBodyAndSummary(teBlogEntry.Text)
+    Post.BlogID = BlogId
+    Post.Title = txtTitle.Text
+    Dim PostBody As New PostBodyAndSummary(teBlogPost.Text)
     If Settings.SummaryModel = SummaryType.PlainTextIndependent Then
-     entryBody.Summary = RemoveHtmlTags(Trim(txtDescriptionText.Text))
+     PostBody.Summary = RemoveHtmlTags(Trim(txtDescriptionText.Text))
     Else
-     entryBody.Summary = Trim(txtDescription.Text)
+     PostBody.Summary = Trim(txtDescription.Text)
     End If
-    entryBody.WriteToEntry(Entry, Settings.SummaryModel, False)
+    PostBody.WriteToPost(Post, Settings.SummaryModel, False)
 
     ' Publishing
-    Entry.Published = chkPublished.Checked
-    Entry.AllowComments = chkAllowComments.Checked
-    Entry.DisplayCopyright = chkDisplayCopyright.Checked
-    Entry.Copyright = txtCopyright.Text
+    Post.Published = chkPublished.Checked
+    Post.AllowComments = chkAllowComments.Checked
+    Post.DisplayCopyright = chkDisplayCopyright.Checked
+    Post.Copyright = txtCopyright.Text
     ' Date
-    Entry.PublishedOnDate = CDate(dpEntryDate.SelectedDate)
-    Dim hour As Integer = tpEntryTime.SelectedDate.Value.Hour
-    Dim minute As Integer = tpEntryTime.SelectedDate.Value.Minute
-    Entry.PublishedOnDate = Entry.PublishedOnDate.AddHours(hour)
-    Entry.PublishedOnDate = Entry.PublishedOnDate.AddMinutes(minute)
-    Entry.PublishedOnDate = TimeZoneInfo.ConvertTimeToUtc(Entry.PublishedOnDate, UiTimeZone)
+    Post.PublishedOnDate = CDate(dpPostDate.SelectedDate)
+    Dim hour As Integer = tpPostTime.SelectedDate.Value.Hour
+    Dim minute As Integer = tpPostTime.SelectedDate.Value.Minute
+    Post.PublishedOnDate = Post.PublishedOnDate.AddHours(hour)
+    Post.PublishedOnDate = Post.PublishedOnDate.AddMinutes(minute)
+    Post.PublishedOnDate = TimeZoneInfo.ConvertTimeToUtc(Post.PublishedOnDate, UiTimeZone)
 
     ' Categories, Tags
     Dim terms As New List(Of TermInfo)
     ctlTags.CreateMissingTerms()
     terms.AddRange(ctlTags.Terms)
     terms.AddRange(ctlCategories.SelectedCategories)
-    Entry.Terms.Clear()
-    Entry.Terms.AddRange(terms)
+    Post.Terms.Clear()
+    Post.Terms.AddRange(terms)
 
-    Entry.Locale = ddLocale.SelectedValue
+    Post.Locale = ddLocale.SelectedValue
 
     ' Image
-    Dim saveDir As String = GetPostDirectoryMapPath(Entry)
+    Dim saveDir As String = GetPostDirectoryMapPath(Post)
     Dim savedFile As String = ""
     If fileImage.HasFile Then
      Dim extension As String = IO.Path.GetExtension(fileImage.FileName).ToLower
      If glbPermittedFileExtensions.IndexOf(extension & ",") > -1 Then
       If Not IO.Directory.Exists(saveDir) Then IO.Directory.CreateDirectory(saveDir)
-      If Entry.Image <> "" Then
+      If Post.Image <> "" Then
        ' remove old images
        Dim imagesToDelete As New List(Of String)
        Dim d As New IO.DirectoryInfo(saveDir)
        For Each f As IO.FileInfo In d.GetFiles
-        If f.Name.StartsWith(Entry.Image) Then
+        If f.Name.StartsWith(Post.Image) Then
          imagesToDelete.Add(f.FullName)
         End If
        Next
@@ -290,43 +290,43 @@ Public Class EntryEdit
       Dim newFileName As String = Guid.NewGuid.ToString("D")
       savedFile = saveDir & newFileName & IO.Path.GetExtension(fileImage.FileName).ToLower
       fileImage.SaveAs(savedFile)
-      Entry.Image = newFileName
+      Post.Image = newFileName
      End If
     End If
 
     ' Final Security Check
-    If Blog.MustApproveGhostPosts AndAlso Not Security.CanApproveEntry Then
-     Entry.Published = False
+    If Blog.MustApproveGhostPosts AndAlso Not Security.CanApprovePost Then
+     Post.Published = False
      firstPublish = False
     End If
 
     ' Add if new, otherwise update
     If ContentItemId = -1 Then
-     Entry.ContentItemId = EntriesController.AddEntry(Entry, UserId)
-     ContentItemId = Entry.ContentItemId
+     Post.ContentItemId = PostsController.AddPost(Post, UserId)
+     ContentItemId = Post.ContentItemId
      If savedFile <> "" Then ' move file if it was saved
-      saveDir = GetPostDirectoryMapPath(Entry)
+      saveDir = GetPostDirectoryMapPath(Post)
       IO.Directory.CreateDirectory(saveDir)
-      Dim dest As String = saveDir & Entry.Image & IO.Path.GetExtension(fileImage.FileName).ToLower
+      Dim dest As String = saveDir & Post.Image & IO.Path.GetExtension(fileImage.FileName).ToLower
       IO.File.Move(savedFile, dest)
      End If
     Else
-     EntriesController.UpdateEntry(Entry, UserId)
+     PostsController.UpdatePost(Post, UserId)
     End If
 
-    If (Entry.Published) Then
+    If (Post.Published) Then
 
-     Dim journalUrl As String = Entry.PermaLink(PortalSettings)
+     Dim journalUrl As String = Post.PermaLink(PortalSettings)
      Dim journalUserId As Integer = UserId
      If Blog.PublishAsOwner Then journalUserId = Blog.OwnerUserId
-     JournalController.AddBlogEntryToJournal(Entry, ModuleContext.PortalId, ModuleContext.TabId, journalUserId, journalUrl)
-     NotificationController.RemoveEntryPendingNotification(Settings.ModuleId, Blog.BlogID, Entry.ContentItemId)
+     JournalController.AddBlogPostToJournal(Post, ModuleContext.PortalId, ModuleContext.TabId, journalUserId, journalUrl)
+     NotificationController.RemovePostPendingNotification(Settings.ModuleId, Blog.BlogID, Post.ContentItemId)
 
     ElseIf Blog.MustApproveGhostPosts And UserId <> Blog.OwnerUserId Then
 
      Dim title As String = Localization.GetString("ApprovePostNotifyBody", SharedResourceFileName)
-     Dim summary As String = "<a target='_blank' href='" + Entry.PermaLink(PortalSettings) + "'>" + Entry.Title + "</a>"
-     NotificationController.EntryPendingApproval(Blog, Entry, ModuleContext.PortalId, summary, title)
+     Dim summary As String = "<a target='_blank' href='" + Post.PermaLink(PortalSettings) + "'>" + Post.Title + "</a>"
+     NotificationController.PostPendingApproval(Blog, Post, ModuleContext.PortalId, summary, title)
 
     End If
 
@@ -342,15 +342,15 @@ Public Class EntryEdit
  Protected Sub cmdDelete_Click(sender As Object, e As EventArgs) Handles cmdDelete.Click
   Try
    DeleteAllFiles()
-   EntriesController.DeleteEntry(Entry.ContentItemId, Entry.BlogID, ModuleContext.PortalId, Settings.VocabularyId)
+   PostsController.DeletePost(Post.ContentItemId, Post.BlogID, ModuleContext.PortalId, Settings.VocabularyId)
    Response.Redirect(NavigateURL(TabId, "", "Blog=" & BlogId.ToString), False)
   Catch exc As Exception    'Module failed to load
    ProcessModuleLoadException(Me, exc)
   End Try
  End Sub
 
- Protected Sub valEntry_ServerValidate(source As Object, args As System.Web.UI.WebControls.ServerValidateEventArgs) Handles valEntry.ServerValidate
-  args.IsValid = teBlogEntry.Text.Length > 0
+ Protected Sub valPost_ServerValidate(source As Object, args As System.Web.UI.WebControls.ServerValidateEventArgs) Handles valPost.ServerValidate
+  args.IsValid = teBlogPost.Text.Length > 0
  End Sub
 
  Protected Sub chkDisplayCopyright_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles chkDisplayCopyright.CheckedChanged
@@ -363,7 +363,7 @@ Public Class EntryEdit
  Private Sub ddBlog_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles ddBlog.SelectedIndexChanged
   Blog = BlogsController.GetBlog(ddBlog.SelectedItem.Value.ToInt, UserId)
   Security = New Modules.Blog.Security.ContextSecurity(Settings.ModuleId, TabId, Blog, UserInfo)
-  If Blog.MustApproveGhostPosts AndAlso Not Security.CanApproveEntry Then
+  If Blog.MustApproveGhostPosts AndAlso Not Security.CanApprovePost Then
    chkPublished.Checked = False
    chkPublished.Enabled = False
   End If
@@ -374,14 +374,14 @@ Public Class EntryEdit
 
  Private Sub cmdImageRemove_Click(sender As Object, e As System.EventArgs) Handles cmdImageRemove.Click
 
-  If Entry IsNot Nothing Then
-   If Entry.Image <> "" Then
+  If Post IsNot Nothing Then
+   If Post.Image <> "" Then
     ' remove old images
     Dim saveDir As String = PortalSettings.HomeDirectoryMapPath & String.Format("\Blog\Files\{0}\{1}\", BlogId, ContentItemId)
     Dim imagesToDelete As New List(Of String)
     Dim d As New IO.DirectoryInfo(saveDir)
     For Each f As IO.FileInfo In d.GetFiles
-     If f.Name.StartsWith(Entry.Image) Then
+     If f.Name.StartsWith(Post.Image) Then
       imagesToDelete.Add(f.FullName)
      End If
     Next
@@ -392,10 +392,10 @@ Public Class EntryEdit
      End Try
     Next
    End If
-   Entry.Image = ""
-   EntriesController.UpdateEntry(Entry, UserId)
+   Post.Image = ""
+   PostsController.UpdatePost(Post, UserId)
   End If
-  imgEntryImage.Visible = False
+  imgPostImage.Visible = False
   cmdImageRemove.Visible = False
 
  End Sub
@@ -410,7 +410,7 @@ Public Class EntryEdit
 #Region " Upload Feature Methods "
  Private Sub DeleteAllFiles()
   Try
-   System.IO.Directory.Delete(FileController.getEntryDir(Me.FilePath, Entry), True)
+   System.IO.Directory.Delete(FileController.getPostDir(Me.FilePath, Post), True)
   Catch
 
   End Try

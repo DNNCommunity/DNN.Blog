@@ -21,7 +21,7 @@ Imports System.IO
 Imports DotNetNuke.Common
 Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Modules.Blog.Entities
-Imports DotNetNuke.Modules.Blog.Entities.Entries
+Imports DotNetNuke.Modules.Blog.Entities.Posts
 
 Namespace Integration
 
@@ -29,11 +29,11 @@ Namespace Integration
 
 #Region "Shared methods"
 
-  Public Shared Function getFileList(pModulPath As String, pEntry As EntryInfo) As ArrayList
+  Public Shared Function getFileList(pModulPath As String, pPost As PostInfo) As ArrayList
 
    Dim myList As New ArrayList
-   If Directory.Exists(getEntryDir(pModulPath, pEntry)) Then
-    Dim fileList() As String = System.IO.Directory.GetFiles(getEntryDir(pModulPath, pEntry))
+   If Directory.Exists(getPostDir(pModulPath, pPost)) Then
+    Dim fileList() As String = System.IO.Directory.GetFiles(getPostDir(pModulPath, pPost))
     For Each s As String In fileList
      myList.Add(System.IO.Path.GetFileName(s))
     Next
@@ -42,13 +42,13 @@ Namespace Integration
 
   End Function
 
-  Public Shared Function getEntryDir(pModulPath As String, pEntry As EntryInfo) As String
+  Public Shared Function getPostDir(pModulPath As String, pPost As PostInfo) As String
 
    Dim _portalSettings As PortalSettings = CType(HttpContext.Current.Items("PortalSettings"), PortalSettings)
-   If pEntry Is Nothing Then
-    getEntryDir = System.Web.HttpContext.Current.Request.MapPath(pModulPath) & "Files\AnonymousBlogAttachments\"
+   If pPost Is Nothing Then
+    getPostDir = System.Web.HttpContext.Current.Request.MapPath(pModulPath) & "Files\AnonymousBlogAttachments\"
    Else
-    getEntryDir = System.Web.HttpContext.Current.Request.MapPath(pModulPath) & "Files\" & pEntry.BlogID.ToString() & "\" & pEntry.ContentItemId.ToString() & "\"
+    getPostDir = System.Web.HttpContext.Current.Request.MapPath(pModulPath) & "Files\" & pPost.BlogID.ToString() & "\" & pPost.ContentItemId.ToString() & "\"
    End If
 
   End Function

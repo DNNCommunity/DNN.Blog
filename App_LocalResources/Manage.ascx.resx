@@ -150,10 +150,10 @@
   <data name="Actions.Header" xml:space="preserve">
     <value>Actions</value>
   </data>
-  <data name="ApproveEntry.Text" xml:space="preserve">
+  <data name="ApprovePost.Text" xml:space="preserve">
     <value>Approve this post?</value>
   </data>
-  <data name="DeleteEntry.Text" xml:space="preserve">
+  <data name="DeletePost.Text" xml:space="preserve">
     <value>Delete this post?</value>
   </data>
   <data name="lblAllowAllLocales.Help" xml:space="preserve">
@@ -192,11 +192,11 @@
   <data name="lblVocabularyId.Text" xml:space="preserve">
     <value>Category Vocabulary</value>
   </data>
-  <data name="lblWLWRecentEntriesMax.Help" xml:space="preserve">
+  <data name="lblWLWRecentPostsMax.Help" xml:space="preserve">
     <value>This is the maximum number of (recent) blog posts that can be downloaded by Windows Live Writer for editing.</value>
   </data>
-  <data name="lblWLWRecentEntriesMax.Text" xml:space="preserve">
-    <value>WLW Max Recent Entries</value>
+  <data name="lblWLWRecentPostsMax.Text" xml:space="preserve">
+    <value>WLW Max Recent Posts</value>
   </data>
   <data name="NoneSpecified.Text" xml:space="preserve">
     <value>&lt; None Specified &gt;</value>

@@ -29,7 +29,7 @@ Imports System.Net.Http
 Imports System.Web.Http
 Imports DotNetNuke.Web.Api
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
-Imports DotNetNuke.Modules.Blog.Entities.Entries
+Imports DotNetNuke.Modules.Blog.Entities.Posts
 Imports DotNetNuke.Modules.Blog.Security
 Imports DotNetNuke.Modules.Blog.Integration
 Imports DotNetNuke.Entities.Modules
@@ -119,7 +119,7 @@ Namespace Services
      output.WriteElementString("supportsPageParent", "No")
      output.WriteElementString("supportsPageOrder", "No")
      output.WriteElementString("supportsEmptyTitles", "No")
-     output.WriteElementString("supportsExtendedEntries", (CBool(bs.SummaryModel = Globals.SummaryType.HtmlPrecedesPost)).ToYesNo)
+     output.WriteElementString("supportsExtendedPosts", (CBool(bs.SummaryModel = Globals.SummaryType.HtmlPrecedesPost)).ToYesNo)
      output.WriteElementString("supportsCommentPolicy", "Yes")
      output.WriteElementString("supportsPingPolicy", "No")
      output.WriteElementString("supportsPostAsDraft", "Yes")

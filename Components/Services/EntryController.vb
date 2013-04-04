@@ -29,23 +29,23 @@ Imports System.Net.Http
 Imports System.Web.Http
 Imports DotNetNuke.Web.Api
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
-Imports DotNetNuke.Modules.Blog.Entities.Entries
+Imports DotNetNuke.Modules.Blog.Entities.Posts
 Imports DotNetNuke.Modules.Blog.Security
 Imports DotNetNuke.Modules.Blog.Integration
 
 Namespace Services
 
- Public Class EntryController
+ Public Class PostController
   Inherits DnnApiController
 
-  Public Class EntryDTO
+  Public Class PostDTO
    Public Property BlogId As Integer
-   Public Property EntryId As Integer
+   Public Property PostId As Integer
   End Class
 
 #Region " Private Members "
   Private Property Blog As BlogInfo = Nothing
-  Private Property Entry As EntryInfo = Nothing
+  Private Property Post As PostInfo = Nothing
 #End Region
 
 #Region " Service Methods "
@@ -53,12 +53,12 @@ Namespace Services
   <BlogAuthorizeAttribute(Services.SecurityAccessLevel.ApprovePost)>
   <ValidateAntiForgeryToken()>
   <ActionName("Approve")>
-  Public Function ApproveEntry(postData As EntryDTO) As HttpResponseMessage
+  Public Function ApprovePost(postData As PostDTO) As HttpResponseMessage
    SetContext(postData)
-   If Blog Is Nothing Or Entry Is Nothing Then
+   If Blog Is Nothing Or Post Is Nothing Then
     Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
    End If
-   EntriesController.PublishEntry(Entry, True, UserInfo.UserID)
+   PostsController.PublishPost(Post, True, UserInfo.UserID)
    Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = "success"})
   End Function
 
@@ -66,20 +66,20 @@ Namespace Services
   <BlogAuthorizeAttribute(Services.SecurityAccessLevel.EditPost)>
   <ValidateAntiForgeryToken()>
   <ActionName("Delete")>
-  Public Function DeleteEntry(postData As EntryDTO) As HttpResponseMessage
+  Public Function DeletePost(postData As PostDTO) As HttpResponseMessage
    SetContext(postData)
-   If Blog Is Nothing Or Entry Is Nothing Then
+   If Blog Is Nothing Or Post Is Nothing Then
     Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
    End If
-   EntriesController.DeleteEntry(Entry)
+   PostsController.DeletePost(Post)
    Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = "success"})
   End Function
 #End Region
 
 #Region " Private Methods "
-  Private Sub SetContext(data As EntryDTO)
+  Private Sub SetContext(data As PostDTO)
    Blog = BlogsController.GetBlog(data.BlogId, UserInfo.UserID)
-   Entry = EntriesController.GetEntry(data.EntryId, ActiveModule.ModuleID)
+   Post = PostsController.GetPost(data.PostId, ActiveModule.ModuleID)
   End Sub
 #End Region
 

@@ -157,7 +157,7 @@
     <Content Include="js\jquery.timeago.js" />
     <Content Include="js\tag-it.min.js" />
     <Content Include="Manage.ascx" />
-    <Content Include="EntryEdit.ascx" />
+    <Content Include="PostEdit.ascx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BlogImage.ashx.vb">
@@ -242,17 +242,17 @@
     <Compile Include="Components\Data\SqlDataProvider_CRUD.vb" />
     <Compile Include="Components\Data\SqlDataProvider_FK.vb" />
     <Compile Include="Components\Entities\Blogs\BlogsController.vb" />
-    <Compile Include="Components\Entities\Entries\EntriesController.vb" />
+    <Compile Include="Components\Entities\Posts\PostsController.vb" />
     <Compile Include="Components\Entities\Blogs\BlogInfo.vb" />
     <Compile Include="Components\Entities\Blogs\BlogInfo_Interfaces.vb" />
     <Compile Include="Components\Entities\Blogs\BlogInfo_Properties.vb" />
     <Compile Include="Components\Entities\Blogs\BlogsController_CRUD.vb" />
     <Compile Include="Components\Entities\Blogs\BlogsController_FK.vb" />
     <Compile Include="Components\Entities\Comments\CommentInfo.vb" />
-    <Compile Include="Components\Entities\Entries\EntriesController_CRUD.vb" />
-    <Compile Include="Components\Entities\Entries\EntryInfo_Interfaces.vb" />
-    <Compile Include="Components\Entities\Entries\EntryInfo_Properties.vb" />
-    <Compile Include="Components\Entities\Entries\EntryInfo.vb" />
+    <Compile Include="Components\Entities\Posts\PostsController_CRUD.vb" />
+    <Compile Include="Components\Entities\Posts\PostInfo_Interfaces.vb" />
+    <Compile Include="Components\Entities\Posts\PostInfo_Properties.vb" />
+    <Compile Include="Components\Entities\Posts\PostInfo.vb" />
     <Compile Include="Components\Entities\Terms\TermInfo.vb" />
     <Compile Include="Components\Integration\JournalController.vb" />
     <Compile Include="Components\Integration\NotificationController.vb" />
@@ -325,11 +325,11 @@
       <DependentUpon>Manage.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="EntryEdit.ascx.designer.vb">
-      <DependentUpon>EntryEdit.ascx</DependentUpon>
+    <Compile Include="PostEdit.ascx.designer.vb">
+      <DependentUpon>PostEdit.ascx</DependentUpon>
     </Compile>
-    <Compile Include="EntryEdit.ascx.vb">
-      <DependentUpon>EntryEdit.ascx</DependentUpon>
+    <Compile Include="PostEdit.ascx.vb">
+      <DependentUpon>PostEdit.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Blog.ascx.designer.vb">
@@ -369,11 +369,11 @@
     <Content Include="Templates\tagCloud\template.js" />
     <Content Include="Templates\_default\TermBanner.html" />
     <Content Include="Templates\_default\Tag.html" />
-    <Content Include="Templates\_default\EntryBanner.html" />
+    <Content Include="Templates\_default\PostBanner.html" />
     <Content Include="Templates\_default\List.html" />
-    <Content Include="Templates\_default\EntryDetails.html" />
-    <Content Include="Templates\_default\Entry.html" />
-    <Content Include="Templates\_default\EntryThumbnail.html" />
+    <Content Include="Templates\_default\PostDetails.html" />
+    <Content Include="Templates\_default\Post.html" />
+    <Content Include="Templates\_default\PostThumbnail.html" />
     <Content Include="Templates\_default\template.css" />
     <Content Include="Templates\_default\Template.html" />
   </ItemGroup>

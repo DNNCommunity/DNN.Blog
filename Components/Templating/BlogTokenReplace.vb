@@ -3,7 +3,7 @@ Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Entities.Users
 Imports DotNetNuke.Services.Tokens
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
-Imports DotNetNuke.Modules.Blog.Entities.Entries
+Imports DotNetNuke.Modules.Blog.Entities.Posts
 Imports DotNetNuke.Modules.Blog.Entities.Terms
 
 Namespace Templating
@@ -21,8 +21,8 @@ Namespace Templating
    If blogModule.Blog IsNot Nothing Then
     Me.PropertySource("blog") = blogModule.Blog
    End If
-   If blogModule.Entry IsNot Nothing Then
-    Me.PropertySource("entry") = blogModule.Entry
+   If blogModule.Post IsNot Nothing Then
+    Me.PropertySource("post") = blogModule.Post
    End If
    If blogModule.Term IsNot Nothing Then
     Me.PropertySource("selectedterm") = blogModule.Term
@@ -40,8 +40,8 @@ Namespace Templating
    Me.PropertySource("urls") = blogModule.ModuleUrls
    Me.PropertySource("settings") = settings
    Me.PropertySource("blog") = blog
-   If blogModule.Entry IsNot Nothing Then
-    Me.PropertySource("entry") = blogModule.Entry
+   If blogModule.Post IsNot Nothing Then
+    Me.PropertySource("post") = blogModule.Post
    End If
    If blogModule.Term IsNot Nothing Then
     Me.PropertySource("selectedterm") = blogModule.Term
@@ -49,24 +49,24 @@ Namespace Templating
 
   End Sub
 
-  Public Sub New(blogModule As BlogModuleBase, settings As Common.ModuleSettings, entry As EntryInfo)
+  Public Sub New(blogModule As BlogModuleBase, settings As Common.ModuleSettings, Post As PostInfo)
    MyBase.new(Scope.DefaultSettings)
 
-   Me.PrimaryObject = entry
+   Me.PrimaryObject = Post
    Me.ModuleInfo = blogModule.ModuleConfiguration
    Me.UseObjectLessExpression = False
    Me.PropertySource("query") = blogModule
    Me.PropertySource("urls") = blogModule.ModuleUrls
    Me.PropertySource("settings") = settings
-   Me.PropertySource("entry") = entry
-   Me.PropertySource("blog") = entry.Blog
+   Me.PropertySource("post") = Post
+   Me.PropertySource("blog") = Post.Blog
    If blogModule.Term IsNot Nothing Then
     Me.PropertySource("selectedterm") = blogModule.Term
    End If
 
   End Sub
 
-  Public Sub New(blogModule As BlogModuleBase, settings As Common.ModuleSettings, entry As EntryInfo, term As TermInfo)
+  Public Sub New(blogModule As BlogModuleBase, settings As Common.ModuleSettings, Post As PostInfo, term As TermInfo)
    MyBase.new(Scope.DefaultSettings)
 
    Me.PrimaryObject = term
@@ -75,9 +75,9 @@ Namespace Templating
    Me.PropertySource("query") = blogModule
    Me.PropertySource("urls") = blogModule.ModuleUrls
    Me.PropertySource("settings") = settings
-   If entry IsNot Nothing Then
-    Me.PropertySource("entry") = entry
-    Me.PropertySource("blog") = entry.Blog
+   If Post IsNot Nothing Then
+    Me.PropertySource("post") = Post
+    Me.PropertySource("blog") = Post.Blog
    ElseIf blogModule.Blog IsNot Nothing Then
     Me.PropertySource("blog") = blogModule.Blog
    End If

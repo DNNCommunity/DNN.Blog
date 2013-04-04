@@ -2,7 +2,7 @@
 Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Entities.Modules
 Imports DotNetNuke.Modules.Blog.Common.Globals
-Imports DotNetNuke.Modules.Blog.Entities.Entries
+Imports DotNetNuke.Modules.Blog.Entities.Posts
 Imports DotNetNuke.Modules.Blog.Entities.Terms
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
 
@@ -29,7 +29,7 @@ Namespace Rss
 #Region " Properties "
   Public Property Settings As ModuleSettings = Nothing
   Public Property PortalSettings As DotNetNuke.Entities.Portals.PortalSettings = Nothing
-  Public Property Entries As IEnumerable(Of EntryInfo) = Nothing
+  Public Property Posts As IEnumerable(Of PostInfo) = Nothing
   Public Property CacheFile As String = ""
   Public Property IsCached As Boolean = False
   Public Property ImageHandlerUrl As String = ""
@@ -147,15 +147,15 @@ Namespace Rss
     ' Load Posts
     If IsSearchFeed Then
      If Term IsNot Nothing Then
-      Entries = EntriesController.SearchEntriesByTerm(moduleId, BlogId, TermId, Search, SearchTitle, SearchContents, 1, Language, Date.Now.ToUniversalTime, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
+      Posts = PostsController.SearchPostsByTerm(moduleId, BlogId, TermId, Search, SearchTitle, SearchContents, 1, Language, Date.Now.ToUniversalTime, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
      Else
-      Entries = EntriesController.SearchEntries(moduleId, BlogId, Search, SearchTitle, SearchContents, 1, Language, Date.Now.ToUniversalTime, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
+      Posts = PostsController.SearchPosts(moduleId, BlogId, Search, SearchTitle, SearchContents, 1, Language, Date.Now.ToUniversalTime, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
      End If
     Else
      If Term IsNot Nothing Then
-      Entries = EntriesController.GetEntriesByTerm(moduleId, BlogId, TermId, 1, Language, Date.Now.ToUniversalTime, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
+      Posts = PostsController.GetPostsByTerm(moduleId, BlogId, TermId, 1, Language, Date.Now.ToUniversalTime, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
      Else
-      Entries = EntriesController.GetEntries(moduleId, BlogId, 1, Language, Date.Now.ToUniversalTime, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
+      Posts = PostsController.GetPosts(moduleId, BlogId, 1, Language, Date.Now.ToUniversalTime, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
      End If
     End If
     WriteRss(CacheFile)
@@ -246,7 +246,7 @@ Namespace Rss
     output.WriteElementString(nsOpenSearchPre, "itemsPerPage", nsOpenSearchFull, RecordsToSend.ToString)
    End If
 
-   For Each e As EntryInfo In Entries
+   For Each e As PostInfo In Posts
     WriteItem(output, e)
    Next
 
@@ -258,7 +258,7 @@ Namespace Rss
 #End Region
 
 #Region "Private Methods"
-  Private Sub WriteItem(ByRef writer As XmlTextWriter, item As EntryInfo)
+  Private Sub WriteItem(ByRef writer As XmlTextWriter, item As PostInfo)
 
    writer.WriteStartElement("item")
 
@@ -268,7 +268,7 @@ Namespace Rss
    writer.WriteElementString("description", RemoveHtmlTags(HttpUtility.HtmlDecode(item.Summary)))
    ' optional elements
    If item.Blog.IncludeAuthorInFeed Then writer.WriteElementString("author", String.Format("{0} ({1})", item.Email, item.DisplayName))
-   For Each t As TermInfo In TermsController.GetTermsByEntry(item.ContentItemId, Settings.ModuleId)
+   For Each t As TermInfo In TermsController.GetTermsByPost(item.ContentItemId, Settings.ModuleId)
     writer.WriteElementString("category", t.Name)
    Next
    writer.WriteElementString("guid", String.Format("post={0}", item.ContentItemId))

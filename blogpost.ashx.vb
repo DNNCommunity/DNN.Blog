@@ -40,7 +40,7 @@ Imports DotNetNuke.Modules.Blog.Services.WLW.WordPress
 Imports DotNetNuke.Modules.Blog.Services.WLW.MoveableType
 Imports DotNetNuke.Modules.Blog.Services.WLW.MetaWeblog
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
-Imports DotNetNuke.Modules.Blog.Entities.Entries
+Imports DotNetNuke.Modules.Blog.Entities.Posts
 Imports DotNetNuke.Modules.Blog.Common.Extensions
 Imports DotNetNuke.Modules.Blog.Security
 Imports DotNetNuke.Modules.Blog.Entities.Terms
@@ -68,9 +68,9 @@ Public Class BlogPost
  Private Property ModuleId As Integer = -1
  Private Property PortalId As Integer = -1
  Private Property BlogId As Integer = -1
- Private Property Blog As BlogInfo = Nothing
- Private Property EntryId As Integer = -1
- Private Property Entry As EntryInfo = Nothing
+ Private Property RequestedBlog As BlogInfo = Nothing
+ Private Property PostId As Integer = -1
+ Private Property RequestedPost As PostInfo = Nothing
  Private Property UnAuthorized As Boolean = True
  Private Property Security As ContextSecurity = Nothing
  Private Property UserTimeZone As TimeZoneInfo = Nothing
@@ -99,21 +99,21 @@ Public Class BlogPost
   InitializeMethodCall(username, password, "", postid)
   RequireEditPermission()
 
-  Dim post As Post
+  Dim result As Post
   Try
-   post = ToPost(Entry)
+   result = ToMwlPost(RequestedPost)
    Dim regexPattern As String = String.Empty
    Dim options As RegexOptions = RegexOptions.Singleline Or RegexOptions.IgnoreCase
    ' Look for and replace relative images with absolute images
    regexPattern = "(src="")/"
-   If Not String.IsNullOrEmpty(post.mt_excerpt) Then
-    post.mt_excerpt = Regex.Replace(post.mt_excerpt, regexPattern, "$1http://" + Context.Request.Url.Host + "/", options)
+   If Not String.IsNullOrEmpty(result.mt_excerpt) Then
+    result.mt_excerpt = Regex.Replace(result.mt_excerpt, regexPattern, "$1http://" + Context.Request.Url.Host + "/", options)
    End If
-   If Not String.IsNullOrEmpty(post.description) Then
-    post.description = Regex.Replace(post.description, regexPattern, "$1http://" + Context.Request.Url.Host + "/", options)
+   If Not String.IsNullOrEmpty(result.description) Then
+    result.description = Regex.Replace(result.description, regexPattern, "$1http://" + Context.Request.Url.Host + "/", options)
    End If
-   If Not String.IsNullOrEmpty(post.mt_text_more) Then
-    post.mt_text_more = Regex.Replace(post.mt_text_more, regexPattern, "$1http://" + Context.Request.Url.Host + "/", options)
+   If Not String.IsNullOrEmpty(result.mt_text_more) Then
+    result.mt_text_more = Regex.Replace(result.mt_text_more, regexPattern, "$1http://" + Context.Request.Url.Host + "/", options)
    End If
   Catch ex As BlogPostException
    LogException(ex)
@@ -125,7 +125,7 @@ Public Class BlogPost
    LogException(ex)
    Throw New XmlRpcFaultException(0, GetString("GetPostError", "There was an error retrieving this item."))
   End Try
-  Return post
+  Return result
 
  End Function
 
@@ -172,7 +172,7 @@ Public Class BlogPost
   RequireEditPermission()
 
   Dim colCategories As List(Of TermInfo)
-  colCategories = Entry.Terms
+  colCategories = RequestedPost.Terms
   Dim res(colCategories.Count - 1) As Category
   Dim i As Integer = 0
   For Each objTerm As Term In colCategories
@@ -198,9 +198,9 @@ Public Class BlogPost
   Dim posts As New List(Of Post)
   Try
    Dim totalRecs As Integer
-   Dim arEntries As Dictionary(Of Integer, EntryInfo) = EntriesController.GetEntriesByBlog(ModuleId, CInt(blogid), UserInfo.UserID, 1, Settings.WLWRecentEntriesMax, "PublishedOnDate DESC", totalRecs)
-   For Each entry As EntryInfo In arEntries.Values
-    posts.Add(ToPost(entry))
+   Dim arPosts As Dictionary(Of Integer, PostInfo) = PostsController.GetPostsByBlog(ModuleId, CInt(blogid), UserInfo.UserID, 1, Settings.WLWRecentPostsMax, "PublishedOnDate DESC", totalRecs)
+   For Each Post As PostInfo In arPosts.Values
+    posts.Add(ToMwlPost(Post))
    Next
   Catch ex As BlogPostException
    LogException(ex)
@@ -246,37 +246,37 @@ Public Class BlogPost
     End If
    End If
 
-   ' Add the new entry
-   Dim newEntry As EntryInfo = ToEntry(post)
-   If Blog.MustApproveGhostPosts And Not Security.CanApproveEntry Then
-    newEntry.Published = False
+   ' Add the new Post
+   Dim newBlogPost As PostInfo = ToBlogPost(post)
+   If RequestedBlog.MustApproveGhostPosts And Not Security.CanApprovePost Then
+    newBlogPost.Published = False
    Else
-    newEntry.Published = publish
+    newBlogPost.Published = publish
    End If
-   EntriesController.AddEntry(newEntry, UserInfo.UserID)
+   PostsController.AddPost(newBlogPost, UserInfo.UserID)
 
-   HandleAttachments(newEntry)
-   EntriesController.UpdateEntry(newEntry, UserInfo.UserID)
+   HandleAttachments(newBlogPost)
+   PostsController.UpdatePost(newBlogPost, UserInfo.UserID)
 
    ' Add keywords and categories
    If Not styleDetectionPost Then
-    AddCategoriesAndKeyWords(newEntry, post)
+    AddCategoriesAndKeyWords(newBlogPost, post)
    End If
 
    ' Publish to journal
-   If Not styleDetectionPost And newEntry.Published Then
-    PublishToJournal(newEntry)
+   If Not styleDetectionPost And newBlogPost.Published Then
+    PublishToJournal(newBlogPost)
    End If
 
    ' If this is a style detection post, then we write to the Blog_MetaWeblogData table to note
    ' that this post is a new post.
    If styleDetectionPost Then
-    Dim blogUrl As String = (New DotNetNuke.Security.PortalSecurity).InputFilter(newEntry.PermaLink(PortalSettings), DotNetNuke.Security.PortalSecurity.FilterFlag.NoSQL)
+    Dim blogUrl As String = (New DotNetNuke.Security.PortalSecurity).InputFilter(newBlogPost.PermaLink(PortalSettings), DotNetNuke.Security.PortalSecurity.FilterFlag.NoSQL)
     Settings.StyleDetectionUrl = blogUrl
     Settings.UpdateSettings()
    End If
 
-   Return newEntry.ContentItemId.ToString
+   Return newBlogPost.ContentItemId.ToString
 
   Catch ex As BlogPostException
    LogException(ex)
@@ -291,27 +291,27 @@ Public Class BlogPost
 
  End Function
 
- Public Function editPost(postid As String, username As String, password As String, post As Post, publish As Boolean) As Boolean Implements IMetaWeblog.editPost
+ Public Function editPost(postid As String, username As String, password As String, mwlPost As Post, publish As Boolean) As Boolean Implements IMetaWeblog.editPost
   InitializeMethodCall(username, password, "", postid)
   RequireEditPermission()
 
   Dim success As Boolean = False
   Try
-   post.postid = postid
-   Dim newEntry As EntryInfo = ToEntry(post)
-   AddCategoriesAndKeyWords(newEntry, post)
-   If Blog.MustApproveGhostPosts And Not Security.CanApproveEntry Then
-    newEntry.Published = False
+   mwlPost.postid = postid
+   Dim newPost As PostInfo = ToBlogPost(mwlPost)
+   AddCategoriesAndKeyWords(newPost, mwlPost)
+   If RequestedBlog.MustApproveGhostPosts And Not Security.CanApprovePost Then
+    newPost.Published = False
    Else
-    newEntry.Published = publish
+    newPost.Published = publish
    End If
 
-   HandleAttachments(newEntry)
-   EntriesController.UpdateEntry(newEntry, UserInfo.UserID)
+   HandleAttachments(newPost)
+   PostsController.UpdatePost(newPost, UserInfo.UserID)
 
-   If (Not Entry.Published) And newEntry.Published Then
+   If (Not RequestedPost.Published) And newPost.Published Then
     ' First published
-    PublishToJournal(newEntry)
+    PublishToJournal(newPost)
    End If
    success = True
   Catch ex As BlogPostException
@@ -334,7 +334,7 @@ Public Class BlogPost
 
   Dim success As Boolean = False
   Try
-   EntriesController.DeleteEntry(Entry.ContentItemId, Entry.BlogID, PortalId, Settings.VocabularyId)
+   PostsController.DeletePost(RequestedPost.ContentItemId, RequestedPost.BlogID, PortalId, Settings.VocabularyId)
   Catch ex As BlogPostException
    LogException(ex)
    Throw New XmlRpcFaultException(0, GetString(ex.ResourceKey, ex.Message))
@@ -445,48 +445,48 @@ Public Class BlogPost
  End Function
 #End Region
 
-#Region " Post/Entry Conversion Methods "
- Public Function ToPost(entry As EntryInfo) As Post
+#Region " Metaweblog/Blog Module Post Conversion Methods "
+ Public Function ToMwlPost(post As PostInfo) As Post
 
-  Dim post As New Post
-  Dim entryBody As New PostBodyAndSummary(entry, Settings.SummaryModel)
-  entryBody.WriteToPost(post, Settings.SummaryModel)
+  Dim newPost As New Post
+  Dim PostBody As New PostBodyAndSummary(Post, Settings.SummaryModel)
+  PostBody.WriteToPost(newPost, Settings.SummaryModel)
 
-  post.mt_allow_comments = entry.AllowComments.ToInt
-  post.categories = entry.EntryCategories.ToStringArray
-  post.dateCreated = GetLocalAddedTime(entry.CreatedOnDate, PortalSettings.PortalId, UserInfo)
-  post.pubDate = entry.PublishedOnDate
-  post.date_created_gmt = entry.PublishedOnDate
-  post.postid = entry.ContentItemId.ToString
-  post.mt_keywords = String.Join(",", entry.EntryTags.ToStringArray)
-  post.link = entry.PermaLink(PortalSettings)
-  post.permalink = entry.PermaLink(PortalSettings)
-  post.title = entry.Title
-  post.publish = entry.Published
+  newPost.mt_allow_comments = Post.AllowComments.ToInt
+  newPost.categories = Post.PostCategories.ToStringArray
+  newPost.dateCreated = GetLocalAddedTime(Post.CreatedOnDate, PortalSettings.PortalId, UserInfo)
+  newPost.pubDate = Post.PublishedOnDate
+  newPost.date_created_gmt = Post.PublishedOnDate
+  newPost.postid = Post.ContentItemId.ToString
+  newPost.mt_keywords = String.Join(",", Post.PostTags.ToStringArray)
+  newPost.link = Post.PermaLink(PortalSettings)
+  newPost.permalink = Post.PermaLink(PortalSettings)
+  newPost.title = Post.Title
+  newPost.publish = Post.Published
 
-  Return post
+  Return newPost
 
  End Function
 
- Public Function ToEntry(post As Post) As EntryInfo
+ Public Function ToBlogPost(post As Post) As PostInfo
 
-  Dim entry As New EntryInfo
+  Dim newPost As New PostInfo
   Dim postBody As New PostBodyAndSummary(post, Settings.SummaryModel)
-  postBody.WriteToEntry(entry, Settings.SummaryModel, True)
+  postBody.WriteToPost(newPost, Settings.SummaryModel, True)
 
   If Not String.IsNullOrEmpty(post.postid) Then
-   entry.ContentItemId = post.postid.ToInt
+   newPost.ContentItemId = post.postid.ToInt
   End If
-  entry.BlogID = BlogId
-  entry.Title = post.title
+  newPost.BlogID = BlogId
+  Post.Title = post.title
   If post.dateCreated.Year > 1 Then
-   entry.PublishedOnDate = TimeZoneInfo.ConvertTimeToUtc(post.dateCreated, UserTimeZone)
+   newPost.PublishedOnDate = TimeZoneInfo.ConvertTimeToUtc(post.dateCreated, UserTimeZone)
   End If
-  entry.Published = post.publish
-  entry.AllowComments = post.mt_allow_comments.ToBool
-  entry.TabID = TabId
-  entry.ModuleID = ModuleId
-  Return entry
+  newPost.Published = post.publish
+  newPost.AllowComments = post.mt_allow_comments.ToBool
+  newPost.TabID = TabId
+  newPost.ModuleID = ModuleId
+  Return newPost
 
  End Function
 #End Region
@@ -529,7 +529,7 @@ Public Class BlogPost
 
  Private Sub RequireEditPermission()
   If Security IsNot Nothing Then
-   If Security.CanEditEntry Then
+   If Security.CanEditPost Then
     Exit Sub
    End If
   End If
@@ -538,7 +538,7 @@ Public Class BlogPost
 
  Private Sub RequireAddPermission()
   If Security IsNot Nothing Then
-   If Security.CanAddEntry Then
+   If Security.CanAddPost Then
     Exit Sub
    End If
   End If
@@ -547,7 +547,7 @@ Public Class BlogPost
 
  Private Sub RequireAccessPermission()
   If Security IsNot Nothing Then
-   If Security.CanAddEntry Or Security.CanEditEntry Then
+   If Security.CanAddPost Or Security.CanEditPost Then
     Exit Sub
    End If
   End If
@@ -570,16 +570,16 @@ Public Class BlogPost
     UserInfo = ValidateUser(username, password, Me.Context.Request.UserHostAddress)
    End If
    If requestedPostId <> "" Then
-    EntryId = CInt(requestedPostId)
-    Entry = EntriesController.GetEntry(EntryId, ModuleId)
-    BlogId = Entry.BlogID
+    PostId = CInt(requestedPostId)
+    RequestedPost = PostsController.GetPost(PostId, ModuleId)
+    BlogId = RequestedPost.BlogID
    ElseIf requestedBlogId <> "" Then
     BlogId = CInt(requestedBlogId)
    End If
    ' Check for user access to the blog
    If Me.BlogId > -1 Then
-    Blog = BlogsController.GetBlog(Me.BlogId, UserInfo.UserID)
-    Security = New ContextSecurity(ModuleId, TabId, Blog, UserInfo)
+    RequestedBlog = BlogsController.GetBlog(Me.BlogId, UserInfo.UserID)
+    Security = New ContextSecurity(ModuleId, TabId, RequestedBlog, UserInfo)
    End If
    UserTimeZone = PortalSettings.TimeZone
    If UserInfo.Profile.PreferredTimeZone IsNot Nothing Then
@@ -655,36 +655,36 @@ Public Class BlogPost
 #End Region
 
 #Region " Data Handling Methods "
- Private Sub AddCategoriesAndKeyWords(ByRef newEntry As EntryInfo, post As Post)
+ Private Sub AddCategoriesAndKeyWords(ByRef newPost As PostInfo, post As Post)
   Dim terms As New List(Of TermInfo)
   terms.AddRange(TermsController.GetTermList(ModuleId, post.mt_keywords, 1, True))
   If Settings.VocabularyId > 1 Then
    terms.AddRange(TermsController.GetTermList(ModuleId, post.categories.ToList, Settings.VocabularyId, False))
   End If
-  newEntry.Terms.Clear()
-  newEntry.Terms.AddRange(terms)
-  EntriesController.UpdateEntry(newEntry, UserInfo.UserID)
+  newPost.Terms.Clear()
+  newPost.Terms.AddRange(terms)
+  PostsController.UpdatePost(newPost, UserInfo.UserID)
  End Sub
 
- Private Sub PublishToJournal(newEntry As EntryInfo)
+ Private Sub PublishToJournal(newPost As PostInfo)
   Dim journalUserId As Integer
-  If newEntry.CreatedByUserID <> UserInfo.UserID AndAlso Not Blog.PublishAsOwner Then
+  If newPost.CreatedByUserID <> UserInfo.UserID AndAlso Not RequestedBlog.PublishAsOwner Then
    journalUserId = UserInfo.UserID
   Else
-   journalUserId = Blog.OwnerUserId
+   journalUserId = RequestedBlog.OwnerUserId
   End If
-  Integration.JournalController.AddBlogEntryToJournal(newEntry, PortalId, newEntry.TabID, journalUserId, newEntry.PermaLink(PortalSettings))
+  Integration.JournalController.AddBlogPostToJournal(newPost, PortalId, newPost.TabID, journalUserId, newPost.PermaLink(PortalSettings))
  End Sub
 #End Region
 
 #Region " Attachment Handling Methods "
- Private Sub HandleAttachments(ByRef newEntry As EntryInfo)
+ Private Sub HandleAttachments(ByRef newPost As PostInfo)
 
   ' Handle attachments
-  Dim contents As String = newEntry.Content
-  If Not String.IsNullOrEmpty(newEntry.Summary) Then contents &= newEntry.Summary
+  Dim contents As String = newPost.Content
+  If Not String.IsNullOrEmpty(newPost.Summary) Then contents &= newPost.Summary
   Dim d As New IO.DirectoryInfo(GetTempPostDirectoryMapPath(Me.BlogId))
-  Dim targetDir As String = GetPostDirectoryMapPath(newEntry)
+  Dim targetDir As String = GetPostDirectoryMapPath(newPost)
   If Not IO.Directory.Exists(targetDir) Then
    IO.Directory.CreateDirectory(targetDir)
   Else
@@ -705,8 +705,8 @@ Public Class BlogPost
     End If
    Next
   End If
-  newEntry.Content = newEntry.Content.Replace(String.Format("Blog/Files/{0}/_temp_images/", Me.BlogId), String.Format("Blog/Files/{0}/{1}/", Me.BlogId, newEntry.ContentItemId))
-  If Not String.IsNullOrEmpty(newEntry.Summary) Then newEntry.Summary = newEntry.Summary.Replace(String.Format("Blog/Files/{0}/_temp_images/", Me.BlogId), String.Format("Blog/Files/{0}/{1}/", Me.BlogId, newEntry.ContentItemId))
+  newPost.Content = newPost.Content.Replace(String.Format("Blog/Files/{0}/_temp_images/", Me.BlogId), String.Format("Blog/Files/{0}/{1}/", Me.BlogId, newPost.ContentItemId))
+  If Not String.IsNullOrEmpty(newPost.Summary) Then newPost.Summary = newPost.Summary.Replace(String.Format("Blog/Files/{0}/_temp_images/", Me.BlogId), String.Format("Blog/Files/{0}/{1}/", Me.BlogId, newPost.ContentItemId))
 
  End Sub
 #End Region

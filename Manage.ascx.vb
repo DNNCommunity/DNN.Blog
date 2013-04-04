@@ -1,6 +1,6 @@
 ﻿Imports DotNetNuke.Modules.Blog.Entities.Blogs
 Imports System.Linq
-Imports DotNetNuke.Modules.Blog.Entities.Entries
+Imports DotNetNuke.Modules.Blog.Entities.Posts
 Imports DotNetNuke.Web.UI.WebControls
 Imports DotNetNuke.Web.Client.ClientResourceManagement
 Imports DotNetNuke.Modules.Blog.Common.Globals
@@ -8,7 +8,7 @@ Imports DotNetNuke.Modules.Blog.Common.Globals
 Public Class Manage
  Inherits BlogModuleBase
 
- Private _totalEntries As Integer = -1
+ Private _totalPosts As Integer = -1
 
  Private Sub Page_Init1(sender As Object, e As System.EventArgs) Handles Me.Init
   AddBlogService()
@@ -40,7 +40,7 @@ Public Class Manage
   Settings.SummaryModel = CType(ddSummaryModel.SelectedValue.ToInt, SummaryType)
   Settings.AllowMultipleCategories = chkAllowMultipleCategories.Checked
   Settings.AllowWLW = chkAllowWLW.Checked
-  Settings.WLWRecentEntriesMax = txtWLWRecentEntriesMax.Text.ToInt
+  Settings.WLWRecentPostsMax = txtWLWRecentPostsMax.Text.ToInt
   Settings.AllowAllLocales = chkAllowAllLocales.Checked
   Settings.ShowAllLocales = chkShowAllLocales.Checked
   Settings.VocabularyId = ddVocabularyId.SelectedValue.ToInt
@@ -85,7 +85,7 @@ Public Class Manage
    txtRssMaxNrItems.Text = Settings.RssMaxNrItems.ToString
    txtRssTtl.Text = Settings.RssTtl.ToString
 
-   txtWLWRecentEntriesMax.Text = Settings.WLWRecentEntriesMax.ToString
+   txtWLWRecentPostsMax.Text = Settings.WLWRecentPostsMax.ToString
    ddVocabularyId.DataSource = Common.Globals.GetPortalVocabularies(PortalId)
    ddVocabularyId.DataBind()
    ddVocabularyId.Items.Insert(0, New ListItem(LocalizeString("NoneSpecified"), "-1"))
@@ -104,16 +104,16 @@ Public Class Manage
 
  End Sub
 
- Public Sub GetEntries()
+ Public Sub GetPosts()
 
-  grdEntries.DataSource = EntriesController.GetEntries(Settings.ModuleId, -1, -1, "", Now, -1, grdEntries.CurrentPageIndex, grdEntries.PageSize, "PUBLISHEDONDATE DESC", _totalEntries, UserId, Security.UserIsAdmin).Values
-  grdEntries.VirtualItemCount = _totalEntries
+  grdPosts.DataSource = PostsController.GetPosts(Settings.ModuleId, -1, -1, "", Now, -1, grdPosts.CurrentPageIndex, grdPosts.PageSize, "PUBLISHEDONDATE DESC", _totalPosts, UserId, Security.UserIsAdmin).Values
+  grdPosts.VirtualItemCount = _totalPosts
 
  End Sub
 
- Public Sub RebindEntries()
-  GetEntries()
-  grdEntries.Rebind()
+ Public Sub RebindPosts()
+  GetPosts()
+  grdPosts.Rebind()
  End Sub
 
 End Class

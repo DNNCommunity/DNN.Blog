@@ -24,7 +24,7 @@ Imports DotNetNuke.Modules.Blog.Entities
 Imports DotNetNuke.Services.Journal
 Imports System.Linq
 Imports DotNetNuke.Modules.Blog.Common.Globals
-Imports DotNetNuke.Modules.Blog.Entities.Entries
+Imports DotNetNuke.Modules.Blog.Entities.Posts
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
 Imports DotNetNuke.Modules.Blog.Integration.Integration
 
@@ -34,16 +34,16 @@ Namespace Integration
 
 #Region " Public Methods "
   ''' <summary>
-  ''' Informs the core journal that the user has posted a blog entry.
+  ''' Informs the core journal that the user has posted a blog Post.
   ''' </summary>
-  ''' <param name="objEntry"></param>
+  ''' <param name="objPost"></param>
   ''' <param name="portalId"></param>
   ''' <param name="tabId"></param>
   ''' <param name="journalUserId"></param>
   ''' <param name="url"></param>
   ''' <remarks></remarks>
-  Public Shared Sub AddBlogEntryToJournal(objEntry As EntryInfo, portalId As Integer, tabId As Integer, journalUserId As Integer, url As String)
-   Dim objectKey As String = ContentTypeName + "_" + ContentTypeName + "_" + String.Format("{0}:{1}", objEntry.BlogID, objEntry.ContentItemId)
+  Public Shared Sub AddBlogPostToJournal(objPost As PostInfo, portalId As Integer, tabId As Integer, journalUserId As Integer, url As String)
+   Dim objectKey As String = ContentTypeName + "_" + ContentTypeName + "_" + String.Format("{0}:{1}", objPost.BlogID, objPost.ContentItemId)
    Dim ji As JournalItem = DotNetNuke.Services.Journal.JournalController.Instance.GetJournalItemByKey(portalId, objectKey)
 
    If Not ji Is Nothing Then
@@ -55,11 +55,11 @@ Namespace Integration
    ji.PortalId = portalId
    ji.ProfileId = journalUserId
    ji.UserId = journalUserId
-   ji.ContentItemId = objEntry.ContentItemId
-   ji.Title = objEntry.Title
+   ji.ContentItemId = objPost.ContentItemId
+   ji.Title = objPost.Title
    ji.ItemData = New ItemData()
    ji.ItemData.Url = url
-   ji.Summary = objEntry.Summary
+   ji.Summary = objPost.Summary
    ji.Body = Nothing
    ji.JournalTypeId = GetBlogJournalTypeID(portalId)
    ji.ObjectKey = objectKey
@@ -69,28 +69,28 @@ Namespace Integration
   End Sub
 
   ''' <summary>
-  ''' Deletes a journal item associated with the specified blog entry.
+  ''' Deletes a journal item associated with the specified blog Post.
   ''' </summary>
   ''' <param name="blogId"></param>
-  ''' <param name="entryId"></param>
+  ''' <param name="PostId"></param>
   ''' <param name="portalId"></param>
   ''' <remarks></remarks>
-  Public Shared Sub RemoveBlogEntryFromJournal(blogId As Integer, entryId As Integer, portalId As Integer)
-   Dim objectKey As String = ContentTypeName + "_" + ContentTypeName + "_" + String.Format("{0}:{1}", blogId, entryId)
+  Public Shared Sub RemoveBlogPostFromJournal(blogId As Integer, PostId As Integer, portalId As Integer)
+   Dim objectKey As String = ContentTypeName + "_" + ContentTypeName + "_" + String.Format("{0}:{1}", blogId, PostId)
    DotNetNuke.Services.Journal.JournalController.Instance.DeleteJournalItemByKey(portalId, objectKey)
   End Sub
 
   ''' <summary>
-  ''' Informs the core journal that the user has commented on a blog entry.
+  ''' Informs the core journal that the user has commented on a blog Post.
   ''' </summary>
-  ''' <param name="objEntry"></param>
+  ''' <param name="objPost"></param>
   ''' <param name="objComment"></param>
   ''' <param name="portalId"></param>
   ''' <param name="tabId"></param>
   ''' <param name="journalUserId"></param>
   ''' <param name="url"></param>
-  Public Shared Sub AddOrUpdateCommentInJournal(objBlog As BlogInfo, objEntry As EntryInfo, objComment As Entities.Comments.CommentInfo, portalId As Integer, tabId As Integer, journalUserId As Integer, url As String)
-   Dim objectKey As String = ContentTypeName + "_" + JournalCommentTypeName + "_" + String.Format("{0}:{1}", objEntry.ContentItemId.ToString(), objComment.CommentID.ToString())
+  Public Shared Sub AddOrUpdateCommentInJournal(objBlog As BlogInfo, objPost As PostInfo, objComment As Entities.Comments.CommentInfo, portalId As Integer, tabId As Integer, journalUserId As Integer, url As String)
+   Dim objectKey As String = ContentTypeName + "_" + JournalCommentTypeName + "_" + String.Format("{0}:{1}", objPost.ContentItemId.ToString(), objComment.CommentID.ToString())
    Dim ji As JournalItem = DotNetNuke.Services.Journal.JournalController.Instance.GetJournalItemByKey(portalId, objectKey)
    If Not ji Is Nothing Then
     DotNetNuke.Services.Journal.JournalController.Instance.DeleteJournalItemByKey(portalId, objectKey)
@@ -101,8 +101,8 @@ Namespace Integration
    ji.PortalId = portalId
    ji.ProfileId = journalUserId
    ji.UserId = journalUserId
-   ji.ContentItemId = objEntry.ContentItemId
-   ji.Title = objEntry.Title
+   ji.ContentItemId = objPost.ContentItemId
+   ji.Title = objPost.Title
    ji.ItemData = New ItemData()
    ji.ItemData.Url = url
    ji.Summary = objComment.Comment
@@ -115,8 +115,8 @@ Namespace Integration
 
    If objBlog.OwnerUserId = journalUserId Then
     Dim title As String = DotNetNuke.Services.Localization.Localization.GetString("CommentAddedNotify", SharedResourceFileName)
-    Dim summary As String = "<a target='_blank' href='" + url + "'>" + objEntry.Title + "</a>"
-    NotificationController.CommentAdded(objComment, objEntry, objBlog, portalId, summary, title)
+    Dim summary As String = "<a target='_blank' href='" + url + "'>" + objPost.Title + "</a>"
+    NotificationController.CommentAdded(objComment, objPost, objBlog, portalId, summary, title)
    End If
 
   End Sub
@@ -124,18 +124,18 @@ Namespace Integration
   ''' <summary>
   ''' Deletes a journal item associated with the specific comment.
   ''' </summary>
-  ''' <param name="entryId"></param>
+  ''' <param name="PostId"></param>
   ''' <param name="commentId"></param>
   ''' <param name="portalId"></param>
-  Public Shared Sub RemoveCommentFromJournal(entryId As Integer, commentId As Integer, portalId As Integer)
-   Dim objectKey As String = ContentTypeName + "_" + JournalCommentTypeName + "_" + String.Format("{0}:{1}", entryId, commentId)
+  Public Shared Sub RemoveCommentFromJournal(PostId As Integer, commentId As Integer, portalId As Integer)
+   Dim objectKey As String = ContentTypeName + "_" + JournalCommentTypeName + "_" + String.Format("{0}:{1}", PostId, commentId)
    DotNetNuke.Services.Journal.JournalController.Instance.DeleteJournalItemByKey(portalId, objectKey)
   End Sub
 #End Region
 
 #Region " Private Methods "
   ''' <summary>
-  ''' Returns a journal type associated with blog entries (using one of the core built in journal types)
+  ''' Returns a journal type associated with blog Posts (using one of the core built in journal types)
   ''' </summary>
   ''' <param name="portalId"></param>
   ''' <returns></returns>

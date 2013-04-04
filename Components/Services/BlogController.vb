@@ -30,7 +30,7 @@ Imports DotNetNuke.Web.Api
 Imports DotNetNuke.Modules.Blog
 Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
-Imports DotNetNuke.Modules.Blog.Entities.Entries
+Imports DotNetNuke.Modules.Blog.Entities.Posts
 Imports DotNetNuke.Modules.Blog.Entities.Comments
 Imports DotNetNuke.Modules.Blog.Security
 Imports DotNetNuke.Modules.Blog.Integration
@@ -107,7 +107,7 @@ Namespace Services
    Dim handledRecs As Integer = 0
    Dim page As Integer = 0
    Do
-    For Each post As EntryInfo In EntriesController.GetEntriesByBlog(ActiveModule.ModuleID, Blog.BlogID, -1, page, 10, "PUBLISHEDONDATE", totalRecs).Values
+    For Each post As PostInfo In PostsController.GetPostsByBlog(ActiveModule.ModuleID, Blog.BlogID, -1, page, 10, "PUBLISHEDONDATE", totalRecs).Values
      handledRecs += 1
      TargetBlogML.Posts.Add(ConvertPost(post))
     Next
@@ -115,13 +115,13 @@ Namespace Services
    Loop While totalRecs > handledRecs
   End Sub
 
-  Private Function ConvertPost(post As EntryInfo) As BlogMLPost
+  Private Function ConvertPost(post As PostInfo) As BlogMLPost
 
    Dim newPostML As New BlogMLPost
    newPostML.Approved = post.Published
    newPostML.Title = post.Title
    newPostML.Content = BlogMLContent.Create(HttpUtility.HtmlDecode(post.Content), BlogML.ContentTypes.Html)
-   For Each t As TermInfo In post.EntryCategories
+   For Each t As TermInfo In post.PostCategories
     newPostML.Categories.Add(New BlogMLCategoryReference With {.Ref = t.TermId.ToString})
    Next
    newPostML.Authors.Add(post.DisplayName)

@@ -127,20 +127,20 @@
     <value>Title</value>
   </data>
   <data name="ModuleHelp.Text" xml:space="preserve">
-    <value>&lt;h1&gt;Blog - Edit Entry&lt;/h1&gt;
-&lt;p&gt;Here is where the user can create, edit and delete blog posts.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Entry date&lt;/b&gt;&lt;br /&gt;This is the date when the entry will be published. This date can be the actual date, a future date or a past date. If a future date is used, the entry will not be displayed until the date is met.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Parent blog&lt;/b&gt;&lt;br /&gt;If child blogs have been created under the parent blog, here the user can chose if the entry should be posted under one of those blogs. It is possible to post the entry to the parent blog as well.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Title&lt;/b&gt;&lt;br /&gt;This is the entry title, that will be displayed in the entry list and at the top of the entry itself.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Summary&lt;/b&gt;&lt;br /&gt;The summary may feature a sinthetic abstract of the entry content&lt;/p&gt;&lt;p&gt;&lt;b&gt;Blog&lt;/b&gt;&lt;br /&gt;Here is added the entry content.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Published&lt;/b&gt;&lt;br /&gt;The entry will not be displayed until this checkbox is checked. This is useful when the entry is still a draft, and needs to be finished before being displayed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Allow users to comment on this entry&lt;/b&gt;&lt;br /&gt;Here the blog owner can override the blog settings and decide if his/her readers will be allowed to post comments on this specific entry.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Display copyright notice at the bottom of your entry&lt;/b&gt;&lt;br /&gt;if checked, the copyright notice entered in Blog Settings is shown at the end of the entry.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Trackback Url&lt;/b&gt;&lt;br /&gt;This field is available only if Trackback auto discovery is not selected under Blog Settings. This is the URL that will be notified of the Trackback.&lt;/p&gt;</value>
+    <value>&lt;h1&gt;Blog - Edit Post&lt;/h1&gt;
+&lt;p&gt;Here is where the user can create, edit and delete blog posts.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Post date&lt;/b&gt;&lt;br /&gt;This is the date when the Post will be published. This date can be the actual date, a future date or a past date. If a future date is used, the Post will not be displayed until the date is met.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Parent blog&lt;/b&gt;&lt;br /&gt;If child blogs have been created under the parent blog, here the user can chose if the Post should be posted under one of those blogs. It is possible to post the Post to the parent blog as well.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Title&lt;/b&gt;&lt;br /&gt;This is the Post title, that will be displayed in the Post list and at the top of the Post itself.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Summary&lt;/b&gt;&lt;br /&gt;The summary may feature a sinthetic abstract of the Post content&lt;/p&gt;&lt;p&gt;&lt;b&gt;Blog&lt;/b&gt;&lt;br /&gt;Here is added the Post content.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Published&lt;/b&gt;&lt;br /&gt;The Post will not be displayed until this checkbox is checked. This is useful when the Post is still a draft, and needs to be finished before being displayed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Allow users to comment on this Post&lt;/b&gt;&lt;br /&gt;Here the blog owner can override the blog settings and decide if his/her readers will be allowed to post comments on this specific Post.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Display copyright notice at the bottom of your Post&lt;/b&gt;&lt;br /&gt;if checked, the copyright notice entered in Blog Settings is shown at the end of the Post.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Trackback Url&lt;/b&gt;&lt;br /&gt;This field is available only if Trackback auto discovery is not selected under Blog Settings. This is the URL that will be notified of the Trackback.&lt;/p&gt;</value>
   </data>
   <data name="valTitle.ErrorMessage" xml:space="preserve">
     <value>Title is required</value>
   </data>
   <data name="lblAllowComments.Help" xml:space="preserve">
-    <value>Allow users to comment on this entry (overrides Blog Setting)</value>
+    <value>Allow users to comment on this Post (overrides Blog Setting)</value>
   </data>
-  <data name="valEntry.ErrorMessage" xml:space="preserve">
-    <value>Entry is Required</value>
+  <data name="valPost.ErrorMessage" xml:space="preserve">
+    <value>Post is Required</value>
   </data>
   <data name="lblDisplayCopyright.Help" xml:space="preserve">
-    <value>If checked, displays a copyright notice at the bottom of your entry.</value>
+    <value>If checked, displays a copyright notice at the bottom of your Post.</value>
   </data>
   <data name="lblCategories.Text" xml:space="preserve">
     <value>Categories</value>
@@ -160,7 +160,7 @@
   <data name="lblPublishDate.Text" xml:space="preserve">
     <value>Publish Date</value>
   </data>
-  <data name="ControlTitle_entryedit.Text" xml:space="preserve">
+  <data name="ControlTitle_Postedit.Text" xml:space="preserve">
     <value>Edit Post</value>
   </data>
   <data name="lblBlog.Help" xml:space="preserve">

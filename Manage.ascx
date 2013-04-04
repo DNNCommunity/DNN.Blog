@@ -49,8 +49,8 @@
 		<asp:CheckBox ID="chkBloggersCanEditCategories" runat="server" />
 	</div>
 	<div class="dnnFormItem">
-		<dnn:label id="lblWLWRecentEntriesMax" runat="server" controlname="txtWLWRecentEntriesMax" suffix=":" />
-		<asp:TextBox runat="server" ID="txtWLWRecentEntriesMax" />
+		<dnn:label id="lblWLWRecentPostsMax" runat="server" controlname="txtWLWRecentPostsMax" suffix=":" />
+		<asp:TextBox runat="server" ID="txtWLWRecentPostsMax" />
 	</div>
 </fieldset>
 <h2 id="H2" class="dnnFormSectionHead"><a href="" class="dnnFormSectionExpanded"><%= LocalizeString("RSS")%></a></h2>
@@ -128,31 +128,31 @@
   </p>
  </div>
  <div id="Posts" class="dnnClear">
-  <div class="coreMessaging" id="blogEntriesError"></div>
-  <dnn:DNNGrid id="grdEntries" autogeneratecolumns="false" cssclass="dnnGrid dnnSecurityRolesGrid"
+  <div class="coreMessaging" id="blogPostsError"></div>
+  <dnn:DNNGrid id="grdPosts" autogeneratecolumns="false" cssclass="dnnGrid dnnSecurityRolesGrid"
    runat="server" allowpaging="True" allowcustompaging="True" enableviewstate="True"
-   onneeddatasource="GetEntries">
+   onneeddatasource="GetPosts">
    <MasterTableView>
     <Columns>
      <dnn:DnnGridTemplateColumn HeaderText="Actions">
       <ItemStyle Width="90px"></ItemStyle>
       <ItemTemplate>
-       <a href="<%# EditUrl("Post", Eval("ContentItemId"), "EntryEdit") %>" 
+       <a href="<%# EditUrl("Post", Eval("ContentItemId"), "PostEdit") %>" 
           class="icon16 entypoButton" 
           title="Edit"
-          style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Entries.EntryInfo).Blog.CanEdit, "inline", "none") %>">&#9998;</a>
+          style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Blog.CanEdit, "inline", "none") %>">&#9998;</a>
        <a href="#" 
-          onclick="if (confirm('<%= LocalizeString("DeleteEntry") %>')) {blogService.deleteEntry(<%# Eval("BlogID") %>, <%# Eval("ContentItemID") %>, function() {$('#cmdDeleteEntry<%# Eval("ContentItemID") %>').parent().parent().hide()})};return false;"
-          id="cmdDeleteEntry<%# Eval("ContentItemID") %>"
+          onclick="if (confirm('<%= LocalizeString("DeletePost") %>')) {blogService.deletePost(<%# Eval("BlogID") %>, <%# Eval("ContentItemID") %>, function() {$('#cmdDeletePost<%# Eval("ContentItemID") %>').parent().parent().hide()})};return false;"
+          id="cmdDeletePost<%# Eval("ContentItemID") %>"
           class="icon16 entypoButton" 
           title="Delete"
-          style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Entries.EntryInfo).Blog.CanEdit, "inline", "none") %>">&#59177;</a>
+          style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Blog.CanEdit, "inline", "none") %>">&#59177;</a>
        <a href="#" 
-          onclick="if (confirm('<%= LocalizeString("ApproveEntry") %>')) {blogService.approveEntry(<%# Eval("BlogID") %>, <%# Eval("ContentItemID") %>, function() {$('#cmdApproveEntry<%# Eval("ContentItemID") %>').hide();$('#approveTick<%# Eval("ContentItemID") %>').text('&#10003;')})};return false;" 
-          id="cmdApproveEntry<%# Eval("ContentItemID") %>"
+          onclick="if (confirm('<%= LocalizeString("ApprovePost") %>')) {blogService.approvePost(<%# Eval("BlogID") %>, <%# Eval("ContentItemID") %>, function() {$('#cmdApprovePost<%# Eval("ContentItemID") %>').hide();$('#approveTick<%# Eval("ContentItemID") %>').text('&#10003;')})};return false;" 
+          id="cmdApprovePost<%# Eval("ContentItemID") %>"
           class="icon16 entypoButton" 
           title="Approve"
-          style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Entries.EntryInfo).Blog.CanApprove AND NOT CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Entries.EntryInfo).Published, "inline", "none") %>">&#128077;</a>
+          style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Blog.CanApprove AND NOT CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Published, "inline", "none") %>">&#128077;</a>
       </ItemTemplate>
      </dnn:DnnGridTemplateColumn>
      <dnn:DnnGridTemplateColumn HeaderText="Date">
@@ -169,7 +169,7 @@
      </dnn:DnnGridTemplateColumn>
      <dnn:DnnGridTemplateColumn HeaderText="Blog">
       <ItemTemplate>
-       <asp:Label ID="Label1" Runat="server" Text='<%# CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Entries.EntryInfo).Blog.Title %>' />
+       <asp:Label ID="Label1" Runat="server" Text='<%# CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Blog.Title %>' />
       </ItemTemplate>
      </dnn:DnnGridTemplateColumn>
     </Columns>

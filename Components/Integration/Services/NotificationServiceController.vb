@@ -30,7 +30,7 @@ Imports System.Web.Http
 Imports DotNetNuke.Web.Api
 Imports DotNetNuke.Services.Social.Notifications
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
-Imports DotNetNuke.Modules.Blog.Entities.Entries
+Imports DotNetNuke.Modules.Blog.Entities.Posts
 Imports DotNetNuke.Modules.Blog.Entities.Comments
 Imports DotNetNuke.Modules.Blog.Security
 Imports DotNetNuke.Modules.Blog.Integration
@@ -51,7 +51,7 @@ Namespace Integration.Services
   Private Property BlogId As Integer = -1
   Private Property Blog As BlogInfo = Nothing
   Private Property ContentItemId As Integer = -1
-  Private Property Entry As EntryInfo = Nothing
+  Private Property Post As PostInfo = Nothing
   Private Property CommentId As Integer = -1
   Private Property Comment As CommentInfo = Nothing
 
@@ -61,14 +61,14 @@ Namespace Integration.Services
   <HttpPost()>
   <BlogAuthorizeAttribute(DotNetNuke.Modules.Blog.Services.SecurityAccessLevel.ApprovePost)>
   <ValidateAntiForgeryToken()>
-  Public Function ApproveEntry(postData As NotificationDTO) As HttpResponseMessage
+  Public Function ApprovePost(postData As NotificationDTO) As HttpResponseMessage
    Dim notify As Notification = NotificationsController.Instance.GetNotification(postData.NotificationId)
    ParsePublishKey(notify.Context)
-   If Blog Is Nothing Or Entry Is Nothing Then
+   If Blog Is Nothing Or Post Is Nothing Then
     Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
    End If
-   Entry.Published = True
-   EntriesController.UpdateEntry(Entry, UserInfo.UserID)
+   Post.Published = True
+   PostsController.UpdatePost(Post, UserInfo.UserID)
    NotificationsController.Instance().DeleteNotification(postData.NotificationId)
    Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = "success"})
   End Function
@@ -76,13 +76,13 @@ Namespace Integration.Services
   <HttpPost()>
   <BlogAuthorizeAttribute(DotNetNuke.Modules.Blog.Services.SecurityAccessLevel.EditPost)>
   <ValidateAntiForgeryToken()>
-  Public Function DeleteEntry(postData As NotificationDTO) As HttpResponseMessage
+  Public Function DeletePost(postData As NotificationDTO) As HttpResponseMessage
    Dim notify As Notification = NotificationsController.Instance.GetNotification(postData.NotificationId)
    ParsePublishKey(notify.Context)
-   If Blog Is Nothing Or Entry Is Nothing Then
+   If Blog Is Nothing Or Post Is Nothing Then
     Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
    End If
-   EntriesController.DeleteEntry(ContentItemId)
+   PostsController.DeletePost(ContentItemId)
    NotificationsController.Instance().DeleteNotification(postData.NotificationId)
    Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = "success"})
   End Function
@@ -93,7 +93,7 @@ Namespace Integration.Services
   Public Function ApproveComment(postData As NotificationDTO) As HttpResponseMessage
    Dim notify As Notification = NotificationsController.Instance.GetNotification(postData.NotificationId)
    ParseCommentKey(notify.Context)
-   If Blog Is Nothing Or Entry Is Nothing Or Comment Is Nothing Then
+   If Blog Is Nothing Or Post Is Nothing Or Comment Is Nothing Then
     Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
    End If
    CommentsController.ApproveComment(BlogModuleId, BlogId, Comment)
@@ -107,7 +107,7 @@ Namespace Integration.Services
   Public Function DeleteComment(postData As NotificationDTO) As HttpResponseMessage
    Dim notify As Notification = NotificationsController.Instance.GetNotification(postData.NotificationId)
    ParseCommentKey(notify.Context)
-   If Blog Is Nothing Or Entry Is Nothing Or Comment Is Nothing Then
+   If Blog Is Nothing Or Post Is Nothing Or Comment Is Nothing Then
     Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
    End If
    CommentsController.DeleteComment(BlogModuleId, BlogId, Comment)
@@ -123,7 +123,7 @@ Namespace Integration.Services
    BlogId = nKey.BlogId
    ContentItemId = nKey.ContentItemId
    Blog = BlogsController.GetBlog(BlogId, UserInfo.UserID)
-   Entry = EntriesController.GetEntry(ContentItemId, BlogModuleId)
+   Post = PostsController.GetPost(ContentItemId, BlogModuleId)
   End Sub
 
   Private Sub ParseCommentKey(key As String)
@@ -133,7 +133,7 @@ Namespace Integration.Services
    ContentItemId = nKey.ContentItemId
    CommentId = nKey.CommentId
    Blog = BlogsController.GetBlog(BlogId, UserInfo.UserID)
-   Entry = EntriesController.GetEntry(ContentItemId, BlogModuleId)
+   Post = PostsController.GetPost(ContentItemId, BlogModuleId)
    Comment = CommentsController.GetComment(CommentId)
   End Sub
 #End Region

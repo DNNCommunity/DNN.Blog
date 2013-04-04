@@ -51,7 +51,7 @@ Namespace Controls
       SelectedCommentId = -1
      Else
       objComment = New CommentInfo
-      objComment.ContentItemId = Entry.ContentItemId
+      objComment.ContentItemId = Post.ContentItemId
       objComment.CreatedByUserID = Me.UserId
      End If
 
@@ -59,9 +59,9 @@ Namespace Controls
      objComment.Approved = Security.CanApproveComment
 
      If objComment.CommentID > -1 Then
-      CommentsController.UpdateComment(Blog, Entry, objComment)
+      CommentsController.UpdateComment(Blog, Post, objComment)
      Else
-      objComment.CommentID = CommentsController.AddComment(Blog, Entry, objComment)
+      objComment.CommentID = CommentsController.AddComment(Blog, Post, objComment)
       If Not objComment.Approved Then
        UI.Skins.Skin.AddModuleMessage(Me, LocalizeString("CommentPendingApproval"), ModuleMessage.ModuleMessageType.BlueInfo)
       End If
@@ -91,7 +91,7 @@ Namespace Controls
   Protected Sub cmdDeleteComment_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdDeleteComment.Click
    Dim comment As CommentInfo = CommentsController.GetComment(SelectedCommentId)
    If SelectedCommentId > -1 Then
-    If Security.CanEditEntry Or Security.CanApproveComment Or comment.CreatedByUserID = UserId Then
+    If Security.CanEditPost Or Security.CanApproveComment Or comment.CreatedByUserID = UserId Then
      CommentsController.DeleteComment(Settings.ModuleId, Blog.BlogID, comment)
     End If
     SelectedCommentId = -1
@@ -102,11 +102,11 @@ Namespace Controls
 
 #Region " Private Methods "
   Private Sub BindCommentsList()
-   If Entry Is Nothing Then
+   If Post Is Nothing Then
     pnlAddComment.Visible = False
     pnlComments.Visible = False
    Else
-    lstComments.DataSource = CommentsController.GetCommentsByContentItem(Entry.ContentItemId, Security.CanApproveEntry)
+    lstComments.DataSource = CommentsController.GetCommentsByContentItem(Post.ContentItemId, Security.CanApprovePost)
     lstComments.DataBind()
     txtComment.Text = ""
     lblComments.Text = String.Format(LocalizeString("lblComments"), lstComments.Items.Count)

@@ -36,7 +36,7 @@
 <script>
 (function ($, Sys) {
  $(document).ready(function () {
-<% If Security.CanAddEntry %>
+<% If Security.CanAddPost %>
   var $dialogWLW = $('<div class="dnnDialog"></div>')
 		.html('<input type="text" id="txtWLWLink<%=ModuleId %>" style="width:95%"></input><br/><span><%=LocalizeString("WLW.Help") %></span>')
 		.dialog({
@@ -71,7 +71,7 @@
  });
 <% End If %>
   var $dialogSearch = $('<div class="dnnDialog"></div>')
-		.html('<input type="text" id="txtSearch" style="width:95%"></input><br/><%=LocalizeString("SearchIn") %>&nbsp;<input type="checkbox" id="scopeTitle<%=ModuleId %>" value="1" checked="1" /><%=LocalizeString("Title") %><input type="checkbox" id="scopeContents<%=ModuleId %>" value="1" /><%=LocalizeString("Contents") %><% If Security.CanAddEntry %><input type="checkbox" id="chkUnpublished<%=ModuleId %>" value="1" /><%=LocalizeString("Unpublished") %><% End If %>')
+		.html('<input type="text" id="txtSearch" style="width:95%"></input><br/><%=LocalizeString("SearchIn") %>&nbsp;<input type="checkbox" id="scopeTitle<%=ModuleId %>" value="1" checked="1" /><%=LocalizeString("Title") %><input type="checkbox" id="scopeContents<%=ModuleId %>" value="1" /><%=LocalizeString("Contents") %><% If Security.CanAddPost %><input type="checkbox" id="chkUnpublished<%=ModuleId %>" value="1" /><%=LocalizeString("Unpublished") %><% End If %>')
 		.dialog({
 		 autoOpen: false,
 		 resizable: false,

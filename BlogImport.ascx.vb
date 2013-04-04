@@ -2,7 +2,7 @@
 Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.BlogML.Xml
-Imports DotNetNuke.Modules.Blog.Entities.Entries
+Imports DotNetNuke.Modules.Blog.Entities.Posts
 
 Public Class BlogImport
  Inherits BlogModuleBase
@@ -83,8 +83,8 @@ Public Class BlogImport
      End If
      For Each post As BlogML.Xml.BlogMLPost In b.Posts
       ' import post
-      Dim entry As New EntryInfo
-      With entry
+      Dim newPost As New PostInfo
+      With newPost
        .BlogID = BlogId
        .AllowComments = Blog.AllowComments
        .Title = post.Title
@@ -93,13 +93,13 @@ Public Class BlogImport
        .Published = post.Approved
        .PublishedOnDate = post.DateCreated
       End With
-      If entry.Title <> "" And entry.Content <> "" Then
-       entry.ContentItemId = EntriesController.AddEntry(entry, UserId)
-       strReport.AppendFormat("Added {0}" & vbCrLf, entry.Title)
+      If newPost.Title <> "" And newPost.Content <> "" Then
+       newPost.ContentItemId = PostsController.AddPost(newPost, UserId)
+       strReport.AppendFormat("Added {0}" & vbCrLf, post.Title)
        ' import resources
        If post.Attachments.Count > 0 Then
-        Dim postDir As String = GetPostDirectoryMapPath(entry)
-        Dim postPath As String = GetPostDirectoryPath(entry)
+        Dim postDir As String = GetPostDirectoryMapPath(newPost)
+        Dim postPath As String = GetPostDirectoryPath(newPost)
         IO.Directory.CreateDirectory(postDir)
         For Each att As BlogMLAttachment In post.Attachments
          If att.Embedded And att.Data IsNot Nothing Then
@@ -108,12 +108,12 @@ Public Class BlogImport
           filename = filename.Replace("/", "\")
           If filename.IndexOf("\") > 0 Then filename = filename.Substring(filename.LastIndexOf("\") + 1)
           IO.File.WriteAllBytes(postDir & filename, att.Data)
-          entry.Content = entry.Content.Replace(filename, postPath & filename)
-          If Not String.IsNullOrEmpty(entry.Summary) Then entry.Summary = entry.Summary.Replace(filename, postPath & filename)
+          newPost.Content = newPost.Content.Replace(filename, postPath & filename)
+          If Not String.IsNullOrEmpty(newPost.Summary) Then newPost.Summary = newPost.Summary.Replace(filename, postPath & filename)
          End If
         Next
        End If
-       EntriesController.UpdateEntry(entry, UserId)
+       PostsController.UpdatePost(newPost, UserId)
       End If
      Next
      txtReport.Text = strReport.ToString

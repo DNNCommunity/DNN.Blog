@@ -56,14 +56,14 @@ Namespace Common
    Request.Params.ReadValue("t", SearchTitle)
    Request.Params.ReadValue("c", SearchContents)
    Request.Params.ReadValue("u", SearchUnpublished)
-   If ContentItemId > -1 Then Entry = Entities.Entries.EntriesController.GetEntry(ContentItemId, Settings.ModuleId)
-   If BlogId > -1 And Entry IsNot Nothing AndAlso Entry.BlogID <> BlogId Then Entry = Nothing ' double check in case someone is hacking to retrieve an entry from another blog
-   If BlogId = -1 And Entry IsNot Nothing Then BlogId = Entry.BlogID
+   If ContentItemId > -1 Then Post = Entities.Posts.PostsController.GetPost(ContentItemId, Settings.ModuleId)
+   If BlogId > -1 And Post IsNot Nothing AndAlso Post.BlogID <> BlogId Then Post = Nothing ' double check in case someone is hacking to retrieve an Post from another blog
+   If BlogId = -1 And Post IsNot Nothing Then BlogId = Post.BlogID
    If BlogId > -1 Then Blog = Entities.Blogs.BlogsController.GetBlog(BlogId, UserInfo.UserID)
    If BlogId > -1 Then BlogMapPath = GetBlogDirectoryMapPath(BlogId)
    If BlogMapPath <> "" AndAlso Not IO.Directory.Exists(BlogMapPath) Then IO.Directory.CreateDirectory(BlogMapPath)
-   If ContentItemId > -1 Then EntryMapPath = GetPostDirectoryMapPath(BlogId, ContentItemId)
-   If EntryMapPath <> "" AndAlso Not IO.Directory.Exists(EntryMapPath) Then IO.Directory.CreateDirectory(EntryMapPath)
+   If ContentItemId > -1 Then PostMapPath = GetPostDirectoryMapPath(BlogId, ContentItemId)
+   If PostMapPath <> "" AndAlso Not IO.Directory.Exists(PostMapPath) Then IO.Directory.CreateDirectory(PostMapPath)
    If TermId > -1 Then Term = Entities.Terms.TermsController.GetTerm(TermId, Settings.ModuleId)
    ' set urls for use in module
    Dim params As New List(Of String)
@@ -90,7 +90,7 @@ Namespace Common
    Select Case strPropertyName.ToLower
     Case "blogid"
      Return (Me.BlogID.ToString(OutputFormat, formatProvider))
-    Case "entryid", "contentitemid", "postid", "post"
+    Case "Postid", "contentitemid", "postid", "post"
      Return (Me.ContentItemId.ToString(OutputFormat, formatProvider))
     Case "blogselected"
      Return CBool(BlogId > -1).ToString(formatProvider)

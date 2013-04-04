@@ -37,9 +37,9 @@ Namespace Common
     Me.BlogId = contextBase.BlogId
     Me.Blog = contextBase.Blog
     Me.ContentItemId = contextBase.ContentItemId
-    Me.Entry = contextBase.Entry
+    Me.Post = contextBase.Post
     Me.BlogMapPath = contextBase.BlogMapPath
-    Me.EntryMapPath = contextBase.EntryMapPath
+    Me.PostMapPath = contextBase.PostMapPath
     Me.OutputAdditionalFiles = contextBase.OutputAdditionalFiles
     Me.Settings = contextBase.Settings
     Me.ViewSettings = contextBase.ViewSettings
@@ -60,10 +60,10 @@ Namespace Common
   Public Property ContentItemId As Integer = -1
   Public Property TermId As Integer = -1
   Public Property Blog As Entities.Blogs.BlogInfo = Nothing
-  Public Property Entry As Entities.Entries.EntryInfo = Nothing
+  Public Property Post As Entities.Posts.PostInfo = Nothing
   Public Property Term As Entities.Terms.TermInfo = Nothing
   Public Property BlogMapPath As String = ""
-  Public Property EntryMapPath As String = ""
+  Public Property PostMapPath As String = ""
   Public Property OutputAdditionalFiles As Boolean
   Public Property ModuleUrls As ModuleUrls = Nothing
   Public Property SearchString As String = ""

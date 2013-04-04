@@ -176,22 +176,22 @@ Partial Public Class Manage
  Protected WithEvents chkBloggersCanEditCategories As Global.System.Web.UI.WebControls.CheckBox
 
  '''<summary>
- '''lblWLWRecentEntriesMax control.
+ '''lblWLWRecentPostsMax control.
  '''</summary>
  '''<remarks>
  '''Auto-generated field.
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
- Protected WithEvents lblWLWRecentEntriesMax As Global.System.Web.UI.UserControl
+ Protected WithEvents lblWLWRecentPostsMax As Global.System.Web.UI.UserControl
 
  '''<summary>
- '''txtWLWRecentEntriesMax control.
+ '''txtWLWRecentPostsMax control.
  '''</summary>
  '''<remarks>
  '''Auto-generated field.
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
- Protected WithEvents txtWLWRecentEntriesMax As Global.System.Web.UI.WebControls.TextBox
+ Protected WithEvents txtWLWRecentPostsMax As Global.System.Web.UI.WebControls.TextBox
 
  '''<summary>
  '''lblRssDefaultNrItems control.
@@ -401,13 +401,13 @@ Partial Public Class Manage
  Protected WithEvents cmdAdd As Global.System.Web.UI.WebControls.LinkButton
 
  '''<summary>
- '''grdEntries control.
+ '''grdPosts control.
  '''</summary>
  '''<remarks>
  '''Auto-generated field.
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
- Protected WithEvents grdEntries As Global.DotNetNuke.Web.UI.WebControls.DnnGrid
+ Protected WithEvents grdPosts As Global.DotNetNuke.Web.UI.WebControls.DnnGrid
 
  '''<summary>
  '''treeState control.

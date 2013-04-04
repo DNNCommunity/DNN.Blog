@@ -4,7 +4,7 @@ Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.Entities.Modules.Actions
 Imports DotNetNuke.Modules.Blog.Templating
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
-Imports DotNetNuke.Modules.Blog.Entities.Entries
+Imports DotNetNuke.Modules.Blog.Entities.Posts
 Imports DotNetNuke.Modules.Blog.Entities.Terms
 
 Public Class Blog
@@ -60,38 +60,38 @@ Public Class Blog
      Next
     End If
 
-   Case "entries"
+   Case "posts"
 
     Parameters.ReadValue("pagesize", _pageSize)
-    If _pageSize < 1 Then _pageSize = 10 ' we will not list "all entries"
-    Dim entryList As IEnumerable(Of EntryInfo)
+    If _pageSize < 1 Then _pageSize = 10 ' we will not list "all Posts"
+    Dim PostList As IEnumerable(Of PostInfo)
     If Not String.IsNullOrEmpty(SearchString) Then
      Dim publishValue As Integer = 1
-     If searchUnpublished Then publishValue = -1
+     If SearchUnpublished Then publishValue = -1
      If Term Is Nothing Then
-      entryList = EntriesController.SearchEntries(Settings.ModuleId, BlogId, SearchString, SearchTitle, SearchContents, publishValue, ShowLocale, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, Security.UserIsAdmin).Values
+      PostList = PostsController.SearchPosts(Settings.ModuleId, BlogId, SearchString, SearchTitle, SearchContents, publishValue, ShowLocale, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, Security.UserIsAdmin).Values
      Else
-      entryList = EntriesController.SearchEntriesByTerm(Settings.ModuleId, BlogId, TermId, SearchString, SearchTitle, SearchContents, publishValue, ShowLocale, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, Security.UserIsAdmin).Values
+      PostList = PostsController.SearchPostsByTerm(Settings.ModuleId, BlogId, TermId, SearchString, SearchTitle, SearchContents, publishValue, ShowLocale, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, Security.UserIsAdmin).Values
      End If
     ElseIf Term Is Nothing Then
-     entryList = EntriesController.GetEntries(Settings.ModuleId, BlogId, -1, ShowLocale, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, Security.UserIsAdmin).Values
+     PostList = PostsController.GetPosts(Settings.ModuleId, BlogId, -1, ShowLocale, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, Security.UserIsAdmin).Values
     Else
-     entryList = EntriesController.GetEntriesByTerm(Settings.ModuleId, BlogId, TermId, -1, ShowLocale, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, Security.UserIsAdmin).Values
+     PostList = PostsController.GetPostsByTerm(Settings.ModuleId, BlogId, TermId, -1, ShowLocale, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, Security.UserIsAdmin).Values
     End If
     _usePaging = True
-    For Each e As EntryInfo In entryList
+    For Each e As PostInfo In PostList
      Replacers.Add(New BlogTokenReplace(Me, Settings, e))
     Next
 
    Case "terms"
 
-    If callingObject IsNot Nothing AndAlso TypeOf callingObject Is EntryInfo Then
-     For Each t As TermInfo In CType(callingObject, EntryInfo).Terms
-      Replacers.Add(New BlogTokenReplace(Me, Settings, Entry, t))
+    If callingObject IsNot Nothing AndAlso TypeOf callingObject Is PostInfo Then
+     For Each t As TermInfo In CType(callingObject, PostInfo).Terms
+      Replacers.Add(New BlogTokenReplace(Me, Settings, Post, t))
      Next
-    ElseIf Entry IsNot Nothing Then
-     For Each t As TermInfo In Entry.Terms
-      Replacers.Add(New BlogTokenReplace(Me, Settings, Entry, t))
+    ElseIf Post IsNot Nothing Then
+     For Each t As TermInfo In Post.Terms
+      Replacers.Add(New BlogTokenReplace(Me, Settings, Post, t))
      Next
     Else
      For Each t As TermInfo In TermsController.GetTermsByModule(Settings.ModuleId)
@@ -102,13 +102,13 @@ Public Class Blog
 
    Case "keywords", "tags"
 
-    If callingObject IsNot Nothing AndAlso TypeOf callingObject Is EntryInfo Then
-     For Each t As TermInfo In CType(callingObject, EntryInfo).EntryTags
-      Replacers.Add(New BlogTokenReplace(Me, Settings, Entry, t))
+    If callingObject IsNot Nothing AndAlso TypeOf callingObject Is PostInfo Then
+     For Each t As TermInfo In CType(callingObject, PostInfo).PostTags
+      Replacers.Add(New BlogTokenReplace(Me, Settings, Post, t))
      Next
-    ElseIf Entry IsNot Nothing Then
-     For Each t As TermInfo In Entry.EntryTags
-      Replacers.Add(New BlogTokenReplace(Me, Settings, Entry, t))
+    ElseIf Post IsNot Nothing Then
+     For Each t As TermInfo In Post.PostTags
+      Replacers.Add(New BlogTokenReplace(Me, Settings, Post, t))
      Next
     Else
      For Each t As TermInfo In TermsController.GetTermsByModule(Settings.ModuleId).Where(Function(x) x.VocabularyId = 1).ToList
@@ -119,13 +119,13 @@ Public Class Blog
 
    Case "categories"
 
-    If callingObject IsNot Nothing AndAlso TypeOf callingObject Is EntryInfo Then
-     For Each t As TermInfo In CType(callingObject, EntryInfo).EntryCategories
-      Replacers.Add(New BlogTokenReplace(Me, Settings, Entry, t))
+    If callingObject IsNot Nothing AndAlso TypeOf callingObject Is PostInfo Then
+     For Each t As TermInfo In CType(callingObject, PostInfo).PostCategories
+      Replacers.Add(New BlogTokenReplace(Me, Settings, Post, t))
      Next
-    ElseIf Entry IsNot Nothing Then
-     For Each t As TermInfo In Entry.EntryCategories
-      Replacers.Add(New BlogTokenReplace(Me, Settings, Entry, t))
+    ElseIf Post IsNot Nothing Then
+     For Each t As TermInfo In Post.PostCategories
+      Replacers.Add(New BlogTokenReplace(Me, Settings, Post, t))
      Next
     Else
      For Each t As TermInfo In TermsController.GetTermsByModule(Settings.ModuleId).Where(Function(x) x.VocabularyId <> 1).ToList

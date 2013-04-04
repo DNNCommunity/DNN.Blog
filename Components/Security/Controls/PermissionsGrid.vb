@@ -709,7 +709,7 @@ Namespace Security.Controls
   ''' </history>
   ''' -----------------------------------------------------------------------------
   Protected Overridable Function GetEnabled(objPerm As PermissionInfo, role As RoleInfo, column As Integer) As Boolean
-
+   Return False
   End Function
 
   ''' -----------------------------------------------------------------------------
@@ -724,7 +724,7 @@ Namespace Security.Controls
   ''' </history>
   ''' -----------------------------------------------------------------------------
   Protected Overridable Function GetEnabled(objPerm As PermissionInfo, user As UserInfo, column As Integer) As Boolean
-
+   Return False
   End Function
 
   ''' -----------------------------------------------------------------------------
@@ -739,7 +739,7 @@ Namespace Security.Controls
   ''' </history>
   ''' -----------------------------------------------------------------------------
   Protected Overridable Function GetPermission(objPerm As PermissionInfo, role As RoleInfo, column As Integer) As Boolean
-
+   Return False
   End Function
 
   ''' -----------------------------------------------------------------------------
@@ -754,7 +754,7 @@ Namespace Security.Controls
   ''' </history>
   ''' -----------------------------------------------------------------------------
   Protected Overridable Function GetPermission(objPerm As PermissionInfo, user As UserInfo, column As Integer) As Boolean
-
+   Return False
   End Function
 
   ''' -----------------------------------------------------------------------------

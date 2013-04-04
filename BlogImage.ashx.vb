@@ -2,14 +2,14 @@
 Imports System.Web.Services
 Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
-Imports DotNetNuke.Modules.Blog.Entities.Entries
+Imports DotNetNuke.Modules.Blog.Entities.Posts
 Imports DotNetNuke.Entities.Portals
 
 Public Class BlogImage
  Implements System.Web.IHttpHandler
 
  Private Property BlogId As Integer = -1
- Private Property EntryId As Integer = -1
+ Private Property PostId As Integer = -1
  Private Property ModuleId As Integer = -1
  Private Property TabId As Integer = -1
  Private Property Key As String = ""
@@ -22,7 +22,7 @@ Public Class BlogImage
 
   PortalSettings = PortalController.GetCurrentPortalSettings
   context.Request.Params.ReadValue("Blog", BlogId)
-  context.Request.Params.ReadValue("Post", EntryId)
+  context.Request.Params.ReadValue("Post", PostId)
   context.Request.Params.ReadValue("Key", Key)
   context.Request.Params.ReadValue("ModuleId", ModuleId)
   context.Request.Params.ReadValue("TabId", TabId)
@@ -32,8 +32,8 @@ Public Class BlogImage
 
   Try
    Dim path As String = ""
-   If EntryId > -1 Then ' we're looking for an entry's image
-    path = GetPostDirectoryMapPath(BlogId, EntryId)
+   If PostId > -1 Then ' we're looking for an Post's image
+    path = GetPostDirectoryMapPath(BlogId, PostId)
    ElseIf BlogId > -1 Then ' we're looking for a blog's image
     path = GetBlogDirectoryMapPath(BlogId)
    End If
