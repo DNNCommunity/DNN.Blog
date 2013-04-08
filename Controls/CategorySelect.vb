@@ -23,7 +23,7 @@ Namespace Controls
   Public Property Vocabulary() As Dictionary(Of String, TermInfo)
    Get
     If _Vocabulary Is Nothing Then
-     _Vocabulary = TermsController.GetTermsByVocabulary(ModuleConfiguration.ModuleID, VocabularyId)
+     _Vocabulary = TermsController.GetTermsByVocabulary(ModuleConfiguration.ModuleID, VocabularyId, Threading.Thread.CurrentThread.CurrentCulture.Name)
      If _Vocabulary Is Nothing Then
       _Vocabulary = New Dictionary(Of String, TermInfo)
      End If

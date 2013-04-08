@@ -78,8 +78,8 @@ Namespace Services
 
 #Region " Private Methods "
   Private Sub SetContext(data As PostDTO)
-   Blog = BlogsController.GetBlog(data.BlogId, UserInfo.UserID)
-   Post = PostsController.GetPost(data.PostId, ActiveModule.ModuleID)
+   Blog = BlogsController.GetBlog(data.BlogId, UserInfo.UserID, Threading.Thread.CurrentThread.CurrentCulture.Name)
+   Post = PostsController.GetPost(data.PostId, ActiveModule.ModuleID, Threading.Thread.CurrentThread.CurrentCulture.Name)
   End Sub
 #End Region
 

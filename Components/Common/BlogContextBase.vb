@@ -50,6 +50,7 @@ Namespace Common
     Me.SearchContents = contextBase.SearchContents
     Me.SearchUnpublished = contextBase.SearchUnpublished
     Me.ShowLocale = contextBase.ShowLocale
+    Me.Locale = contextBase.Locale
     Me.Vocabulary = contextBase.Vocabulary
    End With
   End Sub
@@ -71,6 +72,7 @@ Namespace Common
   Public Property SearchContents As Boolean = False
   Public Property SearchUnpublished As Boolean = False
   Public Property ShowLocale As String = ""
+  Public Property Locale As String = ""
 
   Private _uiTimezone As TimeZoneInfo = Nothing
   Public ReadOnly Property UiTimeZone As TimeZoneInfo
@@ -128,7 +130,7 @@ Namespace Common
   Public Property Vocabulary() As Dictionary(Of String, TermInfo)
    Get
     If _Vocabulary Is Nothing Then
-     _Vocabulary = TermsController.GetTermsByVocabulary(ModuleConfiguration.ModuleID, Settings.VocabularyId)
+     _Vocabulary = TermsController.GetTermsByVocabulary(ModuleConfiguration.ModuleID, Settings.VocabularyId, Locale)
      If _Vocabulary Is Nothing Then
       _Vocabulary = New Dictionary(Of String, TermInfo)
      End If

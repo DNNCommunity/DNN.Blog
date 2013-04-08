@@ -64,7 +64,7 @@ Public Class Manage
   SettingsHeader.Visible = Security.IsEditor
   SettingsTab.Visible = Security.IsEditor
   If Security.IsEditor Then
-   dlBlogs.DataSource = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId).Values
+   dlBlogs.DataSource = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, Locale).Values
    chkAllowAttachments.Checked = Settings.AllowAttachments
    Try
     ddSummaryModel.Items.FindByValue(CInt(Settings.SummaryModel).ToString).Selected = True
@@ -95,9 +95,9 @@ Public Class Manage
    End Try
    chkBloggersCanEditCategories.Checked = Settings.BloggersCanEditCategories
   Else
-   dlBlogs.DataSource = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId).Values.Where(Function(b)
-                                                                                                  Return b.OwnerUserId = UserId
-                                                                                                 End Function)
+   dlBlogs.DataSource = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, Locale).Values.Where(Function(b)
+                                                                                                          Return b.OwnerUserId = UserId
+                                                                                                         End Function)
   End If
   dlBlogs.DataBind()
   If dlBlogs.Items.Count = 0 Then dlBlogs.Visible = False
@@ -106,7 +106,7 @@ Public Class Manage
 
  Public Sub GetPosts()
 
-  grdPosts.DataSource = PostsController.GetPosts(Settings.ModuleId, -1, -1, "", Now, -1, grdPosts.CurrentPageIndex, grdPosts.PageSize, "PUBLISHEDONDATE DESC", _totalPosts, UserId, Security.UserIsAdmin).Values
+  grdPosts.DataSource = PostsController.GetPosts(Settings.ModuleId, -1, Locale, -1, "", Now, -1, grdPosts.CurrentPageIndex, grdPosts.PageSize, "PUBLISHEDONDATE DESC", _totalPosts, UserId, Security.UserIsAdmin).Values
   grdPosts.VirtualItemCount = _totalPosts
 
  End Sub

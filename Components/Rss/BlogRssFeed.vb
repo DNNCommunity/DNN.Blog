@@ -55,6 +55,7 @@ Namespace Rss
   Public Property Link As String = ""
   Public Property FeedEmail As String = ""
   Public Property Language As String = ""
+  Public Property Locale As String = Threading.Thread.CurrentThread.CurrentCulture.Name
   Public Property Copyright As String = ""
 #End Region
 
@@ -89,11 +90,12 @@ Namespace Rss
    reqParams.ReadValue("t", SearchTitle)
    reqParams.ReadValue("c", SearchContents)
    reqParams.ReadValue("language", Language)
+   If Language <> "" Then Locale = Language
 
    ' Start Filling In Feed Properties
    If Search <> "" Then IsSearchFeed = True
-   If BlogId > -1 Then Blog = BlogsController.GetBlog(BlogId, -1)
-   If TermId > -1 Then Term = TermsController.GetTerm(TermId, moduleId)
+   If BlogId > -1 Then Blog = BlogsController.GetBlog(BlogId, -1, Threading.Thread.CurrentThread.CurrentCulture.Name)
+   If TermId > -1 Then Term = TermsController.GetTerm(TermId, moduleId, Locale)
    If Blog Is Nothing Then
     Dim m As ModuleInfo = (New ModuleController).GetModule(moduleId)
     If m IsNot Nothing Then
@@ -147,15 +149,15 @@ Namespace Rss
     ' Load Posts
     If IsSearchFeed Then
      If Term IsNot Nothing Then
-      Posts = PostsController.SearchPostsByTerm(moduleId, BlogId, TermId, Search, SearchTitle, SearchContents, 1, Language, Date.Now.ToUniversalTime, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
+      Posts = PostsController.SearchPostsByTerm(moduleId, BlogId, Locale, TermId, Search, SearchTitle, SearchContents, 1, Language, Date.Now.ToUniversalTime, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
      Else
-      Posts = PostsController.SearchPosts(moduleId, BlogId, Search, SearchTitle, SearchContents, 1, Language, Date.Now.ToUniversalTime, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
+      Posts = PostsController.SearchPosts(moduleId, BlogId, Locale, Search, SearchTitle, SearchContents, 1, Language, Date.Now.ToUniversalTime, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
      End If
     Else
      If Term IsNot Nothing Then
-      Posts = PostsController.GetPostsByTerm(moduleId, BlogId, TermId, 1, Language, Date.Now.ToUniversalTime, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
+      Posts = PostsController.GetPostsByTerm(moduleId, BlogId, Locale, TermId, 1, Language, Date.Now.ToUniversalTime, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
      Else
-      Posts = PostsController.GetPosts(moduleId, BlogId, 1, Language, Date.Now.ToUniversalTime, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
+      Posts = PostsController.GetPosts(moduleId, BlogId, Locale, 1, Language, Date.Now.ToUniversalTime, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
      End If
     End If
     WriteRss(CacheFile)
@@ -257,7 +259,7 @@ Namespace Rss
   End Sub
 #End Region
 
-#Region "Private Methods"
+#Region " Private Methods "
   Private Sub WriteItem(ByRef writer As XmlTextWriter, item As PostInfo)
 
    writer.WriteStartElement("item")
@@ -268,7 +270,7 @@ Namespace Rss
    writer.WriteElementString("description", RemoveHtmlTags(HttpUtility.HtmlDecode(item.Summary)))
    ' optional elements
    If item.Blog.IncludeAuthorInFeed Then writer.WriteElementString("author", String.Format("{0} ({1})", item.Email, item.DisplayName))
-   For Each t As TermInfo In TermsController.GetTermsByPost(item.ContentItemId, Settings.ModuleId)
+   For Each t As TermInfo In TermsController.GetTermsByPost(item.ContentItemId, Settings.ModuleId, Locale)
     writer.WriteElementString("category", t.Name)
    Next
    writer.WriteElementString("guid", String.Format("post={0}", item.ContentItemId))

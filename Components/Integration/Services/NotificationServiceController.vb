@@ -122,8 +122,8 @@ Namespace Integration.Services
    BlogModuleId = nKey.ModuleId
    BlogId = nKey.BlogId
    ContentItemId = nKey.ContentItemId
-   Blog = BlogsController.GetBlog(BlogId, UserInfo.UserID)
-   Post = PostsController.GetPost(ContentItemId, BlogModuleId)
+   Blog = BlogsController.GetBlog(BlogId, UserInfo.UserID, Threading.Thread.CurrentThread.CurrentCulture.Name)
+   Post = PostsController.GetPost(ContentItemId, BlogModuleId, Threading.Thread.CurrentThread.CurrentCulture.Name)
   End Sub
 
   Private Sub ParseCommentKey(key As String)
@@ -132,8 +132,8 @@ Namespace Integration.Services
    BlogId = nKey.BlogId
    ContentItemId = nKey.ContentItemId
    CommentId = nKey.CommentId
-   Blog = BlogsController.GetBlog(BlogId, UserInfo.UserID)
-   Post = PostsController.GetPost(ContentItemId, BlogModuleId)
+   Blog = BlogsController.GetBlog(BlogId, UserInfo.UserID, Threading.Thread.CurrentThread.CurrentCulture.Name)
+   Post = PostsController.GetPost(ContentItemId, BlogModuleId, Threading.Thread.CurrentThread.CurrentCulture.Name)
    Comment = CommentsController.GetComment(CommentId)
   End Sub
 #End Region

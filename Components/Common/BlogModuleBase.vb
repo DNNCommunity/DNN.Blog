@@ -48,6 +48,7 @@ Namespace Common
    Else
     Settings = ModuleSettings.GetModuleSettings(ViewSettings.BlogModuleId)
    End If
+   Locale = Threading.Thread.CurrentThread.CurrentCulture.Name
 
    Request.Params.ReadValue("Blog", BlogId)
    Request.Params.ReadValue("Post", ContentItemId)
@@ -56,15 +57,15 @@ Namespace Common
    Request.Params.ReadValue("t", SearchTitle)
    Request.Params.ReadValue("c", SearchContents)
    Request.Params.ReadValue("u", SearchUnpublished)
-   If ContentItemId > -1 Then Post = Entities.Posts.PostsController.GetPost(ContentItemId, Settings.ModuleId)
+   If ContentItemId > -1 Then Post = Entities.Posts.PostsController.GetPost(ContentItemId, Settings.ModuleId, Locale)
    If BlogId > -1 And Post IsNot Nothing AndAlso Post.BlogID <> BlogId Then Post = Nothing ' double check in case someone is hacking to retrieve an Post from another blog
    If BlogId = -1 And Post IsNot Nothing Then BlogId = Post.BlogID
-   If BlogId > -1 Then Blog = Entities.Blogs.BlogsController.GetBlog(BlogId, UserInfo.UserID)
+   If BlogId > -1 Then Blog = Entities.Blogs.BlogsController.GetBlog(BlogId, UserInfo.UserID, Locale)
    If BlogId > -1 Then BlogMapPath = GetBlogDirectoryMapPath(BlogId)
    If BlogMapPath <> "" AndAlso Not IO.Directory.Exists(BlogMapPath) Then IO.Directory.CreateDirectory(BlogMapPath)
    If ContentItemId > -1 Then PostMapPath = GetPostDirectoryMapPath(BlogId, ContentItemId)
    If PostMapPath <> "" AndAlso Not IO.Directory.Exists(PostMapPath) Then IO.Directory.CreateDirectory(PostMapPath)
-   If TermId > -1 Then Term = Entities.Terms.TermsController.GetTerm(TermId, Settings.ModuleId)
+   If TermId > -1 Then Term = Entities.Terms.TermsController.GetTerm(TermId, Settings.ModuleId, Locale)
    ' set urls for use in module
    Dim params As New List(Of String)
    If BlogId > -1 Then params.Add("Blog=" & BlogId.ToString)
@@ -72,7 +73,7 @@ Namespace Common
    If TermId > -1 Then params.Add("Term=" & TermId.ToString)
    ModuleUrls = New ModuleUrls(TabId, BlogId, ContentItemId, TermId)
    If Not Settings.ShowAllLocales Then
-    ShowLocale = Threading.Thread.CurrentThread.CurrentCulture.Name
+    ShowLocale = Locale
    End If
 
   End Sub

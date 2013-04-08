@@ -43,6 +43,24 @@ Namespace Entities.Terms
   Public Property TotalPosts() As Integer
 #End Region
 
+#Region " ML Properties "
+  Public Property AltLocale As String = ""
+  Public Property AltName As String = ""
+  Public Property AltDescription As String = ""
+
+  Public ReadOnly Property LocalizedName As String
+   Get
+    Return CStr(IIf(String.IsNullOrEmpty(AltName), Name, AltName))
+   End Get
+  End Property
+
+  Public ReadOnly Property LocalizedDescription As String
+   Get
+    Return CStr(IIf(String.IsNullOrEmpty(AltDescription), Description, AltDescription))
+   End Get
+  End Property
+#End Region
+
 #Region " IHydratable Implementation "
   Public Overrides Sub Fill(dr As System.Data.IDataReader)
    MyBase.Fill(dr)
@@ -92,6 +110,16 @@ Namespace Entities.Terms
      Return (Me.LastModifiedOnDate.ToString(OutputFormat, formatProvider))
     Case "totalposts"
      Return (Me.TotalPosts.ToString(OutputFormat, formatProvider))
+    Case "altlocale"
+     Return PropertyAccess.FormatString(Me.AltLocale, strFormat)
+    Case "altname"
+     Return PropertyAccess.FormatString(Me.AltName, strFormat)
+    Case "altdescription"
+     Return PropertyAccess.FormatString(Me.AltDescription, strFormat)
+    Case "localizedname"
+     Return PropertyAccess.FormatString(Me.LocalizedName, strFormat)
+    Case "localizeddescription"
+     Return PropertyAccess.FormatString(Me.LocalizedDescription, strFormat)
     Case Else
      PropertyNotFound = True
    End Select

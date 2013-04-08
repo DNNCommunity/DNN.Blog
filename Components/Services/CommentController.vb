@@ -80,7 +80,7 @@ Namespace Services
 
 #Region " Private Methods "
   Private Sub SetContext(data As CommentDTO)
-   Blog = BlogsController.GetBlog(data.BlogId, UserInfo.UserID)
+   Blog = BlogsController.GetBlog(data.BlogId, UserInfo.UserID, Threading.Thread.CurrentThread.CurrentCulture.Name)
    Comment = CommentsController.GetComment(data.CommentId)
   End Sub
 #End Region

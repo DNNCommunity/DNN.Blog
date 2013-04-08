@@ -39,9 +39,9 @@ Public Class Blog
 
    Case "blogs"
 
-    Dim blogList As IEnumerable(Of BlogInfo) = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId).Values.Where(Function(b)
-                                                                                                                         Return b.Published = True
-                                                                                                                        End Function).OrderBy(Function(b) b.Title)
+    Dim blogList As IEnumerable(Of BlogInfo) = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, Locale).Values.Where(Function(b)
+                                                                                                                                 Return b.Published = True
+                                                                                                                                End Function).OrderBy(Function(b) b.Title)
     Parameters.ReadValue("pagesize", _pageSize)
     If _pageSize > 0 Then
      _usePaging = True
@@ -69,14 +69,14 @@ Public Class Blog
      Dim publishValue As Integer = 1
      If SearchUnpublished Then publishValue = -1
      If Term Is Nothing Then
-      PostList = PostsController.SearchPosts(Settings.ModuleId, BlogId, SearchString, SearchTitle, SearchContents, publishValue, ShowLocale, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, Security.UserIsAdmin).Values
+      PostList = PostsController.SearchPosts(Settings.ModuleId, BlogId, Locale, SearchString, SearchTitle, SearchContents, publishValue, ShowLocale, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, Security.UserIsAdmin).Values
      Else
-      PostList = PostsController.SearchPostsByTerm(Settings.ModuleId, BlogId, TermId, SearchString, SearchTitle, SearchContents, publishValue, ShowLocale, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, Security.UserIsAdmin).Values
+      PostList = PostsController.SearchPostsByTerm(Settings.ModuleId, BlogId, Locale, TermId, SearchString, SearchTitle, SearchContents, publishValue, ShowLocale, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, Security.UserIsAdmin).Values
      End If
     ElseIf Term Is Nothing Then
-     PostList = PostsController.GetPosts(Settings.ModuleId, BlogId, -1, ShowLocale, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, Security.UserIsAdmin).Values
+     PostList = PostsController.GetPosts(Settings.ModuleId, BlogId, Locale, -1, ShowLocale, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, Security.UserIsAdmin).Values
     Else
-     PostList = PostsController.GetPostsByTerm(Settings.ModuleId, BlogId, TermId, -1, ShowLocale, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, Security.UserIsAdmin).Values
+     PostList = PostsController.GetPostsByTerm(Settings.ModuleId, BlogId, Locale, TermId, -1, ShowLocale, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, Security.UserIsAdmin).Values
     End If
     _usePaging = True
     For Each e As PostInfo In PostList
@@ -94,7 +94,7 @@ Public Class Blog
       Replacers.Add(New BlogTokenReplace(Me, Settings, Post, t))
      Next
     Else
-     For Each t As TermInfo In TermsController.GetTermsByModule(Settings.ModuleId)
+     For Each t As TermInfo In TermsController.GetTermsByModule(Settings.ModuleId, Locale)
       Replacers.Add(New BlogTokenReplace(Me, Settings, Nothing, t))
      Next
     End If
@@ -111,7 +111,7 @@ Public Class Blog
       Replacers.Add(New BlogTokenReplace(Me, Settings, Post, t))
      Next
     Else
-     For Each t As TermInfo In TermsController.GetTermsByModule(Settings.ModuleId).Where(Function(x) x.VocabularyId = 1).ToList
+     For Each t As TermInfo In TermsController.GetTermsByModule(Settings.ModuleId, Locale).Where(Function(x) x.VocabularyId = 1).ToList
       Replacers.Add(New BlogTokenReplace(Me, Settings, Nothing, t))
      Next
     End If
@@ -128,7 +128,7 @@ Public Class Blog
       Replacers.Add(New BlogTokenReplace(Me, Settings, Post, t))
      Next
     Else
-     For Each t As TermInfo In TermsController.GetTermsByModule(Settings.ModuleId).Where(Function(x) x.VocabularyId <> 1).ToList
+     For Each t As TermInfo In TermsController.GetTermsByModule(Settings.ModuleId, Locale).Where(Function(x) x.VocabularyId <> 1).ToList
       Replacers.Add(New BlogTokenReplace(Me, Settings, Nothing, t))
      Next
     End If

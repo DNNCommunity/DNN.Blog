@@ -25,31 +25,31 @@ Imports DotNetNuke.Entities.Content.Taxonomy
 Namespace Entities.Terms
  Public Class TermsController
 
-  Public Shared Function GetTerm(termId As Integer, moduleId As Integer) As TermInfo
-   Return CType(CBO.FillObject(Data.DataProvider.Instance().GetTerm(termId, moduleId), GetType(TermInfo)), TermInfo)
+  Public Shared Function GetTerm(termId As Integer, moduleId As Integer, locale As String) As TermInfo
+   Return CType(CBO.FillObject(Data.DataProvider.Instance().GetTerm(termId, moduleId, locale), GetType(TermInfo)), TermInfo)
   End Function
 
-  Public Shared Function GetTermsByPost(contentItemId As Int32, moduleId As Int32) As List(Of TermInfo)
-   Return DotNetNuke.Common.Utilities.CBO.FillCollection(Of TermInfo)(Data.DataProvider.Instance.GetTermsByPost(contentItemId, moduleId))
+  Public Shared Function GetTermsByPost(contentItemId As Int32, moduleId As Int32, locale As String) As List(Of TermInfo)
+   Return DotNetNuke.Common.Utilities.CBO.FillCollection(Of TermInfo)(Data.DataProvider.Instance.GetTermsByPost(contentItemId, moduleId, locale))
   End Function
 
-  Public Shared Function GetTermsByModule(moduleId As Int32) As List(Of TermInfo)
-   Return DotNetNuke.Common.Utilities.CBO.FillCollection(Of TermInfo)(Data.DataProvider.Instance.GetTermsByModule(moduleId))
+  Public Shared Function GetTermsByModule(moduleId As Int32, locale As String) As List(Of TermInfo)
+   Return DotNetNuke.Common.Utilities.CBO.FillCollection(Of TermInfo)(Data.DataProvider.Instance.GetTermsByModule(moduleId, locale))
   End Function
 
-  Public Shared Function GetTermsByVocabulary(moduleId As Int32, vocabularyId As Int32) As Dictionary(Of String, TermInfo)
+  Public Shared Function GetTermsByVocabulary(moduleId As Int32, vocabularyId As Int32, locale As String) As Dictionary(Of String, TermInfo)
    Dim res As New Dictionary(Of String, TermInfo)(StringComparer.CurrentCultureIgnoreCase)
-   DotNetNuke.Common.Utilities.CBO.FillDictionary(Of String, TermInfo)("Name", Data.DataProvider.Instance.GetTermsByVocabulary(moduleId, vocabularyId), res)
+   DotNetNuke.Common.Utilities.CBO.FillDictionary(Of String, TermInfo)("Name", Data.DataProvider.Instance.GetTermsByVocabulary(moduleId, vocabularyId, locale), res)
    Return res
   End Function
 
-  Public Shared Function GetTermList(moduleId As Integer, termList As String, vocabularyId As Integer, autoCreate As Boolean) As List(Of TermInfo)
+  Public Shared Function GetTermList(moduleId As Integer, termList As String, vocabularyId As Integer, autoCreate As Boolean, locale As String) As List(Of TermInfo)
    Dim termNames As String() = termList.Replace(";", ",").Trim(","c).Split(","c)
-   Return GetTermList(moduleId, termNames.ToList, vocabularyId, autoCreate)
+   Return GetTermList(moduleId, termNames.ToList, vocabularyId, autoCreate, locale)
   End Function
 
-  Public Shared Function GetTermList(moduleId As Integer, termList As List(Of String), vocabularyId As Integer, autoCreate As Boolean) As List(Of TermInfo)
-   Dim vocab As Dictionary(Of String, TermInfo) = GetTermsByVocabulary(moduleId, vocabularyId)
+  Public Shared Function GetTermList(moduleId As Integer, termList As List(Of String), vocabularyId As Integer, autoCreate As Boolean, locale As String) As List(Of TermInfo)
+   Dim vocab As Dictionary(Of String, TermInfo) = GetTermsByVocabulary(moduleId, vocabularyId, locale)
    Dim res As New List(Of TermInfo)
    For Each termName As String In termList
     Dim name As String = termName

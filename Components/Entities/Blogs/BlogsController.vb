@@ -27,21 +27,21 @@ Namespace Entities.Blogs
 
  Partial Public Class BlogsController
 
-  Public Shared Function GetBlog(blogID As Int32, userId As Integer) As BlogInfo
+  Public Shared Function GetBlog(blogID As Int32, userId As Integer, locale As String) As BlogInfo
 
-   Return CType(CBO.FillObject(DataProvider.Instance().GetBlog(blogID, userId), GetType(BlogInfo)), BlogInfo)
-
-  End Function
-
-  Public Shared Function GetBlogsByModule(moduleID As Int32) As Dictionary(Of Integer, BlogInfo)
-
-   Return GetBlogsByModule(moduleID, -1)
+   Return CType(CBO.FillObject(DataProvider.Instance().GetBlog(blogID, userId, locale), GetType(BlogInfo)), BlogInfo)
 
   End Function
 
-  Public Shared Function GetBlogsByModule(moduleID As Int32, userId As Integer) As Dictionary(Of Integer, BlogInfo)
+  Public Shared Function GetBlogsByModule(moduleID As Int32, locale As String) As Dictionary(Of Integer, BlogInfo)
 
-   Dim res As Dictionary(Of Integer, BlogInfo) = DotNetNuke.Common.Utilities.CBO.FillDictionary(Of Integer, BlogInfo)("BlogID", DataProvider.Instance().GetBlogsByModule(moduleID, userId))
+   Return GetBlogsByModule(moduleID, -1, locale)
+
+  End Function
+
+  Public Shared Function GetBlogsByModule(moduleID As Int32, userId As Integer, locale As String) As Dictionary(Of Integer, BlogInfo)
+
+   Dim res As Dictionary(Of Integer, BlogInfo) = DotNetNuke.Common.Utilities.CBO.FillDictionary(Of Integer, BlogInfo)("BlogID", DataProvider.Instance().GetBlogsByModule(moduleID, userId, locale))
    If userId > -1 Then
     For Each b As BlogInfo In res.Values
      If b.OwnerUserId = userId Then
@@ -53,7 +53,7 @@ Namespace Entities.Blogs
     Next
    End If
    Return res
-   
+
   End Function
 
 

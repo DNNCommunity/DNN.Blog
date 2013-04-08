@@ -33,7 +33,7 @@ Namespace Controls
    If Me.Page.IsPostBack Then
     ' read return values
     Terms = New List(Of TermInfo)
-    Dim vocab As Dictionary(Of String, TermInfo) = TermsController.GetTermsByVocabulary(ModuleConfiguration.ModuleID, VocabularyId)
+    Dim vocab As Dictionary(Of String, TermInfo) = TermsController.GetTermsByVocabulary(ModuleConfiguration.ModuleID, VocabularyId, Threading.Thread.CurrentThread.CurrentCulture.Name)
     Dim tagList As String = ""
     Me.Page.Request.Params.ReadValue(ClientID, tagList)
     If Not String.IsNullOrEmpty(tagList) Then

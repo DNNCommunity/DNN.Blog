@@ -69,7 +69,7 @@ Namespace Entities.Posts
   Public Shadows Property Terms() As List(Of TermInfo)
    Get
     If _terms Is Nothing Then
-     _terms = TermsController.GetTermsByPost(ContentItemId, Blog.ModuleID)
+     _terms = TermsController.GetTermsByPost(ContentItemId, Blog.ModuleID, Threading.Thread.CurrentThread.CurrentCulture.Name)
     End If
     Return _terms
    End Get
@@ -82,7 +82,7 @@ Namespace Entities.Posts
   Public Property Blog() As BlogInfo
    Get
     If _blog Is Nothing Then
-     _blog = BlogsController.GetBlog(BlogID, -1)
+     _blog = BlogsController.GetBlog(BlogID, -1, Threading.Thread.CurrentThread.CurrentCulture.Name)
     End If
     Return _blog
    End Get

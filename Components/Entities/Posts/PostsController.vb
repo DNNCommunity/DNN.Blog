@@ -34,7 +34,7 @@ Namespace Entities.Posts
    Post.Published = publish
    UpdatePost(Post, publishedByUser)
    If publish Then
-    Dim blog As BlogInfo = BlogsController.GetBlog(Post.BlogID, publishedByUser)
+    Dim blog As BlogInfo = BlogsController.GetBlog(Post.BlogID, publishedByUser, Threading.Thread.CurrentThread.CurrentCulture.Name)
     Dim journalUrl As String = Post.PermaLink(DotNetNuke.Entities.Portals.PortalSettings.Current)
     Dim journalUserId As Integer = publishedByUser
     If Blog.PublishAsOwner Then journalUserId = Blog.OwnerUserId
@@ -45,7 +45,7 @@ Namespace Entities.Posts
 
   Public Shared Sub DeletePost(Post As PostInfo)
    DataProvider.Instance().DeletePost(Post.ContentItemId)
-   Dim blog As BlogInfo = BlogsController.GetBlog(Post.BlogID, -1)
+   Dim blog As BlogInfo = BlogsController.GetBlog(Post.BlogID, -1, Threading.Thread.CurrentThread.CurrentCulture.Name)
    NotificationController.RemovePostPendingNotification(blog.ModuleID, blog.BlogID, Post.ContentItemId)
   End Sub
 
@@ -54,7 +54,7 @@ Namespace Entities.Posts
    'CompletePostDelete(contentItemId, blogId, PostId, portalId, vocabularyId)
   End Sub
 
-  Public Shared Function GetPosts(moduleId As Int32, blogID As Int32, published As Integer, locale As String, endDate As Date, authorUserId As Int32, pageIndex As Int32, pageSize As Int32, orderBy As String, ByRef totalRecords As Integer, userId As Integer, userIsAdmin As Boolean) As Dictionary(Of Integer, PostInfo)
+  Public Shared Function GetPosts(moduleId As Int32, blogID As Int32, displayLocale As String, published As Integer, limitToLocale As String, endDate As Date, authorUserId As Int32, pageIndex As Int32, pageSize As Int32, orderBy As String, ByRef totalRecords As Integer, userId As Integer, userIsAdmin As Boolean) As Dictionary(Of Integer, PostInfo)
 
    If pageIndex < 0 Then
     pageIndex = 0
@@ -62,15 +62,15 @@ Namespace Entities.Posts
    End If
 
    Dim res As New Dictionary(Of Integer, PostInfo)
-   Using ir As IDataReader = DataProvider.Instance().GetPosts(moduleId, blogID, userId, userIsAdmin, published, locale, endDate, authorUserId, pageIndex, pageSize, orderBy)
+   Using ir As IDataReader = DataProvider.Instance().GetPosts(moduleId, blogID, displayLocale, userId, userIsAdmin, published, limitToLocale, endDate, authorUserId, pageIndex, pageSize, orderBy)
     res = DotNetNuke.Common.Utilities.CBO.FillDictionary(Of Integer, PostInfo)("ContentItemID", ir, False)
     If blogID = -1 Then
-     Dim blogs As Dictionary(Of Integer, BlogInfo) = BlogsController.GetBlogsByModule(moduleId, userId)
+     Dim blogs As Dictionary(Of Integer, BlogInfo) = BlogsController.GetBlogsByModule(moduleId, userId, displayLocale)
      For Each e As PostInfo In res.Values
       e.Blog = blogs(e.BlogID)
      Next
     Else
-     Dim blog As BlogInfo = BlogsController.GetBlog(blogID, userId)
+     Dim blog As BlogInfo = BlogsController.GetBlog(blogID, userId, displayLocale)
      For Each e As PostInfo In res.Values
       e.Blog = blog
      Next
@@ -82,7 +82,7 @@ Namespace Entities.Posts
 
   End Function
 
-  Public Shared Function GetPostsByTerm(moduleId As Int32, blogID As Int32, termId As Integer, published As Integer, locale As String, endDate As Date, authorUserId As Int32, pageIndex As Int32, pageSize As Int32, orderBy As String, ByRef totalRecords As Integer, userId As Integer, userIsAdmin As Boolean) As Dictionary(Of Integer, PostInfo)
+  Public Shared Function GetPostsByTerm(moduleId As Int32, blogID As Int32, displayLocale As String, termId As Integer, published As Integer, limitToLocale As String, endDate As Date, authorUserId As Int32, pageIndex As Int32, pageSize As Int32, orderBy As String, ByRef totalRecords As Integer, userId As Integer, userIsAdmin As Boolean) As Dictionary(Of Integer, PostInfo)
 
    If pageIndex < 0 Then
     pageIndex = 0
@@ -90,15 +90,15 @@ Namespace Entities.Posts
    End If
 
    Dim res As New Dictionary(Of Integer, PostInfo)
-   Using ir As IDataReader = DataProvider.Instance().GetPostsByTerm(moduleId, blogID, userId, userIsAdmin, termId, published, locale, endDate, authorUserId, pageIndex, pageSize, orderBy)
+   Using ir As IDataReader = DataProvider.Instance().GetPostsByTerm(moduleId, blogID, displayLocale, userId, userIsAdmin, termId, published, limitToLocale, endDate, authorUserId, pageIndex, pageSize, orderBy)
     res = DotNetNuke.Common.Utilities.CBO.FillDictionary(Of Integer, PostInfo)("ContentItemID", ir, False)
     If blogID = -1 Then
-     Dim blogs As Dictionary(Of Integer, BlogInfo) = BlogsController.GetBlogsByModule(moduleId, userId)
+     Dim blogs As Dictionary(Of Integer, BlogInfo) = BlogsController.GetBlogsByModule(moduleId, userId, displayLocale)
      For Each e As PostInfo In res.Values
       e.Blog = blogs(e.BlogID)
      Next
     Else
-     Dim blog As BlogInfo = BlogsController.GetBlog(blogID, userId)
+     Dim blog As BlogInfo = BlogsController.GetBlog(blogID, userId, displayLocale)
      For Each e As PostInfo In res.Values
       e.Blog = blog
      Next
@@ -110,7 +110,7 @@ Namespace Entities.Posts
 
   End Function
 
-  Public Shared Function GetPostsByBlog(moduleId As Int32, blogID As Int32, userId As Int32, pageIndex As Int32, pageSize As Int32, orderBy As String, ByRef totalRecords As Integer) As Dictionary(Of Integer, PostInfo)
+  Public Shared Function GetPostsByBlog(moduleId As Int32, blogID As Int32, displayLocale As String, userId As Int32, pageIndex As Int32, pageSize As Int32, orderBy As String, ByRef totalRecords As Integer) As Dictionary(Of Integer, PostInfo)
 
    If pageIndex < 0 Then
     pageIndex = 0
@@ -118,15 +118,15 @@ Namespace Entities.Posts
    End If
 
    Dim res As New Dictionary(Of Integer, PostInfo)
-   Using ir As IDataReader = DataProvider.Instance().GetPostsByBlog(blogID, pageIndex, pageSize, orderBy)
+   Using ir As IDataReader = DataProvider.Instance().GetPostsByBlog(blogID, displayLocale, pageIndex, pageSize, orderBy)
     res = DotNetNuke.Common.Utilities.CBO.FillDictionary(Of Integer, PostInfo)("ContentItemID", ir, False)
     If blogID = -1 Then
-     Dim blogs As Dictionary(Of Integer, BlogInfo) = BlogsController.GetBlogsByModule(moduleId, userId)
+     Dim blogs As Dictionary(Of Integer, BlogInfo) = BlogsController.GetBlogsByModule(moduleId, userId, displayLocale)
      For Each e As PostInfo In res.Values
       e.Blog = blogs(e.BlogID)
      Next
     Else
-     Dim blog As BlogInfo = BlogsController.GetBlog(blogID, userId)
+     Dim blog As BlogInfo = BlogsController.GetBlog(blogID, userId, displayLocale)
      For Each e As PostInfo In res.Values
       e.Blog = blog
      Next
@@ -138,7 +138,7 @@ Namespace Entities.Posts
 
   End Function
 
-  Public Shared Function SearchPosts(moduleId As Int32, blogID As Int32, searchText As String, searchTitle As Boolean, searchContents As Boolean, published As Integer, locale As String, endDate As Date, authorUserId As Int32, pageIndex As Int32, pageSize As Int32, orderBy As String, ByRef totalRecords As Integer, userId As Integer, userIsAdmin As Boolean) As Dictionary(Of Integer, PostInfo)
+  Public Shared Function SearchPosts(moduleId As Int32, blogID As Int32, displayLocale As String, searchText As String, searchTitle As Boolean, searchContents As Boolean, published As Integer, limitToLocale As String, endDate As Date, authorUserId As Int32, pageIndex As Int32, pageSize As Int32, orderBy As String, ByRef totalRecords As Integer, userId As Integer, userIsAdmin As Boolean) As Dictionary(Of Integer, PostInfo)
 
    If pageIndex < 0 Then
     pageIndex = 0
@@ -146,15 +146,15 @@ Namespace Entities.Posts
    End If
 
    Dim res As New Dictionary(Of Integer, PostInfo)
-   Using ir As IDataReader = DataProvider.Instance().SearchPosts(moduleId, blogID, userId, userIsAdmin, searchText, searchTitle, searchContents, published, locale, endDate, authorUserId, pageIndex, pageSize, orderBy)
+   Using ir As IDataReader = DataProvider.Instance().SearchPosts(moduleId, blogID, displayLocale, userId, userIsAdmin, searchText, searchTitle, searchContents, published, limitToLocale, endDate, authorUserId, pageIndex, pageSize, orderBy)
     res = DotNetNuke.Common.Utilities.CBO.FillDictionary(Of Integer, PostInfo)("ContentItemID", ir, False)
     If blogID = -1 Then
-     Dim blogs As Dictionary(Of Integer, BlogInfo) = BlogsController.GetBlogsByModule(moduleId, userId)
+     Dim blogs As Dictionary(Of Integer, BlogInfo) = BlogsController.GetBlogsByModule(moduleId, userId, displayLocale)
      For Each e As PostInfo In res.Values
       e.Blog = blogs(e.BlogID)
      Next
     Else
-     Dim blog As BlogInfo = BlogsController.GetBlog(blogID, userId)
+     Dim blog As BlogInfo = BlogsController.GetBlog(blogID, userId, displayLocale)
      For Each e As PostInfo In res.Values
       e.Blog = blog
      Next
@@ -166,7 +166,7 @@ Namespace Entities.Posts
 
   End Function
 
-  Public Shared Function SearchPostsByTerm(moduleId As Int32, blogID As Int32, termId As Integer, searchText As String, searchTitle As Boolean, searchContents As Boolean, published As Integer, locale As String, endDate As Date, authorUserId As Int32, pageIndex As Int32, pageSize As Int32, orderBy As String, ByRef totalRecords As Integer, userId As Integer, userIsAdmin As Boolean) As Dictionary(Of Integer, PostInfo)
+  Public Shared Function SearchPostsByTerm(moduleId As Int32, blogID As Int32, displayLocale As String, termId As Integer, searchText As String, searchTitle As Boolean, searchContents As Boolean, published As Integer, limitToLocale As String, endDate As Date, authorUserId As Int32, pageIndex As Int32, pageSize As Int32, orderBy As String, ByRef totalRecords As Integer, userId As Integer, userIsAdmin As Boolean) As Dictionary(Of Integer, PostInfo)
 
    If pageIndex < 0 Then
     pageIndex = 0
@@ -174,15 +174,15 @@ Namespace Entities.Posts
    End If
 
    Dim res As New Dictionary(Of Integer, PostInfo)
-   Using ir As IDataReader = DataProvider.Instance().SearchPostsByTerm(moduleId, blogID, userId, userIsAdmin, termId, searchText, searchTitle, searchContents, published, locale, endDate, authorUserId, pageIndex, pageSize, orderBy)
+   Using ir As IDataReader = DataProvider.Instance().SearchPostsByTerm(moduleId, blogID, displayLocale, userId, userIsAdmin, termId, searchText, searchTitle, searchContents, published, limitToLocale, endDate, authorUserId, pageIndex, pageSize, orderBy)
     res = DotNetNuke.Common.Utilities.CBO.FillDictionary(Of Integer, PostInfo)("ContentItemID", ir, False)
     If blogID = -1 Then
-     Dim blogs As Dictionary(Of Integer, BlogInfo) = BlogsController.GetBlogsByModule(moduleId, userId)
+     Dim blogs As Dictionary(Of Integer, BlogInfo) = BlogsController.GetBlogsByModule(moduleId, userId, displayLocale)
      For Each e As PostInfo In res.Values
       e.Blog = blogs(e.BlogID)
      Next
     Else
-     Dim blog As BlogInfo = BlogsController.GetBlog(blogID, userId)
+     Dim blog As BlogInfo = BlogsController.GetBlog(blogID, userId, displayLocale)
      For Each e As PostInfo In res.Values
       e.Blog = blog
      Next

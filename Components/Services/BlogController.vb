@@ -83,13 +83,13 @@ Namespace Services
 
 #Region " Private Methods "
   Private Sub SetContext(data As BlogDTO)
-   Blog = BlogsController.GetBlog(data.BlogId, UserInfo.UserID)
+   Blog = BlogsController.GetBlog(data.BlogId, UserInfo.UserID, Threading.Thread.CurrentThread.CurrentCulture.Name)
    Settings = ModuleSettings.GetModuleSettings(ActiveModule.ModuleID)
   End Sub
 
   Private Sub AddCategories(ByRef TargetBlogML As BlogMLBlog)
    If Settings.VocabularyId > -1 Then
-    For Each c As TermInfo In Entities.Terms.TermsController.GetTermsByVocabulary(ActiveModule.ModuleID, Settings.VocabularyId).Values
+    For Each c As TermInfo In Entities.Terms.TermsController.GetTermsByVocabulary(ActiveModule.ModuleID, Settings.VocabularyId, Threading.Thread.CurrentThread.CurrentCulture.Name).Values
      Dim categoryML As New BlogMLCategory
      categoryML.Approved = True
      categoryML.DateCreated = c.CreatedOnDate
@@ -107,7 +107,7 @@ Namespace Services
    Dim handledRecs As Integer = 0
    Dim page As Integer = 0
    Do
-    For Each post As PostInfo In PostsController.GetPostsByBlog(ActiveModule.ModuleID, Blog.BlogID, -1, page, 10, "PUBLISHEDONDATE", totalRecs).Values
+    For Each post As PostInfo In PostsController.GetPostsByBlog(ActiveModule.ModuleID, Blog.BlogID, Threading.Thread.CurrentThread.CurrentCulture.Name, -1, page, 10, "PUBLISHEDONDATE", totalRecs).Values
      handledRecs += 1
      TargetBlogML.Posts.Add(ConvertPost(post))
     Next

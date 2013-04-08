@@ -74,6 +74,7 @@ Public Class BlogPost
  Private Property UnAuthorized As Boolean = True
  Private Property Security As ContextSecurity = Nothing
  Private Property UserTimeZone As TimeZoneInfo = Nothing
+ Private Property Locale As String = Threading.Thread.CurrentThread.CurrentCulture.Name
 
 #Region " Method Implementations "
  Public Function getUsersBlogs(appKey As String, username As String, password As String) As BlogInfoStruct() Implements IBlogger.getUsersBlogs
@@ -81,9 +82,9 @@ Public Class BlogPost
 
   Dim blogs As New List(Of BlogInfoStruct)
   Try
-   For Each blog As BlogInfo In BlogsController.GetBlogsByModule(ModuleId, UserInfo.UserID).Values.Where(Function(b)
-                                                                                                          Return b.CreatedByUserID = UserInfo.UserID Or b.CanAdd Or b.CanEdit
-                                                                                                         End Function).ToList
+   For Each blog As BlogInfo In BlogsController.GetBlogsByModule(ModuleId, UserInfo.UserID, Locale).Values.Where(Function(b)
+                                                                                                                  Return b.CreatedByUserID = UserInfo.UserID Or b.CanAdd Or b.CanEdit
+                                                                                                                 End Function).ToList
     blogs.Add(New BlogInfoStruct() With {.blogid = blog.BlogID.ToString, .blogName = blog.Title, .url = GetRedirectUrl(TabId, blog.ModuleID)})
    Next
   Catch mex As BlogPostException
@@ -198,7 +199,7 @@ Public Class BlogPost
   Dim posts As New List(Of Post)
   Try
    Dim totalRecs As Integer
-   Dim arPosts As Dictionary(Of Integer, PostInfo) = PostsController.GetPostsByBlog(ModuleId, CInt(blogid), UserInfo.UserID, 1, Settings.WLWRecentPostsMax, "PublishedOnDate DESC", totalRecs)
+   Dim arPosts As Dictionary(Of Integer, PostInfo) = PostsController.GetPostsByBlog(ModuleId, CInt(blogid), Locale, UserInfo.UserID, 1, Settings.WLWRecentPostsMax, "PublishedOnDate DESC", totalRecs)
    For Each Post As PostInfo In arPosts.Values
     posts.Add(ToMwlPost(Post))
    Next
@@ -571,14 +572,14 @@ Public Class BlogPost
    End If
    If requestedPostId <> "" Then
     PostId = CInt(requestedPostId)
-    RequestedPost = PostsController.GetPost(PostId, ModuleId)
+    RequestedPost = PostsController.GetPost(PostId, ModuleId, Locale)
     BlogId = RequestedPost.BlogID
    ElseIf requestedBlogId <> "" Then
     BlogId = CInt(requestedBlogId)
    End If
    ' Check for user access to the blog
    If Me.BlogId > -1 Then
-    RequestedBlog = BlogsController.GetBlog(Me.BlogId, UserInfo.UserID)
+    RequestedBlog = BlogsController.GetBlog(Me.BlogId, UserInfo.UserID, Locale)
     Security = New ContextSecurity(ModuleId, TabId, RequestedBlog, UserInfo)
    End If
    UserTimeZone = PortalSettings.TimeZone
@@ -657,9 +658,9 @@ Public Class BlogPost
 #Region " Data Handling Methods "
  Private Sub AddCategoriesAndKeyWords(ByRef newPost As PostInfo, post As Post)
   Dim terms As New List(Of TermInfo)
-  terms.AddRange(TermsController.GetTermList(ModuleId, post.mt_keywords, 1, True))
+  terms.AddRange(TermsController.GetTermList(ModuleId, post.mt_keywords, 1, True, Locale))
   If Settings.VocabularyId > 1 Then
-   terms.AddRange(TermsController.GetTermList(ModuleId, post.categories.ToList, Settings.VocabularyId, False))
+   terms.AddRange(TermsController.GetTermList(ModuleId, post.categories.ToList, Settings.VocabularyId, False, Locale))
   End If
   newPost.Terms.Clear()
   newPost.Terms.AddRange(terms)

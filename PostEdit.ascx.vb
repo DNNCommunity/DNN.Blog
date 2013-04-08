@@ -55,11 +55,11 @@ Public Class PostEdit
    If Not Me.IsPostBack Then
     Dim blogList As IEnumerable(Of BlogInfo) = Nothing
     If Security.IsEditor Then
-     blogList = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId).Values
+     blogList = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, Locale).Values
     Else
-     blogList = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId).Values.Where(Function(b)
-                                                                                          Return b.OwnerUserId = UserId Or (b.CanAdd And Security.CanAddPost) Or (b.CanEdit And Security.CanEditPost And ContentItemId > -1)
-                                                                                         End Function)
+     blogList = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, Locale).Values.Where(Function(b)
+                                                                                                  Return b.OwnerUserId = UserId Or (b.CanAdd And Security.CanAddPost) Or (b.CanEdit And Security.CanEditPost And ContentItemId > -1)
+                                                                                                 End Function)
     End If
     ddBlog.DataSource = blogList
     ddBlog.DataBind()
@@ -73,7 +73,7 @@ Public Class PostEdit
       ddBlog.Items.FindByValue(userBlog.BlogID.ToString).Selected = True
       Blog = userBlog
      Else
-      Blog = BlogsController.GetBlog(ddBlog.Items(0).Value.ToInt, UserId)
+      Blog = BlogsController.GetBlog(ddBlog.Items(0).Value.ToInt, UserId, Locale)
      End If
      Security = New Modules.Blog.Security.ContextSecurity(Settings.ModuleId, TabId, Blog, UserInfo)
     End If
@@ -222,7 +222,7 @@ Public Class PostEdit
     If Post Is Nothing Then Post = New PostInfo
     If BlogId = -1 OrElse Blog.BlogID <> ddBlog.SelectedValue.ToInt Then
      BlogId = ddBlog.SelectedValue.ToInt
-     Blog = BlogsController.GetBlog(BlogId, UserId)
+     Blog = BlogsController.GetBlog(BlogId, UserId, Locale)
      Security = New Modules.Blog.Security.ContextSecurity(Settings.ModuleId, TabId, Blog, UserInfo)
     End If
     If ContentItemId = -1 And Not Security.CanAddPost Then Throw New Exception("You can't add posts to this blog")
@@ -361,7 +361,7 @@ Public Class PostEdit
  End Sub
 
  Private Sub ddBlog_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles ddBlog.SelectedIndexChanged
-  Blog = BlogsController.GetBlog(ddBlog.SelectedItem.Value.ToInt, UserId)
+  Blog = BlogsController.GetBlog(ddBlog.SelectedItem.Value.ToInt, UserId, Locale)
   Security = New Modules.Blog.Security.ContextSecurity(Settings.ModuleId, TabId, Blog, UserInfo)
   If Blog.MustApproveGhostPosts AndAlso Not Security.CanApprovePost Then
    chkPublished.Checked = False
