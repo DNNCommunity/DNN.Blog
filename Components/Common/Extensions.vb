@@ -318,5 +318,36 @@ Namespace Common
   End Function
 #End Region
 
+#Region " Other "
+  <System.Runtime.CompilerServices.Extension()>
+  Public Function FindControlByID(Control As System.Web.UI.Control, id As String) As Control
+   Dim found As Control = Nothing
+   If Control IsNot Nothing Then
+    If Control.ID = id Then
+     found = Control
+    Else
+     found = FindControlByID(Control.Controls, id)
+    End If
+   End If
+   Return found
+  End Function
+
+  <System.Runtime.CompilerServices.Extension()>
+  Public Function FindControlByID(Controls As System.Web.UI.ControlCollection, id As String) As Control
+   Dim found As Control = Nothing
+   If Controls IsNot Nothing AndAlso Controls.Count > 0 Then
+    For i As Integer = 0 To Controls.Count - 1
+     If Controls(i).ID = id Then
+      found = Controls(i)
+     Else
+      found = FindControlByID(Controls(i).Controls, id)
+     End If
+     If found IsNot Nothing Then Exit For
+    Next
+   End If
+   Return found
+  End Function
+#End Region
+
  End Module
 End Namespace

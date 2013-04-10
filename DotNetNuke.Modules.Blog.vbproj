@@ -184,6 +184,7 @@
       <DependentUpon>BlogTerms.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Components\Common\LocalizedText.vb" />
     <Compile Include="Components\Common\ModuleUrls.vb" />
     <Compile Include="Components\Common\PostBodyAndSummary.vb" />
     <Compile Include="Components\Entities\Terms\TermsController.vb" />
@@ -310,6 +311,8 @@
       <DependentUpon>BlogEdit.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Controls\LocalizedTextEdit.vb" />
+    <Compile Include="Controls\LongTextEdit.vb" />
     <Compile Include="Controls\ManagementPanel.ascx.designer.vb">
       <DependentUpon>ManagementPanel.ascx</DependentUpon>
     </Compile>
@@ -317,6 +320,7 @@
       <DependentUpon>ManagementPanel.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Controls\ShortTextEdit.vb" />
     <Compile Include="Controls\TagEdit.vb" />
     <Compile Include="Manage.ascx.designer.vb">
       <DependentUpon>Manage.ascx</DependentUpon>

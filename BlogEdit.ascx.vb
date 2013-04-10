@@ -19,6 +19,8 @@ Public Class BlogEdit
     Response.Redirect(NavigateURL("Access Denied"), True)
    End If
   End If
+  txtTitle.DefaultLanguage = PortalSettings.DefaultLanguage
+  txtDescription.DefaultLanguage = PortalSettings.DefaultLanguage
 
  End Sub
 
@@ -26,8 +28,18 @@ Public Class BlogEdit
 
   If Not Page.IsPostBack Then
    If Blog Is Nothing Then Blog = New BlogInfo ' initialize fields
-   txtTitle.Text = Blog.Title
-   txtDescription.Text = Blog.Description
+
+   txtTitle.DefaultText = Blog.Title
+   txtTitle.LocalizedTexts = Blog.TitleLocalizations
+   txtTitle.ManualUpdate = True
+   txtTitle.DataBind()
+   txtTitle.ManualUpdate = False
+   txtDescription.DefaultText = Blog.Description
+   txtDescription.LocalizedTexts = Blog.DescriptionLocalizations
+   txtDescription.ManualUpdate = True
+   txtDescription.DataBind()
+   txtDescription.ManualUpdate = False
+
    If Settings.AllowAllLocales Then
     ddLocale.DataSource = System.Globalization.CultureInfo.GetCultures(Globalization.CultureTypes.SpecificCultures)
     ddLocale.DataValueField = "Name"
@@ -96,8 +108,10 @@ Public Class BlogEdit
      End With
     End If
     With Blog
-     .Title = txtTitle.Text
-     .Description = txtDescription.Text
+     .Title = txtTitle.DefaultText
+     .TitleLocalizations = txtTitle.GetLocalizedTexts
+     .Description = txtDescription.DefaultText
+     .DescriptionLocalizations = txtDescription.GetLocalizedTexts
      .Locale = ddLocale.SelectedValue
      .Published = chkPublic.Checked
      .AllowComments = chkAllowComments.Checked

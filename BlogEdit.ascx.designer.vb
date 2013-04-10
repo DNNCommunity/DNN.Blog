@@ -29,16 +29,7 @@ Partial Public Class BlogEdit
  '''Auto-generated field.
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
- Protected WithEvents txtTitle As Global.System.Web.UI.WebControls.TextBox
-
- '''<summary>
- '''valTitle control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents valTitle As Global.System.Web.UI.WebControls.RequiredFieldValidator
+ Protected WithEvents txtTitle As Global.DotNetNuke.Modules.Blog.Controls.ShortTextEdit
 
  '''<summary>
  '''lblDescription control.
@@ -56,16 +47,7 @@ Partial Public Class BlogEdit
  '''Auto-generated field.
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
- Protected WithEvents txtDescription As Global.System.Web.UI.WebControls.TextBox
-
- '''<summary>
- '''valTitleDescription control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents valTitleDescription As Global.System.Web.UI.WebControls.RequiredFieldValidator
+ Protected WithEvents txtDescription As Global.DotNetNuke.Modules.Blog.Controls.LongTextEdit
 
  '''<summary>
  '''lblLocale control.

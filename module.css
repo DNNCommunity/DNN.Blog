@@ -41,6 +41,15 @@ a.iconLink, a.iconLink:link, a.iconLink:hover, a.iconLink:visited, a.iconLink:ac
  text-decoration: none;
 }
 
+div.blog_rte 
+{
+ float:left;
+}
+div.blog_rte div 
+{
+ width: 100%;
+}
+
 /* Comments */
 .blogComments{width:100%;border: 1px solid #e3e3e3;}
 .commentAuthor{padding:8px;}

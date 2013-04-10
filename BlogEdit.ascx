@@ -2,6 +2,7 @@
 <%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="blog" Namespace="DotNetNuke.Modules.Blog.Security.Controls" Assembly="DotNetNuke.Modules.Blog" %>
+<%@ Register TagPrefix="blog" Namespace="DotNetNuke.Modules.Blog.Controls" Assembly="DotNetNuke.Modules.Blog" %>
 <div class="dnnForm dnnBlogEdit dnnClear" id="dnnBlogEdit">
  <div id="ebContent">
   <h2 id="dnnSitePanel-Options" class="dnnFormSectionHead">
@@ -9,16 +10,11 @@
   <fieldset>
    <div class="dnnFormItem">
     <dnn:Label ID="lblTitle" runat="server" controlname="txtTitle" suffix=":" />
-    <asp:TextBox ID="txtTitle" runat="server" ResourceKey="txtTitle" CssClass="dnnFormRequired" />
-    <asp:RequiredFieldValidator ID="valTitle" runat="server" Display="Dynamic" ControlToValidate="txtTitle"
-     resourcekey="valTitle.ErrorMessage" CssClass="dnnFormError" />
+    <blog:ShortTextEdit id="txtTitle" runat="server" Required="True" Width="520" TextBoxWidth="450" CssClass="blog_rte" />
    </div>
    <div class="dnnFormItem">
     <dnn:Label ID="lblDescription" runat="server" controlname="txtDescription" suffix=":" />
-    <asp:TextBox ID="txtDescription" runat="server" Rows="3" TextMode="MultiLine" CssClass="dnnFormRequired" />
-    <asp:RequiredFieldValidator ID="valTitleDescription" runat="server" Display="Dynamic"
-     resourcekey="valTitleDescription.ErrorMessage" ControlToValidate="txtDescription"
-     CssClass="dnnFormError" />
+    <blog:LongTextEdit id="txtDescription" runat="server" ShowRichTextBox="False" Width="520" TextBoxWidth="450" CssClass="blog_rte" />
    </div>
    <div class="dnnFormItem">
     <dnn:Label ID="lblLocale" runat="server" controlname="ddLocale" suffix=":" />
