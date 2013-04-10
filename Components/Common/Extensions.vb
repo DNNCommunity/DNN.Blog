@@ -67,6 +67,16 @@ Namespace Common
   End Sub
 
   <System.Runtime.CompilerServices.Extension()>
+  Public Sub ReadValue(ByRef ValueTable As Hashtable, ValueName As String, ByRef Variable As LocalizationType)
+   If Not ValueTable.Item(ValueName) Is Nothing Then
+    Try
+     Variable = CType(CType(ValueTable.Item(ValueName), Integer), LocalizationType)
+    Catch ex As Exception
+    End Try
+   End If
+  End Sub
+
+  <System.Runtime.CompilerServices.Extension()>
   Public Sub ReadValue(ByRef ValueTable As Hashtable, ValueName As String, ByRef Variable As TimeSpan)
    If Not ValueTable.Item(ValueName) Is Nothing Then
     Try

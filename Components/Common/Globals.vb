@@ -40,6 +40,12 @@ Namespace Common
    HtmlIndependent = 1
    HtmlPrecedesPost = 2
   End Enum
+
+  Public Enum LocalizationType
+   None = 0
+   Loose = 1
+   Strict = 2
+  End Enum
 #End Region
 
 #Region " Dates "
@@ -188,6 +194,14 @@ Namespace Common
     End Try
    Next
   End Sub
+
+  Public Shared Function GetRolesByGroup(portalId As Integer, roleGroupId As Integer) As List(Of DotNetNuke.Security.Roles.RoleInfo)
+   Return DotNetNuke.Security.Roles.RoleProvider.Instance.GetRoles(portalId).Cast(Of DotNetNuke.Security.Roles.RoleInfo).Where(Function(r) r.RoleGroupID = roleGroupId).ToList
+  End Function
+
+  Public Shared Function GetRolesByPortal(portalId As Integer) As List(Of DotNetNuke.Security.Roles.RoleInfo)
+   Return DotNetNuke.Security.Roles.RoleProvider.Instance.GetRoles(portalId).Cast(Of DotNetNuke.Security.Roles.RoleInfo).ToList
+  End Function
 #End Region
 
  End Class

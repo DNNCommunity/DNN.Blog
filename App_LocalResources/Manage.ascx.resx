@@ -294,4 +294,22 @@
   <data name="Export.Help" xml:space="preserve">
     <value>Upon clicking on the 'Export' button, the module will attempt to pack all this blog's posts into an XML file (BlogML format) that you can subsequently download through a link that will appear just below.</value>
   </data>
+  <data name="lblLocalizationModel.Help" xml:space="preserve">
+    <value>When you are running a multi-lingual site you can opt for a specific type of localization model. "None" means all posts are treated as their own entity without any localized content. "Loose" will offer users to add a translated title and summary for each post. "Strict" will assume all posts need to be translated to each language. In the latter case there will be one "leading" post and the translations will point to it.</value>
+  </data>
+  <data name="lblLocalizationModel.Text" xml:space="preserve">
+    <value>Localization Model</value>
+  </data>
+  <data name="Loose.Opt" xml:space="preserve">
+    <value>Loose</value>
+  </data>
+  <data name="None.Opt" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="Strict.Opt" xml:space="preserve">
+    <value>Sctrict</value>
+  </data>
+  <data name="Localization.Text" xml:space="preserve">
+    <value>Localization</value>
+  </data>
 </root>
