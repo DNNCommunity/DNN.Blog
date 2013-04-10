@@ -25,15 +25,6 @@ Public Class BlogEdit
  Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
   If Not Page.IsPostBack Then
-   If Not Settings.AllowWLW Then
-    lblMetaWeblogUrl.Visible = False
-    lblMetaWeblogNotAvailable.Visible = True
-   Else
-    lblMetaWeblogUrl.Visible = True
-    lblMetaWeblogUrl.Text = "http://" & Request.Url.Host & ControlPath & String.Format("blogpost.ashx?portalid={0}&tabid={1}&moduleid={2}", PortalId, TabId, Settings.ModuleId)
-    lblMetaWeblogNotAvailable.Visible = False
-   End If
-
    If Blog Is Nothing Then Blog = New BlogInfo ' initialize fields
    txtTitle.Text = Blog.Title
    txtDescription.Text = Blog.Description

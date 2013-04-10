@@ -33,7 +33,7 @@ Namespace Security.Controls
 
   Private _dtRolePermissions As New DataTable
   Private _dtUserPermissions As New DataTable
-  Private _roles As ArrayList
+  Private _roles As List(Of DotNetNuke.Security.Roles.RoleInfo)
   Private _users As ArrayList
   Private _permissions As PermissionCollection
   Private _resourceFile As String
@@ -228,11 +228,11 @@ Namespace Security.Controls
   '''     [cnurse]    01/09/2006  Created
   ''' </history>
   ''' -----------------------------------------------------------------------------
-  Public Property Roles() As ArrayList
+  Public Property Roles() As List(Of DotNetNuke.Security.Roles.RoleInfo)
    Get
     Return _roles
    End Get
-   Set(Value As ArrayList)
+   Set(Value As list(Of DotNetNuke.Security.Roles.RoleInfo))
     _roles = Value
    End Set
   End Property
@@ -326,7 +326,7 @@ Namespace Security.Controls
    UpdateRolePermissions()
    Dim row As DataRow
    For i = 0 To Roles.Count - 1
-    Dim role As RoleInfo = DirectCast(Roles(i), RoleInfo)
+    Dim role As RoleInfo = Roles(i)
     row = dtRolePermissions.NewRow
     row("RoleId") = role.RoleID
     row("RoleName") = Localization.LocalizeRole(role.RoleName)
@@ -428,12 +428,12 @@ Namespace Security.Controls
    End If
 
    If RoleGroupId > -2 Then
-    _roles = DotNetNuke.Security.Roles.RoleProvider.Instance.GetRolesByGroup(PortalController.GetCurrentPortalSettings.PortalId, RoleGroupId)
+    _roles = GetRolesByGroup(PortalController.GetCurrentPortalSettings.PortalId, RoleGroupId)
    Else
-    _roles = DotNetNuke.Security.Roles.RoleProvider.Instance.GetRoles(PortalController.GetCurrentPortalSettings.PortalId)
+    _roles = GetRolesByPortal(PortalController.GetCurrentPortalSettings.PortalId)
    End If
    If Not IncludeAdministratorRole Then
-    Dim newList As New ArrayList
+    Dim newList As New List(Of DotNetNuke.Security.Roles.RoleInfo)
     For Each r As RoleInfo In _roles
      If r.RoleID <> AdministratorRoleId Then
       newList.Add(r)
@@ -453,7 +453,7 @@ Namespace Security.Controls
     _roles.Add(r)
    End If
    _roles.Reverse()
-   _roles.Sort(New RoleComparer)
+   _roles = _roles.OrderBy(Function(r) r.RoleName.ToLower).ToList
   End Sub
 
   ''' -----------------------------------------------------------------------------

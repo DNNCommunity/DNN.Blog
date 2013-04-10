@@ -140,33 +140,6 @@ Partial Public Class BlogEdit
  Protected WithEvents chkPublic As Global.System.Web.UI.WebControls.CheckBox
 
  '''<summary>
- '''lblMetaWebBlog control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents lblMetaWebBlog As Global.System.Web.UI.UserControl
-
- '''<summary>
- '''lblMetaWeblogNotAvailable control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents lblMetaWeblogNotAvailable As Global.System.Web.UI.WebControls.Label
-
- '''<summary>
- '''lblMetaWeblogUrl control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents lblMetaWeblogUrl As Global.System.Web.UI.WebControls.Label
-
- '''<summary>
  '''pnlComments control.
  '''</summary>
  '''<remarks>

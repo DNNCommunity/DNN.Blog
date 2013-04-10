@@ -36,14 +36,6 @@
     <dnn:Label ID="lblPublic" runat="server" controlname="chkPublic" suffix=":" />
     <asp:CheckBox ID="chkPublic" runat="server" />
    </div>
-   <div class="dnnFormItem">
-    <dnn:Label id="lblMetaWebBlog" runat="server" controlname="" suffix=":" />
-    <div>
-     <asp:Label ID="lblMetaWeblogNotAvailable" runat="server" ResourceKey="lblMetaWeblogNotAvailable"
-      Visible="false" />
-     <asp:Label ID="lblMetaWeblogUrl" runat="server" Text="http://www.yourdomain.com/desktopmodules/blog/blogpost.ashx" />
-    </div>
-   </div>
   </fieldset>
   <h2 id="dnnSitePanel-CommentOptions" class="dnnFormSectionHead">
    <%=LocalizeString("lblCommentOptions")%></h2>
