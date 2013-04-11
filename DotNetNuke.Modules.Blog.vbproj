@@ -142,7 +142,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="BlogImport.ascx" />
-    <Content Include="BlogTerms.asmx" />
     <Content Include="BlogEdit.ascx" />
     <Content Include="Controls\Comments.ascx" />
     <Content Include="Controls\ManagementPanel.ascx" />
@@ -179,10 +178,6 @@
     <Compile Include="blogpostredirect.aspx.vb">
       <DependentUpon>blogpostredirect.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="BlogTerms.asmx.vb">
-      <DependentUpon>BlogTerms.asmx</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Components\Common\LocalizedText.vb" />
     <Compile Include="Components\Common\ModuleUrls.vb" />

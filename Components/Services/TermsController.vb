@@ -19,10 +19,7 @@ Namespace Services
    Dim queryString As NameValueCollection = HttpUtility.ParseQueryString(Me.Request.RequestUri.Query)
    Dim searchString As String = queryString("term")
    Dim vocab As Integer = Integer.Parse(queryString("vocab"))
-   Dim colTerms As IQueryable(Of String) = (From t In DotNetNuke.Entities.Content.Common.Util.GetTermController().GetTermsByVocabulary(vocab)
-        Where t.Name.ToLower().Contains(searchString.ToLower())
-        Where (t.Name.IndexOfAny(DisallowedCharacters.ToCharArray()) = -1)
-        Select t.Name)
+   Dim colTerms As IEnumerable(Of String) = Entities.Terms.TermsController.GetTermsByVocabulary(ActiveModule.ModuleID, vocab, Threading.Thread.CurrentThread.CurrentCulture.Name).Values.Where(Function(t) t.LocalizedName.IndexOfAny(DisallowedCharacters.ToCharArray()) = -1 And t.LocalizedName.ToLower().Contains(searchString.ToLower())).Select(Function(t) t.LocalizedName)
    Return Request.CreateResponse(HttpStatusCode.OK, colTerms)
   End Function
 #End Region

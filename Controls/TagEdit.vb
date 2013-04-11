@@ -76,7 +76,7 @@ Namespace Controls
     If Terms IsNot Nothing Then
      For Each term As TermInfo In Terms
       out.WriteStartElement("li")
-      out.WriteValue(term.Name)
+      out.WriteValue(term.LocalizedName)
       out.WriteEndElement() ' li
      Next
     End If

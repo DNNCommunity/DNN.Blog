@@ -59,6 +59,52 @@ Namespace Entities.Terms
     Return CStr(IIf(String.IsNullOrEmpty(AltDescription), Description, AltDescription))
    End Get
   End Property
+
+  ''' <summary>
+  ''' ML text type to handle the name of the term
+  ''' </summary>
+  ''' <value></value>
+  ''' <returns></returns>
+  ''' <remarks></remarks>
+  Public Property NameLocalizations() As LocalizedText
+   Get
+    If _nameLocalizations Is Nothing Then
+     If TermId = -1 Then
+      _nameLocalizations = New LocalizedText
+     Else
+      _nameLocalizations = New LocalizedText(Data.DataProvider.Instance().GetTermLocalizations(TermId), "Name")
+     End If
+    End If
+    Return _nameLocalizations
+   End Get
+   Set(ByVal value As LocalizedText)
+    _nameLocalizations = value
+   End Set
+  End Property
+  Private _nameLocalizations As LocalizedText
+
+  ''' <summary>
+  ''' ML text type to handle the description of the term
+  ''' </summary>
+  ''' <value></value>
+  ''' <returns></returns>
+  ''' <remarks></remarks>
+  Public Property DescriptionLocalizations() As LocalizedText
+   Get
+    If _descriptionLocalizations Is Nothing Then
+     If TermId = -1 Then
+      _descriptionLocalizations = New LocalizedText
+     Else
+      _descriptionLocalizations = New LocalizedText(Data.DataProvider.Instance().GetTermLocalizations(TermId), "Description")
+     End If
+    End If
+    Return _descriptionLocalizations
+   End Get
+   Set(ByVal value As LocalizedText)
+    _descriptionLocalizations = value
+   End Set
+  End Property
+  Private _descriptionLocalizations As LocalizedText
 #End Region
 
 #Region " IHydratable Implementation "
@@ -67,6 +113,9 @@ Namespace Entities.Terms
    MyBase.FillInternal(dr)
 
    TotalPosts = Null.SetNullInteger(dr("TotalPosts"))
+   AltLocale = Convert.ToString(Null.SetNull(dr.Item("AltLocale"), AltLocale))
+   AltName = Convert.ToString(Null.SetNull(dr.Item("AltName"), AltName))
+   AltDescription = Convert.ToString(Null.SetNull(dr.Item("AltDescription"), AltDescription))
   End Sub
 #End Region
 

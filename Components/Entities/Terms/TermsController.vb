@@ -94,7 +94,7 @@ Namespace Entities.Terms
     For Each cat As TermInfo In selection
      If Not first Then out.Append(",")
      out.Append("{")
-     out.Append(String.Format("title: '{0}',", cat.Name))
+     out.Append(String.Format("title: '{0}',", cat.LocalizedName))
      out.Append(String.Format("key: '{0}',", cat.TermId))
      out.Append("icon: false,")
      out.Append("expand: true,")

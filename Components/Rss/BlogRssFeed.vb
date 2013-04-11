@@ -110,7 +110,7 @@ Namespace Rss
     Copyright = Regex.Replace(Blog.Copyright, "(?i)\[year\](?-i)", Now.ToString("yyyy"))
    End If
    If Term IsNot Nothing Then
-    Title &= " - " & Term.Name
+    Title &= " - " & Term.LocalizedName
    End If
    If IsSearchFeed Then
     Title = "DNN Blog Search " & Title
@@ -223,7 +223,7 @@ Namespace Rss
    output.WriteElementString("pubDate", Now.ToString("r"))
    output.WriteElementString("lastBuildDate", Now.ToString("r"))
    If Term IsNot Nothing Then
-    output.WriteElementString("category", Term.Name)
+    output.WriteElementString("category", Term.LocalizedName)
    End If
    output.WriteElementString("generator", "DotNetNuke Blog RSS Generator Version " & CType(System.Reflection.Assembly.GetExecutingAssembly.GetName.Version.ToString, String))
    output.WriteElementString("ttl", Settings.RssTtl.ToString)
@@ -271,7 +271,7 @@ Namespace Rss
    ' optional elements
    If item.Blog.IncludeAuthorInFeed Then writer.WriteElementString("author", String.Format("{0} ({1})", item.Email, item.DisplayName))
    For Each t As TermInfo In TermsController.GetTermsByPost(item.ContentItemId, Settings.ModuleId, Locale)
-    writer.WriteElementString("category", t.Name)
+    writer.WriteElementString("category", t.LocalizedName)
    Next
    writer.WriteElementString("guid", String.Format("post={0}", item.ContentItemId))
    writer.WriteElementString("pubDate", item.PublishedOnDate.ToString("r"))
