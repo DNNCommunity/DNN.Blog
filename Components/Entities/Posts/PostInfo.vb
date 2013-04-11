@@ -71,6 +71,9 @@ Namespace Entities.Posts
     If _terms Is Nothing Then
      _terms = TermsController.GetTermsByPost(ContentItemId, Blog.ModuleID, Threading.Thread.CurrentThread.CurrentCulture.Name)
     End If
+    If _terms Is Nothing Then
+     _terms = New List(Of TermInfo)
+    End If
     Return _terms
    End Get
    Set(ByVal value As List(Of TermInfo))

@@ -450,7 +450,7 @@ Public Class BlogPost
  Public Function ToMwlPost(post As PostInfo) As Post
 
   Dim newPost As New Post
-  Dim PostBody As New PostBodyAndSummary(Post, Settings.SummaryModel)
+  Dim PostBody As New PostBodyAndSummary(post, Settings.SummaryModel, False)
   PostBody.WriteToPost(newPost, Settings.SummaryModel)
 
   newPost.mt_allow_comments = Post.AllowComments.ToInt
@@ -473,7 +473,7 @@ Public Class BlogPost
 
   Dim newPost As New PostInfo
   Dim postBody As New PostBodyAndSummary(post, Settings.SummaryModel)
-  postBody.WriteToPost(newPost, Settings.SummaryModel, True)
+  postBody.WriteToPost(newPost, Settings.SummaryModel, True, False)
 
   If Not String.IsNullOrEmpty(post.postid) Then
    newPost.ContentItemId = post.postid.ToInt

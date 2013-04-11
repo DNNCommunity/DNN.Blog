@@ -36,13 +36,6 @@ Public Class PostEdit
 
 #End Region
 
-#Region " Controls "
-
- Protected WithEvents txtDescription As DotNetNuke.UI.UserControls.TextEditor
- Protected WithEvents teBlogPost As DotNetNuke.UI.UserControls.TextEditor
-
-#End Region
-
 #Region " Event Handlers "
  Protected Overloads Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
 
@@ -86,6 +79,21 @@ Public Class PostEdit
     Response.Redirect(NavigateURL("Access Denied"))
    End If
 
+   txtTitle.DefaultLanguage = PortalSettings.DefaultLanguage
+   txtDescription.DefaultLanguage = PortalSettings.DefaultLanguage
+   teBlogPost.DefaultLanguage = PortalSettings.DefaultLanguage
+
+   ' Summary
+   Select Case Settings.SummaryModel
+    Case SummaryType.HtmlIndependent
+     txtDescription.ShowRichTextBox = True
+    Case SummaryType.HtmlPrecedesPost
+     txtDescription.ShowRichTextBox = True
+     lblSummaryPrecedingWarning.Visible = True
+    Case Else ' plain text
+     txtDescription.ShowRichTextBox = False
+   End Select
+
   Catch
   End Try
 
@@ -111,20 +119,6 @@ Public Class PostEdit
     End If
     ddLocale.DataBind()
 
-    ' Summary
-    Select Case Settings.SummaryModel
-     Case SummaryType.HtmlIndependent
-      txtDescription.Visible = True
-      txtDescriptionText.Visible = False
-     Case SummaryType.HtmlPrecedesPost
-      txtDescription.Visible = True
-      txtDescriptionText.Visible = False
-      lblSummaryPrecedingWarning.Visible = True
-     Case Else ' plain text
-      txtDescription.Visible = False
-      txtDescriptionText.Visible = True
-    End Select
-
     ' Buttons
     If BlogId > -1 Then
      hlCancel.NavigateUrl = NavigateURL(TabId, "", "Blog=" & BlogId.ToString)
@@ -137,11 +131,18 @@ Public Class PostEdit
 
     If Not Post Is Nothing Then
 
-     Dim PostBody As New PostBodyAndSummary(Post, Settings.SummaryModel)
+     Dim PostBody As New PostBodyAndSummary(Post, Settings.SummaryModel, True)
 
      ' Content
-     txtTitle.Text = HttpUtility.HtmlDecode(Post.Title)
-     teBlogPost.Text = PostBody.Body
+     txtTitle.DefaultText = HttpUtility.HtmlDecode(Post.Title)
+     txtTitle.LocalizedTexts = Post.TitleLocalizations
+     txtTitle.InitialBind()
+     txtDescription.DefaultText = PostBody.Summary
+     txtDescription.LocalizedTexts = PostBody.SummaryLocalizations
+     txtDescription.InitialBind()
+     teBlogPost.DefaultText = PostBody.Body
+     teBlogPost.LocalizedTexts = PostBody.BodyLocalizations
+     teBlogPost.InitialBind()
 
      ' Publishing
      chkPublished.Checked = Post.Published
@@ -164,12 +165,6 @@ Public Class PostEdit
       ddLocale.Items.FindByValue(Post.Locale).Selected = True
      Catch ex As Exception
      End Try
-     Select Case Settings.SummaryModel
-      Case SummaryType.PlainTextIndependent
-       txtDescriptionText.Text = PostBody.Summary
-      Case Else ' plain text
-       txtDescription.Text = PostBody.Summary
-     End Select
      If Not String.IsNullOrEmpty(Post.Image) Then
       imgPostImage.ImageUrl = ResolveUrl(glbImageHandlerPath) & String.Format("?TabId={0}&ModuleId={1}&Blog={2}&Post={3}&w=100&h=100&c=1&key={4}", TabId, Settings.ModuleId, BlogId, ContentItemId, Post.Image)
       imgPostImage.Visible = True
@@ -232,14 +227,10 @@ Public Class PostEdit
 
     ' Contents and summary
     Post.BlogID = BlogId
-    Post.Title = txtTitle.Text
-    Dim PostBody As New PostBodyAndSummary(teBlogPost.Text)
-    If Settings.SummaryModel = SummaryType.PlainTextIndependent Then
-     PostBody.Summary = RemoveHtmlTags(Trim(txtDescriptionText.Text))
-    Else
-     PostBody.Summary = Trim(txtDescription.Text)
-    End If
-    PostBody.WriteToPost(Post, Settings.SummaryModel, False)
+    Post.Title = txtTitle.DefaultText
+    Post.TitleLocalizations = txtTitle.GetLocalizedTexts
+    Dim PostBody As New PostBodyAndSummary(teBlogPost, txtDescription, Settings.SummaryModel, True)
+    PostBody.WriteToPost(Post, Settings.SummaryModel, False, True)
 
     ' Publishing
     Post.Published = chkPublished.Checked
@@ -350,7 +341,7 @@ Public Class PostEdit
  End Sub
 
  Protected Sub valPost_ServerValidate(source As Object, args As System.Web.UI.WebControls.ServerValidateEventArgs) Handles valPost.ServerValidate
-  args.IsValid = teBlogPost.Text.Length > 0
+  args.IsValid = teBlogPost.DefaultText.Length > 0
  End Sub
 
  Protected Sub chkDisplayCopyright_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles chkDisplayCopyright.CheckedChanged

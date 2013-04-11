@@ -31,14 +31,10 @@ Public Class BlogEdit
 
    txtTitle.DefaultText = Blog.Title
    txtTitle.LocalizedTexts = Blog.TitleLocalizations
-   txtTitle.ManualUpdate = True
-   txtTitle.DataBind()
-   txtTitle.ManualUpdate = False
+   txtTitle.InitialBind()
    txtDescription.DefaultText = Blog.Description
    txtDescription.LocalizedTexts = Blog.DescriptionLocalizations
-   txtDescription.ManualUpdate = True
-   txtDescription.DataBind()
-   txtDescription.ManualUpdate = False
+   txtDescription.InitialBind()
 
    If Settings.AllowAllLocales Then
     ddLocale.DataSource = System.Globalization.CultureInfo.GetCultures(Globalization.CultureTypes.SpecificCultures)

@@ -19,18 +19,20 @@ Namespace Controls
    Me.Controls.Clear()
    pnlMain = New System.Web.UI.WebControls.Table
    pnlMain.ID = Me.ID & "_mainTable"
+   pnlMain.CssClass = CssPrefix & "default"
    Me.Controls.Add(pnlMain)
    Dim tr As New TableRow
    pnlMain.Rows.Add(tr)
    Dim td As New TableCell
+   td.CssClass = CssPrefix & "defaulttext"
    tr.Cells.Add(td)
 
    If Me.ShowRichTextBox Then
-    Dim t As New DotNetNuke.Web.UI.WebControls.DnnTextBox
+    Dim t As DotNetNuke.UI.UserControls.TextEditor = CType(Me.Page.LoadControl("~/controls/texteditor.ascx"), UI.UserControls.TextEditor)
     With t
      .ID = Me.ID & "_txtMain"
-     .Width = Me.TextBoxWidth
-     .Height = Me.TextBoxHeight
+     If Me.TextBoxWidth <> Unit.Pixel(0) Then .Width = Me.TextBoxWidth
+     If Me.TextBoxHeight <> Unit.Pixel(0) Then .Height = Me.TextBoxHeight
      .EnableViewState = True
     End With
     td.Controls.Add(t)
@@ -38,8 +40,8 @@ Namespace Controls
     Dim txtMain As New TextBox
     With txtMain
      .ID = Me.ID & "_txtMain"
-     .Width = Me.TextBoxWidth
-     .Height = Me.TextBoxHeight
+     If Me.TextBoxWidth <> Unit.Pixel(0) Then .Width = Me.TextBoxWidth
+     If Me.TextBoxHeight <> Unit.Pixel(0) Then .Height = Me.TextBoxHeight
      .TextMode = TextBoxMode.MultiLine
     End With
     td.Controls.Add(txtMain)
@@ -48,7 +50,7 @@ Namespace Controls
    If SupportedLocales.Count > 1 Then
     ' Create max/min cell
     td = New TableCell
-    td.VerticalAlign = VerticalAlign.Top
+    td.CssClass = CssPrefix & "defflag"
     tr.Cells.Add(td)
     Dim img As WebControls.Image
     If UseFlags Then
@@ -67,11 +69,11 @@ Namespace Controls
 
     ' Make the dropdown box
     pnlBox = New System.Web.UI.WebControls.Panel
-    pnlBox.CssClass = "showHideBox"
+    pnlBox.CssClass = CssPrefix & "minmaxbox"
     Me.Controls.Add(pnlBox)
     pnlContent = New System.Web.UI.WebControls.Table
     pnlContent.ID = Me.ID & "_contentTable"
-    pnlContent.CssClass = "showHideContent"
+    pnlContent.CssClass = CssPrefix & "localizations"
     pnlBox.Controls.Add(pnlContent)
     DotNetNuke.UI.Utilities.DNNClientAPI.EnableMinMax(ib, pnlContent, -1, Not StartMaximized, DotNetNuke.Common.ResolveUrl("~/images/min.gif"), DotNetNuke.Common.ResolveUrl("~/images/max.gif"), DotNetNuke.UI.Utilities.DNNClientAPI.MinMaxPersistanceType.None)
 
@@ -81,13 +83,14 @@ Namespace Controls
       tr = New TableRow
       pnlContent.Rows.Add(tr)
       td = New TableCell
+      td.CssClass = CssPrefix & "localization"
       tr.Cells.Add(td)
       If Me.ShowRichTextBox Then
-       Dim t As New DotNetNuke.Web.UI.WebControls.DnnTextBox
+       Dim t As DotNetNuke.UI.UserControls.TextEditor = CType(Me.Page.LoadControl("~/controls/texteditor.ascx"), UI.UserControls.TextEditor)
        With t
         .ID = Me.ID & "_txt" & localeCode
-        .Width = Me.TextBoxWidth
-        .Height = Me.TextBoxHeight
+        If Me.TextBoxWidth <> Unit.Pixel(0) Then .Width = Me.TextBoxWidth
+        If Me.TextBoxHeight <> Unit.Pixel(0) Then .Height = Me.TextBoxHeight
         .EnableViewState = True
        End With
        td.Controls.Add(t)
@@ -95,14 +98,14 @@ Namespace Controls
        Dim tb As New TextBox
        With tb
         .ID = Me.ID & "_txt" & localeCode
-        .Width = Me.TextBoxWidth
-        .Height = Me.TextBoxHeight
+        If Me.TextBoxWidth <> Unit.Pixel(0) Then .Width = Me.TextBoxWidth
+        If Me.TextBoxHeight <> Unit.Pixel(0) Then .Height = Me.TextBoxHeight
         .TextMode = TextBoxMode.MultiLine
        End With
        td.Controls.Add(tb)
       End If
       td = New TableCell
-      td.VerticalAlign = VerticalAlign.Top
+      td.CssClass = CssPrefix & "flag"
       tr.Cells.Add(td)
       If UseFlags Then
        Dim i As New WebControls.Image
@@ -125,7 +128,7 @@ Namespace Controls
    If JustUpdated Then Exit Sub
    Try
     If Me.ShowRichTextBox Then
-     Dim txtMain As DotNetNuke.Web.UI.WebControls.DnnTextBox = CType(pnlMain.FindControlByID(Me.ID & "_txtMain"), DotNetNuke.Web.UI.WebControls.DnnTextBox)
+     Dim txtMain As DotNetNuke.UI.UserControls.TextEditor = CType(pnlMain.FindControlByID(Me.ID & "_txtMain"), DotNetNuke.UI.UserControls.TextEditor)
      Dim returnText As String = CStr(txtMain.Text)
      If returnText <> "<p>&#160;</p>" Then
       DefaultText = returnText
@@ -140,7 +143,7 @@ Namespace Controls
     If Not localeCode = DefaultLanguage Then
      Try
       If Me.ShowRichTextBox Then
-       Dim txtBox As DotNetNuke.Web.UI.WebControls.DnnTextBox = CType(pnlContent.FindControlByID(Me.ID & "_txt" & localeCode), DotNetNuke.Web.UI.WebControls.DnnTextBox)
+       Dim txtBox As DotNetNuke.UI.UserControls.TextEditor = CType(pnlContent.FindControlByID(Me.ID & "_txt" & localeCode), DotNetNuke.UI.UserControls.TextEditor)
        If LocalizedTexts.ContainsKey(localeCode) Then
         LocalizedTexts(localeCode) = CStr(txtBox.Text)
        Else
@@ -165,7 +168,7 @@ Namespace Controls
   Public Overrides Sub Rebind()
    Try
     If Me.ShowRichTextBox Then
-     Dim txtMain As DotNetNuke.Web.UI.WebControls.DnnTextBox = CType(pnlMain.FindControlByID(Me.ID & "_txtMain"), DotNetNuke.Web.UI.WebControls.DnnTextBox)
+     Dim txtMain As DotNetNuke.UI.UserControls.TextEditor = CType(pnlMain.FindControlByID(Me.ID & "_txtMain"), DotNetNuke.UI.UserControls.TextEditor)
      txtMain.Text = DefaultText
     Else
      Dim txtMain As TextBox = CType(pnlMain.FindControlByID(Me.ID & "_txtMain"), TextBox)
@@ -176,7 +179,7 @@ Namespace Controls
    For Each localeCode As String In SupportedLocales
     If Not localeCode = DefaultLanguage Then
      If Me.ShowRichTextBox Then
-      CType(pnlContent.FindControlByID(Me.ID & "_txt" & localeCode), DotNetNuke.Web.UI.WebControls.DnnTextBox).Text = LocalizedTexts(localeCode)
+      CType(pnlContent.FindControlByID(Me.ID & "_txt" & localeCode), DotNetNuke.UI.UserControls.TextEditor).Text = LocalizedTexts(localeCode)
      Else
       CType(pnlContent.FindControlByID(Me.ID & "_txt" & localeCode), TextBox).Text = LocalizedTexts(localeCode)
      End If

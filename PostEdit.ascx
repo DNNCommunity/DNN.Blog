@@ -10,17 +10,16 @@
   <asp:DropDownList runat="server" ID="ddBlog" DataTextField="Title" DataValueField="BlogID" Width="100%" AutoPostBack="true" />
 
 		<dnn:Label ID="lblTitle" runat="server" controlname="treeCategories" suffix=":" CssClass="dnnLeft" /><br />
-		<asp:TextBox ID="txtTitle" runat="server" CssClass="dnnFormRequired" Width="98%" />
-		<asp:RequiredFieldValidator ID="valTitle" runat="server" ResourceKey="valTitle.ErrorMessage" Display="Dynamic" ControlToValidate="txtTitle" CssClass="dnnFormError" />
+  <blog:ShortTextEdit id="txtTitle" runat="server" Required="True" CssClass="blog_rte_full" CssPrefix="blog_rte_" />
 
-		<dnn:Label ID="lblSummary" runat="server" controlname="txtDescription" suffix=":" CssClass="dnnLeft" /><br />
-		<dnn:texteditor id="txtDescription" runat="server" width="100%" height="250" />
-		<asp:TextBox runat="server" ID="txtDescriptionText" Width="100%" Height="250" TextMode="MultiLine" Visible="false" />
+		<dnn:Label ID="lblSummary" runat="server" controlname="txtDescription" suffix=":" CssClass="dnnLeft" />
+  <div style="display:block;float:clear">&nbsp;</div>
+  <blog:LongTextEdit id="txtDescription" runat="server" Width="100%" TextBoxWidth="100%" TextBoxHeight="300" CssPrefix="blog_rte_" />
 	</fieldset>
 	<h2 id="H1" class="dnnFormSectionHead"><a href="" class="dnnFormSectionExpanded"><%= LocalizeString("Content")%></a></h2>
 	<fieldset>
   <asp:Label runat="server" ID="lblSummaryPrecedingWarning" resourcekey="lblSummaryPrecedingWarning" Visible="false" CssClass="dnnFormMessage dnnFormWarning" />
-		<dnn:texteditor id="teBlogPost" runat="server" width="100%" height="400" />
+  <blog:LongTextEdit id="teBlogPost" runat="server" Width="100%" TextBoxHeight="500" TextBoxWidth="100%" ShowRichTextBox="True" CssClass="blog_rte" CssPrefix="blog_rte_" />
 	</fieldset>
 	<h2 id="H3" class="dnnFormSectionHead"><a href="" class="dnnFormSectionExpanded"><%= LocalizeString("Publishing")%></a></h2>
 	<fieldset>

@@ -356,7 +356,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_LocalResources\BlogEdit.ascx.resx" />
-    <Content Include="App_LocalResources\EntryEdit.ascx.resx" />
+    <Content Include="App_LocalResources\PostEdit.ascx.resx" />
     <Content Include="App_LocalResources\SharedResources.resx" />
   </ItemGroup>
   <ItemGroup>

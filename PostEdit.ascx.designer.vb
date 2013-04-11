@@ -47,16 +47,7 @@ Partial Public Class PostEdit
  '''Auto-generated field.
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
- Protected WithEvents txtTitle As Global.System.Web.UI.WebControls.TextBox
-
- '''<summary>
- '''valTitle control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents valTitle As Global.System.Web.UI.WebControls.RequiredFieldValidator
+ Protected WithEvents txtTitle As Global.DotNetNuke.Modules.Blog.Controls.ShortTextEdit
 
  '''<summary>
  '''lblSummary control.
@@ -68,13 +59,13 @@ Partial Public Class PostEdit
  Protected WithEvents lblSummary As Global.System.Web.UI.UserControl
 
  '''<summary>
- '''txtDescriptionText control.
+ '''txtDescription control.
  '''</summary>
  '''<remarks>
  '''Auto-generated field.
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
- Protected WithEvents txtDescriptionText As Global.System.Web.UI.WebControls.TextBox
+ Protected WithEvents txtDescription As Global.DotNetNuke.Modules.Blog.Controls.LongTextEdit
 
  '''<summary>
  '''lblSummaryPrecedingWarning control.
@@ -84,6 +75,15 @@ Partial Public Class PostEdit
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
  Protected WithEvents lblSummaryPrecedingWarning As Global.System.Web.UI.WebControls.Label
+
+ '''<summary>
+ '''teBlogPost control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents teBlogPost As Global.DotNetNuke.Modules.Blog.Controls.LongTextEdit
 
  '''<summary>
  '''pnlPublished control.

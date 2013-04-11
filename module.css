@@ -49,6 +49,24 @@ div.blog_rte div
 {
  width: 100%;
 }
+div.blog_rte_full
+{
+ clear:both;
+ width: 100%;
+}
+table.blog_rte_default, div.blog_rte_minmaxbox, table.blog_rte_localizations
+{
+ width:100%;
+}
+td.blog_rte_defflag, td.blog_rte_flag
+{
+ width:50px;
+ vertical-align:top;
+}
+td.blog_rte_defaulttext input, td.blog_rte_localization input
+{
+ width:97%;
+}
 
 /* Comments */
 .blogComments{width:100%;border: 1px solid #e3e3e3;}

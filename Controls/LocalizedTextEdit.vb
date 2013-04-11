@@ -11,40 +11,27 @@ Namespace Controls
 
 #Region " Private Members "
   Private _localizedTexts As LocalizedText = Nothing
-  Private _textboxWidth As Unit = Unit.Pixel(200)
-  Private _textboxHeight As Unit = Unit.Pixel(100)
   Friend pnlBox As System.Web.UI.WebControls.Panel
-  Private _maxImage As String = "~/images/max.gif"
-  Private _minImage As String = "~/images/min.gif"
-  Private _useFlags As Boolean = True
-
-  Private _rebindOnPostback As Boolean = True
-  Private _manualUpdate As Boolean = False
-  Private _startMaximized As Boolean = False
   Private _defaultText As String = String.Empty
-
   Private _supportedLocales As LocaleCollection = Nothing
   Private _DefaultLanguage As String = Nothing
-
-  Private _preRendered As Boolean = False
-  Private _justUpdated As Boolean = False
 #End Region
 
 #Region " Protected Methods "
   Protected Overrides Sub OnPreRender(ByVal e As System.EventArgs)
 
-   If Not _preRendered AndAlso (RebindOnPostback Or (Not Me.Page.IsPostBack)) Then
+   If Not _PreRendered AndAlso (RebindOnPostback Or (Not Me.Page.IsPostBack)) Then
     Me.DataBind()
    End If
-   _preRendered = True
+   _PreRendered = True
 
   End Sub
 
   Protected Overrides Sub Render(ByVal writer As System.Web.UI.HtmlTextWriter)
-   If Not _preRendered AndAlso (RebindOnPostback Or (Not Me.Page.IsPostBack)) Then
+   If Not _PreRendered AndAlso (RebindOnPostback Or (Not Me.Page.IsPostBack)) Then
     Me.DataBind()
    End If
-   _preRendered = True
+   _PreRendered = True
    MyBase.Render(writer)
   End Sub
 
@@ -109,9 +96,28 @@ Namespace Controls
    End If
    Return LocalizedTexts
   End Function
+
+  Public Sub InitialBind()
+   Dim mu As Boolean = ManualUpdate
+   ManualUpdate = True
+   DataBind()
+   ManualUpdate = mu
+  End Sub
 #End Region
 
 #Region " Properties "
+  Public Property TextBoxWidth As Unit = Unit.Pixel(0)
+  Public Property TextBoxHeight As Unit = Unit.Pixel(0)
+  Public Property MaxImage As String = "~/images/max.gif"
+  Public Property MinImage As String = "~/images/min.gif"
+  Public Property StartMaximized As Boolean = False
+  Public Property UseFlags As Boolean = True
+  Public Property RebindOnPostback As Boolean = True
+  Public Property ManualUpdate As Boolean = False
+  Public Property PreRendered As Boolean = False
+  Public Property JustUpdated As Boolean = False
+  Public Property CssPrefix As String = ""
+
   Public Property LocalizedTexts() As LocalizedText
    Get
     If _localizedTexts Is Nothing Then
@@ -124,78 +130,6 @@ Namespace Controls
    End Set
   End Property
 
-  Public Property TextBoxWidth() As Unit
-   Get
-    Return _textboxWidth
-   End Get
-   Set(ByVal value As Unit)
-    _textboxWidth = value
-   End Set
-  End Property
-
-  Public Property TextBoxHeight() As Unit
-   Get
-    Return _textboxHeight
-   End Get
-   Set(ByVal value As Unit)
-    _textboxHeight = value
-   End Set
-  End Property
-
-  Public Property MaxImage() As String
-   Get
-    Return _maxImage
-   End Get
-   Set(ByVal value As String)
-    _maxImage = value
-   End Set
-  End Property
-
-  Public Property MinImage() As String
-   Get
-    Return _minImage
-   End Get
-   Set(ByVal value As String)
-    _minImage = value
-   End Set
-  End Property
-
-  Public Property StartMaximized() As Boolean
-   Get
-    Return _startMaximized
-   End Get
-   Set(ByVal value As Boolean)
-    _startMaximized = value
-   End Set
-  End Property
-
-  Public Property UseFlags() As Boolean
-   Get
-    Return _useFlags
-   End Get
-   Set(ByVal value As Boolean)
-    _useFlags = value
-   End Set
-  End Property
-
-  Public Property RebindOnPostback() As Boolean
-   Get
-    Return _rebindOnPostback
-   End Get
-   Set(ByVal value As Boolean)
-    _rebindOnPostback = value
-   End Set
-  End Property
-
-  Public Property ManualUpdate() As Boolean
-   Get
-    Return _manualUpdate
-   End Get
-   Set(ByVal value As Boolean)
-    _manualUpdate = value
-   End Set
-  End Property
-
   Public Property DefaultText() As String
    Get
     If Not ManualUpdate Then
@@ -205,24 +139,6 @@ Namespace Controls
    End Get
    Set(ByVal value As String)
     _defaultText = value
-   End Set
-  End Property
-
-  Public Property PreRendered() As Boolean
-   Get
-    Return _preRendered
-   End Get
-   Set(ByVal value As Boolean)
-    _preRendered = value
-   End Set
-  End Property
-
-  Public Property JustUpdated() As Boolean
-   Get
-    Return _justUpdated
-   End Get
-   Set(ByVal value As Boolean)
-    _justUpdated = value
    End Set
   End Property
 

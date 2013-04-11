@@ -16,7 +16,7 @@ Namespace Controls
 #End Region
 
 #Region " Public Properties "
-  Public Property SelectedCategories As List(Of TermInfo)
+  Public Property SelectedCategories As New List(Of TermInfo)
   Public Property ModuleConfiguration As DotNetNuke.Entities.Modules.ModuleInfo = Nothing
   Public Property VocabularyId As Integer = -1
   Private _Vocabulary As Dictionary(Of String, TermInfo)
