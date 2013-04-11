@@ -212,6 +212,15 @@ Partial Public Class Manage
  Protected WithEvents chkShowAllLocales As Global.System.Web.UI.WebControls.CheckBox
 
  '''<summary>
+ '''cmdEditTagsML control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents cmdEditTagsML As Global.System.Web.UI.WebControls.LinkButton
+
+ '''<summary>
  '''lblRssDefaultNrItems control.
  '''</summary>
  '''<remarks>

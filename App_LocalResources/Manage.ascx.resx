@@ -312,4 +312,7 @@
   <data name="Localization.Text" xml:space="preserve">
     <value>Localization</value>
   </data>
+  <data name="cmdEditTagsML.Text" xml:space="preserve">
+    <value>Edit Tag Localization</value>
+  </data>
 </root>

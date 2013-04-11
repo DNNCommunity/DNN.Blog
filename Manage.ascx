@@ -63,6 +63,9 @@
 		<dnn:label id="lblShowAllLocales" runat="server" controlname="chkShowAllLocales" suffix=":" />
 		<asp:CheckBox ID="chkShowAllLocales" runat="server" />
 	</div>
+	<div class="dnnFormItem">
+  <asp:LinkButton runat="server" ID="cmdEditTagsML" resourcekey="cmdEditTagsML" CssClass="dnnSecondaryAction" />
+	</div>
 </fieldset>
 <h2 id="H3" class="dnnFormSectionHead"><a href="" class="dnnFormSectionExpanded"><%= LocalizeString("RSS")%></a></h2>
 <fieldset>

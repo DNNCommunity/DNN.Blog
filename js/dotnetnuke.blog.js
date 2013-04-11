@@ -3,6 +3,7 @@
  var commentsServicepath = servicesFramework.getServiceRoot('Blog') + 'Comment/';
  var modulesServicepath = servicesFramework.getServiceRoot('Blog') + 'Modules/';
  var blogServicepath = servicesFramework.getServiceRoot('Blog') + 'Blog/';
+ var termServicepath = servicesFramework.getServiceRoot('Blog') + 'Terms/';
 
  this.approvePost = function (blogId, PostId, success) {
   $.ajax({
@@ -93,6 +94,21 @@
    displayMessage("#blogServiceErrorBox", settings.serverErrorWithDescription + eval("(" + xhr.responseText + ")").ExceptionMessage, "dnnFormWarning");
   });
  };
+
+ this.getVocabularyML = function (vocabularyId, success) {
+  $.ajax({
+   type: "GET",
+   url: termServicepath + "VocabularyML",
+   beforeSend: servicesFramework.setModuleHeaders,
+   data: { vocabularyId: vocabularyId }
+  }).done(function (data) {
+   if (success != undefined) {
+    success(data);
+   }
+  }).fail(function (xhr, status) {
+   displayMessage("#blogServiceErrorBox", settings.serverErrorWithDescription + eval("(" + xhr.responseText + ")").ExceptionMessage, "dnnFormWarning");
+  });
+ }
 
 }
 

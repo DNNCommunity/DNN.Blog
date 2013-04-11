@@ -145,6 +145,9 @@
     <Content Include="BlogEdit.ascx" />
     <Content Include="Controls\Comments.ascx" />
     <Content Include="Controls\ManagementPanel.ascx" />
+    <Content Include="css\jquery.handsontable.css" />
+    <Content Include="js\jquery.handsontable.js" />
+    <Content Include="TermsEditML.ascx" />
     <EmbeddedResource Include="Controls\TagEdit.JS.CodeBlock.txt" />
     <EmbeddedResource Include="Controls\CategorySelect.JS.CodeBlock.txt" />
     <Content Include="css\dynatree.css" />
@@ -346,6 +349,13 @@
     </Compile>
     <Compile Include="Controls\ViewSettings.ascx.vb">
       <DependentUpon>ViewSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TermsEditML.ascx.designer.vb">
+      <DependentUpon>TermsEditML.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="TermsEditML.ascx.vb">
+      <DependentUpon>TermsEditML.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
   </ItemGroup>

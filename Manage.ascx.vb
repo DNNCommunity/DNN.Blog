@@ -28,6 +28,10 @@ Public Class Manage
   Response.Redirect(EditUrl("BlogEdit"), False)
  End Sub
 
+ Private Sub cmdEditTagsML_Click(sender As Object, e As System.EventArgs) Handles cmdEditTagsML.Click
+  Response.Redirect(EditUrl("TermsEditML"), False)
+ End Sub
+
  Private Sub cmdCancel_Click(sender As Object, e As System.EventArgs) Handles cmdCancel.Click
   Response.Redirect(DotNetNuke.Common.NavigateURL(TabId), False)
  End Sub
