@@ -1,8 +1,8 @@
 ﻿function BlogService($, settings, servicesFramework) {
- var baseServicepath = servicesFramework.getServiceRoot('Blog') + 'Post/';
- var commentsServicepath = servicesFramework.getServiceRoot('Blog') + 'Comment/';
+ var baseServicepath = servicesFramework.getServiceRoot('Blog') + 'Posts/';
+ var commentsServicepath = servicesFramework.getServiceRoot('Blog') + 'Comments/';
  var modulesServicepath = servicesFramework.getServiceRoot('Blog') + 'Modules/';
- var blogServicepath = servicesFramework.getServiceRoot('Blog') + 'Blog/';
+ var blogServicepath = servicesFramework.getServiceRoot('Blog') + 'Blogs/';
  var termServicepath = servicesFramework.getServiceRoot('Blog') + 'Terms/';
 
  this.approvePost = function (blogId, PostId, success) {

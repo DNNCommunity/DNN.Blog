@@ -1,6 +1,7 @@
 ﻿Imports DotNetNuke.Web.Client.ClientResourceManagement
 Imports DotNetNuke.Services.Localization
 Imports System.Globalization
+Imports DotNetNuke.Modules.Blog.Entities.Terms
 
 Public Class TermsEditML
  Inherits BlogModuleBase
@@ -38,10 +39,10 @@ Public Class TermsEditML
  End Sub
 
  Private Sub cmdUpdate_Click(sender As Object, e As System.EventArgs) Handles cmdUpdate.Click
-  Dim vocab As List(Of Services.TermsController.TermML) = Newtonsoft.Json.JsonConvert.DeserializeObject(Of List(Of Services.TermsController.TermML))(Storage.Value)
-  Dim currentVocabulary As Dictionary(Of Integer, Entities.Terms.TermInfo) = Entities.Terms.TermsController.GetTermsByVocabulary(ModuleId, VocabularyId)
+  Dim vocab As List(Of TermsController.TermML) = Newtonsoft.Json.JsonConvert.DeserializeObject(Of List(Of TermsController.TermML))(Storage.Value)
+  Dim currentVocabulary As Dictionary(Of Integer, TermInfo) = TermsController.GetTermsByVocabulary(ModuleId, VocabularyId)
 
-  For Each t As Services.TermsController.TermML In vocab
+  For Each t As TermsController.TermML In vocab
    Dim crtTerm As Entities.Terms.TermInfo = currentVocabulary(t.TermID)
    If crtTerm IsNot Nothing Then
     If crtTerm.Name <> t.DefaultName Then

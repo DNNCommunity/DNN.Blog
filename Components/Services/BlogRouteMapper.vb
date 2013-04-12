@@ -28,7 +28,11 @@ Namespace Services
   Implements IServiceRouteMapper
 
   Public Sub RegisterRoutes(mapRouteManager As IMapRoute) Implements IServiceRouteMapper.RegisterRoutes
-   mapRouteManager.MapHttpRoute("Blog", "Default", "{controller}/{action}", New String() {"DotNetNuke.Modules.Blog.Services", "DotNetNuke.Modules.Blog.Integration.Services"})
+   mapRouteManager.MapHttpRoute("Blog", "Blogs", "Blogs/{action}", New With {.Controller = "Blogs"}, New String() {"DotNetNuke.Modules.Blog.Entities.Blogs"})
+   mapRouteManager.MapHttpRoute("Blog", "Comments", "Comments/{action}", New With {.Controller = "Comments"}, New String() {"DotNetNuke.Modules.Blog.Entities.Comments"})
+   mapRouteManager.MapHttpRoute("Blog", "Posts", "Posts/{action}", New With {.Controller = "Posts"}, New String() {"DotNetNuke.Modules.Blog.Entities.Posts"})
+   mapRouteManager.MapHttpRoute("Blog", "Terms", "Terms/{action}", New With {.Controller = "Terms"}, New String() {"DotNetNuke.Modules.Blog.Entities.Terms"})
+   mapRouteManager.MapHttpRoute("Blog", "Other", "{controller}/{action}", New String() {"DotNetNuke.Modules.Blog.Services", "DotNetNuke.Modules.Blog.Integration.Services"})
   End Sub
 
  End Class

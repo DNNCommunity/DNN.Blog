@@ -23,7 +23,7 @@ Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Entities.Content.Taxonomy
 
 Namespace Entities.Terms
- Public Class TermsController
+ Partial Public Class TermsController
 
   Public Shared Function GetTerm(termId As Integer, moduleId As Integer, locale As String) As TermInfo
    Return CType(CBO.FillObject(Data.DataProvider.Instance().GetTerm(termId, moduleId, locale), GetType(TermInfo)), TermInfo)

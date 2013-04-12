@@ -191,14 +191,16 @@
     <Compile Include="Components\Common\LocalizedText.vb" />
     <Compile Include="Components\Common\ModuleUrls.vb" />
     <Compile Include="Components\Common\PostBodyAndSummary.vb" />
+    <Compile Include="Components\Entities\Blogs\BlogsController_Service.vb" />
+    <Compile Include="Components\Entities\Comments\CommentsController_Service.vb" />
+    <Compile Include="Components\Entities\Posts\PostsController_Service.vb" />
+    <Compile Include="Components\Entities\Terms\TermsController_Service.vb" />
     <Compile Include="Components\Entities\Terms\TermsController.vb" />
     <Compile Include="Components\Integration\Integration.vb" />
     <Compile Include="Components\Rss\BlogRssFeed.vb" />
     <Compile Include="Components\Security\Security.vb" />
-    <Compile Include="Components\Services\BlogController.vb" />
     <Compile Include="Components\Services\RSSController.vb" />
     <Compile Include="Components\Services\ModulesController.vb" />
-    <Compile Include="Components\Services\TermsController.vb" />
     <Compile Include="Components\Services\WLW\Blogger\IBlogger.vb" />
     <Compile Include="Components\BlogML\BlogMLBlogExtendedProperties.vb" />
     <Compile Include="Components\BlogML\BlogMLResource.vb" />
@@ -279,8 +281,6 @@
     <Compile Include="Components\Services\BlogAuthorizeAttribute.vb" />
     <Compile Include="Components\Services\BlogRouteMapper.vb" />
     <Compile Include="Components\Integration\Services\NotificationServiceController.vb" />
-    <Compile Include="Components\Services\CommentController.vb" />
-    <Compile Include="Components\Services\EntryController.vb" />
     <Compile Include="Components\Templating\BaseCustomTokenReplace.vb" />
     <Compile Include="Components\Templating\BaseTokenReplace.vb" />
     <Compile Include="Components\Templating\BlogTokenReplace.vb" />

@@ -5,8 +5,8 @@ Imports System.Net.Http
 Imports System.Net
 Imports System.Linq
 
-Namespace Services
- Public Class TermsController
+Namespace Entities.Terms
+ Partial Public Class TermsController
   Inherits DnnApiController
 
   Private Const DisallowedCharacters As String = "%?*&;:'\\"
