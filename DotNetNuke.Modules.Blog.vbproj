@@ -85,6 +85,11 @@
       <HintPath>_References\Microsoft.ApplicationBlocks.Data.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.0.5.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_References\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -148,6 +153,7 @@
     <Content Include="css\jquery.handsontable.css" />
     <Content Include="js\jquery.handsontable.js" />
     <Content Include="TermsEditML.ascx" />
+    <Content Include="App_LocalResources\TermsEditML.ascx.resx" />
     <EmbeddedResource Include="Controls\TagEdit.JS.CodeBlock.txt" />
     <EmbeddedResource Include="Controls\CategorySelect.JS.CodeBlock.txt" />
     <Content Include="css\dynatree.css" />

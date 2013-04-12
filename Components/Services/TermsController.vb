@@ -29,7 +29,7 @@ Namespace Services
   Public Function GetVocabularyML(vocabularyId As Integer) As HttpResponseMessage
    Dim res As New List(Of TermML)
    For Each t As Entities.Terms.TermInfo In Entities.Terms.TermsController.GetTermsByVocabulary(ActiveModule.ModuleID, vocabularyId, "").Values
-    res.Add(New TermML With {.TermID = t.TermId, .DefaultName = t.Name, .LocNames = t.NameLocalizations})
+    res.Add(New TermML With {.TermID = t.TermId, .DefaultName = t.Name, .LocNames = t.NameLocalizations.GetDictionary})
    Next
    Return Request.CreateResponse(HttpStatusCode.OK, res)
   End Function
@@ -38,7 +38,7 @@ Namespace Services
   Public Structure TermML
    Public TermID As Integer
    Public DefaultName As String
-   Public LocNames As LocalizedText
+   Public LocNames As Dictionary(Of String, String)
   End Structure
 
  End Class

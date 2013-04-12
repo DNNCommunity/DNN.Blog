@@ -34,6 +34,9 @@ Namespace Common
 #End Region
 
 #Region " Public Methods "
+  Public Function GetDictionary() As Dictionary(Of String, String)
+   Return _texts
+  End Function
   Public Function ContainsKey(ByVal key As String) As Boolean
    Return _texts.ContainsKey(key)
   End Function

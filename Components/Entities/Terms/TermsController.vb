@@ -43,6 +43,12 @@ Namespace Entities.Terms
    Return res
   End Function
 
+  Public Shared Function GetTermsByVocabulary(moduleId As Int32, vocabularyId As Int32) As Dictionary(Of Integer, TermInfo)
+   Dim res As New Dictionary(Of Integer, TermInfo)
+   DotNetNuke.Common.Utilities.CBO.FillDictionary(Of Integer, TermInfo)("TermID", Data.DataProvider.Instance.GetTermsByVocabulary(moduleId, vocabularyId, ""), res)
+   Return res
+  End Function
+
   Public Shared Function GetTermList(moduleId As Integer, termList As String, vocabularyId As Integer, autoCreate As Boolean, locale As String) As List(Of TermInfo)
    Dim termNames As String() = termList.Replace(";", ",").Trim(","c).Split(","c)
    Return GetTermList(moduleId, termNames.ToList, vocabularyId, autoCreate, locale)
