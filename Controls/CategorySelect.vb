@@ -83,10 +83,10 @@ Namespace Controls
    For Each c As TermInfo In SelectedCategories
     selectedIds.Add(c.TermId)
    Next
-   Storage.Value = TermsController.GetCategoryTreeAsJson(Vocabulary, selectedIds)
 
    Dim pagescript As String = GetResource("DotNetNuke.Modules.Blog.CategorySelect.JS.CodeBlock.txt")
    pagescript = pagescript.Replace("[ID]", MainControlId)
+   pagescript = pagescript.Replace("[Children]", TermsController.GetCategoryTreeAsJson(Vocabulary, selectedIds))
    pagescript = pagescript.Replace("[StorageControlId]", StorageControlId)
    Me.Page.ClientScript.RegisterClientScriptBlock(GetType(String), ClientID, pagescript, True)
 

@@ -59,11 +59,34 @@ Public Class Manage
   Settings.UpdateSettings()
   If treeState.Value <> DotNetNuke.Modules.Blog.Entities.Terms.TermsController.GetCategoryTreeAsJson(Vocabulary) Then
    Dim categoryTree As List(Of Common.DynatreeItem) = Newtonsoft.Json.JsonConvert.DeserializeObject(Of List(Of Common.DynatreeItem))(treeState.Value)
+   Dim ReturnedIds As New List(Of Integer)
+   Dim i As Integer = 1
    For Each rootNode As Common.DynatreeItem In categoryTree
-
+    AddOrUpdateCategory(-1, i, rootNode, ReturnedIds)
+    i += 1
+   Next
+   Dim deleteCategories As New List(Of Entities.Terms.TermInfo)
+   For Each t As Entities.Terms.TermInfo In Vocabulary.Values
+    If Not ReturnedIds.Contains(t.TermId) Then deleteCategories.Add(t)
+   Next
+   For Each categoryToDelete As Entities.Terms.TermInfo In deleteCategories
+    DotNetNuke.Entities.Content.Common.Util.GetTermController().DeleteTerm(categoryToDelete)
    Next
   End If
   Response.Redirect(DotNetNuke.Common.NavigateURL(TabId), False)
+ End Sub
+
+ Private Sub AddOrUpdateCategory(parentId As Integer, viewOrder As Integer, category As Common.DynatreeItem, ByRef returnedIds As List(Of Integer))
+  If String.IsNullOrEmpty(category.title) Then Exit Sub
+  Dim termId As Integer = -1
+  If IsNumeric(category.key) Then termId = Integer.Parse(category.key)
+  termId = Data.DataProvider.Instance.SetTerm(termId, Settings.VocabularyId, parentId, viewOrder, category.title, UserId)
+  returnedIds.Add(termId)
+  Dim i As Integer = 1
+  For Each subCategory As Common.DynatreeItem In category.children
+   AddOrUpdateCategory(termId, i, subCategory, returnedIds)
+   i += 1
+  Next
  End Sub
 
  Public Overrides Sub DataBind()

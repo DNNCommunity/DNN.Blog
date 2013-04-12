@@ -189,6 +189,7 @@
   <div class="dnnLeft">
    <textarea id="txtNewCategories" rows="10" cols="60"></textarea><br />
    <button class="dnnSecondaryAction" id="btnAddCategories">Add</button>
+   <button class="dnnSecondaryAction" id="btnDeleteCategory">Delete Selected</button>
   </div>
   <div id="categoryTree" class="dnnLeft">
   </div>
@@ -246,6 +247,11 @@
   $dialogexport.dialog('open');
   return false;
  });
+ $('#btnDeleteCategory').click(function () {
+   $("#categoryTree").dynatree("getActiveNode").remove();
+   $('#<%= treeState.ClientID %>').val(JSON.stringify($("#categoryTree").dynatree("getRoot").toDict(true).children));
+  return false;
+ });
  $('#btnAddCategories').click(function () {
   var rootNode = $("#categoryTree").dynatree("getRoot");
   var lines = $('#txtNewCategories').val().split('\n');
@@ -260,6 +266,7 @@
    };
   });
   $('#txtNewCategories').val('');
+  $('#<%= treeState.ClientID %>').val(JSON.stringify($("#categoryTree").dynatree("getRoot").toDict(true).children));
   return false;
  });
  function editNode(node) {
@@ -284,6 +291,7 @@
      node.setTitle(title);
      tree.$widget.bind();
      node.focus();
+     $('#<%= treeState.ClientID %>').val(JSON.stringify($("#categoryTree").dynatree("getRoot").toDict(true).children));
     });
  }
  $(document).ready(function () {

@@ -1,5 +1,6 @@
 ﻿(function ($, Sys) {
  $(document).ready(function () {
+  $('#[StorageControlId]').val('[Children]');
   $('#[ID]').dynatree({
    onSelect: function (flag, node) {
     var selectedNodes = $("#[ID]").dynatree("getTree").serializeArray();
@@ -13,12 +14,5 @@
    checkbox: true,
    children: $.parseJSON($('#[StorageControlId]').val())
   })
-  var selectedNodes = $("#[ID]").dynatree("getTree").serializeArray();
-  var res = '';
-  var i;
-  for (i = 0; i < selectedNodes.length; i += 1) {
-   res += selectedNodes[i].value + ',';
-  }
-  $('#[StorageControlId]').val(res)
  });
 } (jQuery, window.Sys));
