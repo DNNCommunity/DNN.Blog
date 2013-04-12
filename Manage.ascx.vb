@@ -35,11 +35,8 @@ Public Class Manage
  Private Sub cmdCancel_Click(sender As Object, e As System.EventArgs) Handles cmdCancel.Click
   Response.Redirect(DotNetNuke.Common.NavigateURL(TabId), False)
  End Sub
- Private Sub cmdCancelSettings_Click(sender As Object, e As System.EventArgs) Handles cmdCancelSettings.Click
-  Response.Redirect(DotNetNuke.Common.NavigateURL(TabId), False)
- End Sub
 
- Private Sub cmdUpdateSettings_Click(sender As Object, e As System.EventArgs) Handles cmdUpdateSettings.Click
+ Private Sub cmdUpdateSettings_Click(sender As Object, e As System.EventArgs) Handles cmdUpdate.Click
   Settings.AllowAttachments = chkAllowAttachments.Checked
   Settings.SummaryModel = CType(ddSummaryModel.SelectedValue.ToInt, SummaryType)
   Settings.LocalizationModel = CType(ddSummaryModel.SelectedValue.ToInt, LocalizationType)
@@ -60,6 +57,12 @@ Public Class Manage
   Settings.RssMaxNrItems = Integer.Parse(txtRssMaxNrItems.Text)
   Settings.RssTtl = Integer.Parse(txtRssTtl.Text)
   Settings.UpdateSettings()
+  If treeState.Value <> DotNetNuke.Modules.Blog.Entities.Terms.TermsController.GetCategoryTreeAsJson(Vocabulary) Then
+   Dim categoryTree As List(Of Common.DynatreeItem) = Newtonsoft.Json.JsonConvert.DeserializeObject(Of List(Of Common.DynatreeItem))(treeState.Value)
+   For Each rootNode As Common.DynatreeItem In categoryTree
+
+   Next
+  End If
   Response.Redirect(DotNetNuke.Common.NavigateURL(TabId), False)
  End Sub
 
@@ -111,6 +114,8 @@ Public Class Manage
   End If
   dlBlogs.DataBind()
   If dlBlogs.Items.Count = 0 Then dlBlogs.Visible = False
+
+  treeState.Value = DotNetNuke.Modules.Blog.Entities.Terms.TermsController.GetCategoryTreeAsJson(Vocabulary)
 
  End Sub
 

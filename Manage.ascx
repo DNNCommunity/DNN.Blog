@@ -106,10 +106,6 @@
 		<asp:CheckBox ID="chkRssImageSizeAllowOverride" runat="server" />
 	</div>
 </fieldset>
-  <p>
-   <asp:LinkButton runat="server" ID="cmdCancelSettings" resourcekey="cmdCancel" CssClass="dnnSecondaryAction" />
-   <asp:LinkButton runat="server" ID="cmdUpdateSettings" resourcekey="cmdUpdate" CssClass="dnnPrimaryAction" />
-  </p>
  </div>
  <div id="Blogs" class="dnnClear">
   <asp:DataList runat="server" ID="dlBlogs">
@@ -137,7 +133,6 @@
    </FooterTemplate>
   </asp:DataList>
   <p>
-   <asp:LinkButton runat="server" ID="cmdCancel" resourcekey="cmdCancel" CssClass="dnnPrimaryAction" />
    <asp:LinkButton runat="server" ID="cmdAdd" resourcekey="cmdAdd" CssClass="dnnSecondaryAction" />
   </p>
  </div>
@@ -192,13 +187,18 @@
  </div>
  <div id="Categories" class="dnnClear">
   <div class="dnnLeft">
-   <textarea id="txtNewCategories" rows="10" cols="60"></textarea>
+   <textarea id="txtNewCategories" rows="10" cols="60"></textarea><br />
+   <button class="dnnSecondaryAction" id="btnAddCategories">Add</button>
   </div>
   <div id="categoryTree" class="dnnLeft">
   </div>
   <asp:HiddenField runat="server" ID="treeState" />
  </div>
 </div>
+<p class="updatecancelbar">
+ <asp:LinkButton runat="server" ID="cmdCancel" resourcekey="cmdCancel" CssClass="dnnSecondaryAction" />
+ <asp:LinkButton runat="server" ID="cmdUpdate" resourcekey="cmdUpdate" CssClass="dnnPrimaryAction" />
+</p>
 
 <div id="blogServiceErrorBox">
 </div>
@@ -246,38 +246,89 @@
   $dialogexport.dialog('open');
   return false;
  });
- $('#categoryTree').dynatree({
-   checkbox: false
-  <%= DotNetNuke.Modules.Blog.Entities.Terms.TermsController.GetCategoryTreeAsJson(Vocabulary) %>,
-    dnd: {
-      onDragStart: function(node) {
-        return true;
-      },
-      onDragStop: function(node) {
-      },
-      autoExpandMS: 1000,
-      preventVoidMoves: true, // Prevent dropping nodes 'before self', etc.
-      onDragEnter: function(node, sourceNode) {
-        return true;
-      },
-      onDragOver: function(node, sourceNode, hitMode) {
-        // Prevent dropping a parent below it's own child
-        if(node.isDescendantOf(sourceNode)){
-          return false;
-        }
-        // Prohibit creating childs in non-folders (only sorting allowed)
-        if( !node.data.isFolder && hitMode === "over" ){
-          return "after";
-        }
-      },
-      onDrop: function(node, sourceNode, hitMode, ui, draggable) {
-        sourceNode.move(node, hitMode);
-        var tree = $("#categoryTree").dynatree("getTree");
-        $('#<%= treeState.ClientID %>').val(JSON.stringify(tree.toDict()));
-      },
-      onDragLeave: function(node, sourceNode) {
-      }
+ $('#btnAddCategories').click(function () {
+  var rootNode = $("#categoryTree").dynatree("getRoot");
+  var lines = $('#txtNewCategories').val().split('\n');
+  $.each(lines, function (n, elem) {
+   if ($.trim(elem) != '') {
+    var childNode = rootNode.addChild({
+     title: $.trim(elem),
+     key: "-1",
+     icon: false,
+     isFolder: true
+    });
+   };
+  });
+  $('#txtNewCategories').val('');
+  return false;
+ });
+ function editNode(node) {
+  var prevTitle = node.data.title,
+  tree = node.tree;
+  tree.$widget.unbind();
+  $(".dynatree-title", node.span).html("<input id='editNode' value='" + prevTitle + "'>");
+  $("input#editNode")
+    .focus()
+    .keydown(function (event) {
+     switch (event.which) {
+      case 27: // [esc]
+       $("input#editNode").val(prevTitle);
+       $(this).blur();
+       break;
+      case 13: // [enter]
+       $(this).blur();
+       break;
+     }
+    }).blur(function (event) {
+     var title = $("input#editNode").val();
+     node.setTitle(title);
+     tree.$widget.bind();
+     node.focus();
+    });
+ }
+ $(document).ready(function () {
+  $('#categoryTree').dynatree({
+   checkbox: false,
+   children: $.parseJSON($('#<%= treeState.ClientID %>').val()),
+   dnd: {
+    onDragStart: function (node) {
+     return true;
+    },
+    onDragStop: function (node) {
+    },
+    autoExpandMS: 1000,
+    preventVoidMoves: true,
+    onDragEnter: function (node, sourceNode) {
+     return true;
+    },
+    onDragOver: function (node, sourceNode, hitMode) {
+     if (node.isDescendantOf(sourceNode)) {
+      return false;
+     }
+     if (!node.data.isFolder && hitMode === "over") {
+      return "after";
+     }
+    },
+    onDrop: function (node, sourceNode, hitMode, ui, draggable) {
+     sourceNode.move(node, hitMode);
+     $('#<%= treeState.ClientID %>').val(JSON.stringify($("#categoryTree").dynatree("getRoot").toDict(true).children));
+    },
+    onDragLeave: function (node, sourceNode) {
     }
- })
+   },
+   onClick: function (node, event) {
+    if (event.shiftKey) {
+     editNode(node);
+     $('#<%= treeState.ClientID %>').val(JSON.stringify($("#categoryTree").dynatree("getRoot").toDict(true).children));
+     return false;
+    }
+   },
+   onDblClick: function (node, event) {
+    editNode(node);
+    $('#<%= treeState.ClientID %>').val(JSON.stringify($("#categoryTree").dynatree("getRoot").toDict(true).children));
+    return false;
+   }
+  })
+ });
 } (jQuery, window.Sys));
 </script>

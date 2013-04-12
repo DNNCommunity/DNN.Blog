@@ -40,7 +40,12 @@ a.iconLink, a.iconLink:link, a.iconLink:hover, a.iconLink:visited, a.iconLink:ac
 {
  text-decoration: none;
 }
-
+p.updatecancelbar
+{
+ width:100%;
+ text-align:right;
+ padding-top:40px;
+}
 div.blog_rte 
 {
  float:left;

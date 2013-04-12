@@ -383,24 +383,6 @@ Partial Public Class Manage
  Protected WithEvents chkRssImageSizeAllowOverride As Global.System.Web.UI.WebControls.CheckBox
 
  '''<summary>
- '''cmdCancelSettings control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents cmdCancelSettings As Global.System.Web.UI.WebControls.LinkButton
-
- '''<summary>
- '''cmdUpdateSettings control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents cmdUpdateSettings As Global.System.Web.UI.WebControls.LinkButton
-
- '''<summary>
  '''dlBlogs control.
  '''</summary>
  '''<remarks>
@@ -408,15 +390,6 @@ Partial Public Class Manage
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
  Protected WithEvents dlBlogs As Global.System.Web.UI.WebControls.DataList
-
- '''<summary>
- '''cmdCancel control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents cmdCancel As Global.System.Web.UI.WebControls.LinkButton
 
  '''<summary>
  '''cmdAdd control.
@@ -444,4 +417,22 @@ Partial Public Class Manage
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
  Protected WithEvents treeState As Global.System.Web.UI.WebControls.HiddenField
+
+ '''<summary>
+ '''cmdCancel control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents cmdCancel As Global.System.Web.UI.WebControls.LinkButton
+
+ '''<summary>
+ '''cmdUpdate control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents cmdUpdate As Global.System.Web.UI.WebControls.LinkButton
 End Class

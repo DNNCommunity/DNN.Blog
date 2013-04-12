@@ -188,6 +188,7 @@
       <DependentUpon>blogpostredirect.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Components\Common\DynatreeItem.vb" />
     <Compile Include="Components\Common\LocalizedText.vb" />
     <Compile Include="Components\Common\ModuleUrls.vb" />
     <Compile Include="Components\Common\PostBodyAndSummary.vb" />

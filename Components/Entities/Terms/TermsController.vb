@@ -79,7 +79,11 @@ Namespace Entities.Terms
   Public Shared Function GetCategoryTreeAsJson(vocabulary As Dictionary(Of String, TermInfo), selectedIds As List(Of Integer)) As String
    Dim childTreeBuilder As New StringBuilder
    GetCategoryTree(childTreeBuilder, vocabulary, -1, selectedIds)
-   Return childTreeBuilder.ToString
+   Dim res As String = childTreeBuilder.ToString
+   If res.Length > 0 Then
+    res = res.Substring(14) ' cut off the first children declaration
+   End If
+   Return res
   End Function
 
   Private Shared Sub GetCategoryTree(out As StringBuilder, vocabulary As Dictionary(Of String, TermInfo), parentId As Integer, selectedIds As List(Of Integer))
@@ -95,17 +99,17 @@ Namespace Entities.Terms
    End If
 
    If selection.Count > 0 Then
-    out.Append(", children: [")
+    out.Append(", ""children"": [")
     Dim first As Boolean = True
     For Each cat As TermInfo In selection
      If Not first Then out.Append(",")
      out.Append("{")
-     out.Append(String.Format("title: '{0}',", cat.LocalizedName))
-     out.Append(String.Format("key: '{0}',", cat.TermId))
-     out.Append("icon: false,")
-     out.Append("expand: true,")
-     out.Append("isFolder: true,")
-     out.Append(String.Format("select: {0}", IIf(selectedIds.Contains(cat.TermId), "true", "false")))
+     out.Append(String.Format("""title"": ""{0}"",", cat.LocalizedName))
+     out.Append(String.Format("""key"": ""{0}"",", cat.TermId))
+     out.Append("""icon"": false,")
+     out.Append("""expand"": true,")
+     out.Append("""isFolder"": true,")
+     out.Append(String.Format("""select"": {0}", IIf(selectedIds.Contains(cat.TermId), "true", "false")))
      GetCategoryTree(out, vocabulary, cat.TermId, selectedIds)
      out.Append("}")
      first = False

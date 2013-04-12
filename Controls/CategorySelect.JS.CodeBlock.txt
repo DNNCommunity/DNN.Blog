@@ -10,8 +10,8 @@
     }
     $('#[StorageControlId]').val(res)
    },
-   checkbox: true
-   [Children]
+   checkbox: true,
+   children: $.parseJSON($('#[StorageControlId]').val())
   })
   var selectedNodes = $("#[ID]").dynatree("getTree").serializeArray();
   var res = '';
