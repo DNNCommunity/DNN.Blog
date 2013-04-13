@@ -80,7 +80,7 @@ Public Class Manage
   If String.IsNullOrEmpty(category.title) Then Exit Sub
   Dim termId As Integer = -1
   If IsNumeric(category.key) Then termId = Integer.Parse(category.key)
-  termId = Data.DataProvider.Instance.SetTerm(termId, Settings.VocabularyId, parentId, viewOrder, category.title, UserId)
+  termId = Data.DataProvider.Instance.SetTerm(termId, Settings.VocabularyId, parentId, viewOrder, category.title, "", UserId)
   returnedIds.Add(termId)
   Dim i As Integer = 1
   For Each subCategory As Common.DynatreeItem In category.children
