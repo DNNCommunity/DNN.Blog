@@ -3,6 +3,7 @@
 <div style="height:40px" id="pnlManagement" runat="server">
  <a href="#" id="cmdCopyModule" runat="server" class="dnnSecondaryAction" visible="false"><%=LocalizeString("cmdCopyModule")%></a>
  <asp:LinkButton runat="server" ID="cmdManageBlogs" resourcekey="cmdManageBlogs" Visible="false" CssClass="dnnSecondaryAction" />
+ <asp:LinkButton runat="server" ID="cmdAdmin" resourcekey="cmdAdmin" Visible="false" CssClass="dnnSecondaryAction" />
  <asp:LinkButton runat="server" ID="cmdEditPost" resourcekey="cmdEditPost" Visible="false" CssClass="dnnSecondaryAction" />
  <asp:LinkButton runat="server" ID="cmdBlog" resourcekey="cmdBlog" Visible="false" CssClass="dnnPrimaryAction" />&nbsp;
  <a href="#" id="wlwlink" runat="server" class="icon16 entypoButton" style="margin-top:-24px;float:right">&#59290;</a>

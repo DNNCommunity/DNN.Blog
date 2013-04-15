@@ -21,6 +21,10 @@
      <desktopModule>
       <moduleName>Blog</moduleName>
       <foldername>Blog</foldername>
+      <businessControllerClass>DotNetNuke.Modules.Blog.Common.BlogModuleController, DOTNETNUKE.MODULES.BLOG</businessControllerClass>
+      <supportedFeatures>
+       <supportedFeature type="Upgradable" />
+      </supportedFeatures>
       <moduleDefinitions>
        <moduleDefinition>
         <friendlyName>Blog</friendlyName>
@@ -54,6 +58,17 @@
           <supportsPartialRendering>False</supportsPartialRendering>
           <controlTitle>Edit Post</controlTitle>
           <controlType>View</controlType>
+          <iconFile/>
+          <helpUrl/>
+          <supportsPopUps>False</supportsPopUps>
+          <viewOrder>0</viewOrder>
+         </moduleControl>
+         <moduleControl>
+          <controlKey>Admin</controlKey>
+          <controlSrc>DesktopModules/Blog/Admin.ascx</controlSrc>
+          <supportsPartialRendering>False</supportsPartialRendering>
+          <controlTitle>Blog Module Administration</controlTitle>
+          <controlType>Edit</controlType>
           <iconFile/>
           <helpUrl/>
           <supportsPopUps>False</supportsPopUps>
@@ -97,7 +112,7 @@
           <controlSrc>DesktopModules/Blog/Settings.ascx</controlSrc>
           <supportsPartialRendering>False</supportsPartialRendering>
           <controlTitle>Blog Module Instance Settings</controlTitle>
-          <controlType>Settings</controlType>
+          <controlType>Edit</controlType>
           <iconFile/>
           <helpUrl/>
           <supportsPopUps>True</supportsPopUps>
@@ -110,6 +125,15 @@
        </moduleDefinition>
       </moduleDefinitions>
      </desktopModule>
+     <eventMessage>
+      <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
+      <processorCommand>UpgradeModule</processorCommand>
+      <attributes>
+       <businessControllerClass>DotNetNuke.Modules.Blog.Common.BlogModuleController, DOTNETNUKE.MODULES.BLOG</businessControllerClass>
+       <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
+       <upgradeVersionsList>05.00.00</upgradeVersionsList>
+      </attributes>
+     </eventMessage>
     </component>
    </components>
   </package>

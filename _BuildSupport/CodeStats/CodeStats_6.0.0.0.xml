@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <code-summaries>
-  <code-summary date="2013-04-15T12:06:43.5791015+02:00" buildname="6.0.0.0">
-    <linecount label="VB" totalLineCount="26223" emptyLineCount="3194" commentLineCount="4373">
+  <code-summary date="2013-04-15T17:28:17.2480468+02:00" buildname="6.0.0.0">
+    <linecount label="VB" totalLineCount="26250" emptyLineCount="3200" commentLineCount="4376">
       <file-summaries>
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\BlogML\Enumerators\BlogPostTypes.vb" totalLineCount="10" emptyLineCount="1" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\BlogML\Enumerators\CommentModerationTypes.vb" totalLineCount="7" emptyLineCount="0" commentLineCount="0" />
@@ -26,6 +26,7 @@
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\BlogML\Pair.vb" totalLineCount="19" emptyLineCount="4" commentLineCount="3" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\BlogContextBase.vb" totalLineCount="148" emptyLineCount="12" commentLineCount="19" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\BlogModuleBase.vb" totalLineCount="138" emptyLineCount="16" commentLineCount="21" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\BlogModuleController.vb" totalLineCount="26" emptyLineCount="7" commentLineCount="3" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\DynatreeItem.vb" totalLineCount="11" emptyLineCount="0" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\Extensions.vb" totalLineCount="353" emptyLineCount="36" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\Globals.vb" totalLineCount="209" emptyLineCount="25" commentLineCount="19" />
@@ -70,7 +71,7 @@
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Integration\FileController.vb" totalLineCount="75" emptyLineCount="15" commentLineCount="19" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Integration\Integration.vb" totalLineCount="12" emptyLineCount="2" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Integration\JournalController.vb" totalLineCount="181" emptyLineCount="24" commentLineCount="61" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Integration\NotificationController.vb" totalLineCount="250" emptyLineCount="40" commentLineCount="64" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Integration\NotificationController.vb" totalLineCount="251" emptyLineCount="39" commentLineCount="64" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Integration\NotificationKey.vb" totalLineCount="34" emptyLineCount="6" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Rss\BlogRssFeed.vb" totalLineCount="300" emptyLineCount="27" commentLineCount="15" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Rss\StringWriterWithEncoding.vb" totalLineCount="47" emptyLineCount="6" commentLineCount="26" />

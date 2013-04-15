@@ -36,6 +36,7 @@ Namespace Integration
 
  Public Class NotificationController
 
+#Region " Integration Methods "
   ''' <summary>
   ''' This method will send a core notification to blog owners when a blog Post is pending publishing approval.
   ''' </summary>
@@ -170,9 +171,9 @@ Namespace Integration
 
    NotificationsController.Instance.SendNotification(objNotification, portalId, Nothing, colUsers)
   End Sub
+#End Region
 
 #Region " Install Methods "
-
   ''' <summary>
   ''' This will create a notification type associated w/ the module and also handle the actions that must be associated with it.
   ''' </summary>
@@ -190,14 +191,14 @@ Namespace Integration
     Dim objAction As New NotificationTypeAction
     objAction.NameResourceKey = "ApprovePost"
     objAction.DescriptionResourceKey = "ApprovePost_Desc"
-    objAction.APICall = "DesktopModules/Blog/API/NotificationService.ashx/ApprovePost"
+    objAction.APICall = "DesktopModules/Blog/API/Posts/Approve"
     objAction.Order = 1
     actions.Add(objAction)
 
     objAction = New NotificationTypeAction
     objAction.NameResourceKey = "DeletePost"
     objAction.DescriptionResourceKey = "DeletePost_Desc"
-    objAction.APICall = "DesktopModules/Blog/API/NotificationService.ashx/DeletePost"
+    objAction.APICall = "DesktopModules/Blog/API/Posts/Delete"
     objAction.ConfirmResourceKey = "DeleteItem"
     objAction.Order = 3
     actions.Add(objAction)
@@ -217,14 +218,14 @@ Namespace Integration
     Dim objAction As New NotificationTypeAction
     objAction.NameResourceKey = "ApproveComment"
     objAction.DescriptionResourceKey = "ApproveComment_Desc"
-    objAction.APICall = "DesktopModules/Blog/API/NotificationService.ashx/ApproveComment"
+    objAction.APICall = "DesktopModules/Blog/API/Comments/Approve"
     objAction.Order = 1
     actions.Add(objAction)
 
     objAction = New NotificationTypeAction
     objAction.NameResourceKey = "DeleteComment"
     objAction.DescriptionResourceKey = "DeleteComment_Desc"
-    objAction.APICall = "DesktopModules/Blog/API/NotificationService.ashx/DeleteComment"
+    objAction.APICall = "DesktopModules/Blog/API/Comments/Delete"
     objAction.ConfirmResourceKey = "DeleteItem"
     objAction.Order = 3
     actions.Add(objAction)

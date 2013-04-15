@@ -1976,3 +1976,7 @@ BEGIN
 END
 GO
 
+/******* DATA *******/
+EXEC {databaseOwner}{objectQualifier}AddContentType 'DNN_Blog_Post'
+GO
+

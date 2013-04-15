@@ -186,4 +186,7 @@
   <data name="Unpublished.Text" xml:space="preserve">
     <value>Also Unpublished</value>
   </data>
+  <data name="cmdAdmin.Text" xml:space="preserve">
+    <value>Admin</value>
+  </data>
 </root>

@@ -12,6 +12,7 @@ Namespace Controls
    LocalResourceFile = "~/DesktopModules/Blog/Controls/App_LocalResources/ManagementPanel.ascx.resx"
    If Not Me.IsPostBack Then
     cmdManageBlogs.Visible = Security.IsBlogger Or Security.CanApprovePost
+    cmdAdmin.Visible = Security.IsEditor
     cmdBlog.Visible = Security.CanAddPost
     cmdEditPost.Visible = (Post IsNot Nothing) And Security.CanEditPost
     cmdCopyModule.Visible = Security.IsEditor
@@ -52,6 +53,10 @@ Namespace Controls
    End If
    If ShowLocale <> "" Then RssLink &= String.Format("&language={0}", ShowLocale)
 
+  End Sub
+
+  Private Sub cmdAdmin_Click(sender As Object, e As System.EventArgs) Handles cmdAdmin.Click
+   Response.Redirect(EditUrl("Admin"), False)
   End Sub
 
   Private Sub cmdManageBlogs_Click(sender As Object, e As System.EventArgs) Handles cmdManageBlogs.Click

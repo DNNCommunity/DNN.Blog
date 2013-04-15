@@ -156,137 +156,8 @@
   <data name="DeletePost.Text" xml:space="preserve">
     <value>Delete this post?</value>
   </data>
-  <data name="lblAllowAllLocales.Help" xml:space="preserve">
-    <value>If selected users can opt that their blog is in a language that is not part of the portal languages set. Otherwise it is restricted to one of the portal languages.</value>
-  </data>
-  <data name="lblAllowAllLocales.Text" xml:space="preserve">
-    <value>Allow All Languages</value>
-  </data>
-  <data name="lblAllowAttachments.Help" xml:space="preserve">
-    <value>If selected bloggers can upload files for a blog post using Windows Live Writer. If not then uploading will be blocked.</value>
-  </data>
-  <data name="lblAllowAttachments.Text" xml:space="preserve">
-    <value>Allow Attachments</value>
-  </data>
-  <data name="lblAllowMultipleCategories.Help" xml:space="preserve">
-    <value>Allow bloggers to select more than one category for their posts</value>
-  </data>
-  <data name="lblAllowMultipleCategories.Text" xml:space="preserve">
-    <value>Allow Multiple Categories</value>
-  </data>
-  <data name="lblAllowWLW.Help" xml:space="preserve">
-    <value>If selected bloggers may connect and blog using Windows Live Writer</value>
-  </data>
-  <data name="lblAllowWLW.Text" xml:space="preserve">
-    <value>Allow Windows Live Writer</value>
-  </data>
-  <data name="lblEmail.Help" xml:space="preserve">
-    <value>This email address will be used in the RSS feed as the 'managing editor' of the blogs in this module</value>
-  </data>
-  <data name="lblEmail.Text" xml:space="preserve">
-    <value>Email</value>
-  </data>
-  <data name="lblVocabularyId.Help" xml:space="preserve">
-    <value>Select the vocabulary to use for storing the categories of this module and all its blogs</value>
-  </data>
-  <data name="lblVocabularyId.Text" xml:space="preserve">
-    <value>Category Vocabulary</value>
-  </data>
-  <data name="lblWLWRecentPostsMax.Help" xml:space="preserve">
-    <value>This is the maximum number of (recent) blog posts that can be downloaded by Windows Live Writer for editing.</value>
-  </data>
-  <data name="lblWLWRecentPostsMax.Text" xml:space="preserve">
-    <value>WLW Max Recent Posts</value>
-  </data>
-  <data name="NoneSpecified.Text" xml:space="preserve">
-    <value>&lt; None Specified &gt;</value>
-  </data>
-  <data name="HtmlIndependent.Opt" xml:space="preserve">
-    <value>HTML independent from body of post</value>
-  </data>
-  <data name="HtmlPrecedesPost.Opt" xml:space="preserve">
-    <value>HTML precedes post</value>
-  </data>
-  <data name="PlainTextIndependent.Opt" xml:space="preserve">
-    <value>Plain text independent from body of post</value>
-  </data>
-  <data name="lblSummaryModel.Help" xml:space="preserve">
-    <value>Select how you want the summary to behave and what format it should be</value>
-  </data>
-  <data name="lblSummaryModel.Text" xml:space="preserve">
-    <value>Summary Model</value>
-  </data>
-  <data name="General.Text" xml:space="preserve">
-    <value>General</value>
-  </data>
-  <data name="lblRssAllowContentInFeed.Help" xml:space="preserve">
-    <value>If selected the feed request can optionally retrieve the contents of the blog posts by specifying 'body=true' in the querystring</value>
-  </data>
-  <data name="lblRssAllowContentInFeed.Text" xml:space="preserve">
-    <value>Allow Content In Feed</value>
-  </data>
-  <data name="lblRssDefaultCopyright.Help" xml:space="preserve">
-    <value>If specified then this is the default copyright for feeds. It can be overridden by a blog's own copyright setting.</value>
-  </data>
-  <data name="lblRssDefaultCopyright.Text" xml:space="preserve">
-    <value>Default Copyright</value>
-  </data>
-  <data name="lblRssDefaultNrItems.Help" xml:space="preserve">
-    <value>The nr of posts that the RSS feed will show if no other amount is requested</value>
-  </data>
-  <data name="lblRssDefaultNrItems.Text" xml:space="preserve">
-    <value>Default Nr Items</value>
-  </data>
-  <data name="lblRssImageHeight.Help" xml:space="preserve">
-    <value>The RSS feed can include images (both for the entire feed as for individual posts). If it does, specify here what the height is of the images that will be sent.</value>
-  </data>
-  <data name="lblRssImageHeight.Text" xml:space="preserve">
-    <value>Image Height</value>
-  </data>
-  <data name="lblRssImageSizeAllowOverride.Help" xml:space="preserve">
-    <value>Allow an RSS request to override the size of the images through the 'w' and 'h' querystring parameters.</value>
-  </data>
-  <data name="lblRssImageSizeAllowOverride.Text" xml:space="preserve">
-    <value>Allow Image Size Override</value>
-  </data>
-  <data name="lblRssImageWidth.Help" xml:space="preserve">
-    <value>The RSS feed can include images (both for the entire feed as for individual posts). If it does, specify here what the width is of the images that will be sent.</value>
-  </data>
-  <data name="lblRssImageWidth.Text" xml:space="preserve">
-    <value>Image Width</value>
-  </data>
-  <data name="lblRssMaxNrItems.Help" xml:space="preserve">
-    <value>The maximum nr posts can a RSS feed display using the 'recs' querystring parameter. If this is negative the nr of posts cannot be changed.</value>
-  </data>
-  <data name="lblRssMaxNrItems.Text" xml:space="preserve">
-    <value>Max Nr Items</value>
-  </data>
-  <data name="lblRssTtl.Help" xml:space="preserve">
-    <value>Time (in minutes) that a feed will be cached internally before being refreshed</value>
-  </data>
-  <data name="lblRssTtl.Text" xml:space="preserve">
-    <value>TTL</value>
-  </data>
-  <data name="RSS.Text" xml:space="preserve">
-    <value>RSS Settings</value>
-  </data>
-  <data name="lblShowAllLocales.Help" xml:space="preserve">
-    <value>If selected then posts in all languages will be shown regardless of the user's selection</value>
-  </data>
-  <data name="lblShowAllLocales.Text" xml:space="preserve">
-    <value>Show All Languages</value>
-  </data>
-  <data name="lblBloggersCanEditCategories.Help" xml:space="preserve">
-    <value>If selected bloggers can add to the category tree and change/delete categories of the selected category tree.</value>
-  </data>
-  <data name="lblBloggersCanEditCategories.Text" xml:space="preserve">
-    <value>Bloggers Can Edit Categories</value>
-  </data>
   <data name="Export.Text" xml:space="preserve">
     <value>Export</value>
-  </data>
-  <data name="Cancel.Text" xml:space="preserve">
-    <value>Cancel</value>
   </data>
   <data name="Download.Text" xml:space="preserve">
     <value>Download BlogML File</value>
@@ -294,25 +165,16 @@
   <data name="Export.Help" xml:space="preserve">
     <value>Upon clicking on the 'Export' button, the module will attempt to pack all this blog's posts into an XML file (BlogML format) that you can subsequently download through a link that will appear just below.</value>
   </data>
-  <data name="lblLocalizationModel.Help" xml:space="preserve">
-    <value>When you are running a multi-lingual site you can opt for a specific type of localization model. "None" means all posts are treated as their own entity without any localized content. "Loose" will offer users to add a translated title and summary for each post. "Strict" will assume all posts need to be translated to each language. In the latter case there will be one "leading" post and the translations will point to it.</value>
+  <data name="Blogs.Text" xml:space="preserve">
+    <value>Blogs</value>
   </data>
-  <data name="lblLocalizationModel.Text" xml:space="preserve">
-    <value>Localization Model</value>
+  <data name="Cancel.Text" xml:space="preserve">
+    <value>Cancel</value>
   </data>
-  <data name="Loose.Opt" xml:space="preserve">
-    <value>Loose</value>
+  <data name="cmdReturn.Text" xml:space="preserve">
+    <value>Return</value>
   </data>
-  <data name="None.Opt" xml:space="preserve">
-    <value>None</value>
-  </data>
-  <data name="Strict.Opt" xml:space="preserve">
-    <value>Sctrict</value>
-  </data>
-  <data name="Localization.Text" xml:space="preserve">
-    <value>Localization</value>
-  </data>
-  <data name="cmdEditTagsML.Text" xml:space="preserve">
-    <value>Edit Tag Localization</value>
+  <data name="Posts.Text" xml:space="preserve">
+    <value>Posts</value>
   </data>
 </root>

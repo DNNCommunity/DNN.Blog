@@ -152,12 +152,14 @@
     <Content Include="BlogEdit.ascx" />
     <Content Include="Controls\Comments.ascx" />
     <Content Include="Controls\ManagementPanel.ascx" />
+    <Content Include="Admin.ascx" />
     <Content Include="css\jquery.handsontable.css" />
     <Content Include="js\jquery.handsontable.js" />
     <Content Include="TermsEditML.ascx" />
     <Content Include="App_LocalResources\TermsEditML.ascx.resx" />
     <Content Include="_Installation\license.txt" />
     <Content Include="_Installation\releaseNotes.txt" />
+    <Content Include="App_LocalResources\Admin.ascx.resx" />
     <EmbeddedResource Include="Controls\TagEdit.JS.CodeBlock.txt" />
     <EmbeddedResource Include="Controls\CategorySelect.JS.CodeBlock.txt" />
     <Content Include="css\dynatree.css" />
@@ -192,6 +194,7 @@
       <DependentUpon>blogpostredirect.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Components\Common\BlogModuleController.vb" />
     <Compile Include="Components\Common\DynatreeItem.vb" />
     <Compile Include="Components\Common\LocalizedText.vb" />
     <Compile Include="Components\Common\ModuleUrls.vb" />
@@ -331,6 +334,13 @@
     </Compile>
     <Compile Include="Controls\ShortTextEdit.vb" />
     <Compile Include="Controls\TagEdit.vb" />
+    <Compile Include="Admin.ascx.designer.vb">
+      <DependentUpon>Admin.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin.ascx.vb">
+      <DependentUpon>Admin.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Manage.ascx.designer.vb">
       <DependentUpon>Manage.ascx</DependentUpon>
     </Compile>
@@ -373,7 +383,9 @@
   <ItemGroup>
     <Content Include="App_LocalResources\BlogEdit.ascx.resx" />
     <Content Include="App_LocalResources\PostEdit.ascx.resx" />
-    <Content Include="App_LocalResources\SharedResources.resx" />
+    <Content Include="App_LocalResources\SharedResources.resx">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="blogpost.ashx" />
