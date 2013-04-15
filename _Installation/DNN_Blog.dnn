@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <dotnetnuke type="Package" version="5.0">
  <packages>
   <package name="DotNetNuke.Blog" type="Module" version="05.00.00">
@@ -13,27 +14,23 @@
    <license src="License.txt"/>
    <releaseNotes src="ReleaseNotes.txt"/>
    <dependencies>
-    <dependency type="CoreVersion">06.02.00</dependency>
+    <dependency type="CoreVersion">07.00.04</dependency>
    </dependencies>
    <components>
     <component type="Module">
      <desktopModule>
       <moduleName>Blog</moduleName>
       <foldername>Blog</foldername>
-      <businessControllerClass>DotNetNuke.Modules.Blog.Components.Controllers.InterfaceController, DotNetNuke.Modules.Blog</businessControllerClass>
-      <supportedFeatures>
-       <supportedFeature type="Upgradable"/>
-      </supportedFeatures>
       <moduleDefinitions>
        <moduleDefinition>
-        <friendlyName>View_Blog</friendlyName>
+        <friendlyName>Blog</friendlyName>
         <defaultCacheTime>-1</defaultCacheTime>
         <moduleControls>
          <moduleControl>
           <controlKey/>
-          <controlSrc>DesktopModules/Blog/MainView.ascx</controlSrc>
+          <controlSrc>DesktopModules/Blog/Blog.ascx</controlSrc>
           <supportsPartialRendering>False</supportsPartialRendering>
-          <controlTitle>View Blog</controlTitle>
+          <controlTitle>Blog</controlTitle>
           <controlType>View</controlType>
           <iconFile/>
           <helpUrl/>
@@ -41,8 +38,8 @@
           <viewOrder>0</viewOrder>
          </moduleControl>
          <moduleControl>
-          <controlKey>Edit_Blog</controlKey>
-          <controlSrc>DesktopModules/Blog/EditBlog.ascx</controlSrc>
+          <controlKey>BlogEdit</controlKey>
+          <controlSrc>DesktopModules/Blog/BlogEdit.ascx</controlSrc>
           <supportsPartialRendering>False</supportsPartialRendering>
           <controlTitle>Edit Blog</controlTitle>
           <controlType>View</controlType>
@@ -52,10 +49,10 @@
           <viewOrder>0</viewOrder>
          </moduleControl>
          <moduleControl>
-          <controlKey>Edit_Entry</controlKey>
-          <controlSrc>DesktopModules/Blog/EditEntry.ascx</controlSrc>
+          <controlKey>PostEdit</controlKey>
+          <controlSrc>DesktopModules/Blog/PostEdit.ascx</controlSrc>
           <supportsPartialRendering>False</supportsPartialRendering>
-          <controlTitle>Edit Entry</controlTitle>
+          <controlTitle>Edit Post</controlTitle>
           <controlType>View</controlType>
           <iconFile/>
           <helpUrl/>
@@ -63,306 +60,56 @@
           <viewOrder>0</viewOrder>
          </moduleControl>
          <moduleControl>
-          <controlKey>Mass_Edit</controlKey>
-          <controlSrc>DesktopModules/Blog/MassEdit.ascx</controlSrc>
+          <controlKey>Manage</controlKey>
+          <controlSrc>DesktopModules/Blog/Manage.ascx</controlSrc>
           <supportsPartialRendering>False</supportsPartialRendering>
-          <controlTitle>Mass Edit</controlTitle>
-          <controlType>Edit</controlType>
+          <controlTitle>Manage Content</controlTitle>
+          <controlType>View</controlType>
           <iconFile/>
           <helpUrl/>
           <supportsPopUps>False</supportsPopUps>
           <viewOrder>0</viewOrder>
          </moduleControl>
          <moduleControl>
-          <controlKey>Module_Options</controlKey>
-          <controlSrc>DesktopModules/Blog/ModuleOptions.ascx</controlSrc>
+          <controlKey>BlogImport</controlKey>
+          <controlSrc>DesktopModules/Blog/BlogImport.ascx</controlSrc>
           <supportsPartialRendering>False</supportsPartialRendering>
-          <controlTitle>Options</controlTitle>
-          <controlType>Admin</controlType>
+          <controlTitle>Blog Import</controlTitle>
+          <controlType>View</controlType>
           <iconFile/>
           <helpUrl/>
           <supportsPopUps>True</supportsPopUps>
           <viewOrder>0</viewOrder>
          </moduleControl>
          <moduleControl>
-          <controlKey>View_Entry</controlKey>
-          <controlSrc>DesktopModules/Blog/ViewEntry.ascx</controlSrc>
+          <controlKey>TermsEditML</controlKey>
+          <controlSrc>DesktopModules/Blog/TermsEditML.ascx</controlSrc>
           <supportsPartialRendering>False</supportsPartialRendering>
-          <controlTitle>Entry</controlTitle>
+          <controlTitle>Edit Terms</controlTitle>
           <controlType>View</controlType>
           <iconFile/>
           <helpUrl/>
           <supportsPopUps>False</supportsPopUps>
+          <viewOrder>0</viewOrder>
+         </moduleControl>
+         <moduleControl>
+          <controlKey>Settings</controlKey>
+          <controlSrc>DesktopModules/Blog/Settings.ascx</controlSrc>
+          <supportsPartialRendering>False</supportsPartialRendering>
+          <controlTitle>Blog Module Instance Settings</controlTitle>
+          <controlType>Settings</controlType>
+          <iconFile/>
+          <helpUrl/>
+          <supportsPopUps>True</supportsPopUps>
           <viewOrder>0</viewOrder>
          </moduleControl>
         </moduleControls>
         <permissions>
          <permission code="DNN_BLOG_MODULE" key="BLOGGER" name="Blogger"/>
-         <permission code="DNN_BLOG_MODULE" key="GHOSTWRITER" name="Ghost Writer"/>
         </permissions>
-       </moduleDefinition>
-       <moduleDefinition>
-        <friendlyName>Blog_List</friendlyName>
-        <defaultCacheTime>-1</defaultCacheTime>
-        <moduleControls>
-         <moduleControl>
-          <controlKey/>
-          <controlSrc>DesktopModules/Blog/BlogList.ascx</controlSrc>
-          <supportsPartialRendering>False</supportsPartialRendering>
-          <controlTitle>Blogs</controlTitle>
-          <controlType>View</controlType>
-          <iconFile/>
-          <helpUrl/>
-          <supportsPopUps>False</supportsPopUps>
-          <viewOrder>0</viewOrder>
-         </moduleControl>
-        </moduleControls>
-       </moduleDefinition>
-       <moduleDefinition>
-        <friendlyName>Blog_Categories</friendlyName>
-        <defaultCacheTime>-1</defaultCacheTime>
-        <moduleControls>
-         <moduleControl>
-          <controlKey/>
-          <controlSrc>DesktopModules/Blog/ViewCategories.ascx</controlSrc>
-          <supportsPartialRendering>False</supportsPartialRendering>
-          <controlTitle>Categories</controlTitle>
-          <controlType>View</controlType>
-          <iconFile/>
-          <helpUrl/>
-          <supportsPopUps>False</supportsPopUps>
-          <viewOrder>0</viewOrder>
-         </moduleControl>
-         <moduleControl>
-          <controlKey>Settings</controlKey>
-          <controlSrc>DesktopModules/Blog/ViewCategoriesSettings.ascx</controlSrc>
-          <supportsPartialRendering>True</supportsPartialRendering>
-          <controlTitle/>
-          <controlType>Edit</controlType>
-          <iconFile/>
-          <helpUrl/>
-          <supportsPopUps>True</supportsPopUps>
-          <viewOrder>0</viewOrder>
-         </moduleControl>
-        </moduleControls>
-       </moduleDefinition>
-       <moduleDefinition>
-        <friendlyName>Blog_Tags</friendlyName>
-        <defaultCacheTime>-1</defaultCacheTime>
-        <moduleControls>
-         <moduleControl>
-          <controlKey/>
-          <controlSrc>DesktopModules/Blog/ViewTags.ascx</controlSrc>
-          <supportsPartialRendering>False</supportsPartialRendering>
-          <controlTitle>Tags</controlTitle>
-          <controlType>View</controlType>
-          <iconFile/>
-          <helpUrl/>
-          <supportsPopUps>False</supportsPopUps>
-          <viewOrder>0</viewOrder>
-         </moduleControl>
-         <moduleControl>
-          <controlKey>Settings</controlKey>
-          <controlSrc>DesktopModules/Blog/ViewTagsSettings.ascx</controlSrc>
-          <supportsPartialRendering>True</supportsPartialRendering>
-          <controlTitle/>
-          <controlType>Edit</controlType>
-          <iconFile/>
-          <helpUrl/>
-          <supportsPopUps>True</supportsPopUps>
-          <viewOrder>0</viewOrder>
-         </moduleControl>
-        </moduleControls>
-       </moduleDefinition>
-       <moduleDefinition>
-        <friendlyName>Blog_Archive</friendlyName>
-        <defaultCacheTime>-1</defaultCacheTime>
-        <moduleControls>
-         <moduleControl>
-          <controlKey/>
-          <controlSrc>DesktopModules/Blog/Archive.ascx</controlSrc>
-          <supportsPartialRendering>False</supportsPartialRendering>
-          <controlTitle>Archive</controlTitle>
-          <controlType>View</controlType>
-          <iconFile/>
-          <helpUrl/>
-          <supportsPopUps>False</supportsPopUps>
-          <viewOrder>0</viewOrder>
-         </moduleControl>
-         <moduleControl>
-          <controlKey>Settings</controlKey>
-          <controlSrc>DesktopModules/Blog/ArchiveSettings.ascx</controlSrc>
-          <supportsPartialRendering>True</supportsPartialRendering>
-          <controlTitle/>
-          <controlType>Edit</controlType>
-          <iconFile/>
-          <helpUrl/>
-          <supportsPopUps>True</supportsPopUps>
-          <viewOrder>0</viewOrder>
-         </moduleControl>
-        </moduleControls>
        </moduleDefinition>
       </moduleDefinitions>
      </desktopModule>
-     <eventMessage>
-      <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
-      <processorCommand>UpgradeModule</processorCommand>
-      <attributes>
-       <businessControllerClass>DotNetNuke.Modules.Blog.Components.Controllers.InterfaceController</businessControllerClass>
-       <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
-			  <upgradeVersionsList>05.00.00</upgradeVersionsList>
-      </attributes>
-     </eventMessage>
-    </component>
-    <component type="Assembly">
-     <assemblies>
-      <assembly>
-       <name>DotNetNuke.Modules.Blog.dll</name>
-       <sourceFileName>DotNetNuke.Modules.Blog.dll</sourceFileName>
-       <version>04.05.00</version>
-      </assembly>
-      <assembly>
-       <name>CookComputing.XmlRpcV2.dll</name>
-       <sourceFileName>CookComputing.XmlRpcV2.dll</sourceFileName>
-      </assembly>
-     </assemblies>
-    </component>
-    <component type="File">
-     <files>
-      <basePath>DesktopModules\Blog\Documentation</basePath>
-      <file>
-       <name>License.txt</name>
-      </file>
-      <file>
-       <name>ReleaseNotes.txt</name>
-      </file>
-     </files>
-    </component>
-    <component type="Script">
-     <scripts>
-      <basePath>DesktopModules\Blog\Providers\Data\SqlDataProvider</basePath>
-      <script type="Install">
-       <name>01.00.00.SqlDataProvider</name>
-       <version>01.00.00</version>
-      </script>
-      <script type="Install">
-       <name>01.00.02.SqlDataProvider</name>
-       <version>01.00.02</version>
-      </script>
-      <script type="Install">
-       <name>03.01.04.SqlDataProvider</name>
-       <version>03.01.04</version>
-      </script>
-      <script type="Install">
-       <name>03.01.07.SqlDataProvider</name>
-       <version>03.01.07</version>
-      </script>
-      <script type="Install">
-       <name>03.01.12.SqlDataProvider</name>
-       <version>03.01.12</version>
-      </script>
-      <script type="Install">
-       <name>03.01.15.SqlDataProvider</name>
-       <version>03.01.15</version>
-      </script>
-      <script type="Install">
-       <name>03.01.20.SqlDataProvider</name>
-       <version>03.01.20</version>
-      </script>
-      <script type="Install">
-       <name>03.01.21.SqlDataProvider</name>
-       <version>03.01.21</version>
-      </script>
-      <script type="Install">
-       <name>03.03.00.SqlDataProvider</name>
-       <version>03.03.00</version>
-      </script>
-      <script type="Install">
-       <name>03.04.01.SqlDataProvider</name>
-       <version>03.04.01</version>
-      </script>
-      <script type="Install">
-       <name>03.05.00.SqlDataProvider</name>
-       <version>03.05.00</version>
-      </script>
-      <script type="Install">
-       <name>03.05.01.SqlDataProvider</name>
-       <version>03.05.01</version>
-      </script>
-      <script type="Install">
-       <name>04.00.00.SqlDataProvider</name>
-       <version>04.00.00</version>
-      </script>
-      <script type="Install">
-       <name>04.01.00.SqlDataProvider</name>
-       <version>04.01.00</version>
-      </script>
-      <script type="Install">
-       <name>05.00.00.SqlDataProvider</name>
-       <version>05.00.00</version>
-      </script>
-      <script type="Install">
-       <name>Install.04.00.00.SqlDataProvider</name>
-       <version>04.00.00</version>
-      </script>
-      <script type="UnInstall">
-       <name>Uninstall.SqlDataProvider</name>
-       <version>05.00.00</version>
-      </script>
-     </scripts>
-    </component>
-    <component type="ResourceFile">
-     <resourceFiles>
-      <basePath>DesktopModules\Blog</basePath>
-      <resourceFile>
-       <name>Resources.zip</name>
-       <sourceFileName>Resources.zip</sourceFileName>
-      </resourceFile>
-     </resourceFiles>
-    </component>
-    <component type="Cleanup" version="05.00.00">
-     <files>
-      <file>
-       <path>Install\Module</path>
-       <name>Blog_03.02.00_Install.resources</name>
-      </file>
-      <file>
-       <path>Install\Module</path>
-       <name>Blog_03.03.00_Install.resources</name>
-      </file>
-      <file>
-       <path>Install\Module</path>
-       <name>Blog_03.03.01_Install.resources</name>
-      </file>
-      <file>
-       <path>Install\Module</path>
-       <name>Blog_03.04.00_Install.resources</name>
-      </file>
-      <file>
-       <path>Install\Module</path>
-       <name>Blog_03.05.00_Install.resources</name>
-      </file>
-      <file>
-       <path>Install\Module</path>
-       <name>Blog_03.05.01_Install.resources</name>
-      </file>
-      <file>
-       <path>Install\Module</path>
-       <name>Blog_04.00.00_Install.resources</name>
-      </file>
-      <file>
-       <path>Install\Module</path>
-       <name>Blog_04.01.00_Install.resources</name>
-      </file>
-      <file>
-       <path>Install\Module</path>
-       <name>Blog_04.01.01_Install.resources</name>
-      </file>
-      <file>
-       <path>bin</path>
-       <name>DotNetNuke.Modules.Blog.SqlDataProvider.dll</name>
-      </file>
-     </files>
     </component>
    </components>
   </package>

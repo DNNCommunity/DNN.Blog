@@ -1,182 +1,138 @@
-/******* CORE INTEGRATION DATA *******/
-/* Notifications */
-DECLARE @NotificationTypeId INT
- SET @NotificationTypeId = (SELECT NotificationTypeID from {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes] WHERE Name = N'DNN_Blog_Entry_Publishing')
- DELETE FROM  {databaseOwner}[{objectQualifier}CoreMessaging_Messages] 
-	WHERE NotificationTypeId = @NotificationTypeId
-
- DELETE FROM {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions] 
-	WHERE NotificationTypeId = @NotificationTypeId
-
-DELETE FROM {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes] 
-	WHERE NotificationTypeId = @NotificationTypeId
-
-SET @NotificationTypeId = (SELECT NotificationTypeID from {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes] WHERE Name = N'DNN_Blog_Entry_CommentApproval')
-DELETE FROM  {databaseOwner}[{objectQualifier}CoreMessaging_Messages] 
-	WHERE NotificationTypeId = @NotificationTypeId
-
-DELETE FROM {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions] 
-	WHERE NotificationTypeId = @NotificationTypeId
-
-DELETE FROM {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes] 
-	WHERE NotificationTypeId = @NotificationTypeId
-
-SET @NotificationTypeId = (SELECT NotificationTypeID from {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes] WHERE Name = N'DNN_Blog_Entry_CommentAdded')
-DELETE FROM  {databaseOwner}[{objectQualifier}CoreMessaging_Messages] 
-	WHERE NotificationTypeId = @NotificationTypeId
-
-DELETE FROM {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions] 
-WHERE NotificationTypeId = @NotificationTypeId
-
-DELETE FROM {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes] 
-	WHERE NotificationTypeId = @NotificationTypeId
-GO
-
-/* Content Item */
-DECLARE @ContentTypeID INT
-SET @ContentTypeID = ( SELECT   ContentTypeID
-					   FROM     {databaseOwner}{objectQualifier}ContentTypes
-					   WHERE    ContentType = 'DNN_Blog_Entry'
-					 )
-
-DELETE FROM {databaseOwner}{objectQualifier}ContentItems
-	WHERE   ContentTypeID = @ContentTypeID
-
-DELETE FROM  {databaseOwner}{objectQualifier}ContentTypes
-	WHERE ContentTypeID = @ContentTypeID
-GO
-
 /******* SPROCS *******/
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Upgrade_BlogsGetAll') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_BlogsGetAll
-GO
-
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_AddBlog') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_AddBlog
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_AddBlogPermission') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_AddBlogPermission
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_AddComment') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_AddComment
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_AddEntry') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_AddEntry
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_AddPost') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_AddPost
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_AddPostView') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_AddPostView
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_ApproveComment') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_ApproveComment
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_DeleteBlog') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_DeleteBlog
 GO
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_DeleteBlogPermissions') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_DeleteBlogPermissions
+GO
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_DeleteComment') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_DeleteComment
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_DeleteEntry') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_DeleteEntry
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_DelUnAppCommByEntry') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_DelUnAppCommByEntry
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetAllEntriesByBlog') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetAllEntriesByBlog
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetAllEntriesByPortal') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetAllEntriesByPortal
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_DeletePost') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_DeletePost
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetBlog') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlog
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetBlogDaysForMonth') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlogDaysForMonth
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetBlogLocalizations') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlogLocalizations
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetBlogMonths') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlogMonths
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetBlogPermissionsByBlog') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlogPermissionsByBlog
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetBlogsByPortal') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlogsByPortal
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetBlogViewEntryModuleID') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlogViewEntryModuleID
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetBlogsByModule') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlogsByModule
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetComment') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetComment
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetCommentsByBlog') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetCommentsByBlog
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetCommentsByContentItem') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetCommentsByContentItem
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetCommentsByEntry') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetCommentsByEntry
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetPost') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetPost
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetCommentsByPortal') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetCommentsByPortal
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetPostLocalizations') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetPostLocalizations
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetEntriesByBlog') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetEntriesByBlog
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetPosts') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetPosts
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetEntriesByDay') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetEntriesByDay
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetPostsByBlog') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetPostsByBlog
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetEntriesByMonth') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetEntriesByMonth
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetPostsByTerm') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetPostsByTerm
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetEntriesByPortal') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetEntriesByPortal
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetTerm') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetTerm
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetEntriesByTerm') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetEntriesByTerm
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetTermLocalizations') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetTermLocalizations
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetEntry') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetEntry
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetTermsByModule') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetTermsByModule
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetSettings') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetSettings
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetTermsByPost') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetTermsByPost
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetTermsByContentItem') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetTermsByContentItem
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetTermsByVocabulary') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetTermsByVocabulary
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetTermsByContentType') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetTermsByContentType
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetUserPermissionsByModule') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetUserPermissionsByModule
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_MetaWeblog_Get_DesktopModule_FriendlyName') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_MetaWeblog_Get_DesktopModule_FriendlyName
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetUsersByBlogPermission') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetUsersByBlogPermission
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_SearchByKeyWordAndBlog') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_SearchByKeyWordAndBlog
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_SearchPosts') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_SearchPosts
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_SearchByKeyWordAndPortal') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_SearchByKeyWordAndPortal
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_SearchPostsByTerm') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_SearchPostsByTerm
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_SearchByPhraseAndBlog') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_SearchByPhraseAndBlog
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_SetBlogLocalization') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_SetBlogLocalization
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_SearchByPhraseAndPortal') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_SearchByPhraseAndPortal
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_SetPostLocalization') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_SetPostLocalization
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_SetTerm') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_SetTerm
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_SetTermLocalization') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_SetTermLocalization
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_UpdateBlog') AND type in (N'P', N'PC'))
@@ -187,120 +143,104 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwn
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdateComment
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_UpdateEntry') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdateEntry
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_UpdateEntryViewCount') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdateEntryViewCount
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_UpdateSetting') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdateSetting
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Upgrade_CategoriesGet') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_CategoriesGet
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Upgrade_GetCategoriesByEntry') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_GetCategoriesByEntry
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Upgrade_GetTagsByEntry') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_GetTagsByEntry
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Upgrade_RetrieveTaxonomyEntries') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_RetrieveTaxonomyEntries
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Upgrade_TagsGet') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_TagsGet
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_UpdatePost') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdatePost
 GO
 
 /******* VIEWS *******/
-IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}vw_Blog_Terms'))
-DROP VIEW {databaseOwner}{objectQualifier}vw_Blog_Terms
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}vw_Blog_BlogPermissions'))
+DROP VIEW {databaseOwner}{objectQualifier}vw_Blog_BlogPermissions
+GO
+
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}vw_Blog_Comments'))
+DROP VIEW {databaseOwner}{objectQualifier}vw_Blog_Comments
 GO
 
 /******* FUNCTIONS *******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_BlogList') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION {databaseOwner}{objectQualifier}Blog_BlogList
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_PostList') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION {databaseOwner}{objectQualifier}Blog_PostList
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Split') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION {databaseOwner}{objectQualifier}Blog_Split
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_TermList') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION {databaseOwner}{objectQualifier}Blog_TermList
+GO
+
 /******* TRIGGERS *******/
 /******* STRUCTURE *******/
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_Blogs_Portals') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Blogs'))
-ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs DROP CONSTRAINT FK_{objectQualifier}Blog_Blogs_Portals
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_BlogLocalization_Blogs') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_BlogLocalization'))
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_BlogLocalization DROP CONSTRAINT FK_{objectQualifier}Blog_BlogLocalization_Blogs
 GO
 
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_Blogs_Users') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Blogs'))
-ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs DROP CONSTRAINT FK_{objectQualifier}Blog_Blogs_Users
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_BlogPermissions_Blogs') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_BlogPermissions'))
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_BlogPermissions DROP CONSTRAINT FK_{objectQualifier}Blog_BlogPermissions_Blogs
 GO
 
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_Categories_Portals') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Categories'))
-ALTER TABLE {databaseOwner}{objectQualifier}Blog_Categories DROP CONSTRAINT FK_{objectQualifier}Blog_Categories_Portals
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_Blogs_Modules') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Blogs'))
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs DROP CONSTRAINT FK_{objectQualifier}Blog_Blogs_Modules
 GO
 
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_Comments') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Comments'))
 ALTER TABLE {databaseOwner}{objectQualifier}Blog_Comments DROP CONSTRAINT FK_{objectQualifier}Blog_Comments
 GO
 
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_Entry_Categories_Categories') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Entry_Categories'))
-ALTER TABLE {databaseOwner}{objectQualifier}Blog_Entry_Categories DROP CONSTRAINT FK_{objectQualifier}Blog_Entry_Categories_Categories
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_PostLocalization_ContentItems') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_PostLocalization'))
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_PostLocalization DROP CONSTRAINT FK_{objectQualifier}Blog_PostLocalization_ContentItems
 GO
 
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_Entry_Categories_Entries') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Entry_Categories'))
-ALTER TABLE {databaseOwner}{objectQualifier}Blog_Entry_Categories DROP CONSTRAINT FK_{objectQualifier}Blog_Entry_Categories_Entries
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_Entries_Blogs') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Posts'))
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Posts DROP CONSTRAINT FK_{objectQualifier}Blog_Entries_Blogs
 GO
 
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_Entry_Tags_Entries') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Entry_Tags'))
-ALTER TABLE {databaseOwner}{objectQualifier}Blog_Entry_Tags DROP CONSTRAINT FK_{objectQualifier}Blog_Entry_Tags_Entries
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_Entries_ContentItems') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Posts'))
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Posts DROP CONSTRAINT FK_{objectQualifier}Blog_Entries_ContentItems
 GO
 
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_Entry_Tags_Tags') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Entry_Tags'))
-ALTER TABLE {databaseOwner}{objectQualifier}Blog_Entry_Tags DROP CONSTRAINT FK_{objectQualifier}Blog_Entry_Tags_Tags
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_TermLocalization_Taxonomy_Terms') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_TermLocalization'))
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_TermLocalization DROP CONSTRAINT FK_{objectQualifier}Blog_TermLocalization_Taxonomy_Terms
 GO
 
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_Settings_Portals') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Settings'))
-ALTER TABLE {databaseOwner}{objectQualifier}Blog_Settings DROP CONSTRAINT FK_{objectQualifier}Blog_Settings_Portals
-GO
-
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_Tags_Portals') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Tags'))
-ALTER TABLE {databaseOwner}{objectQualifier}Blog_Tags DROP CONSTRAINT FK_{objectQualifier}Blog_Tags_Portals
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_Terms_Terms') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Terms'))
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Terms DROP CONSTRAINT FK_{objectQualifier}Blog_Terms_Terms
 GO
 
 /******* TABLES *******/
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Blogs') AND type in (N'U'))
-DROP TABLE {databaseOwner}{objectQualifier}Blog_Blogs
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_BlogLocalization') AND type in (N'U'))
+DROP TABLE {databaseOwner}{objectQualifier}Blog_BlogLocalization
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Categories') AND type in (N'U'))
-DROP TABLE {databaseOwner}{objectQualifier}Blog_Categories
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_BlogPermissions') AND type in (N'U'))
+DROP TABLE {databaseOwner}{objectQualifier}Blog_BlogPermissions
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Blogs') AND type in (N'U'))
+DROP TABLE {databaseOwner}{objectQualifier}Blog_Blogs
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Comments') AND type in (N'U'))
 DROP TABLE {databaseOwner}{objectQualifier}Blog_Comments
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Entries') AND type in (N'U'))
-DROP TABLE {databaseOwner}{objectQualifier}Blog_Entries
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_PostLocalization') AND type in (N'U'))
+DROP TABLE {databaseOwner}{objectQualifier}Blog_PostLocalization
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Entry_Categories') AND type in (N'U'))
-DROP TABLE {databaseOwner}{objectQualifier}Blog_Entry_Categories
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Posts') AND type in (N'U'))
+DROP TABLE {databaseOwner}{objectQualifier}Blog_Posts
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Entry_Tags') AND type in (N'U'))
-DROP TABLE {databaseOwner}{objectQualifier}Blog_Entry_Tags
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_TermLocalization') AND type in (N'U'))
+DROP TABLE {databaseOwner}{objectQualifier}Blog_TermLocalization
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_MetaWeblogData') AND type in (N'U'))
-DROP TABLE {databaseOwner}{objectQualifier}Blog_MetaWeblogData
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Settings') AND type in (N'U'))
-DROP TABLE {databaseOwner}{objectQualifier}Blog_Settings
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Tags') AND type in (N'U'))
-DROP TABLE {databaseOwner}{objectQualifier}Blog_Tags
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Terms') AND type in (N'U'))
+DROP TABLE {databaseOwner}{objectQualifier}Blog_Terms
 GO
 

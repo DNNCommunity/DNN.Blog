@@ -8,9 +8,7 @@
  <call target="set.parameters" />
  <property value="DotNetNuke.Modules" name="prefix" />
  <property value="${basedirectory}_Installation" name="installationdir"/>
- <property value="${basedirectory}Providers\Data\SqlDataProvider" name="dbscriptsdir"/>
  <property value="DotNetNuke.Modules.Blog.dll" name="mainassemblyfilename"/>
  <property name="packagename" value="Blog"/>
- <property name="referencedir" value="E:\Webroot\DNNBLOG5DEV3\DesktopModules\Blog\_Dependencies"/>
-
+ <property value="dotnetnuke.blog.pagescript.js,jqcloud-1.0.3.min.js,tag-it.min.js,jquery.dynatree.min.js" name="excludejsfiles" />
 </project>
