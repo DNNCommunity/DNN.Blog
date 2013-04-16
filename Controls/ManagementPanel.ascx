@@ -115,6 +115,51 @@
    $dialogSearch.dialog('open');
    return false;
   });
+<% If Security.CanAddPost %>
+  var $blogChoose = $('<div class="dnnDialog"></div>')
+		.html('<%=BlogSelectListHtml %>')
+		.dialog({
+		 autoOpen: false,
+		 resizable: false,
+		 dialogClass: 'dnnFormPopup dnnClear',
+		 title: '<%=LocalizeString("BlogChoose") %>',
+		 height: 150,
+		 width: 500,
+		 open: function (e) {
+		  $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeString("cmdBlog") %>")').addClass('dnnPrimaryAction');
+		  $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeString("Cancel") %>")').addClass('dnnSecondaryAction');
+    $('#ddBlog').width("100%");
+		 },
+		 buttons: [
+    {
+     text: '<%=LocalizeString("Cancel") %>',
+     click: function () {
+      $(this).dialog("close");
+     }
+    },
+    {
+     text: '<%=LocalizeString("cmdBlog") %>',
+     click: function () {
+      $(this).dialog("close");
+      var url = '<%=EditUrl("PostEdit") %>';
+      if (url.indexOf("?") == -1) {
+       url += '?'
+      } else {
+       url += '&'
+      };
+      url += 'Blog=' + $('#ddBlog').val();
+      window.location.href = encodeURI(url);
+     }
+    }
+    ]
+		});
+  <% If NrBlogs > 1 %>
+  $('#<%=cmdBlog.ClientId %>').click(function () {
+   $blogChoose.dialog('open');
+   return false;
+  });
+ <% End If %>
+<% End If %>
  });
 } (jQuery, window.Sys));
 </script>

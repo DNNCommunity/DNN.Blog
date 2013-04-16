@@ -117,6 +117,7 @@ Namespace Controls
   Public Property PreRendered As Boolean = False
   Public Property JustUpdated As Boolean = False
   Public Property CssPrefix As String = ""
+  Public Property ShowTranslations As Boolean = True
 
   Public Property LocalizedTexts() As LocalizedText
    Get

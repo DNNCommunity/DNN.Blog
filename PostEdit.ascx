@@ -6,9 +6,6 @@
 <div class="dnnForm dnnBlogEditPost dnnClear" id="dnnBlogEditPost">
 	<h2 id="dnnSitePanel-BlogContent" class="dnnFormSectionHead"><a href="" class="dnnFormSectionExpanded"><%= LocalizeString("Title")%></a></h2>
 	<fieldset>
-		<dnn:Label ID="lblBlog" runat="server" controlname="ddBlog" suffix=":" CssClass="dnnLeft" /><br />
-  <asp:DropDownList runat="server" ID="ddBlog" DataTextField="Title" DataValueField="BlogID" Width="100%" AutoPostBack="true" />
-
 		<dnn:Label ID="lblTitle" runat="server" controlname="treeCategories" suffix=":" CssClass="dnnLeft" /><br />
   <blog:ShortTextEdit id="txtTitle" runat="server" Required="True" CssClass="blog_rte_full" CssPrefix="blog_rte_" />
 
@@ -25,7 +22,7 @@
 	<fieldset>
 		<asp:Panel ID="pnlPublished" runat="server" class="dnnFormItem">
 			<dnn:Label ID="lblPublished" runat="server" controlname="chkPublished" suffix=":" />
-			<asp:CheckBox ID="chkPublished" runat="server" AutoPostBack="True" />
+			<asp:CheckBox ID="chkPublished" runat="server" />
 		</asp:Panel>
 		<asp:Panel ID="pnlComments" runat="server" class="dnnFormItem">
 			<dnn:Label ID="lblAllowComments" runat="server" controlname="chkAllowComments" suffix=":" />
@@ -52,7 +49,7 @@
 	</fieldset>
 	<h2 id="H2" class="dnnFormSectionHead"><a href="" class="dnnFormSectionExpanded"><%= LocalizeString("Metadata")%></a></h2>
 	<fieldset>
-  <div class="dnnFormItem">
+  <div class="dnnFormItem" id="rowLocale" runat="server">
    <dnn:Label ID="lblLocale" runat="server" controlname="ddLocale" suffix=":" />
    <asp:DropDownList ID="ddLocale" runat="server" DataTextField="NativeName" />
   </div>

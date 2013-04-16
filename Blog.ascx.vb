@@ -150,11 +150,8 @@ Public Class Blog
   End With
   vtContents.DataBind()
 
-  ctlComments.Visible = ViewSettings.ShowComments
+  ctlComments.Visible = ViewSettings.ShowComments AndAlso Security.CanViewComments
   ctlComments.ClonePropertiesFrom(Me)
-  If Blog IsNot Nothing Then
-   ctlComments.AllowAnonymousComments = Blog.AllowAnonymousComments
-  End If
 
   ctlManagement.Visible = ViewSettings.ShowManagementPanel
   ctlManagement.ClonePropertiesFrom(Me)

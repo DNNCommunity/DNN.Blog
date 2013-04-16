@@ -104,24 +104,6 @@ Partial Public Class Admin
  Protected WithEvents ddVocabularyId As Global.System.Web.UI.WebControls.DropDownList
 
  '''<summary>
- '''lblBloggersCanEditCategories control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents lblBloggersCanEditCategories As Global.System.Web.UI.UserControl
-
- '''<summary>
- '''chkBloggersCanEditCategories control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents chkBloggersCanEditCategories As Global.System.Web.UI.WebControls.CheckBox
-
- '''<summary>
  '''lblWLWRecentPostsMax control.
  '''</summary>
  '''<remarks>
@@ -140,24 +122,6 @@ Partial Public Class Admin
  Protected WithEvents txtWLWRecentPostsMax As Global.System.Web.UI.WebControls.TextBox
 
  '''<summary>
- '''lblLocalizationModel control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents lblLocalizationModel As Global.System.Web.UI.UserControl
-
- '''<summary>
- '''ddLocalizationModel control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents ddLocalizationModel As Global.System.Web.UI.WebControls.DropDownList
-
- '''<summary>
  '''lblAllowAllLocales control.
  '''</summary>
  '''<remarks>
@@ -174,24 +138,6 @@ Partial Public Class Admin
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
  Protected WithEvents chkAllowAllLocales As Global.System.Web.UI.WebControls.CheckBox
-
- '''<summary>
- '''lblShowAllLocales control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents lblShowAllLocales As Global.System.Web.UI.UserControl
-
- '''<summary>
- '''chkShowAllLocales control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents chkShowAllLocales As Global.System.Web.UI.WebControls.CheckBox
 
  '''<summary>
  '''cmdEditTagsML control.

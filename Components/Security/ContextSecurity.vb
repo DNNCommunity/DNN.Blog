@@ -34,6 +34,7 @@ Namespace Security
   Private _canApprove As Boolean = False
   Private _canAddComment As Boolean = False
   Private _canApproveComment As Boolean = False
+  Private _canViewComment As Boolean = False
   Private _userIsAdmin As Boolean = False
   Private _isBlogger As Boolean = False
   Private _isEditor As Boolean = False
@@ -44,6 +45,9 @@ Namespace Security
     _canAdd = blog.CanAdd
     _canEdit = blog.CanEdit
     _canApprove = blog.CanApprove
+    _canViewComment = blog.Permissions.CurrentUserHasPermission("VIEWCOMMENT")
+    _canApproveComment = blog.Permissions.CurrentUserHasPermission("APPROVECOMMENT")
+    _canAddComment = blog.Permissions.CurrentUserHasPermission("ADDCOMMENT")
    Else
     Using ir As IDataReader = Data.DataProvider.Instance().GetUserPermissionsByModule(moduleId, user.UserID)
      Do While ir.Read
@@ -87,6 +91,12 @@ Namespace Security
   Public ReadOnly Property CanAddComment() As Boolean
    Get
     Return _canAddComment Or IsOwner Or UserIsAdmin
+   End Get
+  End Property
+
+  Public ReadOnly Property CanViewComments() As Boolean
+   Get
+    Return _canViewComment Or IsOwner Or UserIsAdmin
    End Get
   End Property
 

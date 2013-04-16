@@ -163,12 +163,6 @@
   <data name="ControlTitle_Postedit.Text" xml:space="preserve">
     <value>Edit Post</value>
   </data>
-  <data name="lblBlog.Help" xml:space="preserve">
-    <value>Select blog to use for this post</value>
-  </data>
-  <data name="lblBlog.Text" xml:space="preserve">
-    <value>Blog</value>
-  </data>
   <data name="Publishing.Text" xml:space="preserve">
     <value>Publishing Details</value>
   </data>
@@ -213,5 +207,8 @@
   </data>
   <data name="ctlTags.PlaceholderText" xml:space="preserve">
     <value>Enter the tags for this post here ...</value>
+  </data>
+  <data name="DefaultLocale.Text" xml:space="preserve">
+    <value>&lt; Default Blog Language &gt;</value>
   </data>
 </root>

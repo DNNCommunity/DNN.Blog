@@ -19,4 +19,8 @@
 		<dnn:label id="lblShowComments" runat="server" controlname="chkShowComments" suffix=":" />
 		<asp:CheckBox ID="chkShowComments" runat="server" />
 	</div>
+	<div class="dnnFormItem">
+		<dnn:label id="lblShowAllLocales" runat="server" controlname="chkShowAllLocales" suffix=":" />
+		<asp:CheckBox ID="chkShowAllLocales" runat="server" />
+	</div>
 </fieldset>

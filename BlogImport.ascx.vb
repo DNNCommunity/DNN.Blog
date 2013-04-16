@@ -11,7 +11,7 @@ Public Class BlogImport
 
  Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
-  If Settings.VocabularyId > -1 AndAlso (Security.IsEditor Or Settings.BloggersCanEditCategories) Then CanImportCategories = True
+  If Settings.VocabularyId > -1 AndAlso (Security.IsEditor) Then CanImportCategories = True
 
   If Not Me.IsPostBack Then
    lblTargetName.Text = Blog.Title
@@ -86,7 +86,7 @@ Public Class BlogImport
       Dim newPost As New PostInfo
       With newPost
        .BlogID = BlogId
-       .AllowComments = Blog.AllowComments
+       '.AllowComments = Blog.AllowComments
        .Title = post.Title
        .Content = post.Content.Text
        .Summary = post.Excerpt.Text

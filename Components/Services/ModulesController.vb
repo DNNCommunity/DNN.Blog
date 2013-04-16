@@ -127,7 +127,7 @@ Namespace Services
      output.WriteElementString("supportsSlug", "No")
      output.WriteElementString("supportsHierarchicalCategories", "Yes")
      output.WriteElementString("supportsCategoriesInline", "Yes")
-     output.WriteElementString("supportsNewCategories", bs.BloggersCanEditCategories.ToYesNo)
+     output.WriteElementString("supportsNewCategories", "No")
      output.WriteElementString("supportsNewCategoriesInline", "No")
      output.WriteElementString("requiresXHTML", "Yes")
 

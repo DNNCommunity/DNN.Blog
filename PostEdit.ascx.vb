@@ -45,33 +45,24 @@ Public Class PostEdit
    ctlCategories.ModuleConfiguration = Me.ModuleConfiguration
    ctlCategories.VocabularyId = Settings.VocabularyId
 
-   If Not Me.IsPostBack Then
+   If Blog Is Nothing Then
     Dim blogList As IEnumerable(Of BlogInfo) = Nothing
-    If Security.IsEditor Then
-     blogList = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, Locale).Values
+    blogList = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, Locale).Values.Where(Function(b)
+                                                                                                 Return b.OwnerUserId = UserId
+                                                                                                End Function)
+    If blogList.Count > 0 Then
+     Blog = blogList(0)
+     Security = New Modules.Blog.Security.ContextSecurity(Settings.ModuleId, TabId, Blog, UserInfo)
     Else
      blogList = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, Locale).Values.Where(Function(b)
-                                                                                                  Return b.OwnerUserId = UserId Or (b.CanAdd And Security.CanAddPost) Or (b.CanEdit And Security.CanEditPost And ContentItemId > -1)
+                                                                                                  Return (b.CanAdd And Security.CanAddPost) Or (b.CanEdit And Security.CanEditPost And ContentItemId > -1)
                                                                                                  End Function)
-    End If
-    ddBlog.DataSource = blogList
-    ddBlog.DataBind()
-    If BlogId > -1 Then
-     ddBlog.Items.FindByValue(BlogId.ToString).Selected = True
-    Else
-     Dim userBlog As BlogInfo = blogList.First(Function(b)
-                                                Return b.OwnerUserId = UserId
-                                               End Function)
-     If userBlog IsNot Nothing Then
-      ddBlog.Items.FindByValue(userBlog.BlogID.ToString).Selected = True
-      Blog = userBlog
+     If blogList.Count > 0 Then
+      Blog = blogList(0)
+      Security = New Modules.Blog.Security.ContextSecurity(Settings.ModuleId, TabId, Blog, UserInfo)
      Else
-      Blog = BlogsController.GetBlog(ddBlog.Items(0).Value.ToInt, UserId, Locale)
+      Throw New Exception("Could not find a blog for you to post to")
      End If
-     Security = New Modules.Blog.Security.ContextSecurity(Settings.ModuleId, TabId, Blog, UserInfo)
-    End If
-    If ContentItemId > -1 Then
-     ddBlog.Enabled = False ' we're not going to allow someone to change the blog to which the post belongs - at least, not yet
     End If
    End If
 
@@ -82,6 +73,9 @@ Public Class PostEdit
    txtTitle.DefaultLanguage = PortalSettings.DefaultLanguage
    txtDescription.DefaultLanguage = PortalSettings.DefaultLanguage
    teBlogPost.DefaultLanguage = PortalSettings.DefaultLanguage
+   txtTitle.ShowTranslations = Blog.FullLocalization
+   txtDescription.ShowTranslations = Blog.FullLocalization
+   teBlogPost.ShowTranslations = Blog.FullLocalization
 
    ' Summary
    Select Case Settings.SummaryModel
@@ -118,6 +112,8 @@ Public Class PostEdit
      ddLocale.DataValueField = "Code"
     End If
     ddLocale.DataBind()
+    ddLocale.Items.Insert(0, New ListItem(LocalizeString("DefaultLocale"), ""))
+    rowLocale.Visible = CBool(IsMultiLingualSite And Not Blog.FullLocalization)
 
     ' Buttons
     If BlogId > -1 Then
@@ -178,12 +174,9 @@ Public Class PostEdit
 
     Else
 
-     Try
-      ddLocale.Items.FindByValue(Blog.Locale).Selected = True
-     Catch ex As Exception
-     End Try
+     ddLocale.Items.FindByValue("").Selected = True
      ' Publishing
-     chkAllowComments.Checked = Blog.AllowComments
+     chkAllowComments.Checked = Blog.Permissions.ContainsPermissionKey("ADDCOMMENT")
      ' Date
      litTimezone.Text = UiTimeZone.DisplayName
      Dim publishDate As Date = UtcToLocalTime(DateTime.Now.ToUniversalTime, UiTimeZone)
@@ -215,11 +208,6 @@ Public Class PostEdit
    If Page.IsValid = True Then
 
     If Post Is Nothing Then Post = New PostInfo
-    If BlogId = -1 OrElse Blog.BlogID <> ddBlog.SelectedValue.ToInt Then
-     BlogId = ddBlog.SelectedValue.ToInt
-     Blog = BlogsController.GetBlog(BlogId, UserId, Locale)
-     Security = New Modules.Blog.Security.ContextSecurity(Settings.ModuleId, TabId, Blog, UserInfo)
-    End If
     If ContentItemId = -1 And Not Security.CanAddPost Then Throw New Exception("You can't add posts to this blog")
     If ContentItemId <> -1 And Not Security.CanEditPost Then Throw New Exception("You're not allowed to edit this post")
 
@@ -253,7 +241,11 @@ Public Class PostEdit
     Post.Terms.Clear()
     Post.Terms.AddRange(terms)
 
-    Post.Locale = ddLocale.SelectedValue
+    If IsMultiLingualSite And Not Blog.FullLocalization Then
+     Post.Locale = ddLocale.SelectedValue
+    Else
+     Post.Locale = ""
+    End If
 
     ' Image
     Dim saveDir As String = GetPostDirectoryMapPath(Post)
@@ -348,18 +340,6 @@ Public Class PostEdit
   pnlCopyright.Visible = chkDisplayCopyright.Checked
   If pnlCopyright.Visible Then
    txtCopyright.Text = CreateCopyRight()
-  End If
- End Sub
-
- Private Sub ddBlog_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles ddBlog.SelectedIndexChanged
-  Blog = BlogsController.GetBlog(ddBlog.SelectedItem.Value.ToInt, UserId, Locale)
-  Security = New Modules.Blog.Security.ContextSecurity(Settings.ModuleId, TabId, Blog, UserInfo)
-  If Blog.MustApproveGhostPosts AndAlso Not Security.CanApprovePost Then
-   chkPublished.Checked = False
-   chkPublished.Enabled = False
-  End If
-  If ContentItemId = -1 Then
-   chkAllowComments.Checked = Blog.AllowComments
   End If
  End Sub
 

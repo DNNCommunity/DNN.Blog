@@ -32,7 +32,7 @@ Namespace Controls
    txtMain.ID = Me.ID & "_txtMain"
    td.Controls.Add(txtMain)
 
-   If SupportedLocales.Count > 1 Then
+   If SupportedLocales.Count > 1 And ShowTranslations Then
     td = New TableCell
     td.CssClass = CssPrefix & "defflag"
     tr.Cells.Add(td)
@@ -153,19 +153,21 @@ Namespace Controls
     DefaultText = txtMain.Text
    Catch ex As Exception
    End Try
-   For Each localeCode As String In SupportedLocales
-    If Not localeCode = DefaultLanguage Then
-     Try
-      Dim txtBox As TextBox = CType(pnlContent.FindControlByID(Me.ID & "_txt" & localeCode), TextBox)
-      If LocalizedTexts.ContainsKey(localeCode) Then
-       LocalizedTexts(localeCode) = txtBox.Text.Trim
-      Else
-       LocalizedTexts.Add(localeCode, txtBox.Text.Trim)
-      End If
-     Catch ex As Exception
-     End Try
-    End If
-   Next
+   If ShowTranslations Then
+    For Each localeCode As String In SupportedLocales
+     If Not localeCode = DefaultLanguage Then
+      Try
+       Dim txtBox As TextBox = CType(pnlContent.FindControlByID(Me.ID & "_txt" & localeCode), TextBox)
+       If LocalizedTexts.ContainsKey(localeCode) Then
+        LocalizedTexts(localeCode) = txtBox.Text.Trim
+       Else
+        LocalizedTexts.Add(localeCode, txtBox.Text.Trim)
+       End If
+      Catch ex As Exception
+      End Try
+     End If
+    Next
+   End If
    JustUpdated = True
 
   End Sub
@@ -175,14 +177,16 @@ Namespace Controls
     txtMain.Text = DefaultText
    Catch ex As Exception
    End Try
-   For Each localeCode As String In SupportedLocales
-    If Not localeCode = DefaultLanguage Then
-     Try
-      CType(pnlContent.FindControlByID(Me.ID & "_txt" & localeCode), TextBox).Text = LocalizedTexts(localeCode)
-     Catch ex As Exception
-     End Try
-    End If
-   Next
+   If ShowTranslations Then
+    For Each localeCode As String In SupportedLocales
+     If Not localeCode = DefaultLanguage Then
+      Try
+       CType(pnlContent.FindControlByID(Me.ID & "_txt" & localeCode), TextBox).Text = LocalizedTexts(localeCode)
+      Catch ex As Exception
+      End Try
+     End If
+    Next
+   End If
   End Sub
 #End Region
 

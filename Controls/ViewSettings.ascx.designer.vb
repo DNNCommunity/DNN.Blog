@@ -85,5 +85,23 @@ Namespace Controls
   '''To modify move field declaration from designer file to code-behind file.
   '''</remarks>
   Protected WithEvents chkShowComments As Global.System.Web.UI.WebControls.CheckBox
+
+  '''<summary>
+  '''lblShowAllLocales control.
+  '''</summary>
+  '''<remarks>
+  '''Auto-generated field.
+  '''To modify move field declaration from designer file to code-behind file.
+  '''</remarks>
+  Protected WithEvents lblShowAllLocales As Global.System.Web.UI.UserControl
+
+  '''<summary>
+  '''chkShowAllLocales control.
+  '''</summary>
+  '''<remarks>
+  '''Auto-generated field.
+  '''To modify move field declaration from designer file to code-behind file.
+  '''</remarks>
+  Protected WithEvents chkShowAllLocales As Global.System.Web.UI.WebControls.CheckBox
  End Class
 End Namespace

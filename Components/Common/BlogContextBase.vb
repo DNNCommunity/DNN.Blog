@@ -49,6 +49,7 @@ Namespace Common
     Me.SearchTitle = contextBase.SearchTitle
     Me.SearchContents = contextBase.SearchContents
     Me.SearchUnpublished = contextBase.SearchUnpublished
+    Me.IsMultiLingualSite = contextBase.IsMultiLingualSite
     Me.ShowLocale = contextBase.ShowLocale
     Me.Locale = contextBase.Locale
     Me.Vocabulary = contextBase.Vocabulary
@@ -71,6 +72,7 @@ Namespace Common
   Public Property SearchTitle As Boolean = True
   Public Property SearchContents As Boolean = False
   Public Property SearchUnpublished As Boolean = False
+  Public Property IsMultiLingualSite As Boolean = False
   Public Property ShowLocale As String = ""
   Public Property Locale As String = ""
 

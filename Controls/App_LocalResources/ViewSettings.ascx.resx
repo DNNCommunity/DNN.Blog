@@ -144,4 +144,10 @@
   <data name="lblShowComments.Text" xml:space="preserve">
     <value>Show Comments</value>
   </data>
+  <data name="lblShowAllLocales.Help" xml:space="preserve">
+    <value>If selected then posts in all languages will be shown regardless of the user's selection</value>
+  </data>
+  <data name="lblShowAllLocales.Text" xml:space="preserve">
+    <value>Show All Languages</value>
+  </data>
 </root>

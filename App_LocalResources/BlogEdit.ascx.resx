@@ -150,14 +150,8 @@
   <data name="valTitle.ErrorMessage" xml:space="preserve">
     <value>Title is required</value>
   </data>
-  <data name="lblAllowAnonymousComments.Text" xml:space="preserve">
-    <value>Comments by Unauthenticated Users</value>
-  </data>
   <data name="lblMetaWeblogNotAvailable.Text" xml:space="preserve">
     <value>MetaWeblog clients integration has been disabled</value>
-  </data>
-  <data name="lblAllowAnonymousComments.Help" xml:space="preserve">
-    <value>These are users who are either not logged into the website or they are not members of the community (in other words, anonymous).</value>
   </data>
   <data name="lblPublic.Help" xml:space="preserve">
     <value>If checked, site visitors will be able to view your blog Posts (if they can view the blog page/module). </value>
@@ -170,12 +164,6 @@
   </data>
   <data name="ControlTitle_blogedit.Text" xml:space="preserve">
     <value>Edit Blog</value>
-  </data>
-  <data name="lblAllowComments.Help" xml:space="preserve">
-    <value>If checked, registered users will be permitted to post comments (how this is done is controlled at the module level).</value>
-  </data>
-  <data name="lblAllowComments.Text" xml:space="preserve">
-    <value>Allow Comments</value>
   </data>
   <data name="cmdImageRemove.Text" xml:space="preserve">
     <value>Remove Image</value>
@@ -227,5 +215,11 @@
   </data>
   <data name="lblIncludeAuthorInFeed.Text" xml:space="preserve">
     <value>Include Author in Rss Feed</value>
+  </data>
+  <data name="lblFullLocalization.Help" xml:space="preserve">
+    <value>When checked every post is assumed to be translated into all portal languages and the user will see edit boxes for title, summary and post for every language. If left unchecked every blog post can be labeled in its own language and will not have translations.</value>
+  </data>
+  <data name="lblFullLocalization.Text" xml:space="preserve">
+    <value>Full Localization</value>
   </data>
 </root>

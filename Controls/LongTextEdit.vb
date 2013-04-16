@@ -47,7 +47,7 @@ Namespace Controls
     td.Controls.Add(txtMain)
    End If
 
-   If SupportedLocales.Count > 1 Then
+   If SupportedLocales.Count > 1 And ShowTranslations Then
     ' Create max/min cell
     td = New TableCell
     td.CssClass = CssPrefix & "defflag"
@@ -139,28 +139,30 @@ Namespace Controls
     End If
    Catch ex As Exception
    End Try
-   For Each localeCode As String In SupportedLocales
-    If Not localeCode = DefaultLanguage Then
-     Try
-      If Me.ShowRichTextBox Then
-       Dim txtBox As DotNetNuke.UI.UserControls.TextEditor = CType(pnlContent.FindControlByID(Me.ID & "_txt" & localeCode), DotNetNuke.UI.UserControls.TextEditor)
-       If LocalizedTexts.ContainsKey(localeCode) Then
-        LocalizedTexts(localeCode) = CStr(txtBox.Text)
+   If ShowTranslations Then
+    For Each localeCode As String In SupportedLocales
+     If Not localeCode = DefaultLanguage Then
+      Try
+       If Me.ShowRichTextBox Then
+        Dim txtBox As DotNetNuke.UI.UserControls.TextEditor = CType(pnlContent.FindControlByID(Me.ID & "_txt" & localeCode), DotNetNuke.UI.UserControls.TextEditor)
+        If LocalizedTexts.ContainsKey(localeCode) Then
+         LocalizedTexts(localeCode) = CStr(txtBox.Text)
+        Else
+         LocalizedTexts.Add(localeCode, CStr(txtBox.Text))
+        End If
        Else
-        LocalizedTexts.Add(localeCode, CStr(txtBox.Text))
+        Dim txtBox As TextBox = CType(pnlContent.FindControlByID(Me.ID & "_txt" & localeCode), TextBox)
+        If LocalizedTexts.ContainsKey(localeCode) Then
+         LocalizedTexts(localeCode) = txtBox.Text.Trim
+        Else
+         LocalizedTexts.Add(localeCode, txtBox.Text.Trim)
+        End If
        End If
-      Else
-       Dim txtBox As TextBox = CType(pnlContent.FindControlByID(Me.ID & "_txt" & localeCode), TextBox)
-       If LocalizedTexts.ContainsKey(localeCode) Then
-        LocalizedTexts(localeCode) = txtBox.Text.Trim
-       Else
-        LocalizedTexts.Add(localeCode, txtBox.Text.Trim)
-       End If
-      End If
-     Catch ex As Exception
-     End Try
-    End If
-   Next
+      Catch ex As Exception
+      End Try
+     End If
+    Next
+   End If
    JustUpdated = True
 
   End Sub
@@ -176,15 +178,17 @@ Namespace Controls
     End If
    Catch ex As Exception
    End Try
-   For Each localeCode As String In SupportedLocales
-    If Not localeCode = DefaultLanguage Then
-     If Me.ShowRichTextBox Then
-      CType(pnlContent.FindControlByID(Me.ID & "_txt" & localeCode), DotNetNuke.UI.UserControls.TextEditor).Text = LocalizedTexts(localeCode)
-     Else
-      CType(pnlContent.FindControlByID(Me.ID & "_txt" & localeCode), TextBox).Text = LocalizedTexts(localeCode)
+   If ShowTranslations Then
+    For Each localeCode As String In SupportedLocales
+     If Not localeCode = DefaultLanguage Then
+      If Me.ShowRichTextBox Then
+       CType(pnlContent.FindControlByID(Me.ID & "_txt" & localeCode), DotNetNuke.UI.UserControls.TextEditor).Text = LocalizedTexts(localeCode)
+      Else
+       CType(pnlContent.FindControlByID(Me.ID & "_txt" & localeCode), TextBox).Text = LocalizedTexts(localeCode)
+      End If
      End If
-    End If
-   Next
+    Next
+   End If
   End Sub
 #End Region
 

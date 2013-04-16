@@ -219,4 +219,7 @@
   <data name="ServerErrorWithDescription.Text" xml:space="preserve">
     <value>An error occurred while processing the request: </value>
   </data>
+  <data name="VIEWCOMMENT.Permission" xml:space="preserve">
+    <value>View Comments</value>
+  </data>
 </root>

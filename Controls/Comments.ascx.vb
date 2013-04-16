@@ -12,7 +12,6 @@ Namespace Controls
 
 #Region " Private Properties "
   Private Property SelectedCommentId As Integer = -1
-  Public Property AllowAnonymousComments As Boolean = False
 #End Region
 
 #Region " Event Handlers "
@@ -30,9 +29,7 @@ Namespace Controls
    If Not Me.IsPostBack Then
     BindCommentsList()
    End If
-   If Not AllowAnonymousComments AndAlso UserInfo.UserID = -1 Then
-    pnlAddComment.Visible = False
-   End If
+   pnlAddComment.Visible = Security.CanAddComment And Post IsNot Nothing
   End Sub
 
   Private Sub Page_PreRender(sender As Object, e As System.EventArgs) Handles Me.PreRender
@@ -43,7 +40,7 @@ Namespace Controls
    Try
     valComment.Enabled = True
 
-    If (txtComment.Text.Length > 0) Then
+    If Security.CanAddComment And (txtComment.Text.Length > 0) Then
      Dim objComment As New CommentInfo
 
      If SelectedCommentId > -1 Then

@@ -65,6 +65,7 @@ Namespace Controls
    End Try
    chkShowManagementPanel.Checked = ViewSettings.ShowManagementPanel
    chkShowComments.Checked = ViewSettings.ShowComments
+   chkShowAllLocales.Checked = ViewSettings.ShowAllLocales
    Try
     ddTemplate.Items.FindByValue(ViewSettings.Template).Selected = True
    Catch ex As Exception
@@ -77,6 +78,7 @@ Namespace Controls
    ViewSettings.BlogModuleId = CInt(ddBlogModuleId.SelectedValue)
    ViewSettings.ShowManagementPanel = chkShowManagementPanel.Checked
    ViewSettings.ShowComments = chkShowComments.Checked
+   ViewSettings.ShowAllLocales = chkShowAllLocales.Checked
    ViewSettings.Template = ddTemplate.SelectedValue
    ViewSettings.UpdateSettings()
 

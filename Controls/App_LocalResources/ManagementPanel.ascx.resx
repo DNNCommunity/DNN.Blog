@@ -189,4 +189,7 @@
   <data name="cmdAdmin.Text" xml:space="preserve">
     <value>Admin</value>
   </data>
+  <data name="BlogChoose.Text" xml:space="preserve">
+    <value>Choose blog to post to</value>
+  </data>
 </root>

@@ -1,11 +1,15 @@
-﻿Imports DotNetNuke.Services.Localization.Localization
+﻿Imports System.Linq
+Imports DotNetNuke.Services.Localization.Localization
 Imports DotNetNuke.Modules.Blog.Common.Globals
+Imports DotNetNuke.Modules.Blog.Entities.Blogs
 
 Namespace Controls
  Public Class ManagementPanel
   Inherits BlogContextBase
 
   Public Property RssLink As String = ""
+  Public Property BlogSelectListHtml As String = ""
+  Public Property NrBlogs As Integer = 0
 
   Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
@@ -52,6 +56,22 @@ Namespace Controls
     RssLink &= String.Format("&search={0}&t={1}&c={2}", HttpUtility.UrlEncode(SearchString), SearchTitle, SearchContents)
    End If
    If ShowLocale <> "" Then RssLink &= String.Format("&language={0}", ShowLocale)
+   If Security.CanAddPost Then
+    BlogSelectListHtml = "<select id=""ddBlog"">"
+    Dim blogList As IEnumerable(Of BlogInfo) = Nothing
+    If Security.IsEditor Then
+     blogList = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, Locale).Values
+    Else
+     blogList = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, Locale).Values.Where(Function(b)
+                                                                                                  Return b.OwnerUserId = UserId Or (b.CanAdd And Security.CanAddPost) Or (b.CanEdit And Security.CanEditPost And ContentItemId > -1)
+                                                                                                 End Function)
+    End If
+    NrBlogs = blogList.Count
+    For Each b As BlogInfo In blogList
+     BlogSelectListHtml &= String.Format("<option value=""{0}"">{1}</option>", b.BlogID, b.LocalizedTitle)
+    Next
+    BlogSelectListHtml &= "</select>"
+   End If
 
   End Sub
 

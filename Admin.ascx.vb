@@ -35,14 +35,11 @@ Public Class Admin
  Private Sub cmdUpdateSettings_Click(sender As Object, e As System.EventArgs) Handles cmdUpdate.Click
   Settings.AllowAttachments = chkAllowAttachments.Checked
   Settings.SummaryModel = CType(ddSummaryModel.SelectedValue.ToInt, SummaryType)
-  Settings.LocalizationModel = CType(ddSummaryModel.SelectedValue.ToInt, LocalizationType)
   Settings.AllowMultipleCategories = chkAllowMultipleCategories.Checked
   Settings.AllowWLW = chkAllowWLW.Checked
   Settings.WLWRecentPostsMax = txtWLWRecentPostsMax.Text.ToInt
   Settings.AllowAllLocales = chkAllowAllLocales.Checked
-  Settings.ShowAllLocales = chkShowAllLocales.Checked
   Settings.VocabularyId = ddVocabularyId.SelectedValue.ToInt
-  Settings.BloggersCanEditCategories = chkBloggersCanEditCategories.Checked
   Settings.RssAllowContentInFeed = chkRssAllowContentInFeed.Checked
   Settings.RssDefaultCopyright = txtRssDefaultCopyright.Text
   Settings.RssDefaultNrItems = Integer.Parse(txtRssDefaultNrItems.Text)
@@ -93,15 +90,10 @@ Public Class Admin
    ddSummaryModel.Items.FindByValue(CInt(Settings.SummaryModel).ToString).Selected = True
   Catch ex As Exception
   End Try
-  Try
-   ddLocalizationModel.Items.FindByValue(CInt(Settings.LocalizationModel).ToString).Selected = True
-  Catch ex As Exception
-  End Try
-  ddLocalizationModel.Enabled = CBool((New DotNetNuke.Services.Localization.LocaleController).GetLocales(PortalId).Count > 1)
+  cmdEditTagsML.Enabled = IsMultiLingualSite
   chkAllowMultipleCategories.Checked = Settings.AllowMultipleCategories
   chkAllowWLW.Checked = Settings.AllowWLW
   chkAllowAllLocales.Checked = Settings.AllowAllLocales
-  chkShowAllLocales.Checked = Settings.ShowAllLocales
 
   chkRssAllowContentInFeed.Checked = Settings.RssAllowContentInFeed
   txtRssDefaultCopyright.Text = Settings.RssDefaultCopyright
@@ -121,7 +113,6 @@ Public Class Admin
    ddVocabularyId.Items.FindByValue(Settings.VocabularyId.ToString).Selected = True
   Catch ex As Exception
   End Try
-  chkBloggersCanEditCategories.Checked = Settings.BloggersCanEditCategories
 
   treeState.Value = DotNetNuke.Modules.Blog.Entities.Terms.TermsController.GetCategoryTreeAsJson(Vocabulary)
 

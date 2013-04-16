@@ -72,7 +72,8 @@ Namespace Common
    If ContentItemId > -1 Then params.Add("Post=" & ContentItemId.ToString)
    If TermId > -1 Then params.Add("Term=" & TermId.ToString)
    ModuleUrls = New ModuleUrls(TabId, BlogId, ContentItemId, TermId)
-   If Not Settings.ShowAllLocales Then
+   IsMultiLingualSite = CBool((New DotNetNuke.Services.Localization.LocaleController).GetLocales(PortalId).Count > 1)
+   If Not ViewSettings.ShowAllLocales Then
     ShowLocale = Locale
    End If
 

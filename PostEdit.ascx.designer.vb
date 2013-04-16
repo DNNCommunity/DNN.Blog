@@ -14,24 +14,6 @@ Option Explicit On
 Partial Public Class PostEdit
 
  '''<summary>
- '''lblBlog control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents lblBlog As Global.System.Web.UI.UserControl
-
- '''<summary>
- '''ddBlog control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents ddBlog As Global.System.Web.UI.WebControls.DropDownList
-
- '''<summary>
  '''lblTitle control.
  '''</summary>
  '''<remarks>
@@ -219,6 +201,15 @@ Partial Public Class PostEdit
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
  Protected WithEvents litTimezone As Global.System.Web.UI.WebControls.Literal
+
+ '''<summary>
+ '''rowLocale control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents rowLocale As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
  '''<summary>
  '''lblLocale control.

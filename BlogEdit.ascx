@@ -16,9 +16,13 @@
     <dnn:Label ID="lblDescription" runat="server" controlname="txtDescription" suffix=":" />
     <blog:LongTextEdit id="txtDescription" runat="server" ShowRichTextBox="False" Width="520" TextBoxWidth="450" CssClass="blog_rte" />
    </div>
-   <div class="dnnFormItem">
+   <div class="dnnFormItem" id="rowLocale" runat="server">
     <dnn:Label ID="lblLocale" runat="server" controlname="ddLocale" suffix=":" />
     <asp:DropDownList ID="ddLocale" runat="server" DataTextField="NativeName" />
+   </div>
+   <div class="dnnFormItem" id="rowFullLocalization" runat="server">
+    <dnn:Label ID="lblFullLocalization" runat="server" controlname="chkPublic" suffix=":" />
+    <asp:CheckBox ID="chkFullLocalization" runat="server" />
    </div>
    <div class="dnnFormItem">
     <dnn:Label ID="lblImage" runat="server" controlname="fileImage" suffix=":" />
@@ -36,14 +40,6 @@
   <h2 id="dnnSitePanel-CommentOptions" class="dnnFormSectionHead">
    <%=LocalizeString("lblCommentOptions")%></h2>
   <fieldset>
-   <asp:Panel ID="pnlComments" runat="server" CssClass="dnnFormItem">
-    <dnn:Label ID="lblAllowComments" runat="server" controlname="chkAllowComments" suffix=":" />
-    <asp:CheckBox ID="chkAllowComments" runat="server" />
-   </asp:Panel>
-   <asp:Panel ID="pnlAnonymousComments" runat="server" CssClass="dnnFormItem">
-    <dnn:Label ID="lblAllowAnonymousComments" runat="server" controlname="chkAllowAnonymousComments" suffix=":" />
-    <asp:CheckBox ID="chkAllowAnonymousComments" runat="server" />
-   </asp:Panel>
    <div class="dnnFormItem">
     <dnn:Label ID="lblSyndicate" runat="server" controlname="chkSyndicate" suffix=":" />
     <asp:CheckBox ID="chkSyndicate" runat="server" />

@@ -50,6 +50,15 @@ Partial Public Class BlogEdit
  Protected WithEvents txtDescription As Global.DotNetNuke.Modules.Blog.Controls.LongTextEdit
 
  '''<summary>
+ '''rowLocale control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents rowLocale As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+ '''<summary>
  '''lblLocale control.
  '''</summary>
  '''<remarks>
@@ -66,6 +75,33 @@ Partial Public Class BlogEdit
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
  Protected WithEvents ddLocale As Global.System.Web.UI.WebControls.DropDownList
+
+ '''<summary>
+ '''rowFullLocalization control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents rowFullLocalization As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+ '''<summary>
+ '''lblFullLocalization control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lblFullLocalization As Global.System.Web.UI.UserControl
+
+ '''<summary>
+ '''chkFullLocalization control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents chkFullLocalization As Global.System.Web.UI.WebControls.CheckBox
 
  '''<summary>
  '''lblImage control.
@@ -120,60 +156,6 @@ Partial Public Class BlogEdit
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
  Protected WithEvents chkPublic As Global.System.Web.UI.WebControls.CheckBox
-
- '''<summary>
- '''pnlComments control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents pnlComments As Global.System.Web.UI.WebControls.Panel
-
- '''<summary>
- '''lblAllowComments control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents lblAllowComments As Global.System.Web.UI.UserControl
-
- '''<summary>
- '''chkAllowComments control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents chkAllowComments As Global.System.Web.UI.WebControls.CheckBox
-
- '''<summary>
- '''pnlAnonymousComments control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents pnlAnonymousComments As Global.System.Web.UI.WebControls.Panel
-
- '''<summary>
- '''lblAllowAnonymousComments control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents lblAllowAnonymousComments As Global.System.Web.UI.UserControl
-
- '''<summary>
- '''chkAllowAnonymousComments control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents chkAllowAnonymousComments As Global.System.Web.UI.WebControls.CheckBox
 
  '''<summary>
  '''lblSyndicate control.

@@ -14,6 +14,7 @@ Namespace Common
   Public Property ShowManagementPanel As Boolean = True
   Public Property ShowComments As Boolean = True
   Public Property BlogModuleId As Integer = -1
+  Public Property ShowAllLocales As Boolean = True
 #End Region
 
 #Region " Constructors "
@@ -25,6 +26,7 @@ Namespace Common
    _allSettings.ReadValue("ShowManagementPanel", ShowManagementPanel)
    _allSettings.ReadValue("ShowComments", ShowComments)
    _allSettings.ReadValue("BlogModuleId", BlogModuleId)
+   _allSettings.ReadValue("ShowAllLocales", ShowAllLocales)
 
   End Sub
 
@@ -51,6 +53,7 @@ Namespace Common
    objModules.UpdateTabModuleSetting(tabModuleId, "ShowManagementPanel", ShowManagementPanel.ToString)
    objModules.UpdateTabModuleSetting(tabModuleId, "ShowComments", ShowComments.ToString)
    objModules.UpdateTabModuleSetting(tabModuleId, "BlogModuleId", BlogModuleId.ToString)
+   objModules.UpdateTabModuleSetting(tabModuleId, "ShowAllLocales", ShowAllLocales.ToString)
 
    Dim CacheKey As String = "TabModuleSettings" & tabModuleId.ToString
    DotNetNuke.Common.Utilities.DataCache.SetCache(CacheKey, Me)

@@ -35,10 +35,6 @@
 		<asp:DropDownList ID="ddVocabularyId" runat="server" DataValueField="VocabularyID" DataTextField="Name" />
 	</div>
 	<div class="dnnFormItem">
-		<dnn:label id="lblBloggersCanEditCategories" runat="server" controlname="chkBloggersCanEditCategories" suffix=":" />
-		<asp:CheckBox ID="chkBloggersCanEditCategories" runat="server" />
-	</div>
-	<div class="dnnFormItem">
 		<dnn:label id="lblWLWRecentPostsMax" runat="server" controlname="txtWLWRecentPostsMax" suffix=":" />
 		<asp:TextBox runat="server" ID="txtWLWRecentPostsMax" />
 	</div>
@@ -46,20 +42,8 @@
 <h2 id="H2" class="dnnFormSectionHead"><a href="" class="dnnFormSectionExpanded"><%= LocalizeString("Localization")%></a></h2>
 <fieldset>
 	<div class="dnnFormItem">
-		<dnn:label id="lblLocalizationModel" runat="server" controlname="ddLocalizationModel" suffix=":" />
-  <asp:DropDownList ID="ddLocalizationModel" runat="server">
-   <asp:ListItem Value="0" ResourceKey="None.Opt" />
-   <asp:ListItem Value="1" ResourceKey="Loose.Opt" />
-   <asp:ListItem Value="2" ResourceKey="Strict.Opt" />
-  </asp:DropDownList>
-	</div>
-	<div class="dnnFormItem">
 		<dnn:label id="lblAllowAllLocales" runat="server" controlname="chkAllowAllLocales" suffix=":" />
 		<asp:CheckBox ID="chkAllowAllLocales" runat="server" />
-	</div>
-	<div class="dnnFormItem">
-		<dnn:label id="lblShowAllLocales" runat="server" controlname="chkShowAllLocales" suffix=":" />
-		<asp:CheckBox ID="chkShowAllLocales" runat="server" />
 	</div>
 	<div class="dnnFormItem">
   <asp:LinkButton runat="server" ID="cmdEditTagsML" resourcekey="cmdEditTagsML" CssClass="dnnSecondaryAction" />

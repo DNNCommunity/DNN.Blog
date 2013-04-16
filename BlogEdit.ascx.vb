@@ -36,21 +36,25 @@ Public Class BlogEdit
    txtDescription.LocalizedTexts = Blog.DescriptionLocalizations
    txtDescription.InitialBind()
 
-   If Settings.AllowAllLocales Then
-    ddLocale.DataSource = System.Globalization.CultureInfo.GetCultures(Globalization.CultureTypes.SpecificCultures)
-    ddLocale.DataValueField = "Name"
+   If IsMultiLingualSite Then
+    If Settings.AllowAllLocales Then
+     ddLocale.DataSource = System.Globalization.CultureInfo.GetCultures(Globalization.CultureTypes.SpecificCultures)
+     ddLocale.DataValueField = "Name"
+    Else
+     ddLocale.DataSource = DotNetNuke.Services.Localization.LocaleController.Instance.GetLocales(PortalId).Values
+     ddLocale.DataValueField = "Code"
+    End If
+    ddLocale.DataBind()
+    Try
+     ddLocale.Items.FindByValue(Blog.Locale).Selected = True
+    Catch ex As Exception
+    End Try
+    chkFullLocalization.Checked = Blog.FullLocalization
    Else
-    ddLocale.DataSource = DotNetNuke.Services.Localization.LocaleController.Instance.GetLocales(PortalId).Values
-    ddLocale.DataValueField = "Code"
+    rowLocale.Visible = False
+    rowFullLocalization.Visible = False
    End If
-   ddLocale.DataBind()
-   Try
-    ddLocale.Items.FindByValue(Blog.Locale).Selected = True
-   Catch ex As Exception
-   End Try
    chkPublic.Checked = Blog.Published
-   chkAllowComments.Checked = Blog.AllowComments
-   chkAllowAnonymousComments.Checked = Blog.AllowAnonymousComments
    chkSyndicate.Checked = Blog.Syndicated
    If Blog.SyndicationEmail Is Nothing Then
     txtSyndicationEmail.Text = ModuleContext.PortalSettings.UserInfo.Email
@@ -108,10 +112,13 @@ Public Class BlogEdit
      .TitleLocalizations = txtTitle.GetLocalizedTexts
      .Description = txtDescription.DefaultText
      .DescriptionLocalizations = txtDescription.GetLocalizedTexts
-     .Locale = ddLocale.SelectedValue
+     If IsMultiLingualSite Then
+      .Locale = ddLocale.SelectedValue
+      .FullLocalization = chkFullLocalization.Checked
+     Else
+      .Locale = PortalSettings.DefaultLanguage
+     End If
      .Published = chkPublic.Checked
-     .AllowComments = chkAllowComments.Checked
-     .AllowAnonymousComments = chkAllowAnonymousComments.Checked
      .Syndicated = chkSyndicate.Checked
      .SyndicationEmail = txtSyndicationEmail.Text
      .IncludeImagesInFeed = chkIncludeImagesInFeed.Checked
