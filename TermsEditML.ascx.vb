@@ -11,7 +11,6 @@ Public Class TermsEditML
  Public Property Columns As String = ""
 
  Private Sub Page_Init1(sender As Object, e As System.EventArgs) Handles Me.Init
-  AddBlogService()
   ClientResourceManager.RegisterScript(Page, ResolveUrl("~/DesktopModules/Blog/js/jquery.handsontable.js"))
   ClientResourceManager.RegisterStyleSheet(Page, ResolveUrl("~/DesktopModules/Blog/css/jquery.handsontable.css"), Web.Client.FileOrder.Css.ModuleCss)
   Me.Request.Params.ReadValue("VocabularyId", VocabularyId)

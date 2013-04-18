@@ -10,10 +10,6 @@ Public Class Manage
 
  Private _totalPosts As Integer = -1
 
- Private Sub Page_Init1(sender As Object, e As System.EventArgs) Handles Me.Init
-  AddBlogService()
- End Sub
-
  Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
   If Not Security.CanDoSomethingWithPosts Then
