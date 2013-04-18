@@ -29,7 +29,6 @@ Namespace Common
 
  Public Class BlogModuleBase
   Inherits BlogContextBase
-  Implements IPropertyAccess
 
 #Region " Event Handlers "
   Protected Sub Page_Init(sender As Object, e As EventArgs) Handles Me.Init
@@ -77,42 +76,9 @@ Namespace Common
     ShowLocale = Locale
    End If
 
+   AddBlogService()
+
   End Sub
-#End Region
-
-#Region " IPropertyAccess Implementation "
-  Public Function GetProperty(strPropertyName As String, strFormat As String, formatProvider As System.Globalization.CultureInfo, AccessingUser As DotNetNuke.Entities.Users.UserInfo, AccessLevel As DotNetNuke.Services.Tokens.Scope, ByRef PropertyNotFound As Boolean) As String Implements DotNetNuke.Services.Tokens.IPropertyAccess.GetProperty
-   Dim OutputFormat As String = String.Empty
-   Dim portalSettings As DotNetNuke.Entities.Portals.PortalSettings = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings()
-   If strFormat = String.Empty Then
-    OutputFormat = "D"
-   Else
-    OutputFormat = strFormat
-   End If
-   Select Case strPropertyName.ToLower
-    Case "blogid"
-     Return (Me.BlogID.ToString(OutputFormat, formatProvider))
-    Case "Postid", "contentitemid", "postid", "post"
-     Return (Me.ContentItemId.ToString(OutputFormat, formatProvider))
-    Case "blogselected"
-     Return CBool(BlogId > -1).ToString(formatProvider)
-    Case "postselected"
-     Return CBool(ContentItemId > -1).ToString(formatProvider)
-    Case Else
-     If Me.Request.Params(strPropertyName) IsNot Nothing Then
-      Return Me.Request.Params(strPropertyName)
-     Else
-      PropertyNotFound = True
-     End If
-   End Select
-   Return DotNetNuke.Common.Utilities.Null.NullString
-  End Function
-
-  Public ReadOnly Property Cacheability() As DotNetNuke.Services.Tokens.CacheLevel Implements DotNetNuke.Services.Tokens.IPropertyAccess.Cacheability
-   Get
-    Return CacheLevel.fullyCacheable
-   End Get
-  End Property
 #End Region
 
 #Region " Public Methods "

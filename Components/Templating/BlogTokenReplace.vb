@@ -11,7 +11,7 @@ Namespace Templating
  Public Class BlogTokenReplace
   Inherits GenericTokenReplace
 
-  Public Sub New(blogModule As BlogModuleBase, settings As Common.ModuleSettings)
+  Public Sub New(blogModule As BlogContextBase, settings As Common.ModuleSettings)
    MyBase.new(Scope.DefaultSettings)
 
    Me.ModuleInfo = blogModule.ModuleConfiguration
@@ -32,7 +32,7 @@ Namespace Templating
 
   End Sub
 
-  Public Sub New(blogModule As BlogModuleBase, settings As Common.ModuleSettings, blog As BlogInfo)
+  Public Sub New(blogModule As BlogContextBase, settings As Common.ModuleSettings, blog As BlogInfo)
    MyBase.new(Scope.DefaultSettings)
 
    Me.PrimaryObject = blog
@@ -53,7 +53,7 @@ Namespace Templating
 
   End Sub
 
-  Public Sub New(blogModule As BlogModuleBase, settings As Common.ModuleSettings, Post As PostInfo)
+  Public Sub New(blogModule As BlogContextBase, settings As Common.ModuleSettings, Post As PostInfo)
    MyBase.new(Scope.DefaultSettings)
 
    Me.PrimaryObject = Post
@@ -72,7 +72,7 @@ Namespace Templating
 
   End Sub
 
-  Public Sub New(blogModule As BlogModuleBase, settings As Common.ModuleSettings, Post As PostInfo, term As TermInfo)
+  Public Sub New(blogModule As BlogContextBase, settings As Common.ModuleSettings, Post As PostInfo, term As TermInfo)
    MyBase.new(Scope.DefaultSettings)
 
    Me.PrimaryObject = term
@@ -97,7 +97,7 @@ Namespace Templating
 
   End Sub
 
-  Public Sub New(blogModule As BlogModuleBase, settings As Common.ModuleSettings, Post As PostInfo, comment As CommentInfo)
+  Public Sub New(blogModule As BlogContextBase, settings As Common.ModuleSettings, Post As PostInfo, comment As CommentInfo)
    MyBase.new(Scope.DefaultSettings)
 
    Me.PrimaryObject = comment

@@ -31,13 +31,16 @@ Namespace Templating
   Public Property TemplatePath As String = ""
   Public Property TemplateMapPath As String = ""
   Public Property DefaultReplacer As GenericTokenReplace
+  Public Property StartTemplate As String = "Template.html"
   Private Property ViewPath As String = ""
   Private Property ViewMapPath As String = ""
 #End Region
 
 #Region " Overrides "
   Protected Overrides Sub Render(ByVal writer As System.Web.UI.HtmlTextWriter)
-   writer.Write(Template.ReplaceContents)
+   If Template IsNot Nothing Then
+    writer.Write(Template.ReplaceContents)
+   End If
   End Sub
 
   Public Overrides Sub DataBind()
@@ -51,9 +54,9 @@ Namespace Templating
 
    RaiseEvent GetData("", params, dataSrc, args, Nothing)
    If dataSrc.Count > 0 Then
-    Template = New Template(ViewMapPath, "Template.html", dataSrc(0), Nothing)
+    Template = New Template(ViewMapPath, StartTemplate, dataSrc(0), Nothing)
    Else
-    Template = New Template(ViewMapPath, "Template.html", DefaultReplacer, Nothing)
+    Template = New Template(ViewMapPath, StartTemplate, DefaultReplacer, Nothing)
    End If
    AddHandler Template.GetData, AddressOf Template_GetData
 
