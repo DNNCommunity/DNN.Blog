@@ -6,6 +6,7 @@ Imports DotNetNuke.Modules.Blog.Templating
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
 Imports DotNetNuke.Modules.Blog.Entities.Posts
 Imports DotNetNuke.Modules.Blog.Entities.Terms
+Imports DotNetNuke.Modules.Blog.Entities.Comments
 
 Public Class Blog
  Inherits BlogModuleBase
@@ -100,6 +101,13 @@ Public Class Blog
     End If
     _usePaging = False
 
+   Case "allterms"
+
+    For Each t As TermInfo In TermsController.GetTermsByModule(Settings.ModuleId, Locale)
+     Replacers.Add(New BlogTokenReplace(Me, Settings, Nothing, t))
+    Next
+    _usePaging = False
+
    Case "keywords", "tags"
 
     If callingObject IsNot Nothing AndAlso TypeOf callingObject Is PostInfo Then
@@ -117,6 +125,13 @@ Public Class Blog
     End If
     _usePaging = False
 
+   Case "allkeywords", "alltags"
+
+    For Each t As TermInfo In TermsController.GetTermsByModule(Settings.ModuleId, Locale).Where(Function(x) x.VocabularyId = 1).ToList
+     Replacers.Add(New BlogTokenReplace(Me, Settings, Nothing, t))
+    Next
+    _usePaging = False
+
    Case "categories"
 
     If callingObject IsNot Nothing AndAlso TypeOf callingObject Is PostInfo Then
@@ -130,6 +145,30 @@ Public Class Blog
     Else
      For Each t As TermInfo In TermsController.GetTermsByModule(Settings.ModuleId, Locale).Where(Function(x) x.VocabularyId <> 1).ToList
       Replacers.Add(New BlogTokenReplace(Me, Settings, Nothing, t))
+     Next
+    End If
+    _usePaging = False
+
+   Case "allcategories"
+
+    For Each t As TermInfo In TermsController.GetTermsByModule(Settings.ModuleId, Locale).Where(Function(x) x.VocabularyId <> 1).ToList
+     Replacers.Add(New BlogTokenReplace(Me, Settings, Nothing, t))
+    Next
+    _usePaging = False
+
+   Case "comments"
+
+    If callingObject IsNot Nothing AndAlso TypeOf callingObject Is PostInfo Then
+     For Each c As CommentInfo In CommentsController.GetCommentsByContentItem(CType(callingObject, PostInfo).ContentItemId, False)
+      Replacers.Add(New BlogTokenReplace(Me, Settings, Post, c))
+     Next
+    ElseIf Post IsNot Nothing Then
+     For Each c As CommentInfo In CommentsController.GetCommentsByContentItem(Post.ContentItemId, False)
+      Replacers.Add(New BlogTokenReplace(Me, Settings, Post, c))
+     Next
+    Else
+     For Each c As CommentInfo In CommentsController.GetCommentsByModule(ModuleId)
+      Replacers.Add(New BlogTokenReplace(Me, Settings, Post, c))
      Next
     End If
     _usePaging = False

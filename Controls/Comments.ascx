@@ -18,7 +18,7 @@
       <a href="<%# DotNetNuke.Common.Globals.UserProfileURL(DataBinder.Eval(Container.DataItem, "CreatedByUserID")) %>"><%# IIf(DataBinder.Eval(Container.DataItem, "CreatedByUserID") = -1, LocalizeString("Anonymous"), DataBinder.Eval(Container.DataItem, "DisplayName"))%>
       </a>
       &nbsp;
-      <abbr title="<%# CDATE(DataBinder.Eval(Container.DataItem, "CreatedOnDate")).ToString("u") %>" class="commenttimeago"></abbr>
+      <abbr title="<%# CDATE(DataBinder.Eval(Container.DataItem, "CreatedOnDate")).ToUniversalTime.ToString("u") %>" class="commenttimeago"></abbr>
      </div>
 					<div>
       <%# System.Text.RegularExpressions.Regex.Replace(DataBinder.Eval(Container.DataItem, "Comment"), "(?<!["">])((http|https|ftp)\://.+?)(?=\s|$)", "<a rel=""nofollow"" href=""$1"">$1</a>").Replace(System.Environment.NewLine, "<br />")%>

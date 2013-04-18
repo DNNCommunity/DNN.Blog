@@ -152,8 +152,16 @@ IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner
 DROP VIEW {databaseOwner}{objectQualifier}vw_Blog_BlogPermissions
 GO
 
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}vw_Blog_Blogs'))
+DROP VIEW {databaseOwner}{objectQualifier}vw_Blog_Blogs
+GO
+
 IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}vw_Blog_Comments'))
 DROP VIEW {databaseOwner}{objectQualifier}vw_Blog_Comments
+GO
+
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}vw_Blog_Posts'))
+DROP VIEW {databaseOwner}{objectQualifier}vw_Blog_Posts
 GO
 
 /******* FUNCTIONS *******/
