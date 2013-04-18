@@ -97,6 +97,10 @@ Public Class PostEdit
 
   Try
 
+   If Not Security.CanEditPost And Not Security.CanAddPost Then
+    Throw New Exception("You do not have access to this resource. Please check your login status.")
+   End If
+
    If Not Page.IsPostBack Then
 
     ' Categories

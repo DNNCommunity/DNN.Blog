@@ -112,6 +112,12 @@ Namespace Security
    End Get
   End Property
 
+  Public ReadOnly Property CanDoSomethingWithPosts As Boolean
+   Get
+    Return _canEdit Or _canAdd Or _canApprove Or UserIsAdmin
+   End Get
+  End Property
+
   Public ReadOnly Property UserIsAdmin As Boolean
    Get
     Return _userIsAdmin

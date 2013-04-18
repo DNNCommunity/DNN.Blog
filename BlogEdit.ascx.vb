@@ -26,6 +26,10 @@ Public Class BlogEdit
 
  Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
+  If Not Security.IsBlogger Then
+   Throw New Exception("You do not have access to this resource. Please check your login status.")
+  End If
+
   If Not Page.IsPostBack Then
    If Blog Is Nothing Then Blog = New BlogInfo ' initialize fields
 

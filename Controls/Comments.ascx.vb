@@ -1,4 +1,6 @@
-﻿Imports DotNetNuke.Entities.Users
+﻿Imports System.Linq
+
+Imports DotNetNuke.Entities.Users
 Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.Modules.Blog.Entities.Comments
@@ -12,6 +14,8 @@ Namespace Controls
 
 #Region " Private Properties "
   Private Property SelectedCommentId As Integer = -1
+  Private fulllocs As List(Of String) = {"pt-br", "zh-cn", "zh-tw"}.ToList
+  Private twoletterlocs As List(Of String) = {"ar", "bg", "bs", "ca", "cy", "cz", "da", "de", "el", "en", "es", "fa", "fi", "fr", "he", "hr", "hu", "hy", "id", "it", "ja", "ko", "mk", "nl", "no", "pl", "pt", "ro", "ru", "sk", "sv", "th", "tr", "uk", "uz"}.ToList
 #End Region
 
 #Region " Event Handlers "
@@ -20,6 +24,12 @@ Namespace Controls
    ViewState.ReadValue("SelectedCommentId", SelectedCommentId)
 
    CType(Me.Parent, BlogModuleBase).AddBlogService()
+
+   If fulllocs.Contains(Locale.ToLower) Then
+    Web.Client.ClientResourceManagement.ClientResourceManager.RegisterScript(Page, TemplateSourceDirectory + "/../js/time-ago-locales/jquery.timeago." & Locale.ToLower & ".js")
+   ElseIf twoletterlocs.Contains(Threading.Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.ToLower) Then
+    Web.Client.ClientResourceManagement.ClientResourceManager.RegisterScript(Page, TemplateSourceDirectory + "/../js/time-ago-locales/jquery.timeago." & Threading.Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.ToLower & ".js")
+   End If
    Web.Client.ClientResourceManagement.ClientResourceManager.RegisterScript(Page, TemplateSourceDirectory + "/../js/jquery.timeago.js")
 
   End Sub

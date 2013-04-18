@@ -18,6 +18,10 @@ Public Class Admin
 
  Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
+  If Not Security.IsEditor Then
+   Throw New Exception("You do not have access to this resource. Please check your login status.")
+  End If
+
   If Not Me.IsPostBack Then
    Me.DataBind()
   End If
