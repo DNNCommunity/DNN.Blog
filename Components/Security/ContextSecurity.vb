@@ -24,11 +24,14 @@ Imports DotNetNuke.Entities.Users
 Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
 Imports DotNetNuke.Modules.Blog.Security.Security
+Imports DotNetNuke.Services.Tokens
 
 Namespace Security
 
  Public Class ContextSecurity
-  Public Property IsOwner As Boolean = False
+  Implements IPropertyAccess
+
+#Region " Private Members "
   Private _canAdd As Boolean = False
   Private _canEdit As Boolean = False
   Private _canApprove As Boolean = False
@@ -38,10 +41,12 @@ Namespace Security
   Private _userIsAdmin As Boolean = False
   Private _isBlogger As Boolean = False
   Private _isEditor As Boolean = False
+#End Region
 
+#Region " Constructor "
   Public Sub New(moduleId As Integer, tabId As Integer, blog As BlogInfo, user As UserInfo)
    If blog IsNot Nothing Then
-    IsOwner = CBool(blog.CreatedByUserId = user.UserID)
+    IsOwner = CBool(blog.CreatedByUserID = user.UserID)
     _canAdd = blog.CanAdd
     _canEdit = blog.CanEdit
     _canApprove = blog.CanApprove
@@ -75,6 +80,10 @@ Namespace Security
     _isEditor = ModulePermissionController.HasModulePermission(objMod.ModulePermissions, "EDIT")
    End If
   End Sub
+#End Region
+
+#Region " Public Properties "
+  Public Property IsOwner As Boolean = False
 
   Public ReadOnly Property CanEditPost() As Boolean
    Get
@@ -135,5 +144,74 @@ Namespace Security
     Return _isEditor
    End Get
   End Property
+#End Region
+
+#Region " IPropertyAccess Implementation "
+  Public Function GetProperty(strPropertyName As String, strFormat As String, formatProvider As System.Globalization.CultureInfo, AccessingUser As DotNetNuke.Entities.Users.UserInfo, AccessLevel As DotNetNuke.Services.Tokens.Scope, ByRef PropertyNotFound As Boolean) As String Implements DotNetNuke.Services.Tokens.IPropertyAccess.GetProperty
+   Dim OutputFormat As String = String.Empty
+   Dim portalSettings As DotNetNuke.Entities.Portals.PortalSettings = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings()
+   If strFormat = String.Empty Then
+    OutputFormat = "D"
+   Else
+    OutputFormat = strFormat
+   End If
+   Select Case strPropertyName.ToLower
+    Case "isowner"
+     Return Me.IsOwner.ToString
+    Case "isowneryesno"
+     Return PropertyAccess.Boolean2LocalizedYesNo(Me.IsOwner, formatProvider)
+    Case "caneditpost"
+     Return Me.CanEditPost.ToString
+    Case "caneditpostyesno"
+     Return PropertyAccess.Boolean2LocalizedYesNo(Me.CanEditPost, formatProvider)
+    Case "canaddpost"
+     Return Me.CanAddPost.ToString
+    Case "canaddpostyesno"
+     Return PropertyAccess.Boolean2LocalizedYesNo(Me.CanAddPost, formatProvider)
+    Case "canaddcomment"
+     Return Me.CanAddComment.ToString
+    Case "canaddcommentyesno"
+     Return PropertyAccess.Boolean2LocalizedYesNo(Me.CanAddComment, formatProvider)
+    Case "canviewcomments"
+     Return Me.CanViewComments.ToString
+    Case "canviewcommentsyesno"
+     Return PropertyAccess.Boolean2LocalizedYesNo(Me.CanViewComments, formatProvider)
+    Case "canapprovepost"
+     Return Me.CanApprovePost.ToString
+    Case "canapprovepostyesno"
+     Return PropertyAccess.Boolean2LocalizedYesNo(Me.CanApprovePost, formatProvider)
+    Case "canapprovecomment"
+     Return Me.CanApproveComment.ToString
+    Case "canapprovecommentyesno"
+     Return PropertyAccess.Boolean2LocalizedYesNo(Me.CanApproveComment, formatProvider)
+    Case "candosomethingwithposts"
+     Return Me.CanDoSomethingWithPosts.ToString
+    Case "candosomethingwithpostsyesno"
+     Return PropertyAccess.Boolean2LocalizedYesNo(Me.CanDoSomethingWithPosts, formatProvider)
+    Case "userisadmin"
+     Return Me.UserIsAdmin.ToString
+    Case "userisadminyesno"
+     Return PropertyAccess.Boolean2LocalizedYesNo(Me.UserIsAdmin, formatProvider)
+    Case "isblogger"
+     Return Me.IsBlogger.ToString
+    Case "isbloggeryesno"
+     Return PropertyAccess.Boolean2LocalizedYesNo(Me.IsBlogger, formatProvider)
+    Case "iseditor"
+     Return Me.IsEditor.ToString
+    Case "iseditoryesno"
+     Return PropertyAccess.Boolean2LocalizedYesNo(Me.IsEditor, formatProvider)
+    Case Else
+     PropertyNotFound = True
+   End Select
+   Return DotNetNuke.Common.Utilities.Null.NullString
+  End Function
+
+  Public ReadOnly Property Cacheability() As DotNetNuke.Services.Tokens.CacheLevel Implements DotNetNuke.Services.Tokens.IPropertyAccess.Cacheability
+   Get
+    Return CacheLevel.fullyCacheable
+   End Get
+  End Property
+#End Region
+
  End Class
 End Namespace

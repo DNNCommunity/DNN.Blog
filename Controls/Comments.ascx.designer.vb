@@ -15,84 +15,12 @@ Namespace Controls
  Partial Public Class Comments
 
   '''<summary>
-  '''pnlComments control.
+  '''vtContents control.
   '''</summary>
   '''<remarks>
   '''Auto-generated field.
   '''To modify move field declaration from designer file to code-behind file.
   '''</remarks>
-  Protected WithEvents pnlComments As Global.System.Web.UI.WebControls.Panel
-
-  '''<summary>
-  '''lblComments control.
-  '''</summary>
-  '''<remarks>
-  '''Auto-generated field.
-  '''To modify move field declaration from designer file to code-behind file.
-  '''</remarks>
-  Protected WithEvents lblComments As Global.System.Web.UI.WebControls.Label
-
-  '''<summary>
-  '''lstComments control.
-  '''</summary>
-  '''<remarks>
-  '''Auto-generated field.
-  '''To modify move field declaration from designer file to code-behind file.
-  '''</remarks>
-  Protected WithEvents lstComments As Global.System.Web.UI.WebControls.DataList
-
-  '''<summary>
-  '''pnlAddComment control.
-  '''</summary>
-  '''<remarks>
-  '''Auto-generated field.
-  '''To modify move field declaration from designer file to code-behind file.
-  '''</remarks>
-  Protected WithEvents pnlAddComment As Global.System.Web.UI.WebControls.Panel
-
-  '''<summary>
-  '''valComment control.
-  '''</summary>
-  '''<remarks>
-  '''Auto-generated field.
-  '''To modify move field declaration from designer file to code-behind file.
-  '''</remarks>
-  Protected WithEvents valComment As Global.System.Web.UI.WebControls.RequiredFieldValidator
-
-  '''<summary>
-  '''txtComment control.
-  '''</summary>
-  '''<remarks>
-  '''Auto-generated field.
-  '''To modify move field declaration from designer file to code-behind file.
-  '''</remarks>
-  Protected WithEvents txtComment As Global.System.Web.UI.WebControls.TextBox
-
-  '''<summary>
-  '''cmdAddComment control.
-  '''</summary>
-  '''<remarks>
-  '''Auto-generated field.
-  '''To modify move field declaration from designer file to code-behind file.
-  '''</remarks>
-  Protected WithEvents cmdAddComment As Global.System.Web.UI.WebControls.LinkButton
-
-  '''<summary>
-  '''cmdDeleteComment control.
-  '''</summary>
-  '''<remarks>
-  '''Auto-generated field.
-  '''To modify move field declaration from designer file to code-behind file.
-  '''</remarks>
-  Protected WithEvents cmdDeleteComment As Global.System.Web.UI.WebControls.LinkButton
-
-  '''<summary>
-  '''txtClientIP control.
-  '''</summary>
-  '''<remarks>
-  '''Auto-generated field.
-  '''To modify move field declaration from designer file to code-behind file.
-  '''</remarks>
-  Protected WithEvents txtClientIP As Global.System.Web.UI.WebControls.TextBox
+  Protected WithEvents vtContents As Global.DotNetNuke.Modules.Blog.Templating.ViewTemplate
  End Class
 End Namespace

@@ -17,6 +17,7 @@ Namespace Templating
    Me.ModuleInfo = blogModule.ModuleConfiguration
    Me.UseObjectLessExpression = False
    Me.PropertySource("query") = blogModule
+   Me.PropertySource("security") = blogModule.Security
    Me.PropertySource("urls") = blogModule.ModuleUrls
    Me.PropertySource("settings") = settings
    If blogModule.Blog IsNot Nothing Then
@@ -39,6 +40,7 @@ Namespace Templating
    Me.ModuleInfo = blogModule.ModuleConfiguration
    Me.UseObjectLessExpression = False
    Me.PropertySource("query") = blogModule
+   Me.PropertySource("security") = blogModule.Security
    Me.PropertySource("urls") = blogModule.ModuleUrls
    Me.PropertySource("settings") = settings
    Me.PropertySource("blog") = blog
@@ -60,6 +62,7 @@ Namespace Templating
    Me.ModuleInfo = blogModule.ModuleConfiguration
    Me.UseObjectLessExpression = False
    Me.PropertySource("query") = blogModule
+   Me.PropertySource("security") = blogModule.Security
    Me.PropertySource("urls") = blogModule.ModuleUrls
    Me.PropertySource("settings") = settings
    Me.PropertySource("post") = Post
@@ -79,6 +82,7 @@ Namespace Templating
    Me.ModuleInfo = blogModule.ModuleConfiguration
    Me.UseObjectLessExpression = False
    Me.PropertySource("query") = blogModule
+   Me.PropertySource("security") = blogModule.Security
    Me.PropertySource("urls") = blogModule.ModuleUrls
    Me.PropertySource("settings") = settings
    If Post IsNot Nothing Then
@@ -104,6 +108,7 @@ Namespace Templating
    Me.ModuleInfo = blogModule.ModuleConfiguration
    Me.UseObjectLessExpression = False
    Me.PropertySource("query") = blogModule
+   Me.PropertySource("security") = blogModule.Security
    Me.PropertySource("urls") = blogModule.ModuleUrls
    Me.PropertySource("settings") = settings
    If Post IsNot Nothing Then

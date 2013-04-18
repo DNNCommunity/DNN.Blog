@@ -155,6 +155,10 @@
     <Content Include="Admin.ascx" />
     <Content Include="css\jquery.handsontable.css" />
     <Content Include="js\jquery.handsontable.js" />
+    <Content Include="Templates\_default\CommentsTemplate.html" />
+    <Content Include="Templates\_default\Comment.html" />
+    <Content Include="Templates\_default\CommentApprove.html" />
+    <Content Include="Templates\_default\CommentApproveBar.html" />
     <Content Include="TermsEditML.ascx" />
     <Content Include="App_LocalResources\TermsEditML.ascx.resx" />
     <Content Include="_Installation\license.txt" />
@@ -172,6 +176,7 @@
     <Content Include="js\tag-it.min.js" />
     <Content Include="Manage.ascx" />
     <Content Include="PostEdit.ascx" />
+    <EmbeddedResource Include="Templates\_default\resx\SharedResources.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BlogImage.ashx.vb">
@@ -294,6 +299,7 @@
     <Compile Include="Components\Templating\BlogTokenReplace.vb" />
     <Compile Include="Components\Templating\CustomParameters.vb" />
     <Compile Include="Components\Templating\GenericTokenReplace.vb" />
+    <Compile Include="Components\Templating\LazyLoadingUser.vb" />
     <Compile Include="Components\Templating\Resources.vb" />
     <Compile Include="Components\Templating\Template.vb" />
     <Compile Include="Components\Templating\TemplateController.vb" />
@@ -416,7 +422,6 @@
     <Folder Include="Templates\_default\images\" />
     <Folder Include="Templates\_default\jsblocks\" />
     <Folder Include="Templates\_default\js\" />
-    <Folder Include="Templates\_default\resx\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_LocalResources\Blog.ascx.resx" />
