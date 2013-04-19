@@ -119,6 +119,32 @@ Namespace Integration
    NotificationsController.Instance.SendNotification(objNotification, portalId, Nothing, colUsers)
   End Sub
 
+  Public Shared Sub ReportComment(objComment As CommentInfo, objBlog As BlogInfo, objPost As PostInfo, portalId As Integer, summary As String, subject As String)
+   Dim notificationType As NotificationType = NotificationsController.Instance.GetNotificationType(NotificationCommentReportedTypeName)
+
+   Dim notificationKey As New NotificationKey(ContentTypeName & NotificationCommentReportedTypeName, objBlog.ModuleID, objBlog.BlogID, objPost.ContentItemId, objComment.CommentID)
+   Dim objNotification As New Notification
+
+   Dim recipientId As Integer
+   If objBlog.PublishAsOwner Then
+    recipientId = objBlog.OwnerUserId
+   Else
+    recipientId = objPost.CreatedByUserID
+   End If
+
+   objNotification.NotificationTypeID = notificationType.NotificationTypeId
+   objNotification.Subject = subject
+   objNotification.Body = summary
+   objNotification.IncludeDismissAction = True
+   objNotification.SenderUserID = objComment.CreatedByUserID
+   objNotification.Context = notificationKey.ToString
+
+   Dim objOwner As UserInfo = UserController.GetUserById(portalId, recipientId)
+   Dim colUsers As List(Of UserInfo) = BlogPermissionsController.GetUsersByBlogPermission(portalId, objBlog.BlogID, BlogPermissionTypes.APPROVECOMMENT).Values.ToList
+   If Not colUsers.Contains(objOwner) Then colUsers.Add(objOwner)
+
+   NotificationsController.Instance.SendNotification(objNotification, portalId, Nothing, colUsers)
+  End Sub
   ''' <summary>
   ''' Removes any notifications associated w/ a specific blog comment pending approval.
   ''' </summary>
@@ -184,7 +210,7 @@ Namespace Integration
 
    Dim objNotificationType As NotificationType = New NotificationType
    objNotificationType.Name = NotificationPublishingTypeName
-   objNotificationType.Description = "Blog module and workflow approval."
+   objNotificationType.Description = "Blog module post approval."
    objNotificationType.DesktopModuleId = deskModuleId
 
    If NotificationsController.Instance.GetNotificationType(objNotificationType.Name) Is Nothing Then
@@ -209,7 +235,7 @@ Namespace Integration
 
    objNotificationType = New NotificationType
    objNotificationType.Name = NotificationCommentApprovalTypeName
-   objNotificationType.Description = "Blog module and comment approval."
+   objNotificationType.Description = "Blog module comment approval."
    objNotificationType.DesktopModuleId = deskModuleId
 
    If NotificationsController.Instance.GetNotificationType(objNotificationType.Name) Is Nothing Then
@@ -228,6 +254,26 @@ Namespace Integration
     objAction.APICall = "DesktopModules/Blog/API/Comments/Delete"
     objAction.ConfirmResourceKey = "DeleteItem"
     objAction.Order = 3
+    actions.Add(objAction)
+
+    NotificationsController.Instance.CreateNotificationType(objNotificationType)
+    NotificationsController.Instance.SetNotificationTypeActions(actions, objNotificationType.NotificationTypeId)
+   End If
+
+   objNotificationType = New NotificationType
+   objNotificationType.Name = NotificationCommentReportedTypeName
+   objNotificationType.Description = "Blog module comment reported."
+   objNotificationType.DesktopModuleId = deskModuleId
+
+   If NotificationsController.Instance.GetNotificationType(objNotificationType.Name) Is Nothing Then
+    actions.Clear()
+
+    Dim objAction As New NotificationTypeAction
+    objAction.NameResourceKey = "DeleteComment"
+    objAction.DescriptionResourceKey = "DeleteComment_Desc"
+    objAction.APICall = "DesktopModules/Blog/API/Comments/Delete"
+    objAction.ConfirmResourceKey = "DeleteItem"
+    objAction.Order = 1
     actions.Add(objAction)
 
     NotificationsController.Instance.CreateNotificationType(objNotificationType)

@@ -222,4 +222,11 @@
   <data name="VIEWCOMMENT.Permission" xml:space="preserve">
     <value>View Comments</value>
   </data>
+  <data name="CommentReportedNotify.Body" xml:space="preserve">
+    <value>According to {0}, {1} has posted an inappropriate comment:&lt;br/&gt;{2}&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;
+&lt;a target="_blank" href="{3}"&gt;{4}&lt;/a&gt;</value>
+  </data>
+  <data name="CommentReportedNotify.Text" xml:space="preserve">
+    <value>{0} has reported a comment as inappropriate</value>
+  </data>
 </root>
