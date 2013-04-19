@@ -11,8 +11,8 @@ Public Class Admin
  Private _totalPosts As Integer = -1
 
  Private Sub Page_Init1(sender As Object, e As System.EventArgs) Handles Me.Init
-  ClientResourceManager.RegisterScript(Page, ResolveUrl("~/DesktopModules/Blog/js/jquery.dynatree.min.js"))
-  ClientResourceManager.RegisterStyleSheet(Page, ResolveUrl("~/DesktopModules/Blog/css/dynatree.css"), Web.Client.FileOrder.Css.ModuleCss)
+  AddJavascriptFile("jquery.dynatree.min.js")
+  AddCssFile("dynatree.css")
  End Sub
 
  Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load

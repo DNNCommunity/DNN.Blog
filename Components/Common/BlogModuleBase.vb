@@ -24,11 +24,17 @@ Imports DotNetNuke.Framework
 Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.Security
 Imports DotNetNuke.Services.Tokens
+Imports System.Linq
 
 Namespace Common
 
  Public Class BlogModuleBase
   Inherits BlogContextBase
+
+#Region " Private Members "
+  Private fulllocs As List(Of String) = {"pt-br", "zh-cn", "zh-tw"}.ToList
+  Private twoletterlocs As List(Of String) = {"ar", "bg", "bs", "ca", "cy", "cz", "da", "de", "el", "en", "es", "fa", "fi", "fr", "he", "hr", "hu", "hy", "id", "it", "ja", "ko", "mk", "nl", "no", "pl", "pt", "ro", "ru", "sk", "sv", "th", "tr", "uk", "uz"}.ToList
+#End Region
 
 #Region " Event Handlers "
   Protected Sub Page_Init(sender As Object, e As EventArgs) Handles Me.Init
@@ -76,7 +82,15 @@ Namespace Common
     ShowLocale = Locale
    End If
 
-   AddBlogService()
+   If ViewSettings.BlogModuleId = -1 Then
+    AddBlogService()
+    AddJavascriptFile("jquery.timeago.js")
+    If fulllocs.Contains(Locale.ToLower) Then
+     AddJavascriptFile("time-ago-locales/jquery.timeago." & Locale.ToLower & ".js")
+    ElseIf twoletterlocs.Contains(Threading.Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.ToLower) Then
+     AddJavascriptFile("time-ago-locales/jquery.timeago." & Threading.Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.ToLower & ".js")
+    End If
+   End If
 
   End Sub
 #End Region
@@ -87,7 +101,7 @@ Namespace Common
    DotNetNuke.Framework.jQuery.RequestDnnPluginsRegistration()
    DotNetNuke.Framework.ServicesFramework.Instance.RequestAjaxScriptSupport()
    DotNetNuke.Framework.ServicesFramework.Instance.RequestAjaxAntiForgerySupport()
-   Web.Client.ClientResourceManagement.ClientResourceManager.RegisterScript(Page, ResolveUrl("~/DesktopModules/Blog/js/dotnetnuke.blog.js"))
+   AddJavascriptFile("dotnetnuke.blog.js")
 
    ' Load initialization snippet
    Dim scriptBlock As String = Common.Globals.ReadFile(DotNetNuke.Common.ApplicationMapPath & "\DesktopModules\Blog\js\dotnetnuke.blog.pagescript.js")
@@ -97,6 +111,14 @@ Namespace Common
    scriptBlock = "<script type=""text/javascript"">" & vbCrLf & "//<![CDATA[" & vbCrLf & scriptBlock & vbCrLf & "//]]>" & vbCrLf & "</script>"
    Page.ClientScript.RegisterClientScriptBlock(Me.GetType, "BlogServiceScript", scriptBlock)
 
+  End Sub
+
+  Public Sub AddJavascriptFile(jsFilename As String)
+   ClientResourceManager.RegisterScript(Page, ResolveUrl("~/DesktopModules/Blog/js/" & jsFilename))
+  End Sub
+
+  Public Sub AddCssFile(cssFilename As String)
+   ClientResourceManager.RegisterStyleSheet(Page, ResolveUrl("~/DesktopModules/Blog/css/" & cssFilename), Web.Client.FileOrder.Css.ModuleCss)
   End Sub
 #End Region
 

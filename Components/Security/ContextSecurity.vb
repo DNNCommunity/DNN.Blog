@@ -71,6 +71,7 @@ Namespace Security
      Loop
     End Using
    End If
+   LoggedIn = CBool(user.UserID > -1)
    _userIsAdmin = DotNetNuke.Security.PortalSecurity.IsInRole(DotNetNuke.Entities.Portals.PortalSettings.Current.AdministratorRoleName)
    Dim mc As New DotNetNuke.Entities.Modules.ModuleController
    Dim objMod As New DotNetNuke.Entities.Modules.ModuleInfo
@@ -84,6 +85,7 @@ Namespace Security
 
 #Region " Public Properties "
   Public Property IsOwner As Boolean = False
+  Public Property LoggedIn As Boolean = False
 
   Public ReadOnly Property CanEditPost() As Boolean
    Get
@@ -200,6 +202,10 @@ Namespace Security
      Return Me.IsEditor.ToString
     Case "iseditoryesno"
      Return PropertyAccess.Boolean2LocalizedYesNo(Me.IsEditor, formatProvider)
+    Case "loggedin"
+     Return Me.LoggedIn.ToString
+    Case "loggedinyesno"
+     Return PropertyAccess.Boolean2LocalizedYesNo(Me.LoggedIn, formatProvider)
     Case Else
      PropertyNotFound = True
    End Select

@@ -11,8 +11,8 @@ Public Class TermsEditML
  Public Property Columns As String = ""
 
  Private Sub Page_Init1(sender As Object, e As System.EventArgs) Handles Me.Init
-  ClientResourceManager.RegisterScript(Page, ResolveUrl("~/DesktopModules/Blog/js/jquery.handsontable.js"))
-  ClientResourceManager.RegisterStyleSheet(Page, ResolveUrl("~/DesktopModules/Blog/css/jquery.handsontable.css"), Web.Client.FileOrder.Css.ModuleCss)
+  AddJavascriptFile("jquery.handsontable.js")
+  AddCssFile("jquery.handsontable.css")
   Me.Request.Params.ReadValue("VocabularyId", VocabularyId)
   If VocabularyId <> Settings.VocabularyId AndAlso VocabularyId <> 1 Then ' prevent users from editing another vocabulary
    VocabularyId = 1

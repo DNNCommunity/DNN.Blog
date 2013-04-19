@@ -2,7 +2,8 @@
 jQuery(function ($) {
  blogService = new BlogService($, {
    serverErrorText: '[resx:ServerError]',
-   serverErrorWithDescriptionText: '[resx:ServerErrorWithDescription]'
+   serverErrorWithDescriptionText: '[resx:ServerErrorWithDescription]',
+   errorBoxId: '#blogServiceErrorBox[module:moduleId]'
   },
   $.dnnSF([module:moduleID]));
 });

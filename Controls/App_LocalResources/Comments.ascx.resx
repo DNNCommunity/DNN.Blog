@@ -117,45 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="valComment.ErrorMessage" xml:space="preserve">
-    <value>Comment is required</value>
+  <data name="Cancel.Text" xml:space="preserve">
+    <value>Cancel</value>
   </data>
-  <data name="msgUpdateComment.Text" xml:space="preserve">
-    <value>Update Comment</value>
+  <data name="Comment.Text" xml:space="preserve">
+    <value>Comment</value>
   </data>
-  <data name="msgAddComment.Text" xml:space="preserve">
-    <value>Add Comment</value>
+  <data name="CommentTitle.Text" xml:space="preserve">
+    <value>Comment on this post</value>
   </data>
-  <data name="cmdAddComment.Text" xml:space="preserve">
-    <value>Add Comment</value>
-  </data>
-  <data name="ModuleHelp.Text" xml:space="preserve">
-    <value>&lt;h1&gt;Blog&lt;/h1&gt;
-&lt;p&gt;...&lt;/p&gt;
-        </value>
-  </data>
-  <data name="lblComment.Text" xml:space="preserve">
-    <value>Comment:</value>
-  </data>
-  <data name="Approve.Text" xml:space="preserve">
-    <value>Approve</value>
-  </data>
-  <data name="lblComments.Text" xml:space="preserve">
-    <value>{0} comment(s) so far...</value>
-  </data>
-  <data name="Delete.Text" xml:space="preserve">
-    <value>Delete</value>
-  </data>
-  <data name="CommentPendingApproval.Text" xml:space="preserve">
-    <value>Thanks, your comment has been received and is pending approval.</value>
-  </data>
-  <data name="Anonymous.Text" xml:space="preserve">
-    <value>Anonymous</value>
-  </data>
-  <data name="DeleteComment.Text" xml:space="preserve">
-    <value>Delete this comment?</value>
-  </data>
-  <data name="cmdDeleteComment.Text" xml:space="preserve">
-    <value>Delete</value>
+  <data name="Submit.Text" xml:space="preserve">
+    <value>Submit</value>
   </data>
 </root>

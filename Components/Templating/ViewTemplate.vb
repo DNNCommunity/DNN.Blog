@@ -36,6 +36,19 @@ Namespace Templating
   Private Property ViewMapPath As String = ""
 #End Region
 
+#Region " Public Methods "
+  Public Function GetContentsAsString() As String
+   Dim sb As New StringBuilder
+   Using tw As New IO.StringWriter(sb)
+    Using w As New System.Web.UI.HtmlTextWriter(tw)
+     Render(w)
+     w.Flush()
+    End Using
+   End Using
+   Return sb.ToString
+  End Function
+#End Region
+
 #Region " Overrides "
   Protected Overrides Sub Render(ByVal writer As System.Web.UI.HtmlTextWriter)
    If Template IsNot Nothing Then

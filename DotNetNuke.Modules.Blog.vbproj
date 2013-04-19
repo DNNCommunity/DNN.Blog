@@ -159,6 +159,8 @@
     <Content Include="Templates\_default\Comment.html" />
     <Content Include="Templates\_default\CommentApprove.html" />
     <Content Include="Templates\_default\CommentApproveBar.html" />
+    <Content Include="Templates\_default\CommentKarmaBar.html" />
+    <Content Include="Templates\_default\template.js" />
     <Content Include="TermsEditML.ascx" />
     <Content Include="App_LocalResources\TermsEditML.ascx.resx" />
     <Content Include="_Installation\license.txt" />

@@ -5,6 +5,8 @@
 
 <blog:management runat="server" id="ctlManagement" />
 
+<div id="blogServiceErrorBox<%=ModuleId %>"></div>
+
 <blog:ViewTemplate runat="server" id="vtContents" />
 
 <blog:comments runat="server" id="ctlComments" />

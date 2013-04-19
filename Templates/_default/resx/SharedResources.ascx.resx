@@ -117,10 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Comment.Text" xml:space="preserve">
+    <value>Comment</value>
+  </data>
   <data name="DeleteComment.Confirm" xml:space="preserve">
     <value>Delete the comment? This cannot be undone.</value>
   </data>
   <data name="DeleteComment.Text" xml:space="preserve">
     <value>Delete</value>
+  </data>
+  <data name="DislikeComment.Text" xml:space="preserve">
+    <value>Dislike Comment</value>
+  </data>
+  <data name="LikeComment.Text" xml:space="preserve">
+    <value>Like Comment</value>
+  </data>
+  <data name="Reply.Text" xml:space="preserve">
+    <value>Reply</value>
+  </data>
+  <data name="ReportComment.Confirm" xml:space="preserve">
+    <value>Do you wish to report this comment as inappropriate?</value>
+  </data>
+  <data name="ReportComment.Text" xml:space="preserve">
+    <value>Report Comment</value>
   </data>
 </root>
