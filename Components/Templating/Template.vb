@@ -64,7 +64,9 @@ Namespace Templating
     ' Expand subtemplates
     ' Simple conditional template e.g. [subtemplate|Widget.html|widget:isgood|True]
     Contents = Regex.Replace(_Contents, "(?i)\[subtemplate\|([^|\]]+)\|([^:|\]]+):([^|\]]+)\|?([^|\]]+)?\](?-i)", AddressOf ReplaceConditionalTemplate)
-    ' e.g. [subtemplate|Flight.html|flights|pagesize=6]
+    ' Inline conditional e.g. [if|2][flight:flightid][>]4[/if] ... [endif|2]
+    _Contents = Regex.Replace(_Contents, "(?si)\[if\|(?<template>[^|\]]+)\](?<left>.*?)\[(?<comparison>\W{1,2})\](?<right>.*?)\[/if\](?<content>.*)\[endif\|\1\](?-is)", AddressOf ReplaceIfThens)
+    ' Simple repeating template e.g. [subtemplate|Flight.html|flights|pagesize=6]
     Contents = Regex.Replace(Contents, "(?i)\[subtemplate\|([^|\]]+)\|([^|\]]+)\|?([^|\]]+)?\](?-i)", AddressOf ReplaceSubtemplates)
     If Replacer IsNot Nothing Then
      Return Replacer.ReplaceTokens(Contents)
@@ -159,6 +161,68 @@ Namespace Templating
     End If
    End If
    Return res.ToString
+
+  End Function
+
+  Private Function ReplaceIfThens(ByVal m As Match) As String
+
+   Dim result As Boolean = False
+   Dim inlineContents As String = ""
+   Dim templateFilename As String = ""
+   If m.Groups("content").Success Then
+    inlineContents = m.Groups("content").Value
+   Else
+    templateFilename = m.Groups("template").Value.ToLower
+   End If
+
+   Dim leftside As String = _Replacer.ReplaceTokens(m.Groups("left").Value.ToLower)
+   If m.Groups("comparison").Success Then
+    Dim comparison As String = m.Groups("comparison").Value.ToLower
+    Dim rightside As String = _Replacer.ReplaceTokens(m.Groups("right").Value.ToLower)
+    Select Case comparison
+     Case "="
+      result = CBool(leftside = rightside)
+     Case "<"
+      If IsNumeric(leftside) And IsNumeric(rightside) Then
+       result = CBool(Single.Parse(leftside) < Single.Parse(rightside))
+      Else
+       result = CBool(leftside < rightside)
+      End If
+     Case "<="
+      If IsNumeric(leftside) And IsNumeric(rightside) Then
+       result = CBool(Single.Parse(leftside) <= Single.Parse(rightside))
+      Else
+       result = CBool(leftside <= rightside)
+      End If
+     Case ">="
+      If IsNumeric(leftside) And IsNumeric(rightside) Then
+       result = CBool(Single.Parse(leftside) >= Single.Parse(rightside))
+      Else
+       result = CBool(leftside >= rightside)
+      End If
+     Case ">"
+      If IsNumeric(leftside) And IsNumeric(rightside) Then
+       result = CBool(Single.Parse(leftside) > Single.Parse(rightside))
+      Else
+       result = CBool(leftside > rightside)
+      End If
+     Case "!=", "<>"
+      If IsNumeric(leftside) And IsNumeric(rightside) Then
+       result = CBool(Single.Parse(leftside) < Single.Parse(rightside))
+      Else
+       result = CBool(leftside < rightside)
+      End If
+     Case Else
+    End Select
+   Else
+    result = CBool(leftside)
+   End If
+
+   If result Then
+    Return inlineContents
+   Else
+   Return ""
+   End If
 
   End Function
 #End Region

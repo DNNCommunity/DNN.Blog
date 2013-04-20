@@ -16,7 +16,7 @@ Public Class Blog
  Private _urlParameters As New List(Of String)
  Private _pageSize As Integer = -1
  Private _totalRecords As Integer = 0
- Private _reqPage As Integer = 0
+ Private _reqPage As Integer = 1
  Private _usePaging As Boolean = False
  Private _endDate As Date = Date.Now.ToUniversalTime
 #End Region
@@ -64,25 +64,55 @@ Public Class Blog
    Case "posts"
 
     Parameters.ReadValue("pagesize", _pageSize)
-    If _pageSize < 1 Then _pageSize = 10 ' we will not list "all Posts"
-    Dim PostList As IEnumerable(Of PostInfo)
-    If Not String.IsNullOrEmpty(SearchString) Then
-     Dim publishValue As Integer = 1
-     If SearchUnpublished Then publishValue = -1
-     If Term Is Nothing Then
-      PostList = PostsController.SearchPosts(Settings.ModuleId, BlogId, Locale, SearchString, SearchTitle, SearchContents, publishValue, ShowLocale, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, Security.UserIsAdmin).Values
-     Else
-      PostList = PostsController.SearchPostsByTerm(Settings.ModuleId, BlogId, Locale, TermId, SearchString, SearchTitle, SearchContents, publishValue, ShowLocale, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, Security.UserIsAdmin).Values
-     End If
-    ElseIf Term Is Nothing Then
-     PostList = PostsController.GetPosts(Settings.ModuleId, BlogId, Locale, -1, ShowLocale, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, Security.UserIsAdmin).Values
-    Else
-     PostList = PostsController.GetPostsByTerm(Settings.ModuleId, BlogId, Locale, TermId, -1, ShowLocale, _endDate, -1, _reqPage, _pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, Security.UserIsAdmin).Values
-    End If
-    _usePaging = True
+    EnsurePostList(_pageSize)
     For Each e As PostInfo In PostList
      Replacers.Add(New BlogTokenReplace(Me, Settings, e))
     Next
+
+   Case "postspager"
+
+    Parameters.ReadValue("pagesize", _pageSize)
+    EnsurePostList(_pageSize)
+    Dim pagerType As String = "allpages"
+    Parameters.ReadValue("pagertype", pagerType)
+    Dim remdr As Integer = 0
+    Dim nrPages As Integer = Math.DivRem(_totalRecords, _pageSize, remdr)
+    If remdr > 0 Then
+     nrPages += 1
+    End If
+    If nrPages < 2 Then
+    Else
+     Replacers.Add(New BlogTokenReplace(Me, Settings))
+     Select Case pagerType.ToLower
+      Case "allpages"
+       For i As Integer = 1 To nrPages
+        Dim s As String() = {"page=" & i.ToString, "pageiscurrent=" & CBool(i = _reqPage).ToString, "pagename=" & i.ToString, "pagetype=number"}
+        Arguments.Add(s)
+       Next
+      Case "somepages"
+       If _reqPage > 3 Then
+        Dim s As String() = {"page=1", "pageiscurrent=False", "pagename=1", "pagetype=firstpage"}
+        Arguments.Add(s)
+       End If
+       For i As Integer = Math.Max(_reqPage - 2, 1) To Math.Min(_reqPage + 2, nrPages)
+        Dim s As String() = {"page=" & i.ToString, "pageiscurrent=" & CBool(i = _reqPage).ToString, "pagename=" & i.ToString, "pagetype=number"}
+        Arguments.Add(s)
+       Next
+       If _reqPage < nrPages - 3 Then
+        Dim s As String() = {"page=" & nrPages.ToString, "pageiscurrent=False", "pagename=" & nrPages.ToString, "pagetype=lastpage"}
+        Arguments.Add(s)
+       End If
+      Case "newerolder"
+       If _reqPage > 1 Then
+        Dim s As String() = {"page=" & (_reqPage - 1).ToString, "pageiscurrent=False", "pagename=" & LocalizeString("Newer"), "pagetype=previous"}
+        Arguments.Add(s)
+       End If
+       If _reqPage < nrPages Then
+        Dim s As String() = {"page=" & (_reqPage + 1).ToString, "pageiscurrent=False", "pagename=" & LocalizeString("Older"), "pagetype=next"}
+        Arguments.Add(s)
+       End If
+     End Select
+    End If
 
    Case "terms"
 
@@ -174,6 +204,31 @@ Public Class Blog
     _usePaging = False
 
   End Select
+
+ End Sub
+#End Region
+
+#Region " Post List Stuff "
+ Private Property PostList As IEnumerable(Of PostInfo) = Nothing
+ Private Sub EnsurePostList(pageSize As Integer)
+
+  If PostList Is Nothing Then
+   If pageSize < 1 Then pageSize = 10 ' we will not list "all Posts"
+   If Not String.IsNullOrEmpty(SearchString) Then
+    Dim publishValue As Integer = 1
+    If SearchUnpublished Then publishValue = -1
+    If Term Is Nothing Then
+     PostList = PostsController.SearchPosts(Settings.ModuleId, BlogId, Locale, SearchString, SearchTitle, SearchContents, publishValue, ShowLocale, _endDate, -1, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, Security.UserIsAdmin).Values
+    Else
+     PostList = PostsController.SearchPostsByTerm(Settings.ModuleId, BlogId, Locale, TermId, SearchString, SearchTitle, SearchContents, publishValue, ShowLocale, _endDate, -1, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, Security.UserIsAdmin).Values
+    End If
+   ElseIf Term Is Nothing Then
+    PostList = PostsController.GetPosts(Settings.ModuleId, BlogId, Locale, -1, ShowLocale, _endDate, AuthorId, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, Security.UserIsAdmin).Values
+   Else
+    PostList = PostsController.GetPostsByTerm(Settings.ModuleId, BlogId, Locale, TermId, -1, ShowLocale, _endDate, AuthorId, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, Security.UserIsAdmin).Values
+   End If
+   _usePaging = True
+  End If
 
  End Sub
 #End Region

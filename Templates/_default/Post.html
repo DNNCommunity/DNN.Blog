@@ -1,17 +1,31 @@
 ﻿<article class="is-post is-post-excerpt">
  <header>
   <h2><a href="[Post:link]">[Post:localizedtitle]</a></h2>
-  <span class="byline"></span>
+  <span class="byline">[blog:localizedtitle] - [post:displayname]</span>
  </header>
  <div class="info">
-  <span class="date"><span class="month">[Post:PublishedOnDate|MMM]<span></span></span> <span class="day">[Post:PublishedOnDate|dd]</span><span class="year">[Post:PublishedOnDate|yyyy]</span></span>
-  <ul class="stats">
+  <span class="date">
+   <span class="month">[Post:PublishedOnDate|MMM]</span>
+   <span class="day">[Post:PublishedOnDate|dd]</span>
+   <span class="year">[Post:PublishedOnDate|yyyy]</span>
+  </span>
+  <div class="stats">
+   <div class="entypoIcon">&#59146;</div>
+   <div class="stat">[post:viewcount]</div>
+  </div>
+  <div class="stats">
+   <div class="entypoIcon">&#59160;</div>
+   <div class="stat">[post:nrcomments]</div>
+  </div>
+  <div style="clear:both"></div>
+  <ul class="tags">
+[subtemplate|Tag.html|categories]
 [subtemplate|Tag.html|keywords]
   </ul>
  </div>
 [subtemplate|Postbanner.html|Post:hasimage]
- <p>
+ <div class="summary">
 [Post:localizedsummary]
- </p>
+ </div>
 </article>
 

@@ -35,16 +35,22 @@ Namespace Common
   Public Sub ClonePropertiesFrom(contextBase As BlogContextBase)
    With contextBase
     Me.ModuleConfiguration = contextBase.ModuleConfiguration
-    Me.BlogId = contextBase.BlogId
-    Me.Blog = contextBase.Blog
-    Me.ContentItemId = contextBase.ContentItemId
-    Me.Post = contextBase.Post
-    Me.BlogMapPath = contextBase.BlogMapPath
-    Me.PostMapPath = contextBase.PostMapPath
-    Me.OutputAdditionalFiles = contextBase.OutputAdditionalFiles
     Me.Settings = contextBase.Settings
     Me.ViewSettings = contextBase.ViewSettings
     Me.Security = contextBase.Security
+    Me.Vocabulary = contextBase.Vocabulary
+
+    Me.BlogId = contextBase.BlogId
+    Me.ContentItemId = contextBase.ContentItemId
+    Me.TermId = contextBase.TermId
+    Me.AuthorId = contextBase.AuthorId
+    Me.Blog = contextBase.Blog
+    Me.Post = contextBase.Post
+    Me.Term = contextBase.Term
+    Me.Author = contextBase.Author
+    Me.BlogMapPath = contextBase.BlogMapPath
+    Me.PostMapPath = contextBase.PostMapPath
+    Me.OutputAdditionalFiles = contextBase.OutputAdditionalFiles
     Me.ModuleUrls = contextBase.ModuleUrls
     Me.SearchString = contextBase.SearchString
     Me.SearchTitle = contextBase.SearchTitle
@@ -53,7 +59,6 @@ Namespace Common
     Me.IsMultiLingualSite = contextBase.IsMultiLingualSite
     Me.ShowLocale = contextBase.ShowLocale
     Me.Locale = contextBase.Locale
-    Me.Vocabulary = contextBase.Vocabulary
    End With
   End Sub
 #End Region
@@ -62,9 +67,11 @@ Namespace Common
   Public Property BlogId As Integer = -1
   Public Property ContentItemId As Integer = -1
   Public Property TermId As Integer = -1
+  Public Property AuthorId As Integer = -1
   Public Property Blog As Entities.Blogs.BlogInfo = Nothing
   Public Property Post As Entities.Posts.PostInfo = Nothing
   Public Property Term As Entities.Terms.TermInfo = Nothing
+  Public Property Author As DotNetNuke.Entities.Users.UserInfo = Nothing
   Public Property BlogMapPath As String = ""
   Public Property PostMapPath As String = ""
   Public Property OutputAdditionalFiles As Boolean
@@ -160,10 +167,18 @@ Namespace Common
      Return (Me.BlogID.ToString(OutputFormat, formatProvider))
     Case "Postid", "contentitemid", "postid", "post"
      Return (Me.ContentItemId.ToString(OutputFormat, formatProvider))
+    Case "termid", "term"
+     Return (Me.TermId.ToString(OutputFormat, formatProvider))
+    Case "authorid", "author"
+     Return (Me.AuthorId.ToString(OutputFormat, formatProvider))
     Case "blogselected"
-     Return CBool(BlogId > -1).ToString(formatProvider)
+     Return CBool(BlogId > -1).ToString()
     Case "postselected"
-     Return CBool(ContentItemId > -1).ToString(formatProvider)
+     Return CBool(ContentItemId > -1).ToString()
+    Case "termselected"
+     Return CBool(TermId > -1).ToString()
+    Case "authorselected"
+     Return CBool(AuthorId > -1).ToString()
     Case Else
      If Me.Request.Params(strPropertyName) IsNot Nothing Then
       Return Me.Request.Params(strPropertyName)

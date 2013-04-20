@@ -9,15 +9,17 @@ Namespace Common
   Public Property BlogId As Integer = -1
   Public Property ContentItemId As Integer = -1
   Public Property TermId As Integer = -1
+  Public Property AuthorId As Integer = -1
   Private Property Cache As New Dictionary(Of String, String)
 #End Region
 
 #Region " Constructors "
-  Public Sub New(tabId As Integer, blogId As Integer, contentItemId As Integer, termId As Integer)
+  Public Sub New(tabId As Integer, blogId As Integer, contentItemId As Integer, termId As Integer, authorId As Integer)
    Me.TabId = tabId
    Me.BlogId = blogId
    Me.ContentItemId = contentItemId
    Me.TermId = termId
+   Me.AuthorId = authorId
   End Sub
 #End Region
 
@@ -47,6 +49,11 @@ Namespace Common
      If BlogId > -1 Then params.Add("Blog=" & BlogId.ToString)
      If ContentItemId > -1 Then params.Add("Post=" & ContentItemId.ToString)
      If TermId > -1 Then params.Add("Term=" & TermId.ToString)
+    Case "blogposttermauthor", "all"
+     If BlogId > -1 Then params.Add("Blog=" & BlogId.ToString)
+     If ContentItemId > -1 Then params.Add("Post=" & ContentItemId.ToString)
+     If TermId > -1 Then params.Add("Term=" & TermId.ToString)
+     If AuthorId > -1 Then params.Add("Author=" & AuthorId.ToString)
     Case "blogterm"
      If BlogId > -1 Then params.Add("Blog=" & BlogId.ToString)
      If TermId > -1 Then params.Add("Term=" & TermId.ToString)
@@ -57,6 +64,8 @@ Namespace Common
      If TermId > -1 Then params.Add("Term=" & TermId.ToString)
     Case "term"
      If TermId > -1 Then params.Add("Term=" & TermId.ToString)
+    Case "author"
+     If AuthorId > -1 Then params.Add("Author=" & AuthorId.ToString)
    End Select
    Dim BaseUrl As String = DotNetNuke.Common.NavigateURL(TabId, "", params.ToArray)
    Dim BaseUrlPlusEnding As String

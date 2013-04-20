@@ -1,4 +1,9 @@
-﻿[subtemplate|termbanner.html|selectedterm:termid]
+﻿[subtemplate|blogbanner.html|query:blogselected]
+[subtemplate|termbanner.html|query:termselected]
+[subtemplate|authorbanner.html|query:authorselected]
 <div class="blog-main-content">
-[subtemplate|Post.html|Posts|pagesize=10]
+[subtemplate|Post.html|Posts|pagesize=5]
+<div class="pager">
+[subtemplate|Page.html|PostsPager|pagesize=5,pagertype=somepages]
+</div>
 </div>

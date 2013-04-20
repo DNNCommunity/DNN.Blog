@@ -2,12 +2,10 @@
  [comment:comment]
  <div class="blog_commentdetails">
   <div class="blog_commentwhen"><abbr title="[comment:CreatedOnDateUTC|u]" class="blog_commenttimeago"></abbr></div>
-  <div class="blog_commentwho">[comment:displayname]</div>
+  <div class="blog_commentwho">[resx:By] [comment:displayname]</div>
   [subtemplate|CommentApproveBar.html|security:canapprovecomment|True]
   [subtemplate|CommentKarmaBar.html|security:loggedin|True]
+  [subtemplate|CommentReplyBar.html|security:canaddcomment|True]
  </div>
  [subtemplate|Comment.html|Comments|]
- <div class="blog_commentreply">
-  <a href="#" class="icon16 entypoButton" onclick="commentParentId=[comment:commentId];$dialogComment.dialog('open');return false;" title="[resx:reply]">&#59168;</a>
- </div>
 </div>

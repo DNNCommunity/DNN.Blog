@@ -1,0 +1,17 @@
+﻿[if|1][custom:pagetype][=]number[/if]
+<a href="[urls:all|true]Page=[custom:page]" class="pagebtn [custom:pageiscurrent|active;]">
+ [custom:pagename]
+</a>
+[endif|1]
+[if|2][custom:pagetype][=]firstpage[/if]
+<a href="[urls:all|true]Page=[custom:page]" class="pagebtn">
+ [custom:pagename]
+</a>
+<span>...</span>
+[endif|2]
+[if|3][custom:pagetype][=]lastpage[/if]
+<span>...</span>
+<a href="[urls:all|true]Page=[custom:page]" class="pagebtn">
+ [custom:pagename]
+</a>
+[endif|3]

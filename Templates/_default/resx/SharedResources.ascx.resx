@@ -117,8 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Allposts.Text" xml:space="preserve">
+    <value>All Posts</value>
+  </data>
+  <data name="By.Text" xml:space="preserve">
+    <value>by</value>
+  </data>
   <data name="Comment.Text" xml:space="preserve">
     <value>Comment</value>
+  </data>
+  <data name="Comments.Text" xml:space="preserve">
+    <value>Comment(s)</value>
   </data>
   <data name="DeleteComment.Confirm" xml:space="preserve">
     <value>Delete the comment? This cannot be undone.</value>
@@ -132,6 +141,9 @@
   <data name="LikeComment.Text" xml:space="preserve">
     <value>Like Comment</value>
   </data>
+  <data name="Posts.Text" xml:space="preserve">
+    <value>post(s)</value>
+  </data>
   <data name="Reply.Text" xml:space="preserve">
     <value>Reply</value>
   </data>
@@ -140,5 +152,8 @@
   </data>
   <data name="ReportComment.Text" xml:space="preserve">
     <value>Report Comment</value>
+  </data>
+  <data name="Total.Text" xml:space="preserve">
+    <value>Total</value>
   </data>
 </root>

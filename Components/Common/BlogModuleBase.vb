@@ -58,6 +58,7 @@ Namespace Common
    Request.Params.ReadValue("Blog", BlogId)
    Request.Params.ReadValue("Post", ContentItemId)
    Request.Params.ReadValue("Term", TermId)
+   Request.Params.ReadValue("Author", AuthorId)
    Request.Params.ReadValue("search", SearchString)
    Request.Params.ReadValue("t", SearchTitle)
    Request.Params.ReadValue("c", SearchContents)
@@ -71,12 +72,13 @@ Namespace Common
    If ContentItemId > -1 Then PostMapPath = GetPostDirectoryMapPath(BlogId, ContentItemId)
    If PostMapPath <> "" AndAlso Not IO.Directory.Exists(PostMapPath) Then IO.Directory.CreateDirectory(PostMapPath)
    If TermId > -1 Then Term = Entities.Terms.TermsController.GetTerm(TermId, Settings.ModuleId, Locale)
+   If AuthorId > -1 Then Author = DotNetNuke.Entities.Users.UserController.GetUserById(PortalId, AuthorId)
    ' set urls for use in module
    Dim params As New List(Of String)
    If BlogId > -1 Then params.Add("Blog=" & BlogId.ToString)
    If ContentItemId > -1 Then params.Add("Post=" & ContentItemId.ToString)
    If TermId > -1 Then params.Add("Term=" & TermId.ToString)
-   ModuleUrls = New ModuleUrls(TabId, BlogId, ContentItemId, TermId)
+   ModuleUrls = New ModuleUrls(TabId, BlogId, ContentItemId, TermId, AuthorId)
    IsMultiLingualSite = CBool((New DotNetNuke.Services.Localization.LocaleController).GetLocales(PortalId).Count > 1)
    If Not ViewSettings.ShowAllLocales Then
     ShowLocale = Locale

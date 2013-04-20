@@ -120,4 +120,10 @@
   <data name="EditContent.Action" xml:space="preserve">
     <value>Manage Blogs</value>
   </data>
+  <data name="Newer.Text" xml:space="preserve">
+    <value>Newer Posts</value>
+  </data>
+  <data name="Older.Text" xml:space="preserve">
+    <value>Older Posts</value>
+  </data>
 </root>
