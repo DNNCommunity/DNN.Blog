@@ -21,9 +21,9 @@
    </HeaderTemplate>
    <ItemTemplate>
     <tr class="dnnGridItem">
-     <td><a href="<%# EditUrl("Blog", Eval("BlogId"), "BlogEdit") %>" class="icon16 entypoButton" title="Edit">&#9998;</a></td>
-     <td><a href="<%# EditUrl("Blog", Eval("BlogId"), "BlogImport") %>" class="icon16 entypoButton" title="Import">&#59200;</a></td>
-     <td><a href="#" class="icon16 entypoButton exportlink" title="Export" data-blogid="<%# Eval("BlogId") %>">&#59201;</a></td>
+     <td><a href="<%# EditUrl("Blog", Eval("BlogId"), "BlogEdit") %>" class="blogicon-edit icon16" title="Edit"></a></td>
+     <td><a href="<%# EditUrl("Blog", Eval("BlogId"), "BlogImport") %>" class="blogicon-download-alt icon16" title="Import"></a></td>
+     <td><a href="#" class="blogicon-upload-alt icon16 exportlink" title="Export" data-blogid="<%# Eval("BlogId") %>"></a></td>
      <td><%# Eval("Title") %></td>
      <td><%# Eval("DisplayName") %></td>
     </tr>
@@ -47,21 +47,21 @@
       <ItemStyle Width="90px"></ItemStyle>
       <ItemTemplate>
        <a href="<%# EditUrl("Post", Eval("ContentItemId"), "PostEdit") %>" 
-          class="icon16 entypoButton" 
+          class="blogicon-edit icon16" 
           title="Edit"
-          style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Blog.CanEdit, "inline", "none") %>">&#9998;</a>
+          style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Blog.CanEdit, "inline", "none") %>"></a>
        <a href="#" 
           onclick="if (confirm('<%= LocalizeString("DeletePost") %>')) {blogService.deletePost(<%# Eval("BlogID") %>, <%# Eval("ContentItemID") %>, function() {$('#cmdDeletePost<%# Eval("ContentItemID") %>').parent().parent().hide()})};return false;"
           id="cmdDeletePost<%# Eval("ContentItemID") %>"
-          class="icon16 entypoButton" 
+          class="blogicon-remove icon16" 
           title="Delete"
-          style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Blog.CanEdit, "inline", "none") %>">&#59177;</a>
+          style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Blog.CanEdit, "inline", "none") %>"></a>
        <a href="#" 
           onclick="if (confirm('<%= LocalizeString("ApprovePost") %>')) {blogService.approvePost(<%# Eval("BlogID") %>, <%# Eval("ContentItemID") %>, function() {$('#cmdApprovePost<%# Eval("ContentItemID") %>').hide();$('#approveTick<%# Eval("ContentItemID") %>').text('&#10003;')})};return false;" 
           id="cmdApprovePost<%# Eval("ContentItemID") %>"
-          class="icon16 entypoButton" 
+          class="blogicon-ok icon16" 
           title="Approve"
-          style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Blog.CanApprove AND NOT CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Published, "inline", "none") %>">&#128077;</a>
+          style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Blog.CanApprove AND NOT CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Published, "inline", "none") %>"></a>
       </ItemTemplate>
      </dnn:DnnGridTemplateColumn>
      <dnn:DnnGridTemplateColumn HeaderText="Date">
@@ -73,7 +73,7 @@
      <dnn:DnnGridTemplateColumn HeaderText="Published">
       <ItemStyle Width="30px" HorizontalAlign="Center"></ItemStyle>
       <ItemTemplate>
-       <span class="entypoIcon icon16" id="approveTick<%# Eval("ContentItemID") %>"><%# IIf(Eval("Published"), "&#10003;", "&#10060;")%></span>
+       <span class="blogicon-<%# IIf(Eval("Published"), "ok", "remove")%> icon16" id="approveTick<%# Eval("ContentItemID") %>"></span>
       </ItemTemplate>
      </dnn:DnnGridTemplateColumn>
      <dnn:DnnGridTemplateColumn HeaderText="Blog">

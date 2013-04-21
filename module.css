@@ -1,40 +1,14 @@
-﻿@font-face {
-    font-family: 'EntypoRegular';
-    src: url('images/entypo.eot');
-    src: url('images/entypo.eot?#iefix') format('embedded-opentype'),
-         url('images/entypo.woff') format('woff'),
-         url('images/entypo.ttf') format('truetype'),
-         url('images/entypo.svg#EntypoRegular') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
-a.entypoButton, a.entypoButton:link, a.entypoButton:visited, input.entypoButton
+﻿@import url("css/font-awesome.css"); /* Compile */
+.icon16, a.icon16, a.icon16:link, a.icon16:visited
 {
- font-family: EntypoRegular !important;
- font-size: 5em;
- text-decoration: none;
- color: #666;
- padding: 4px;
+ font-size: 16px !important;
+ width:16px;
+ height:16px;
+ color: #999;
 }
-input.entypoButton 
-{
- border-width: 0;
- margin: 0;
- margin-top:-14px;
- cursor: pointer;
-}
-a.entypoButton:hover, a.entypoButton:active
+a.icon16:hover
 {
  color: #000;
-}
-span.entypoIcon
-{
- font-family: EntypoRegular !important;
- color: #666;
-}
-.icon16
-{
- font-size: 3em !important;
 }
 a.iconLink, a.iconLink:link, a.iconLink:hover, a.iconLink:visited, a.iconLink:active
 {

@@ -235,22 +235,9 @@ a.blog_commentLinkSelected
 {
  font-size: larger;
 }
-.ModBlogC .entypoIcon
-{
- font-family: EntypoRegular !important;
- color: #666;
-}
 .ModBlogC div.stats
 {
  clear:both;
-}
-.ModBlogC div.stats div.entypoIcon
-{
- font-size: 2em !important;
- margin-top: -7px !important;
- display:inline;
- float:left;
- color: #999;
 }
 .ModBlogC div.stats div.stat
 {
@@ -286,7 +273,7 @@ a.blog_commentLinkSelected
 .ModBlogC span.removeselection
 {
  float:right;
- margin-top:-14px;
+ margin-top:-8px;
 }
 .ModBlogC span.removeselection a
 {
@@ -371,17 +358,23 @@ a.blog_commentLinkSelected
 .ModBlogC div.blog_commentbuttons
 {
  float:right;
- margin-top:-6px;
 }
 .ModBlogC div.blog_commentbuttons a
 {
  color: #333;
- font-size: 2em;
+ font-size: 1.2em;
+ margin-right:4px;
 }
-.ModBlogC div.blog_comments
+.ModBlogC div.blog_comments, .ModBlogC .socialbar
 {
 	margin-top:30px;
  padding: 8px;
 	border-radius: 0.4em;
  border: 1px solid #999;
+}
+
+.ModBlogC .socialbar .socialicons
+{
+ font-size: 1.5em;
+ padding: 4px 6px;
 }

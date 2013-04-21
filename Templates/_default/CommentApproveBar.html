@@ -1,8 +1,8 @@
 ﻿<div class="blog_commentbuttons">
 [subtemplate|CommentApprove.html|comment:approved|False]
 <a href="#" 
-   class="entypoButton"
+   class="blogicon-remove"
    title="[resx:DeleteComment]"
    onclick="if (confirm('[resx:DeleteComment.Confirm]')) {blogService.deleteComment([blog:blogid], [comment:CommentID], function() 
-    {$('#commentDiv[comment:CommentID]').hide()})};return false;">&#59177;</a>
+    {$('#commentDiv[comment:CommentID]').hide()})};return false;"></a>
 </div>

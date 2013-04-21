@@ -2,7 +2,7 @@
 <article class="is-post post-details">
  [subtemplate|Postbanner.html|Post:hasimage]
  <header>
-  <span class="removeselection"><a href="[urls:module|false]" class="entypoIcon icon16" title="[resx:Allposts]">&#58543;</a></span>
+  <span class="removeselection"><a href="[urls:module|false]" class="blogicon-arrow-up icon16" title="[resx:Allposts]"></a></span>
   <h2>[Post:localizedtitle]</h2>
   <span class="byline"><a href="[urls:blog|false]">[Blog:localizedtitle]</a><br />
   <a href="[urls:module|true]author=[post:CreatedByUserID]">[Post:DisplayName]</a>
@@ -19,6 +19,9 @@
    <span class="day">[Post:PublishedOnDate|dd]</span>
    <span class="year">[Post:PublishedOnDate|yyyy]</span>
   </span>
+ </div>
+ <div class="socialbar">
+  <div id="sharrre" data-url="[post:link]" data-text="share"></div>
  </div>
  <p>
 [Post:localizedcontent]

@@ -161,6 +161,8 @@
     <Content Include="Templates\_default\CommentApproveBar.html" />
     <Content Include="Templates\_default\CommentKarmaBar.html" />
     <Content Include="Templates\_default\AuthorBanner.html" />
+    <Content Include="Templates\_default\BlogBanner.html" />
+    <Content Include="Templates\_default\CommentReplyBar.html" />
     <Content Include="Templates\_default\Page.html" />
     <Content Include="Templates\_default\PostTag.html" />
     <Content Include="Templates\_default\template.js" />

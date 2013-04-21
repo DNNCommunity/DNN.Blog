@@ -6,9 +6,11 @@
  <asp:LinkButton runat="server" ID="cmdAdmin" resourcekey="cmdAdmin" Visible="false" CssClass="dnnSecondaryAction" />
  <asp:LinkButton runat="server" ID="cmdEditPost" resourcekey="cmdEditPost" Visible="false" CssClass="dnnSecondaryAction" />
  <asp:LinkButton runat="server" ID="cmdBlog" resourcekey="cmdBlog" Visible="false" CssClass="dnnPrimaryAction" />&nbsp;
- <a href="#" id="wlwlink" runat="server" class="icon16 entypoButton" style="margin-top:-24px;float:right">&#59290;</a>
- <a href="<%=RssLink%>" id="rsslink<%=ModuleId %>" title="<%=LocalizeString("RSS") %>" class="icon16 entypoButton" style="display:inline;margin-top:-24px;float:right">&#59194;</a>
- <a href="#" id="searchlink<%=ModuleId %>" title="<%=LocalizeString("Search") %>" class="icon16 entypoButton" style="display:inline;margin-top:-24px;float:right">&#128269;</a>
+ <div style="float:right">
+  <a href="#" id="wlwlink" runat="server" class="blogicon-pencil icon16">&nbsp;</a>
+  <a href="<%=RssLink%>" id="rsslink<%=ModuleId %>" title="<%=LocalizeString("RSS") %>" class="blogicon-rss icon16">&nbsp;</a>
+  <a href="#" id="searchlink<%=ModuleId %>" title="<%=LocalizeString("Search") %>" class="blogicon-search icon16">&nbsp;</a>
+ </div>
 </div>
 <div class="dnnDialog" id="pnlCopyModule" runat="server">
  <div class="dnnClear">
