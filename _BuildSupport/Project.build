@@ -10,5 +10,5 @@
  <property value="${basedirectory}_Installation" name="installationdir"/>
  <property value="DotNetNuke.Modules.Blog.dll" name="mainassemblyfilename"/>
  <property name="packagename" value="Blog"/>
- <property value="dotnetnuke.blog.pagescript.js,jqcloud-1.0.3.min.js,tag-it.min.js,jquery.dynatree.min.js" name="excludejsfiles" />
+ <property value="dotnetnuke.blog.pagescript.js,jqcloud-1.0.3.min.js,tag-it.min.js,jquery.dynatree.min.js,jquery.fancybox-1.3.4.pack.js,jquery.sharrre.min.js" name="excludejsfiles" />
 </project>

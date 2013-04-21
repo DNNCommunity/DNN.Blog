@@ -53,7 +53,7 @@
     <Reference Include="CookComputing.XmlRpcV2, Version=2.5.0.0, Culture=neutral, PublicKeyToken=a7d6e17aa302004d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>_References\CookComputing.XmlRpcV2.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DotNetNuke, Version=7.0.1.266, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

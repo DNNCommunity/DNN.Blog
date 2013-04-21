@@ -63,11 +63,10 @@ CREATE TABLE {databaseOwner}{objectQualifier}Blog_Blogs(
  [Description] [nvarchar](2000) NULL,
  [Image] [nvarchar](255) NULL,
  [Locale] [nvarchar](50) NOT NULL,
+ [FullLocalization] [bit] NULL,
  [Published] [bit] NOT NULL,
  [IncludeImagesInFeed] [bit] NOT NULL,
  [IncludeAuthorInFeed] [bit] NOT NULL,
- [AllowComments] [bit] NOT NULL,
- [AllowAnonymousComments] [bit] NOT NULL,
  [Syndicated] [bit] NOT NULL,
  [SyndicationEmail] [nvarchar](255) NULL,
  [Copyright] [nvarchar](2000) NULL,
@@ -94,11 +93,32 @@ GO
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_CommentKarmas') AND type in (N'U'))
+BEGIN
+CREATE TABLE {databaseOwner}{objectQualifier}Blog_CommentKarmas(
+ [CommentId] [int] NOT NULL,
+ [UserId] [int] NOT NULL,
+ [Karma] [int] NOT NULL,
+ [Datime] [datetime] NOT NULL,
+ CONSTRAINT PK_{objectQualifier}Blog_CommentReports PRIMARY KEY CLUSTERED 
+(
+ [CommentId] ASC,
+ [UserId] ASC,
+ [Karma] ASC
+)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF)
+)
+END
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Comments') AND type in (N'U'))
 BEGIN
 CREATE TABLE {databaseOwner}{objectQualifier}Blog_Comments(
  [CommentID] [int] IDENTITY(1,1) NOT NULL,
  [ContentItemId] [int] NOT NULL,
+ [ParentId] [int] NULL,
  [Comment] [nvarchar](max) NOT NULL,
  [Approved] [bit] NULL,
  [Author] [nvarchar](50) NULL,
@@ -154,7 +174,6 @@ CREATE TABLE {databaseOwner}{objectQualifier}Blog_Posts(
  [Copyright] [nvarchar](255) NULL,
  [Locale] [nvarchar](50) NOT NULL,
  [ViewCount] [int] NULL,
- [TranslationOf] [int] NULL,
  CONSTRAINT PK_{objectQualifier}Blog_Entries PRIMARY KEY CLUSTERED 
 (
  [ContentItemId] ASC
@@ -231,6 +250,14 @@ ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs  WITH NOCHECK ADD  CONSTR
 REFERENCES {objectQualifier}Modules ([ModuleID])
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_Blogs_Modules') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Blogs'))
 ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs NOCHECK CONSTRAINT FK_{objectQualifier}Blog_Blogs_Modules
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_CommentReports_Comments') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_CommentKarmas'))
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_CommentKarmas  WITH CHECK ADD  CONSTRAINT FK_{objectQualifier}Blog_CommentReports_Comments FOREIGN KEY([CommentId])
+REFERENCES {objectQualifier}Blog_Comments ([CommentID])
+ON DELETE CASCADE
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_CommentReports_Comments') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_CommentKarmas'))
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_CommentKarmas CHECK CONSTRAINT FK_{objectQualifier}Blog_CommentReports_Comments
 GO
 
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_Comments') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Comments'))
@@ -409,8 +436,17 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE VIEW {databaseOwner}{objectQualifier}vw_Blog_Comments
 AS
-SELECT     c.CommentID, c.ContentItemId, c.Comment, c.Approved, c.Author, c.Website, c.Email, c.CreatedByUserID, c.CreatedOnDate, c.LastModifiedByUserID, 
-                      c.LastModifiedOnDate, ISNULL(u.Username, 'Anonymous') AS Username, u.DisplayName
+SELECT     c.CommentID, c.ContentItemId, c.ParentId, c.Comment, c.Approved, c.Author, c.Website, c.Email, c.CreatedByUserID, c.CreatedOnDate, c.LastModifiedByUserID, 
+                      c.LastModifiedOnDate, ISNULL(u.Username, 'Anonymous') AS Username, u.DisplayName,
+                          (SELECT     COUNT(*) AS Expr1
+                            FROM          {databaseOwner}{objectQualifier}Blog_CommentKarmas
+                            WHERE      (c.CommentID = c.CommentID) AND (Karma = 0)) AS Likes,
+                          (SELECT     COUNT(*) AS Expr1
+                            FROM          {databaseOwner}{objectQualifier}Blog_CommentKarmas AS {objectQualifier}Blog_CommentKarmas_2
+                            WHERE      (c.CommentID = c.CommentID) AND (Karma = 1)) AS Dislikes,
+                          (SELECT     COUNT(*) AS Expr1
+                            FROM          {databaseOwner}{objectQualifier}Blog_CommentKarmas AS {objectQualifier}Blog_CommentKarmas_1
+                            WHERE      (c.CommentID = c.CommentID) AND (Karma = 2)) AS Reports
 FROM         {databaseOwner}{objectQualifier}Blog_Comments AS c LEFT OUTER JOIN
                       {databaseOwner}{objectQualifier}Users AS u ON c.CreatedByUserID = u.UserID
 GO
@@ -425,15 +461,14 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_AddBlog
- @AllowAnonymousComments BIT, 
  @ModuleID INT, 
- @AllowComments BIT, 
  @Copyright NVARCHAR (2000), 
  @Description NVARCHAR (2000), 
+ @FullLocalization BIT, 
  @Image NVARCHAR (255), 
  @IncludeAuthorInFeed BIT, 
  @IncludeImagesInFeed BIT, 
- @Locale VARCHAR (10), 
+ @Locale NVARCHAR (50), 
  @MustApproveGhostPosts BIT, 
  @OwnerUserId INT, 
  @PublishAsOwner BIT, 
@@ -444,13 +479,12 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_AddBlog
  @CreatedByUser INT
 AS
 INSERT INTO {databaseOwner}{objectQualifier}Blog_Blogs (
- [AllowAnonymousComments],
  [ModuleID],
- [AllowComments],
  [Copyright],
  [CreatedByUserID],
  [CreatedOnDate],
  [Description],
+ [FullLocalization],
  [Image],
  [IncludeAuthorInFeed],
  [IncludeImagesInFeed],
@@ -465,7 +499,7 @@ INSERT INTO {databaseOwner}{objectQualifier}Blog_Blogs (
  [SyndicationEmail],
  [Title]
 )
- VALUES ( @AllowAnonymousComments, @ModuleID, @AllowComments, @Copyright, @CreatedByUser, GETDATE(), @Description, @Image, @IncludeAuthorInFeed, @IncludeImagesInFeed, @CreatedByUser, GETDATE(), @Locale, @MustApproveGhostPosts, @OwnerUserId, @PublishAsOwner, @Published, @Syndicated, @SyndicationEmail, @Title)
+ VALUES ( @ModuleID, @Copyright, @CreatedByUser, GETDATE(), @Description, @FullLocalization, @Image, @IncludeAuthorInFeed, @IncludeImagesInFeed, @CreatedByUser, GETDATE(), @Locale, @MustApproveGhostPosts, @OwnerUserId, @PublishAsOwner, @Published, @Syndicated, @SyndicationEmail, @Title)
 select SCOPE_IDENTITY()
 GO
 
@@ -515,6 +549,7 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_AddComment
  @Comment NVARCHAR (MAX), 
  @ContentItemId INT, 
  @Email NVARCHAR (255), 
+ @ParentId INT, 
  @Website NVARCHAR (255), 
  @CreatedByUser INT
 AS
@@ -528,10 +563,37 @@ INSERT INTO {databaseOwner}{objectQualifier}Blog_Comments (
  [Email],
  [LastModifiedByUserID],
  [LastModifiedOnDate],
+ [ParentId],
  [Website]
 )
- VALUES ( @Approved, @Author, @Comment, @ContentItemId, @CreatedByUser, GETDATE(), @Email, @CreatedByUser, GETDATE(), @Website)
+ VALUES ( @Approved, @Author, @Comment, @ContentItemId, @CreatedByUser, GETDATE(), @Email, @CreatedByUser, GETDATE(), @ParentId, @Website)
 select SCOPE_IDENTITY()
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_AddCommentKarma') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_AddCommentKarma
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_AddCommentKarma
+ @CommentId INT, 
+ @UserId INT,
+ @Karma INT
+AS
+DECLARE @Res INT
+SET @Res = -1;
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}Blog_CommentKarmas WHERE CommentId=@CommentId AND UserId=@UserId AND Karma=@Karma)
+BEGIN
+ INSERT INTO {databaseOwner}{objectQualifier}Blog_CommentKarmas
+  (CommentId, UserId, Karma, Datime)
+ VALUES
+  (@CommentId, @UserId, @Karma, GETDATE());
+ SET @Res = @CommentId;
+END
+SELECT @Res
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_AddPost') AND type in (N'P', N'PC'))
@@ -554,9 +616,8 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_AddPost
  @PublishedOnDate DATETIME, 
  @Summary NVARCHAR (MAX),
  @TermIds NVARCHAR(1000),
- @Title NVARCHAR (255), 
- @ViewCount INT,
- @TranslationOf INT,
+ @Title NVARCHAR (255),
+ @ViewCount INT, 
  @CreatedByUser INT
 AS
 DECLARE @ContentTypeID INT
@@ -580,10 +641,9 @@ INSERT INTO {databaseOwner}{objectQualifier}Blog_Posts (
  [PublishedOnDate],
  [Summary],
  [Title],
- [ViewCount],
- [TranslationOf]
+ [ViewCount]
 )
- VALUES (  @AllowComments, @BlogID, @ContentItemID, @Copyright, @DisplayCopyright, @Image, @Locale, @Published, @PublishedOnDate, @Summary, @Title, @ViewCount, @TranslationOf);
+ VALUES (  @AllowComments, @BlogID, @ContentItemID, @Copyright, @DisplayCopyright, @Image, @Locale, @Published, @PublishedOnDate, @Summary, @Title, @ViewCount);
 IF @TermIds<>''
 BEGIN
  DECLARE @ids TABLE (s NVARCHAR(512))
@@ -604,11 +664,11 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_AddPostView
- @ContentItemId INT
+ @ContentTypeID INT
 AS
 UPDATE {databaseOwner}{objectQualifier}Blog_Posts
-SET ViewCount = ViewCount + 1
-WHERE ContentItemId=@ContentItemId
+SET [ViewCount] = ISNULL([ViewCount],0) + 1
+WHERE [ContentItemId]=@ContentTypeID
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_ApproveComment') AND type in (N'P', N'PC'))
@@ -735,6 +795,7 @@ SELECT
  WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4)) AND bp.BlogId=b.BlogID AND bp.PermissionId=2) AS CanApprove
  
 FROM {databaseOwner}{objectQualifier}Blog_BlogList(@Locale) b
+ WHERE b.BlogID=@BlogId
 END
 GO
 
@@ -860,6 +921,28 @@ ORDER BY
  c.CreatedOnDate DESC
 GO
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetCommentsByModuleId') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetCommentsByModuleId
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetCommentsByModuleId
+ @ModuleId INT
+AS
+SELECT
+ c.*
+FROM
+ {databaseOwner}{objectQualifier}vw_Blog_Comments c
+ INNER JOIN {databaseOwner}{objectQualifier}ContentItems ci ON ci.ContentItemID=c.ContentItemId
+WHERE
+ ci.ModuleID=@ModuleId
+ORDER BY
+ c.CreatedOnDate DESC
+GO
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetPost') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetPost
 GO
@@ -874,7 +957,8 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetPost
  @Locale NVARCHAR(10)
 AS
 SELECT
- p.*
+ p.*,
+ (SELECT COUNT(c.CommentID) FROM {databaseOwner}{objectQualifier}Blog_Comments c WHERE c.ContentItemId=p.ContentItemId) AS NrComments
 FROM
  {databaseOwner}{objectQualifier}Blog_PostList(@Locale) p
 WHERE
@@ -941,15 +1025,18 @@ SELECT
  b.BlogId,
  b.Locale,
 (SELECT COUNT(*)
- FROM {objectQualifier}Blog_BlogPermissions bp
+ FROM {databaseOwner}{objectQualifier}Blog_BlogPermissions bp
  LEFT JOIN (SELECT ur.UserID, ur.RoleID  
-    FROM {objectQualifier}UserRoles ur
+    FROM {databaseOwner}{objectQualifier}UserRoles ur
     WHERE (ur.EffectiveDate <= GETDATE() OR ur.EffectiveDate IS NULL) AND (ur.ExpiryDate >= GETDATE() OR ur.ExpiryDate IS NULL)
     and ur.UserID=@UserID) r  ON r.RoleID=bp.RoleId
  WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4)) AND bp.BlogId=b.BlogID AND bp.PermissionId IN (0,1,2)) AS [HasPrivilege]
-FROM {objectQualifier}Blog_Blogs b
+FROM {databaseOwner}{objectQualifier}Blog_Blogs b
 WHERE b.ModuleID=@ModuleId;
-SELECT * FROM
+SELECT
+ Tbl.*,
+ (SELECT COUNT(c.CommentID) FROM {databaseOwner}{objectQualifier}Blog_Comments c WHERE c.ContentItemId=tbl.ContentItemId) AS NrComments
+FROM
 (SELECT
  p.*,
  ROW_NUMBER() OVER
@@ -1043,7 +1130,10 @@ DECLARE
  @PageUpperBound INT, 
  @RowsToReturn INT
 EXEC {databaseOwner}{objectQualifier}CalculatePagingInformation @PageIndex, @PageSize, @RowsToReturn output, @PageLowerBound output, @PageUpperBound output;
-SELECT * FROM
+SELECT 
+ Tbl.*,
+ (SELECT COUNT(c.CommentID) FROM {databaseOwner}{objectQualifier}Blog_Comments c WHERE c.ContentItemId=tbl.ContentItemId) AS NrComments
+FROM
 (SELECT
  p.*,
  ROW_NUMBER() OVER
@@ -1150,7 +1240,10 @@ SELECT
  WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4)) AND bp.BlogId=b.BlogID AND bp.PermissionId IN (0,1,2)) AS [HasPrivilege]
 FROM {objectQualifier}Blog_Blogs b
 WHERE b.ModuleID=@ModuleId;
-SELECT * FROM
+SELECT 
+ Tbl.*,
+ (SELECT COUNT(c.CommentID) FROM {databaseOwner}{objectQualifier}Blog_Comments c WHERE c.ContentItemId=tbl.ContentItemId) AS NrComments
+FROM
 (SELECT
  p.*,
  ROW_NUMBER() OVER
@@ -1468,7 +1561,10 @@ SELECT
  WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4)) AND bp.BlogId=b.BlogID AND bp.PermissionId IN (0,1,2)) AS [HasPrivilege]
 FROM {objectQualifier}Blog_Blogs b
 WHERE b.ModuleID=@ModuleId;
-SELECT * FROM
+SELECT
+ Tbl.*,
+ (SELECT COUNT(c.CommentID) FROM {databaseOwner}{objectQualifier}Blog_Comments c WHERE c.ContentItemId=tbl.ContentItemId) AS NrComments
+FROM
 (SELECT
  p.*,
  ROW_NUMBER() OVER
@@ -1592,7 +1688,10 @@ SELECT
  WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4)) AND bp.BlogId=b.BlogID AND bp.PermissionId IN (0,1,2)) AS [HasPrivilege]
 FROM {objectQualifier}Blog_Blogs b
 WHERE b.ModuleID=@ModuleId;
-SELECT * FROM
+SELECT
+ Tbl.*,
+ (SELECT COUNT(c.CommentID) FROM {databaseOwner}{objectQualifier}Blog_Comments c WHERE c.ContentItemId=tbl.ContentItemId) AS NrComments
+FROM
 (SELECT
  p.*,
  ROW_NUMBER() OVER
@@ -1844,16 +1943,15 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdateBlog
- @AllowAnonymousComments BIT, 
- @ModuleID INT, 
- @AllowComments BIT, 
  @BlogID INT, 
+ @ModuleID INT, 
  @Copyright NVARCHAR (2000), 
  @Description NVARCHAR (2000), 
+ @FullLocalization BIT, 
  @Image NVARCHAR (255), 
  @IncludeAuthorInFeed BIT, 
  @IncludeImagesInFeed BIT, 
- @Locale VARCHAR (10), 
+ @Locale NVARCHAR (50), 
  @MustApproveGhostPosts BIT, 
  @OwnerUserId INT, 
  @PublishAsOwner BIT, 
@@ -1864,11 +1962,10 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdateBlog
  @UpdatedByUser INT
 AS
 UPDATE {databaseOwner}{objectQualifier}Blog_Blogs SET
- [AllowAnonymousComments] = @AllowAnonymousComments,
  [ModuleID] = @ModuleID,
- [AllowComments] = @AllowComments,
  [Copyright] = @Copyright,
  [Description] = @Description,
+ [FullLocalization] = @FullLocalization,
  [Image] = @Image,
  [IncludeAuthorInFeed] = @IncludeAuthorInFeed,
  [IncludeImagesInFeed] = @IncludeImagesInFeed,
@@ -1901,6 +1998,7 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdateComment
  @CommentID INT, 
  @ContentItemId INT, 
  @Email NVARCHAR (255), 
+ @ParentId INT, 
  @Website NVARCHAR (255), 
  @UpdatedByUser INT
 AS
@@ -1912,6 +2010,7 @@ UPDATE {databaseOwner}{objectQualifier}Blog_Comments SET
  [Email] = @Email,
  [LastModifiedByUserID] = @UpdatedByUser,
  [LastModifiedOnDate] = GETDATE(),
+ [ParentId] = @ParentId,
  [Website] = @Website
 WHERE
  [CommentID] = @CommentID
@@ -1938,9 +2037,8 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdatePost
  @PublishedOnDate DATETIME, 
  @Summary NVARCHAR (MAX), 
  @TermIds NVARCHAR(1000),
- @Title NVARCHAR (255), 
+ @Title NVARCHAR (255),
  @ViewCount INT,
- @TranslationOf INT,
  @UpdatedByUser INT
 AS
 DECLARE @ContentTypeID INT
@@ -1959,8 +2057,7 @@ UPDATE {databaseOwner}{objectQualifier}Blog_Posts SET
  [PublishedOnDate] = @PublishedOnDate,
  [Summary] = @Summary,
  [Title] = @Title,
- [ViewCount] = @ViewCount,
- [TranslationOf] = @TranslationOf
+ [ViewCount]=@ViewCount
 WHERE
  [ContentItemId] = @ContentItemId;
  

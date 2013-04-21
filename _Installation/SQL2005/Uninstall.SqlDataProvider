@@ -11,6 +11,10 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwn
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_AddComment
 GO
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_AddCommentKarma') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_AddCommentKarma
+GO
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_AddPost') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_AddPost
 GO
@@ -61,6 +65,10 @@ GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetCommentsByContentItem') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetCommentsByContentItem
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetCommentsByModuleId') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetCommentsByModuleId
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetPost') AND type in (N'P', N'PC'))
@@ -152,8 +160,16 @@ IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner
 DROP VIEW {databaseOwner}{objectQualifier}vw_Blog_BlogPermissions
 GO
 
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}vw_Blog_Blogs'))
+DROP VIEW {databaseOwner}{objectQualifier}vw_Blog_Blogs
+GO
+
 IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}vw_Blog_Comments'))
 DROP VIEW {databaseOwner}{objectQualifier}vw_Blog_Comments
+GO
+
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}vw_Blog_Posts'))
+DROP VIEW {databaseOwner}{objectQualifier}vw_Blog_Posts
 GO
 
 /******* FUNCTIONS *******/
@@ -185,6 +201,10 @@ GO
 
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_Blogs_Modules') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Blogs'))
 ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs DROP CONSTRAINT FK_{objectQualifier}Blog_Blogs_Modules
+GO
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_CommentReports_Comments') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_CommentKarmas'))
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_CommentKarmas DROP CONSTRAINT FK_{objectQualifier}Blog_CommentReports_Comments
 GO
 
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_Comments') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Comments'))
@@ -222,6 +242,10 @@ GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Blogs') AND type in (N'U'))
 DROP TABLE {databaseOwner}{objectQualifier}Blog_Blogs
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_CommentKarmas') AND type in (N'U'))
+DROP TABLE {databaseOwner}{objectQualifier}Blog_CommentKarmas
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Comments') AND type in (N'U'))

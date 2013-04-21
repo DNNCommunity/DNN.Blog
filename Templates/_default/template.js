@@ -11,6 +11,7 @@
     facebook: true,
     twitter: true
    },
+   urlCurl: '',
    template: '<a href="#" class="blogicon-facebook socialicons facebook"></a><a href="#" class="blogicon-twitter socialicons twitter"></a><a href="#" class="blogicon-google-plus socialicons googleplus"></a>',
    enableHover: false,
    enableTracking: true,
