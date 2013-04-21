@@ -54,6 +54,7 @@ Namespace Common
     Settings = ModuleSettings.GetModuleSettings(ViewSettings.BlogModuleId)
    End If
    Locale = Threading.Thread.CurrentThread.CurrentCulture.Name
+   Referrer = Request.UrlReferrer.PathAndQuery
 
    Request.Params.ReadValue("Blog", BlogId)
    Request.Params.ReadValue("Post", ContentItemId)

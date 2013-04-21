@@ -67,6 +67,9 @@ Namespace Controls
                                                                                                  End Function)
     End If
     NrBlogs = blogList.Count
+    If NrBlogs = 0 Then
+     cmdBlog.Visible = False
+    End If
     For Each b As BlogInfo In blogList
      BlogSelectListHtml &= String.Format("<option value=""{0}"">{1}</option>", b.BlogID, b.LocalizedTitle)
     Next

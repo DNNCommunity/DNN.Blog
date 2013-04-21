@@ -59,6 +59,7 @@ Namespace Common
     Me.IsMultiLingualSite = contextBase.IsMultiLingualSite
     Me.ShowLocale = contextBase.ShowLocale
     Me.Locale = contextBase.Locale
+    Me.Referrer = contextBase.Referrer
    End With
   End Sub
 #End Region
@@ -83,6 +84,7 @@ Namespace Common
   Public Property IsMultiLingualSite As Boolean = False
   Public Property ShowLocale As String = ""
   Public Property Locale As String = ""
+  Public Property Referrer As String = ""
 
   Private _uiTimezone As TimeZoneInfo = Nothing
   Public ReadOnly Property UiTimeZone As TimeZoneInfo
@@ -179,6 +181,16 @@ Namespace Common
      Return CBool(TermId > -1).ToString()
     Case "authorselected"
      Return CBool(AuthorId > -1).ToString()
+    Case "ismultilingualsite"
+     Return IsMultiLingualSite.ToString()
+    Case "showlocale"
+     Return ShowLocale
+    Case "locale"
+     Return Locale
+    Case "searchstring"
+     Return SearchString
+    Case "referrer"
+     Return Referrer
     Case Else
      If Me.Request.Params(strPropertyName) IsNot Nothing Then
       Return Me.Request.Params(strPropertyName)
