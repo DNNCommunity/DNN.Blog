@@ -63,7 +63,6 @@ Namespace Common
    Request.Params.ReadValue("t", SearchTitle)
    Request.Params.ReadValue("c", SearchContents)
    Request.Params.ReadValue("u", SearchUnpublished)
-   ModuleUrls = New ModuleUrls(TabId, BlogId, ContentItemId, TermId, AuthorId)
    If ContentItemId > -1 Then Post = Entities.Posts.PostsController.GetPost(ContentItemId, Settings.ModuleId, Locale)
    If BlogId > -1 And Post IsNot Nothing AndAlso Post.BlogID <> BlogId Then Post = Nothing ' double check in case someone is hacking to retrieve an Post from another blog
    If BlogId = -1 And Post IsNot Nothing Then BlogId = Post.BlogID
@@ -75,10 +74,7 @@ Namespace Common
    If TermId > -1 Then Term = Entities.Terms.TermsController.GetTerm(TermId, Settings.ModuleId, Locale)
    If AuthorId > -1 Then Author = DotNetNuke.Entities.Users.UserController.GetUserById(PortalId, AuthorId)
    ' set urls for use in module
-   Dim params As New List(Of String)
-   If BlogId > -1 Then params.Add("Blog=" & BlogId.ToString)
-   If ContentItemId > -1 Then params.Add("Post=" & ContentItemId.ToString)
-   If TermId > -1 Then params.Add("Term=" & TermId.ToString)
+   ModuleUrls = New ModuleUrls(TabId, BlogId, ContentItemId, TermId, AuthorId)
    IsMultiLingualSite = CBool((New DotNetNuke.Services.Localization.LocaleController).GetLocales(PortalId).Count > 1)
    If Not ViewSettings.ShowAllLocales Then
     ShowLocale = Locale
