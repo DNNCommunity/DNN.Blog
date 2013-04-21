@@ -153,6 +153,7 @@
     <Content Include="Controls\Comments.ascx" />
     <Content Include="Controls\ManagementPanel.ascx" />
     <Content Include="Admin.ascx" />
+    <Content Include="css\font-awesome.css" />
     <Content Include="css\jquery.handsontable.css" />
     <Content Include="js\jquery.handsontable.js" />
     <Content Include="Templates\_default\CommentsTemplate.html" />

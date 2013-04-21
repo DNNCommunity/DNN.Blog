@@ -74,7 +74,7 @@
  });
 <% End If %>
   var $dialogSearch = $('<div class="dnnDialog"></div>')
-		.html('<input type="text" id="txtSearch" style="width:95%"></input><br/><%=LocalizeString("SearchIn") %>&nbsp;<input type="checkbox" id="scopeTitle<%=ModuleId %>" value="1" checked="1" /><%=LocalizeString("Title") %><input type="checkbox" id="scopeContents<%=ModuleId %>" value="1" /><%=LocalizeString("Contents") %><% If Security.CanAddPost %><input type="checkbox" id="chkUnpublished<%=ModuleId %>" value="1" /><%=LocalizeString("Unpublished") %><% End If %>')
+		.html('<input type="text" id="txtSearch" style="width:95%"></input><br/><%=LocalizeString("SearchIn") %>&nbsp;<input type="checkbox" id="scopeAll<%=ModuleId %>" value="1" checked="1" /><%=LocalizeString("SearchAll") %><input type="checkbox" id="scopeTitle<%=ModuleId %>" value="1" checked="1" /><%=LocalizeString("Title") %><input type="checkbox" id="scopeContents<%=ModuleId %>" value="1" /><%=LocalizeString("Contents") %><% If Security.CanAddPost %><input type="checkbox" id="chkUnpublished<%=ModuleId %>" value="1" /><%=LocalizeString("Unpublished") %><% End If %>')
 		.dialog({
 		 autoOpen: false,
 		 resizable: false,
@@ -97,7 +97,12 @@
      text: '<%=LocalizeString("Search") %>',
      click: function () {
       $(this).dialog("close");
-      var url = '<%=ModuleUrls.GetUrl(True, True, True, True) %>';
+      var url
+      if ($('#scopeAll<%=ModuleId %>').is(':checked')) {
+       url = '<%=ModuleUrls.GetUrl(False, False, False, False, True) %>';
+      } else {
+       url = '<%=ModuleUrls.GetUrl(True, False, True, True, True) %>';
+      }
       url += 'search=' + $('#txtSearch').val();
       if ($('#scopeTitle<%=ModuleId %>').is(':checked')) {
        url += '&t=1'

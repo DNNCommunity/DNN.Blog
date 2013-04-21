@@ -192,4 +192,7 @@
   <data name="BlogChoose.Text" xml:space="preserve">
     <value>Choose blog to post to</value>
   </data>
+  <data name="SearchAll.Text" xml:space="preserve">
+    <value>In all content</value>
+  </data>
 </root>

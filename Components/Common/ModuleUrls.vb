@@ -24,11 +24,12 @@ Namespace Common
 #End Region
 
 #Region " Public Methods "
-  Public Function GetUrl(includeBlog As Boolean, includePost As Boolean, includeTerm As Boolean, includeEnding As Boolean) As String
+  Public Function GetUrl(includeBlog As Boolean, includePost As Boolean, includeTerm As Boolean, includeAuthor As Boolean, includeEnding As Boolean) As String
    Dim urlType As String = ""
    If includeBlog Then urlType = "blog"
    If includePost Then urlType &= "post"
    If includeTerm Then urlType &= "term"
+   If includeAuthor Then urlType &= "author"
    Dim cacheKey As String = String.Format("{0}:{1}", urlType, includeEnding.ToString.ToLower)
    If Cache.ContainsKey(cacheKey) Then Return Cache(cacheKey)
    BuildUrl(urlType)
@@ -42,29 +43,49 @@ Namespace Common
    Select Case urlType
     Case "blog"
      If BlogId > -1 Then params.Add("Blog=" & BlogId.ToString)
+    Case "post"
+     If ContentItemId > -1 Then params.Add("Post=" & ContentItemId.ToString)
+    Case "term"
+     If TermId > -1 Then params.Add("Term=" & TermId.ToString)
+    Case "author"
+     If AuthorId > -1 Then params.Add("Author=" & AuthorId.ToString)
+
     Case "blogpost"
      If BlogId > -1 Then params.Add("Blog=" & BlogId.ToString)
      If ContentItemId > -1 Then params.Add("Post=" & ContentItemId.ToString)
+    Case "blogterm"
+     If BlogId > -1 Then params.Add("Blog=" & BlogId.ToString)
+     If TermId > -1 Then params.Add("Term=" & TermId.ToString)
+    Case "blogauthor"
+     If BlogId > -1 Then params.Add("Blog=" & BlogId.ToString)
+     If AuthorId > -1 Then params.Add("Author=" & AuthorId.ToString)
+    Case "postterm"
+     If ContentItemId > -1 Then params.Add("Post=" & ContentItemId.ToString)
+     If TermId > -1 Then params.Add("Term=" & TermId.ToString)
+    Case "postauthor"
+     If ContentItemId > -1 Then params.Add("Post=" & ContentItemId.ToString)
+     If AuthorId > -1 Then params.Add("Author=" & AuthorId.ToString)
+    Case "termauthor"
+     If TermId > -1 Then params.Add("Term=" & TermId.ToString)
+     If AuthorId > -1 Then params.Add("Author=" & AuthorId.ToString)
+
     Case "blogpostterm"
      If BlogId > -1 Then params.Add("Blog=" & BlogId.ToString)
      If ContentItemId > -1 Then params.Add("Post=" & ContentItemId.ToString)
      If TermId > -1 Then params.Add("Term=" & TermId.ToString)
+    Case "blogpostauthor"
+     If BlogId > -1 Then params.Add("Blog=" & BlogId.ToString)
+     If ContentItemId > -1 Then params.Add("Post=" & ContentItemId.ToString)
+     If AuthorId > -1 Then params.Add("Author=" & AuthorId.ToString)
+    Case "posttermauthor"
+     If ContentItemId > -1 Then params.Add("Post=" & ContentItemId.ToString)
+     If TermId > -1 Then params.Add("Term=" & TermId.ToString)
+     If AuthorId > -1 Then params.Add("Author=" & AuthorId.ToString)
+
     Case "blogposttermauthor", "all"
      If BlogId > -1 Then params.Add("Blog=" & BlogId.ToString)
      If ContentItemId > -1 Then params.Add("Post=" & ContentItemId.ToString)
      If TermId > -1 Then params.Add("Term=" & TermId.ToString)
-     If AuthorId > -1 Then params.Add("Author=" & AuthorId.ToString)
-    Case "blogterm"
-     If BlogId > -1 Then params.Add("Blog=" & BlogId.ToString)
-     If TermId > -1 Then params.Add("Term=" & TermId.ToString)
-    Case "post"
-     If ContentItemId > -1 Then params.Add("Post=" & ContentItemId.ToString)
-    Case "postterm"
-     If ContentItemId > -1 Then params.Add("Post=" & ContentItemId.ToString)
-     If TermId > -1 Then params.Add("Term=" & TermId.ToString)
-    Case "term"
-     If TermId > -1 Then params.Add("Term=" & TermId.ToString)
-    Case "author"
      If AuthorId > -1 Then params.Add("Author=" & AuthorId.ToString)
    End Select
    Dim BaseUrl As String = DotNetNuke.Common.NavigateURL(TabId, "", params.ToArray)
