@@ -80,6 +80,9 @@ Namespace Common
    If Not ViewSettings.ShowAllLocales Then
     ShowLocale = Locale
    End If
+   If Referrer.Contains("/ctl/") Or Referrer.Contains("&ctl=") Then
+    Referrer = DotNetNuke.Common.NavigateURL(TabId) ' just catch 99% of bad referrals to edit pages
+   End If
 
    If ViewSettings.BlogModuleId = -1 Then
     AddBlogService()
