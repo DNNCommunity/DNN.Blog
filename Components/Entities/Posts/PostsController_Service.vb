@@ -52,6 +52,19 @@ Namespace Entities.Posts
    PostsController.DeletePost(Post)
    Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = "success"})
   End Function
+
+  <HttpPost()>
+  <BlogAuthorizeAttribute(Services.SecurityAccessLevel.EditPost)>
+  <ValidateAntiForgeryToken()>
+  <ActionName("View")>
+  Public Function ViewPost(postData As PostDTO) As HttpResponseMessage
+   SetContext(postData)
+   If Blog Is Nothing Or Post Is Nothing Then
+    Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
+   End If
+   Data.DataProvider.Instance.AddPostView(postData.PostId)
+   Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = "success"})
+  End Function
 #End Region
 
 #Region " Private Methods "

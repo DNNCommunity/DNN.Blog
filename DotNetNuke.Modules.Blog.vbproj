@@ -164,6 +164,9 @@
     <Content Include="Templates\_default\AuthorBanner.html" />
     <Content Include="Templates\_default\BlogBanner.html" />
     <Content Include="Templates\_default\CommentReplyBar.html" />
+    <Content Include="Templates\_default\css\jquery.fancybox-1.3.4.css" />
+    <Content Include="Templates\_default\js\jquery.fancybox-1.3.4.pack.js" />
+    <Content Include="Templates\_default\js\jquery.sharrre.min.js" />
     <Content Include="Templates\_default\Page.html" />
     <Content Include="Templates\_default\PostTag.html" />
     <Content Include="Templates\_default\template.js" />
@@ -426,10 +429,8 @@
     <Folder Include="Templates\tagCloud\images\" />
     <Folder Include="Templates\tagCloud\jsblocks\" />
     <Folder Include="Templates\tagCloud\resx\" />
-    <Folder Include="Templates\_default\css\" />
     <Folder Include="Templates\_default\images\" />
     <Folder Include="Templates\_default\jsblocks\" />
-    <Folder Include="Templates\_default\js\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_LocalResources\Blog.ascx.resx" />

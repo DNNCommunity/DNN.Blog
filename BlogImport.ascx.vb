@@ -91,6 +91,7 @@ Public Class BlogImport
       With newPost
        .BlogID = BlogId
        '.AllowComments = Blog.AllowComments
+       .ViewCount = 0
        .Title = post.Title
        .Content = post.Content.Text
        .Summary = post.Excerpt.Text

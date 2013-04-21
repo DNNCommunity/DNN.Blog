@@ -35,6 +35,21 @@
   });
  };
 
+ this.viewPost = function (blogId, PostId, success) {
+  $.ajax({
+   type: "POST",
+   url: baseServicepath + "View",
+   beforeSend: servicesFramework.setModuleHeaders,
+   data: { blogId: blogId, PostId: PostId }
+  }).done(function (data) {
+   if (success != undefined) {
+    success();
+   }
+  }).fail(function (xhr, status) {
+   displayMessage(settings.errorBoxId, settings.serverErrorWithDescription + eval("(" + xhr.responseText + ")").ExceptionMessage, "dnnFormWarning");
+  });
+ };
+
  this.approveComment = function (blogId, commentId, success) {
   $.ajax({
    type: "POST",

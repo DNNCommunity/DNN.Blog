@@ -88,6 +88,10 @@ Namespace Common
     ElseIf twoletterlocs.Contains(Threading.Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.ToLower) Then
      AddJavascriptFile("time-ago-locales/jquery.timeago." & Threading.Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.ToLower & ".js")
     End If
+    If Not Me.IsPostBack And ContentItemId > -1 Then
+     Dim scriptBlock As String = "(function ($, Sys) {$(document).ready(function () {blogService.viewPost(" & BlogId.ToString & ", " & ContentItemId.ToString & ")});} (jQuery, window.Sys));"
+     Page.ClientScript.RegisterClientScriptBlock(Me.GetType, "PostViewScript", scriptBlock, True)
+    End If
    End If
 
   End Sub
