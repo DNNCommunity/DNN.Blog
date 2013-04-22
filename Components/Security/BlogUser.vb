@@ -1,4 +1,4 @@
-﻿Imports DotNetNuke.Entities.Users
+Imports DotNetNuke.Entities.Users
 Imports DotNetNuke.Security.Roles
 
 Namespace Security

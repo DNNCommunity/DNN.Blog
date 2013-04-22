@@ -1,4 +1,4 @@
-﻿Namespace Security.Permissions
+Namespace Security.Permissions
  Public Class PermissionsController
 
   Public Shared Function GetPermissions() As PermissionCollection

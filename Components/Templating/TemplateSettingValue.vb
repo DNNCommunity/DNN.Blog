@@ -1,4 +1,4 @@
-﻿'
+'
 ' Bring2mind - http://www.bring2mind.net
 ' Copyright (c) 2012
 ' by Bring2mind

@@ -1,4 +1,4 @@
-﻿(function ($, Sys) {
+(function ($, Sys) {
  $(document).ready(function () {
   var servicesFramework = $.dnnSF([ModuleId]);
   $('#[ID]').tagit({

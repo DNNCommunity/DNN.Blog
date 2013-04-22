@@ -1,4 +1,4 @@
-﻿Imports System.Linq
+Imports System.Linq
 Imports DotNetNuke.Services.Localization.Localization
 Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.Entities.Blogs

@@ -1,4 +1,4 @@
-﻿function BlogService($, settings, servicesFramework) {
+function BlogService($, settings, servicesFramework) {
  var baseServicepath = servicesFramework.getServiceRoot('Blog') + 'Posts/';
  var commentsServicepath = servicesFramework.getServiceRoot('Blog') + 'Comments/';
  var modulesServicepath = servicesFramework.getServiceRoot('Blog') + 'Modules/';

@@ -1,4 +1,4 @@
-﻿Namespace Security
+Namespace Security
  Public Class Security
 
   Public Enum BlogPermissionTypes

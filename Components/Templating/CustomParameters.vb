@@ -1,4 +1,4 @@
-﻿Imports DotNetNuke.Services.Tokens
+Imports DotNetNuke.Services.Tokens
 
 Namespace Templating
  Public Class CustomParameters

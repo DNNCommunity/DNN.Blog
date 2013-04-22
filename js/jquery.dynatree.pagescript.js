@@ -1,4 +1,4 @@
-﻿(function ($, Sys) {
+(function ($, Sys) {
  $(document).ready(function () {
   $('#[ID]').dynatree({
    onSelect: function (flag, node) {

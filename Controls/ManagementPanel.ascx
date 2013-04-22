@@ -1,4 +1,4 @@
-﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="ManagementPanel.ascx.vb" Inherits="DotNetNuke.Modules.Blog.Controls.ManagementPanel" %>
+<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="ManagementPanel.ascx.vb" Inherits="DotNetNuke.Modules.Blog.Controls.ManagementPanel" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <div style="height:40px" id="pnlManagement" runat="server">
  <a href="#" id="cmdCopyModule" runat="server" class="dnnSecondaryAction" visible="false"><%=LocalizeString("cmdCopyModule")%></a>

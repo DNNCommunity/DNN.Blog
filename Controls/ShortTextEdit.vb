@@ -1,4 +1,4 @@
-﻿Imports System.Web.UI.WebControls
+Imports System.Web.UI.WebControls
 Imports DotNetNuke
 Imports DotNetNuke.Modules.Blog.Common.Globals
 

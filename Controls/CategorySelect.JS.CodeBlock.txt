@@ -1,4 +1,4 @@
-﻿(function ($, Sys) {
+(function ($, Sys) {
  $(document).ready(function () {
   $('#[StorageControlId]').val('[Children]');
   $('#[ID]').dynatree({

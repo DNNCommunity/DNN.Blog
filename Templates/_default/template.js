@@ -1,4 +1,4 @@
-﻿(function ($, Sys) {
+(function ($, Sys) {
  $(document).ready(function () {
   $("abbr.blog_commenttimeago").timeago();
   $('#cmdComment').click(function () {

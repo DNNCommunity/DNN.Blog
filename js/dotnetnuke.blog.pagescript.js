@@ -1,4 +1,4 @@
-﻿var blogService
+var blogService
 jQuery(function ($) {
  blogService = new BlogService($, {
    serverErrorText: '[resx:ServerError]',

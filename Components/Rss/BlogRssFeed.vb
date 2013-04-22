@@ -1,4 +1,4 @@
-﻿Imports System.Xml
+Imports System.Xml
 Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Entities.Modules
 Imports DotNetNuke.Modules.Blog.Common.Globals

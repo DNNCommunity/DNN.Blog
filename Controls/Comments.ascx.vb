@@ -1,4 +1,4 @@
-﻿Imports System.Linq
+Imports System.Linq
 
 Imports DotNetNuke.Modules.Blog.Templating
 Imports DotNetNuke.Modules.Blog.Entities.Comments

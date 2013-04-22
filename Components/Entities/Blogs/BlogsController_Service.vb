@@ -1,4 +1,4 @@
-﻿Imports System.Globalization
+Imports System.Globalization
 Imports System.Runtime.Serialization
 Imports System.Runtime.Serialization.Json
 Imports System.Net

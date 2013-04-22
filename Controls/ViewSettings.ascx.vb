@@ -1,4 +1,4 @@
-﻿Imports DotNetNuke.Modules.Blog.Common.Globals
+Imports DotNetNuke.Modules.Blog.Common.Globals
 
 Namespace Controls
  Public Class ViewSettings

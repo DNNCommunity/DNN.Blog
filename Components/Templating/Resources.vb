@@ -1,4 +1,4 @@
-﻿Imports DotNetNuke.Common.Utilities
+Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Services.Tokens
 Imports DotNetNuke.Services.Localization.Localization
 

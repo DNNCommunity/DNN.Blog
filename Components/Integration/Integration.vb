@@ -1,4 +1,4 @@
-﻿Namespace Integration
+Namespace Integration
  Public Class Integration
 
   Public Const ContentTypeName As String = "DNN_Blog_Post"

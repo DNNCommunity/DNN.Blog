@@ -1,4 +1,4 @@
-﻿
+
 Namespace Integration
  Public Class NotificationKey
 

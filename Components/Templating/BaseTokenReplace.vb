@@ -1,4 +1,4 @@
-﻿'
+'
 ' DotNetNuke® - http://www.dotnetnuke.com
 ' Copyright (c) 2002-2010 by DotNetNuke Corp. 
 '

@@ -1,4 +1,4 @@
-﻿Namespace Services.WLW
+Namespace Services.WLW
  Public Class BlogPostException
   Inherits Exception
 

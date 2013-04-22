@@ -1,4 +1,4 @@
-﻿Imports DotNetNuke.Web.Api
+Imports DotNetNuke.Web.Api
 Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports System.Web.Http
 Imports System.Net.Http
