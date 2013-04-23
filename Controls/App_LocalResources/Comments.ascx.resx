@@ -126,7 +126,28 @@
   <data name="CommentTitle.Text" xml:space="preserve">
     <value>Comment on this post</value>
   </data>
+  <data name="Email.Text" xml:space="preserve">
+    <value>Email (not published on site) *</value>
+  </data>
+  <data name="EmailRequired.Error" xml:space="preserve">
+    <value>You will need to fill in a valid email address</value>
+  </data>
+  <data name="Name.Text" xml:space="preserve">
+    <value>Name *</value>
+  </data>
+  <data name="NameRequired.Error" xml:space="preserve">
+    <value>You will need to fill in your name or be logged in to leave a comment</value>
+  </data>
+  <data name="NotApproved.Text" xml:space="preserve">
+    <value>Your comment has been sent but needs to be approved before it is shown here.</value>
+  </data>
+  <data name="RemarksRequired.Error" xml:space="preserve">
+    <value>You need to leave a comment or click Cancel</value>
+  </data>
   <data name="Submit.Text" xml:space="preserve">
     <value>Submit</value>
+  </data>
+  <data name="Website.Text" xml:space="preserve">
+    <value>Website</value>
   </data>
 </root>

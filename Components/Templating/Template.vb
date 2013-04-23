@@ -175,7 +175,7 @@ Namespace Templating
     templateFilename = m.Groups("template").Value.ToLower
    End If
 
-   Dim leftside As String = _Replacer.ReplaceTokens(m.Groups("left").Value.ToLower)
+   Dim leftside As String = _Replacer.ReplaceTokens(m.Groups("left").Value).ToLower
    If m.Groups("comparison").Success Then
     Dim comparison As String = m.Groups("comparison").Value.ToLower
     Dim rightside As String = _Replacer.ReplaceTokens(m.Groups("right").Value.ToLower)

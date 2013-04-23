@@ -54,7 +54,7 @@ Namespace Common
     Settings = ModuleSettings.GetModuleSettings(ViewSettings.BlogModuleId)
    End If
    Locale = Threading.Thread.CurrentThread.CurrentCulture.Name
-   Referrer = Request.UrlReferrer.PathAndQuery
+   If Request.UrlReferrer IsNot Nothing Then Referrer = Request.UrlReferrer.PathAndQuery
 
    Request.Params.ReadValue("Blog", BlogId)
    Request.Params.ReadValue("Post", ContentItemId)
@@ -86,11 +86,11 @@ Namespace Common
 
    If ViewSettings.BlogModuleId = -1 Then
     AddBlogService()
-    AddJavascriptFile("jquery.timeago.js")
+    AddJavascriptFile("jquery.timeago.js", 60)
     If fulllocs.Contains(Locale.ToLower) Then
-     AddJavascriptFile("time-ago-locales/jquery.timeago." & Locale.ToLower & ".js")
+     AddJavascriptFile("time-ago-locales/jquery.timeago." & Locale.ToLower & ".js", 60)
     ElseIf twoletterlocs.Contains(Threading.Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.ToLower) Then
-     AddJavascriptFile("time-ago-locales/jquery.timeago." & Threading.Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.ToLower & ".js")
+     AddJavascriptFile("time-ago-locales/jquery.timeago." & Threading.Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.ToLower & ".js", 61)
     End If
     If Not Me.IsPostBack And ContentItemId > -1 Then
      Dim scriptBlock As String = "(function ($, Sys) {$(document).ready(function () {blogService.viewPost(" & BlogId.ToString & ", " & ContentItemId.ToString & ")});} (jQuery, window.Sys));"
@@ -107,7 +107,7 @@ Namespace Common
    DotNetNuke.Framework.jQuery.RequestDnnPluginsRegistration()
    DotNetNuke.Framework.ServicesFramework.Instance.RequestAjaxScriptSupport()
    DotNetNuke.Framework.ServicesFramework.Instance.RequestAjaxAntiForgerySupport()
-   AddJavascriptFile("dotnetnuke.blog.js")
+   AddJavascriptFile("dotnetnuke.blog.js", 70)
 
    ' Load initialization snippet
    Dim scriptBlock As String = Common.Globals.ReadFile(DotNetNuke.Common.ApplicationMapPath & "\DesktopModules\Blog\js\dotnetnuke.blog.pagescript.js")
@@ -119,8 +119,8 @@ Namespace Common
 
   End Sub
 
-  Public Sub AddJavascriptFile(jsFilename As String)
-   ClientResourceManager.RegisterScript(Page, ResolveUrl("~/DesktopModules/Blog/js/" & jsFilename))
+  Public Sub AddJavascriptFile(jsFilename As String, priority As Integer)
+   ClientResourceManager.RegisterScript(Page, ResolveUrl("~/DesktopModules/Blog/js/" & jsFilename), priority)
   End Sub
 
   Public Sub AddCssFile(cssFilename As String)

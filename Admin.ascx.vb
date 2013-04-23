@@ -11,7 +11,7 @@ Public Class Admin
  Private _totalPosts As Integer = -1
 
  Private Sub Page_Init1(sender As Object, e As System.EventArgs) Handles Me.Init
-  AddJavascriptFile("jquery.dynatree.min.js")
+  AddJavascriptFile("jquery.dynatree.min.js", 60)
   AddCssFile("dynatree.css")
  End Sub
 

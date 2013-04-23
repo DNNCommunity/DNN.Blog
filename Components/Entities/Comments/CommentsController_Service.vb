@@ -133,7 +133,7 @@ Namespace Entities.Comments
    If Not Security.CanViewComments Then Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = ""})
    Dim ViewSettings As ViewSettings = ViewSettings.GetViewSettings(ActiveModule.TabModuleID)
    Settings = ModuleSettings.GetModuleSettings(ActiveModule.ModuleID)
-   AllComments = CommentsController.GetCommentsByContentItem(Post.ContentItemId, True)
+   AllComments = CommentsController.GetCommentsByContentItem(Post.ContentItemId, Security.CanApproveComment)
    Dim vt As New ViewTemplate
    Dim tmgr As New TemplateManager(PortalSettings, ViewSettings.Template)
    With vt

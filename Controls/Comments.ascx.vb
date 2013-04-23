@@ -16,7 +16,7 @@ Namespace Controls
 
    LocalResourceFile = "~/DesktopModules/Blog/Controls/App_LocalResources/Comments.ascx.resx"
    If Post IsNot Nothing AndAlso Security.CanViewComments AndAlso Post.AllowComments Then
-    AllComments = CommentsController.GetCommentsByContentItem(Post.ContentItemId, True)
+    AllComments = CommentsController.GetCommentsByContentItem(Post.ContentItemId, Security.CanApproveComment)
     DataBind()
    End If
 

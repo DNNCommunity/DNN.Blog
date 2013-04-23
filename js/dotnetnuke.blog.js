@@ -106,7 +106,7 @@ function BlogService($, settings, servicesFramework) {
    data: { blogId: blogId, postId: postId, parentId: parentId, comment: comment, author: author, website: website, email: email }
   }).done(function (data) {
    if (success != undefined) {
-    success();
+    success(data);
    }
   }).fail(function (xhr, status) {
    displayMessage(settings.errorBoxId, settings.serverErrorWithDescription + eval("(" + xhr.responseText + ")").ExceptionMessage, "dnnFormWarning");

@@ -65,6 +65,7 @@ Namespace Templating
    End If
    If blogModule.Post IsNot Nothing Then
     Me.PropertySource("post") = blogModule.Post
+    Me.PropertySource("author") = New LazyLoadingUser(PortalSettings.PortalId, blogModule.Post.Username)
    End If
    If blogModule.Term IsNot Nothing Then
     Me.PropertySource("selectedterm") = blogModule.Term
