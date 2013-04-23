@@ -115,8 +115,8 @@ Namespace Integration
    Dim objOwner As UserInfo = UserController.GetUserById(portalId, recipientId)
    Dim colUsers As List(Of UserInfo) = BlogPermissionsController.GetUsersByBlogPermission(portalId, objBlog.BlogID, BlogPermissionTypes.APPROVECOMMENT).Values.ToList
    If Not colUsers.Contains(objOwner) Then colUsers.Add(objOwner)
+   AddNotifications(portalId, colUsers, objNotification)
 
-   NotificationsController.Instance.SendNotification(objNotification, portalId, Nothing, colUsers)
   End Sub
 
   Public Shared Sub ReportComment(objComment As CommentInfo, objBlog As BlogInfo, objPost As PostInfo, portalId As Integer, summary As String, subject As String)
@@ -142,8 +142,8 @@ Namespace Integration
    Dim objOwner As UserInfo = UserController.GetUserById(portalId, recipientId)
    Dim colUsers As List(Of UserInfo) = BlogPermissionsController.GetUsersByBlogPermission(portalId, objBlog.BlogID, BlogPermissionTypes.APPROVECOMMENT).Values.ToList
    If Not colUsers.Contains(objOwner) Then colUsers.Add(objOwner)
+   AddNotifications(portalId, colUsers, objNotification)
 
-   NotificationsController.Instance.SendNotification(objNotification, portalId, Nothing, colUsers)
   End Sub
   ''' <summary>
   ''' Removes any notifications associated w/ a specific blog comment pending approval.
@@ -195,7 +195,22 @@ Namespace Integration
 
    colUsers.Add(objOwner)
 
-   NotificationsController.Instance.SendNotification(objNotification, portalId, Nothing, colUsers)
+   AddNotifications(portalId, colUsers, objNotification)
+
+  End Sub
+#End Region
+
+#Region " Private Methods "
+  Private Shared Sub AddNotifications(portalId As Integer, colUsers As List(Of UserInfo), objNotification As Notification)
+   If colUsers.Count > DotNetNuke.Services.Social.Messaging.Internal.InternalMessagingController.Instance.RecipientLimit(portalId) Then
+    For Each u As UserInfo In colUsers
+     Dim list As New List(Of UserInfo)
+     list.Add(u)
+     NotificationsController.Instance.SendNotification(objNotification, portalId, Nothing, list)
+    Next
+   Else
+    NotificationsController.Instance.SendNotification(objNotification, portalId, Nothing, colUsers)
+   End If
   End Sub
 #End Region
 

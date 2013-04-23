@@ -1502,7 +1502,7 @@ SELECT DISTINCT * FROM
 FROM
  {databaseOwner}{objectQualifier}vw_Users u
  INNER JOIN {databaseOwner}{objectQualifier}UserRoles ur ON ur.UserID=u.UserID
- INNER JOIN {databaseOwner}{objectQualifier}Blog_BlogPermissions bp ON bp.RoleId=ur.RoleID
+ INNER JOIN {databaseOwner}{objectQualifier}Blog_BlogPermissions bp ON bp.RoleId=ur.RoleID AND bp.PermissionId=@PermissionId
 WHERE
  (ISNULL(ur.EffectiveDate, DATEADD(day, - 1, GETDATE())) < GETDATE()) AND (ISNULL(ur.ExpiryDate, DATEADD(day, 1, GETDATE())) > GETDATE())
 UNION
@@ -1510,7 +1510,7 @@ SELECT
  u.*
 FROM
  {databaseOwner}{objectQualifier}vw_Users u
- INNER JOIN {databaseOwner}{objectQualifier}Blog_BlogPermissions bp ON bp.UserId=u.UserID) x
+ INNER JOIN {databaseOwner}{objectQualifier}Blog_BlogPermissions bp ON bp.UserId=u.UserID AND bp.PermissionId=@PermissionId) x
  
 GO
 
