@@ -25,10 +25,19 @@ Public Class Admin
    Me.DataBind()
   End If
 
+  DotNetNuke.UI.Utilities.ClientAPI.AddButtonConfirm(cmdEditTagsML, LocalizeString("LeavePage.Confirm"))
+  DotNetNuke.UI.Utilities.ClientAPI.AddButtonConfirm(cmdEditCategoriesML, LocalizeString("LeavePage.Confirm"))
+
  End Sub
 
  Private Sub cmdEditTagsML_Click(sender As Object, e As System.EventArgs) Handles cmdEditTagsML.Click
   Response.Redirect(EditUrl("TermsEditML"), False)
+ End Sub
+
+ Private Sub cmdEditCategoriesML_Click(sender As Object, e As System.EventArgs) Handles cmdEditCategoriesML.Click
+  If Settings.VocabularyId > -1 Then
+   Response.Redirect(EditUrl("VocabularyId", Settings.VocabularyId.ToString, "TermsEditML"), False)
+  End If
  End Sub
 
  Private Sub cmdCancel_Click(sender As Object, e As System.EventArgs) Handles cmdCancel.Click
@@ -94,6 +103,7 @@ Public Class Admin
   Catch ex As Exception
   End Try
   cmdEditTagsML.Enabled = IsMultiLingualSite
+  cmdEditCategoriesML.Enabled = IsMultiLingualSite And Settings.VocabularyId > -1
   chkAllowMultipleCategories.Checked = Settings.AllowMultipleCategories
   chkAllowWLW.Checked = Settings.AllowWLW
   chkAllowAllLocales.Checked = Settings.AllowAllLocales

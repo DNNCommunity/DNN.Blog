@@ -279,7 +279,7 @@ a.blog_commentLinkSelected
 {
  color: #aaa;
 }
-.ModBlogC .selectbanner
+.ModBlogC .selectbanner, .ModBlogC .selectbanner span
 {
  color: #fff
 }

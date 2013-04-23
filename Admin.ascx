@@ -94,6 +94,7 @@
    <textarea id="txtNewCategories" rows="10" cols="60"></textarea><br />
    <button class="dnnSecondaryAction" id="btnAddCategories">Add</button>
    <button class="dnnSecondaryAction" id="btnDeleteCategory">Delete Selected</button>
+   <asp:LinkButton runat="server" ID="cmdEditCategoriesML" resourcekey="cmdEditCategoriesML" CssClass="dnnSecondaryAction" />
   </div>
   <div id="categoryTree" class="dnnLeft">
   </div>

@@ -63,7 +63,7 @@ Namespace Controls
      blogList = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, Locale).Values
     Else
      blogList = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, Locale).Values.Where(Function(b)
-                                                                                                  Return b.OwnerUserId = UserId Or (b.CanAdd And Security.CanAddPost) Or (b.CanEdit And Security.CanEditPost And ContentItemId > -1)
+                                                                                                  Return b.OwnerUserId = UserId Or b.CanAdd Or (b.CanEdit And ContentItemId > -1)
                                                                                                  End Function)
     End If
     NrBlogs = blogList.Count

@@ -252,15 +252,6 @@
   <data name="Cancel.Text" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="Loose.Opt" xml:space="preserve">
-    <value>Loose</value>
-  </data>
-  <data name="None.Opt" xml:space="preserve">
-    <value>None (monolingual)</value>
-  </data>
-  <data name="Strict.Opt" xml:space="preserve">
-    <value>Sctrict</value>
-  </data>
   <data name="Localization.Text" xml:space="preserve">
     <value>Localization</value>
   </data>
@@ -278,5 +269,11 @@
   </data>
   <data name="Settings.Text" xml:space="preserve">
     <value>Settings</value>
+  </data>
+  <data name="cmdEditCategoriesML.Text" xml:space="preserve">
+    <value>Edit Categories Localization</value>
+  </data>
+  <data name="LeavePage.Confirm" xml:space="preserve">
+    <value>Do you wish to leave this page without saving changes?</value>
   </data>
 </root>

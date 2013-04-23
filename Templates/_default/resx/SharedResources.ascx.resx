@@ -132,6 +132,9 @@
   <data name="Comments.Text" xml:space="preserve">
     <value>Comment(s)</value>
   </data>
+  <data name="Contents.Text" xml:space="preserve">
+    <value>Contents</value>
+  </data>
   <data name="DeleteComment.Confirm" xml:space="preserve">
     <value>Delete the comment? This cannot be undone.</value>
   </data>
@@ -140,6 +143,9 @@
   </data>
   <data name="DislikeComment.Text" xml:space="preserve">
     <value>Dislike Comment</value>
+  </data>
+  <data name="In.Text" xml:space="preserve">
+    <value>In</value>
   </data>
   <data name="LikeComment.Text" xml:space="preserve">
     <value>Like Comment</value>
@@ -155,6 +161,12 @@
   </data>
   <data name="ReportComment.Text" xml:space="preserve">
     <value>Report Comment</value>
+  </data>
+  <data name="Search.Text" xml:space="preserve">
+    <value>Searching for</value>
+  </data>
+  <data name="Title.Text" xml:space="preserve">
+    <value>Title</value>
   </data>
   <data name="Total.Text" xml:space="preserve">
     <value>Total</value>

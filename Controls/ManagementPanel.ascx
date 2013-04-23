@@ -165,7 +165,19 @@
    $blogChoose.dialog('open');
    return false;
   });
- <% End If %>
+  <% ElseIf NrBlogs = 1 %>
+  $('#<%=cmdBlog.ClientId %>').click(function () {
+   var url = '<%=EditUrl("PostEdit") %>';
+   if (url.indexOf("?") == -1) {
+    url += '?'
+   } else {
+    url += '&'
+   };
+   url += 'Blog=' + $('#ddBlog').val();
+   window.location.href = encodeURI(url);
+   return false;
+  });
+  <% End If %>
 <% End If %>
  });
 } (jQuery, window.Sys));

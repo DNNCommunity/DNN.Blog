@@ -1,51 +1,35 @@
-﻿<h3>Blog 5.0.0</h3>
+﻿<h3>Blog 6.0.0</h3>
 <p class="Contributor">
-	DotNetNuke&reg; <br />
-	<a href="mailto:support@dotnetnuke.com">support@dotnetnuke.com</a><br />
-	<a href=http://www.dotnetnuke.com>http://www.dotnetnuke.com</a><br />
+ DotNetNuke&reg; <br />
+ <a href="mailto:support@dotnetnuke.com">support@dotnetnuke.com</a><br />
+ <a href="http://www.dotnetnuke.com">http://www.dotnetnuke.com</a><br />
 </p>
 <hr/>
 <div class="License">
-	<h3>About the Core Blog Module</h3>
-	<p class="Owner">
-		<strong>Version 5.0.0</strong><br /><br />
-		This version of the module requires DotNetNuke Core 6.2 or greater. <br /><br />
-		FYI: Developers should be aware that the module uses Visual Studio 2010 only. <br /><br />
-
-		Release Highlights:
-		<ul>
-			<li>Corrected blog comment sorting problem.</li>
-			<li>20228 - Integrated with the core Journal API (entry added, comment added).</li>
-			<li>20789, 21988 - wired in fix submitted by J Sheely around blank author names.</li>
-			<li>20210 - Updated manifest to 5.0 format (from 3.0).</li>
-			<li>Automated packaging and made project structure more inline with other DotNetNuke modules and projects.</li>
-			<li>Converted module to use DNN 6 form pattern (also removed h1, h2 and font-family styling from module.css).</li>
-			<li>Changed all jQuery registration to use proper core methods (now loads jQuery UI too).</li>
-			<li>Offloaded most script and css loading to Client Dependency Framework.</li>
-			<li>20211 - Integrated core taxonomy & folksonomy.</li>
-			<li>Implemented tagging controls and styling form Q&A module.</li>
-			<li>19321 - Updated Page Meta information in several views, so the title, description and keywords associated with the 'page' are much more accurate than before (before, we used core page info).</li>
-			<li>Added Open Graph Protocol Support to several views.</li>
-			<li>Made comment time stamps use friendly date format (x hours/days ago).</li>
-			<li>20935 - Corrected column drop bug seen in upgrades to 4.1.0.</li>
-			<li>Updated CookComputing.XmlRpcV2.dll</li>
-			<li>Added new social sharing option, big 4 only, same as it was done in Q&A.</li>
-			<li>Replaced custom tag cloud with Rad Tag Cloud (and now wired into core folksonomy).</li>
-			<li>21730, 20946 - Changed how blog post counts are calculated (for display in blog list).</li>
-			<li>22459 - Now showing comment link and count to unauthenticated users.</li>
-			<li>21252 - Cleaned up HTML and CSS in normal user views (changed from table layout to divs, removed unnecessary styling, moved archive out into its own file).</li>
-			<li>Replaced dnn tree view (for category selection) with Telerik Treeview.</li>
-			<li>Corrected index problems on category and tag tables (even though they will eventually be removed), to avoid maintenance problems.</li>
-			<li>20215 - Removed ShareBadge Pro</li>
-			<li>Added user image and profile link to blog description, added author profile section to entry view.</li>
-			<li>Corrected TimeZone problems and module is now based on user profile settings (not a per blog setting).</li>	
-			<li>19021, 20865 - Added support for "Ghost Writer" via a new module permission as well as "Blogger" permissions.</li>
-			<li>Disabled partial rendering throught all parts of the module (minus settings, core standard). All previous 'benefits' are now handled client-side (show, hide, etc.) with less overhead and trips to the server.</li>
-			<li>Reduced the number of module definitions and exposed the same functionality through existing pieces, also took a similar approach and simplified per blog (and module level) settings.</li>
-			<li>Added paging support to the module (initial 'home' view doesn't display any paging, by design).</li>
-			<li>Corrected problems found in Azure installs, also tested module's basic usage in Azure.</li>
-			<li>Removed 'recent entries' module definition. The same functionality (even more advanced than what was available) is provided today using the Journal and Journal type filters (a similar approach is being taken with comments).</li>
-			<li>Made archive blog part operate in 1 of 2 modes (calendar or list, instead of both in one module).</li>
-			<li>Integrated 6.2 Notifications for comment approval, blog entry approval (in Ghost Author Mode to create a publishing 'workflow').</li>.
-		</ul>
+ <h3>About the Core Blog Module</h3>
+ <p class="Owner">
+  <strong>Version 6.0.0</strong><br /><br />
+  This version of the module requires DotNetNuke Core 07.00.04 or greater. <br /><br />
+  FYI: Developers should be aware that the module uses Visual Studio 2010 only. <br /><br />
+  Release Highlights:
+  <ul>
+   <li>Complete rewrite of the module</li>
+   <li>UI completely based on templates</li>
+   <li>Bloggers can have any number of blogs</li>
+   <li>Blogs now tied to module instead of portal</li>
+   <li>Every blog has a set of permissions that govern ghost writing and commenting</li>
+   <li>Just one single module definition now</li>
+   <li>You can point the module to another to use the other's blog content</li>
+   <li>"Hybrid multilingual capable module":
+  <ul>
+   <li>Full localization: every blog post has optional translations</li>
+   <li>Regular: every blog post is labeled with a locale</li>
+  </ul>
+</li>
+   <li>Categories and tags can be translated</li>
+   <li>Select an image for each blog and post</li>
+   <li>Proper editor for categories</li>
+   <li>BlogML import and export</li>
+   <li>DNN 7 services layer to make a much more fluent UI</li>
+  </ul>
 </div>

@@ -58,6 +58,9 @@ Namespace Entities.Blogs
    AltLocale = Convert.ToString(Null.SetNull(dr.Item("AltLocale"), AltLocale))
    AltTitle = Convert.ToString(Null.SetNull(dr.Item("AltTitle"), AltTitle))
    AltDescription = Convert.ToString(Null.SetNull(dr.Item("AltDescription"), AltDescription))
+   CanEdit = Convert.ToBoolean(Null.SetNull(dr.Item("CanEdit"), CanEdit))
+   CanAdd = Convert.ToBoolean(Null.SetNull(dr.Item("CanAdd"), CanAdd))
+   CanApprove = Convert.ToBoolean(Null.SetNull(dr.Item("CanApprove"), CanApprove))
 
   End Sub
   ''' -----------------------------------------------------------------------------

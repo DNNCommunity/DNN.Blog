@@ -15,7 +15,7 @@ Namespace Controls
   Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
    LocalResourceFile = "~/DesktopModules/Blog/Controls/App_LocalResources/Comments.ascx.resx"
-   If Post IsNot Nothing AndAlso Security.CanViewComments Then
+   If Post IsNot Nothing AndAlso Security.CanViewComments AndAlso Post.AllowComments Then
     AllComments = CommentsController.GetCommentsByContentItem(Post.ContentItemId, True)
     DataBind()
    End If

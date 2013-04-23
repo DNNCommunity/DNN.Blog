@@ -54,7 +54,7 @@ Namespace Entities.Posts
   End Function
 
   <HttpPost()>
-  <BlogAuthorizeAttribute(Services.SecurityAccessLevel.EditPost)>
+  <AllowAnonymous()>
   <ValidateAntiForgeryToken()>
   <ActionName("View")>
   Public Function ViewPost(postData As PostDTO) As HttpResponseMessage

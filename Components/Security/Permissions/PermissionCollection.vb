@@ -12,9 +12,9 @@ Namespace Security.Permissions
    Me.Add("ADD", New PermissionInfo With {.PermissionId = BlogPermissionTypes.ADD, .PermissionKey = "ADD"})
    Me.Add("EDIT", New PermissionInfo With {.PermissionId = BlogPermissionTypes.EDIT, .PermissionKey = "EDIT"})
    Me.Add("APPROVE", New PermissionInfo With {.PermissionId = BlogPermissionTypes.APPROVE, .PermissionKey = "APPROVE"})
+   Me.Add("VIEWCOMMENT", New PermissionInfo With {.PermissionId = BlogPermissionTypes.VIEWCOMMENT, .PermissionKey = "VIEWCOMMENT"})
    Me.Add("ADDCOMMENT", New PermissionInfo With {.PermissionId = BlogPermissionTypes.ADDCOMMENT, .PermissionKey = "ADDCOMMENT"})
    Me.Add("APPROVECOMMENT", New PermissionInfo With {.PermissionId = BlogPermissionTypes.APPROVECOMMENT, .PermissionKey = "APPROVECOMMENT"})
-   Me.Add("VIEWCOMMENT", New PermissionInfo With {.PermissionId = BlogPermissionTypes.VIEWCOMMENT, .PermissionKey = "VIEWCOMMENT"})
   End Sub
 
   Public Function GetById(id As Integer) As PermissionInfo

@@ -311,6 +311,15 @@ Partial Public Class Admin
  Protected WithEvents chkRssImageSizeAllowOverride As Global.System.Web.UI.WebControls.CheckBox
 
  '''<summary>
+ '''cmdEditCategoriesML control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents cmdEditCategoriesML As Global.System.Web.UI.WebControls.LinkButton
+
+ '''<summary>
  '''treeState control.
  '''</summary>
  '''<remarks>

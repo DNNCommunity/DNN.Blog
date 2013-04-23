@@ -189,6 +189,8 @@ Namespace Common
      Return Locale
     Case "searchstring"
      Return SearchString
+    Case "issearch"
+     Return CBool(SearchString <> "").ToString()
     Case "referrer"
      Return Referrer
     Case Else

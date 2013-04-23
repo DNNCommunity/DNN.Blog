@@ -38,7 +38,7 @@ Public Class TermsEditML
  End Sub
 
  Private Sub cmdCancel_Click(sender As Object, e As System.EventArgs) Handles cmdCancel.Click
-  Response.Redirect(EditUrl("Manage"), False)
+  Response.Redirect(EditUrl("Admin"), False)
  End Sub
 
  Private Sub cmdUpdate_Click(sender As Object, e As System.EventArgs) Handles cmdUpdate.Click
@@ -58,6 +58,6 @@ Public Class TermsEditML
    Next
   Next
 
-  Response.Redirect(EditUrl("Manage"), False)
+  Response.Redirect(EditUrl("Admin"), False)
  End Sub
 End Class
