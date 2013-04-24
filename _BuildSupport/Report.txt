@@ -513,7 +513,7 @@ SET QUOTED_IDENTIFIER ON
 CREATE VIEW dbo.BLOGDEV_vw_Blog_Comments
 AS
 SELECT     c.CommentID, c.ContentItemId, c.ParentId, c.Comment, c.Approved, c.Author, c.Website, c.Email, c.CreatedByUserID, c.CreatedOnDate, c.LastModifiedByUserID, 
-                      c.LastModifiedOnDate, ISNULL(u.Username, 'Anonymous') AS Username, u.DisplayName,
+                      c.LastModifiedOnDate, ISNULL(u.Username, '') AS Username, ISNULL(u.DisplayName, c.Author) AS DisplayName,
                           (SELECT     COUNT(*) AS Expr1
                             FROM          dbo.BLOGDEV_Blog_CommentKarmas
                             WHERE      (c.CommentID = c.CommentID) AND (Karma = 0)) AS Likes,
@@ -1121,7 +1121,7 @@ AS
 
 SELECT
  p.*,
- (SELECT COUNT(c.CommentID) FROM dbo.BLOGDEV_Blog_Comments c WHERE c.ContentItemId=p.ContentItemId) AS NrComments
+ (SELECT COUNT(c.CommentID) FROM dbo.BLOGDEV_Blog_Comments c WHERE c.ContentItemId=p.ContentItemId AND c.Approved=1) AS NrComments
 FROM
  dbo.BLOGDEV_Blog_PostList(@Locale) p
 WHERE
@@ -1204,7 +1204,7 @@ WHERE b.ModuleID=@ModuleId;
 
 SELECT
  Tbl.*,
- (SELECT COUNT(c.CommentID) FROM dbo.BLOGDEV_Blog_Comments c WHERE c.ContentItemId=tbl.ContentItemId) AS NrComments
+ (SELECT COUNT(c.CommentID) FROM dbo.BLOGDEV_Blog_Comments c WHERE c.ContentItemId=tbl.ContentItemId AND c.Approved=1) AS NrComments
 FROM
 (SELECT
  p.*,
@@ -1307,7 +1307,7 @@ EXEC dbo.BLOGDEV_CalculatePagingInformation @PageIndex, @PageSize, @RowsToReturn
 
 SELECT 
  Tbl.*,
- (SELECT COUNT(c.CommentID) FROM dbo.BLOGDEV_Blog_Comments c WHERE c.ContentItemId=tbl.ContentItemId) AS NrComments
+ (SELECT COUNT(c.CommentID) FROM dbo.BLOGDEV_Blog_Comments c WHERE c.ContentItemId=tbl.ContentItemId AND c.Approved=1) AS NrComments
 FROM
 (SELECT
  p.*,
@@ -1424,7 +1424,7 @@ WHERE b.ModuleID=@ModuleId;
 
 SELECT 
  Tbl.*,
- (SELECT COUNT(c.CommentID) FROM dbo.BLOGDEV_Blog_Comments c WHERE c.ContentItemId=tbl.ContentItemId) AS NrComments
+ (SELECT COUNT(c.CommentID) FROM dbo.BLOGDEV_Blog_Comments c WHERE c.ContentItemId=tbl.ContentItemId AND c.Approved=1) AS NrComments
 FROM
 (SELECT
  p.*,
@@ -1772,7 +1772,7 @@ WHERE b.ModuleID=@ModuleId;
 
 SELECT
  Tbl.*,
- (SELECT COUNT(c.CommentID) FROM dbo.BLOGDEV_Blog_Comments c WHERE c.ContentItemId=tbl.ContentItemId) AS NrComments
+ (SELECT COUNT(c.CommentID) FROM dbo.BLOGDEV_Blog_Comments c WHERE c.ContentItemId=tbl.ContentItemId AND c.Approved=1) AS NrComments
 FROM
 (SELECT
  p.*,
@@ -1906,7 +1906,7 @@ WHERE b.ModuleID=@ModuleId;
 
 SELECT
  Tbl.*,
- (SELECT COUNT(c.CommentID) FROM dbo.BLOGDEV_Blog_Comments c WHERE c.ContentItemId=tbl.ContentItemId) AS NrComments
+ (SELECT COUNT(c.CommentID) FROM dbo.BLOGDEV_Blog_Comments c WHERE c.ContentItemId=tbl.ContentItemId AND c.Approved=1) AS NrComments
 FROM
 (SELECT
  p.*,
@@ -2728,5 +2728,5 @@ Finished Script Creation
 
 BUILD SUCCEEDED
 
-Total time: 5.5 seconds.
+Total time: 5.4 seconds.
 

@@ -455,7 +455,7 @@ GO
 CREATE VIEW {databaseOwner}{objectQualifier}vw_Blog_Comments
 AS
 SELECT     c.CommentID, c.ContentItemId, c.ParentId, c.Comment, c.Approved, c.Author, c.Website, c.Email, c.CreatedByUserID, c.CreatedOnDate, c.LastModifiedByUserID, 
-                      c.LastModifiedOnDate, ISNULL(u.Username, 'Anonymous') AS Username, u.DisplayName,
+                      c.LastModifiedOnDate, ISNULL(u.Username, '') AS Username, ISNULL(u.DisplayName, c.Author) AS DisplayName,
                           (SELECT     COUNT(*) AS Expr1
                             FROM          {databaseOwner}{objectQualifier}Blog_CommentKarmas
                             WHERE      (c.CommentID = c.CommentID) AND (Karma = 0)) AS Likes,
@@ -995,7 +995,7 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetPost
 AS
 SELECT
  p.*,
- (SELECT COUNT(c.CommentID) FROM {databaseOwner}{objectQualifier}Blog_Comments c WHERE c.ContentItemId=p.ContentItemId) AS NrComments
+ (SELECT COUNT(c.CommentID) FROM {databaseOwner}{objectQualifier}Blog_Comments c WHERE c.ContentItemId=p.ContentItemId AND c.Approved=1) AS NrComments
 FROM
  {databaseOwner}{objectQualifier}Blog_PostList(@Locale) p
 WHERE
@@ -1072,7 +1072,7 @@ FROM {databaseOwner}{objectQualifier}Blog_Blogs b
 WHERE b.ModuleID=@ModuleId;
 SELECT
  Tbl.*,
- (SELECT COUNT(c.CommentID) FROM {databaseOwner}{objectQualifier}Blog_Comments c WHERE c.ContentItemId=tbl.ContentItemId) AS NrComments
+ (SELECT COUNT(c.CommentID) FROM {databaseOwner}{objectQualifier}Blog_Comments c WHERE c.ContentItemId=tbl.ContentItemId AND c.Approved=1) AS NrComments
 FROM
 (SELECT
  p.*,
@@ -1169,7 +1169,7 @@ DECLARE
 EXEC {databaseOwner}{objectQualifier}CalculatePagingInformation @PageIndex, @PageSize, @RowsToReturn output, @PageLowerBound output, @PageUpperBound output;
 SELECT 
  Tbl.*,
- (SELECT COUNT(c.CommentID) FROM {databaseOwner}{objectQualifier}Blog_Comments c WHERE c.ContentItemId=tbl.ContentItemId) AS NrComments
+ (SELECT COUNT(c.CommentID) FROM {databaseOwner}{objectQualifier}Blog_Comments c WHERE c.ContentItemId=tbl.ContentItemId AND c.Approved=1) AS NrComments
 FROM
 (SELECT
  p.*,
@@ -1279,7 +1279,7 @@ FROM {objectQualifier}Blog_Blogs b
 WHERE b.ModuleID=@ModuleId;
 SELECT 
  Tbl.*,
- (SELECT COUNT(c.CommentID) FROM {databaseOwner}{objectQualifier}Blog_Comments c WHERE c.ContentItemId=tbl.ContentItemId) AS NrComments
+ (SELECT COUNT(c.CommentID) FROM {databaseOwner}{objectQualifier}Blog_Comments c WHERE c.ContentItemId=tbl.ContentItemId AND c.Approved=1) AS NrComments
 FROM
 (SELECT
  p.*,
@@ -1600,7 +1600,7 @@ FROM {objectQualifier}Blog_Blogs b
 WHERE b.ModuleID=@ModuleId;
 SELECT
  Tbl.*,
- (SELECT COUNT(c.CommentID) FROM {databaseOwner}{objectQualifier}Blog_Comments c WHERE c.ContentItemId=tbl.ContentItemId) AS NrComments
+ (SELECT COUNT(c.CommentID) FROM {databaseOwner}{objectQualifier}Blog_Comments c WHERE c.ContentItemId=tbl.ContentItemId AND c.Approved=1) AS NrComments
 FROM
 (SELECT
  p.*,
@@ -1727,7 +1727,7 @@ FROM {objectQualifier}Blog_Blogs b
 WHERE b.ModuleID=@ModuleId;
 SELECT
  Tbl.*,
- (SELECT COUNT(c.CommentID) FROM {databaseOwner}{objectQualifier}Blog_Comments c WHERE c.ContentItemId=tbl.ContentItemId) AS NrComments
+ (SELECT COUNT(c.CommentID) FROM {databaseOwner}{objectQualifier}Blog_Comments c WHERE c.ContentItemId=tbl.ContentItemId AND c.Approved=1) AS NrComments
 FROM
 (SELECT
  p.*,

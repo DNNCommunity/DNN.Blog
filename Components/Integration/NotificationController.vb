@@ -232,14 +232,14 @@ Namespace Integration
     Dim objAction As New NotificationTypeAction
     objAction.NameResourceKey = "ApprovePost"
     objAction.DescriptionResourceKey = "ApprovePost_Desc"
-    objAction.APICall = "DesktopModules/Blog/API/Posts/Approve"
+    objAction.APICall = "DesktopModules/Blog/API/NotificationService/ApprovePost"
     objAction.Order = 1
     actions.Add(objAction)
 
     objAction = New NotificationTypeAction
     objAction.NameResourceKey = "DeletePost"
     objAction.DescriptionResourceKey = "DeletePost_Desc"
-    objAction.APICall = "DesktopModules/Blog/API/Posts/Delete"
+    objAction.APICall = "DesktopModules/Blog/API/NotificationService/DeletePost"
     objAction.ConfirmResourceKey = "DeleteItem"
     objAction.Order = 3
     actions.Add(objAction)
@@ -259,14 +259,14 @@ Namespace Integration
     Dim objAction As New NotificationTypeAction
     objAction.NameResourceKey = "ApproveComment"
     objAction.DescriptionResourceKey = "ApproveComment_Desc"
-    objAction.APICall = "DesktopModules/Blog/API/Comments/Approve"
+    objAction.APICall = "DesktopModules/Blog/API/NotificationService/ApproveComment"
     objAction.Order = 1
     actions.Add(objAction)
 
     objAction = New NotificationTypeAction
     objAction.NameResourceKey = "DeleteComment"
     objAction.DescriptionResourceKey = "DeleteComment_Desc"
-    objAction.APICall = "DesktopModules/Blog/API/Comments/Delete"
+    objAction.APICall = "DesktopModules/Blog/API/NotificationService/DeleteComment"
     objAction.ConfirmResourceKey = "DeleteItem"
     objAction.Order = 3
     actions.Add(objAction)
