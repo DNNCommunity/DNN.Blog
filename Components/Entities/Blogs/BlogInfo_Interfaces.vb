@@ -36,9 +36,9 @@ Namespace Entities.Blogs
    ModuleID = Convert.ToInt32(Null.SetNull(dr.Item("ModuleID"), ModuleID))
    Title = Convert.ToString(Null.SetNull(dr.Item("Title"), Title))
    Description = Convert.ToString(Null.SetNull(dr.Item("Description"), Description))
-   FullLocalization = Convert.ToBoolean(Null.SetNull(dr.Item("FullLocalization"), FullLocalization))
    Image = Convert.ToString(Null.SetNull(dr.Item("Image"), Image))
    Locale = Convert.ToString(Null.SetNull(dr.Item("Locale"), Locale))
+   FullLocalization = Convert.ToBoolean(Null.SetNull(dr.Item("FullLocalization"), FullLocalization))
    Published = Convert.ToBoolean(Null.SetNull(dr.Item("Published"), Published))
    IncludeImagesInFeed = Convert.ToBoolean(Null.SetNull(dr.Item("IncludeImagesInFeed"), IncludeImagesInFeed))
    IncludeAuthorInFeed = Convert.ToBoolean(Null.SetNull(dr.Item("IncludeAuthorInFeed"), IncludeAuthorInFeed))
@@ -52,9 +52,12 @@ Namespace Entities.Blogs
    CreatedOnDate = CDate(Null.SetNull(dr.Item("CreatedOnDate"), CreatedOnDate))
    LastModifiedByUserID = Convert.ToInt32(Null.SetNull(dr.Item("LastModifiedByUserID"), LastModifiedByUserID))
    LastModifiedOnDate = CDate(Null.SetNull(dr.Item("LastModifiedOnDate"), LastModifiedOnDate))
-   Username = Convert.ToString(Null.SetNull(dr.Item("Username"), Username))
    DisplayName = Convert.ToString(Null.SetNull(dr.Item("DisplayName"), DisplayName))
    Email = Convert.ToString(Null.SetNull(dr.Item("Email"), Email))
+   Username = Convert.ToString(Null.SetNull(dr.Item("Username"), Username))
+   NrPosts = Convert.ToInt32(Null.SetNull(dr.Item("NrPosts"), NrPosts))
+   LastPublishDate = CDate(Null.SetNull(dr.Item("LastPublishDate"), LastPublishDate))
+   NrViews = Convert.ToInt32(Null.SetNull(dr.Item("NrViews"), NrViews))
    AltLocale = Convert.ToString(Null.SetNull(dr.Item("AltLocale"), AltLocale))
    AltTitle = Convert.ToString(Null.SetNull(dr.Item("AltTitle"), AltTitle))
    AltDescription = Convert.ToString(Null.SetNull(dr.Item("AltDescription"), AltDescription))
@@ -101,14 +104,16 @@ Namespace Entities.Blogs
      Return PropertyAccess.FormatString(Me.Title, strFormat)
     Case "description"
      Return PropertyAccess.FormatString(Me.Description, strFormat)
-   Case "fulllocalization"
-    Return Me.FullLocalization.ToString
-   Case "fulllocalizationyesno"
-    Return PropertyAccess.Boolean2LocalizedYesNo(Me.FullLocalization, formatProvider)
     Case "image"
      Return PropertyAccess.FormatString(Me.Image, strFormat)
+    Case "hasimage"
+     Return CBool(Me.Image <> "").ToString(formatProvider)
     Case "locale"
      Return PropertyAccess.FormatString(Me.Locale, strFormat)
+    Case "fulllocalization"
+     Return Me.FullLocalization.ToString
+    Case "fulllocalizationyesno"
+     Return PropertyAccess.Boolean2LocalizedYesNo(Me.FullLocalization, formatProvider)
     Case "published"
      Return Me.Published.ToString
     Case "publishedyesno"
@@ -147,12 +152,18 @@ Namespace Entities.Blogs
      Return (Me.LastModifiedByUserID.ToString(OutputFormat, formatProvider))
     Case "lastmodifiedondate"
      Return (Me.LastModifiedOnDate.ToString(OutputFormat, formatProvider))
-    Case "username"
-     Return PropertyAccess.FormatString(Me.Username, strFormat)
     Case "displayname"
      Return PropertyAccess.FormatString(Me.DisplayName, strFormat)
     Case "email"
      Return PropertyAccess.FormatString(Me.Email, strFormat)
+    Case "username"
+     Return PropertyAccess.FormatString(Me.Username, strFormat)
+    Case "nrposts"
+     Return (Me.NrPosts.ToString(OutputFormat, formatProvider))
+    Case "lastpublishdate"
+     Return (Me.LastPublishDate.ToString(OutputFormat, formatProvider))
+    Case "nrviews"
+     Return (Me.NrViews.ToString(OutputFormat, formatProvider))
     Case "altlocale"
      Return PropertyAccess.FormatString(Me.AltLocale, strFormat)
     Case "alttitle"
@@ -225,6 +236,7 @@ Namespace Entities.Blogs
     Description = readElement(reader, "Description")
     Image = readElement(reader, "Image")
     Locale = readElement(reader, "Locale")
+    Boolean.TryParse(readElement(reader, "FullLocalization"), FullLocalization)
     Boolean.TryParse(readElement(reader, "Published"), Published)
     Boolean.TryParse(readElement(reader, "IncludeImagesInFeed"), IncludeImagesInFeed)
     Boolean.TryParse(readElement(reader, "IncludeAuthorInFeed"), IncludeAuthorInFeed)
@@ -291,54 +303,6 @@ Namespace Entities.Blogs
    writer.WriteElementString("DisplayName", DisplayName)
    writer.WriteElementString("Email", Email)
    writer.WriteEndElement()
-  End Sub
-#End Region
-
-#Region " ToXml Methods "
-  Public Function ToXml() As String
-   Return ToXml("Blog")
-  End Function
-
-  Public Function ToXml(elementName As String) As String
-   Dim xml As New StringBuilder
-   xml.Append("<")
-   xml.Append(elementName)
-   AddAttribute(xml, "BlogID", BlogID.ToString())
-   AddAttribute(xml, "ModuleID", ModuleID.ToString())
-   AddAttribute(xml, "Title", Title)
-   AddAttribute(xml, "Description", Description)
-   AddAttribute(xml, "Image", Image)
-   AddAttribute(xml, "Locale", Locale.ToString())
-   AddAttribute(xml, "Published", Published.ToString())
-   AddAttribute(xml, "IncludeImagesInFeed", IncludeImagesInFeed.ToString())
-   AddAttribute(xml, "IncludeAuthorInFeed", IncludeAuthorInFeed.ToString())
-   AddAttribute(xml, "Syndicated", Syndicated.ToString())
-   AddAttribute(xml, "SyndicationEmail", SyndicationEmail)
-   AddAttribute(xml, "Copyright", Copyright)
-   AddAttribute(xml, "MustApproveGhostPosts", MustApproveGhostPosts.ToString())
-   AddAttribute(xml, "PublishAsOwner", PublishAsOwner.ToString())
-   AddAttribute(xml, "OwnerUserId", OwnerUserId.ToString())
-   AddAttribute(xml, "CreatedByUserID", CreatedByUserID.ToString())
-   AddAttribute(xml, "CreatedOnDate", CreatedOnDate.ToString())
-   AddAttribute(xml, "LastModifiedByUserID", LastModifiedByUserID.ToString())
-   AddAttribute(xml, "LastModifiedOnDate", LastModifiedOnDate.ToString())
-   AddAttribute(xml, "Username", Username)
-   AddAttribute(xml, "DisplayName", DisplayName)
-   AddAttribute(xml, "Email", Email)
-   xml.Append(" />")
-   Return xml.ToString
-  End Function
-
-  Private Sub AddAttribute(ByRef xml As StringBuilder, attributeName As String, attributeValue As String)
-   xml.Append(" " & attributeName)
-   xml.Append("=""" & attributeValue & """")
-  End Sub
-#End Region
-
-#Region " JSON Serialization "
-  Public Sub WriteJSON(ByRef s As Stream)
-   Dim ser As New DataContractJsonSerializer(GetType(BlogInfo))
-   ser.WriteObject(s, Me)
   End Sub
 #End Region
 

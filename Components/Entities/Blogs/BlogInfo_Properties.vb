@@ -26,11 +26,11 @@ Namespace Entities.Blogs
   <DataMember()>
   Public Property Description As String = ""
   <DataMember()>
-  Public Property FullLocalization As Boolean = False
-  <DataMember()>
   Public Property Image As String = ""
   <DataMember()>
   Public Property Locale As String = ""
+  <DataMember()>
+  Public Property FullLocalization As Boolean = False
   <DataMember()>
   Public Property Published As Boolean = True
   <DataMember()>
@@ -58,11 +58,17 @@ Namespace Entities.Blogs
   <DataMember()>
   Public Property LastModifiedOnDate As Date = Date.MinValue
   <DataMember()>
-  Public Property Username As String = ""
-  <DataMember()>
   Public Property DisplayName As String = ""
   <DataMember()>
   Public Property Email As String = ""
+  <DataMember()>
+  Public Property Username As String = ""
+  <DataMember()>
+  Public Property NrPosts As Int32 = -1
+  <DataMember()>
+  Public Property LastPublishDate As Date = Date.MinValue
+  <DataMember()>
+  Public Property NrViews As Int32 = -1
 #End Region
 
 #Region " ML Properties "

@@ -156,6 +156,10 @@
     <Content Include="css\font-awesome.css" />
     <Content Include="css\jquery.handsontable.css" />
     <Content Include="js\jquery.handsontable.js" />
+    <Content Include="Templates\blogList\BlogImage.html" />
+    <Content Include="Templates\blogList\Blog.html" />
+    <Content Include="Templates\blogList\template.css" />
+    <Content Include="Templates\blogList\Template.html" />
     <Content Include="Templates\_default\CommentsTemplate.html" />
     <Content Include="Templates\_default\Comment.html" />
     <Content Include="Templates\_default\CommentApprove.html" />
@@ -190,7 +194,7 @@
     <Content Include="js\tag-it.min.js" />
     <Content Include="Manage.ascx" />
     <Content Include="PostEdit.ascx" />
-    <EmbeddedResource Include="Templates\_default\resx\SharedResources.ascx.resx" />
+    <Content Include="Templates\_default\resx\SharedResources.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BlogImage.ashx.vb">
@@ -429,6 +433,11 @@
     <Content Include="Templates\_default\Template.html" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Templates\blogList\css\" />
+    <Folder Include="Templates\blogList\images\" />
+    <Folder Include="Templates\blogList\jsblocks\" />
+    <Folder Include="Templates\blogList\js\" />
+    <Folder Include="Templates\blogList\resx\" />
     <Folder Include="Templates\tagCloud\images\" />
     <Folder Include="Templates\tagCloud\jsblocks\" />
     <Folder Include="Templates\tagCloud\resx\" />
