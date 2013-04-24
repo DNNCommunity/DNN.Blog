@@ -29,8 +29,8 @@ Namespace Entities.Comments
    If comment.Approved Then
     JournalController.AddOrUpdateCommentInJournal(blog, Post, comment, PortalSettings.Current.PortalId, PortalSettings.Current.ActiveTab.TabID, PortalSettings.Current.UserId, Post.PermaLink(PortalSettings.Current))
    Else
-    Dim title As String = GetString("CommentPendingNotify", SharedResourceFileName)
-    Dim summary As String = "<a target='_blank' href='" + Post.PermaLink(PortalSettings.Current) + "'>" + Post.Title + "</a><br />" + comment.Comment
+    Dim title As String = GetString("CommentPendingNotify.Subject", SharedResourceFileName)
+    Dim summary As String = String.Format(GetString("CommentPendingNotify.Body", SharedResourceFileName), Post.PermaLink(PortalSettings.Current), comment.CommentID, Post.Title, comment.Comment)
     NotificationController.CommentPendingApproval(comment, blog, Post, PortalSettings.Current.PortalId, summary, title)
    End If
    Return comment.CommentID
@@ -44,8 +44,8 @@ Namespace Entities.Comments
    If comment.Approved Then
     JournalController.AddOrUpdateCommentInJournal(blog, Post, comment, PortalSettings.Current.PortalId, PortalSettings.Current.ActiveTab.TabID, PortalSettings.Current.UserId, Post.PermaLink(PortalSettings.Current))
    Else
-    Dim title As String = GetString("CommentPendingNotify", SharedResourceFileName)
-    Dim summary As String = "<a target='_blank' href='" + Post.PermaLink(PortalSettings.Current) + "'>" + Post.Title + "</a><br />" + comment.Comment
+    Dim title As String = GetString("CommentPendingNotify.Subject", SharedResourceFileName)
+    Dim summary As String = String.Format(GetString("CommentPendingNotify.Body", SharedResourceFileName), Post.PermaLink(PortalSettings.Current), comment.CommentID, Post.Title, comment.Comment)
     NotificationController.CommentPendingApproval(comment, blog, Post, PortalSettings.Current.PortalId, summary, title)
    End If
 
