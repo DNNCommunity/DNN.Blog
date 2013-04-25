@@ -819,6 +819,38 @@ FROM {databaseOwner}{objectQualifier}Blog_BlogList(@Locale) b
 END
 GO
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetBlogCalendar') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlogCalendar
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlogCalendar
+ @ModuleId INT,
+ @BlogId INT,
+ @Locale NVARCHAR(10)
+AS
+SELECT
+ PostMonth, 
+ PostYear,
+ COUNT(*) PostCount,
+ SUM(ViewCount) ViewCount
+FROM
+(SELECT
+  MONTH(p.PublishedOnDate) PostMonth, YEAR(p.PublishedOnDate) PostYear, p.ViewCount
+ FROM {databaseOwner}{objectQualifier}Blog_Posts p
+ INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs b ON b.BlogID=p.BlogID
+ WHERE
+  p.Published=1 
+  AND (p.BlogID=@BlogId OR @BlogId=-1) 
+  AND b.ModuleID=@ModuleId
+  AND (@Locale IS NULL OR ISNULL(p.Locale, b.Locale)=@Locale)) pd
+GROUP BY PostYear, PostMonth
+ORDER BY PostYear DESC, PostMonth DESC
+GO
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetBlogLocalizations') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlogLocalizations
 GO

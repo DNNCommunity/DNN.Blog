@@ -161,6 +161,9 @@
     <Content Include="Templates\blogList\Blog.html" />
     <Content Include="Templates\blogList\template.css" />
     <Content Include="Templates\blogList\Template.html" />
+    <Content Include="Templates\blogCalendarList\CalendarItem.html" />
+    <Content Include="Templates\blogCalendarList\template.css" />
+    <Content Include="Templates\blogCalendarList\Template.html" />
     <Content Include="Templates\timelineJS\Description.txt" />
     <Content Include="Templates\timelineJS\Post.html" />
     <Content Include="Templates\timelineJS\PostImage.html" />
@@ -230,6 +233,7 @@
     <Compile Include="Components\Common\LocalizedText.vb" />
     <Compile Include="Components\Common\ModuleUrls.vb" />
     <Compile Include="Components\Common\PostBodyAndSummary.vb" />
+    <Compile Include="Components\Entities\Blogs\BlogCalendarInfo.vb" />
     <Compile Include="Components\Entities\Blogs\BlogsController_Service.vb" />
     <Compile Include="Components\Entities\Comments\CommentsController_Service.vb" />
     <Compile Include="Components\Entities\Posts\PostsController_Service.vb" />
@@ -448,6 +452,11 @@
     <Content Include="Templates\_default\Template.html" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Templates\blogCalendarList\css\" />
+    <Folder Include="Templates\blogCalendarList\images\" />
+    <Folder Include="Templates\blogCalendarList\jsblocks\" />
+    <Folder Include="Templates\blogCalendarList\js\" />
+    <Folder Include="Templates\blogCalendarList\resx\" />
     <Folder Include="Templates\blogList\css\" />
     <Folder Include="Templates\blogList\images\" />
     <Folder Include="Templates\blogList\jsblocks\" />

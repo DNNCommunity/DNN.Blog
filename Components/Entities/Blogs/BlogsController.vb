@@ -56,6 +56,9 @@ Namespace Entities.Blogs
 
   End Function
 
+  Public Shared Function GetBlogCalendar(moduleId As Integer, blogId As Integer, locale As String) As List(Of BlogCalendarInfo)
+   Return DotNetNuke.Common.Utilities.CBO.FillCollection(Of BlogCalendarInfo)(DataProvider.Instance.GetBlogCalendar(moduleId, blogId, locale))
+  End Function
 
  End Class
 

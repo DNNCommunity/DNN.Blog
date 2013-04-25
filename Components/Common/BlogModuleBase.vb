@@ -60,6 +60,7 @@ Namespace Common
    Request.Params.ReadValue("Post", ContentItemId)
    Request.Params.ReadValue("Term", TermId)
    Request.Params.ReadValue("Author", AuthorId)
+   Request.Params.ReadValue("end", EndDate)
    Request.Params.ReadValue("search", SearchString)
    Request.Params.ReadValue("t", SearchTitle)
    Request.Params.ReadValue("c", SearchContents)
@@ -74,6 +75,7 @@ Namespace Common
    If PostMapPath <> "" AndAlso Not IO.Directory.Exists(PostMapPath) Then IO.Directory.CreateDirectory(PostMapPath)
    If TermId > -1 Then Term = Entities.Terms.TermsController.GetTerm(TermId, Settings.ModuleId, Locale)
    If AuthorId > -1 Then Author = DotNetNuke.Entities.Users.UserController.GetUserById(PortalId, AuthorId)
+
    ' set urls for use in module
    ModuleUrls = New ModuleUrls(TabId, BlogId, ContentItemId, TermId, AuthorId)
    IsMultiLingualSite = CBool((New DotNetNuke.Services.Localization.LocaleController).GetLocales(PortalId).Count > 1)

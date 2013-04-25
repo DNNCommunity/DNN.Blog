@@ -18,7 +18,6 @@ Public Class Blog
  Private _totalRecords As Integer = 0
  Private _reqPage As Integer = 1
  Private _usePaging As Boolean = False
- Private _endDate As Date = Date.Now.ToUniversalTime
 #End Region
 
 #Region " Event Handlers "
@@ -27,7 +26,6 @@ Public Class Blog
   DotNetNuke.Framework.jQuery.RequestRegistration()
   DotNetNuke.Framework.jQuery.RequestUIRegistration()
   Me.Request.Params.ReadValue("Page", _reqPage)
-  Me.Request.Params.ReadValue("EndDate", _endDate)
   DataBind()
 
  End Sub
@@ -203,6 +201,12 @@ Public Class Blog
     End If
     _usePaging = False
 
+   Case "calendar", "blogcalendar"
+
+    For Each bci As BlogCalendarInfo In BlogsController.GetBlogCalendar(Settings.ModuleId, BlogId, ShowLocale)
+     Replacers.Add(New BlogTokenReplace(Me, bci))
+    Next
+
   End Select
 
  End Sub
@@ -218,14 +222,14 @@ Public Class Blog
     Dim publishValue As Integer = 1
     If SearchUnpublished Then publishValue = -1
     If Term Is Nothing Then
-     PostList = PostsController.SearchPosts(Settings.ModuleId, BlogId, Locale, SearchString, SearchTitle, SearchContents, publishValue, ShowLocale, _endDate, -1, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, Security.UserIsAdmin).Values
+     PostList = PostsController.SearchPosts(Settings.ModuleId, BlogId, Locale, SearchString, SearchTitle, SearchContents, publishValue, ShowLocale, EndDate, -1, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, Security.UserIsAdmin).Values
     Else
-     PostList = PostsController.SearchPostsByTerm(Settings.ModuleId, BlogId, Locale, TermId, SearchString, SearchTitle, SearchContents, publishValue, ShowLocale, _endDate, -1, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, Security.UserIsAdmin).Values
+     PostList = PostsController.SearchPostsByTerm(Settings.ModuleId, BlogId, Locale, TermId, SearchString, SearchTitle, SearchContents, publishValue, ShowLocale, EndDate, -1, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, Security.UserIsAdmin).Values
     End If
    ElseIf Term Is Nothing Then
-    PostList = PostsController.GetPosts(Settings.ModuleId, BlogId, Locale, -1, ShowLocale, _endDate, AuthorId, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, Security.UserIsAdmin).Values
+    PostList = PostsController.GetPosts(Settings.ModuleId, BlogId, Locale, -1, ShowLocale, EndDate, AuthorId, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, Security.UserIsAdmin).Values
    Else
-    PostList = PostsController.GetPostsByTerm(Settings.ModuleId, BlogId, Locale, TermId, -1, ShowLocale, _endDate, AuthorId, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, Security.UserIsAdmin).Values
+    PostList = PostsController.GetPostsByTerm(Settings.ModuleId, BlogId, Locale, TermId, -1, ShowLocale, EndDate, AuthorId, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, Security.UserIsAdmin).Values
    End If
    _usePaging = True
   End If

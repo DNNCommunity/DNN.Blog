@@ -27,6 +27,10 @@ Namespace Data
    Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "GetBlog", blogId, userId, locale), IDataReader)
   End Function
 
+  Public Overrides Function GetBlogCalendar(moduleId As Int32, blogId As Int32, locale As String) As IDataReader
+   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "GetBlogCalendar", moduleId, blogId, locale), IDataReader)
+  End Function
+
   Public Overrides Function GetBlogLocalizations(blogId As Int32) As IDataReader
    Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "GetBlogLocalizations", blogId), IDataReader)
   End Function

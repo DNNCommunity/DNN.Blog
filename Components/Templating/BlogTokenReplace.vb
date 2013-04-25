@@ -104,6 +104,33 @@ Namespace Templating
 
   End Sub
 
+  Public Sub New(blogModule As BlogContextBase, objBlogCalendar As BlogCalendarInfo)
+   MyBase.new(Scope.DefaultSettings)
+
+   Me.PrimaryObject = objBlogCalendar
+   Me.ModuleInfo = blogModule.ModuleConfiguration
+   Me.UseObjectLessExpression = False
+   Me.PropertySource("query") = blogModule
+   Me.PropertySource("security") = blogModule.Security
+   Me.PropertySource("urls") = blogModule.ModuleUrls
+   Me.PropertySource("settings") = blogModule.Settings
+   Me.PropertySource("viewsettings") = blogModule.ViewSettings
+   If blogModule.Blog IsNot Nothing Then
+    Me.PropertySource("blog") = blogModule.Blog
+   End If
+   Me.PropertySource("calendar") = objBlogCalendar
+   If blogModule.Post IsNot Nothing Then
+    Me.PropertySource("post") = blogModule.Post
+    Me.PropertySource("author") = New LazyLoadingUser(PortalSettings.PortalId, blogModule.Post.Username)
+   ElseIf blogModule.Author IsNot Nothing Then
+    Me.PropertySource("author") = blogModule.Author
+   End If
+   If blogModule.Term IsNot Nothing Then
+    Me.PropertySource("selectedterm") = blogModule.Term
+   End If
+
+  End Sub
+
   Public Sub New(blogModule As BlogContextBase, Post As PostInfo)
    MyBase.new(Scope.DefaultSettings)
 

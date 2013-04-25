@@ -44,6 +44,7 @@ Namespace Common
     Me.ContentItemId = contextBase.ContentItemId
     Me.TermId = contextBase.TermId
     Me.AuthorId = contextBase.AuthorId
+    Me.EndDate = contextBase.EndDate
     Me.Blog = contextBase.Blog
     Me.Post = contextBase.Post
     Me.Term = contextBase.Term
@@ -69,6 +70,7 @@ Namespace Common
   Public Property ContentItemId As Integer = -1
   Public Property TermId As Integer = -1
   Public Property AuthorId As Integer = -1
+  Public Property EndDate As Date = DateTime.Now
   Public Property Blog As Entities.Blogs.BlogInfo = Nothing
   Public Property Post As Entities.Posts.PostInfo = Nothing
   Public Property Term As Entities.Terms.TermInfo = Nothing
@@ -173,6 +175,8 @@ Namespace Common
      Return (Me.TermId.ToString(OutputFormat, formatProvider))
     Case "authorid", "author"
      Return (Me.AuthorId.ToString(OutputFormat, formatProvider))
+    Case "enddate"
+     Return (Me.EndDate.ToString(OutputFormat, formatProvider))
     Case "blogselected"
      Return CBool(BlogId > -1).ToString()
     Case "postselected"
