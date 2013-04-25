@@ -109,9 +109,20 @@
          </moduleControl>
          <moduleControl>
           <controlKey>Settings</controlKey>
-          <controlSrc>DesktopModules/Blog/Settings.ascx</controlSrc>
+          <controlSrc>DesktopModules/Blog/Controls/ViewSettings.ascx</controlSrc>
           <supportsPartialRendering>False</supportsPartialRendering>
           <controlTitle>Blog Module Instance Settings</controlTitle>
+          <controlType>Edit</controlType>
+          <iconFile/>
+          <helpUrl/>
+          <supportsPopUps>True</supportsPopUps>
+          <viewOrder>0</viewOrder>
+         </moduleControl>
+         <moduleControl>
+          <controlKey>TemplateSettings</controlKey>
+          <controlSrc>DesktopModules/Blog/Controls/TemplateSettings.ascx</controlSrc>
+          <supportsPartialRendering>False</supportsPartialRendering>
+          <controlTitle>Blog Module Instance Template Settings</controlTitle>
           <controlType>Edit</controlType>
           <iconFile/>
           <helpUrl/>

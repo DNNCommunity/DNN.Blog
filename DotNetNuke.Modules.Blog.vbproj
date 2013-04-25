@@ -153,6 +153,7 @@
     <Content Include="Controls\Comments.ascx" />
     <Content Include="Controls\ManagementPanel.ascx" />
     <Content Include="Admin.ascx" />
+    <Content Include="Controls\TemplateSettings.ascx" />
     <Content Include="css\font-awesome.css" />
     <Content Include="css\jquery.handsontable.css" />
     <Content Include="js\jquery.handsontable.js" />
@@ -160,6 +161,11 @@
     <Content Include="Templates\blogList\Blog.html" />
     <Content Include="Templates\blogList\template.css" />
     <Content Include="Templates\blogList\Template.html" />
+    <Content Include="Templates\timelineJS\Description.txt" />
+    <Content Include="Templates\timelineJS\Post.html" />
+    <Content Include="Templates\timelineJS\PostImage.html" />
+    <Content Include="Templates\timelineJS\Settings.xml" />
+    <Content Include="Templates\timelineJS\Template.html" />
     <Content Include="Templates\_default\CommentsTemplate.html" />
     <Content Include="Templates\_default\Comment.html" />
     <Content Include="Templates\_default\CommentApprove.html" />
@@ -182,6 +188,7 @@
     <Content Include="App_LocalResources\Admin.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Controls\App_LocalResources\TemplateSettings.ascx.resx" />
     <EmbeddedResource Include="Controls\TagEdit.JS.CodeBlock.txt" />
     <EmbeddedResource Include="Controls\CategorySelect.JS.CodeBlock.txt" />
     <Content Include="css\dynatree.css" />
@@ -195,6 +202,7 @@
     <Content Include="Manage.ascx" />
     <Content Include="PostEdit.ascx" />
     <Content Include="Templates\_default\resx\SharedResources.ascx.resx" />
+    <Content Include="Templates\timelineJS\resx\SharedResources.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BlogImage.ashx.vb">
@@ -365,6 +373,13 @@
       <DependentUpon>Admin.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Controls\TemplateSettings.ascx.designer.vb">
+      <DependentUpon>TemplateSettings.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TemplateSettings.ascx.vb">
+      <DependentUpon>TemplateSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Manage.ascx.designer.vb">
       <DependentUpon>Manage.ascx</DependentUpon>
     </Compile>
@@ -441,6 +456,10 @@
     <Folder Include="Templates\tagCloud\images\" />
     <Folder Include="Templates\tagCloud\jsblocks\" />
     <Folder Include="Templates\tagCloud\resx\" />
+    <Folder Include="Templates\timelineJS\css\" />
+    <Folder Include="Templates\timelineJS\images\" />
+    <Folder Include="Templates\timelineJS\jsblocks\" />
+    <Folder Include="Templates\timelineJS\js\" />
     <Folder Include="Templates\_default\images\" />
     <Folder Include="Templates\_default\jsblocks\" />
   </ItemGroup>
@@ -468,6 +487,9 @@
     <Content Include="Controls\App_LocalResources\ManagementPanel.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Templates\Settings.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="_Installation\DNN_Blog.dnn" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />

@@ -347,6 +347,18 @@ Namespace Common
    End If
    Return found
   End Function
+
+  <System.Runtime.CompilerServices.Extension()>
+  Public Function OutputHtml(encodedHtml As String, strFormat As String) As String
+   Select Case strFormat.ToLower
+    Case ""
+     Return HttpUtility.HtmlDecode(encodedHtml)
+    Case "js"
+     Return HttpUtility.HtmlDecode(encodedHtml).Replace("""", "\""").Replace("'", "\'").Replace(vbCrLf, "\r\n")
+    Case Else
+     Return HttpUtility.HtmlDecode(encodedHtml)
+   End Select
+  End Function
 #End Region
 
  End Module

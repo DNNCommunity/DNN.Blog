@@ -71,7 +71,6 @@
   });
  $('#cmdAdd<%=ModuleId %>').click(function () {
   blogService.addModule($('#<%=ddPane.ClientId %>').val(), $('#<%=ddPosition.ClientId %>').val(), $('#<%=txtTitle.ClientId %>').val(), $('#<%=ddTemplate.ClientId %>').val());
-  window.location.href = encodeURI('<%= Request.Url.PathAndQuery %>');
  });
 <% End If %>
   var $dialogSearch = $('<div class="dnnDialog"></div>')

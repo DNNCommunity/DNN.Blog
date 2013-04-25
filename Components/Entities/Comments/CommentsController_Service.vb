@@ -41,8 +41,45 @@ Namespace Entities.Comments
   Private Property Post As PostInfo = Nothing
   Private Property Comment As CommentInfo = Nothing
   Private Property AllComments As New List(Of CommentInfo)
-  Private Property Settings As ModuleSettings = Nothing
-  Private Property Security As ContextSecurity = Nothing
+
+  Private _Settings As ModuleSettings
+  Private Property Settings() As ModuleSettings
+   Get
+    If _Settings Is Nothing Then
+     _Settings = ModuleSettings.GetModuleSettings(ActiveModule.ModuleID)
+    End If
+    Return _Settings
+   End Get
+   Set(ByVal value As ModuleSettings)
+    _Settings = value
+   End Set
+  End Property
+
+  Private _viewSettings As ViewSettings
+  Private Property ViewSettings() As ViewSettings
+   Get
+    If _viewSettings Is Nothing Then
+     _viewSettings = ViewSettings.GetViewSettings(ActiveModule.TabModuleID)
+    End If
+    Return _viewSettings
+   End Get
+   Set(ByVal value As ViewSettings)
+    _viewSettings = value
+   End Set
+  End Property
+
+  Private _Security As ContextSecurity
+  Private Property Security() As ContextSecurity
+   Get
+    If _Security Is Nothing Then
+     _Security = New ContextSecurity(ActiveModule.ModuleID, ActiveModule.TabID, Blog, UserInfo)
+    End If
+    Return _Security
+   End Get
+   Set(ByVal value As ContextSecurity)
+    _Security = value
+   End Set
+  End Property
 #End Region
 
 #Region " Service Methods "
@@ -103,7 +140,6 @@ Namespace Entities.Comments
    objComment.ParentId = postData.ParentId
    Dim ps As New DotNetNuke.Security.PortalSecurity
    objComment.Comment = HttpUtility.HtmlEncode(ps.InputFilter(postData.Comment, DotNetNuke.Security.PortalSecurity.FilterFlag.NoProfanity))
-   Security = New ContextSecurity(ActiveModule.ModuleID, ActiveModule.TabID, Blog, UserInfo)
    objComment.Approved = Security.CanApproveComment
    objComment.Author = ps.InputFilter(postData.Author, DotNetNuke.Security.PortalSecurity.FilterFlag.NoMarkup And DotNetNuke.Security.PortalSecurity.FilterFlag.NoProfanity And DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting And DotNetNuke.Security.PortalSecurity.FilterFlag.NoSQL)
    objComment.Email = ps.InputFilter(postData.Email, DotNetNuke.Security.PortalSecurity.FilterFlag.NoMarkup And DotNetNuke.Security.PortalSecurity.FilterFlag.NoProfanity And DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting And DotNetNuke.Security.PortalSecurity.FilterFlag.NoSQL)
@@ -129,17 +165,15 @@ Namespace Entities.Comments
    If Blog Is Nothing Or Post Is Nothing Then
     Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
    End If
-   Security = New ContextSecurity(ActiveModule.ModuleID, ActiveModule.TabID, Blog, UserInfo)
    If Not Security.CanViewComments Then Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = ""})
    Dim ViewSettings As ViewSettings = ViewSettings.GetViewSettings(ActiveModule.TabModuleID)
-   Settings = ModuleSettings.GetModuleSettings(ActiveModule.ModuleID)
    AllComments = CommentsController.GetCommentsByContentItem(Post.ContentItemId, Security.CanApproveComment)
    Dim vt As New ViewTemplate
    Dim tmgr As New TemplateManager(PortalSettings, ViewSettings.Template)
    With vt
     .TemplatePath = tmgr.TemplatePath
     .TemplateMapPath = tmgr.TemplateMapPath
-    .DefaultReplacer = New BlogTokenReplace(ActiveModule, Security, Blog, Post, Settings)
+    .DefaultReplacer = New BlogTokenReplace(ActiveModule, Security, Blog, Post, Settings, ViewSettings)
     .StartTemplate = "CommentsTemplate.html"
    End With
    AddHandler vt.GetData, AddressOf TemplateGetData
@@ -167,11 +201,11 @@ Namespace Entities.Comments
      If callingObject IsNot Nothing AndAlso TypeOf callingObject Is CommentInfo Then
       Dim parent As Integer = CType(callingObject, CommentInfo).CommentID
       For Each c As CommentInfo In AllComments.Where(Function(cmt) cmt.ParentId = parent).OrderBy(Function(cmt) cmt.CreatedOnDate)
-       Replacers.Add(New BlogTokenReplace(ActiveModule, Security, Blog, Post, Settings, c))
+       Replacers.Add(New BlogTokenReplace(ActiveModule, Security, Blog, Post, Settings, ViewSettings, c))
       Next
      Else
       For Each c As CommentInfo In AllComments.Where(Function(cmt) cmt.ParentId = -1).OrderBy(Function(cmt) cmt.CreatedOnDate)
-       Replacers.Add(New BlogTokenReplace(ActiveModule, Security, Blog, Post, Settings, c))
+       Replacers.Add(New BlogTokenReplace(ActiveModule, Security, Blog, Post, Settings, ViewSettings, c))
       Next
      End If
 

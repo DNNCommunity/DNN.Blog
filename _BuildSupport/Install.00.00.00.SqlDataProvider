@@ -326,11 +326,9 @@ RETURNS TABLE
 AS
 RETURN
 (SELECT 
-  b.*, 
-  u.Username, u.DisplayName, u.Email, 
+  b.*,
   bl.Locale AS AltLocale, bl.Title AS AltTitle, bl.[Description] AS AltDescription
- FROM {databaseOwner}{objectQualifier}Blog_Blogs AS b
-  INNER JOIN {databaseOwner}{objectQualifier}Users AS u ON b.OwnerUserId = u.UserID
+ FROM {databaseOwner}{objectQualifier}vw_Blog_Blogs AS b
   LEFT OUTER JOIN {databaseOwner}{objectQualifier}Blog_BlogLocalization AS bl ON b.BlogID = bl.BlogID AND bl.Locale=@Locale)
 GO
 
@@ -438,10 +436,14 @@ CREATE VIEW {databaseOwner}{objectQualifier}vw_Blog_Blogs
 AS
 SELECT     b.BlogID, b.ModuleID, b.Title, b.Description, b.Image, b.Locale, b.FullLocalization, b.Published, b.IncludeImagesInFeed, b.IncludeAuthorInFeed, b.Syndicated, 
                       b.SyndicationEmail, b.Copyright, b.MustApproveGhostPosts, b.PublishAsOwner, b.OwnerUserId, b.CreatedByUserID, b.CreatedOnDate, b.LastModifiedByUserID, 
-                      b.LastModifiedOnDate, bl.Locale AS Expr1, bl.Title AS Expr2, bl.Description AS Expr3, u.DisplayName, u.Email, u.Username
+                      b.LastModifiedOnDate, u.DisplayName, u.Email, u.Username, p.NrPosts, p.LastPublishDate, p.NrViews, p.FirstPublishDate
 FROM         {databaseOwner}{objectQualifier}Blog_Blogs AS b INNER JOIN
                       {databaseOwner}{objectQualifier}Users AS u ON b.OwnerUserId = u.UserID LEFT OUTER JOIN
-                      {databaseOwner}{objectQualifier}Blog_BlogLocalization AS bl ON b.BlogID = bl.BlogID
+                          (SELECT     BlogID, COUNT(ContentItemId) AS NrPosts, SUM(ViewCount) AS NrViews, MAX(PublishedOnDate) AS LastPublishDate, MIN(PublishedOnDate) 
+                                                   AS FirstPublishDate
+                            FROM          {databaseOwner}{objectQualifier}Blog_Posts AS posts
+                            GROUP BY BlogID, Published
+                            HAVING      (Published = 1)) AS p ON p.BlogID = b.BlogID
 GO
 
 IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}vw_Blog_Comments'))

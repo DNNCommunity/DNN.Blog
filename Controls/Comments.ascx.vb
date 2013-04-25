@@ -33,11 +33,11 @@ Namespace Controls
      If callingObject IsNot Nothing AndAlso TypeOf callingObject Is CommentInfo Then
       Dim parent As Integer = CType(callingObject, CommentInfo).CommentID
       For Each c As CommentInfo In AllComments.Where(Function(cmt) cmt.ParentId = parent).OrderBy(Function(cmt) cmt.CreatedOnDate)
-       Replacers.Add(New BlogTokenReplace(Me, Settings, Post, c))
+       Replacers.Add(New BlogTokenReplace(Me, Post, c))
       Next
      Else
       For Each c As CommentInfo In AllComments.Where(Function(cmt) cmt.ParentId = -1).OrderBy(Function(cmt) cmt.CreatedOnDate)
-       Replacers.Add(New BlogTokenReplace(Me, Settings, Post, c))
+       Replacers.Add(New BlogTokenReplace(Me, Post, c))
       Next
      End If
 
@@ -53,7 +53,7 @@ Namespace Controls
    With vtContents
     .TemplatePath = tmgr.TemplatePath
     .TemplateMapPath = tmgr.TemplateMapPath
-    .DefaultReplacer = New BlogTokenReplace(Me, Settings)
+    .DefaultReplacer = New BlogTokenReplace(Me)
     .StartTemplate = "CommentsTemplate.html"
    End With
    vtContents.DataBind()

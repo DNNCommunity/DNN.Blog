@@ -90,7 +90,7 @@ Namespace Entities.Posts
     Case "title"
      Return PropertyAccess.FormatString(Me.Title, strFormat)
     Case "summary"
-     Return HttpUtility.HtmlDecode(PropertyAccess.FormatString(Me.Summary, strFormat))
+     Return Me.Summary.OutputHtml(strFormat)
     Case "image"
      Return PropertyAccess.FormatString(Me.Image, strFormat)
     Case "published"
@@ -132,9 +132,9 @@ Namespace Entities.Posts
     Case "localizedtitle"
      Return PropertyAccess.FormatString(Me.LocalizedTitle, strFormat)
     Case "localizedsummary"
-     Return HttpUtility.HtmlDecode(PropertyAccess.FormatString(Me.LocalizedSummary, strFormat))
+     Return Me.LocalizedSummary.OutputHtml(strFormat)
     Case "localizedcontent"
-     Return HttpUtility.HtmlDecode(PropertyAccess.FormatString(Me.LocalizedContent, strFormat))
+     Return Me.LocalizedContent.OutputHtml(strFormat)
     Case "contentitemid"
      Return (Me.ContentItemId.ToString(OutputFormat, formatProvider))
     Case "createdbyuserid"
@@ -146,10 +146,10 @@ Namespace Entities.Posts
     Case "lastmodifiedondate"
      Return (Me.LastModifiedOnDate.ToString(OutputFormat, formatProvider))
     Case "content"
-     Return HttpUtility.HtmlDecode(PropertyAccess.FormatString(Me.Content, strFormat))
+     Return Me.Content.OutputHtml(strFormat)
     Case "hasimage"
      Return CBool(Me.Image <> "").ToString(formatProvider)
-    Case "link"
+    Case "link", "permalink"
      Return PermaLink(DotNetNuke.Entities.Portals.PortalSettings.Current)
     Case Else
      PropertyNotFound = True

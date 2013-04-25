@@ -327,10 +327,8 @@ AS
 RETURN
 (SELECT 
   b.*, 
-  u.Username, u.DisplayName, u.Email, 
   bl.Locale AS AltLocale, bl.Title AS AltTitle, bl.[Description] AS AltDescription
- FROM {databaseOwner}{objectQualifier}Blog_Blogs AS b
-  INNER JOIN {databaseOwner}{objectQualifier}Users AS u ON b.OwnerUserId = u.UserID
+ FROM {databaseOwner}{objectQualifier}vw_Blog_Blogs AS b
   LEFT OUTER JOIN {databaseOwner}{objectQualifier}Blog_BlogLocalization AS bl ON b.BlogID = bl.BlogID AND bl.Locale=@Locale)
 GO
 
@@ -424,6 +422,28 @@ SELECT     bp.AllowAccess, bp.BlogId, bp.Expires, bp.PermissionId, bp.RoleId, bp
 FROM         {databaseOwner}{objectQualifier}Blog_BlogPermissions AS bp LEFT OUTER JOIN
                       {databaseOwner}{objectQualifier}Roles AS r ON bp.RoleId = r.RoleID LEFT OUTER JOIN
                       {databaseOwner}{objectQualifier}Users AS u ON bp.UserId = u.UserID
+GO
+
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}vw_Blog_Blogs'))
+DROP VIEW {databaseOwner}{objectQualifier}vw_Blog_Blogs
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW {databaseOwner}{objectQualifier}vw_Blog_Blogs
+AS
+SELECT     b.BlogID, b.ModuleID, b.Title, b.Description, b.Image, b.Locale, b.FullLocalization, b.Published, b.IncludeImagesInFeed, b.IncludeAuthorInFeed, b.Syndicated, 
+                      b.SyndicationEmail, b.Copyright, b.MustApproveGhostPosts, b.PublishAsOwner, b.OwnerUserId, b.CreatedByUserID, b.CreatedOnDate, b.LastModifiedByUserID, 
+                      b.LastModifiedOnDate, u.DisplayName, u.Email, u.Username, p.NrPosts, p.LastPublishDate, p.NrViews, p.FirstPublishDate
+FROM         {databaseOwner}{objectQualifier}Blog_Blogs AS b INNER JOIN
+                      {databaseOwner}{objectQualifier}Users AS u ON b.OwnerUserId = u.UserID LEFT OUTER JOIN
+                          (SELECT     BlogID, COUNT(ContentItemId) AS NrPosts, SUM(ViewCount) AS NrViews, MAX(PublishedOnDate) AS LastPublishDate, MIN(PublishedOnDate) 
+                                                   AS FirstPublishDate
+                            FROM          {databaseOwner}{objectQualifier}Blog_Posts AS posts
+                            GROUP BY BlogID, Published
+                            HAVING      (Published = 1)) AS p ON p.BlogID = b.BlogID
 GO
 
 IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}vw_Blog_Comments'))

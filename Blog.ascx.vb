@@ -51,13 +51,13 @@ Public Class Blog
      Dim i As Integer = 1
      For Each b As BlogInfo In blogList
       If i >= startRec And i <= endRec Then
-       Replacers.Add(New BlogTokenReplace(Me, Settings, b))
+       Replacers.Add(New BlogTokenReplace(Me, b))
       End If
       i += 1
      Next
     Else
      For Each b As BlogInfo In blogList
-      Replacers.Add(New BlogTokenReplace(Me, Settings, b))
+      Replacers.Add(New BlogTokenReplace(Me, b))
      Next
     End If
 
@@ -66,7 +66,7 @@ Public Class Blog
     Parameters.ReadValue("pagesize", _pageSize)
     EnsurePostList(_pageSize)
     For Each e As PostInfo In PostList
-     Replacers.Add(New BlogTokenReplace(Me, Settings, e))
+     Replacers.Add(New BlogTokenReplace(Me, e))
     Next
 
    Case "postspager"
@@ -82,7 +82,7 @@ Public Class Blog
     End If
     If nrPages < 2 Then
     Else
-     Replacers.Add(New BlogTokenReplace(Me, Settings))
+     Replacers.Add(New BlogTokenReplace(Me))
      Select Case pagerType.ToLower
       Case "allpages"
        For i As Integer = 1 To nrPages
@@ -118,15 +118,15 @@ Public Class Blog
 
     If callingObject IsNot Nothing AndAlso TypeOf callingObject Is PostInfo Then
      For Each t As TermInfo In CType(callingObject, PostInfo).Terms
-      Replacers.Add(New BlogTokenReplace(Me, Settings, Post, t))
+      Replacers.Add(New BlogTokenReplace(Me, Post, t))
      Next
     ElseIf Post IsNot Nothing Then
      For Each t As TermInfo In Post.Terms
-      Replacers.Add(New BlogTokenReplace(Me, Settings, Post, t))
+      Replacers.Add(New BlogTokenReplace(Me, Post, t))
      Next
     Else
      For Each t As TermInfo In TermsController.GetTermsByModule(Settings.ModuleId, Locale)
-      Replacers.Add(New BlogTokenReplace(Me, Settings, Nothing, t))
+      Replacers.Add(New BlogTokenReplace(Me, Nothing, t))
      Next
     End If
     _usePaging = False
@@ -134,7 +134,7 @@ Public Class Blog
    Case "allterms"
 
     For Each t As TermInfo In TermsController.GetTermsByModule(Settings.ModuleId, Locale)
-     Replacers.Add(New BlogTokenReplace(Me, Settings, Nothing, t))
+     Replacers.Add(New BlogTokenReplace(Me, Nothing, t))
     Next
     _usePaging = False
 
@@ -142,15 +142,15 @@ Public Class Blog
 
     If callingObject IsNot Nothing AndAlso TypeOf callingObject Is PostInfo Then
      For Each t As TermInfo In CType(callingObject, PostInfo).PostTags
-      Replacers.Add(New BlogTokenReplace(Me, Settings, Post, t))
+      Replacers.Add(New BlogTokenReplace(Me, Post, t))
      Next
     ElseIf Post IsNot Nothing Then
      For Each t As TermInfo In Post.PostTags
-      Replacers.Add(New BlogTokenReplace(Me, Settings, Post, t))
+      Replacers.Add(New BlogTokenReplace(Me, Post, t))
      Next
     Else
      For Each t As TermInfo In TermsController.GetTermsByModule(Settings.ModuleId, Locale).Where(Function(x) x.VocabularyId = 1).ToList
-      Replacers.Add(New BlogTokenReplace(Me, Settings, Nothing, t))
+      Replacers.Add(New BlogTokenReplace(Me, Nothing, t))
      Next
     End If
     _usePaging = False
@@ -158,7 +158,7 @@ Public Class Blog
    Case "allkeywords", "alltags"
 
     For Each t As TermInfo In TermsController.GetTermsByModule(Settings.ModuleId, Locale).Where(Function(x) x.VocabularyId = 1).ToList
-     Replacers.Add(New BlogTokenReplace(Me, Settings, Nothing, t))
+     Replacers.Add(New BlogTokenReplace(Me, Nothing, t))
     Next
     _usePaging = False
 
@@ -166,15 +166,15 @@ Public Class Blog
 
     If callingObject IsNot Nothing AndAlso TypeOf callingObject Is PostInfo Then
      For Each t As TermInfo In CType(callingObject, PostInfo).PostCategories
-      Replacers.Add(New BlogTokenReplace(Me, Settings, Post, t))
+      Replacers.Add(New BlogTokenReplace(Me, Post, t))
      Next
     ElseIf Post IsNot Nothing Then
      For Each t As TermInfo In Post.PostCategories
-      Replacers.Add(New BlogTokenReplace(Me, Settings, Post, t))
+      Replacers.Add(New BlogTokenReplace(Me, Post, t))
      Next
     Else
      For Each t As TermInfo In TermsController.GetTermsByModule(Settings.ModuleId, Locale).Where(Function(x) x.VocabularyId <> 1).ToList
-      Replacers.Add(New BlogTokenReplace(Me, Settings, Nothing, t))
+      Replacers.Add(New BlogTokenReplace(Me, Nothing, t))
      Next
     End If
     _usePaging = False
@@ -182,7 +182,7 @@ Public Class Blog
    Case "allcategories"
 
     For Each t As TermInfo In TermsController.GetTermsByModule(Settings.ModuleId, Locale).Where(Function(x) x.VocabularyId <> 1).ToList
-     Replacers.Add(New BlogTokenReplace(Me, Settings, Nothing, t))
+     Replacers.Add(New BlogTokenReplace(Me, Nothing, t))
     Next
     _usePaging = False
 
@@ -190,15 +190,15 @@ Public Class Blog
 
     If callingObject IsNot Nothing AndAlso TypeOf callingObject Is PostInfo Then
      For Each c As CommentInfo In CommentsController.GetCommentsByContentItem(CType(callingObject, PostInfo).ContentItemId, False)
-      Replacers.Add(New BlogTokenReplace(Me, Settings, Post, c))
+      Replacers.Add(New BlogTokenReplace(Me, Post, c))
      Next
     ElseIf Post IsNot Nothing Then
      For Each c As CommentInfo In CommentsController.GetCommentsByContentItem(Post.ContentItemId, False)
-      Replacers.Add(New BlogTokenReplace(Me, Settings, Post, c))
+      Replacers.Add(New BlogTokenReplace(Me, Post, c))
      Next
     Else
      For Each c As CommentInfo In CommentsController.GetCommentsByModule(ModuleId)
-      Replacers.Add(New BlogTokenReplace(Me, Settings, Post, c))
+      Replacers.Add(New BlogTokenReplace(Me, Post, c))
      Next
     End If
     _usePaging = False
@@ -240,7 +240,7 @@ Public Class Blog
   With vtContents
    .TemplatePath = tmgr.TemplatePath
    .TemplateMapPath = tmgr.TemplateMapPath
-   .DefaultReplacer = New BlogTokenReplace(Me, Settings)
+   .DefaultReplacer = New BlogTokenReplace(Me)
   End With
   vtContents.DataBind()
 
@@ -259,6 +259,9 @@ Public Class Blog
    Dim MyActions As New Actions.ModuleActionCollection
    If IsEditable Or Security.IsBlogger Then
     MyActions.Add(GetNextActionID, Localization.GetString(ModuleActionType.EditContent, LocalResourceFile), ModuleActionType.EditContent, "", "", EditUrl("Manage"), False, DotNetNuke.Security.SecurityAccessLevel.View, True, False)
+   End If
+   If IsEditable Then
+    MyActions.Add(GetNextActionID, LocalizeString("TemplateSettings"), ModuleActionType.EditContent, "", "", EditUrl("TemplateSettings"), False, DotNetNuke.Security.SecurityAccessLevel.Edit, True, False)
    End If
    Return MyActions
   End Get

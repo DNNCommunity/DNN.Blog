@@ -11,13 +11,14 @@ Namespace Templating
  Public Class BlogTokenReplace
   Inherits GenericTokenReplace
 
-  Public Sub New(actModule As DotNetNuke.Entities.Modules.ModuleInfo, security As Modules.Blog.Security.ContextSecurity, blog As BlogInfo, post As PostInfo, settings As Common.ModuleSettings)
+  Public Sub New(actModule As DotNetNuke.Entities.Modules.ModuleInfo, security As Modules.Blog.Security.ContextSecurity, blog As BlogInfo, post As PostInfo, settings As Common.ModuleSettings, viewSettings As ViewSettings)
    MyBase.new(Scope.DefaultSettings)
 
    Me.ModuleInfo = actModule
    Me.UseObjectLessExpression = False
    Me.PropertySource("security") = security
    Me.PropertySource("settings") = settings
+   Me.PropertySource("viewsettings") = viewSettings
    If blog IsNot Nothing Then
     Me.PropertySource("blog") = blog
     Me.PropertySource("owner") = New LazyLoadingUser(PortalSettings.PortalId, blog.Username)
@@ -28,7 +29,7 @@ Namespace Templating
 
   End Sub
 
-  Public Sub New(actModule As DotNetNuke.Entities.Modules.ModuleInfo, security As Modules.Blog.Security.ContextSecurity, blog As BlogInfo, Post As PostInfo, settings As Common.ModuleSettings, comment As CommentInfo)
+  Public Sub New(actModule As DotNetNuke.Entities.Modules.ModuleInfo, security As Modules.Blog.Security.ContextSecurity, blog As BlogInfo, Post As PostInfo, settings As Common.ModuleSettings, viewSettings As ViewSettings, comment As CommentInfo)
    MyBase.new(Scope.DefaultSettings)
 
    Me.PrimaryObject = comment
@@ -36,6 +37,7 @@ Namespace Templating
    Me.UseObjectLessExpression = False
    Me.PropertySource("security") = security
    Me.PropertySource("settings") = settings
+   Me.PropertySource("viewsettings") = viewSettings
    If Post IsNot Nothing Then
     Me.PropertySource("post") = Post
     Me.PropertySource("author") = New LazyLoadingUser(PortalSettings.PortalId, Post.Username)
@@ -50,7 +52,7 @@ Namespace Templating
 
   End Sub
 
-  Public Sub New(blogModule As BlogContextBase, settings As Common.ModuleSettings)
+  Public Sub New(blogModule As BlogContextBase)
    MyBase.new(Scope.DefaultSettings)
 
    Me.ModuleInfo = blogModule.ModuleConfiguration
@@ -58,7 +60,8 @@ Namespace Templating
    Me.PropertySource("query") = blogModule
    Me.PropertySource("security") = blogModule.Security
    Me.PropertySource("urls") = blogModule.ModuleUrls
-   Me.PropertySource("settings") = settings
+   Me.PropertySource("settings") = blogModule.Settings
+   Me.PropertySource("viewsettings") = blogModule.ViewSettings
    If blogModule.Blog IsNot Nothing Then
     Me.PropertySource("blog") = blogModule.Blog
     Me.PropertySource("owner") = New LazyLoadingUser(PortalSettings.PortalId, blogModule.Blog.Username)
@@ -76,7 +79,7 @@ Namespace Templating
 
   End Sub
 
-  Public Sub New(blogModule As BlogContextBase, settings As Common.ModuleSettings, blog As BlogInfo)
+  Public Sub New(blogModule As BlogContextBase, blog As BlogInfo)
    MyBase.new(Scope.DefaultSettings)
 
    Me.PrimaryObject = blog
@@ -85,7 +88,8 @@ Namespace Templating
    Me.PropertySource("query") = blogModule
    Me.PropertySource("security") = blogModule.Security
    Me.PropertySource("urls") = blogModule.ModuleUrls
-   Me.PropertySource("settings") = settings
+   Me.PropertySource("settings") = blogModule.Settings
+   Me.PropertySource("viewsettings") = blogModule.ViewSettings
    Me.PropertySource("blog") = blog
    Me.PropertySource("owner") = New LazyLoadingUser(PortalSettings.PortalId, blog.Username)
    If blogModule.Post IsNot Nothing Then
@@ -100,7 +104,7 @@ Namespace Templating
 
   End Sub
 
-  Public Sub New(blogModule As BlogContextBase, settings As Common.ModuleSettings, Post As PostInfo)
+  Public Sub New(blogModule As BlogContextBase, Post As PostInfo)
    MyBase.new(Scope.DefaultSettings)
 
    Me.PrimaryObject = Post
@@ -109,7 +113,8 @@ Namespace Templating
    Me.PropertySource("query") = blogModule
    Me.PropertySource("security") = blogModule.Security
    Me.PropertySource("urls") = blogModule.ModuleUrls
-   Me.PropertySource("settings") = settings
+   Me.PropertySource("settings") = blogModule.Settings
+   Me.PropertySource("viewsettings") = blogModule.ViewSettings
    Me.PropertySource("post") = Post
    Me.PropertySource("author") = New LazyLoadingUser(PortalSettings.PortalId, Post.Username)
    Me.PropertySource("blog") = Post.Blog
@@ -120,7 +125,7 @@ Namespace Templating
 
   End Sub
 
-  Public Sub New(blogModule As BlogContextBase, settings As Common.ModuleSettings, Post As PostInfo, term As TermInfo)
+  Public Sub New(blogModule As BlogContextBase, Post As PostInfo, term As TermInfo)
    MyBase.new(Scope.DefaultSettings)
 
    Me.PrimaryObject = term
@@ -129,7 +134,8 @@ Namespace Templating
    Me.PropertySource("query") = blogModule
    Me.PropertySource("security") = blogModule.Security
    Me.PropertySource("urls") = blogModule.ModuleUrls
-   Me.PropertySource("settings") = settings
+   Me.PropertySource("settings") = blogModule.Settings
+   Me.PropertySource("viewsettings") = blogModule.ViewSettings
    If Post IsNot Nothing Then
     Me.PropertySource("post") = Post
     Me.PropertySource("author") = New LazyLoadingUser(PortalSettings.PortalId, Post.Username)
@@ -146,7 +152,7 @@ Namespace Templating
 
   End Sub
 
-  Public Sub New(blogModule As BlogContextBase, settings As Common.ModuleSettings, Post As PostInfo, comment As CommentInfo)
+  Public Sub New(blogModule As BlogContextBase, Post As PostInfo, comment As CommentInfo)
    MyBase.new(Scope.DefaultSettings)
 
    Me.PrimaryObject = comment
@@ -155,7 +161,8 @@ Namespace Templating
    Me.PropertySource("query") = blogModule
    Me.PropertySource("security") = blogModule.Security
    Me.PropertySource("urls") = blogModule.ModuleUrls
-   Me.PropertySource("settings") = settings
+   Me.PropertySource("settings") = blogModule.Settings
+   Me.PropertySource("viewsettings") = blogModule.ViewSettings
    If Post IsNot Nothing Then
     Me.PropertySource("post") = Post
     Me.PropertySource("author") = New LazyLoadingUser(PortalSettings.PortalId, Post.Username)

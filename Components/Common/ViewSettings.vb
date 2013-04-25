@@ -1,8 +1,10 @@
 ﻿Imports System.Xml
 Imports DotNetNuke.Common.Utilities
+Imports DotNetNuke.Services.Tokens
 
 Namespace Common
  Public Class ViewSettings
+  Implements IPropertyAccess
 
 #Region " Private Members "
   Private _allSettings As Hashtable = Nothing
@@ -15,6 +17,8 @@ Namespace Common
   Public Property ShowComments As Boolean = True
   Public Property BlogModuleId As Integer = -1
   Public Property ShowAllLocales As Boolean = True
+  Public Property TemplateSettings As New Dictionary(Of String, String)
+  Private Property TemplateManager As Templating.TemplateManager
 #End Region
 
 #Region " Constructors "
@@ -59,6 +63,70 @@ Namespace Common
    DotNetNuke.Common.Utilities.DataCache.SetCache(CacheKey, Me)
 
   End Sub
+
+  Public Sub SaveTemplateSettings()
+   Dim objModules As New DotNetNuke.Entities.Modules.ModuleController
+   For Each key As String In TemplateSettings.Keys
+    objModules.UpdateTabModuleSetting(_tabModuleId, "t_" & key, TemplateSettings(key))
+   Next
+  End Sub
+
+  Public Sub SetTemplateSetting(key As String, value As String)
+   If Not TemplateSettings.ContainsKey(key) Then
+    TemplateSettings.Add(key, value)
+   Else
+    TemplateSettings(key) = value
+   End If
+  End Sub
+#End Region
+
+#Region " Private Methods "
+  Private Sub SetTemplate(template As String)
+   TemplateManager = New Templating.TemplateManager(DotNetNuke.Entities.Portals.PortalSettings.Current, template)
+   TemplateSettings.Clear()
+   For Each st As Templating.TemplateSetting In _TemplateManager.TemplateSettings.Settings
+    TemplateSettings.Add(st.Key, st.DefaultValue)
+   Next
+   For Each key As String In _allSettings.Keys
+    If key.StartsWith("t_") Then
+     SetTemplateSetting(Mid(key, 3), CStr(_allSettings(key)))
+    End If
+   Next
+  End Sub
+#End Region
+
+#Region " IPropertyAccess "
+  Public ReadOnly Property Cacheability As DotNetNuke.Services.Tokens.CacheLevel Implements DotNetNuke.Services.Tokens.IPropertyAccess.Cacheability
+   Get
+    Return CacheLevel.fullyCacheable
+   End Get
+  End Property
+
+  Public Function GetProperty(strPropertyName As String, strFormat As String, formatProvider As System.Globalization.CultureInfo, AccessingUser As DotNetNuke.Entities.Users.UserInfo, AccessLevel As DotNetNuke.Services.Tokens.Scope, ByRef PropertyNotFound As Boolean) As String Implements DotNetNuke.Services.Tokens.IPropertyAccess.GetProperty
+   Dim OutputFormat As String = String.Empty
+   If strFormat = String.Empty Then
+    OutputFormat = "D"
+   Else
+    OutputFormat = strFormat
+   End If
+   Select Case strPropertyName.ToLower
+    Case "tabmoduleid"
+     Return (_tabModuleId.ToString(OutputFormat, formatProvider))
+    Case "templatepath"
+     Return PropertyAccess.FormatString(_TemplateManager.TemplatePath, strFormat)
+    Case "templatemappath"
+     Return PropertyAccess.FormatString(_TemplateManager.TemplateMapPath, strFormat)
+    Case Else
+     If TemplateSettings.ContainsKey(strPropertyName) Then
+      Return PropertyAccess.FormatString(CStr(TemplateSettings(strPropertyName)), strFormat)
+     End If
+     If strPropertyName.StartsWith("t_") Then strPropertyName = Mid(strPropertyName, 3)
+     If TemplateSettings.ContainsKey(strPropertyName) Then
+      Return PropertyAccess.FormatString(CStr(TemplateSettings(strPropertyName)), strFormat)
+     End If
+     Return ""
+   End Select
+  End Function
 #End Region
 
  End Class

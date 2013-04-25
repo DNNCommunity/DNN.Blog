@@ -186,7 +186,22 @@ Namespace Common
     Case "showlocale"
      Return ShowLocale
     Case "locale"
-     Return Locale
+     Select Case strFormat.ToLower
+      Case "3"
+       Return Threading.Thread.CurrentThread.CurrentCulture.ThreeLetterISOLanguageName
+      Case "ietf"
+       Return Threading.Thread.CurrentThread.CurrentCulture.IetfLanguageTag
+      Case "displayname", "display"
+       Return Threading.Thread.CurrentThread.CurrentCulture.DisplayName
+      Case "englishname", "english"
+       Return Threading.Thread.CurrentThread.CurrentCulture.EnglishName
+      Case "nativename", "native"
+       Return Threading.Thread.CurrentThread.CurrentCulture.NativeName
+      Case "generic", "2"
+       Return Threading.Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName
+      Case Else
+       Return Locale
+     End Select
     Case "searchstring"
      Return SearchString
     Case "issearch"

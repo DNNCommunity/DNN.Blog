@@ -57,6 +57,7 @@ Namespace Entities.Blogs
    Username = Convert.ToString(Null.SetNull(dr.Item("Username"), Username))
    NrPosts = Convert.ToInt32(Null.SetNull(dr.Item("NrPosts"), NrPosts))
    LastPublishDate = CDate(Null.SetNull(dr.Item("LastPublishDate"), LastPublishDate))
+   FirstPublishDate = CDate(Null.SetNull(dr.Item("FirstPublishDate"), FirstPublishDate))
    NrViews = Convert.ToInt32(Null.SetNull(dr.Item("NrViews"), NrViews))
    AltLocale = Convert.ToString(Null.SetNull(dr.Item("AltLocale"), AltLocale))
    AltTitle = Convert.ToString(Null.SetNull(dr.Item("AltTitle"), AltTitle))
@@ -162,6 +163,8 @@ Namespace Entities.Blogs
      Return (Me.NrPosts.ToString(OutputFormat, formatProvider))
     Case "lastpublishdate"
      Return (Me.LastPublishDate.ToString(OutputFormat, formatProvider))
+    Case "firstpublishdate"
+     Return (Me.FirstPublishDate.ToString(OutputFormat, formatProvider))
     Case "nrviews"
      Return (Me.NrViews.ToString(OutputFormat, formatProvider))
     Case "altlocale"

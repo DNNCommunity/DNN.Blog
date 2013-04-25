@@ -38,9 +38,35 @@ Namespace Templating
   Public Property TemplatePath As String
   Public Property TemplateMapPath As String
 
+  Private _templateSettings As TemplateSettings
+  Public Property TemplateSettings() As TemplateSettings
+   Get
+    If _templateSettings Is Nothing Then
+     _templateSettings = New TemplateSettings(TemplateMapPath)
+    End If
+    Return _templateSettings
+   End Get
+   Set(ByVal value As TemplateSettings)
+    _templateSettings = value
+   End Set
+  End Property
+
   Public ReadOnly Property SharedResourcesFile() As String
    Get
     Return TemplatePath & "resx/SharedResources"
+   End Get
+  End Property
+
+  Private _description As String = Nothing
+  Public ReadOnly Property Description As String
+   Get
+    If _description Is Nothing Then
+     _description = ""
+     If IO.File.Exists(TemplateMapPath & "description.txt") Then
+      _description = Common.Globals.ReadFile(TemplateMapPath & "description.txt")
+     End If
+    End If
+    Return _description
    End Get
   End Property
 #End Region
