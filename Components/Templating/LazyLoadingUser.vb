@@ -1,5 +1,7 @@
+Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Entities.Users
 Imports DotNetNuke.Services.Tokens
+Imports DotNetNuke.Modules.Blog.Entities.Posts
 
 Namespace Templating
  Public Class LazyLoadingUser
@@ -28,6 +30,8 @@ Namespace Templating
     _user = value
    End Set
   End Property
+
+  Private _postAuthor As PostAuthor = Nothing
 #End Region
 
 #Region " Constructors "
@@ -40,11 +44,29 @@ Namespace Templating
    Me.PortalId = portalId
    Me.Username = userName
   End Sub
+
+  Public Sub New(user As UserInfo)
+   Me.User = user
+   Me.PortalId = user.PortalID
+   Me.UserId = user.UserID
+  End Sub
+
+  Public Sub New(user As PostAuthor)
+   Me.User = user
+   Me.PortalId = user.PortalID
+   Me.UserId = user.UserID
+   _postAuthor = user
+  End Sub
 #End Region
 
 #Region " IPropertyAccess Implementation "
   Public Function GetProperty(strPropertyName As String, strFormat As String, formatProvider As System.Globalization.CultureInfo, AccessingUser As DotNetNuke.Entities.Users.UserInfo, AccessLevel As DotNetNuke.Services.Tokens.Scope, ByRef PropertyNotFound As Boolean) As String Implements DotNetNuke.Services.Tokens.IPropertyAccess.GetProperty
-   Dim res As String = User.GetProperty(strPropertyName, strFormat, formatProvider, AccessingUser, AccessLevel, PropertyNotFound)
+   Dim res As String = Null.NullString
+   If _postAuthor IsNot Nothing Then
+    res = _postAuthor.GetProperty(strPropertyName, strFormat, formatProvider, AccessingUser, AccessLevel, PropertyNotFound)
+   Else
+    res = User.GetProperty(strPropertyName, strFormat, formatProvider, AccessingUser, AccessLevel, PropertyNotFound)
+   End If
    If PropertyNotFound Then
     res = User.Profile.GetPropertyValue(strPropertyName)
    End If

@@ -9,6 +9,7 @@ Namespace Data
   Public MustOverride Sub ApproveComment(commentId As Int32)
   Public MustOverride Function AddCommentKarma(commentId As Int32, userId As Int32, karma As Int32) As Integer
   Public MustOverride Sub DeleteBlogPermissions(blogId As Int32)
+  Public MustOverride Function GetAuthors(moduleId As Int32, blogID As Int32) As IDataReader
   Public MustOverride Function GetBlog(blogId As Int32, userId As Int32, locale As String) As IDataReader
   Public MustOverride Function GetBlogCalendar(moduleId As Int32, blogId As Int32, locale As String) As IDataReader
   Public MustOverride Function GetBlogLocalizations(blogId As Int32) As IDataReader

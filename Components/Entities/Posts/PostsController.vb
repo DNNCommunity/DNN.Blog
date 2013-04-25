@@ -194,6 +194,10 @@ Namespace Entities.Posts
 
   End Function
 
+  Public Shared Function GetAuthors(moduleId As Integer, blogId As Integer) As List(Of PostAuthor)
+   Return DotNetNuke.Common.Utilities.CBO.FillCollection(Of PostAuthor)(DataProvider.Instance.GetAuthors(moduleId, blogId))
+  End Function
+
 #Region " Private Methods "
 #End Region
 

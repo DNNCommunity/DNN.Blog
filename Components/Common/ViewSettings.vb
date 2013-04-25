@@ -32,6 +32,9 @@ Namespace Common
    _allSettings.ReadValue("BlogModuleId", BlogModuleId)
    _allSettings.ReadValue("ShowAllLocales", ShowAllLocales)
 
+   ' Template Settings - first load defaults
+   SetTemplate(Template)
+
   End Sub
 
   Public Shared Function GetViewSettings(tabModuleId As Integer) As ViewSettings

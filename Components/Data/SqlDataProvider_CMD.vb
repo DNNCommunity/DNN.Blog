@@ -23,6 +23,10 @@ Namespace Data
    SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "DeleteBlogPermissions", blogId)
   End Sub
 
+  Public Overrides Function GetAuthors(moduleId As Int32, blogID As Int32) As IDataReader
+   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "GetAuthors", moduleId, blogID), IDataReader)
+  End Function
+
   Public Overrides Function GetBlog(blogId As Int32, userId As Int32, locale As String) As IDataReader
    Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "GetBlog", blogId, userId, locale), IDataReader)
   End Function

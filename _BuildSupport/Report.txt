@@ -901,6 +901,36 @@ WHERE
 GO
 
 
+Adding BLOGDEV_Blog_GetAuthors
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[BLOGDEV_Blog_GetAuthors]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[BLOGDEV_Blog_GetAuthors]
+GO
+
+
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+
+CREATE PROCEDURE [dbo].[BLOGDEV_Blog_GetAuthors]
+ @ModuleId INT,
+ @BlogID INT
+AS
+
+SELECT
+ *
+FROM dbo.BLOGDEV_vw_Users u
+ INNER JOIN (
+SELECT
+ ci.CreatedByUserID, COUNT(ci.ContentItemID) NrPosts, SUM(ViewCount) AS NrViews, MAX(p.PublishedOnDate) LastPublishDate, MIN(p.PublishedOnDate) FirstPublishDate 
+FROM dbo.BLOGDEV_Blog_Posts p
+ INNER JOIN dbo.BLOGDEV_ContentItems ci ON ci.ContentItemID=p.ContentItemId AND p.Published=1
+ INNER JOIN dbo.BLOGDEV_Blog_Blogs b ON p.BlogID=b.BlogID AND b.ModuleID=@ModuleId AND (@BlogID=-1 OR b.BlogID=@BlogID)
+GROUP BY ci.CreatedByUserID
+ ) ub ON ub.CreatedByUserID=u.UserID
+ORDER BY u.LastName
+
+GO
+
+
 Adding BLOGDEV_Blog_GetBlog
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[BLOGDEV_Blog_GetBlog]') AND type in (N'P', N'PC'))
 DROP PROCEDURE [dbo].[BLOGDEV_Blog_GetBlog]
@@ -2434,6 +2464,12 @@ GO
 Adding BLOGDEV_Blog_DeletePost
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[BLOGDEV_Blog_DeletePost]') AND type in (N'P', N'PC'))
 DROP PROCEDURE [dbo].[BLOGDEV_Blog_DeletePost]
+GO
+
+
+Adding BLOGDEV_Blog_GetAuthors
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[BLOGDEV_Blog_GetAuthors]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[BLOGDEV_Blog_GetAuthors]
 GO
 
 
