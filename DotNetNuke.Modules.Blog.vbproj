@@ -221,15 +221,8 @@
       <DependentUpon>BlogImport.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="blogpost.ashx.vb">
-      <DependentUpon>blogpost.ashx</DependentUpon>
-    </Compile>
-    <Compile Include="blogpostredirect.aspx.designer.vb">
-      <DependentUpon>blogpostredirect.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="blogpostredirect.aspx.vb">
-      <DependentUpon>blogpostredirect.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
+    <Compile Include="BlogPost.ashx.vb">
+      <DependentUpon>BlogPost.ashx</DependentUpon>
     </Compile>
     <Compile Include="Components\Common\BlogModuleController.vb" />
     <Compile Include="Components\Common\DynatreeItem.vb" />
@@ -435,8 +428,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="blogpost.ashx" />
-    <Content Include="blogpostredirect.aspx" />
+    <Content Include="BlogPost.ashx" />
     <Content Include="Blog.ascx" />
     <Content Include="module.css" />
     <Content Include="Controls\ViewSettings.ascx" />

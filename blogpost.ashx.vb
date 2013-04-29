@@ -85,7 +85,7 @@ Public Class BlogPost
    For Each blog As BlogInfo In BlogsController.GetBlogsByModule(ModuleId, UserInfo.UserID, Locale).Values.Where(Function(b)
                                                                                                                   Return b.CreatedByUserID = UserInfo.UserID Or b.CanAdd Or b.CanEdit
                                                                                                                  End Function).ToList
-    blogs.Add(New BlogInfoStruct() With {.blogid = blog.BlogID.ToString, .blogName = blog.Title, .url = GetRedirectUrl(TabId, blog.ModuleID)})
+    blogs.Add(New BlogInfoStruct() With {.blogid = blog.BlogID.ToString, .blogName = blog.Title, .url = DotNetNuke.Common.Globals.NavigateURL(TabId)})
    Next
   Catch mex As BlogPostException
    Throw New XmlRpcFaultException(0, GetString(mex.ResourceKey, mex.Message))
@@ -638,16 +638,6 @@ Public Class BlogPost
   Dim retValue As String = DotNetNuke.Services.Localization.Localization.GetString(key, "/DesktopModules/blog/App_LocalResources/blogpost")
   If retValue Is Nothing Then Return defaultValue
   Return retValue
- End Function
-
- Private Function GetRedirectUrl(tabId As Integer, moduleId As Integer) As String
-  'Dim appPath As String = HttpContext.Current.Request.ApplicationPath
-  'If appPath = "/" Then
-  ' appPath = String.Empty
-  'End If
-  'Dim returnUrl As String = appPath + String.Format("/DesktopModules/Blog/blogpostredirect.aspx?tab={0}&ModuleId={1}", tabId, moduleId)
-  'Return returnUrl
-  Return DotNetNuke.Common.Globals.NavigateURL(tabId)
  End Function
 #End Region
 

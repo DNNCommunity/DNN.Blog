@@ -1,1 +1,1 @@
-<%@ WebHandler Language="vb" CodeBehind="blogpost.ashx.vb" Class="DotNetNuke.Modules.Blog.BlogPost" %>
+<%@ WebHandler Language="vb" CodeBehind="BlogPost.ashx.vb" Class="DotNetNuke.Modules.Blog.BlogPost" %>
