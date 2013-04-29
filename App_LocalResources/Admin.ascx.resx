@@ -276,4 +276,10 @@
   <data name="LeavePage.Confirm" xml:space="preserve">
     <value>Do you wish to leave this page without saving changes?</value>
   </data>
+  <data name="Add.Text" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="DeleteSelection.Text" xml:space="preserve">
+    <value>Delete Selection</value>
+  </data>
 </root>

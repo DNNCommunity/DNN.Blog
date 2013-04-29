@@ -92,8 +92,8 @@
  <div id="Categories" class="dnnClear">
   <div class="dnnLeft">
    <textarea id="txtNewCategories" rows="10" cols="60"></textarea><br />
-   <button class="dnnSecondaryAction" id="btnAddCategories">Add</button>
-   <button class="dnnSecondaryAction" id="btnDeleteCategory">Delete Selected</button>
+   <button class="dnnSecondaryAction" id="btnAddCategories"><%= LocalizeString("Add")%></button>
+   <button class="dnnSecondaryAction" id="btnDeleteCategory"><%= LocalizeString("DeleteSelected")%></button>
    <asp:LinkButton runat="server" ID="cmdEditCategoriesML" resourcekey="cmdEditCategoriesML" CssClass="dnnSecondaryAction" />
   </div>
   <div id="categoryTree" class="dnnLeft">

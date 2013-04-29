@@ -130,7 +130,6 @@
 		 resizable: false,
 		 dialogClass: 'dnnFormPopup dnnClear',
 		 title: '<%=LocalizeString("BlogChoose") %>',
-		 height: 150,
 		 width: 500,
 		 open: function (e) {
 		  $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeString("cmdBlog") %>")').addClass('dnnPrimaryAction');

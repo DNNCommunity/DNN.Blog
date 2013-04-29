@@ -177,4 +177,10 @@
   <data name="Posts.Text" xml:space="preserve">
     <value>Posts</value>
   </data>
+  <data name="Blog.Text" xml:space="preserve">
+    <value>Blog</value>
+  </data>
+  <data name="Owner.Text" xml:space="preserve">
+    <value>Owner</value>
+  </data>
 </root>

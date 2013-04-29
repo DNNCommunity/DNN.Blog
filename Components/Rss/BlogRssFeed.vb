@@ -128,13 +128,6 @@ Namespace Rss
    CacheFile = Link.Substring(Link.IndexOf("?"c) + 1).Replace("&", "+").Replace("=", "-")
    CacheFile = String.Format("{0}\Blog\RssCache\{1}.resources", PortalSettings.HomeDirectoryMapPath, CacheFile)
    Link = FriendlyUrl(PortalSettings.ActiveTab, Link, GetSafePageName(Title))
-   If Language = "" Then
-    If Blog IsNot Nothing AndAlso Not String.IsNullOrEmpty(Blog.Locale) Then
-     Language = Blog.Locale
-    Else
-     Language = PortalSettings.DefaultLanguage
-    End If
-   End If
 
    ' Check Cache
    If IO.File.Exists(CacheFile) Then

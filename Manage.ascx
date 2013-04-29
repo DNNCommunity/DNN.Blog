@@ -15,8 +15,8 @@
       <td></td>
       <td></td>
       <td></td>
-      <td>Blog</td>
-      <td>Owner</td>
+      <td><%= LocalizeString("Blog")%></td>
+      <td><%= LocalizeString("Owner")%></td>
      </tr>
    </HeaderTemplate>
    <ItemTemplate>

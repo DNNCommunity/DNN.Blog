@@ -70,9 +70,9 @@ Public Class PostEdit
     Response.Redirect(NavigateURL("Access Denied"))
    End If
 
-   txtTitle.DefaultLanguage = PortalSettings.DefaultLanguage
-   txtDescription.DefaultLanguage = PortalSettings.DefaultLanguage
-   teBlogPost.DefaultLanguage = PortalSettings.DefaultLanguage
+   txtTitle.DefaultLanguage = Blog.Locale
+   txtDescription.DefaultLanguage = Blog.Locale
+   teBlogPost.DefaultLanguage = Blog.Locale
    txtTitle.ShowTranslations = Blog.FullLocalization
    txtDescription.ShowTranslations = Blog.FullLocalization
    teBlogPost.ShowTranslations = Blog.FullLocalization
