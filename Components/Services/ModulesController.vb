@@ -33,6 +33,7 @@ Imports DotNetNuke.Modules.Blog.Entities.Posts
 Imports DotNetNuke.Modules.Blog.Security
 Imports DotNetNuke.Modules.Blog.Integration
 Imports DotNetNuke.Entities.Modules
+Imports System.Linq
 Imports System.Xml
 Imports System.Net.Http.Formatting
 
@@ -85,6 +86,55 @@ Namespace Services
    newSettings.UpdateSettings(objModule.TabModuleID)
 
    Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = "success"})
+
+  End Function
+
+  <HttpGet()>
+  <AllowAnonymous()>
+  <ActionName("APIRSD")>
+  Public Function ApiRsd() As HttpResponseMessage
+
+   Dim res As New HttpResponseMessage(HttpStatusCode.OK)
+   Dim userId As Integer = -1
+   HttpContext.Current.Request.Params.ReadValue("UserId", userId)
+
+   Using out As New IO.StringWriter
+    Using output As New XmlTextWriter(out)
+
+     output.Formatting = Formatting.Indented
+     output.WriteStartDocument()
+     output.WriteStartElement("rsd")
+     output.WriteAttributeString("version", "1.0")
+     output.WriteStartElement("service")
+
+     output.WriteElementString("engineName", "DNN Blog")
+     output.WriteElementString("engineLink", "http://www.dnnblog.org")
+     output.WriteElementString("homePageLink", DotNetNuke.Common.Globals.NavigateURL(ActiveModule.TabID))
+     output.WriteStartElement("apis")
+     output.WriteStartElement("api")
+     output.WriteAttributeString("name", "MetaWeblog")
+     output.WriteAttributeString("preferred", "true")
+     output.WriteAttributeString("apiLink", DotNetNuke.Common.ResolveUrl(String.Format("~/DesktopModules/Blog/blogpost.ashx?portalid={0}&tabid={1}&moduleid={2}", PortalSettings.PortalId, ActiveModule.TabID, ActiveModule.ModuleID)))
+     output.WriteAttributeString("blogID", "0")
+     output.WriteEndElement() ' api
+     output.WriteStartElement("api")
+     output.WriteAttributeString("name", "MetaWeblog")
+     output.WriteAttributeString("preferred", "false")
+     output.WriteAttributeString("apiLink", DotNetNuke.Common.ResolveUrl(String.Format("~/DesktopModules/Blog/blogpost.ashx?portalid={0}&tabid={1}&moduleid={2}", PortalSettings.PortalId, ActiveModule.TabID, ActiveModule.ModuleID)))
+     output.WriteAttributeString("blogID", "1")
+     output.WriteEndElement() ' api
+     output.WriteEndElement() ' apis
+     output.WriteEndElement() ' service
+     output.WriteEndElement() ' rsd
+     output.Flush()
+
+    End Using
+
+    res.Content = New StringContent(out.ToString, System.Text.Encoding.UTF8, "application/xml")
+
+   End Using
+
+   Return res
 
   End Function
 

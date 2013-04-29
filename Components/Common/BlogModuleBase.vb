@@ -128,6 +128,14 @@ Namespace Common
   Public Sub AddCssFile(cssFilename As String)
    ClientResourceManager.RegisterStyleSheet(Page, ResolveUrl("~/DesktopModules/Blog/css/" & cssFilename), Web.Client.FileOrder.Css.ModuleCss)
   End Sub
+
+  Public Sub AddWLWLink()
+   Dim lnk As New HtmlGenericControl("link")
+   lnk.Attributes.Add("rel", "edituri")
+   lnk.Attributes.Add("title", "RSD")
+   lnk.Attributes.Add("href", ResolveUrl(String.Format("~/DesktopModules/Blog/API/Modules/APIRSD?TabId={0}&ModuleId={1}", TabId, ViewSettings.BlogModuleId)))
+   Me.Page.Header.Controls.Add(lnk)
+  End Sub
 #End Region
 
  End Class

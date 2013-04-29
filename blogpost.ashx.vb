@@ -85,7 +85,7 @@ Public Class BlogPost
    For Each blog As BlogInfo In BlogsController.GetBlogsByModule(ModuleId, UserInfo.UserID, Locale).Values.Where(Function(b)
                                                                                                                   Return b.CreatedByUserID = UserInfo.UserID Or b.CanAdd Or b.CanEdit
                                                                                                                  End Function).ToList
-    blogs.Add(New BlogInfoStruct() With {.blogid = blog.BlogID.ToString, .blogName = blog.Title, .url = GetRedirectUrl(TabId, blog.ModuleID)})
+    blogs.Add(New BlogInfoStruct() With {.blogid = blog.BlogID.ToString, .blogName = blog.Title, .url = DotNetNuke.Common.NavigateURL(TabId, "", "BlogId=" & blog.BlogID.ToString)})
    Next
   Catch mex As BlogPostException
    Throw New XmlRpcFaultException(0, GetString(mex.ResourceKey, mex.Message))
@@ -646,6 +646,7 @@ Public Class BlogPost
  End Function
 
  Private Function GetRedirectUrl(tabId As Integer, moduleId As Integer) As String
+  ' url to blog
   Dim appPath As String = HttpContext.Current.Request.ApplicationPath
   If appPath = "/" Then
    appPath = String.Empty
