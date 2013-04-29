@@ -50,6 +50,7 @@ Namespace Entities.Terms
   End Function
 
   Public Shared Function GetTermList(moduleId As Integer, termList As String, vocabularyId As Integer, autoCreate As Boolean, locale As String) As List(Of TermInfo)
+   If termList Is Nothing Then termList = ""
    Dim termNames As String() = termList.Replace(";", ",").Trim(","c).Split(","c)
    Return GetTermList(moduleId, termNames.ToList, vocabularyId, autoCreate, locale)
   End Function

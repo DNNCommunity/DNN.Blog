@@ -25,6 +25,7 @@ Public Class Blog
 
   DotNetNuke.Framework.jQuery.RequestRegistration()
   DotNetNuke.Framework.jQuery.RequestUIRegistration()
+  AddWLWManifestLink()
   Me.Request.Params.ReadValue("Page", _reqPage)
   DataBind()
 

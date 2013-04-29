@@ -231,21 +231,13 @@ Public Class BlogPost
   InitializeMethodCall(username, password, blogId, "")
   RequireAddPermission()
 
-  Dim styleId As String = String.Empty
   Dim styleDetectionPost As Boolean = False
   Dim moduleId As Integer = -1
 
   Try
+
    ' Check to see if this a style detection post.
    styleDetectionPost = post.title.Contains("3bfe001a-32de-4114-a6b4-4005b770f6d7")
-
-   ' Check to see if a styleId is passed through the QueryString
-   ' however, we'll only do this if we are creating a post for style detection.
-   If styleDetectionPost Then
-    If TabId > -1 Then
-     styleId = TabId.ToString
-    End If
-   End If
 
    ' Add the new Post
    Dim newBlogPost As PostInfo = ToBlogPost(post)
@@ -253,6 +245,9 @@ Public Class BlogPost
     newBlogPost.Published = False
    Else
     newBlogPost.Published = publish
+   End If
+   If styleDetectionPost Then
+    newBlogPost.Published = True
    End If
    PostsController.AddPost(newBlogPost, UserInfo.UserID)
 
@@ -479,7 +474,7 @@ Public Class BlogPost
    newPost.ContentItemId = post.postid.ToInt
   End If
   newPost.BlogID = BlogId
-  Post.Title = post.title
+  newPost.Title = post.title
   If post.dateCreated.Year > 1 Then
    newPost.PublishedOnDate = TimeZoneInfo.ConvertTimeToUtc(post.dateCreated, UserTimeZone)
   End If
@@ -646,12 +641,13 @@ Public Class BlogPost
  End Function
 
  Private Function GetRedirectUrl(tabId As Integer, moduleId As Integer) As String
-  Dim appPath As String = HttpContext.Current.Request.ApplicationPath
-  If appPath = "/" Then
-   appPath = String.Empty
-  End If
-  Dim returnUrl As String = appPath + String.Format("/DesktopModules/Blog/blogpostredirect.aspx?tab={0}&ModuleId={1}", tabId, moduleId)
-  Return returnUrl
+  'Dim appPath As String = HttpContext.Current.Request.ApplicationPath
+  'If appPath = "/" Then
+  ' appPath = String.Empty
+  'End If
+  'Dim returnUrl As String = appPath + String.Format("/DesktopModules/Blog/blogpostredirect.aspx?tab={0}&ModuleId={1}", tabId, moduleId)
+  'Return returnUrl
+  Return DotNetNuke.Common.Globals.NavigateURL(tabId)
  End Function
 #End Region
 

@@ -75,6 +75,31 @@ Namespace Common
    If PostMapPath <> "" AndAlso Not IO.Directory.Exists(PostMapPath) Then IO.Directory.CreateDirectory(PostMapPath)
    If TermId > -1 Then Term = Entities.Terms.TermsController.GetTerm(TermId, Settings.ModuleId, Locale)
    If AuthorId > -1 Then Author = DotNetNuke.Entities.Users.UserController.GetUserById(PortalId, AuthorId)
+   WLWRequest = CBool(Request.UserAgent.IndexOf("Windows Live Writer") > -1)
+
+   ' security
+   Dim isStylePostRequest As Boolean = False
+   If Post IsNot Nothing AndAlso Not Post.Published AndAlso Not Security.IsEditor Then
+    If Post.Title.Contains("3bfe001a-32de-4114-a6b4-4005b770f6d7") And WLWRequest Then
+     isStylePostRequest = True
+    Else
+     Post = Nothing
+     ContentItemId = -1
+    End If
+   End If
+   If Blog IsNot Nothing AndAlso Not Blog.Published AndAlso Not Security.IsOwner AndAlso Not isStylePostRequest Then
+    Blog = Nothing
+    BlogId = -1
+   End If
+
+   ' wlw style detection post redirect?
+   If Not String.IsNullOrEmpty(Settings.StyleDetectionUrl) And WLWRequest Then
+    ' we have a style detection post in storage and it's being requested
+    Dim url As String = Settings.StyleDetectionUrl
+    Settings.StyleDetectionUrl = ""
+    Settings.UpdateSettings()
+    Response.Redirect(url, False)
+   End If
 
    ' set urls for use in module
    ModuleUrls = New ModuleUrls(TabId, BlogId, ContentItemId, TermId, AuthorId)
@@ -119,6 +144,14 @@ Namespace Common
    scriptBlock = "<script type=""text/javascript"">" & vbCrLf & "//<![CDATA[" & vbCrLf & scriptBlock & vbCrLf & "//]]>" & vbCrLf & "</script>"
    Page.ClientScript.RegisterClientScriptBlock(Me.GetType, "BlogServiceScript", scriptBlock)
 
+  End Sub
+
+  Public Sub AddWLWManifestLink()
+   Dim link As New HtmlGenericControl("link")
+   link.Attributes.Add("rel", "wlwmanifest")
+   link.Attributes.Add("type", "application/wlwmanifest+xml")
+   link.Attributes.Add("href", ResolveUrl(ManifestFilePath(TabId, ModuleId)))
+   Me.Page.Header.Controls.Add(link)
   End Sub
 
   Public Sub AddJavascriptFile(jsFilename As String, priority As Integer)

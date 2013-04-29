@@ -61,6 +61,7 @@ Namespace Common
     Me.ShowLocale = contextBase.ShowLocale
     Me.Locale = contextBase.Locale
     Me.Referrer = contextBase.Referrer
+    Me.WLWRequest = contextBase.WLWRequest
    End With
   End Sub
 #End Region
@@ -87,6 +88,7 @@ Namespace Common
   Public Property ShowLocale As String = ""
   Public Property Locale As String = ""
   Public Property Referrer As String = ""
+  Public Property WLWRequest As Boolean = False
 
   Private _uiTimezone As TimeZoneInfo = Nothing
   Public ReadOnly Property UiTimeZone As TimeZoneInfo

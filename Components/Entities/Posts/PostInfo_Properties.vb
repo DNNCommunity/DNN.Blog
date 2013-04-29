@@ -83,7 +83,7 @@ Namespace Entities.Posts
   Public Property TitleLocalizations() As LocalizedText
    Get
     If _titleLocalizations Is Nothing Then
-     If BlogID = -1 Then
+     If ContentItemId = -1 Then
       _titleLocalizations = New LocalizedText
      Else
       _titleLocalizations = New LocalizedText(Data.DataProvider.Instance().GetPostLocalizations(ContentItemId), "Title")
@@ -106,7 +106,7 @@ Namespace Entities.Posts
   Public Property SummaryLocalizations() As LocalizedText
    Get
     If _summaryLocalizations Is Nothing Then
-     If BlogID = -1 Then
+     If ContentItemId = -1 Then
       _summaryLocalizations = New LocalizedText
      Else
       _summaryLocalizations = New LocalizedText(Data.DataProvider.Instance().GetPostLocalizations(ContentItemId), "Summary")
