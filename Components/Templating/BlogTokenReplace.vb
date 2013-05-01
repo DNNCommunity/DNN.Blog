@@ -60,7 +60,7 @@ Namespace Templating
    Me.PropertySource("query") = blogModule.BlogContext
    Me.PropertySource("security") = blogModule.BlogContext.Security
    Me.PropertySource("urls") = blogModule.BlogContext.ModuleUrls
-   Me.PropertySource("settings") = blogModule.BlogContext.Settings
+   Me.PropertySource("settings") = blogModule.Settings
    Me.PropertySource("viewsettings") = blogModule.ViewSettings
    If blogModule.BlogContext.Blog IsNot Nothing Then
     Me.PropertySource("blog") = blogModule.BlogContext.Blog
@@ -88,7 +88,7 @@ Namespace Templating
    Me.PropertySource("query") = blogModule.BlogContext
    Me.PropertySource("security") = blogModule.BlogContext.Security
    Me.PropertySource("urls") = blogModule.BlogContext.ModuleUrls
-   Me.PropertySource("settings") = blogModule.BlogContext.Settings
+   Me.PropertySource("settings") = blogModule.Settings
    Me.PropertySource("viewsettings") = blogModule.ViewSettings
    Me.PropertySource("blog") = blog
    Me.PropertySource("owner") = New LazyLoadingUser(PortalSettings.PortalId, blog.Username)
@@ -113,7 +113,7 @@ Namespace Templating
    Me.PropertySource("query") = blogModule.BlogContext
    Me.PropertySource("security") = blogModule.BlogContext.Security
    Me.PropertySource("urls") = blogModule.BlogContext.ModuleUrls
-   Me.PropertySource("settings") = blogModule.BlogContext.Settings
+   Me.PropertySource("settings") = blogModule.Settings
    Me.PropertySource("viewsettings") = blogModule.ViewSettings
    If blogModule.BlogContext.Blog IsNot Nothing Then
     Me.PropertySource("blog") = blogModule.BlogContext.Blog
@@ -140,7 +140,7 @@ Namespace Templating
    Me.PropertySource("query") = blogModule.BlogContext
    Me.PropertySource("security") = blogModule.BlogContext.Security
    Me.PropertySource("urls") = blogModule.BlogContext.ModuleUrls
-   Me.PropertySource("settings") = blogModule.BlogContext.Settings
+   Me.PropertySource("settings") = blogModule.Settings
    Me.PropertySource("viewsettings") = blogModule.ViewSettings
    If blogModule.BlogContext.Blog IsNot Nothing Then
     Me.PropertySource("blog") = blogModule.BlogContext.Blog
@@ -164,7 +164,7 @@ Namespace Templating
    Me.PropertySource("query") = blogModule.BlogContext
    Me.PropertySource("security") = blogModule.BlogContext.Security
    Me.PropertySource("urls") = blogModule.BlogContext.ModuleUrls
-   Me.PropertySource("settings") = blogModule.BlogContext.Settings
+   Me.PropertySource("settings") = blogModule.Settings
    Me.PropertySource("viewsettings") = blogModule.ViewSettings
    Me.PropertySource("post") = Post
    Me.PropertySource("author") = New LazyLoadingUser(PortalSettings.PortalId, Post.Username)
@@ -185,7 +185,7 @@ Namespace Templating
    Me.PropertySource("query") = blogModule.BlogContext
    Me.PropertySource("security") = blogModule.BlogContext.Security
    Me.PropertySource("urls") = blogModule.BlogContext.ModuleUrls
-   Me.PropertySource("settings") = blogModule.BlogContext.Settings
+   Me.PropertySource("settings") = blogModule.Settings
    Me.PropertySource("viewsettings") = blogModule.ViewSettings
    If Post IsNot Nothing Then
     Me.PropertySource("post") = Post
@@ -212,7 +212,7 @@ Namespace Templating
    Me.PropertySource("query") = blogModule.BlogContext
    Me.PropertySource("security") = blogModule.BlogContext.Security
    Me.PropertySource("urls") = blogModule.BlogContext.ModuleUrls
-   Me.PropertySource("settings") = blogModule.BlogContext.Settings
+   Me.PropertySource("settings") = blogModule.Settings
    Me.PropertySource("viewsettings") = blogModule.ViewSettings
    If Post IsNot Nothing Then
     Me.PropertySource("post") = Post

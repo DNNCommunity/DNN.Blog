@@ -41,7 +41,7 @@ Public Class BlogEdit
    txtDescription.InitialBind()
 
    If BlogContext.IsMultiLingualSite Then
-    If BlogContext.Settings.AllowAllLocales Then
+    If Settings.AllowAllLocales Then
      ddLocale.DataSource = System.Globalization.CultureInfo.GetCultures(Globalization.CultureTypes.SpecificCultures)
      ddLocale.DataValueField = "Name"
     Else
@@ -70,7 +70,7 @@ Public Class BlogEdit
    txtCopyright.Text = BlogContext.Blog.Copyright
    cmdDelete.Visible = CBool(BlogContext.BlogId <> -1)
    If Not String.IsNullOrEmpty(BlogContext.Blog.Image) Then
-    imgBlogImage.ImageUrl = ResolveUrl(glbImageHandlerPath) & String.Format("?TabId={0}&ModuleId={1}&Blog={2}&w=100&h=100&c=1&key={3}", TabId, BlogContext.Settings.ModuleId, BlogContext.BlogId, BlogContext.Blog.Image)
+    imgBlogImage.ImageUrl = ResolveUrl(glbImageHandlerPath) & String.Format("?TabId={0}&ModuleId={1}&Blog={2}&w=100&h=100&c=1&key={3}", TabId, Settings.ModuleId, BlogContext.BlogId, BlogContext.Blog.Image)
     imgBlogImage.Visible = True
     cmdImageRemove.Visible = True
    Else
@@ -107,7 +107,7 @@ Public Class BlogEdit
     If BlogContext.Blog Is Nothing Then
      BlogContext.Blog = New BlogInfo
      With BlogContext.Blog
-      .ModuleID = BlogContext.Settings.ModuleId
+      .ModuleID = Settings.ModuleId
       .OwnerUserId = Me.UserId
      End With
     End If

@@ -35,11 +35,11 @@ Public Class Manage
   MyBase.DataBind()
 
   If BlogContext.security.IsEditor Then
-   dlBlogs.DataSource = BlogsController.GetBlogsByModule(BlogContext.Settings.ModuleId, UserId, BlogContext.Locale).Values
+   dlBlogs.DataSource = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, BlogContext.Locale).Values
   Else
-   dlBlogs.DataSource = BlogsController.GetBlogsByModule(BlogContext.Settings.ModuleId, UserId, BlogContext.Locale).Values.Where(Function(b)
-                                                                                                                                  Return b.OwnerUserId = UserId
-                                                                                                                                 End Function)
+   dlBlogs.DataSource = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, BlogContext.Locale).Values.Where(Function(b)
+                                                                                                                      Return b.OwnerUserId = UserId
+                                                                                                                     End Function)
   End If
   dlBlogs.DataBind()
   If dlBlogs.Items.Count = 0 Then dlBlogs.Visible = False
@@ -48,7 +48,7 @@ Public Class Manage
 
  Public Sub GetPosts()
 
-  grdPosts.DataSource = PostsController.GetPosts(BlogContext.Settings.ModuleId, -1, BlogContext.Locale, -1, "", Now, -1, grdPosts.CurrentPageIndex, grdPosts.PageSize, "PUBLISHEDONDATE DESC", _totalPosts, UserId, BlogContext.Security.UserIsAdmin).Values
+  grdPosts.DataSource = PostsController.GetPosts(Settings.ModuleId, -1, BlogContext.Locale, -1, "", Now, -1, grdPosts.CurrentPageIndex, grdPosts.PageSize, "PUBLISHEDONDATE DESC", _totalPosts, UserId, BlogContext.Security.UserIsAdmin).Values
   grdPosts.VirtualItemCount = _totalPosts
 
  End Sub

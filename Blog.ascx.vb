@@ -18,6 +18,8 @@ Public Class Blog
  Private _totalRecords As Integer = 0
  Private _reqPage As Integer = 1
  Private _usePaging As Boolean = False
+ Private fulllocs As List(Of String) = {"pt-br", "zh-cn", "zh-tw"}.ToList
+ Private twoletterlocs As List(Of String) = {"ar", "bg", "bs", "ca", "cy", "cz", "da", "de", "el", "en", "es", "fa", "fi", "fr", "he", "hr", "hu", "hy", "id", "it", "ja", "ko", "mk", "nl", "no", "pl", "pt", "ro", "ru", "sk", "sv", "th", "tr", "uk", "uz"}.ToList
 #End Region
 
 #Region " Event Handlers "
@@ -30,9 +32,32 @@ Public Class Blog
 
  Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
-  DotNetNuke.Framework.jQuery.RequestRegistration()
-  DotNetNuke.Framework.jQuery.RequestUIRegistration()
+  ' wlw style detection post redirect?
+  If Not String.IsNullOrEmpty(Settings.StyleDetectionUrl) And BlogContext.WLWRequest Then
+   ' we have a style detection post in storage and it's being requested
+   Dim url As String = Settings.StyleDetectionUrl
+   Settings.StyleDetectionUrl = ""
+   Settings.UpdateSettings()
+   Response.Redirect(url, False)
+  End If
+
+  If ViewSettings.BlogModuleId = -1 Then
+   AddBlogService()
+   AddJavascriptFile("jquery.timeago.js", 60)
+   If fulllocs.Contains(BlogContext.Locale.ToLower) Then
+    AddJavascriptFile("time-ago-locales/jquery.timeago." & BlogContext.Locale.ToLower & ".js", 60)
+   ElseIf twoletterlocs.Contains(Threading.Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.ToLower) Then
+    AddJavascriptFile("time-ago-locales/jquery.timeago." & Threading.Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.ToLower & ".js", 61)
+   End If
+   If Not Me.IsPostBack And BlogContext.ContentItemId > -1 Then
+    Dim scriptBlock As String = "(function ($, Sys) {$(document).ready(function () {blogService.viewPost(" & BlogContext.BlogId.ToString & ", " & BlogContext.ContentItemId.ToString & ")});} (jQuery, window.Sys));"
+    Page.ClientScript.RegisterClientScriptBlock(Me.GetType, "PostViewScript", scriptBlock, True)
+   End If
+  End If
+
   AddWLWManifestLink()
+
+
   Me.Request.Params.ReadValue("Page", _reqPage)
   DataBind()
 
@@ -46,9 +71,9 @@ Public Class Blog
 
    Case "blogs"
 
-    Dim blogList As IEnumerable(Of BlogInfo) = BlogsController.GetBlogsByModule(BlogContext.Settings.ModuleId, UserId, BlogContext.Locale).Values.Where(Function(b)
-                                                                                                                                                         Return b.Published = True
-                                                                                                                                                        End Function).OrderBy(Function(b) b.Title)
+    Dim blogList As IEnumerable(Of BlogInfo) = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, BlogContext.Locale).Values.Where(Function(b)
+                                                                                                                                             Return b.Published = True
+                                                                                                                                            End Function).OrderBy(Function(b) b.Title)
     Parameters.ReadValue("pagesize", _pageSize)
     If _pageSize > 0 Then
      _usePaging = True
@@ -131,7 +156,7 @@ Public Class Blog
       Replacers.Add(New BlogTokenReplace(Me, BlogContext.Post, t))
      Next
     Else
-     For Each t As TermInfo In TermsController.GetTermsByModule(BlogContext.Settings.ModuleId, BlogContext.Locale)
+     For Each t As TermInfo In TermsController.GetTermsByModule(Settings.ModuleId, BlogContext.Locale)
       Replacers.Add(New BlogTokenReplace(Me, Nothing, t))
      Next
     End If
@@ -139,7 +164,7 @@ Public Class Blog
 
    Case "allterms"
 
-    For Each t As TermInfo In TermsController.GetTermsByModule(BlogContext.Settings.ModuleId, BlogContext.Locale)
+    For Each t As TermInfo In TermsController.GetTermsByModule(Settings.ModuleId, BlogContext.Locale)
      Replacers.Add(New BlogTokenReplace(Me, Nothing, t))
     Next
     _usePaging = False
@@ -155,7 +180,7 @@ Public Class Blog
       Replacers.Add(New BlogTokenReplace(Me, BlogContext.Post, t))
      Next
     Else
-     For Each t As TermInfo In TermsController.GetTermsByModule(BlogContext.Settings.ModuleId, BlogContext.Locale).Where(Function(x) x.VocabularyId = 1).ToList
+     For Each t As TermInfo In TermsController.GetTermsByModule(Settings.ModuleId, BlogContext.Locale).Where(Function(x) x.VocabularyId = 1).ToList
       Replacers.Add(New BlogTokenReplace(Me, Nothing, t))
      Next
     End If
@@ -163,7 +188,7 @@ Public Class Blog
 
    Case "allkeywords", "alltags"
 
-    For Each t As TermInfo In TermsController.GetTermsByModule(BlogContext.Settings.ModuleId, BlogContext.Locale).Where(Function(x) x.VocabularyId = 1).ToList
+    For Each t As TermInfo In TermsController.GetTermsByModule(Settings.ModuleId, BlogContext.Locale).Where(Function(x) x.VocabularyId = 1).ToList
      Replacers.Add(New BlogTokenReplace(Me, Nothing, t))
     Next
     _usePaging = False
@@ -179,7 +204,7 @@ Public Class Blog
       Replacers.Add(New BlogTokenReplace(Me, BlogContext.Post, t))
      Next
     Else
-     For Each t As TermInfo In TermsController.GetTermsByModule(BlogContext.Settings.ModuleId, BlogContext.Locale).Where(Function(x) x.VocabularyId <> 1).ToList
+     For Each t As TermInfo In TermsController.GetTermsByModule(Settings.ModuleId, BlogContext.Locale).Where(Function(x) x.VocabularyId <> 1).ToList
       Replacers.Add(New BlogTokenReplace(Me, Nothing, t))
      Next
     End If
@@ -187,7 +212,7 @@ Public Class Blog
 
    Case "allcategories"
 
-    For Each t As TermInfo In TermsController.GetTermsByModule(BlogContext.Settings.ModuleId, BlogContext.Locale).Where(Function(x) x.VocabularyId <> 1).ToList
+    For Each t As TermInfo In TermsController.GetTermsByModule(Settings.ModuleId, BlogContext.Locale).Where(Function(x) x.VocabularyId <> 1).ToList
      Replacers.Add(New BlogTokenReplace(Me, Nothing, t))
     Next
     _usePaging = False
@@ -211,7 +236,7 @@ Public Class Blog
 
    Case "calendar", "blogcalendar"
 
-    For Each bci As BlogCalendarInfo In BlogsController.GetBlogCalendar(BlogContext.Settings.ModuleId, BlogContext.BlogId, BlogContext.ShowLocale)
+    For Each bci As BlogCalendarInfo In BlogsController.GetBlogCalendar(Settings.ModuleId, BlogContext.BlogId, BlogContext.ShowLocale)
      Replacers.Add(New BlogTokenReplace(Me, bci))
     Next
 
@@ -221,23 +246,23 @@ Public Class Blog
     Parameters.ReadValue("sort", sort)
     Select Case sort.ToLower
      Case "username"
-      For Each u As PostAuthor In PostsController.GetAuthors(BlogContext.Settings.ModuleId, BlogContext.BlogId).OrderBy(Function(t) t.Username)
+      For Each u As PostAuthor In PostsController.GetAuthors(Settings.ModuleId, BlogContext.BlogId).OrderBy(Function(t) t.Username)
        Replacers.Add(New BlogTokenReplace(Me, New LazyLoadingUser(u)))
       Next
      Case "email"
-      For Each u As PostAuthor In PostsController.GetAuthors(BlogContext.Settings.ModuleId, BlogContext.BlogId).OrderBy(Function(t) t.Email)
+      For Each u As PostAuthor In PostsController.GetAuthors(Settings.ModuleId, BlogContext.BlogId).OrderBy(Function(t) t.Email)
        Replacers.Add(New BlogTokenReplace(Me, New LazyLoadingUser(u)))
       Next
      Case "firstname"
-      For Each u As PostAuthor In PostsController.GetAuthors(BlogContext.Settings.ModuleId, BlogContext.BlogId).OrderBy(Function(t) t.FirstName)
+      For Each u As PostAuthor In PostsController.GetAuthors(Settings.ModuleId, BlogContext.BlogId).OrderBy(Function(t) t.FirstName)
        Replacers.Add(New BlogTokenReplace(Me, New LazyLoadingUser(u)))
       Next
      Case "displayname"
-      For Each u As PostAuthor In PostsController.GetAuthors(BlogContext.Settings.ModuleId, BlogContext.BlogId).OrderBy(Function(t) t.DisplayName)
+      For Each u As PostAuthor In PostsController.GetAuthors(Settings.ModuleId, BlogContext.BlogId).OrderBy(Function(t) t.DisplayName)
        Replacers.Add(New BlogTokenReplace(Me, New LazyLoadingUser(u)))
       Next
      Case Else ' last name
-      For Each u As PostAuthor In PostsController.GetAuthors(BlogContext.Settings.ModuleId, BlogContext.BlogId)
+      For Each u As PostAuthor In PostsController.GetAuthors(Settings.ModuleId, BlogContext.BlogId)
        Replacers.Add(New BlogTokenReplace(Me, New LazyLoadingUser(u)))
       Next
     End Select
@@ -257,14 +282,14 @@ Public Class Blog
     Dim publishValue As Integer = 1
     If BlogContext.SearchUnpublished Then publishValue = -1
     If BlogContext.Term Is Nothing Then
-     PostList = PostsController.SearchPosts(BlogContext.Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, BlogContext.SearchString, BlogContext.SearchTitle, BlogContext.SearchContents, publishValue, BlogContext.ShowLocale, BlogContext.EndDate, -1, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
+     PostList = PostsController.SearchPosts(Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, BlogContext.SearchString, BlogContext.SearchTitle, BlogContext.SearchContents, publishValue, BlogContext.ShowLocale, BlogContext.EndDate, -1, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
     Else
-     PostList = PostsController.SearchPostsByTerm(BlogContext.Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, BlogContext.TermId, BlogContext.SearchString, BlogContext.SearchTitle, BlogContext.SearchContents, publishValue, BlogContext.ShowLocale, BlogContext.EndDate, -1, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
+     PostList = PostsController.SearchPostsByTerm(Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, BlogContext.TermId, BlogContext.SearchString, BlogContext.SearchTitle, BlogContext.SearchContents, publishValue, BlogContext.ShowLocale, BlogContext.EndDate, -1, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
     End If
    ElseIf BlogContext.Term Is Nothing Then
-    PostList = PostsController.GetPosts(BlogContext.Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, -1, BlogContext.ShowLocale, BlogContext.EndDate, BlogContext.AuthorId, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
+    PostList = PostsController.GetPosts(Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, -1, BlogContext.ShowLocale, BlogContext.EndDate, BlogContext.AuthorId, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
    Else
-    PostList = PostsController.GetPostsByTerm(BlogContext.Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, BlogContext.TermId, -1, BlogContext.ShowLocale, BlogContext.EndDate, BlogContext.AuthorId, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
+    PostList = PostsController.GetPostsByTerm(Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, BlogContext.TermId, -1, BlogContext.ShowLocale, BlogContext.EndDate, BlogContext.AuthorId, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
    End If
    _usePaging = True
   End If

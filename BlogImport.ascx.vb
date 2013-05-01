@@ -15,7 +15,7 @@ Public Class BlogImport
    Throw New Exception("You do not have access to this resource. Please check your login status.")
   End If
 
-  If BlogContext.Settings.VocabularyId > -1 AndAlso (BlogContext.Security.IsEditor) Then CanImportCategories = True
+  If Settings.VocabularyId > -1 AndAlso (BlogContext.Security.IsEditor) Then CanImportCategories = True
 
   If Not Me.IsPostBack Then
    lblTargetName.Text = BlogContext.Blog.Title

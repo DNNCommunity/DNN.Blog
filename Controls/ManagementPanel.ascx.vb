@@ -34,7 +34,7 @@ Namespace Controls
        ddTemplate.Items.Add(New ListItem(d.Name & " [System]", "[G]" & d.Name))
       End If
      Next
-     For Each d As IO.DirectoryInfo In (New IO.DirectoryInfo(BlogContext.Settings.PortalTemplatesMapPath)).GetDirectories
+     For Each d As IO.DirectoryInfo In (New IO.DirectoryInfo(Settings.PortalTemplatesMapPath)).GetDirectories
       ddTemplate.Items.Add(New ListItem(d.Name & " [Local]", "[P]" & d.Name))
      Next
      For intItem As Integer = 0 To PortalSettings.ActiveTab.Panes.Count - 1
@@ -60,11 +60,11 @@ Namespace Controls
     BlogSelectListHtml = "<select id=""ddBlog"">"
     Dim blogList As IEnumerable(Of BlogInfo) = Nothing
     If BlogContext.Security.IsEditor Then
-     blogList = BlogsController.GetBlogsByModule(BlogContext.Settings.ModuleId, UserId, BlogContext.Locale).Values
+     blogList = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, BlogContext.Locale).Values
     Else
-     blogList = BlogsController.GetBlogsByModule(BlogContext.Settings.ModuleId, UserId, BlogContext.Locale).Values.Where(Function(b)
-                                                                                                                          Return b.OwnerUserId = UserId Or b.CanAdd Or (b.CanEdit And BlogContext.ContentItemId > -1)
-                                                                                                                         End Function)
+     blogList = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, BlogContext.Locale).Values.Where(Function(b)
+                                                                                                              Return b.OwnerUserId = UserId Or b.CanAdd Or (b.CanEdit And BlogContext.ContentItemId > -1)
+                                                                                                             End Function)
     End If
     NrBlogs = blogList.Count
     If NrBlogs = 0 Then

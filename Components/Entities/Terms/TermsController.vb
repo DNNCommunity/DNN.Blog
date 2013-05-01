@@ -38,8 +38,17 @@ Namespace Entities.Terms
   End Function
 
   Public Shared Function GetTermsByVocabulary(moduleId As Int32, vocabularyId As Int32, locale As String) As Dictionary(Of String, TermInfo)
-   Dim res As New Dictionary(Of String, TermInfo)(StringComparer.CurrentCultureIgnoreCase)
-   DotNetNuke.Common.Utilities.CBO.FillDictionary(Of String, TermInfo)("Name", Data.DataProvider.Instance.GetTermsByVocabulary(moduleId, vocabularyId, locale), res)
+   Return GetTermsByVocabulary(moduleId, vocabularyId, locale, False)
+  End Function
+
+  Public Shared Function GetTermsByVocabulary(moduleId As Int32, vocabularyId As Int32, locale As String, clearCache As Boolean) As Dictionary(Of String, TermInfo)
+   Dim CacheKey As String = "BlogCategories" & moduleId.ToString
+   Dim res As Dictionary(Of String, TermInfo) = CType(DotNetNuke.Common.Utilities.DataCache.GetCache(CacheKey), Dictionary(Of String, TermInfo))
+   If res Is Nothing Or clearCache Then
+    res = New Dictionary(Of String, TermInfo)(StringComparer.CurrentCultureIgnoreCase)
+    DotNetNuke.Common.Utilities.CBO.FillDictionary(Of String, TermInfo)("Name", Data.DataProvider.Instance.GetTermsByVocabulary(moduleId, vocabularyId, locale), res)
+    DotNetNuke.Common.Utilities.DataCache.SetCache(CacheKey, res)
+   End If
    Return res
   End Function
 

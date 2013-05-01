@@ -25,6 +25,7 @@ Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.Security
 Imports DotNetNuke.Services.Tokens
 Imports System.Linq
+Imports DotNetNuke.Modules.Blog.Entities.Terms
 
 Namespace Common
 
@@ -32,8 +33,6 @@ Namespace Common
   Inherits PortalModuleBase
 
 #Region " Private Members "
-  Private fulllocs As List(Of String) = {"pt-br", "zh-cn", "zh-tw"}.ToList
-  Private twoletterlocs As List(Of String) = {"ar", "bg", "bs", "ca", "cy", "cz", "da", "de", "el", "en", "es", "fa", "fi", "fr", "he", "hr", "hu", "hy", "id", "it", "ja", "ko", "mk", "nl", "no", "pl", "pt", "ro", "ru", "sk", "sv", "th", "tr", "uk", "uz"}.ToList
 #End Region
 
 #Region " Properties "
@@ -50,6 +49,36 @@ Namespace Common
    End Set
   End Property
 
+  Private _settings As ModuleSettings
+  Public Shadows Property Settings() As ModuleSettings
+   Get
+    If _settings Is Nothing Then
+     If ViewSettings.BlogModuleId = -1 Then
+      _settings = ModuleSettings.GetModuleSettings(ModuleConfiguration.ModuleID)
+     Else
+      _settings = ModuleSettings.GetModuleSettings(ViewSettings.BlogModuleId)
+     End If
+    End If
+    Return _settings
+   End Get
+   Set(ByVal value As ModuleSettings)
+    _settings = value
+   End Set
+  End Property
+
+  Private _categories As Dictionary(Of String, TermInfo)
+  Public Property Categories() As Dictionary(Of String, TermInfo)
+   Get
+    If _categories Is Nothing Then
+     _categories = TermsController.GetTermsByVocabulary(ModuleId, Settings.VocabularyId, BlogContext.Locale)
+    End If
+    Return _categories
+   End Get
+   Set(ByVal value As Dictionary(Of String, TermInfo))
+    _categories = value
+   End Set
+  End Property
+
   Private _viewSettings As ViewSettings
   Public Property ViewSettings() As ViewSettings
    Get
@@ -60,11 +89,18 @@ Namespace Common
     _viewSettings = value
    End Set
   End Property
+
+  Public Shadows ReadOnly Property Page As DotNetNuke.Framework.CDefault
+   Get
+    Return CType(MyBase.Page, DotNetNuke.Framework.CDefault)
+   End Get
+  End Property
 #End Region
 
 #Region " Event Handlers "
   Private Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
 
+   jQuery.RequestRegistration()
    jQuery.RequestUIRegistration()
    Dim script As New StringBuilder
    script.AppendLine("<script type=""text/javascript"">")
@@ -73,29 +109,6 @@ Namespace Common
    script.AppendLine("//]]>")
    script.AppendLine("</script>")
    UI.Utilities.ClientAPI.RegisterClientScriptBlock(Page, "blogAppPath", script.ToString)
-
-   ' wlw style detection post redirect?
-   If Not String.IsNullOrEmpty(BlogContext.Settings.StyleDetectionUrl) And BlogContext.WLWRequest Then
-    ' we have a style detection post in storage and it's being requested
-    Dim url As String = BlogContext.Settings.StyleDetectionUrl
-    BlogContext.Settings.StyleDetectionUrl = ""
-    BlogContext.Settings.UpdateSettings()
-    Response.Redirect(url, False)
-   End If
-
-   If ViewSettings.BlogModuleId = -1 Then
-    AddBlogService()
-    AddJavascriptFile("jquery.timeago.js", 60)
-    If fulllocs.Contains(BlogContext.Locale.ToLower) Then
-     AddJavascriptFile("time-ago-locales/jquery.timeago." & BlogContext.Locale.ToLower & ".js", 60)
-    ElseIf twoletterlocs.Contains(Threading.Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.ToLower) Then
-     AddJavascriptFile("time-ago-locales/jquery.timeago." & Threading.Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.ToLower & ".js", 61)
-    End If
-    If Not Me.IsPostBack And BlogContext.ContentItemId > -1 Then
-     Dim scriptBlock As String = "(function ($, Sys) {$(document).ready(function () {blogService.viewPost(" & BlogContext.BlogId.ToString & ", " & BlogContext.ContentItemId.ToString & ")});} (jQuery, window.Sys));"
-     Page.ClientScript.RegisterClientScriptBlock(Me.GetType, "PostViewScript", scriptBlock, True)
-    End If
-   End If
 
   End Sub
 #End Region

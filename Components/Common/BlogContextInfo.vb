@@ -18,11 +18,6 @@ Namespace Common
 #Region " Public Methods "
   Public Sub New(context As HttpContext, blogModule As BlogModuleBase)
 
-   If blogModule.ViewSettings.BlogModuleId = -1 Then
-    Settings = ModuleSettings.GetModuleSettings(blogModule.ModuleConfiguration.ModuleID)
-   Else
-    Settings = ModuleSettings.GetModuleSettings(blogModule.ViewSettings.BlogModuleId)
-   End If
    Security = New ContextSecurity(blogModule.ModuleId, blogModule.TabId, Blog, blogModule.UserInfo)
    Locale = Threading.Thread.CurrentThread.CurrentCulture.Name
    If context.Request.UrlReferrer IsNot Nothing Then Referrer = context.Request.UrlReferrer.PathAndQuery
@@ -37,7 +32,7 @@ Namespace Common
    context.Request.Params.ReadValue("t", SearchTitle)
    context.Request.Params.ReadValue("c", SearchContents)
    context.Request.Params.ReadValue("u", SearchUnpublished)
-   If ContentItemId > -1 Then Post = Entities.Posts.PostsController.GetPost(ContentItemId, Settings.ModuleId, Locale)
+   If ContentItemId > -1 Then Post = Entities.Posts.PostsController.GetPost(ContentItemId, blogModule.ModuleId, Locale)
    If BlogId > -1 And Post IsNot Nothing AndAlso Post.BlogID <> BlogId Then Post = Nothing ' double check in case someone is hacking to retrieve an Post from another blog
    If BlogId = -1 And Post IsNot Nothing Then BlogId = Post.BlogID
    If BlogId > -1 Then Blog = Entities.Blogs.BlogsController.GetBlog(BlogId, blogModule.UserInfo.UserID, Locale)
@@ -45,7 +40,7 @@ Namespace Common
    If BlogMapPath <> "" AndAlso Not IO.Directory.Exists(BlogMapPath) Then IO.Directory.CreateDirectory(BlogMapPath)
    If ContentItemId > -1 Then PostMapPath = GetPostDirectoryMapPath(BlogId, ContentItemId)
    If PostMapPath <> "" AndAlso Not IO.Directory.Exists(PostMapPath) Then IO.Directory.CreateDirectory(PostMapPath)
-   If TermId > -1 Then Term = Entities.Terms.TermsController.GetTerm(TermId, Settings.ModuleId, Locale)
+   If TermId > -1 Then Term = Entities.Terms.TermsController.GetTerm(TermId, blogModule.ModuleId, Locale)
    If AuthorId > -1 Then Author = DotNetNuke.Entities.Users.UserController.GetUserById(blogModule.PortalId, AuthorId)
    WLWRequest = CBool(context.Request.UserAgent.IndexOf("Windows Live Writer") > -1)
 
@@ -78,8 +73,6 @@ Namespace Common
    If blogModule.UserInfo.Profile.PreferredTimeZone IsNot Nothing Then
     UiTimeZone = blogModule.UserInfo.Profile.PreferredTimeZone
    End If
-
-   Vocabulary = TermsController.GetTermsByVocabulary(blogModule.ModuleConfiguration.ModuleID, Settings.VocabularyId, Locale)
 
   End Sub
 
@@ -118,10 +111,8 @@ Namespace Common
   Public Property Locale As String = ""
   Public Property Referrer As String = ""
   Public Property WLWRequest As Boolean = False
-  Public Property Settings As ModuleSettings
   Public Property UiTimeZone As TimeZoneInfo
   Public Property Security As ContextSecurity
-  Public Property Vocabulary As Dictionary(Of String, TermInfo)
 #End Region
 
 #Region " IPropertyAccess Implementation "
