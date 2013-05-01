@@ -18,8 +18,6 @@ Public Class Blog
  Private _totalRecords As Integer = 0
  Private _reqPage As Integer = 1
  Private _usePaging As Boolean = False
- Private fulllocs As List(Of String) = {"pt-br", "zh-cn", "zh-tw"}.ToList
- Private twoletterlocs As List(Of String) = {"ar", "bg", "bs", "ca", "cy", "cz", "da", "de", "el", "en", "es", "fa", "fi", "fr", "he", "hr", "hu", "hy", "id", "it", "ja", "ko", "mk", "nl", "no", "pl", "pt", "ro", "ru", "sk", "sv", "th", "tr", "uk", "uz"}.ToList
 #End Region
 
 #Region " Event Handlers "
@@ -32,31 +30,44 @@ Public Class Blog
 
  Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
-  ' wlw style detection post redirect?
-  If Not String.IsNullOrEmpty(Settings.StyleDetectionUrl) And BlogContext.WLWRequest Then
-   ' we have a style detection post in storage and it's being requested
-   Dim url As String = Settings.StyleDetectionUrl
-   Settings.StyleDetectionUrl = ""
-   Settings.UpdateSettings()
-   Response.Redirect(url, False)
-  End If
+  If Context.Items("BlogPageInitialized") Is Nothing Then
 
-  If ViewSettings.BlogModuleId = -1 Then
-   AddBlogService()
-   AddJavascriptFile("jquery.timeago.js", 60)
-   If fulllocs.Contains(BlogContext.Locale.ToLower) Then
-    AddJavascriptFile("time-ago-locales/jquery.timeago." & BlogContext.Locale.ToLower & ".js", 60)
-   ElseIf twoletterlocs.Contains(Threading.Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.ToLower) Then
-    AddJavascriptFile("time-ago-locales/jquery.timeago." & Threading.Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.ToLower & ".js", 61)
+   ' wlw style detection post redirect?
+   If Not String.IsNullOrEmpty(Settings.StyleDetectionUrl) And BlogContext.WLWRequest Then
+    ' we have a style detection post in storage and it's being requested
+    Dim url As String = Settings.StyleDetectionUrl
+    Settings.StyleDetectionUrl = ""
+    Settings.UpdateSettings()
+    Response.Redirect(url, False)
    End If
+
+   AddBlogService()
    If Not Me.IsPostBack And BlogContext.ContentItemId > -1 Then
     Dim scriptBlock As String = "(function ($, Sys) {$(document).ready(function () {blogService.viewPost(" & BlogContext.BlogId.ToString & ", " & BlogContext.ContentItemId.ToString & ")});} (jQuery, window.Sys));"
     Page.ClientScript.RegisterClientScriptBlock(Me.GetType, "PostViewScript", scriptBlock, True)
    End If
+
+   AddWLWManifestLink()
+
+   If Settings.ModifyPageDetails Then
+    If BlogContext.Post IsNot Nothing Then
+     Page.Title = BlogContext.Post.LocalizedTitle
+     Page.Description = BlogContext.Post.LocalizedSummary
+     Page.KeyWords = String.Join(",", BlogContext.Post.Terms.ToStringArray)
+    ElseIf BlogContext.Blog IsNot Nothing Then
+     Page.Title = BlogContext.Blog.LocalizedTitle
+     Page.Description = BlogContext.Blog.LocalizedDescription
+    ElseIf BlogContext.Author IsNot Nothing Then
+     Page.Title = BlogContext.Author.DisplayName
+     Page.Description = BlogContext.Author.Profile.Biography
+    ElseIf BlogContext.Term IsNot Nothing Then
+     Page.Title = BlogContext.Term.LocalizedName
+     Page.Description = BlogContext.Term.LocalizedDescription
+    End If
+   End If
+
+   Context.Items("BlogPageInitialized") = True
   End If
-
-  AddWLWManifestLink()
-
 
   Me.Request.Params.ReadValue("Page", _reqPage)
   DataBind()

@@ -38,6 +38,10 @@
 		<dnn:label id="lblWLWRecentPostsMax" runat="server" controlname="txtWLWRecentPostsMax" suffix=":" />
 		<asp:TextBox runat="server" ID="txtWLWRecentPostsMax" />
 	</div>
+	<div class="dnnFormItem">
+		<dnn:label id="lblModifyPageDetails" runat="server" controlname="chkModifyPageDetails" suffix=":" />
+		<asp:CheckBox ID="chkModifyPageDetails" runat="server" />
+	</div>
 </fieldset>
 <h2 id="H2" class="dnnFormSectionHead"><a href="" class="dnnFormSectionExpanded"><%= LocalizeString("Localization")%></a></h2>
 <fieldset>

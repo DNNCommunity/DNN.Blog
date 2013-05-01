@@ -122,6 +122,24 @@ Partial Public Class Admin
  Protected WithEvents txtWLWRecentPostsMax As Global.System.Web.UI.WebControls.TextBox
 
  '''<summary>
+ '''lblModifyPageDetails control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lblModifyPageDetails As Global.System.Web.UI.UserControl
+
+ '''<summary>
+ '''chkModifyPageDetails control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents chkModifyPageDetails As Global.System.Web.UI.WebControls.CheckBox
+
+ '''<summary>
  '''lblAllowAllLocales control.
  '''</summary>
  '''<remarks>

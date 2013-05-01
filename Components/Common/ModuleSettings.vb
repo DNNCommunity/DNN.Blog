@@ -27,7 +27,7 @@ Namespace Common
   'Public Property EnablePingBackReceive As Boolean = True
   'Public Property EnableTrackBackSend As Boolean = True
   'Public Property EnableTrackBackReceive As Boolean = False
-  Public Property ModifyPageTitle As Boolean = True
+  Public Property ModifyPageDetails As Boolean = True
 
   Public Property RssEmail As String = ""
   Public Property RssDefaultNrItems As Integer = 20
@@ -68,6 +68,8 @@ Namespace Common
    _allSettings.ReadValue("StyleDetectionUrl", StyleDetectionUrl)
    _allSettings.ReadValue("WLWRecentPostsMax", WLWRecentPostsMax)
    _allSettings.ReadValue("AllowAllLocales", AllowAllLocales)
+   _allSettings.ReadValue("ModifyPageDetails", ModifyPageDetails)
+
    _allSettings.ReadValue("RssEmail", RssEmail)
    _allSettings.ReadValue("RssDefaultNrItems", RssDefaultNrItems)
    _allSettings.ReadValue("RssMaxNrItems", RssMaxNrItems)
@@ -121,6 +123,8 @@ Namespace Common
    objModules.UpdateModuleSetting(_moduleId, "StyleDetectionUrl", StyleDetectionUrl)
    objModules.UpdateModuleSetting(_moduleId, "WLWRecentPostsMax", WLWRecentPostsMax.ToString)
    objModules.UpdateModuleSetting(_moduleId, "AllowAllLocales", AllowAllLocales.ToString)
+   objModules.UpdateModuleSetting(_moduleId, "ModifyPageDetails", ModifyPageDetails.ToString)
+
    objModules.UpdateModuleSetting(_moduleId, "RssEmail", RssEmail)
    objModules.UpdateModuleSetting(_moduleId, "RssDefaultNrItems", RssDefaultNrItems.ToString)
    objModules.UpdateModuleSetting(_moduleId, "RssMaxNrItems", RssMaxNrItems.ToString)

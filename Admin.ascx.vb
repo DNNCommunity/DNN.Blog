@@ -52,6 +52,7 @@ Public Class Admin
   Settings.WLWRecentPostsMax = txtWLWRecentPostsMax.Text.ToInt
   Settings.AllowAllLocales = chkAllowAllLocales.Checked
   Settings.VocabularyId = ddVocabularyId.SelectedValue.ToInt
+  Settings.ModifyPageDetails = chkModifyPageDetails.Checked
   Settings.RssAllowContentInFeed = chkRssAllowContentInFeed.Checked
   Settings.RssDefaultCopyright = txtRssDefaultCopyright.Text
   Settings.RssDefaultNrItems = Integer.Parse(txtRssDefaultNrItems.Text)
@@ -108,6 +109,7 @@ Public Class Admin
   chkAllowMultipleCategories.Checked = Settings.AllowMultipleCategories
   chkAllowWLW.Checked = Settings.AllowWLW
   chkAllowAllLocales.Checked = Settings.AllowAllLocales
+  chkModifyPageDetails.Checked = Settings.ModifyPageDetails
 
   chkRssAllowContentInFeed.Checked = Settings.RssAllowContentInFeed
   txtRssDefaultCopyright.Text = Settings.RssDefaultCopyright
