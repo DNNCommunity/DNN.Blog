@@ -48,6 +48,18 @@ Namespace Entities.Blogs
   <DataMember()>
   Public Property PublishAsOwner As Boolean = False
   <DataMember()>
+  Public Property EnablePingBackSend As Boolean = True
+  <DataMember()>
+  Public Property EnablePingBackReceive As Boolean = True
+  <DataMember()>
+  Public Property AutoApprovePingBack As Boolean = False
+  <DataMember()>
+  Public Property EnableTrackBackSend As Boolean = True
+  <DataMember()>
+  Public Property EnableTrackBackReceive As Boolean = False
+  <DataMember()>
+  Public Property AutoApproveTrackBack As Boolean = False
+  <DataMember()>
   Public Property OwnerUserId As Int32 = -1
   <DataMember()>
   Public Property CreatedByUserID As Int32 = -1

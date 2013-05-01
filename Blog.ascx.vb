@@ -2,6 +2,7 @@
 Imports DotNetNuke.Entities.Modules
 Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.Entities.Modules.Actions
+Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.Templating
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
 Imports DotNetNuke.Modules.Blog.Entities.Posts
@@ -66,12 +67,63 @@ Public Class Blog
     End If
    End If
 
+   If BlogContext.Post IsNot Nothing AndAlso BlogContext.Blog IsNot Nothing Then
+    If BlogContext.Blog.EnablePingBackReceive Then
+     AddPingBackLink()
+    End If
+    If BlogContext.Blog.EnableTrackBackReceive Then
+     AddTrackBackBlurb()
+    End If
+   End If
+
    Context.Items("BlogPageInitialized") = True
   End If
 
   Me.Request.Params.ReadValue("Page", _reqPage)
   DataBind()
 
+ End Sub
+#End Region
+
+#Region " Public Methods "
+ Private Sub AddWLWManifestLink()
+  If Context.Items("WLWManifestLinkAdded") Is Nothing Then
+   Dim link As New HtmlGenericControl("link")
+   link.Attributes.Add("rel", "wlwmanifest")
+   link.Attributes.Add("type", "application/wlwmanifest+xml")
+   link.Attributes.Add("href", ResolveUrl(ManifestFilePath(TabId, ModuleId)))
+   Me.Page.Header.Controls.Add(link)
+   Context.Items("WLWManifestLinkAdded") = True
+  End If
+ End Sub
+
+ Private Sub AddPingBackLink()
+  If Context.Items("PingBackLinkAdded") Is Nothing Then
+   Dim pingbackUrl As String = Services.BlogRouteMapper.GetRoute(Services.BlogRouteMapper.ServiceControllers.Comments, "Pingback")
+   pingbackUrl &= String.Format("?tabId={0}&moduleId={1}&blogId={2}&postId={3}", TabId, BlogContext.BlogModuleId, BlogContext.BlogId, BlogContext.ContentItemId)
+   Response.AppendHeader("x-pingback", pingbackUrl)
+   Context.Items("PingBackLinkAdded") = True
+  End If
+ End Sub
+
+ Private Sub AddTrackBackBlurb()
+  If Context.Items("TrackBackBlurbAdded") Is Nothing Then
+   Dim trackbackUrl As String = Services.BlogRouteMapper.GetRoute(Services.BlogRouteMapper.ServiceControllers.Comments, "Trackback")
+   trackbackUrl &= String.Format("?tabId={0}&moduleId={1}&blogId={2}&postId={3}", TabId, BlogContext.BlogModuleId, BlogContext.BlogId, BlogContext.ContentItemId)
+   Dim postUrl As String = BlogContext.Post.PermaLink(PortalSettings)
+   Dim sb As New StringBuilder
+   sb.AppendLine("<!--")
+   sb.AppendLine(" <rdf:RDF xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#""")
+   sb.AppendLine("  xmlns:dc=""http://purl.org/dc/elements/1.1/""")
+   sb.AppendLine("  xmlns:trackback=""http://madskills.com/public/xml/rss/module/trackback/"">")
+   sb.AppendFormat("  <rdf:Description rdf:about=""{0}""" & vbCrLf, postUrl)
+   sb.AppendFormat("  dc:identifier=""{0}"" dc:Title=""{1}""" & vbCrLf, postUrl, BlogContext.Post.LocalizedTitle)
+   sb.AppendFormat("  trackback:ping=""{0}"" />" & vbCrLf, trackbackUrl) ' trackback url
+   sb.AppendLine(" </rdf:RDF>")
+   sb.AppendLine("-->")
+   litTrackback.Text = sb.ToString
+   Context.Items("TrackBackBlurbAdded") = True
+  End If
  End Sub
 #End Region
 

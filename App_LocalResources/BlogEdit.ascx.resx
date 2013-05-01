@@ -222,4 +222,25 @@
   <data name="lblFullLocalization.Text" xml:space="preserve">
     <value>Full Localization</value>
   </data>
+  <data name="lblPingbacks.Help" xml:space="preserve">
+    <value>Pingbacks are sent automatically upon posting to receiving blogs to notify that they've been mentioned. It is generally more secure (i.e. less prone to spam) than trackbacks. It's a great way to boost your search engine visibility.</value>
+  </data>
+  <data name="lblPingbacks.Text" xml:space="preserve">
+    <value>Pingbacks</value>
+  </data>
+  <data name="lblTrackbacks.Help" xml:space="preserve">
+    <value>Like pingbacks, trackbacks are sent automatically upon posting to receiving blogs to notify that they've been mentioned. Trackbacks generally less secure (i.e. more prone to spam) than pingbacks. It's a great way to boost your search engine visibility.</value>
+  </data>
+  <data name="lblTrackbacks.Text" xml:space="preserve">
+    <value>Trackbacks</value>
+  </data>
+  <data name="Receive.Text" xml:space="preserve">
+    <value>Receive</value>
+  </data>
+  <data name="Send.Text" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="AutoApprove.Text" xml:space="preserve">
+    <value>Auto Approve</value>
+  </data>
 </root>

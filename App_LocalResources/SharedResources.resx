@@ -232,4 +232,14 @@
   <data name="CommentPendingNotify.Body" xml:space="preserve">
     <value>A user has posted a comment requiring approval in &lt;a href="{0}/#commentDiv{1}" target="_blank"&gt;{2}&lt;/a&gt;:&lt;br/&gt;&lt;br/&gt;{3}</value>
   </data>
+  <data name="PingbackComment.Text" xml:space="preserve">
+    <value>Pingback from {0}
+
+{1}</value>
+  </data>
+  <data name="TrackbackComment.Text" xml:space="preserve">
+    <value>Trackback from {0}
+
+{1}</value>
+  </data>
 </root>

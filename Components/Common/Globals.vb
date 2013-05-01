@@ -202,6 +202,30 @@ Namespace Common
   Public Shared Function GetRolesByPortal(portalId As Integer) As List(Of DotNetNuke.Security.Roles.RoleInfo)
    Return DotNetNuke.Security.Roles.RoleProvider.Instance.GetRoles(portalId).Cast(Of DotNetNuke.Security.Roles.RoleInfo).ToList
   End Function
+
+  Public Shared Function SafeString(input As String, filter As DotNetNuke.Security.PortalSecurity.FilterFlag) As String
+   Dim ps As New DotNetNuke.Security.PortalSecurity
+   Return ps.InputFilter(input, filter)
+  End Function
+
+  Public Shared Function SafeString(input As String) As String
+   Return SafeString(input, DotNetNuke.Security.PortalSecurity.FilterFlag.NoMarkup And DotNetNuke.Security.PortalSecurity.FilterFlag.NoProfanity And DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting And DotNetNuke.Security.PortalSecurity.FilterFlag.NoSQL)
+  End Function
+
+  Public Shared Function SafeHtml(input As String) As String
+   Return SafeString(input, DotNetNuke.Security.PortalSecurity.FilterFlag.NoProfanity And DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting And DotNetNuke.Security.PortalSecurity.FilterFlag.NoSQL)
+  End Function
+
+  Public Shared Function SafeStringSimpleHtml(input As String) As String
+   input = SafeString(input)
+   input = Regex.Replace(input, "(?#Protocol)(?:(?:ht|f)tp(?:s?)\:\/\/|~\/|\/)?(?#Username:Password)(?:\w+:\w+@)?(?#Subdomains)(?:(?:[-\w]+\.)+(?#TopLevel Domains)(?:com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum|travel|[a-z]{2}))(?#Port)(?::[\d]{1,5})?(?#Directories)(?:(?:(?:\/(?:[-\w~!$+|.,=]|%[a-f\d]{2})+)+|\/)+|\?|#)?(?#Query)(?:(?:\?(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=?(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)(?:&(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=?(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)*)*(?#Anchor)(?:#(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)?", AddressOf ReplaceLink)
+   input = input.Replace(vbCrLf, "<br />")
+   Return input
+  End Function
+  Public Shared Function ReplaceLink(m As Match) As String
+   Dim link As String = m.Value
+   Return String.Format("<a href=""{0}"">{0}</a>", link)
+  End Function
 #End Region
 
  End Class

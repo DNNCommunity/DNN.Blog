@@ -47,6 +47,12 @@ Namespace Entities.Blogs
    Copyright = Convert.ToString(Null.SetNull(dr.Item("Copyright"), Copyright))
    MustApproveGhostPosts = Convert.ToBoolean(Null.SetNull(dr.Item("MustApproveGhostPosts"), MustApproveGhostPosts))
    PublishAsOwner = Convert.ToBoolean(Null.SetNull(dr.Item("PublishAsOwner"), PublishAsOwner))
+  EnablePingBackSend = Convert.ToBoolean(Null.SetNull(dr.Item("EnablePingBackSend"), EnablePingBackSend))
+  EnablePingBackReceive = Convert.ToBoolean(Null.SetNull(dr.Item("EnablePingBackReceive"), EnablePingBackReceive))
+  AutoApprovePingBack = Convert.ToBoolean(Null.SetNull(dr.Item("AutoApprovePingBack"), AutoApprovePingBack))
+  EnableTrackBackSend = Convert.ToBoolean(Null.SetNull(dr.Item("EnableTrackBackSend"), EnableTrackBackSend))
+  EnableTrackBackReceive = Convert.ToBoolean(Null.SetNull(dr.Item("EnableTrackBackReceive"), EnableTrackBackReceive))
+  AutoApproveTrackBack = Convert.ToBoolean(Null.SetNull(dr.Item("AutoApproveTrackBack"), AutoApproveTrackBack))
    OwnerUserId = Convert.ToInt32(Null.SetNull(dr.Item("OwnerUserId"), OwnerUserId))
    CreatedByUserID = Convert.ToInt32(Null.SetNull(dr.Item("CreatedByUserID"), CreatedByUserID))
    CreatedOnDate = CDate(Null.SetNull(dr.Item("CreatedOnDate"), CreatedOnDate))
@@ -143,6 +149,30 @@ Namespace Entities.Blogs
      Return Me.PublishAsOwner.ToString
     Case "publishasowneryesno"
      Return PropertyAccess.Boolean2LocalizedYesNo(Me.PublishAsOwner, formatProvider)
+   Case "enablepingbacksend"
+    Return Me.EnablePingBackSend.ToString
+   Case "enablepingbacksendyesno"
+    Return PropertyAccess.Boolean2LocalizedYesNo(Me.EnablePingBackSend, formatProvider)
+   Case "enablepingbackreceive"
+    Return Me.EnablePingBackReceive.ToString
+   Case "enablepingbackreceiveyesno"
+    Return PropertyAccess.Boolean2LocalizedYesNo(Me.EnablePingBackReceive, formatProvider)
+   Case "autoapprovepingback"
+    Return Me.AutoApprovePingBack.ToString
+   Case "autoapprovepingbackyesno"
+    Return PropertyAccess.Boolean2LocalizedYesNo(Me.AutoApprovePingBack, formatProvider)
+   Case "enabletrackbacksend"
+    Return Me.EnableTrackBackSend.ToString
+   Case "enabletrackbacksendyesno"
+    Return PropertyAccess.Boolean2LocalizedYesNo(Me.EnableTrackBackSend, formatProvider)
+   Case "enabletrackbackreceive"
+    Return Me.EnableTrackBackReceive.ToString
+   Case "enabletrackbackreceiveyesno"
+    Return PropertyAccess.Boolean2LocalizedYesNo(Me.EnableTrackBackReceive, formatProvider)
+   Case "autoapprovetrackback"
+    Return Me.AutoApproveTrackBack.ToString
+   Case "autoapprovetrackbackyesno"
+    Return PropertyAccess.Boolean2LocalizedYesNo(Me.AutoApproveTrackBack, formatProvider)
     Case "owneruserid"
      Return (Me.OwnerUserId.ToString(OutputFormat, formatProvider))
     Case "createdbyuserid"
@@ -248,6 +278,12 @@ Namespace Entities.Blogs
     Copyright = readElement(reader, "Copyright")
     Boolean.TryParse(readElement(reader, "MustApproveGhostPosts"), MustApproveGhostPosts)
     Boolean.TryParse(readElement(reader, "PublishAsOwner"), PublishAsOwner)
+   Boolean.TryParse(readElement(reader, "EnablePingBackSend"), EnablePingBackSend)
+   Boolean.TryParse(readElement(reader, "EnablePingBackReceive"), EnablePingBackReceive)
+   Boolean.TryParse(readElement(reader, "AutoApprovePingBack"), AutoApprovePingBack)
+   Boolean.TryParse(readElement(reader, "EnableTrackBackSend"), EnableTrackBackSend)
+   Boolean.TryParse(readElement(reader, "EnableTrackBackReceive"), EnableTrackBackReceive)
+   Boolean.TryParse(readElement(reader, "AutoApproveTrackBack"), AutoApproveTrackBack)
     If Not Int32.TryParse(readElement(reader, "OwnerUserId"), OwnerUserId) Then
      OwnerUserId = Null.NullInteger
     End If
@@ -297,6 +333,10 @@ Namespace Entities.Blogs
    writer.WriteElementString("Copyright", Copyright)
    writer.WriteElementString("MustApproveGhostPosts", MustApproveGhostPosts.ToString())
    writer.WriteElementString("PublishAsOwner", PublishAsOwner.ToString())
+   writer.WriteElementString("EnablePingBackSend",  EnablePingBackSend.ToString())
+   writer.WriteElementString("EnablePingBackReceive",  EnablePingBackReceive.ToString())
+   writer.WriteElementString("EnableTrackBackSend",  EnableTrackBackSend.ToString())
+   writer.WriteElementString("EnableTrackBackReceive",  EnableTrackBackReceive.ToString())
    writer.WriteElementString("OwnerUserId", OwnerUserId.ToString())
    writer.WriteElementString("CreatedByUserID", CreatedByUserID.ToString())
    writer.WriteElementString("CreatedOnDate", CreatedOnDate.ToString())

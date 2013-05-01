@@ -60,6 +60,14 @@
     <dnn:Label ID="lblIncludeAuthorInFeed" runat="server" controlname="chkIncludeAuthorInFeed" suffix=":" />
     <asp:CheckBox ID="chkIncludeAuthorInFeed" runat="server" />
    </div>
+   <div class="dnnFormItem">
+    <dnn:Label ID="lblPingbacks" runat="server" controlname="chkEnablePingBackSend" suffix=":" />
+    <asp:CheckBox ID="chkEnablePingBackSend" runat="server" /><%=LocalizeString("Send")%><asp:CheckBox ID="chkEnablePingBackReceive" runat="server" /><%=LocalizeString("Receive")%><asp:CheckBox ID="chkAutoApprovePingBack" runat="server" /><%=LocalizeString("AutoApprove")%>
+   </div>
+   <div class="dnnFormItem">
+    <dnn:Label ID="lblTrackbacks" runat="server" controlname="chkEnableTrackBackSend" suffix=":" />
+    <asp:CheckBox ID="chkEnableTrackBackSend" runat="server" /><%=LocalizeString("Send")%><asp:CheckBox ID="chkEnableTrackBackReceive" runat="server" /><%=LocalizeString("Receive")%><asp:CheckBox ID="chkAutoApproveTrackBack" runat="server" /><%=LocalizeString("AutoApprove")%>
+   </div>
   </fieldset>
   <h2 id="dnnSitePanel-GhostOptions" class="dnnFormSectionHead">
    <%=LocalizeString("lblGhostOptions")%></h2>

@@ -125,7 +125,7 @@ Namespace Common
 
     ' Load initialization snippet
     Dim scriptBlock As String = Common.Globals.ReadFile(DotNetNuke.Common.ApplicationMapPath & "\DesktopModules\Blog\js\dotnetnuke.blog.pagescript.js")
-    Dim tr As New Templating.GenericTokenReplace(Scope.DefaultSettings, ModuleId)
+    Dim tr As New Templating.GenericTokenReplace(Scope.DefaultSettings, BlogContext.BlogModuleId)
     tr.AddResources(DotNetNuke.Common.ApplicationMapPath & "\DesktopModules\Blog\App_LocalResources\SharedResources.resx")
     scriptBlock = tr.ReplaceTokens(scriptBlock)
     scriptBlock = "<script type=""text/javascript"">" & vbCrLf & "//<![CDATA[" & vbCrLf & scriptBlock & vbCrLf & "//]]>" & vbCrLf & "</script>"
@@ -134,43 +134,6 @@ Namespace Common
     Context.Items("BlogServiceAdded") = True
    End If
 
-  End Sub
-
-  Public Sub AddWLWManifestLink()
-   If Context.Items("WLWManifestLinkAdded") Is Nothing Then
-    Dim link As New HtmlGenericControl("link")
-    link.Attributes.Add("rel", "wlwmanifest")
-    link.Attributes.Add("type", "application/wlwmanifest+xml")
-    link.Attributes.Add("href", ResolveUrl(ManifestFilePath(TabId, ModuleId)))
-    Me.Page.Header.Controls.Add(link)
-    Context.Items("WLWManifestLinkAdded") = True
-   End If
-  End Sub
-
-  Public Sub AddPingBackLink()
-   If Context.Items("PingBackLinkAdded") Is Nothing Then
-    Dim link As New HtmlGenericControl("link")
-    link.Attributes.Add("rel", "pingback")
-    link.Attributes.Add("href", "") ' url to service
-    Me.Page.Header.Controls.Add(link)
-    Context.Items("PingBackLinkAdded") = True
-   End If
-  End Sub
-
-  Public Sub AddTrackBackBlurb()
-   If Context.Items("TrackBackBlurbAdded") Is Nothing Then
-    Dim sb As New StringBuilder
-    sb.AppendLine("<!--")
-    sb.AppendLine(" <rdf:RDF xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#""")
-    sb.AppendLine("  xmlns:dc=""http://purl.org/dc/elements/1.1/""")
-    sb.AppendLine("  xmlns:trackback=""http://madskills.com/public/xml/rss/module/trackback/"">")
-    sb.AppendFormat("  <rdf:Description rdf:about=""{0}""" & vbCrLf, "") ' about
-    sb.AppendFormat("  dc:identifier=""{0}"" dc:Title=""{1}""" & vbCrLf, "") ' trackback url
-    sb.AppendFormat("  trackback:ping=""{0}"" />" & vbCrLf, "") ' trackback url
-    sb.AppendLine(" </rdf:RDF>")
-    sb.AppendLine("-->")
-    Context.Items("TrackBackBlurbAdded") = True
-   End If
   End Sub
 
   Public Sub AddJavascriptFile(jsFilename As String, priority As Integer)

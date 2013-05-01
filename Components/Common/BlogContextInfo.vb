@@ -18,11 +18,11 @@ Namespace Common
 #Region " Public Methods "
   Public Sub New(context As HttpContext, blogModule As BlogModuleBase)
 
-   Dim moduleId As Integer = blogModule.ModuleId
+   BlogModuleId = blogModule.ModuleId
    If blogModule.ViewSettings.BlogModuleId <> -1 Then
-    moduleId = blogModule.ViewSettings.BlogModuleId
+    BlogModuleId = blogModule.ViewSettings.BlogModuleId
    End If
-   Security = New ContextSecurity(moduleId, blogModule.TabId, Blog, blogModule.UserInfo)
+   Security = New ContextSecurity(BlogModuleId, blogModule.TabId, Blog, blogModule.UserInfo)
    Locale = Threading.Thread.CurrentThread.CurrentCulture.Name
    If context.Request.UrlReferrer IsNot Nothing Then Referrer = context.Request.UrlReferrer.PathAndQuery
    RequestParams = context.Request.Params
@@ -36,7 +36,7 @@ Namespace Common
    context.Request.Params.ReadValue("t", SearchTitle)
    context.Request.Params.ReadValue("c", SearchContents)
    context.Request.Params.ReadValue("u", SearchUnpublished)
-   If ContentItemId > -1 Then Post = Entities.Posts.PostsController.GetPost(ContentItemId, moduleId, Locale)
+   If ContentItemId > -1 Then Post = Entities.Posts.PostsController.GetPost(ContentItemId, BlogModuleId, Locale)
    If BlogId > -1 And Post IsNot Nothing AndAlso Post.BlogID <> BlogId Then Post = Nothing ' double check in case someone is hacking to retrieve an Post from another blog
    If BlogId = -1 And Post IsNot Nothing Then BlogId = Post.BlogID
    If BlogId > -1 Then Blog = Entities.Blogs.BlogsController.GetBlog(BlogId, blogModule.UserInfo.UserID, Locale)
@@ -44,7 +44,7 @@ Namespace Common
    If BlogMapPath <> "" AndAlso Not IO.Directory.Exists(BlogMapPath) Then IO.Directory.CreateDirectory(BlogMapPath)
    If ContentItemId > -1 Then PostMapPath = GetPostDirectoryMapPath(BlogId, ContentItemId)
    If PostMapPath <> "" AndAlso Not IO.Directory.Exists(PostMapPath) Then IO.Directory.CreateDirectory(PostMapPath)
-   If TermId > -1 Then Term = Entities.Terms.TermsController.GetTerm(TermId, moduleId, Locale)
+   If TermId > -1 Then Term = Entities.Terms.TermsController.GetTerm(TermId, BlogModuleId, Locale)
    If AuthorId > -1 Then Author = DotNetNuke.Entities.Users.UserController.GetUserById(blogModule.PortalId, AuthorId)
    WLWRequest = CBool(context.Request.UserAgent.IndexOf("Windows Live Writer") > -1)
 
@@ -93,6 +93,7 @@ Namespace Common
 #End Region
 
 #Region " Public Properties "
+  Public Property BlogModuleId As Integer = -1
   Public Property BlogId As Integer = -1
   Public Property ContentItemId As Integer = -1
   Public Property TermId As Integer = -1
@@ -129,6 +130,8 @@ Namespace Common
     OutputFormat = strFormat
    End If
    Select Case strPropertyName.ToLower
+    Case "blogmoduleid"
+     Return (Me.BlogModuleId.ToString(OutputFormat, formatProvider))
     Case "blogid"
      Return (Me.BlogId.ToString(OutputFormat, formatProvider))
     Case "Postid", "contentitemid", "postid", "post"

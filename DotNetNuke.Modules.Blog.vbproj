@@ -229,6 +229,7 @@
     <Compile Include="Components\Common\LocalizedText.vb" />
     <Compile Include="Components\Common\ModuleUrls.vb" />
     <Compile Include="Components\Common\PostBodyAndSummary.vb" />
+    <Compile Include="Components\Common\RemoteFile.vb" />
     <Compile Include="Components\Entities\Blogs\BlogCalendarInfo.vb" />
     <Compile Include="Components\Entities\Blogs\BlogsController_Service.vb" />
     <Compile Include="Components\Entities\Comments\CommentsController_Service.vb" />

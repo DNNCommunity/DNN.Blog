@@ -8,6 +8,7 @@ Imports System.Net.Http
 Imports System.Web.Http
 Imports DotNetNuke.Web.Api
 Imports DotNetNuke.Modules.Blog
+Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
 Imports DotNetNuke.Modules.Blog.Entities.Posts
 Imports DotNetNuke.Modules.Blog.Entities.Comments
@@ -15,6 +16,7 @@ Imports DotNetNuke.Modules.Blog.Security
 Imports DotNetNuke.Modules.Blog.Integration
 Imports DotNetNuke.Modules.Blog.Services
 Imports DotNetNuke.Modules.Blog.Templating
+Imports System.Xml
 
 Namespace Entities.Comments
  Partial Public Class CommentsController
@@ -138,12 +140,11 @@ Namespace Entities.Comments
    objComment.ContentItemId = Post.ContentItemId
    objComment.CreatedByUserID = UserInfo.UserID
    objComment.ParentId = postData.ParentId
-   Dim ps As New DotNetNuke.Security.PortalSecurity
-   objComment.Comment = HttpUtility.HtmlEncode(ps.InputFilter(postData.Comment, DotNetNuke.Security.PortalSecurity.FilterFlag.NoProfanity))
+   objComment.Comment = HttpUtility.HtmlEncode(SafeStringSimpleHtml(postData.Comment))
    objComment.Approved = Security.CanApproveComment
-   objComment.Author = ps.InputFilter(postData.Author, DotNetNuke.Security.PortalSecurity.FilterFlag.NoMarkup And DotNetNuke.Security.PortalSecurity.FilterFlag.NoProfanity And DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting And DotNetNuke.Security.PortalSecurity.FilterFlag.NoSQL)
-   objComment.Email = ps.InputFilter(postData.Email, DotNetNuke.Security.PortalSecurity.FilterFlag.NoMarkup And DotNetNuke.Security.PortalSecurity.FilterFlag.NoProfanity And DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting And DotNetNuke.Security.PortalSecurity.FilterFlag.NoSQL)
-   objComment.Website = ps.InputFilter(postData.Website, DotNetNuke.Security.PortalSecurity.FilterFlag.NoMarkup And DotNetNuke.Security.PortalSecurity.FilterFlag.NoProfanity And DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting And DotNetNuke.Security.PortalSecurity.FilterFlag.NoSQL)
+   objComment.Author = SafeString(postData.Author)
+   objComment.Email = SafeString(postData.Email)
+   objComment.Website = SafeString(postData.Website)
    objComment.CommentID = CommentsController.AddComment(Blog, Post, objComment)
    If Not objComment.Approved Then
     Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = "successnotapproved"})
@@ -186,6 +187,108 @@ Namespace Entities.Comments
   <ActionName("Pingback")>
   Public Function Pingback() As HttpResponseMessage
 
+   Dim BlogId As Integer = -1
+   Dim PostId As Integer = -1
+   HttpContext.Current.Request.Params.ReadValue("blogId", BlogId)
+   HttpContext.Current.Request.Params.ReadValue("postId", PostId)
+   Blog = BlogsController.GetBlog(BlogId, UserInfo.UserID, Threading.Thread.CurrentThread.CurrentCulture.Name)
+   If Not Blog.EnablePingBackReceive Then
+    Return Request.CreateResponse(HttpStatusCode.NotFound, New With {.Result = "This blog does not accept pingbacks"})
+   End If
+   Post = PostsController.GetPost(PostId, ActiveModule.ModuleID, "")
+   If Post Is Nothing Then
+    Return PingBackError(32, "The specified target URI does not exist.")
+   End If
+
+   Dim doc As XmlDocument = RetrieveXmlDocument(HttpContext.Current)
+   Dim list As XmlNodeList = If(doc.SelectNodes("methodCall/params/param/value/string"), doc.SelectNodes("methodCall/params/param/value"))
+
+   If list Is Nothing Then
+    Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "Cannot parse the request"})
+   End If
+
+   Dim sourceUrl As String = SafeString(list(0).InnerText.Trim())
+   Dim targetUrl As String = SafeString(list(1).InnerText.Trim())
+
+   Dim containsHtml As Boolean = False
+   Dim sourceHasLink As Boolean = False
+   Dim title As String = sourceUrl
+
+   Try
+    CheckSourcePage(sourceUrl, targetUrl, sourceHasLink, title)
+   Catch ex As Exception
+   End Try
+
+   If Not IsFirstPingBack(Post, sourceUrl) Then
+    Return PingBackError(48, "The pingback has already been registered.")
+   End If
+
+   If Not sourceHasLink Then
+    Return PingBackError(17, "The source URI does not contain a link to the target URI, and so cannot be used as a source.")
+   End If
+
+   If containsHtml Then
+    ' spam
+    Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "Cannot parse the request"})
+   Else
+    Dim objComment As New CommentInfo With {.ContentItemId = Post.ContentItemId, .Author = GetDomain(sourceUrl), .Website = sourceUrl}
+    Dim comment As String = String.Format(DotNetNuke.Services.Localization.Localization.GetString("PingbackComment", SharedResourceFileName), objComment.Author, Environment.NewLine, Environment.NewLine, title)
+    objComment.Comment = HttpUtility.HtmlEncode(SafeStringSimpleHtml(comment))
+    objComment.Approved = Blog.AutoApprovePingBack
+    objComment.CommentID = CommentsController.AddComment(Blog, Post, objComment)
+    Return PingBackSuccess()
+   End If
+
+  End Function
+
+  <HttpPost()>
+  <AllowAnonymous()>
+  <ActionName("Trackback")>
+  Public Function Trackback() As HttpResponseMessage
+
+   Dim BlogId As Integer = -1
+   Dim PostId As Integer = -1
+   HttpContext.Current.Request.Params.ReadValue("blogId", BlogId)
+   HttpContext.Current.Request.Params.ReadValue("postId", PostId)
+   Blog = BlogsController.GetBlog(BlogId, UserInfo.UserID, Threading.Thread.CurrentThread.CurrentCulture.Name)
+   If Not Blog.EnableTrackBackReceive Then
+    Return Request.CreateResponse(HttpStatusCode.NotFound, New With {.Result = "This blog does not accept trackbacks"})
+   End If
+   Post = PostsController.GetPost(PostId, ActiveModule.ModuleID, "")
+   If Post Is Nothing Then
+    Return TrackBackResponse("The source page does not link")
+   End If
+
+   Dim title As String = SafeString(HttpContext.Current.Request.Params("title"))
+   Dim excerpt As String = SafeString(HttpContext.Current.Request.Params("excerpt"))
+   Dim blogName As String = SafeString(HttpContext.Current.Request.Params("blog_name"))
+   Dim sourceUrl As String = String.Empty
+   If HttpContext.Current.Request.Params("url") IsNot Nothing Then
+    sourceUrl = SafeString(HttpContext.Current.Request.Params("url").Split(","c)(0), DotNetNuke.Security.PortalSecurity.FilterFlag.NoSQL And DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting)
+   End If
+
+   Dim sourceHasLink As Boolean = False
+
+   Try
+    CheckSourcePage(sourceUrl, Post.PermaLink(PortalSettings), sourceHasLink, title)
+   Catch ex As Exception
+   End Try
+
+   If Not IsFirstPingBack(Post, sourceUrl) Then
+    Return TrackBackResponse("Trackback already registered")
+   End If
+
+   If Not sourceHasLink Then
+    Return TrackBackResponse("The source page does not link")
+   End If
+
+   Dim objComment As New CommentInfo With {.ContentItemId = Post.ContentItemId, .Author = blogName, .Website = sourceUrl}
+   Dim comment As String = String.Format(DotNetNuke.Services.Localization.Localization.GetString("TrackbackComment", SharedResourceFileName), blogName, Environment.NewLine, Environment.NewLine, title)
+   objComment.Comment = HttpUtility.HtmlEncode(SafeStringSimpleHtml(comment))
+   objComment.Approved = Blog.AutoApproveTrackBack
+   objComment.CommentID = CommentsController.AddComment(Blog, Post, objComment)
+   Return TrackBackResponse()
+
   End Function
 #End Region
 
@@ -217,6 +320,91 @@ Namespace Entities.Comments
      End If
 
    End Select
+
+  End Sub
+
+  Private Shared Function RetrieveXmlDocument(context As HttpContext) As XmlDocument
+   Dim xml As String = ParseRequest(context)
+   If Not xml.Contains("<methodName>pingback.ping</methodName>") Then
+    context.Response.StatusCode = 404
+    context.Response.[End]()
+   End If
+   Dim doc As New XmlDocument()
+   doc.LoadXml(xml)
+   Return doc
+  End Function
+
+  Private Shared Function ParseRequest(context As HttpContext) As String
+   Dim buffer(CInt(context.Request.InputStream.Length - 1)) As Byte
+   context.Request.InputStream.Read(buffer, 0, buffer.Length)
+   Return Encoding.[Default].GetString(buffer)
+  End Function
+
+  Private Shared Function IsFirstPingBack(post As PostInfo, sourceUrl As String) As Boolean
+   For Each c As CommentInfo In CommentsController.GetCommentsByContentItem(post.ContentItemId, True)
+    If c.Website.ToString.Equals(sourceUrl, StringComparison.OrdinalIgnoreCase) Then Return False
+   Next
+   Return True
+  End Function
+
+  Private Shared Function TrackBackResponse() As HttpResponseMessage
+   Return TrackBackResponse("0")
+  End Function
+  Private Shared Function TrackBackResponse(status As String) As HttpResponseMessage
+   Dim reply As String = String.Format("<?xml version=""1.0"" encoding=""iso-8859-1""?><response><error>{0}</error></response>", status)
+   Dim res As New HttpResponseMessage(HttpStatusCode.OK)
+   res.Content = New StringContent(reply, System.Text.Encoding.UTF8, "application/xml")
+   Return res
+  End Function
+
+  Private Shared Function PingBackSuccess() As HttpResponseMessage
+   Dim Success As String = "<methodResponse><params><param><value><string>Thanks!</string></value></param></params></methodResponse>"
+   Dim res As New HttpResponseMessage(HttpStatusCode.OK)
+   res.Content = New StringContent(Success, System.Text.Encoding.UTF8, "application/xml")
+   Return res
+  End Function
+
+  Private Shared Function PingBackError(code As Integer, message As String) As HttpResponseMessage
+   Dim sb As New StringBuilder()
+   sb.Append("<?xml version=""1.0""?>")
+   sb.Append("<methodResponse>")
+   sb.Append("<fault>")
+   sb.Append("<value>")
+   sb.Append("<struct>")
+   sb.Append("<member>")
+   sb.Append("<name>faultCode</name>")
+   sb.AppendFormat("<value><int>{0}</int></value>", code)
+   sb.Append("</member>")
+   sb.Append("<member>")
+   sb.Append("<name>faultString</name>")
+   sb.AppendFormat("<value><string>{0}</string></value>", message)
+   sb.Append("</member>")
+   sb.Append("</struct>")
+   sb.Append("</value>")
+   sb.Append("</fault>")
+   sb.Append("</methodResponse>")
+   Dim res As New HttpResponseMessage(HttpStatusCode.OK)
+   res.Content = New StringContent(sb.ToString, System.Text.Encoding.UTF8, "application/xml")
+   Return res
+  End Function
+
+  Private Shared Function GetDomain(sourceUrl As String) As String
+   Dim start As Integer = sourceUrl.IndexOf("://") + 3
+   Dim [stop] As Integer = sourceUrl.IndexOf("/", start)
+   Return sourceUrl.Substring(start, [stop] - start).Replace("www.", String.Empty)
+  End Function
+
+  Private Shared Sub CheckSourcePage(sourceUrl As String, targetUrl As String, ByRef sourceContainsLink As Boolean, ByRef title As String)
+
+   Dim remoteFile As New RemoteFile(New Uri(sourceUrl))
+   Dim html As String = remoteFile.GetFileAsString().ToUpperInvariant()
+
+   Dim RegexTitle As New Regex("(?<=<title.*>)([\s\S]*)(?=</title>)", RegexOptions.IgnoreCase Or RegexOptions.Compiled)
+   Dim titleMatch As Match = RegexTitle.Match(html)
+   If titleMatch.Success Then title = SafeString(titleMatch.Value.Trim())
+
+   targetUrl = targetUrl.ToUpperInvariant
+   sourceContainsLink = html.Contains("href=""" & targetUrl & """") OrElse html.Contains("href='" & targetUrl & "'")
 
   End Sub
 #End Region

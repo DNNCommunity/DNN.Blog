@@ -88,7 +88,7 @@ Namespace Entities.Comments
     Case "parentid"
      Return (Me.ParentId.ToString(OutputFormat, formatProvider))
     Case "comment"
-     Return PropertyAccess.FormatString(Me.Comment, strFormat)
+     Return Me.Comment.OutputHtml(strFormat)
     Case "approved"
      Return Me.Approved.ToString
     Case "approvedyesno"

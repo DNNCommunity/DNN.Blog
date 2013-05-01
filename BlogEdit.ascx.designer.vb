@@ -248,6 +248,78 @@ Partial Public Class BlogEdit
  Protected WithEvents chkIncludeAuthorInFeed As Global.System.Web.UI.WebControls.CheckBox
 
  '''<summary>
+ '''lblPingbacks control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lblPingbacks As Global.System.Web.UI.UserControl
+
+ '''<summary>
+ '''chkEnablePingBackSend control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents chkEnablePingBackSend As Global.System.Web.UI.WebControls.CheckBox
+
+ '''<summary>
+ '''chkEnablePingBackReceive control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents chkEnablePingBackReceive As Global.System.Web.UI.WebControls.CheckBox
+
+ '''<summary>
+ '''chkAutoApprovePingBack control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents chkAutoApprovePingBack As Global.System.Web.UI.WebControls.CheckBox
+
+ '''<summary>
+ '''lblTrackbacks control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lblTrackbacks As Global.System.Web.UI.UserControl
+
+ '''<summary>
+ '''chkEnableTrackBackSend control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents chkEnableTrackBackSend As Global.System.Web.UI.WebControls.CheckBox
+
+ '''<summary>
+ '''chkEnableTrackBackReceive control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents chkEnableTrackBackReceive As Global.System.Web.UI.WebControls.CheckBox
+
+ '''<summary>
+ '''chkAutoApproveTrackBack control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents chkAutoApproveTrackBack As Global.System.Web.UI.WebControls.CheckBox
+
+ '''<summary>
  '''lblMustApproveGhostPosts control.
  '''</summary>
  '''<remarks>

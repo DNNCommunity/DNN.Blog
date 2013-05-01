@@ -267,7 +267,7 @@ Public Class BlogPost
    ' If this is a style detection post, then we write to the Blog_MetaWeblogData table to note
    ' that this post is a new post.
    If styleDetectionPost Then
-    Dim blogUrl As String = (New DotNetNuke.Security.PortalSecurity).InputFilter(newBlogPost.PermaLink(PortalSettings), DotNetNuke.Security.PortalSecurity.FilterFlag.NoSQL)
+    Dim blogUrl As String = newBlogPost.PermaLink(PortalSettings)
     Settings.StyleDetectionUrl = blogUrl
     Settings.UpdateSettings()
    End If

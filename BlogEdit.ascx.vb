@@ -67,6 +67,12 @@ Public Class BlogEdit
    End If
    chkIncludeImagesInFeed.Checked = BlogContext.Blog.IncludeImagesInFeed
    chkIncludeAuthorInFeed.Checked = BlogContext.Blog.IncludeAuthorInFeed
+   chkEnablePingBackReceive.Checked = BlogContext.Blog.EnablePingBackReceive
+   chkEnablePingBackSend.Checked = BlogContext.Blog.EnablePingBackSend
+   chkAutoApprovePingBack.Checked = BlogContext.Blog.AutoApprovePingBack
+   chkEnableTrackBackReceive.Checked = BlogContext.Blog.EnableTrackBackReceive
+   chkEnableTrackBackSend.Checked = BlogContext.Blog.EnableTrackBackSend
+   chkAutoApproveTrackBack.Checked = BlogContext.Blog.AutoApproveTrackBack
    txtCopyright.Text = BlogContext.Blog.Copyright
    cmdDelete.Visible = CBool(BlogContext.BlogId <> -1)
    If Not String.IsNullOrEmpty(BlogContext.Blog.Image) Then
@@ -127,6 +133,12 @@ Public Class BlogEdit
      .SyndicationEmail = txtSyndicationEmail.Text
      .IncludeImagesInFeed = chkIncludeImagesInFeed.Checked
      .IncludeAuthorInFeed = chkIncludeAuthorInFeed.Checked
+     .EnablePingBackReceive = chkEnablePingBackReceive.Checked
+     .EnablePingBackSend = chkEnablePingBackSend.Checked
+     .AutoApprovePingBack = chkAutoApprovePingBack.Checked
+     .EnableTrackBackReceive = chkEnableTrackBackReceive.Checked
+     .EnableTrackBackSend = chkEnableTrackBackSend.Checked
+     .AutoApproveTrackBack = chkAutoApproveTrackBack.Checked
      .Copyright = txtCopyright.Text.Trim
      .MustApproveGhostPosts = chkMustApproveGhostPosts.Checked
      .PublishAsOwner = chkPublishAsOwner.Checked
