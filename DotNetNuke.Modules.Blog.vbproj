@@ -242,6 +242,7 @@
     <Compile Include="Components\Security\Security.vb" />
     <Compile Include="Components\Services\RSSController.vb" />
     <Compile Include="Components\Services\ModulesController.vb" />
+    <Compile Include="Components\Services\TrackAndPingBackController.vb" />
     <Compile Include="Components\Services\WLW\Blogger\IBlogger.vb" />
     <Compile Include="Components\BlogML\BlogMLBlogExtendedProperties.vb" />
     <Compile Include="Components\BlogML\BlogMLResource.vb" />

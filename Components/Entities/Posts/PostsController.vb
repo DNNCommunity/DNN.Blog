@@ -30,17 +30,28 @@ Namespace Entities.Posts
  Partial Public Class PostsController
 
   Public Shared Sub PublishPost(Post As PostInfo, publish As Boolean, publishedByUser As Integer)
+
    If Post.Published = publish Then Exit Sub
    Post.Published = publish
    UpdatePost(Post, publishedByUser)
-   If publish Then
-    Dim blog As BlogInfo = BlogsController.GetBlog(Post.BlogID, publishedByUser, Threading.Thread.CurrentThread.CurrentCulture.Name)
-    Dim journalUrl As String = Post.PermaLink(DotNetNuke.Entities.Portals.PortalSettings.Current)
-    Dim journalUserId As Integer = publishedByUser
-    If Blog.PublishAsOwner Then journalUserId = Blog.OwnerUserId
-    JournalController.AddBlogPostToJournal(Post, DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, DotNetNuke.Entities.Portals.PortalSettings.Current.ActiveTab.TabID, journalUserId, journalUrl)
-    NotificationController.RemovePostPendingNotification(blog.ModuleID, blog.BlogID, Post.ContentItemId)
-   End If
+   PublishPost(Post, publishedByUser)
+
+  End Sub
+
+  Public Shared Sub PublishPost(Post As PostInfo, publishedByUser As Integer)
+
+   Dim blog As BlogInfo = BlogsController.GetBlog(Post.BlogID, publishedByUser, Threading.Thread.CurrentThread.CurrentCulture.Name)
+   Dim journalUrl As String = Post.PermaLink(DotNetNuke.Entities.Portals.PortalSettings.Current)
+   Dim journalUserId As Integer = publishedByUser
+   If blog.PublishAsOwner Then journalUserId = blog.OwnerUserId
+   JournalController.AddBlogPostToJournal(Post, DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, DotNetNuke.Entities.Portals.PortalSettings.Current.ActiveTab.TabID, journalUserId, journalUrl)
+   NotificationController.RemovePostPendingNotification(blog.ModuleID, blog.BlogID, Post.ContentItemId)
+
+   Dim trackAndPingbacks As New Services.TrackAndPingBackController(Post)
+   Dim trd As New Threading.Thread(AddressOf trackAndPingbacks.SendTrackAndPingBacks)
+   trd.IsBackground = True
+   trd.Start()
+
   End Sub
 
   Public Shared Sub DeletePost(Post As PostInfo)

@@ -211,7 +211,10 @@ Public Class PostEdit
 
    If Page.IsValid = True Then
 
-    If BlogContext.Post Is Nothing Then BlogContext.Post = New PostInfo
+    If BlogContext.Post Is Nothing Then
+     BlogContext.Post = New PostInfo
+     BlogContext.Post.Blog = BlogContext.Blog
+    End If
     If BlogContext.ContentItemId = -1 And Not BlogContext.Security.CanAddPost Then Throw New Exception("You can't add posts to this blog")
     If BlogContext.ContentItemId <> -1 And Not BlogContext.Security.CanEditPost Then Throw New Exception("You're not allowed to edit this post")
 
@@ -301,13 +304,9 @@ Public Class PostEdit
      PostsController.UpdatePost(BlogContext.Post, UserId)
     End If
 
-    If (BlogContext.Post.Published) Then
+    If firstPublish Then
 
-     Dim journalUrl As String = BlogContext.Post.PermaLink(PortalSettings)
-     Dim journalUserId As Integer = UserId
-     If BlogContext.Blog.PublishAsOwner Then journalUserId = BlogContext.Blog.OwnerUserId
-     JournalController.AddBlogPostToJournal(BlogContext.Post, ModuleContext.PortalId, ModuleContext.TabId, journalUserId, journalUrl)
-     NotificationController.RemovePostPendingNotification(Settings.ModuleId, BlogContext.Blog.BlogID, BlogContext.Post.ContentItemId)
+     PostsController.PublishPost(BlogContext.Post, True, UserInfo.UserID)
 
     ElseIf BlogContext.Blog.MustApproveGhostPosts And UserId <> BlogContext.Blog.OwnerUserId Then
 
