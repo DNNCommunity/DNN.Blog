@@ -39,7 +39,7 @@
 <script>
 (function ($, Sys) {
  $(document).ready(function () {
-<% If Security.CanAddPost %>
+<% If BlogContext.Security.CanAddPost %>
   var $dialogWLW = $('<div class="dnnDialog"></div>')
 		.html('<input type="text" id="txtWLWLink<%=ModuleId %>" style="width:95%"></input><br/><span><%=LocalizeString("WLW.Help") %></span>')
 		.dialog({
@@ -56,7 +56,7 @@
    return false;
   });
 <% End If %>
-<% If Security.IsEditor %>
+<% If BlogContext.Security.IsEditor %>
  $('#<%=pnlCopyModule.ClientId %>')
 		.dialog({
 		 autoOpen: false,
@@ -74,7 +74,7 @@
  });
 <% End If %>
   var $dialogSearch = $('<div class="dnnDialog"></div>')
-		.html('<input type="text" id="txtSearch" style="width:95%"></input><br/><%=LocalizeString("SearchIn") %>&nbsp;<input type="checkbox" id="scopeAll<%=ModuleId %>" value="1" checked="1" /><%=LocalizeString("SearchAll") %><input type="checkbox" id="scopeTitle<%=ModuleId %>" value="1" checked="1" /><%=LocalizeString("Title") %><input type="checkbox" id="scopeContents<%=ModuleId %>" value="1" /><%=LocalizeString("Contents") %><% If Security.CanAddPost %><input type="checkbox" id="chkUnpublished<%=ModuleId %>" value="1" /><%=LocalizeString("Unpublished") %><% End If %>')
+		.html('<input type="text" id="txtSearch" style="width:95%"></input><br/><%=LocalizeString("SearchIn") %>&nbsp;<input type="checkbox" id="scopeAll<%=ModuleId %>" value="1" checked="1" /><%=LocalizeString("SearchAll") %><input type="checkbox" id="scopeTitle<%=ModuleId %>" value="1" checked="1" /><%=LocalizeString("Title") %><input type="checkbox" id="scopeContents<%=ModuleId %>" value="1" /><%=LocalizeString("Contents") %><% If BlogContext.Security.CanAddPost %><input type="checkbox" id="chkUnpublished<%=ModuleId %>" value="1" /><%=LocalizeString("Unpublished") %><% End If %>')
 		.dialog({
 		 autoOpen: false,
 		 resizable: false,
@@ -99,9 +99,9 @@
       $(this).dialog("close");
       var url
       if ($('#scopeAll<%=ModuleId %>').is(':checked')) {
-       url = '<%=ModuleUrls.GetUrl(False, False, False, False, True) %>';
+       url = '<%=BlogContext.ModuleUrls.GetUrl(False, False, False, False, True) %>';
       } else {
-       url = '<%=ModuleUrls.GetUrl(True, False, True, True, True) %>';
+       url = '<%=BlogContext.ModuleUrls.GetUrl(True, False, True, True, True) %>';
       }
       url += 'search=' + $('#txtSearch').val();
       if ($('#scopeTitle<%=ModuleId %>').is(':checked')) {
@@ -122,7 +122,7 @@
    $dialogSearch.dialog('open');
    return false;
   });
-<% If Security.CanAddPost %>
+<% If BlogContext.Security.CanAddPost %>
   var $blogChoose = $('<div class="dnnDialog"></div>')
 		.html('<%=BlogSelectListHtml %>')
 		.dialog({

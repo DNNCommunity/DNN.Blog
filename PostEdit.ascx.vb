@@ -43,42 +43,42 @@ Public Class PostEdit
 
    ctlTags.ModuleConfiguration = Me.ModuleConfiguration
    ctlCategories.ModuleConfiguration = Me.ModuleConfiguration
-   ctlCategories.VocabularyId = Settings.VocabularyId
+   ctlCategories.VocabularyId = BlogContext.settings.VocabularyId
 
-   If Blog Is Nothing Then
+   If BlogContext.Blog Is Nothing Then
     Dim blogList As IEnumerable(Of BlogInfo) = Nothing
-    blogList = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, Locale).Values.Where(Function(b)
-                                                                                                 Return b.OwnerUserId = UserId
-                                                                                                End Function)
+    blogList = BlogsController.GetBlogsByModule(BlogContext.Settings.ModuleId, UserId, BlogContext.Locale).Values.Where(Function(b)
+                                                                                                                         Return b.OwnerUserId = UserId
+                                                                                                                        End Function)
     If blogList.Count > 0 Then
-     Blog = blogList(0)
-     Security = New Modules.Blog.Security.ContextSecurity(Settings.ModuleId, TabId, Blog, UserInfo)
+     BlogContext.Blog = blogList(0)
+     BlogContext.Security = New Modules.Blog.Security.ContextSecurity(BlogContext.Settings.ModuleId, TabId, BlogContext.Blog, UserInfo)
     Else
-     blogList = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, Locale).Values.Where(Function(b)
-                                                                                                  Return (b.CanAdd And Security.CanAddPost) Or (b.CanEdit And Security.CanEditPost And ContentItemId > -1)
-                                                                                                 End Function)
+     blogList = BlogsController.GetBlogsByModule(BlogContext.Settings.ModuleId, UserId, BlogContext.Locale).Values.Where(Function(b)
+                                                                                                                          Return (b.CanAdd And BlogContext.Security.CanAddPost) Or (b.CanEdit And BlogContext.Security.CanEditPost And BlogContext.ContentItemId > -1)
+                                                                                                                         End Function)
      If blogList.Count > 0 Then
-      Blog = blogList(0)
-      Security = New Modules.Blog.Security.ContextSecurity(Settings.ModuleId, TabId, Blog, UserInfo)
+      BlogContext.Blog = blogList(0)
+      BlogContext.Security = New Modules.Blog.Security.ContextSecurity(BlogContext.Settings.ModuleId, TabId, BlogContext.Blog, UserInfo)
      Else
       Throw New Exception("Could not find a blog for you to post to")
      End If
     End If
    End If
 
-   If Not Security.CanAddPost Then
+   If Not BlogContext.security.CanAddPost Then
     Response.Redirect(NavigateURL("Access Denied"))
    End If
 
-   txtTitle.DefaultLanguage = Blog.Locale
-   txtDescription.DefaultLanguage = Blog.Locale
-   teBlogPost.DefaultLanguage = Blog.Locale
-   txtTitle.ShowTranslations = Blog.FullLocalization
-   txtDescription.ShowTranslations = Blog.FullLocalization
-   teBlogPost.ShowTranslations = Blog.FullLocalization
+   txtTitle.DefaultLanguage = BlogContext.Blog.Locale
+   txtDescription.DefaultLanguage = BlogContext.Blog.Locale
+   teBlogPost.DefaultLanguage = BlogContext.Blog.Locale
+   txtTitle.ShowTranslations = BlogContext.Blog.FullLocalization
+   txtDescription.ShowTranslations = BlogContext.Blog.FullLocalization
+   teBlogPost.ShowTranslations = BlogContext.Blog.FullLocalization
 
    ' Summary
-   Select Case Settings.SummaryModel
+   Select Case BlogContext.settings.SummaryModel
     Case SummaryType.HtmlIndependent
      txtDescription.ShowRichTextBox = True
     Case SummaryType.HtmlPrecedesPost
@@ -97,18 +97,18 @@ Public Class PostEdit
 
   Try
 
-   If Not Security.CanEditPost And Not Security.CanAddPost Then
+   If Not BlogContext.security.CanEditPost And Not BlogContext.security.CanAddPost Then
     Throw New Exception("You do not have access to this resource. Please check your login status.")
    End If
 
    If Not Page.IsPostBack Then
 
     ' Categories
-    If Settings.VocabularyId < 1 Then
+    If BlogContext.settings.VocabularyId < 1 Then
      pnlCategories.Visible = False
     End If
 
-    If Settings.AllowAllLocales Then
+    If BlogContext.settings.AllowAllLocales Then
      ddLocale.DataSource = System.Globalization.CultureInfo.GetCultures(Globalization.CultureTypes.SpecificCultures)
      ddLocale.DataValueField = "Name"
     Else
@@ -117,25 +117,25 @@ Public Class PostEdit
     End If
     ddLocale.DataBind()
     ddLocale.Items.Insert(0, New ListItem(LocalizeString("DefaultLocale"), ""))
-    rowLocale.Visible = CBool(IsMultiLingualSite And Not Blog.FullLocalization)
+    rowLocale.Visible = CBool(BlogContext.IsMultiLingualSite And Not BlogContext.Blog.FullLocalization)
 
     ' Buttons
-    If BlogId > -1 Then
-     hlCancel.NavigateUrl = NavigateURL(TabId, "", "Blog=" & BlogId.ToString)
-    ElseIf ContentItemId > -1 Then
-     hlCancel.NavigateUrl = NavigateURL(TabId, "", "Post=" & ContentItemId.ToString)
+    If BlogContext.BlogId > -1 Then
+     hlCancel.NavigateUrl = NavigateURL(TabId, "", "Blog=" & BlogContext.BlogId.ToString)
+    ElseIf BlogContext.ContentItemId > -1 Then
+     hlCancel.NavigateUrl = NavigateURL(TabId, "", "Post=" & BlogContext.ContentItemId.ToString)
     Else
      hlCancel.NavigateUrl = ModuleContext.NavigateUrl(ModuleContext.TabId, "", False, "")
     End If
-    cmdDelete.Visible = CBool(Post IsNot Nothing)
+    cmdDelete.Visible = CBool(BlogContext.Post IsNot Nothing)
 
-    If Not Post Is Nothing Then
+    If Not BlogContext.Post Is Nothing Then
 
-     Dim PostBody As New PostBodyAndSummary(Post, Settings.SummaryModel, True)
+     Dim PostBody As New PostBodyAndSummary(BlogContext.Post, BlogContext.Settings.SummaryModel, True)
 
      ' Content
-     txtTitle.DefaultText = HttpUtility.HtmlDecode(Post.Title)
-     txtTitle.LocalizedTexts = Post.TitleLocalizations
+     txtTitle.DefaultText = HttpUtility.HtmlDecode(BlogContext.Post.Title)
+     txtTitle.LocalizedTexts = BlogContext.Post.TitleLocalizations
      txtTitle.InitialBind()
      txtDescription.DefaultText = PostBody.Summary
      txtDescription.LocalizedTexts = PostBody.SummaryLocalizations
@@ -145,16 +145,16 @@ Public Class PostEdit
      teBlogPost.InitialBind()
 
      ' Publishing
-     chkPublished.Checked = Post.Published
-     chkAllowComments.Checked = Post.AllowComments
-     chkDisplayCopyright.Checked = Post.DisplayCopyright
+     chkPublished.Checked = BlogContext.Post.Published
+     chkAllowComments.Checked = BlogContext.Post.AllowComments
+     chkDisplayCopyright.Checked = BlogContext.Post.DisplayCopyright
      If chkDisplayCopyright.Checked Then
       pnlCopyright.Visible = True
-      txtCopyright.Text = Post.Copyright
+      txtCopyright.Text = BlogContext.Post.Copyright
      End If
      ' Date
-     litTimezone.Text = UiTimeZone.DisplayName
-     Dim publishDate As DateTime = UtcToLocalTime(Post.PublishedOnDate, UiTimeZone)
+     litTimezone.Text = BlogContext.UiTimeZone.DisplayName
+     Dim publishDate As DateTime = UtcToLocalTime(BlogContext.Post.PublishedOnDate, BlogContext.UiTimeZone)
      dpPostDate.Culture = Threading.Thread.CurrentThread.CurrentUICulture
      dpPostDate.SelectedDate = publishDate
      tpPostTime.Culture = Threading.Thread.CurrentThread.CurrentUICulture
@@ -162,28 +162,28 @@ Public Class PostEdit
 
      ' Summary, Image, Categories, Tags
      Try
-      ddLocale.Items.FindByValue(Post.Locale).Selected = True
+      ddLocale.Items.FindByValue(BlogContext.Post.Locale).Selected = True
      Catch ex As Exception
      End Try
-     If Not String.IsNullOrEmpty(Post.Image) Then
-      imgPostImage.ImageUrl = ResolveUrl(glbImageHandlerPath) & String.Format("?TabId={0}&ModuleId={1}&Blog={2}&Post={3}&w=100&h=100&c=1&key={4}", TabId, Settings.ModuleId, BlogId, ContentItemId, Post.Image)
+     If Not String.IsNullOrEmpty(BlogContext.Post.Image) Then
+      imgPostImage.ImageUrl = ResolveUrl(glbImageHandlerPath) & String.Format("?TabId={0}&ModuleId={1}&Blog={2}&Post={3}&w=100&h=100&c=1&key={4}", TabId, BlogContext.Settings.ModuleId, BlogContext.BlogId, BlogContext.ContentItemId, BlogContext.Post.Image)
       imgPostImage.Visible = True
       cmdImageRemove.Visible = True
      Else
       imgPostImage.Visible = False
       cmdImageRemove.Visible = False
      End If
-     ctlTags.Terms = Post.PostTags
-     ctlCategories.SelectedCategories = Post.PostCategories
+     ctlTags.Terms = BlogContext.Post.PostTags
+     ctlCategories.SelectedCategories = BlogContext.Post.PostCategories
 
     Else
 
      ddLocale.Items.FindByValue("").Selected = True
      ' Publishing
-     chkAllowComments.Checked = Blog.Permissions.ContainsPermissionKey("ADDCOMMENT")
+     chkAllowComments.Checked = BlogContext.Blog.Permissions.ContainsPermissionKey("ADDCOMMENT")
      ' Date
-     litTimezone.Text = UiTimeZone.DisplayName
-     Dim publishDate As Date = UtcToLocalTime(DateTime.Now.ToUniversalTime, UiTimeZone)
+     litTimezone.Text = BlogContext.UiTimeZone.DisplayName
+     Dim publishDate As Date = UtcToLocalTime(DateTime.Now.ToUniversalTime, BlogContext.UiTimeZone)
      dpPostDate.Culture = Threading.Thread.CurrentThread.CurrentUICulture
      dpPostDate.SelectedDate = publishDate
      tpPostTime.Culture = Threading.Thread.CurrentThread.CurrentUICulture
@@ -192,7 +192,7 @@ Public Class PostEdit
     End If
 
     ' Security
-    If Blog.MustApproveGhostPosts AndAlso Not Security.CanApprovePost Then
+    If BlogContext.Blog.MustApproveGhostPosts AndAlso Not BlogContext.Security.CanApprovePost Then
      chkPublished.Checked = False
      chkPublished.Enabled = False
     End If
@@ -211,59 +211,59 @@ Public Class PostEdit
 
    If Page.IsValid = True Then
 
-    If Post Is Nothing Then Post = New PostInfo
-    If ContentItemId = -1 And Not Security.CanAddPost Then Throw New Exception("You can't add posts to this blog")
-    If ContentItemId <> -1 And Not Security.CanEditPost Then Throw New Exception("You're not allowed to edit this post")
+    If BlogContext.Post Is Nothing Then BlogContext.Post = New PostInfo
+    If BlogContext.ContentItemId = -1 And Not BlogContext.Security.CanAddPost Then Throw New Exception("You can't add posts to this blog")
+    If BlogContext.ContentItemId <> -1 And Not BlogContext.Security.CanEditPost Then Throw New Exception("You're not allowed to edit this post")
 
-    Dim firstPublish As Boolean = CBool((Not Post.Published) And chkPublished.Checked)
+    Dim firstPublish As Boolean = CBool((Not BlogContext.Post.Published) And chkPublished.Checked)
 
     ' Contents and summary
-    Post.BlogID = BlogId
-    Post.Title = txtTitle.DefaultText
-    Post.TitleLocalizations = txtTitle.GetLocalizedTexts
-    Dim PostBody As New PostBodyAndSummary(teBlogPost, txtDescription, Settings.SummaryModel, True)
-    PostBody.WriteToPost(Post, Settings.SummaryModel, False, True)
+    BlogContext.Post.BlogID = BlogContext.BlogId
+    BlogContext.Post.Title = txtTitle.DefaultText
+    BlogContext.Post.TitleLocalizations = txtTitle.GetLocalizedTexts
+    Dim PostBody As New PostBodyAndSummary(teBlogPost, txtDescription, BlogContext.settings.SummaryModel, True)
+    PostBody.WriteToPost(BlogContext.Post, BlogContext.Settings.SummaryModel, False, True)
 
     ' Publishing
-    Post.Published = chkPublished.Checked
-    Post.AllowComments = chkAllowComments.Checked
-    Post.DisplayCopyright = chkDisplayCopyright.Checked
-    Post.Copyright = txtCopyright.Text
+    BlogContext.Post.Published = chkPublished.Checked
+    BlogContext.Post.AllowComments = chkAllowComments.Checked
+    BlogContext.Post.DisplayCopyright = chkDisplayCopyright.Checked
+    BlogContext.Post.Copyright = txtCopyright.Text
     ' Date
-    Post.PublishedOnDate = CDate(dpPostDate.SelectedDate)
+    BlogContext.Post.PublishedOnDate = CDate(dpPostDate.SelectedDate)
     Dim hour As Integer = tpPostTime.SelectedDate.Value.Hour
     Dim minute As Integer = tpPostTime.SelectedDate.Value.Minute
-    Post.PublishedOnDate = Post.PublishedOnDate.AddHours(hour)
-    Post.PublishedOnDate = Post.PublishedOnDate.AddMinutes(minute)
-    Post.PublishedOnDate = TimeZoneInfo.ConvertTimeToUtc(Post.PublishedOnDate, UiTimeZone)
+    BlogContext.Post.PublishedOnDate = BlogContext.Post.PublishedOnDate.AddHours(hour)
+    BlogContext.Post.PublishedOnDate = BlogContext.Post.PublishedOnDate.AddMinutes(minute)
+    BlogContext.Post.PublishedOnDate = TimeZoneInfo.ConvertTimeToUtc(BlogContext.Post.PublishedOnDate, BlogContext.UiTimeZone)
 
     ' Categories, Tags
     Dim terms As New List(Of TermInfo)
     ctlTags.CreateMissingTerms()
     terms.AddRange(ctlTags.Terms)
     terms.AddRange(ctlCategories.SelectedCategories)
-    Post.Terms.Clear()
-    Post.Terms.AddRange(terms)
+    BlogContext.Post.Terms.Clear()
+    BlogContext.Post.Terms.AddRange(terms)
 
-    If IsMultiLingualSite And Not Blog.FullLocalization Then
-     Post.Locale = ddLocale.SelectedValue
+    If BlogContext.IsMultiLingualSite And Not BlogContext.Blog.FullLocalization Then
+     BlogContext.Post.Locale = ddLocale.SelectedValue
     Else
-     Post.Locale = ""
+     BlogContext.Post.Locale = ""
     End If
 
     ' Image
-    Dim saveDir As String = GetPostDirectoryMapPath(Post)
+    Dim saveDir As String = GetPostDirectoryMapPath(BlogContext.Post)
     Dim savedFile As String = ""
     If fileImage.HasFile Then
      Dim extension As String = IO.Path.GetExtension(fileImage.FileName).ToLower
      If glbPermittedFileExtensions.IndexOf(extension & ",") > -1 Then
       If Not IO.Directory.Exists(saveDir) Then IO.Directory.CreateDirectory(saveDir)
-      If Post.Image <> "" Then
+      If BlogContext.Post.Image <> "" Then
        ' remove old images
        Dim imagesToDelete As New List(Of String)
        Dim d As New IO.DirectoryInfo(saveDir)
        For Each f As IO.FileInfo In d.GetFiles
-        If f.Name.StartsWith(Post.Image) Then
+        If f.Name.StartsWith(BlogContext.Post.Image) Then
          imagesToDelete.Add(f.FullName)
         End If
        Next
@@ -277,47 +277,47 @@ Public Class PostEdit
       Dim newFileName As String = Guid.NewGuid.ToString("D")
       savedFile = saveDir & newFileName & IO.Path.GetExtension(fileImage.FileName).ToLower
       fileImage.SaveAs(savedFile)
-      Post.Image = newFileName
+      BlogContext.Post.Image = newFileName
      End If
     End If
 
     ' Final Security Check
-    If Blog.MustApproveGhostPosts AndAlso Not Security.CanApprovePost Then
-     Post.Published = False
+    If BlogContext.Blog.MustApproveGhostPosts AndAlso Not BlogContext.Security.CanApprovePost Then
+     BlogContext.Post.Published = False
      firstPublish = False
     End If
 
     ' Add if new, otherwise update
-    If ContentItemId = -1 Then
-     Post.ContentItemId = PostsController.AddPost(Post, UserId)
-     ContentItemId = Post.ContentItemId
+    If BlogContext.ContentItemId = -1 Then
+     BlogContext.Post.ContentItemId = PostsController.AddPost(BlogContext.Post, UserId)
+     BlogContext.ContentItemId = BlogContext.Post.ContentItemId
      If savedFile <> "" Then ' move file if it was saved
-      saveDir = GetPostDirectoryMapPath(Post)
+      saveDir = GetPostDirectoryMapPath(BlogContext.Post)
       IO.Directory.CreateDirectory(saveDir)
-      Dim dest As String = saveDir & Post.Image & IO.Path.GetExtension(fileImage.FileName).ToLower
+      Dim dest As String = saveDir & BlogContext.Post.Image & IO.Path.GetExtension(fileImage.FileName).ToLower
       IO.File.Move(savedFile, dest)
      End If
     Else
-     PostsController.UpdatePost(Post, UserId)
+     PostsController.UpdatePost(BlogContext.Post, UserId)
     End If
 
-    If (Post.Published) Then
+    If (BlogContext.Post.Published) Then
 
-     Dim journalUrl As String = Post.PermaLink(PortalSettings)
+     Dim journalUrl As String = BlogContext.Post.PermaLink(PortalSettings)
      Dim journalUserId As Integer = UserId
-     If Blog.PublishAsOwner Then journalUserId = Blog.OwnerUserId
-     JournalController.AddBlogPostToJournal(Post, ModuleContext.PortalId, ModuleContext.TabId, journalUserId, journalUrl)
-     NotificationController.RemovePostPendingNotification(Settings.ModuleId, Blog.BlogID, Post.ContentItemId)
+     If BlogContext.Blog.PublishAsOwner Then journalUserId = BlogContext.Blog.OwnerUserId
+     JournalController.AddBlogPostToJournal(BlogContext.Post, ModuleContext.PortalId, ModuleContext.TabId, journalUserId, journalUrl)
+     NotificationController.RemovePostPendingNotification(BlogContext.Settings.ModuleId, BlogContext.Blog.BlogID, BlogContext.Post.ContentItemId)
 
-    ElseIf Blog.MustApproveGhostPosts And UserId <> Blog.OwnerUserId Then
+    ElseIf BlogContext.Blog.MustApproveGhostPosts And UserId <> BlogContext.Blog.OwnerUserId Then
 
      Dim title As String = Localization.GetString("ApprovePostNotifyBody", SharedResourceFileName)
-     Dim summary As String = "<a target='_blank' href='" + Post.PermaLink(PortalSettings) + "'>" + Post.Title + "</a>"
-     NotificationController.PostPendingApproval(Blog, Post, ModuleContext.PortalId, summary, title)
+     Dim summary As String = "<a target='_blank' href='" + BlogContext.Post.PermaLink(PortalSettings) + "'>" + BlogContext.Post.Title + "</a>"
+     NotificationController.PostPendingApproval(BlogContext.Blog, BlogContext.Post, ModuleContext.PortalId, summary, title)
 
     End If
 
-    Response.Redirect(NavigateURL(TabId, "", "Post=" & ContentItemId.ToString), False)
+    Response.Redirect(NavigateURL(TabId, "", "Post=" & BlogContext.ContentItemId.ToString), False)
 
    End If
   Catch exc As Exception
@@ -329,8 +329,8 @@ Public Class PostEdit
  Protected Sub cmdDelete_Click(sender As Object, e As EventArgs) Handles cmdDelete.Click
   Try
    DeleteAllFiles()
-   PostsController.DeletePost(Post.ContentItemId, Post.BlogID, ModuleContext.PortalId, Settings.VocabularyId)
-   Response.Redirect(NavigateURL(TabId, "", "Blog=" & BlogId.ToString), False)
+   PostsController.DeletePost(BlogContext.Post.ContentItemId, BlogContext.Post.BlogID, ModuleContext.PortalId, BlogContext.Settings.VocabularyId)
+   Response.Redirect(NavigateURL(TabId, "", "Blog=" & BlogContext.BlogId.ToString), False)
   Catch exc As Exception    'Module failed to load
    ProcessModuleLoadException(Me, exc)
   End Try
@@ -349,14 +349,14 @@ Public Class PostEdit
 
  Private Sub cmdImageRemove_Click(sender As Object, e As System.EventArgs) Handles cmdImageRemove.Click
 
-  If Post IsNot Nothing Then
-   If Post.Image <> "" Then
+  If BlogContext.Post IsNot Nothing Then
+   If BlogContext.Post.Image <> "" Then
     ' remove old images
-    Dim saveDir As String = PortalSettings.HomeDirectoryMapPath & String.Format("\Blog\Files\{0}\{1}\", BlogId, ContentItemId)
+    Dim saveDir As String = PortalSettings.HomeDirectoryMapPath & String.Format("\Blog\Files\{0}\{1}\", BlogContext.BlogId, BlogContext.ContentItemId)
     Dim imagesToDelete As New List(Of String)
     Dim d As New IO.DirectoryInfo(saveDir)
     For Each f As IO.FileInfo In d.GetFiles
-     If f.Name.StartsWith(Post.Image) Then
+     If f.Name.StartsWith(BlogContext.Post.Image) Then
       imagesToDelete.Add(f.FullName)
      End If
     Next
@@ -367,8 +367,8 @@ Public Class PostEdit
      End Try
     Next
    End If
-   Post.Image = ""
-   PostsController.UpdatePost(Post, UserId)
+   BlogContext.Post.Image = ""
+   PostsController.UpdatePost(BlogContext.Post, UserId)
   End If
   imgPostImage.Visible = False
   cmdImageRemove.Visible = False
@@ -378,14 +378,14 @@ Public Class PostEdit
 
 #Region " Private Methods "
  Private Function CreateCopyRight() As String
-  Return GetString("msgCopyright", LocalResourceFile) & Date.UtcNow.Year & " " & Blog.DisplayName
+  Return GetString("msgCopyright", LocalResourceFile) & Date.UtcNow.Year & " " & BlogContext.Blog.DisplayName
  End Function
 #End Region
 
 #Region " Upload Feature Methods "
  Private Sub DeleteAllFiles()
   Try
-   System.IO.Directory.Delete(FileController.getPostDir(Me.FilePath, Post), True)
+   System.IO.Directory.Delete(FileController.getPostDir(Me.FilePath, BlogContext.Post), True)
   Catch
 
   End Try

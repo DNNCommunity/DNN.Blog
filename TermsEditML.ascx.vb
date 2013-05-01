@@ -14,7 +14,7 @@ Public Class TermsEditML
   AddJavascriptFile("jquery.handsontable.js", 60)
   AddCssFile("jquery.handsontable.css")
   Me.Request.Params.ReadValue("VocabularyId", VocabularyId)
-  If VocabularyId <> Settings.VocabularyId AndAlso VocabularyId <> 1 Then ' prevent users from editing another vocabulary
+  If VocabularyId <> BlogContext.Settings.VocabularyId AndAlso VocabularyId <> 1 Then ' prevent users from editing another vocabulary
    VocabularyId = 1
   End If
   ColumnHeaders = "['" & (New CultureInfo(PortalSettings.DefaultLanguage)).EnglishName & "'"
@@ -31,7 +31,7 @@ Public Class TermsEditML
 
  Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
-  If Not Security.IsEditor Then
+  If Not BlogContext.Security.IsEditor Then
    Throw New Exception("You do not have access to this resource. Please check your login status.")
   End If
 

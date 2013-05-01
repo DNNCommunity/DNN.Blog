@@ -29,15 +29,41 @@ Imports System.Linq
 Namespace Common
 
  Public Class BlogModuleBase
-  Inherits BlogContextBase
+  Inherits PortalModuleBase
 
 #Region " Private Members "
   Private fulllocs As List(Of String) = {"pt-br", "zh-cn", "zh-tw"}.ToList
   Private twoletterlocs As List(Of String) = {"ar", "bg", "bs", "ca", "cy", "cz", "da", "de", "el", "en", "es", "fa", "fi", "fr", "he", "hr", "hu", "hy", "id", "it", "ja", "ko", "mk", "nl", "no", "pl", "pt", "ro", "ru", "sk", "sv", "th", "tr", "uk", "uz"}.ToList
 #End Region
 
+#Region " Properties "
+  Private _blogContext As BlogContextInfo
+  Public Property BlogContext() As BlogContextInfo
+   Get
+    If _blogContext Is Nothing Then
+     _blogContext = BlogContextInfo.GetBlogContext(Context, Me)
+    End If
+    Return _blogContext
+   End Get
+   Set(ByVal value As BlogContextInfo)
+    _blogContext = value
+   End Set
+  End Property
+
+  Private _viewSettings As ViewSettings
+  Public Property ViewSettings() As ViewSettings
+   Get
+    If _viewSettings Is Nothing Then _viewSettings = ViewSettings.GetViewSettings(TabModuleId)
+    Return _viewSettings
+   End Get
+   Set(ByVal value As ViewSettings)
+    _viewSettings = value
+   End Set
+  End Property
+#End Region
+
 #Region " Event Handlers "
-  Protected Sub Page_Init(sender As Object, e As EventArgs) Handles Me.Init
+  Private Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
 
    jQuery.RequestUIRegistration()
    Dim script As New StringBuilder
@@ -48,79 +74,25 @@ Namespace Common
    script.AppendLine("</script>")
    UI.Utilities.ClientAPI.RegisterClientScriptBlock(Page, "blogAppPath", script.ToString)
 
-   If ViewSettings.BlogModuleId = -1 Then
-    Settings = ModuleSettings.GetModuleSettings(ModuleConfiguration.ModuleID)
-   Else
-    Settings = ModuleSettings.GetModuleSettings(ViewSettings.BlogModuleId)
-   End If
-   Locale = Threading.Thread.CurrentThread.CurrentCulture.Name
-   If Request.UrlReferrer IsNot Nothing Then Referrer = Request.UrlReferrer.PathAndQuery
-
-   Request.Params.ReadValue("Blog", BlogId)
-   Request.Params.ReadValue("Post", ContentItemId)
-   Request.Params.ReadValue("Term", TermId)
-   Request.Params.ReadValue("Author", AuthorId)
-   Request.Params.ReadValue("end", EndDate)
-   Request.Params.ReadValue("search", SearchString)
-   Request.Params.ReadValue("t", SearchTitle)
-   Request.Params.ReadValue("c", SearchContents)
-   Request.Params.ReadValue("u", SearchUnpublished)
-   If ContentItemId > -1 Then Post = Entities.Posts.PostsController.GetPost(ContentItemId, Settings.ModuleId, Locale)
-   If BlogId > -1 And Post IsNot Nothing AndAlso Post.BlogID <> BlogId Then Post = Nothing ' double check in case someone is hacking to retrieve an Post from another blog
-   If BlogId = -1 And Post IsNot Nothing Then BlogId = Post.BlogID
-   If BlogId > -1 Then Blog = Entities.Blogs.BlogsController.GetBlog(BlogId, UserInfo.UserID, Locale)
-   If BlogId > -1 Then BlogMapPath = GetBlogDirectoryMapPath(BlogId)
-   If BlogMapPath <> "" AndAlso Not IO.Directory.Exists(BlogMapPath) Then IO.Directory.CreateDirectory(BlogMapPath)
-   If ContentItemId > -1 Then PostMapPath = GetPostDirectoryMapPath(BlogId, ContentItemId)
-   If PostMapPath <> "" AndAlso Not IO.Directory.Exists(PostMapPath) Then IO.Directory.CreateDirectory(PostMapPath)
-   If TermId > -1 Then Term = Entities.Terms.TermsController.GetTerm(TermId, Settings.ModuleId, Locale)
-   If AuthorId > -1 Then Author = DotNetNuke.Entities.Users.UserController.GetUserById(PortalId, AuthorId)
-   WLWRequest = CBool(Request.UserAgent.IndexOf("Windows Live Writer") > -1)
-
-   ' security
-   Dim isStylePostRequest As Boolean = False
-   If Post IsNot Nothing AndAlso Not Post.Published AndAlso Not Security.IsEditor Then
-    If Post.Title.Contains("3bfe001a-32de-4114-a6b4-4005b770f6d7") And WLWRequest Then
-     isStylePostRequest = True
-    Else
-     Post = Nothing
-     ContentItemId = -1
-    End If
-   End If
-   If Blog IsNot Nothing AndAlso Not Blog.Published AndAlso Not Security.IsOwner AndAlso Not isStylePostRequest Then
-    Blog = Nothing
-    BlogId = -1
-   End If
-
    ' wlw style detection post redirect?
-   If Not String.IsNullOrEmpty(Settings.StyleDetectionUrl) And WLWRequest Then
+   If Not String.IsNullOrEmpty(BlogContext.Settings.StyleDetectionUrl) And BlogContext.WLWRequest Then
     ' we have a style detection post in storage and it's being requested
-    Dim url As String = Settings.StyleDetectionUrl
-    Settings.StyleDetectionUrl = ""
-    Settings.UpdateSettings()
+    Dim url As String = BlogContext.Settings.StyleDetectionUrl
+    BlogContext.Settings.StyleDetectionUrl = ""
+    BlogContext.Settings.UpdateSettings()
     Response.Redirect(url, False)
-   End If
-
-   ' set urls for use in module
-   ModuleUrls = New ModuleUrls(TabId, BlogId, ContentItemId, TermId, AuthorId)
-   IsMultiLingualSite = CBool((New DotNetNuke.Services.Localization.LocaleController).GetLocales(PortalId).Count > 1)
-   If Not ViewSettings.ShowAllLocales Then
-    ShowLocale = Locale
-   End If
-   If Referrer.Contains("/ctl/") Or Referrer.Contains("&ctl=") Then
-    Referrer = DotNetNuke.Common.NavigateURL(TabId) ' just catch 99% of bad referrals to edit pages
    End If
 
    If ViewSettings.BlogModuleId = -1 Then
     AddBlogService()
     AddJavascriptFile("jquery.timeago.js", 60)
-    If fulllocs.Contains(Locale.ToLower) Then
-     AddJavascriptFile("time-ago-locales/jquery.timeago." & Locale.ToLower & ".js", 60)
+    If fulllocs.Contains(BlogContext.Locale.ToLower) Then
+     AddJavascriptFile("time-ago-locales/jquery.timeago." & BlogContext.Locale.ToLower & ".js", 60)
     ElseIf twoletterlocs.Contains(Threading.Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.ToLower) Then
      AddJavascriptFile("time-ago-locales/jquery.timeago." & Threading.Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.ToLower & ".js", 61)
     End If
-    If Not Me.IsPostBack And ContentItemId > -1 Then
-     Dim scriptBlock As String = "(function ($, Sys) {$(document).ready(function () {blogService.viewPost(" & BlogId.ToString & ", " & ContentItemId.ToString & ")});} (jQuery, window.Sys));"
+    If Not Me.IsPostBack And BlogContext.ContentItemId > -1 Then
+     Dim scriptBlock As String = "(function ($, Sys) {$(document).ready(function () {blogService.viewPost(" & BlogContext.BlogId.ToString & ", " & BlogContext.ContentItemId.ToString & ")});} (jQuery, window.Sys));"
      Page.ClientScript.RegisterClientScriptBlock(Me.GetType, "PostViewScript", scriptBlock, True)
     End If
    End If
@@ -131,27 +103,61 @@ Namespace Common
 #Region " Public Methods "
   Public Sub AddBlogService()
 
-   DotNetNuke.Framework.jQuery.RequestDnnPluginsRegistration()
-   DotNetNuke.Framework.ServicesFramework.Instance.RequestAjaxScriptSupport()
-   DotNetNuke.Framework.ServicesFramework.Instance.RequestAjaxAntiForgerySupport()
-   AddJavascriptFile("dotnetnuke.blog.js", 70)
+   If Context.Items("BlogServiceAdded") Is Nothing Then
 
-   ' Load initialization snippet
-   Dim scriptBlock As String = Common.Globals.ReadFile(DotNetNuke.Common.ApplicationMapPath & "\DesktopModules\Blog\js\dotnetnuke.blog.pagescript.js")
-   Dim tr As New Templating.GenericTokenReplace(Scope.DefaultSettings, ModuleId)
-   tr.AddResources(DotNetNuke.Common.ApplicationMapPath & "\DesktopModules\Blog\App_LocalResources\SharedResources.resx")
-   scriptBlock = tr.ReplaceTokens(scriptBlock)
-   scriptBlock = "<script type=""text/javascript"">" & vbCrLf & "//<![CDATA[" & vbCrLf & scriptBlock & vbCrLf & "//]]>" & vbCrLf & "</script>"
-   Page.ClientScript.RegisterClientScriptBlock(Me.GetType, "BlogServiceScript", scriptBlock)
+    DotNetNuke.Framework.jQuery.RequestDnnPluginsRegistration()
+    DotNetNuke.Framework.ServicesFramework.Instance.RequestAjaxScriptSupport()
+    DotNetNuke.Framework.ServicesFramework.Instance.RequestAjaxAntiForgerySupport()
+    AddJavascriptFile("dotnetnuke.blog.js", 70)
+
+    ' Load initialization snippet
+    Dim scriptBlock As String = Common.Globals.ReadFile(DotNetNuke.Common.ApplicationMapPath & "\DesktopModules\Blog\js\dotnetnuke.blog.pagescript.js")
+    Dim tr As New Templating.GenericTokenReplace(Scope.DefaultSettings, ModuleId)
+    tr.AddResources(DotNetNuke.Common.ApplicationMapPath & "\DesktopModules\Blog\App_LocalResources\SharedResources.resx")
+    scriptBlock = tr.ReplaceTokens(scriptBlock)
+    scriptBlock = "<script type=""text/javascript"">" & vbCrLf & "//<![CDATA[" & vbCrLf & scriptBlock & vbCrLf & "//]]>" & vbCrLf & "</script>"
+    Page.ClientScript.RegisterClientScriptBlock(Me.GetType, "BlogServiceScript", scriptBlock)
+
+    Context.Items("BlogServiceAdded") = True
+   End If
 
   End Sub
 
   Public Sub AddWLWManifestLink()
-   Dim link As New HtmlGenericControl("link")
-   link.Attributes.Add("rel", "wlwmanifest")
-   link.Attributes.Add("type", "application/wlwmanifest+xml")
-   link.Attributes.Add("href", ResolveUrl(ManifestFilePath(TabId, ModuleId)))
-   Me.Page.Header.Controls.Add(link)
+   If Context.Items("WLWManifestLinkAdded") Is Nothing Then
+    Dim link As New HtmlGenericControl("link")
+    link.Attributes.Add("rel", "wlwmanifest")
+    link.Attributes.Add("type", "application/wlwmanifest+xml")
+    link.Attributes.Add("href", ResolveUrl(ManifestFilePath(TabId, ModuleId)))
+    Me.Page.Header.Controls.Add(link)
+    Context.Items("WLWManifestLinkAdded") = True
+   End If
+  End Sub
+
+  Public Sub AddPingBackLink()
+   If Context.Items("PingBackLinkAdded") Is Nothing Then
+    Dim link As New HtmlGenericControl("link")
+    link.Attributes.Add("rel", "pingback")
+    link.Attributes.Add("href", "") ' url to service
+    Me.Page.Header.Controls.Add(link)
+    Context.Items("PingBackLinkAdded") = True
+   End If
+  End Sub
+
+  Public Sub AddTrackBackBlurb()
+   If Context.Items("TrackBackBlurbAdded") Is Nothing Then
+    Dim sb As New StringBuilder
+    sb.AppendLine("<!--")
+    sb.AppendLine(" <rdf:RDF xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#""")
+    sb.AppendLine("  xmlns:dc=""http://purl.org/dc/elements/1.1/""")
+    sb.AppendLine("  xmlns:trackback=""http://madskills.com/public/xml/rss/module/trackback/"">")
+    sb.AppendFormat("  <rdf:Description rdf:about=""{0}""" & vbCrLf, "") ' about
+    sb.AppendFormat("  dc:identifier=""{0}"" dc:Title=""{1}""" & vbCrLf, "") ' trackback url
+    sb.AppendFormat("  trackback:ping=""{0}"" />" & vbCrLf, "") ' trackback url
+    sb.AppendLine(" </rdf:RDF>")
+    sb.AppendLine("-->")
+    Context.Items("TrackBackBlurbAdded") = True
+   End If
   End Sub
 
   Public Sub AddJavascriptFile(jsFilename As String, priority As Integer)

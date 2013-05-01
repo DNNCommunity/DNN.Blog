@@ -11,14 +11,14 @@ Public Class BlogImport
 
  Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
-  If Not Security.IsBlogger Then
+  If Not BlogContext.Security.IsBlogger Then
    Throw New Exception("You do not have access to this resource. Please check your login status.")
   End If
 
-  If Settings.VocabularyId > -1 AndAlso (Security.IsEditor) Then CanImportCategories = True
+  If BlogContext.Settings.VocabularyId > -1 AndAlso (BlogContext.Security.IsEditor) Then CanImportCategories = True
 
   If Not Me.IsPostBack Then
-   lblTargetName.Text = Blog.Title
+   lblTargetName.Text = BlogContext.Blog.Title
    chkImportCategories.Enabled = CanImportCategories
   End If
 
@@ -49,10 +49,10 @@ Public Class BlogImport
     Dim strReport As New StringBuilder
     Dim file As HttpPostedFile = cmdBrowse.PostedFile
     If file.FileName <> "" Then
-     file.SaveAs(BlogMapPath & "import.resources")
+     file.SaveAs(BlogContext.BlogMapPath & "import.resources")
      strReport.AppendLine("Saved File")
      Dim blog As BlogMLBlog = Nothing
-     Using strIn As New IO.StreamReader(BlogMapPath & "import.resources")
+     Using strIn As New IO.StreamReader(BlogContext.BlogMapPath & "import.resources")
       Using xmlIn As New System.Xml.XmlTextReader(strIn)
        blog = BlogMLSerializer.Deserialize(xmlIn)
       End Using
@@ -70,7 +70,7 @@ Public Class BlogImport
    Case 1 ' analysis and selecting options
     Dim strReport As New StringBuilder
     Dim b As BlogMLBlog = Nothing
-    Using strIn As New IO.StreamReader(BlogMapPath & "import.resources")
+    Using strIn As New IO.StreamReader(BlogContext.BlogMapPath & "import.resources")
      Using xmlIn As New System.Xml.XmlTextReader(strIn)
       b = BlogMLSerializer.Deserialize(xmlIn)
      End Using
@@ -89,7 +89,7 @@ Public Class BlogImport
       ' import post
       Dim newPost As New PostInfo
       With newPost
-       .BlogID = BlogId
+       .BlogID = BlogContext.BlogId
        '.AllowComments = Blog.AllowComments
        .ViewCount = 0
        .Title = post.Title
@@ -125,7 +125,7 @@ Public Class BlogImport
     End If
    Case 2 ' report
     Try
-     IO.File.Delete(BlogMapPath & "import.resources")
+     IO.File.Delete(BlogContext.BlogMapPath & "import.resources")
     Catch ex As Exception
     End Try
     Response.Redirect(EditUrl("Manage"), False)

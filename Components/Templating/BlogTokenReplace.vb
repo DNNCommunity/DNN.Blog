@@ -52,176 +52,176 @@ Namespace Templating
 
   End Sub
 
-  Public Sub New(blogModule As BlogContextBase)
+  Public Sub New(blogModule As BlogModuleBase)
    MyBase.new(Scope.DefaultSettings)
 
    Me.ModuleInfo = blogModule.ModuleConfiguration
    Me.UseObjectLessExpression = False
-   Me.PropertySource("query") = blogModule
-   Me.PropertySource("security") = blogModule.Security
-   Me.PropertySource("urls") = blogModule.ModuleUrls
-   Me.PropertySource("settings") = blogModule.Settings
+   Me.PropertySource("query") = blogModule.BlogContext
+   Me.PropertySource("security") = blogModule.BlogContext.Security
+   Me.PropertySource("urls") = blogModule.BlogContext.ModuleUrls
+   Me.PropertySource("settings") = blogModule.BlogContext.Settings
    Me.PropertySource("viewsettings") = blogModule.ViewSettings
-   If blogModule.Blog IsNot Nothing Then
-    Me.PropertySource("blog") = blogModule.Blog
-    Me.PropertySource("owner") = New LazyLoadingUser(PortalSettings.PortalId, blogModule.Blog.Username)
+   If blogModule.BlogContext.Blog IsNot Nothing Then
+    Me.PropertySource("blog") = blogModule.BlogContext.Blog
+    Me.PropertySource("owner") = New LazyLoadingUser(PortalSettings.PortalId, blogModule.BlogContext.Blog.Username)
    End If
-   If blogModule.Post IsNot Nothing Then
-    Me.PropertySource("post") = blogModule.Post
-    Me.PropertySource("author") = New LazyLoadingUser(PortalSettings.PortalId, blogModule.Post.Username)
+   If blogModule.BlogContext.Post IsNot Nothing Then
+    Me.PropertySource("post") = blogModule.BlogContext.Post
+    Me.PropertySource("author") = New LazyLoadingUser(PortalSettings.PortalId, blogModule.BlogContext.Post.Username)
    End If
-   If blogModule.Term IsNot Nothing Then
-    Me.PropertySource("selectedterm") = blogModule.Term
+   If blogModule.BlogContext.Term IsNot Nothing Then
+    Me.PropertySource("selectedterm") = blogModule.BlogContext.Term
    End If
-   If blogModule.Author IsNot Nothing Then
-    Me.PropertySource("author") = blogModule.Author
+   If blogModule.BlogContext.Author IsNot Nothing Then
+    Me.PropertySource("author") = blogModule.BlogContext.Author
    End If
 
   End Sub
 
-  Public Sub New(blogModule As BlogContextBase, blog As BlogInfo)
+  Public Sub New(blogModule As BlogModuleBase, blog As BlogInfo)
    MyBase.new(Scope.DefaultSettings)
 
    Me.PrimaryObject = blog
    Me.ModuleInfo = blogModule.ModuleConfiguration
    Me.UseObjectLessExpression = False
-   Me.PropertySource("query") = blogModule
-   Me.PropertySource("security") = blogModule.Security
-   Me.PropertySource("urls") = blogModule.ModuleUrls
-   Me.PropertySource("settings") = blogModule.Settings
+   Me.PropertySource("query") = blogModule.BlogContext
+   Me.PropertySource("security") = blogModule.BlogContext.Security
+   Me.PropertySource("urls") = blogModule.BlogContext.ModuleUrls
+   Me.PropertySource("settings") = blogModule.BlogContext.Settings
    Me.PropertySource("viewsettings") = blogModule.ViewSettings
    Me.PropertySource("blog") = blog
    Me.PropertySource("owner") = New LazyLoadingUser(PortalSettings.PortalId, blog.Username)
-   If blogModule.Post IsNot Nothing Then
-    Me.PropertySource("post") = blogModule.Post
-    Me.PropertySource("author") = New LazyLoadingUser(PortalSettings.PortalId, blogModule.Post.Username)
-   ElseIf blogModule.Author IsNot Nothing Then
-    Me.PropertySource("author") = blogModule.Author
+   If blogModule.BlogContext.Post IsNot Nothing Then
+    Me.PropertySource("post") = blogModule.BlogContext.Post
+    Me.PropertySource("author") = New LazyLoadingUser(PortalSettings.PortalId, blogModule.BlogContext.Post.Username)
+   ElseIf blogModule.BlogContext.Author IsNot Nothing Then
+    Me.PropertySource("author") = blogModule.BlogContext.Author
    End If
-   If blogModule.Term IsNot Nothing Then
-    Me.PropertySource("selectedterm") = blogModule.Term
+   If blogModule.BlogContext.Term IsNot Nothing Then
+    Me.PropertySource("selectedterm") = blogModule.BlogContext.Term
    End If
 
   End Sub
 
-  Public Sub New(blogModule As BlogContextBase, objBlogCalendar As BlogCalendarInfo)
+  Public Sub New(blogModule As BlogModuleBase, objBlogCalendar As BlogCalendarInfo)
    MyBase.new(Scope.DefaultSettings)
 
    Me.PrimaryObject = objBlogCalendar
    Me.ModuleInfo = blogModule.ModuleConfiguration
    Me.UseObjectLessExpression = False
-   Me.PropertySource("query") = blogModule
-   Me.PropertySource("security") = blogModule.Security
-   Me.PropertySource("urls") = blogModule.ModuleUrls
-   Me.PropertySource("settings") = blogModule.Settings
+   Me.PropertySource("query") = blogModule.BlogContext
+   Me.PropertySource("security") = blogModule.BlogContext.Security
+   Me.PropertySource("urls") = blogModule.BlogContext.ModuleUrls
+   Me.PropertySource("settings") = blogModule.BlogContext.Settings
    Me.PropertySource("viewsettings") = blogModule.ViewSettings
-   If blogModule.Blog IsNot Nothing Then
-    Me.PropertySource("blog") = blogModule.Blog
+   If blogModule.BlogContext.Blog IsNot Nothing Then
+    Me.PropertySource("blog") = blogModule.BlogContext.Blog
    End If
    Me.PropertySource("calendar") = objBlogCalendar
-   If blogModule.Post IsNot Nothing Then
-    Me.PropertySource("post") = blogModule.Post
-    Me.PropertySource("author") = New LazyLoadingUser(PortalSettings.PortalId, blogModule.Post.Username)
-   ElseIf blogModule.Author IsNot Nothing Then
-    Me.PropertySource("author") = blogModule.Author
+   If blogModule.BlogContext.Post IsNot Nothing Then
+    Me.PropertySource("post") = blogModule.BlogContext.Post
+    Me.PropertySource("author") = New LazyLoadingUser(PortalSettings.PortalId, blogModule.BlogContext.Post.Username)
+   ElseIf blogModule.BlogContext.Author IsNot Nothing Then
+    Me.PropertySource("author") = blogModule.BlogContext.Author
    End If
-   If blogModule.Term IsNot Nothing Then
-    Me.PropertySource("selectedterm") = blogModule.Term
+   If blogModule.BlogContext.Term IsNot Nothing Then
+    Me.PropertySource("selectedterm") = blogModule.BlogContext.Term
    End If
 
   End Sub
 
-  Public Sub New(blogModule As BlogContextBase, objAuthor As LazyLoadingUser)
+  Public Sub New(blogModule As BlogModuleBase, objAuthor As LazyLoadingUser)
    MyBase.new(Scope.DefaultSettings)
 
    Me.PrimaryObject = objAuthor
    Me.ModuleInfo = blogModule.ModuleConfiguration
    Me.UseObjectLessExpression = False
-   Me.PropertySource("query") = blogModule
-   Me.PropertySource("security") = blogModule.Security
-   Me.PropertySource("urls") = blogModule.ModuleUrls
-   Me.PropertySource("settings") = blogModule.Settings
+   Me.PropertySource("query") = blogModule.BlogContext
+   Me.PropertySource("security") = blogModule.BlogContext.Security
+   Me.PropertySource("urls") = blogModule.BlogContext.ModuleUrls
+   Me.PropertySource("settings") = blogModule.BlogContext.Settings
    Me.PropertySource("viewsettings") = blogModule.ViewSettings
-   If blogModule.Blog IsNot Nothing Then
-    Me.PropertySource("blog") = blogModule.Blog
+   If blogModule.BlogContext.Blog IsNot Nothing Then
+    Me.PropertySource("blog") = blogModule.BlogContext.Blog
    End If
    Me.PropertySource("author") = objAuthor
-   If blogModule.Post IsNot Nothing Then
-    Me.PropertySource("post") = blogModule.Post
+   If blogModule.BlogContext.Post IsNot Nothing Then
+    Me.PropertySource("post") = blogModule.BlogContext.Post
    End If
-   If blogModule.Term IsNot Nothing Then
-    Me.PropertySource("selectedterm") = blogModule.Term
+   If blogModule.BlogContext.Term IsNot Nothing Then
+    Me.PropertySource("selectedterm") = blogModule.BlogContext.Term
    End If
 
   End Sub
 
-  Public Sub New(blogModule As BlogContextBase, Post As PostInfo)
+  Public Sub New(blogModule As BlogModuleBase, Post As PostInfo)
    MyBase.new(Scope.DefaultSettings)
 
    Me.PrimaryObject = Post
    Me.ModuleInfo = blogModule.ModuleConfiguration
    Me.UseObjectLessExpression = False
-   Me.PropertySource("query") = blogModule
-   Me.PropertySource("security") = blogModule.Security
-   Me.PropertySource("urls") = blogModule.ModuleUrls
-   Me.PropertySource("settings") = blogModule.Settings
+   Me.PropertySource("query") = blogModule.BlogContext
+   Me.PropertySource("security") = blogModule.BlogContext.Security
+   Me.PropertySource("urls") = blogModule.BlogContext.ModuleUrls
+   Me.PropertySource("settings") = blogModule.BlogContext.Settings
    Me.PropertySource("viewsettings") = blogModule.ViewSettings
    Me.PropertySource("post") = Post
    Me.PropertySource("author") = New LazyLoadingUser(PortalSettings.PortalId, Post.Username)
    Me.PropertySource("blog") = Post.Blog
    Me.PropertySource("owner") = New LazyLoadingUser(PortalSettings.PortalId, Post.Blog.Username)
-   If blogModule.Term IsNot Nothing Then
-    Me.PropertySource("selectedterm") = blogModule.Term
+   If blogModule.BlogContext.Term IsNot Nothing Then
+    Me.PropertySource("selectedterm") = blogModule.BlogContext.Term
    End If
 
   End Sub
 
-  Public Sub New(blogModule As BlogContextBase, Post As PostInfo, term As TermInfo)
+  Public Sub New(blogModule As BlogModuleBase, Post As PostInfo, term As TermInfo)
    MyBase.new(Scope.DefaultSettings)
 
    Me.PrimaryObject = term
    Me.ModuleInfo = blogModule.ModuleConfiguration
    Me.UseObjectLessExpression = False
-   Me.PropertySource("query") = blogModule
-   Me.PropertySource("security") = blogModule.Security
-   Me.PropertySource("urls") = blogModule.ModuleUrls
-   Me.PropertySource("settings") = blogModule.Settings
+   Me.PropertySource("query") = blogModule.BlogContext
+   Me.PropertySource("security") = blogModule.BlogContext.Security
+   Me.PropertySource("urls") = blogModule.BlogContext.ModuleUrls
+   Me.PropertySource("settings") = blogModule.BlogContext.Settings
    Me.PropertySource("viewsettings") = blogModule.ViewSettings
    If Post IsNot Nothing Then
     Me.PropertySource("post") = Post
     Me.PropertySource("author") = New LazyLoadingUser(PortalSettings.PortalId, Post.Username)
     Me.PropertySource("blog") = Post.Blog
     Me.PropertySource("owner") = New LazyLoadingUser(PortalSettings.PortalId, Post.Blog.Username)
-   ElseIf blogModule.Blog IsNot Nothing Then
-    Me.PropertySource("blog") = blogModule.Blog
-    Me.PropertySource("owner") = New LazyLoadingUser(PortalSettings.PortalId, blogModule.Blog.Username)
+   ElseIf blogModule.BlogContext.Blog IsNot Nothing Then
+    Me.PropertySource("blog") = blogModule.BlogContext.Blog
+    Me.PropertySource("owner") = New LazyLoadingUser(PortalSettings.PortalId, blogModule.BlogContext.Blog.Username)
    End If
    Me.PropertySource("term") = term
-   If blogModule.Term IsNot Nothing Then
-    Me.PropertySource("selectedterm") = blogModule.Term
+   If blogModule.BlogContext.Term IsNot Nothing Then
+    Me.PropertySource("selectedterm") = blogModule.BlogContext.Term
    End If
 
   End Sub
 
-  Public Sub New(blogModule As BlogContextBase, Post As PostInfo, comment As CommentInfo)
+  Public Sub New(blogModule As BlogModuleBase, Post As PostInfo, comment As CommentInfo)
    MyBase.new(Scope.DefaultSettings)
 
    Me.PrimaryObject = comment
    Me.ModuleInfo = blogModule.ModuleConfiguration
    Me.UseObjectLessExpression = False
-   Me.PropertySource("query") = blogModule
-   Me.PropertySource("security") = blogModule.Security
-   Me.PropertySource("urls") = blogModule.ModuleUrls
-   Me.PropertySource("settings") = blogModule.Settings
+   Me.PropertySource("query") = blogModule.BlogContext
+   Me.PropertySource("security") = blogModule.BlogContext.Security
+   Me.PropertySource("urls") = blogModule.BlogContext.ModuleUrls
+   Me.PropertySource("settings") = blogModule.BlogContext.Settings
    Me.PropertySource("viewsettings") = blogModule.ViewSettings
    If Post IsNot Nothing Then
     Me.PropertySource("post") = Post
     Me.PropertySource("author") = New LazyLoadingUser(PortalSettings.PortalId, Post.Username)
     Me.PropertySource("blog") = Post.Blog
     Me.PropertySource("owner") = New LazyLoadingUser(PortalSettings.PortalId, Post.Blog.Username)
-   ElseIf blogModule.Blog IsNot Nothing Then
-    Me.PropertySource("blog") = blogModule.Blog
-    Me.PropertySource("owner") = New LazyLoadingUser(PortalSettings.PortalId, blogModule.Blog.Username)
+   ElseIf blogModule.BlogContext.Blog IsNot Nothing Then
+    Me.PropertySource("blog") = blogModule.BlogContext.Blog
+    Me.PropertySource("owner") = New LazyLoadingUser(PortalSettings.PortalId, blogModule.BlogContext.Blog.Username)
    End If
    Me.PropertySource("comment") = comment
    Me.PropertySource("commenter") = New LazyLoadingUser(PortalSettings.PortalId, comment.Username)

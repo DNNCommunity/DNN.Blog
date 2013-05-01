@@ -5,7 +5,7 @@ Imports DotNetNuke.Modules.Blog.Entities.Comments
 
 Namespace Controls
  Public Class Comments
-  Inherits BlogContextBase
+  Inherits BlogModuleBase
 
 #Region " Properties "
   Private Property AllComments As New List(Of CommentInfo)
@@ -15,8 +15,8 @@ Namespace Controls
   Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
    LocalResourceFile = "~/DesktopModules/Blog/Controls/App_LocalResources/Comments.ascx.resx"
-   If Post IsNot Nothing AndAlso Security.CanViewComments AndAlso Post.AllowComments Then
-    AllComments = CommentsController.GetCommentsByContentItem(Post.ContentItemId, Security.CanApproveComment)
+   If BlogContext.Post IsNot Nothing AndAlso BlogContext.Security.CanViewComments AndAlso BlogContext.Post.AllowComments Then
+    AllComments = CommentsController.GetCommentsByContentItem(BlogContext.Post.ContentItemId, BlogContext.Security.CanApproveComment)
     DataBind()
    End If
 
@@ -33,11 +33,11 @@ Namespace Controls
      If callingObject IsNot Nothing AndAlso TypeOf callingObject Is CommentInfo Then
       Dim parent As Integer = CType(callingObject, CommentInfo).CommentID
       For Each c As CommentInfo In AllComments.Where(Function(cmt) cmt.ParentId = parent).OrderBy(Function(cmt) cmt.CreatedOnDate)
-       Replacers.Add(New BlogTokenReplace(Me, Post, c))
+       Replacers.Add(New BlogTokenReplace(Me, BlogContext.Post, c))
       Next
      Else
       For Each c As CommentInfo In AllComments.Where(Function(cmt) cmt.ParentId = -1).OrderBy(Function(cmt) cmt.CreatedOnDate)
-       Replacers.Add(New BlogTokenReplace(Me, Post, c))
+       Replacers.Add(New BlogTokenReplace(Me, BlogContext.Post, c))
       Next
      End If
 

@@ -180,6 +180,13 @@ Namespace Entities.Comments
    vt.DataBind()
    Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = vt.GetContentsAsString})
   End Function
+
+  <HttpPost()>
+  <AllowAnonymous()>
+  <ActionName("Pingback")>
+  Public Function Pingback() As HttpResponseMessage
+
+  End Function
 #End Region
 
 #Region " Private Methods "

@@ -76,7 +76,7 @@ clean.bindirectory:
 compile.projects:
 
      [echo] Building DotNetNuke.Modules.Blog.vbproj
-  [msbuild] Build started 27/04/2013 10:29:08.
+  [msbuild] Build started 29/04/2013 21:41:01.
   [msbuild] Overriding target "GetFrameworkPaths" in project "C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets" with target "GetFrameworkPaths" from project "C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.NETFramework.targets".
   [msbuild] Overriding target "SatelliteDllsProjectOutputGroup" in project "C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets" with target "SatelliteDllsProjectOutputGroup" from project "C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.WinFX.targets".
   [msbuild] Project "E:\Webroot\BLOGDEV\DesktopModules\Blog\DotNetNuke.Modules.Blog.vbproj" on node 1 (Rebuild target(s)).
@@ -127,9 +127,6 @@ compile.projects:
   [msbuild]   Deleting file "E:\Webroot\BLOGDEV\DesktopModules\Blog\obj\release\DotNetNuke.Modules.Blog.dll".
   [msbuild]   Deleting file "E:\Webroot\BLOGDEV\DesktopModules\Blog\obj\release\DotNetNuke.Modules.Blog.xml".
   [msbuild]   Deleting file "E:\Webroot\BLOGDEV\DesktopModules\Blog\obj\release\DotNetNuke.Modules.Blog.pdb".
-  [msbuild]   Deleting file "E:\Webroot\BLOGDEV\DesktopModules\Blog\obj\release\DotNetNuke.Modules.Blog.SharedResources.ascx.resources".
-  [msbuild]   Deleting file "E:\Webroot\BLOGDEV\DesktopModules\Blog\obj\release\GenerateResource.read.1.tlog".
-  [msbuild]   Deleting file "E:\Webroot\BLOGDEV\DesktopModules\Blog\obj\release\GenerateResource.write.1.tlog".
   [msbuild] Done executing task "Delete".
   [msbuild] Using "RemoveDuplicates" task from assembly "Microsoft.Build.Tasks.v4.0, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a".
   [msbuild] Task "RemoveDuplicates"
@@ -3160,13 +3157,13 @@ compile.projects:
   [msbuild]               DotNetNuke.Web, Version=7.0.1.266, Culture=neutral, processorArchitecture=MSIL
   [msbuild]               DotNetNuke, Version=7.0.1.266, Culture=neutral, processorArchitecture=MSIL
   [msbuild]               DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, processorArchitecture=MSIL
+  [msbuild]           E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.Web.dll
+  [msbuild]             Project file item includes which caused reference "E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.Web.dll".
+  [msbuild]               DotNetNuke.Web, Version=7.0.1.266, Culture=neutral, processorArchitecture=MSIL
   [msbuild]           E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.dll
   [msbuild]             Project file item includes which caused reference "E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.dll".
   [msbuild]               DotNetNuke.Web, Version=7.0.1.266, Culture=neutral, processorArchitecture=MSIL
   [msbuild]               DotNetNuke, Version=7.0.1.266, Culture=neutral, processorArchitecture=MSIL
-  [msbuild]           E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.Web.dll
-  [msbuild]             Project file item includes which caused reference "E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.Web.dll".
-  [msbuild]               DotNetNuke.Web, Version=7.0.1.266, Culture=neutral, processorArchitecture=MSIL
   [msbuild]       References which depend on "DotNetNuke.WebUtility, Version=4.2.0.185, Culture=neutral, PublicKeyToken=null" [].
   [msbuild]           E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.WebControls.dll
   [msbuild]             Project file item includes which caused reference "E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.WebControls.dll".
@@ -3181,13 +3178,13 @@ compile.projects:
   [msbuild]               DotNetNuke.Web, Version=7.0.1.266, Culture=neutral, processorArchitecture=MSIL
   [msbuild]               DotNetNuke, Version=7.0.1.266, Culture=neutral, processorArchitecture=MSIL
   [msbuild]               DotNetNuke.Web.Client, Version=6.1.2.0, Culture=neutral, processorArchitecture=MSIL
+  [msbuild]           E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.Web.dll
+  [msbuild]             Project file item includes which caused reference "E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.Web.dll".
+  [msbuild]               DotNetNuke.Web, Version=7.0.1.266, Culture=neutral, processorArchitecture=MSIL
   [msbuild]           E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.dll
   [msbuild]             Project file item includes which caused reference "E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.dll".
   [msbuild]               DotNetNuke.Web, Version=7.0.1.266, Culture=neutral, processorArchitecture=MSIL
   [msbuild]               DotNetNuke, Version=7.0.1.266, Culture=neutral, processorArchitecture=MSIL
-  [msbuild]           E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.Web.dll
-  [msbuild]             Project file item includes which caused reference "E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.Web.dll".
-  [msbuild]               DotNetNuke.Web, Version=7.0.1.266, Culture=neutral, processorArchitecture=MSIL
   [msbuild]       References which depend on "DotNetNuke.Web.Client, Version=6.1.0.272, Culture=neutral, PublicKeyToken=null" [].
   [msbuild]           E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.WebControls.dll
   [msbuild]             Project file item includes which caused reference "E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.WebControls.dll".
@@ -3283,7 +3280,6 @@ compile.projects:
   [msbuild] Task "CreateItem" skipped, due to false condition; ('%(Extension)'=='.rdlc') was evaluated as ('.xml'=='.rdlc').
   [msbuild] Task "CreateItem" skipped, due to false condition; ('%(Extension)'=='.rdlc') was evaluated as ('.resx'=='.rdlc').
   [msbuild] Task "CreateItem" skipped, due to false condition; ('%(Extension)'=='.rdlc') was evaluated as ('.ashx'=='.rdlc').
-  [msbuild] Task "CreateItem" skipped, due to false condition; ('%(Extension)'=='.rdlc') was evaluated as ('.aspx'=='.rdlc').
   [msbuild] Done building target "PrepareRdlFiles" in project "DotNetNuke.Modules.Blog.vbproj".
   [msbuild] Target "RunRdlCompiler" skipped, due to false condition; ('@(RdlFile)'!='') was evaluated as (''!='').
   [msbuild] Target "CompileRdlFiles" in file "C:\Program Files (x86)\MSBuild\Microsoft\VisualStudio\v10.0\ReportingServices\Microsoft.ReportingServices.targets" from project "E:\Webroot\BLOGDEV\DesktopModules\Blog\DotNetNuke.Modules.Blog.vbproj" (target "PrepareResources" depends on it):
@@ -3326,7 +3322,7 @@ compile.projects:
   [msbuild] Output file "obj\release\DotNetNuke.Modules.Blog.xml" does not exist.
   [msbuild] Using "Vbc" task from assembly "Microsoft.Build.Tasks.v4.0, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a".
   [msbuild] Task "Vbc"
-  [msbuild]   C:\Windows\Microsoft.NET\Framework\v4.0.30319\Vbc.exe /noconfig /imports:DotNetNuke.Modules.Blog.Common,Microsoft.VisualBasic,System,System.Collections,System.Collections.Generic,System.Data,System.Diagnostics,System.Collections.Specialized,System.Configuration,System.Text,System.Text.RegularExpressions,System.Web,System.Web.Caching,System.Web.SessionState,System.Web.Security,System.Web.Profile,System.Web.UI,System.Web.UI.WebControls,System.Web.UI.WebControls.WebParts,System.Web.UI.HtmlControls /optioncompare:Binary /optionexplicit+ /optionstrict+ /optioninfer- /nostdlib /rootnamespace:DotNetNuke.Modules.Blog /sdkpath:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0" /doc:obj\release\DotNetNuke.Modules.Blog.xml /define:"CONFIG=\"release\",TRACE=-1,_MyType=\"Custom\",PLATFORM=\"AnyCPU\"" /link:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Accessibility.dll" /reference:E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\CookComputing.XmlRpcV2.dll,E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.dll,E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.Web.Client.dll,E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.Web.dll,E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.WebControls.dll,E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.WebUtility.dll,E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\Microsoft.ApplicationBlocks.Data.dll,E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\Newtonsoft.Json.dll,"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Core.dll","C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Data.DataSetExtensions.dll","C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Data.dll","C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.dll","C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Drawing.dll","C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.EnterpriseServices.dll",E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\System.Net.Http.dll,"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Runtime.Serialization.dll","C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Web.Abstractions.dll","C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Web.ApplicationServices.dll","C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Web.dll","C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Web.DynamicData.dll","C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Web.Entity.dll","C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Web.Extensions.dll",E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\System.Web.Http.dll,"C:\Program Files (x86)\Microsoft ASP.NET\ASP.NET MVC 2\Assemblies\System.Web.Mvc.dll","C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Web.Routing.dll","C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Web.Services.dll","C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Xml.dll","C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Xml.Linq.dll",E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\Telerik.Web.UI.dll /debug:pdbonly /optimize+ /out:obj\release\DotNetNuke.Modules.Blog.dll /resource:Controls\TagEdit.JS.CodeBlock.txt,DotNetNuke.Modules.Blog.TagEdit.JS.CodeBlock.txt /resource:Controls\CategorySelect.JS.CodeBlock.txt,DotNetNuke.Modules.Blog.CategorySelect.JS.CodeBlock.txt /target:library BlogImage.ashx.vb BlogImport.ascx.designer.vb BlogImport.ascx.vb blogpost.ashx.vb blogpostredirect.aspx.designer.vb blogpostredirect.aspx.vb Components\Common\BlogModuleController.vb Components\Common\DynatreeItem.vb Components\Common\LocalizedText.vb Components\Common\ModuleUrls.vb Components\Common\PostBodyAndSummary.vb Components\Entities\Blogs\BlogCalendarInfo.vb Components\Entities\Blogs\BlogsController_Service.vb Components\Entities\Comments\CommentsController_Service.vb Components\Entities\Posts\PostAuthor.vb Components\Entities\Posts\PostsController_Service.vb Components\Entities\Terms\TermsController_Service.vb Components\Entities\Terms\TermsController.vb Components\Integration\Integration.vb Components\Rss\BlogRssFeed.vb Components\Security\Security.vb Components\Services\RSSController.vb Components\Services\ModulesController.vb Components\Services\WLW\Blogger\IBlogger.vb Components\BlogML\BlogMLBlogExtendedProperties.vb Components\BlogML\BlogMLResource.vb Components\BlogML\BlogMLWriterBase.vb Components\BlogML\Enumerators\BlogPostTypes.vb Components\BlogML\Enumerators\CommentModerationTypes.vb Components\BlogML\Enumerators\ContentTypes.vb Components\BlogML\Enumerators\SendTrackbackTypes.vb Components\BlogML\Pair.vb Components\BlogML\Xml\BlogMLAttachment.vb Components\BlogML\Xml\BlogMLAuthor.vb Components\BlogML\Xml\BlogMLAuthorReference.vb Components\BlogML\Xml\BlogMLBlog.vb Components\BlogML\Xml\BlogMLCategory.vb Components\BlogML\Xml\BlogMLCategoryReference.vb Components\BlogML\Xml\BlogMLComment.vb Components\BlogML\Xml\BlogMLContent.vb Components\BlogML\Xml\BlogMLMeta.vb Components\BlogML\Xml\BlogMLNode.vb Components\BlogML\Xml\BlogMLPost.vb Components\BlogML\Xml\BlogMLSerializer.vb Components\BlogML\Xml\BlogMLTrackback.vb Components\Common\BlogModuleBase.vb Components\Services\WLW\BlogPostException.vb Components\Common\BlogContextBase.vb Components\Common\Image.vb Components\Common\ViewSettings.vb Components\Common\Extensions.vb Components\Common\Globals.vb Components\Entities\Comments\CommentInfo_Interfaces.vb Components\Entities\Comments\CommentInfo_Properties.vb Components\Entities\Comments\CommentsController_CRUD.vb Components\Entities\Comments\CommentsController_FK.vb Components\Entities\Comments\CommentsController.vb Components\Integration\NotificationKey.vb Components\Security\ContextSecurity.vb Components\Common\ModuleSettings.vb Components\Data\DataProvider_CMD.vb Components\Data\DataProvider_CRUD.vb Components\Data\DataProvider_FK.vb Components\Data\SqlDataProvider_CMD.vb Components\Data\SqlDataProvider_CRUD.vb Components\Data\SqlDataProvider_FK.vb Components\Entities\Blogs\BlogsController.vb Components\Entities\Posts\PostsController.vb Components\Entities\Blogs\BlogInfo.vb Components\Entities\Blogs\BlogInfo_Interfaces.vb Components\Entities\Blogs\BlogInfo_Properties.vb Components\Entities\Blogs\BlogsController_CRUD.vb Components\Entities\Blogs\BlogsController_FK.vb Components\Entities\Comments\CommentInfo.vb Components\Entities\Posts\PostsController_CRUD.vb Components\Entities\Posts\PostInfo_Interfaces.vb Components\Entities\Posts\PostInfo_Properties.vb Components\Entities\Posts\PostInfo.vb Components\Entities\Terms\TermInfo.vb Components\Integration\JournalController.vb Components\Integration\NotificationController.vb Components\Security\BlogUser.vb Components\Security\Controls\BlogPermissionsGrid.vb Components\Security\Controls\PermissionsGrid.vb Components\Security\Permissions\BlogPermissionCollection.vb Components\Security\Permissions\BlogPermissionInfo_Interfaces.vb Components\Security\Permissions\BlogPermissionInfo_Properties.vb Components\Security\Permissions\BlogPermissionsController_CRUD.vb Components\Security\Permissions\BlogPermissionsController.vb Components\Security\Permissions\BlogPermissionInfo.vb Components\Security\Permissions\PermissionCollection.vb Components\Security\Permissions\PermissionInfo_Properties.vb Components\Security\Permissions\PermissionsController.vb Components\Services\WLW\MetaWeblog\IMetaWeblog.vb Components\Services\WLW\MoveableType\IMoveableType.vb Components\Rss\StringWriterWithEncoding.vb Components\Services\BlogAuthorizeAttribute.vb Components\Services\BlogRouteMapper.vb Components\Integration\Services\NotificationServiceController.vb Components\Templating\BaseCustomTokenReplace.vb Components\Templating\BaseTokenReplace.vb Components\Templating\BlogTokenReplace.vb Components\Templating\CustomParameters.vb Components\Templating\GenericTokenReplace.vb Components\Templating\LazyLoadingUser.vb Components\Templating\Resources.vb Components\Templating\Template.vb Components\Templating\TemplateController.vb Components\Templating\TemplateManager.vb Components\Templating\TemplateRepeaterItem.vb Components\Templating\TemplateSetting.vb Components\Templating\TemplateSettings.vb Components\Templating\TemplateSettingValue.vb Components\Templating\TokenReplace.vb Components\Templating\ViewTemplate.vb Components\Services\WLW\WordPress\IWordPress.vb Controls\CategorySelect.vb Controls\Comments.ascx.designer.vb Controls\Comments.ascx.vb Components\Integration\FileController.vb BlogEdit.ascx.designer.vb BlogEdit.ascx.vb Controls\LocalizedTextEdit.vb Controls\LongTextEdit.vb Controls\ManagementPanel.ascx.designer.vb Controls\ManagementPanel.ascx.vb Controls\ShortTextEdit.vb Controls\TagEdit.vb Admin.ascx.designer.vb Admin.ascx.vb Controls\TemplateSettings.ascx.designer.vb Controls\TemplateSettings.ascx.vb Manage.ascx.designer.vb Manage.ascx.vb PostEdit.ascx.designer.vb PostEdit.ascx.vb Blog.ascx.designer.vb Blog.ascx.vb "My Project\AssemblyInfo.vb" Components\Data\DataProvider.vb Components\Data\SqlDataProvider.vb Controls\ViewSettings.ascx.designer.vb Controls\ViewSettings.ascx.vb TermsEditML.ascx.designer.vb TermsEditML.ascx.vb "C:\Users\Administrator\AppData\Local\Temp\.NETFramework,Version=v4.0.AssemblyAttributes.vb" /warnaserror+:41999,42016,42017,42018,42019,42020,42021,42022,42032,42036
+  [msbuild]   C:\Windows\Microsoft.NET\Framework\v4.0.30319\Vbc.exe /noconfig /imports:DotNetNuke.Modules.Blog.Common,Microsoft.VisualBasic,System,System.Collections,System.Collections.Generic,System.Data,System.Diagnostics,System.Collections.Specialized,System.Configuration,System.Text,System.Text.RegularExpressions,System.Web,System.Web.Caching,System.Web.SessionState,System.Web.Security,System.Web.Profile,System.Web.UI,System.Web.UI.WebControls,System.Web.UI.WebControls.WebParts,System.Web.UI.HtmlControls /optioncompare:Binary /optionexplicit+ /optionstrict+ /optioninfer- /nostdlib /rootnamespace:DotNetNuke.Modules.Blog /sdkpath:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0" /doc:obj\release\DotNetNuke.Modules.Blog.xml /define:"CONFIG=\"release\",TRACE=-1,_MyType=\"Custom\",PLATFORM=\"AnyCPU\"" /link:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Accessibility.dll" /reference:E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\CookComputing.XmlRpcV2.dll,E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.dll,E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.Web.Client.dll,E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.Web.dll,E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.WebControls.dll,E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.WebUtility.dll,E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\Microsoft.ApplicationBlocks.Data.dll,E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\Newtonsoft.Json.dll,"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Core.dll","C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Data.DataSetExtensions.dll","C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Data.dll","C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.dll","C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Drawing.dll","C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.EnterpriseServices.dll",E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\System.Net.Http.dll,"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Runtime.Serialization.dll","C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Web.Abstractions.dll","C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Web.ApplicationServices.dll","C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Web.dll","C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Web.DynamicData.dll","C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Web.Entity.dll","C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Web.Extensions.dll",E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\System.Web.Http.dll,"C:\Program Files (x86)\Microsoft ASP.NET\ASP.NET MVC 2\Assemblies\System.Web.Mvc.dll","C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Web.Routing.dll","C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Web.Services.dll","C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Xml.dll","C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Xml.Linq.dll",E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\Telerik.Web.UI.dll /debug:pdbonly /optimize+ /out:obj\release\DotNetNuke.Modules.Blog.dll /resource:Controls\TagEdit.JS.CodeBlock.txt,DotNetNuke.Modules.Blog.TagEdit.JS.CodeBlock.txt /resource:Controls\CategorySelect.JS.CodeBlock.txt,DotNetNuke.Modules.Blog.CategorySelect.JS.CodeBlock.txt /target:library BlogImage.ashx.vb BlogImport.ascx.designer.vb BlogImport.ascx.vb BlogPost.ashx.vb Components\Common\BlogModuleController.vb Components\Common\DynatreeItem.vb Components\Common\LocalizedText.vb Components\Common\ModuleUrls.vb Components\Common\PostBodyAndSummary.vb Components\Entities\Blogs\BlogCalendarInfo.vb Components\Entities\Blogs\BlogsController_Service.vb Components\Entities\Comments\CommentsController_Service.vb Components\Entities\Posts\PostAuthor.vb Components\Entities\Posts\PostsController_Service.vb Components\Entities\Terms\TermsController_Service.vb Components\Entities\Terms\TermsController.vb Components\Integration\Integration.vb Components\Rss\BlogRssFeed.vb Components\Security\Security.vb Components\Services\RSSController.vb Components\Services\ModulesController.vb Components\Services\WLW\Blogger\IBlogger.vb Components\BlogML\BlogMLBlogExtendedProperties.vb Components\BlogML\BlogMLResource.vb Components\BlogML\BlogMLWriterBase.vb Components\BlogML\Enumerators\BlogPostTypes.vb Components\BlogML\Enumerators\CommentModerationTypes.vb Components\BlogML\Enumerators\ContentTypes.vb Components\BlogML\Enumerators\SendTrackbackTypes.vb Components\BlogML\Pair.vb Components\BlogML\Xml\BlogMLAttachment.vb Components\BlogML\Xml\BlogMLAuthor.vb Components\BlogML\Xml\BlogMLAuthorReference.vb Components\BlogML\Xml\BlogMLBlog.vb Components\BlogML\Xml\BlogMLCategory.vb Components\BlogML\Xml\BlogMLCategoryReference.vb Components\BlogML\Xml\BlogMLComment.vb Components\BlogML\Xml\BlogMLContent.vb Components\BlogML\Xml\BlogMLMeta.vb Components\BlogML\Xml\BlogMLNode.vb Components\BlogML\Xml\BlogMLPost.vb Components\BlogML\Xml\BlogMLSerializer.vb Components\BlogML\Xml\BlogMLTrackback.vb Components\Common\BlogModuleBase.vb Components\Services\WLW\BlogPostException.vb Components\Common\BlogContextBase.vb Components\Common\Image.vb Components\Common\ViewSettings.vb Components\Common\Extensions.vb Components\Common\Globals.vb Components\Entities\Comments\CommentInfo_Interfaces.vb Components\Entities\Comments\CommentInfo_Properties.vb Components\Entities\Comments\CommentsController_CRUD.vb Components\Entities\Comments\CommentsController_FK.vb Components\Entities\Comments\CommentsController.vb Components\Integration\NotificationKey.vb Components\Security\ContextSecurity.vb Components\Common\ModuleSettings.vb Components\Data\DataProvider_CMD.vb Components\Data\DataProvider_CRUD.vb Components\Data\DataProvider_FK.vb Components\Data\SqlDataProvider_CMD.vb Components\Data\SqlDataProvider_CRUD.vb Components\Data\SqlDataProvider_FK.vb Components\Entities\Blogs\BlogsController.vb Components\Entities\Posts\PostsController.vb Components\Entities\Blogs\BlogInfo.vb Components\Entities\Blogs\BlogInfo_Interfaces.vb Components\Entities\Blogs\BlogInfo_Properties.vb Components\Entities\Blogs\BlogsController_CRUD.vb Components\Entities\Blogs\BlogsController_FK.vb Components\Entities\Comments\CommentInfo.vb Components\Entities\Posts\PostsController_CRUD.vb Components\Entities\Posts\PostInfo_Interfaces.vb Components\Entities\Posts\PostInfo_Properties.vb Components\Entities\Posts\PostInfo.vb Components\Entities\Terms\TermInfo.vb Components\Integration\JournalController.vb Components\Integration\NotificationController.vb Components\Security\BlogUser.vb Components\Security\Controls\BlogPermissionsGrid.vb Components\Security\Controls\PermissionsGrid.vb Components\Security\Permissions\BlogPermissionCollection.vb Components\Security\Permissions\BlogPermissionInfo_Interfaces.vb Components\Security\Permissions\BlogPermissionInfo_Properties.vb Components\Security\Permissions\BlogPermissionsController_CRUD.vb Components\Security\Permissions\BlogPermissionsController.vb Components\Security\Permissions\BlogPermissionInfo.vb Components\Security\Permissions\PermissionCollection.vb Components\Security\Permissions\PermissionInfo_Properties.vb Components\Security\Permissions\PermissionsController.vb Components\Services\WLW\MetaWeblog\IMetaWeblog.vb Components\Services\WLW\MoveableType\IMoveableType.vb Components\Rss\StringWriterWithEncoding.vb Components\Services\BlogAuthorizeAttribute.vb Components\Services\BlogRouteMapper.vb Components\Integration\Services\NotificationServiceController.vb Components\Templating\BaseCustomTokenReplace.vb Components\Templating\BaseTokenReplace.vb Components\Templating\BlogTokenReplace.vb Components\Templating\CustomParameters.vb Components\Templating\GenericTokenReplace.vb Components\Templating\LazyLoadingUser.vb Components\Templating\Resources.vb Components\Templating\Template.vb Components\Templating\TemplateController.vb Components\Templating\TemplateManager.vb Components\Templating\TemplateRepeaterItem.vb Components\Templating\TemplateSetting.vb Components\Templating\TemplateSettings.vb Components\Templating\TemplateSettingValue.vb Components\Templating\TokenReplace.vb Components\Templating\ViewTemplate.vb Components\Services\WLW\WordPress\IWordPress.vb Controls\CategorySelect.vb Controls\Comments.ascx.designer.vb Controls\Comments.ascx.vb Components\Integration\FileController.vb BlogEdit.ascx.designer.vb BlogEdit.ascx.vb Controls\LocalizedTextEdit.vb Controls\LongTextEdit.vb Controls\ManagementPanel.ascx.designer.vb Controls\ManagementPanel.ascx.vb Controls\ShortTextEdit.vb Controls\TagEdit.vb Admin.ascx.designer.vb Admin.ascx.vb Controls\TemplateSettings.ascx.designer.vb Controls\TemplateSettings.ascx.vb Manage.ascx.designer.vb Manage.ascx.vb PostEdit.ascx.designer.vb PostEdit.ascx.vb Blog.ascx.designer.vb Blog.ascx.vb "My Project\AssemblyInfo.vb" Components\Data\DataProvider.vb Components\Data\SqlDataProvider.vb Controls\ViewSettings.ascx.designer.vb Controls\ViewSettings.ascx.vb TermsEditML.ascx.designer.vb TermsEditML.ascx.vb "C:\Users\Administrator\AppData\Local\Temp\.NETFramework,Version=v4.0.AssemblyAttributes.vb" /warnaserror+:41999,42016,42017,42018,42019,42020,42021,42022,42032,42036
   [msbuild]   Microsoft (R) Visual Basic Compiler version 10.0.30319.233
   [msbuild]   Copyright (c) Microsoft Corporation.  All rights reserved.
   [msbuild]   Using alternate mscorlib.dll version 4.0.30319.1
@@ -3463,8 +3459,7 @@ compile.projects:
   [msbuild]   Copying file from "TermsEditML.ascx" to "E:\Webroot\BLOGDEV\DesktopModules\Blog\bin\_PublishedWebsites\DotNetNuke.Modules.Blog\TermsEditML.ascx".
   [msbuild]   Copying file from "Manage.ascx" to "E:\Webroot\BLOGDEV\DesktopModules\Blog\bin\_PublishedWebsites\DotNetNuke.Modules.Blog\Manage.ascx".
   [msbuild]   Copying file from "PostEdit.ascx" to "E:\Webroot\BLOGDEV\DesktopModules\Blog\bin\_PublishedWebsites\DotNetNuke.Modules.Blog\PostEdit.ascx".
-  [msbuild]   Copying file from "blogpost.ashx" to "E:\Webroot\BLOGDEV\DesktopModules\Blog\bin\_PublishedWebsites\DotNetNuke.Modules.Blog\blogpost.ashx".
-  [msbuild]   Copying file from "blogpostredirect.aspx" to "E:\Webroot\BLOGDEV\DesktopModules\Blog\bin\_PublishedWebsites\DotNetNuke.Modules.Blog\blogpostredirect.aspx".
+  [msbuild]   Copying file from "BlogPost.ashx" to "E:\Webroot\BLOGDEV\DesktopModules\Blog\bin\_PublishedWebsites\DotNetNuke.Modules.Blog\BlogPost.ashx".
   [msbuild]   Copying file from "Blog.ascx" to "E:\Webroot\BLOGDEV\DesktopModules\Blog\bin\_PublishedWebsites\DotNetNuke.Modules.Blog\Blog.ascx".
   [msbuild]   Copying file from "module.css" to "E:\Webroot\BLOGDEV\DesktopModules\Blog\bin\_PublishedWebsites\DotNetNuke.Modules.Blog\module.css".
   [msbuild]   Copying file from "BlogImage.ashx" to "E:\Webroot\BLOGDEV\DesktopModules\Blog\bin\_PublishedWebsites\DotNetNuke.Modules.Blog\BlogImage.ashx".
@@ -3647,9 +3642,6 @@ compile.projects:
   [msbuild]   Comparison path is "obj\release\".
   [msbuild] Done executing task "FindUnderPath".
   [msbuild] Task "Delete"
-  [msbuild]   File "E:\Webroot\BLOGDEV\DesktopModules\Blog\obj\release\DotNetNuke.Modules.Blog.SharedResources.ascx.resources" doesn't exist. Skipping.
-  [msbuild]   File "E:\Webroot\BLOGDEV\DesktopModules\Blog\obj\release\GenerateResource.read.1.tlog" doesn't exist. Skipping.
-  [msbuild]   File "E:\Webroot\BLOGDEV\DesktopModules\Blog\obj\release\GenerateResource.write.1.tlog" doesn't exist. Skipping.
   [msbuild] Done executing task "Delete".
   [msbuild] Task "RemoveDuplicates"
   [msbuild] Done executing task "RemoveDuplicates".
@@ -3681,7 +3673,7 @@ compile.projects:
   [msbuild]     4 Warning(s)
   [msbuild]     0 Error(s)
   [msbuild] 
-  [msbuild] Time Elapsed 00:00:04.36
+  [msbuild] Time Elapsed 00:00:03.83
 
 make.doc:
 
@@ -3721,8 +3713,8 @@ make.codestats:
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\BlogML\BlogMLResource.vb Totals: [T] 86 [C] 2 [E] 19
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\BlogML\BlogMLWriterBase.vb Totals: [T] 425 [C] 7 [E] 97
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\BlogML\Pair.vb Totals: [T] 19 [C] 3 [E] 4
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\BlogContextBase.vb Totals: [T] 234 [C] 19 [E] 15
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\BlogModuleBase.vb Totals: [T] 135 [C] 21 [E] 19
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\BlogContextBase.vb Totals: [T] 236 [C] 19 [E] 15
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\BlogModuleBase.vb Totals: [T] 168 [C] 24 [E] 22
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\BlogModuleController.vb Totals: [T] 26 [C] 3 [E] 7
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\DynatreeItem.vb Totals: [T] 11 [C] 0 [E] 0
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\Extensions.vb Totals: [T] 365 [C] 0 [E] 37
@@ -3764,7 +3756,7 @@ make.codestats:
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Posts\PostsController_CRUD.vb Totals: [T] 59 [C] 2 [E] 20
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Posts\PostsController_Service.vb Totals: [T] 78 [C] 0 [E] 8
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Terms\TermInfo.vb Totals: [T] 187 [C] 31 [E] 14
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Terms\TermsController.vb Totals: [T] 123 [C] 19 [E] 14
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Terms\TermsController.vb Totals: [T] 124 [C] 19 [E] 14
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Terms\TermsController_Service.vb Totals: [T] 45 [C] 0 [E] 6
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Integration\Services\NotificationServiceController.vb Totals: [T] 143 [C] 19 [E] 15
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Integration\FileController.vb Totals: [T] 75 [C] 19 [E] 15
@@ -3772,7 +3764,7 @@ make.codestats:
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Integration\JournalController.vb Totals: [T] 181 [C] 61 [E] 24
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Integration\NotificationController.vb Totals: [T] 312 [C] 64 [E] 50
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Integration\NotificationKey.vb Totals: [T] 34 [C] 0 [E] 6
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Rss\BlogRssFeed.vb Totals: [T] 300 [C] 15 [E] 27
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Rss\BlogRssFeed.vb Totals: [T] 293 [C] 15 [E] 27
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Rss\StringWriterWithEncoding.vb Totals: [T] 47 [C] 26 [E] 6
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Security\Controls\BlogPermissionsGrid.vb Totals: [T] 584 [C] 200 [E] 86
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Security\Controls\PermissionsGrid.vb Totals: [T] 969 [C] 304 [E] 152
@@ -3819,7 +3811,7 @@ make.codestats:
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\Comments.ascx.vb Totals: [T] 65 [C] 0 [E] 16
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\LocalizedTextEdit.vb Totals: [T] 176 [C] 0 [E] 24
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\LongTextEdit.vb Totals: [T] 207 [C] 3 [E] 16
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\ManagementPanel.ascx Totals: [T] 184 [C] 0 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\ManagementPanel.ascx Totals: [T] 183 [C] 0 [E] 0
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\ManagementPanel.ascx.designer.vb Totals: [T] 161 [C] 120 [E] 19
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\ManagementPanel.ascx.vb Totals: [T] 102 [C] 0 [E] 10
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\ShortTextEdit.vb Totals: [T] 199 [C] 3 [E] 25
@@ -3953,7 +3945,7 @@ make.codestats:
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Admin.ascx.vb Totals: [T] 134 [C] 0 [E] 20
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Blog.ascx Totals: [T] 12 [C] 0 [E] 4
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Blog.ascx.designer.vb Totals: [T] 42 [C] 29 [E] 6
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Blog.ascx.vb Totals: [T] 302 [C] 0 [E] 43
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Blog.ascx.vb Totals: [T] 303 [C] 0 [E] 43
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\BlogEdit.ascx Totals: [T] 113 [C] 1 [E] 2
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\BlogEdit.ascx.designer.vb Totals: [T] 330 [C] 253 [E] 38
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\BlogEdit.ascx.vb Totals: [T] 206 [C] 3 [E] 20
@@ -3961,9 +3953,7 @@ make.codestats:
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\BlogImport.ascx Totals: [T] 93 [C] 1 [E] 1
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\BlogImport.ascx.designer.vb Totals: [T] 159 [C] 120 [E] 19
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\BlogImport.ascx.vb Totals: [T] 134 [C] 5 [E] 13
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\blogpost.ashx.vb Totals: [T] 715 [C] 66 [E] 79
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\blogpostredirect.aspx.designer.vb Totals: [T] 37 [C] 23 [E] 6
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\blogpostredirect.aspx.vb Totals: [T] 82 [C] 21 [E] 20
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\BlogPost.ashx.vb Totals: [T] 701 [C] 64 [E] 78
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Manage.ascx Totals: [T] 140 [C] 0 [E] 2
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Manage.ascx.designer.vb Totals: [T] 51 [C] 36 [E] 7
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Manage.ascx.vb Totals: [T] 61 [C] 0 [E] 17
@@ -3973,7 +3963,7 @@ make.codestats:
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\TermsEditML.ascx Totals: [T] 43 [C] 0 [E] 9
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\TermsEditML.ascx.designer.vb Totals: [T] 42 [C] 29 [E] 6
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\TermsEditML.ascx.vb Totals: [T] 63 [C] 0 [E] 10
-[codestats] Totals: [VB]  [T] 42516 [C] 6790 [E] 5617
+[codestats] Totals: [VB]  [T] 42412 [C] 6747 [E] 5593
 
 check.sqlscripts:
 
@@ -3982,7 +3972,7 @@ check.sqlscripts:
 make.package:
 
    [delete] Deleting directory 'D:\Programs\Nant\Build\Resources'.
-     [copy] Copying 178 files to 'D:\Programs\Nant\Build\Resources'.
+     [copy] Copying 177 files to 'D:\Programs\Nant\Build\Resources'.
      [copy] Copying 76 files to 'D:\Programs\Nant\Build\Resources'.
      [echo] Compacting JS files
     [jsmin] Minifying Javascript
@@ -4141,7 +4131,7 @@ make.package:
 [compilecss] Compiling D:\Programs\Nant\Build\Resources\module.css
 [compilecss] Replacing css/font-awesome.css
 [compilecss] Replacing ../images/fontawesome-webfont.eot?v=3.0.1
-      [zip] Zipping 254 files to 'D:\Programs\Nant\Build\Package\Resources.zip'.
+      [zip] Zipping 253 files to 'D:\Programs\Nant\Build\Package\Resources.zip'.
      [copy] Copying 2 files to 'D:\Programs\Nant\Build\Package'.
      [copy] Copying 2 files to 'D:\Programs\Nant\Build\Package'.
      [copy] Copying 17 files to 'D:\Programs\Nant\Build\Package'.
@@ -4153,9 +4143,9 @@ make.package:
 make.package:
 
    [delete] Deleting directory 'D:\Programs\Nant\Build\Resources'.
-     [copy] Copying 325 files to 'D:\Programs\Nant\Build\Resources'.
+     [copy] Copying 322 files to 'D:\Programs\Nant\Build\Resources'.
      [copy] Copying 76 files to 'D:\Programs\Nant\Build\Resources'.
-      [zip] Zipping 401 files to 'D:\Programs\Nant\Build\Package\Resources.zip'.
+      [zip] Zipping 398 files to 'D:\Programs\Nant\Build\Package\Resources.zip'.
      [copy] Copying 2 files to 'D:\Programs\Nant\Build\Package'.
      [copy] Copying 2 files to 'D:\Programs\Nant\Build\Package'.
      [copy] Copying 17 files to 'D:\Programs\Nant\Build\Package'.
@@ -4171,16 +4161,16 @@ backup.project:
      [echo] Backing Up to \\192.168.123.240\src
      [echo] Backing Up to D:\src
      [echo] Backing Up Install
-     [copy] Copying 1 file to 'D:\src\Blog\2013-4-27\Blog_06.00.00_Install.zip'.
+     [copy] Copying 1 file to 'D:\src\Blog\2013-4-29\Blog_06.00.00_Install.zip'.
      [echo] Backing Up Source
-     [copy] Copying 1 file to 'D:\src\Blog\2013-4-27\Blog_06.00.00_Source.zip'.
+     [copy] Copying 1 file to 'D:\src\Blog\2013-4-29\Blog_06.00.00_Source.zip'.
      [echo] Backing Up to G:\src
      [echo] Backing Up Install
-     [copy] Copying 1 file to 'G:\src\Blog\2013-4-27\Blog_06.00.00_Install.zip'.
+     [copy] Copying 1 file to 'G:\src\Blog\2013-4-29\Blog_06.00.00_Install.zip'.
      [echo] Backing Up Source
-     [copy] Copying 1 file to 'G:\src\Blog\2013-4-27\Blog_06.00.00_Source.zip'.
+     [copy] Copying 1 file to 'G:\src\Blog\2013-4-29\Blog_06.00.00_Source.zip'.
 
 BUILD SUCCEEDED
 
-Total time: 57.6 seconds.
+Total time: 33.5 seconds.
 

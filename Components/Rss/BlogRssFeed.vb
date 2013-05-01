@@ -65,9 +65,9 @@ Namespace Rss
    ' Initialize Settings
    Settings = ModuleSettings.GetModuleSettings(moduleId)
    PortalSettings = DotNetNuke.Entities.Portals.PortalSettings.Current
-   RecordsToSend = Settings.RssDefaultNrItems
-   ImageWidth = Settings.RssImageWidth
-   ImageHeight = Settings.RssImageHeight
+   RecordsToSend = settings.RssDefaultNrItems
+   ImageWidth = settings.RssImageWidth
+   ImageHeight = settings.RssImageHeight
    ImageHandlerUrl = ResolveUrl(glbImageHandlerPath)
 
    ' Read Request Values
@@ -75,15 +75,15 @@ Namespace Rss
    reqParams.ReadValue("blogid", BlogId)
    reqParams.ReadValue("term", TermId)
    reqParams.ReadValue("termid", TermId)
-   If Settings.RssMaxNrItems > 0 Then
+   If settings.RssMaxNrItems > 0 Then
     reqParams.ReadValue("recs", RecordsToSend)
-    If RecordsToSend > Settings.RssMaxNrItems Then RecordsToSend = Settings.RssMaxNrItems
+    If RecordsToSend > settings.RssMaxNrItems Then RecordsToSend = settings.RssMaxNrItems
    End If
-   If Settings.RssImageSizeAllowOverride Then
+   If settings.RssImageSizeAllowOverride Then
     reqParams.ReadValue("w", ImageWidth)
     reqParams.ReadValue("h", ImageHeight)
    End If
-   If Settings.RssAllowContentInFeed Then
+   If settings.RssAllowContentInFeed Then
     reqParams.ReadValue("body", IncludeContents)
    End If
    reqParams.ReadValue("search", Search)
@@ -101,8 +101,8 @@ Namespace Rss
     If m IsNot Nothing Then
      Title = m.ModuleTitle
     End If
-    FeedEmail = Settings.RssEmail
-    Copyright = Settings.RssDefaultCopyright
+    FeedEmail = settings.RssEmail
+    Copyright = settings.RssDefaultCopyright
    Else
     Title = Blog.Title
     Description = Blog.Description
@@ -119,9 +119,9 @@ Namespace Rss
    Link = ApplicationURL()
    If Blog IsNot Nothing Then Link &= String.Format("&blog={0}", BlogId)
    If Term IsNot Nothing Then Link &= String.Format("&term={0}", TermId)
-   If RecordsToSend <> Settings.RssDefaultNrItems Then Link &= String.Format("&recs={0}", RecordsToSend)
-   If ImageWidth <> Settings.RssImageWidth Then Link &= String.Format("&w={0}", ImageWidth)
-   If ImageHeight <> Settings.RssImageHeight Then Link &= String.Format("&h={0}", ImageHeight)
+   If RecordsToSend <> settings.RssDefaultNrItems Then Link &= String.Format("&recs={0}", RecordsToSend)
+   If ImageWidth <> settings.RssImageWidth Then Link &= String.Format("&w={0}", ImageWidth)
+   If ImageHeight <> settings.RssImageHeight Then Link &= String.Format("&h={0}", ImageHeight)
    If IncludeContents Then Link &= "&body=true"
    If Language <> "" Then Link &= String.Format("&language={0}", Language)
    If IsSearchFeed Then Link &= String.Format("&search={0}&t={1}&c={2}", HttpUtility.UrlEncode(Search), SearchTitle, SearchContents)
@@ -219,10 +219,10 @@ Namespace Rss
     output.WriteElementString("category", Term.LocalizedName)
    End If
    output.WriteElementString("generator", "DotNetNuke Blog RSS Generator Version " & CType(System.Reflection.Assembly.GetExecutingAssembly.GetName.Version.ToString, String))
-   output.WriteElementString("ttl", Settings.RssTtl.ToString)
+   output.WriteElementString("ttl", settings.RssTtl.ToString)
    If Blog IsNot Nothing AndAlso (Blog.IncludeImagesInFeed And Blog.Image <> "") Then
     output.WriteStartElement("image")
-    output.WriteElementString("url", ImageHandlerUrl & String.Format("?TabId={0}&ModuleId={1}&Blog={2}&w={4}&h={5}&c=1&key={3}", PortalSettings.ActiveTab.TabID, Settings.ModuleId, BlogId, Blog.Image, ImageWidth, ImageHeight))
+    output.WriteElementString("url", ImageHandlerUrl & String.Format("?TabId={0}&ModuleId={1}&Blog={2}&w={4}&h={5}&c=1&key={3}", PortalSettings.ActiveTab.TabID, settings.ModuleId, BlogId, Blog.Image, ImageWidth, ImageHeight))
     output.WriteElementString("title", Title)
     output.WriteElementString("link", Link)
     output.WriteElementString("width", ImageWidth.ToString) ' default 88 max 144
@@ -263,7 +263,7 @@ Namespace Rss
    writer.WriteElementString("description", RemoveHtmlTags(HttpUtility.HtmlDecode(item.Summary)))
    ' optional elements
    If item.Blog.IncludeAuthorInFeed Then writer.WriteElementString("author", String.Format("{0} ({1})", item.Email, item.DisplayName))
-   For Each t As TermInfo In TermsController.GetTermsByPost(item.ContentItemId, Settings.ModuleId, Locale)
+   For Each t As TermInfo In TermsController.GetTermsByPost(item.ContentItemId, settings.ModuleId, Locale)
     writer.WriteElementString("category", t.LocalizedName)
    Next
    writer.WriteElementString("guid", String.Format("post={0}", item.ContentItemId))
@@ -273,7 +273,7 @@ Namespace Rss
     writer.WriteStartElement(nsMediaPre, "thumbnail", nsMediaFull)
     writer.WriteAttributeString("width", ImageWidth.ToString)
     writer.WriteAttributeString("height", ImageHeight.ToString)
-    writer.WriteAttributeString("url", ImageHandlerUrl & String.Format("?TabId={0}&ModuleId={1}&Blog={2}&Post={3}&w={5}&h={6}&c=1&key={4}", PortalSettings.ActiveTab.TabID, Settings.ModuleId, item.BlogID, item.ContentItemId, item.Image, ImageWidth, ImageHeight))
+    writer.WriteAttributeString("url", ImageHandlerUrl & String.Format("?TabId={0}&ModuleId={1}&Blog={2}&Post={3}&w={5}&h={6}&c=1&key={4}", PortalSettings.ActiveTab.TabID, settings.ModuleId, item.BlogID, item.ContentItemId, item.Image, ImageWidth, ImageHeight))
     writer.WriteEndElement() ' thumbnail
    End If
    If IncludeContents Then

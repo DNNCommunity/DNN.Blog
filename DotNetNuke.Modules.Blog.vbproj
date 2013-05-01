@@ -267,9 +267,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Components\Services\WLW\BlogPostException.vb" />
-    <Compile Include="Components\Common\BlogContextBase.vb">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="Components\Common\BlogContextInfo.vb" />
     <Compile Include="Components\Common\Image.vb" />
     <Compile Include="Components\Common\ViewSettings.vb" />
     <Compile Include="Components\Common\Extensions.vb" />

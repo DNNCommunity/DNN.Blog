@@ -11,11 +11,11 @@ Public Class BlogEdit
  Private Sub Page_Init1(sender As Object, e As System.EventArgs) Handles Me.Init
 
   jQuery.RequestDnnPluginsRegistration()
-  If Not Security.IsEditor Then
-   If Not Security.IsBlogger Then
+  If Not BlogContext.Security.IsEditor Then
+   If Not BlogContext.Security.IsBlogger Then
     Response.Redirect(NavigateURL("Access Denied"), True)
    End If
-   If Blog IsNot Nothing AndAlso Blog.OwnerUserId <> UserId Then
+   If BlogContext.Blog IsNot Nothing AndAlso BlogContext.Blog.OwnerUserId <> UserId Then
     Response.Redirect(NavigateURL("Access Denied"), True)
    End If
   End If
@@ -26,22 +26,22 @@ Public Class BlogEdit
 
  Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
-  If Not Security.IsBlogger Then
+  If Not BlogContext.Security.IsBlogger Then
    Throw New Exception("You do not have access to this resource. Please check your login status.")
   End If
 
   If Not Page.IsPostBack Then
-   If Blog Is Nothing Then Blog = New BlogInfo ' initialize fields
+   If BlogContext.Blog Is Nothing Then BlogContext.Blog = New BlogInfo ' initialize fields
 
-   txtTitle.DefaultText = Blog.Title
-   txtTitle.LocalizedTexts = Blog.TitleLocalizations
+   txtTitle.DefaultText = BlogContext.Blog.Title
+   txtTitle.LocalizedTexts = BlogContext.Blog.TitleLocalizations
    txtTitle.InitialBind()
-   txtDescription.DefaultText = Blog.Description
-   txtDescription.LocalizedTexts = Blog.DescriptionLocalizations
+   txtDescription.DefaultText = BlogContext.Blog.Description
+   txtDescription.LocalizedTexts = BlogContext.Blog.DescriptionLocalizations
    txtDescription.InitialBind()
 
-   If IsMultiLingualSite Then
-    If Settings.AllowAllLocales Then
+   If BlogContext.IsMultiLingualSite Then
+    If BlogContext.Settings.AllowAllLocales Then
      ddLocale.DataSource = System.Globalization.CultureInfo.GetCultures(Globalization.CultureTypes.SpecificCultures)
      ddLocale.DataValueField = "Name"
     Else
@@ -50,27 +50,27 @@ Public Class BlogEdit
     End If
     ddLocale.DataBind()
     Try
-     ddLocale.Items.FindByValue(Blog.Locale).Selected = True
+     ddLocale.Items.FindByValue(BlogContext.Blog.Locale).Selected = True
     Catch ex As Exception
     End Try
-    chkFullLocalization.Checked = Blog.FullLocalization
+    chkFullLocalization.Checked = BlogContext.Blog.FullLocalization
    Else
     rowLocale.Visible = False
     rowFullLocalization.Visible = False
    End If
-   chkPublic.Checked = Blog.Published
-   chkSyndicate.Checked = Blog.Syndicated
-   If Blog.SyndicationEmail Is Nothing Then
+   chkPublic.Checked = BlogContext.Blog.Published
+   chkSyndicate.Checked = BlogContext.Blog.Syndicated
+   If BlogContext.Blog.SyndicationEmail Is Nothing Then
     txtSyndicationEmail.Text = ModuleContext.PortalSettings.UserInfo.Email
    Else
-    txtSyndicationEmail.Text = Blog.SyndicationEmail
+    txtSyndicationEmail.Text = BlogContext.Blog.SyndicationEmail
    End If
-   chkIncludeImagesInFeed.Checked = Blog.IncludeImagesInFeed
-   chkIncludeAuthorInFeed.Checked = Blog.IncludeAuthorInFeed
-   txtCopyright.Text = Blog.Copyright
-   cmdDelete.Visible = CBool(BlogId <> -1)
-   If Not String.IsNullOrEmpty(Blog.Image) Then
-    imgBlogImage.ImageUrl = ResolveUrl(glbImageHandlerPath) & String.Format("?TabId={0}&ModuleId={1}&Blog={2}&w=100&h=100&c=1&key={3}", TabId, Settings.ModuleId, BlogId, Blog.Image)
+   chkIncludeImagesInFeed.Checked = BlogContext.Blog.IncludeImagesInFeed
+   chkIncludeAuthorInFeed.Checked = BlogContext.Blog.IncludeAuthorInFeed
+   txtCopyright.Text = BlogContext.Blog.Copyright
+   cmdDelete.Visible = CBool(BlogContext.BlogId <> -1)
+   If Not String.IsNullOrEmpty(BlogContext.Blog.Image) Then
+    imgBlogImage.ImageUrl = ResolveUrl(glbImageHandlerPath) & String.Format("?TabId={0}&ModuleId={1}&Blog={2}&w=100&h=100&c=1&key={3}", TabId, BlogContext.Settings.ModuleId, BlogContext.BlogId, BlogContext.Blog.Image)
     imgBlogImage.Visible = True
     cmdImageRemove.Visible = True
    Else
@@ -78,12 +78,12 @@ Public Class BlogEdit
     cmdImageRemove.Visible = False
    End If
    ' ghost writing
-   chkMustApproveGhostPosts.Checked = Blog.MustApproveGhostPosts
-   chkPublishAsOwner.Checked = Blog.PublishAsOwner
-   ctlPermissions.Permissions = Blog.Permissions
+   chkMustApproveGhostPosts.Checked = BlogContext.Blog.MustApproveGhostPosts
+   chkPublishAsOwner.Checked = BlogContext.Blog.PublishAsOwner
+   ctlPermissions.Permissions = BlogContext.Blog.Permissions
    ctlPermissions.TabId = TabId
    ctlPermissions.CurrentUserId = UserId
-   ctlPermissions.UserIsAdmin = Security.UserIsAdmin
+   ctlPermissions.UserIsAdmin = BlogContext.Security.UserIsAdmin
 
    hlCancel.NavigateUrl = EditUrl("Manage")
   End If
@@ -92,8 +92,8 @@ Public Class BlogEdit
 
  Protected Sub cmdDelete_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdDelete.Click
   Try
-   If Not Blog Is Nothing Then
-    BlogsController.DeleteBlog(Blog.BlogID)
+   If Not BlogContext.Blog Is Nothing Then
+    BlogsController.DeleteBlog(BlogContext.Blog.BlogID)
    End If
    Response.Redirect(EditUrl("Manage"), False)
   Catch exc As Exception
@@ -104,19 +104,19 @@ Public Class BlogEdit
  Private Sub cmdUpdate_Click(sender As Object, e As System.EventArgs) Handles cmdUpdate.Click
   Try
    If Page.IsValid = True Then
-    If Blog Is Nothing Then
-     Blog = New BlogInfo
-     With Blog
-      .ModuleID = Settings.ModuleId
+    If BlogContext.Blog Is Nothing Then
+     BlogContext.Blog = New BlogInfo
+     With BlogContext.Blog
+      .ModuleID = BlogContext.Settings.ModuleId
       .OwnerUserId = Me.UserId
      End With
     End If
-    With Blog
+    With BlogContext.Blog
      .Title = txtTitle.DefaultText
      .TitleLocalizations = txtTitle.GetLocalizedTexts
      .Description = txtDescription.DefaultText
      .DescriptionLocalizations = txtDescription.GetLocalizedTexts
-     If IsMultiLingualSite Then
+     If BlogContext.IsMultiLingualSite Then
       .Locale = ddLocale.SelectedValue
       .FullLocalization = chkFullLocalization.Checked
      Else
@@ -131,25 +131,25 @@ Public Class BlogEdit
      .MustApproveGhostPosts = chkMustApproveGhostPosts.Checked
      .PublishAsOwner = chkPublishAsOwner.Checked
      .Permissions = ctlPermissions.Permissions
-     If BlogId = -1 Then
-      .BlogID = BlogsController.AddBlog(Blog, UserId)
+     If BlogContext.BlogId = -1 Then
+      .BlogID = BlogsController.AddBlog(BlogContext.Blog, UserId)
      Else
-      BlogsController.UpdateBlog(Blog, UserId)
+      BlogsController.UpdateBlog(BlogContext.Blog, UserId)
      End If
-     Modules.Blog.Security.Permissions.BlogPermissionsController.UpdateBlogPermissions(Blog)
+     Modules.Blog.Security.Permissions.BlogPermissionsController.UpdateBlogPermissions(BlogContext.Blog)
     End With
 
     If fileImage.HasFile Then
      Dim extension As String = IO.Path.GetExtension(fileImage.FileName).ToLower
      If glbPermittedFileExtensions.IndexOf(extension & ",") > -1 Then
-      Dim saveDir As String = GetBlogDirectoryMapPath(BlogId)
+      Dim saveDir As String = GetBlogDirectoryMapPath(BlogContext.BlogId)
       If Not IO.Directory.Exists(saveDir) Then IO.Directory.CreateDirectory(saveDir)
-      If Blog.Image <> "" Then
+      If BlogContext.Blog.Image <> "" Then
        ' remove old images
        Dim imagesToDelete As New List(Of String)
        Dim d As New IO.DirectoryInfo(saveDir)
        For Each f As IO.FileInfo In d.GetFiles
-        If f.Name.StartsWith(Blog.Image) Then
+        If f.Name.StartsWith(BlogContext.Blog.Image) Then
          imagesToDelete.Add(f.FullName)
         End If
        Next
@@ -162,8 +162,8 @@ Public Class BlogEdit
       End If
       Dim newFileName As String = Guid.NewGuid.ToString("D")
       fileImage.SaveAs(saveDir & newFileName & IO.Path.GetExtension(fileImage.FileName).ToLower)
-      Blog.Image = newFileName
-      BlogsController.UpdateBlog(Blog, UserId)
+      BlogContext.Blog.Image = newFileName
+      BlogsController.UpdateBlog(BlogContext.Blog, UserId)
      End If
     End If
 
@@ -176,14 +176,14 @@ Public Class BlogEdit
 
  Private Sub cmdImageRemove_Click(sender As Object, e As System.EventArgs) Handles cmdImageRemove.Click
 
-  If Blog IsNot Nothing Then
-   If Blog.Image <> "" Then
+  If BlogContext.Blog IsNot Nothing Then
+   If BlogContext.Blog.Image <> "" Then
     ' remove old images
-    Dim saveDir As String = GetBlogDirectoryMapPath(BlogId)
+    Dim saveDir As String = GetBlogDirectoryMapPath(BlogContext.BlogId)
     Dim imagesToDelete As New List(Of String)
     Dim d As New IO.DirectoryInfo(saveDir)
     For Each f As IO.FileInfo In d.GetFiles
-     If f.Name.StartsWith(Blog.Image) Then
+     If f.Name.StartsWith(BlogContext.Blog.Image) Then
       imagesToDelete.Add(f.FullName)
      End If
     Next
@@ -194,8 +194,8 @@ Public Class BlogEdit
      End Try
     Next
    End If
-   Blog.Image = ""
-   BlogsController.UpdateBlog(Blog, UserId)
+   BlogContext.Blog.Image = ""
+   BlogsController.UpdateBlog(BlogContext.Blog, UserId)
   End If
   imgBlogImage.Visible = False
   cmdImageRemove.Visible = False

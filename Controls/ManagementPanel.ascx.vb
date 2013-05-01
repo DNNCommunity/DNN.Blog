@@ -5,7 +5,7 @@ Imports DotNetNuke.Modules.Blog.Entities.Blogs
 
 Namespace Controls
  Public Class ManagementPanel
-  Inherits BlogContextBase
+  Inherits BlogModuleBase
 
   Public Property RssLink As String = ""
   Public Property BlogSelectListHtml As String = ""
@@ -15,18 +15,18 @@ Namespace Controls
 
    LocalResourceFile = "~/DesktopModules/Blog/Controls/App_LocalResources/ManagementPanel.ascx.resx"
    If Not Me.IsPostBack Then
-    cmdManageBlogs.Visible = Security.IsBlogger Or Security.CanApprovePost
-    cmdAdmin.Visible = Security.IsEditor
-    cmdBlog.Visible = Security.CanAddPost
-    cmdEditPost.Visible = (Post IsNot Nothing) And Security.CanEditPost
-    cmdCopyModule.Visible = Security.IsEditor
-    pnlCopyModule.Visible = Security.IsEditor
+    cmdManageBlogs.Visible = BlogContext.Security.IsBlogger Or BlogContext.Security.CanApprovePost
+    cmdAdmin.Visible = BlogContext.Security.IsEditor
+    cmdBlog.Visible = BlogContext.Security.CanAddPost
+    cmdEditPost.Visible = (BlogContext.Post IsNot Nothing) And BlogContext.Security.CanEditPost
+    cmdCopyModule.Visible = BlogContext.Security.IsEditor
+    pnlCopyModule.Visible = BlogContext.Security.IsEditor
     wlwlink.Title = LocalizeString("WLW")
-    wlwlink.Visible = Security.CanAddPost
-    If Post IsNot Nothing Then
+    wlwlink.Visible = BlogContext.Security.CanAddPost
+    If BlogContext.Post IsNot Nothing Then
      cmdBlog.Text = LocalizeString("cmdEdit")
     End If
-    If Security.IsEditor Then
+    If BlogContext.Security.IsEditor Then
      ddTemplate.Items.Clear()
      ddTemplate.Items.Add(New ListItem("Default [System]", "[G]_default"))
      For Each d As IO.DirectoryInfo In (New IO.DirectoryInfo(HttpContext.Current.Server.MapPath(DotNetNuke.Common.ResolveUrl(glbTemplatesPath)))).GetDirectories
@@ -34,7 +34,7 @@ Namespace Controls
        ddTemplate.Items.Add(New ListItem(d.Name & " [System]", "[G]" & d.Name))
       End If
      Next
-     For Each d As IO.DirectoryInfo In (New IO.DirectoryInfo(Settings.PortalTemplatesMapPath)).GetDirectories
+     For Each d As IO.DirectoryInfo In (New IO.DirectoryInfo(BlogContext.Settings.PortalTemplatesMapPath)).GetDirectories
       ddTemplate.Items.Add(New ListItem(d.Name & " [Local]", "[P]" & d.Name))
      Next
      For intItem As Integer = 0 To PortalSettings.ActiveTab.Panes.Count - 1
@@ -50,21 +50,21 @@ Namespace Controls
    End If
    RssLink = ResolveUrl(glbServicesPath) & "RSS/Get"
    RssLink &= String.Format("?tabid={0}&moduleid={1}", TabId, ModuleId)
-   If Blog IsNot Nothing Then RssLink &= String.Format("&blog={0}", BlogId)
-   If Term IsNot Nothing Then RssLink &= String.Format("&term={0}", TermId)
-   If Not String.IsNullOrEmpty(SearchString) Then
-    RssLink &= String.Format("&search={0}&t={1}&c={2}", HttpUtility.UrlEncode(SearchString), SearchTitle, SearchContents)
+   If BlogContext.Blog IsNot Nothing Then RssLink &= String.Format("&blog={0}", BlogContext.BlogId)
+   If BlogContext.Term IsNot Nothing Then RssLink &= String.Format("&term={0}", BlogContext.TermId)
+   If Not String.IsNullOrEmpty(BlogContext.SearchString) Then
+    RssLink &= String.Format("&search={0}&t={1}&c={2}", HttpUtility.UrlEncode(BlogContext.SearchString), BlogContext.SearchTitle, BlogContext.SearchContents)
    End If
-   If ShowLocale <> "" Then RssLink &= String.Format("&language={0}", ShowLocale)
-   If Security.CanAddPost Then
+   If BlogContext.ShowLocale <> "" Then RssLink &= String.Format("&language={0}", BlogContext.ShowLocale)
+   If BlogContext.Security.CanAddPost Then
     BlogSelectListHtml = "<select id=""ddBlog"">"
     Dim blogList As IEnumerable(Of BlogInfo) = Nothing
-    If Security.IsEditor Then
-     blogList = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, Locale).Values
+    If BlogContext.Security.IsEditor Then
+     blogList = BlogsController.GetBlogsByModule(BlogContext.Settings.ModuleId, UserId, BlogContext.Locale).Values
     Else
-     blogList = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, Locale).Values.Where(Function(b)
-                                                                                                  Return b.OwnerUserId = UserId Or b.CanAdd Or (b.CanEdit And ContentItemId > -1)
-                                                                                                 End Function)
+     blogList = BlogsController.GetBlogsByModule(BlogContext.Settings.ModuleId, UserId, BlogContext.Locale).Values.Where(Function(b)
+                                                                                                                          Return b.OwnerUserId = UserId Or b.CanAdd Or (b.CanEdit And BlogContext.ContentItemId > -1)
+                                                                                                                         End Function)
     End If
     NrBlogs = blogList.Count
     If NrBlogs = 0 Then
@@ -87,15 +87,15 @@ Namespace Controls
   End Sub
 
   Private Sub cmdBlog_Click(sender As Object, e As System.EventArgs) Handles cmdBlog.Click
-   If BlogId <> -1 Then
-    Response.Redirect(EditUrl("Blog", BlogId.ToString, "PostEdit"), False)
+   If BlogContext.BlogId <> -1 Then
+    Response.Redirect(EditUrl("Blog", BlogContext.BlogId.ToString, "PostEdit"), False)
    Else
     Response.Redirect(EditUrl("PostEdit"), False)
    End If
   End Sub
 
   Private Sub cmdEditPost_Click(sender As Object, e As System.EventArgs) Handles cmdEditPost.Click
-   Response.Redirect(EditUrl("Post", ContentItemId.ToString, "PostEdit"), False)
+   Response.Redirect(EditUrl("Post", BlogContext.ContentItemId.ToString, "PostEdit"), False)
   End Sub
 
  End Class
