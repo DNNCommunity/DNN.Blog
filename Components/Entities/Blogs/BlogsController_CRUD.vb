@@ -22,7 +22,7 @@ Namespace Entities.Blogs
   objBlog.BlogID = CType(DataProvider.Instance().AddBlog(objBlog.AutoApprovePingBack, objBlog.ModuleID, objBlog.AutoApproveTrackBack, objBlog.Copyright, objBlog.Description, objBlog.EnablePingBackReceive, objBlog.EnablePingBackSend, objBlog.EnableTrackBackReceive, objBlog.EnableTrackBackSend, objBlog.FullLocalization, objBlog.Image, objBlog.IncludeAuthorInFeed, objBlog.IncludeImagesInFeed, objBlog.Locale, objBlog.MustApproveGhostPosts, objBlog.OwnerUserId, objBlog.PublishAsOwner, objBlog.Published, objBlog.Syndicated, objBlog.SyndicationEmail, objBlog.Title, createdByUser), Integer)
 
    ' localization
-   For Each l As String In objBlog.TitleLocalizations.Keys
+   For Each l As String In objBlog.TitleLocalizations.Locales
     DataProvider.Instance().SetBlogLocalization(objBlog.BlogID, l, objBlog.TitleLocalizations(l), objBlog.DescriptionLocalizations(l))
    Next
 
@@ -35,7 +35,7 @@ Namespace Entities.Blogs
   DataProvider.Instance().UpdateBlog(objBlog.AutoApprovePingBack, objBlog.ModuleID, objBlog.AutoApproveTrackBack, objBlog.BlogID, objBlog.Copyright, objBlog.Description, objBlog.EnablePingBackReceive, objBlog.EnablePingBackSend, objBlog.EnableTrackBackReceive, objBlog.EnableTrackBackSend, objBlog.FullLocalization, objBlog.Image, objBlog.IncludeAuthorInFeed, objBlog.IncludeImagesInFeed, objBlog.Locale, objBlog.MustApproveGhostPosts, objBlog.OwnerUserId, objBlog.PublishAsOwner, objBlog.Published, objBlog.Syndicated, objBlog.SyndicationEmail, objBlog.Title, updatedByUser)
 
    ' localization
-   For Each l As String In objBlog.TitleLocalizations.Keys
+   For Each l As String In objBlog.TitleLocalizations.Locales
     DataProvider.Instance().SetBlogLocalization(objBlog.BlogID, l, objBlog.TitleLocalizations(l), objBlog.DescriptionLocalizations(l))
    Next
 

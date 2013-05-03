@@ -22,12 +22,12 @@ Namespace Common
     Case SummaryType.HtmlIndependent
     Case SummaryType.HtmlPrecedesPost
      Body = Summary & Body
-     For Each l As String In Me.SummaryLocalizations.Keys
+     For Each l As String In Me.SummaryLocalizations.Locales
       Me.BodyLocalizations(l) = Me.SummaryLocalizations(l) & Me.BodyLocalizations(l)
      Next
     Case SummaryType.PlainTextIndependent
      Me.Summary = RemoveHtmlTags(Me.Summary)
-     For Each l As String In Me.SummaryLocalizations.Keys
+     For Each l As String In Me.SummaryLocalizations.Locales
       Me.SummaryLocalizations(l) = RemoveHtmlTags(Me.SummaryLocalizations(l))
      Next
    End Select
@@ -44,7 +44,7 @@ Namespace Common
     Body = Body.Substring(Summary.Length)
    End If
    If includeLocalizations Then
-    For Each l As String In Post.TitleLocalizations.Keys
+    For Each l As String In Post.TitleLocalizations.Locales
      Dim lBody As String = ""
      If Post.ContentLocalizations.ContainsKey(l) Then lBody = Post.ContentLocalizations(l)
      Dim lSummary As String = ""
@@ -84,7 +84,7 @@ Namespace Common
      Summary = HttpUtility.HtmlEncode(Summary)
     End If
     If includeLocalizations Then
-     For Each l As String In Me.SummaryLocalizations.Keys
+     For Each l As String In Me.SummaryLocalizations.Locales
       Me.BodyLocalizations(l) = HttpUtility.HtmlEncode(Me.BodyLocalizations(l))
       Me.SummaryLocalizations(l) = HttpUtility.HtmlEncode(Me.SummaryLocalizations(l))
      Next

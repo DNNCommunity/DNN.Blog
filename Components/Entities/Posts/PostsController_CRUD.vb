@@ -30,7 +30,7 @@ Namespace Entities.Posts
    objPost.ContentItemId = DataProvider.Instance().AddPost(objPost.AllowComments, objPost.BlogID, objPost.Content, objPost.Copyright, objPost.DisplayCopyright, objPost.Image, objPost.Locale, objPost.Published, objPost.PublishedOnDate, objPost.Summary, objPost.Terms.ToTermIDString, objPost.Title, objPost.ViewCount, createdByUser)
 
    ' localization
-   For Each l As String In objPost.TitleLocalizations.Keys
+   For Each l As String In objPost.TitleLocalizations.Locales
     DataProvider.Instance().SetPostLocalization(objPost.ContentItemId, l, objPost.TitleLocalizations(l), objPost.SummaryLocalizations(l), objPost.ContentLocalizations(l), createdByUser)
    Next
 
@@ -43,7 +43,7 @@ Namespace Entities.Posts
    DataProvider.Instance().UpdatePost(objPost.AllowComments, objPost.BlogID, objPost.Content, objPost.ContentItemId, objPost.Copyright, objPost.DisplayCopyright, objPost.Image, objPost.Locale, objPost.Published, objPost.PublishedOnDate, objPost.Summary, objPost.Terms.ToTermIDString, objPost.Title, objPost.ViewCount, updatedByUser)
 
    ' localization
-   For Each l As String In objPost.TitleLocalizations.Keys
+   For Each l As String In objPost.TitleLocalizations.Locales
     DataProvider.Instance().SetPostLocalization(objPost.ContentItemId, l, objPost.TitleLocalizations(l), objPost.SummaryLocalizations(l), objPost.ContentLocalizations(l), updatedByUser)
    Next
 

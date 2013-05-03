@@ -14,9 +14,13 @@ Namespace Common
 
 #Region " Properties "
   Private _texts As New Dictionary(Of String, String)
-  Public ReadOnly Property Keys() As Dictionary(Of String, String).KeyCollection
+  Public ReadOnly Property Locales As List(Of String)
    Get
-    Return _texts.Keys
+    Dim res As New List(Of String)
+    For Each k As String In _texts.Keys
+     res.Add(k)
+    Next
+    Return res
    End Get
   End Property
   Default Public Property Item(ByVal key As String) As String
