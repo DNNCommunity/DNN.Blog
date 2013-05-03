@@ -35,6 +35,8 @@ Namespace Entities.Posts
   <DataMember()>
   Public Property Locale As String = ""
   <DataMember()>
+  Public Property ViewCount As Int32 = 0
+  <DataMember()>
   Public Property Username As String = ""
   <DataMember()>
   Public Property Email As String = ""
@@ -42,8 +44,6 @@ Namespace Entities.Posts
   Public Property DisplayName As String = ""
   <DataMember()>
   Public Property NrComments As Int32 = 0
-  <DataMember()>
-  Public Property ViewCount As Int32 = 0
 #End Region
 
 #Region " ML Properties "

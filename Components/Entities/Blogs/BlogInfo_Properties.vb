@@ -80,9 +80,9 @@ Namespace Entities.Blogs
   <DataMember()>
   Public Property LastPublishDate As Date = Date.MinValue
   <DataMember()>
-  Public Property FirstPublishDate As Date = Date.MinValue
-  <DataMember()>
   Public Property NrViews As Int32 = -1
+  <DataMember()>
+  Public Property FirstPublishDate As Date = Date.MinValue
 #End Region
 
 #Region " ML Properties "

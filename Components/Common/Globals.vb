@@ -236,6 +236,53 @@ Namespace Common
    Dim link As String = m.Value
    Return String.Format("<a href=""{0}"">{0}</a>", link)
   End Function
+
+  Public Shared Sub WriteMultiLingualText(writer As System.Xml.XmlWriter, name As String, defaultText As String, localizedTexts As LocalizedText)
+   writer.WriteStartElement(name)
+   writer.WriteElementString("Default", defaultText)
+   For Each locale As String In localizedTexts.Locales
+    If Not String.IsNullOrEmpty(localizedTexts(locale)) Then
+     writer.WriteStartElement("Text")
+     writer.WriteAttributeString("Locale", locale)
+     writer.WriteValue(localizedTexts(locale))
+     writer.WriteEndElement() ' Text
+    End If
+   Next
+   writer.WriteEndElement() ' name
+  End Sub
+
+  Public Shared Sub ReadMultiLingualText(reader As System.Xml.XmlReader, name As String, ByRef defaultText As String, ByRef localizedTexts As LocalizedText)
+   reader.ReadStartElement(name) ' advance to name
+   defaultText = readElement(reader, "Default")
+   localizedTexts = New LocalizedText
+   Do While reader.ReadToNextSibling("Text")
+    Dim locale As String = readAttribute(reader, "Locale")
+    Dim text As String = reader.ReadElementContentAsString
+    localizedTexts.Add(locale, text)
+   Loop
+  End Sub
+
+  Public Shared Function readElement(reader As System.Xml.XmlReader, ElementName As String) As String
+   If (Not reader.NodeType = System.Xml.XmlNodeType.Element) OrElse reader.Name <> ElementName Then
+    reader.ReadToFollowing(ElementName)
+   End If
+   If reader.NodeType = System.Xml.XmlNodeType.Element Then
+    Return reader.ReadElementContentAsString
+   Else
+    Return ""
+   End If
+  End Function
+
+  Public Shared Function readAttribute(reader As System.Xml.XmlReader, attributeName As String) As String
+   If (Not reader.NodeType = System.Xml.XmlNodeType.Attribute) OrElse reader.Name <> attributeName Then
+    reader.ReadToFollowing(attributeName)
+   End If
+   If reader.NodeType = System.Xml.XmlNodeType.Attribute Then
+    Return reader.ReadContentAsString
+   Else
+    Return ""
+   End If
+  End Function
 #End Region
 
  End Class

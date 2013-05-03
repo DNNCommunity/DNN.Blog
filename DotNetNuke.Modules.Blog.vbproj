@@ -224,6 +224,7 @@
     <Compile Include="BlogPost.ashx.vb">
       <DependentUpon>BlogPost.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Components\Integration\BlogModuleController_Portable.vb" />
     <Compile Include="Components\Integration\BlogModuleController_Upgradeable.vb" />
     <Compile Include="Components\Common\DynatreeItem.vb" />
     <Compile Include="Components\Common\LocalizedText.vb" />

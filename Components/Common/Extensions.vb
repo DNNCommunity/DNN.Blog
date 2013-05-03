@@ -359,6 +359,16 @@ Namespace Common
      Return HttpUtility.HtmlDecode(encodedHtml)
    End Select
   End Function
+
+  <System.Runtime.CompilerServices.Extension()>
+  Public Sub WriteAttachmentToXml(attachment As BlogML.Xml.BlogMLAttachment, writer As System.Xml.XmlWriter)
+   writer.WriteStartElement("File")
+   writer.WriteElementString("Path", attachment.Path)
+   writer.WriteStartElement("Data")
+   writer.WriteBase64(attachment.Data, 0, attachment.Data.Length - 1)
+   writer.WriteEndElement() ' Data
+   writer.WriteEndElement() ' File
+  End Sub
 #End Region
 
  End Module

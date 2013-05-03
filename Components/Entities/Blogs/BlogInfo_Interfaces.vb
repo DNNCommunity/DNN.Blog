@@ -12,6 +12,8 @@ Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Entities.Modules
 Imports DotNetNuke.Services.Tokens
 
+Imports DotNetNuke.Modules.Blog.Common.Globals
+
 Namespace Entities.Blogs
 
  <Serializable(), XmlRoot("Blog"), DataContract()>
@@ -47,12 +49,12 @@ Namespace Entities.Blogs
    Copyright = Convert.ToString(Null.SetNull(dr.Item("Copyright"), Copyright))
    MustApproveGhostPosts = Convert.ToBoolean(Null.SetNull(dr.Item("MustApproveGhostPosts"), MustApproveGhostPosts))
    PublishAsOwner = Convert.ToBoolean(Null.SetNull(dr.Item("PublishAsOwner"), PublishAsOwner))
-  EnablePingBackSend = Convert.ToBoolean(Null.SetNull(dr.Item("EnablePingBackSend"), EnablePingBackSend))
-  EnablePingBackReceive = Convert.ToBoolean(Null.SetNull(dr.Item("EnablePingBackReceive"), EnablePingBackReceive))
-  AutoApprovePingBack = Convert.ToBoolean(Null.SetNull(dr.Item("AutoApprovePingBack"), AutoApprovePingBack))
-  EnableTrackBackSend = Convert.ToBoolean(Null.SetNull(dr.Item("EnableTrackBackSend"), EnableTrackBackSend))
-  EnableTrackBackReceive = Convert.ToBoolean(Null.SetNull(dr.Item("EnableTrackBackReceive"), EnableTrackBackReceive))
-  AutoApproveTrackBack = Convert.ToBoolean(Null.SetNull(dr.Item("AutoApproveTrackBack"), AutoApproveTrackBack))
+   EnablePingBackSend = Convert.ToBoolean(Null.SetNull(dr.Item("EnablePingBackSend"), EnablePingBackSend))
+   EnablePingBackReceive = Convert.ToBoolean(Null.SetNull(dr.Item("EnablePingBackReceive"), EnablePingBackReceive))
+   AutoApprovePingBack = Convert.ToBoolean(Null.SetNull(dr.Item("AutoApprovePingBack"), AutoApprovePingBack))
+   EnableTrackBackSend = Convert.ToBoolean(Null.SetNull(dr.Item("EnableTrackBackSend"), EnableTrackBackSend))
+   EnableTrackBackReceive = Convert.ToBoolean(Null.SetNull(dr.Item("EnableTrackBackReceive"), EnableTrackBackReceive))
+   AutoApproveTrackBack = Convert.ToBoolean(Null.SetNull(dr.Item("AutoApproveTrackBack"), AutoApproveTrackBack))
    OwnerUserId = Convert.ToInt32(Null.SetNull(dr.Item("OwnerUserId"), OwnerUserId))
    CreatedByUserID = Convert.ToInt32(Null.SetNull(dr.Item("CreatedByUserID"), CreatedByUserID))
    CreatedOnDate = CDate(Null.SetNull(dr.Item("CreatedOnDate"), CreatedOnDate))
@@ -63,8 +65,8 @@ Namespace Entities.Blogs
    Username = Convert.ToString(Null.SetNull(dr.Item("Username"), Username))
    NrPosts = Convert.ToInt32(Null.SetNull(dr.Item("NrPosts"), NrPosts))
    LastPublishDate = CDate(Null.SetNull(dr.Item("LastPublishDate"), LastPublishDate))
-   FirstPublishDate = CDate(Null.SetNull(dr.Item("FirstPublishDate"), FirstPublishDate))
    NrViews = Convert.ToInt32(Null.SetNull(dr.Item("NrViews"), NrViews))
+   FirstPublishDate = CDate(Null.SetNull(dr.Item("FirstPublishDate"), FirstPublishDate))
    AltLocale = Convert.ToString(Null.SetNull(dr.Item("AltLocale"), AltLocale))
    AltTitle = Convert.ToString(Null.SetNull(dr.Item("AltTitle"), AltTitle))
    AltDescription = Convert.ToString(Null.SetNull(dr.Item("AltDescription"), AltDescription))
@@ -149,30 +151,30 @@ Namespace Entities.Blogs
      Return Me.PublishAsOwner.ToString
     Case "publishasowneryesno"
      Return PropertyAccess.Boolean2LocalizedYesNo(Me.PublishAsOwner, formatProvider)
-   Case "enablepingbacksend"
-    Return Me.EnablePingBackSend.ToString
-   Case "enablepingbacksendyesno"
-    Return PropertyAccess.Boolean2LocalizedYesNo(Me.EnablePingBackSend, formatProvider)
-   Case "enablepingbackreceive"
-    Return Me.EnablePingBackReceive.ToString
-   Case "enablepingbackreceiveyesno"
-    Return PropertyAccess.Boolean2LocalizedYesNo(Me.EnablePingBackReceive, formatProvider)
-   Case "autoapprovepingback"
-    Return Me.AutoApprovePingBack.ToString
-   Case "autoapprovepingbackyesno"
-    Return PropertyAccess.Boolean2LocalizedYesNo(Me.AutoApprovePingBack, formatProvider)
-   Case "enabletrackbacksend"
-    Return Me.EnableTrackBackSend.ToString
-   Case "enabletrackbacksendyesno"
-    Return PropertyAccess.Boolean2LocalizedYesNo(Me.EnableTrackBackSend, formatProvider)
-   Case "enabletrackbackreceive"
-    Return Me.EnableTrackBackReceive.ToString
-   Case "enabletrackbackreceiveyesno"
-    Return PropertyAccess.Boolean2LocalizedYesNo(Me.EnableTrackBackReceive, formatProvider)
-   Case "autoapprovetrackback"
-    Return Me.AutoApproveTrackBack.ToString
-   Case "autoapprovetrackbackyesno"
-    Return PropertyAccess.Boolean2LocalizedYesNo(Me.AutoApproveTrackBack, formatProvider)
+    Case "enablepingbacksend"
+     Return Me.EnablePingBackSend.ToString
+    Case "enablepingbacksendyesno"
+     Return PropertyAccess.Boolean2LocalizedYesNo(Me.EnablePingBackSend, formatProvider)
+    Case "enablepingbackreceive"
+     Return Me.EnablePingBackReceive.ToString
+    Case "enablepingbackreceiveyesno"
+     Return PropertyAccess.Boolean2LocalizedYesNo(Me.EnablePingBackReceive, formatProvider)
+    Case "autoapprovepingback"
+     Return Me.AutoApprovePingBack.ToString
+    Case "autoapprovepingbackyesno"
+     Return PropertyAccess.Boolean2LocalizedYesNo(Me.AutoApprovePingBack, formatProvider)
+    Case "enabletrackbacksend"
+     Return Me.EnableTrackBackSend.ToString
+    Case "enabletrackbacksendyesno"
+     Return PropertyAccess.Boolean2LocalizedYesNo(Me.EnableTrackBackSend, formatProvider)
+    Case "enabletrackbackreceive"
+     Return Me.EnableTrackBackReceive.ToString
+    Case "enabletrackbackreceiveyesno"
+     Return PropertyAccess.Boolean2LocalizedYesNo(Me.EnableTrackBackReceive, formatProvider)
+    Case "autoapprovetrackback"
+     Return Me.AutoApproveTrackBack.ToString
+    Case "autoapprovetrackbackyesno"
+     Return PropertyAccess.Boolean2LocalizedYesNo(Me.AutoApproveTrackBack, formatProvider)
     Case "owneruserid"
      Return (Me.OwnerUserId.ToString(OutputFormat, formatProvider))
     Case "createdbyuserid"
@@ -193,10 +195,10 @@ Namespace Entities.Blogs
      Return (Me.NrPosts.ToString(OutputFormat, formatProvider))
     Case "lastpublishdate"
      Return (Me.LastPublishDate.ToString(OutputFormat, formatProvider))
-    Case "firstpublishdate"
-     Return (Me.FirstPublishDate.ToString(OutputFormat, formatProvider))
     Case "nrviews"
      Return (Me.NrViews.ToString(OutputFormat, formatProvider))
+    Case "firstpublishdate"
+     Return (Me.FirstPublishDate.ToString(OutputFormat, formatProvider))
     Case "altlocale"
      Return PropertyAccess.FormatString(Me.AltLocale, strFormat)
     Case "alttitle"
@@ -259,14 +261,8 @@ Namespace Entities.Blogs
   Public Sub ReadXml(reader As XmlReader) Implements IXmlSerializable.ReadXml
    Try
 
-    If Not Int32.TryParse(readElement(reader, "BlogID"), BlogID) Then
-     BlogID = Null.NullInteger
-    End If
-    If Not Int32.TryParse(readElement(reader, "ModuleID"), ModuleID) Then
-     ModuleID = Null.NullInteger
-    End If
-    Title = readElement(reader, "Title")
-    Description = readElement(reader, "Description")
+    ReadMultiLingualText(reader, "Title", Title, TitleLocalizations)
+    ReadMultiLingualText(reader, "Description", Description, DescriptionLocalizations)
     Image = readElement(reader, "Image")
     Locale = readElement(reader, "Locale")
     Boolean.TryParse(readElement(reader, "FullLocalization"), FullLocalization)
@@ -278,26 +274,41 @@ Namespace Entities.Blogs
     Copyright = readElement(reader, "Copyright")
     Boolean.TryParse(readElement(reader, "MustApproveGhostPosts"), MustApproveGhostPosts)
     Boolean.TryParse(readElement(reader, "PublishAsOwner"), PublishAsOwner)
-   Boolean.TryParse(readElement(reader, "EnablePingBackSend"), EnablePingBackSend)
-   Boolean.TryParse(readElement(reader, "EnablePingBackReceive"), EnablePingBackReceive)
-   Boolean.TryParse(readElement(reader, "AutoApprovePingBack"), AutoApprovePingBack)
-   Boolean.TryParse(readElement(reader, "EnableTrackBackSend"), EnableTrackBackSend)
-   Boolean.TryParse(readElement(reader, "EnableTrackBackReceive"), EnableTrackBackReceive)
-   Boolean.TryParse(readElement(reader, "AutoApproveTrackBack"), AutoApproveTrackBack)
-    If Not Int32.TryParse(readElement(reader, "OwnerUserId"), OwnerUserId) Then
-     OwnerUserId = Null.NullInteger
-    End If
-    If Not Int32.TryParse(readElement(reader, "CreatedByUserID"), CreatedByUserID) Then
-     CreatedByUserID = Null.NullInteger
-    End If
-    Date.TryParse(readElement(reader, "CreatedOnDate"), CreatedOnDate)
-    If Not Int32.TryParse(readElement(reader, "LastModifiedByUserID"), LastModifiedByUserID) Then
-     LastModifiedByUserID = Null.NullInteger
-    End If
-    Date.TryParse(readElement(reader, "LastModifiedOnDate"), LastModifiedOnDate)
+    Boolean.TryParse(readElement(reader, "EnablePingBackSend"), EnablePingBackSend)
+    Boolean.TryParse(readElement(reader, "EnablePingBackReceive"), EnablePingBackReceive)
+    Boolean.TryParse(readElement(reader, "AutoApprovePingBack"), AutoApprovePingBack)
+    Boolean.TryParse(readElement(reader, "EnableTrackBackSend"), EnableTrackBackSend)
+    Boolean.TryParse(readElement(reader, "EnableTrackBackReceive"), EnableTrackBackReceive)
+    Boolean.TryParse(readElement(reader, "AutoApproveTrackBack"), AutoApproveTrackBack)
     Username = readElement(reader, "Username")
-    DisplayName = readElement(reader, "DisplayName")
     Email = readElement(reader, "Email")
+    ImportedPosts = New List(Of Posts.PostInfo)
+    reader.ReadStartElement("Posts") ' advance to content
+    If reader.ReadState <> ReadState.EndOfFile And reader.NodeType <> XmlNodeType.None And reader.LocalName <> "" Then
+     Do
+      reader.ReadStartElement("Post")
+      Dim post As New Posts.PostInfo
+      post.ReadXml(reader)
+      ImportedPosts.Add(post)
+     Loop While reader.ReadToNextSibling("Post")
+    End If
+    reader.ReadStartElement("Files") ' advance to files
+    ImportedFiles = New List(Of BlogML.Xml.BlogMLAttachment)
+    If reader.ReadState <> ReadState.EndOfFile And reader.NodeType <> XmlNodeType.None And reader.LocalName <> "" Then
+     Do
+      reader.ReadStartElement("File")
+      Dim f As New BlogML.Xml.BlogMLAttachment
+      f.Path = readElement(reader, "Path")
+      Dim bufferSize As Integer = 1000
+      Dim buffer(bufferSize) As Byte
+      Dim readBytes As Integer = 0
+      Do
+       readBytes = reader.ReadElementContentAsBase64(buffer, 0, bufferSize)
+      Loop While bufferSize <= readBytes
+      f.Data = buffer
+      ImportedFiles.Add(f)
+     Loop While reader.ReadToNextSibling("File")
+    End If
    Catch ex As Exception
     ' log exception as DNN import routine does not do that
     DotNetNuke.Services.Exceptions.LogException(ex)
@@ -306,6 +317,8 @@ Namespace Entities.Blogs
    End Try
 
   End Sub
+  Friend Property ImportedPosts As List(Of Posts.PostInfo)
+  Friend Property ImportedFiles As List(Of BlogML.Xml.BlogMLAttachment)
 
   ''' -----------------------------------------------------------------------------
   ''' <summary>
@@ -319,12 +332,11 @@ Namespace Entities.Blogs
   ''' -----------------------------------------------------------------------------
   Public Sub WriteXml(writer As XmlWriter) Implements IXmlSerializable.WriteXml
    writer.WriteStartElement("Blog")
-   writer.WriteElementString("BlogID", BlogID.ToString())
-   writer.WriteElementString("ModuleID", ModuleID.ToString())
-   writer.WriteElementString("Title", Title)
-   writer.WriteElementString("Description", Description)
+   WriteMultiLingualText(writer, "Title", Title, TitleLocalizations)
+   WriteMultiLingualText(writer, "Description", Description, DescriptionLocalizations)
    writer.WriteElementString("Image", Image)
-   writer.WriteElementString("Locale", Locale.ToString())
+   writer.WriteElementString("Locale", Locale)
+   writer.WriteElementString("FullLocalization", FullLocalization.ToString())
    writer.WriteElementString("Published", Published.ToString())
    writer.WriteElementString("IncludeImagesInFeed", IncludeImagesInFeed.ToString())
    writer.WriteElementString("IncludeAuthorInFeed", IncludeAuthorInFeed.ToString())
@@ -333,19 +345,45 @@ Namespace Entities.Blogs
    writer.WriteElementString("Copyright", Copyright)
    writer.WriteElementString("MustApproveGhostPosts", MustApproveGhostPosts.ToString())
    writer.WriteElementString("PublishAsOwner", PublishAsOwner.ToString())
-   writer.WriteElementString("EnablePingBackSend",  EnablePingBackSend.ToString())
-   writer.WriteElementString("EnablePingBackReceive",  EnablePingBackReceive.ToString())
-   writer.WriteElementString("EnableTrackBackSend",  EnableTrackBackSend.ToString())
-   writer.WriteElementString("EnableTrackBackReceive",  EnableTrackBackReceive.ToString())
-   writer.WriteElementString("OwnerUserId", OwnerUserId.ToString())
-   writer.WriteElementString("CreatedByUserID", CreatedByUserID.ToString())
-   writer.WriteElementString("CreatedOnDate", CreatedOnDate.ToString())
-   writer.WriteElementString("LastModifiedByUserID", LastModifiedByUserID.ToString())
-   writer.WriteElementString("LastModifiedOnDate", LastModifiedOnDate.ToString())
+   writer.WriteElementString("EnablePingBackSend", EnablePingBackSend.ToString())
+   writer.WriteElementString("EnablePingBackReceive", EnablePingBackReceive.ToString())
+   writer.WriteElementString("AutoApprovePingBack", AutoApprovePingBack.ToString())
+   writer.WriteElementString("EnableTrackBackSend", EnableTrackBackSend.ToString())
+   writer.WriteElementString("EnableTrackBackReceive", EnableTrackBackReceive.ToString())
+   writer.WriteElementString("AutoApproveTrackBack", AutoApproveTrackBack.ToString())
    writer.WriteElementString("Username", Username)
-   writer.WriteElementString("DisplayName", DisplayName)
    writer.WriteElementString("Email", Email)
-   writer.WriteEndElement()
+   writer.WriteStartElement("Posts")
+   Dim page As Integer = 0
+   Dim totalRecords As Integer = 1
+   Do While page * 10 < totalRecords
+    For Each p As Posts.PostInfo In Posts.PostsController.GetPostsByBlog(ModuleID, BlogID, "", -1, page, 20, "PUBLISHEDONDATE DESC", totalRecords).Values
+     p.WriteXml(writer)
+    Next
+    page += 1
+   Loop
+   writer.WriteEndElement() ' Posts
+   writer.WriteStartElement("Files")
+   ' pack files
+   Dim postDir As String = GetBlogDirectoryMapPath(BlogID)
+   If IO.Directory.Exists(postDir) Then
+    For Each f As String In IO.Directory.GetFiles(postDir)
+     Dim fileName As String = IO.Path.GetFileName(f)
+     Dim att As New BlogML.Xml.BlogMLAttachment With {.Embedded = True, .Path = fileName}
+     Using fs As New IO.FileStream(f, IO.FileMode.Open)
+      Dim fileData(CInt(fs.Length - 1)) As Byte
+      If fs.Length > 0 Then
+       fs.Read(fileData, 0, CInt(fs.Length - 1))
+       att.Data = fileData
+      Else
+       'Empty File
+      End If
+     End Using
+     att.WriteAttachmentToXml(writer)
+    Next
+   End If
+   writer.WriteEndElement() ' Files
+   writer.WriteEndElement() ' Blog
   End Sub
 #End Region
 
