@@ -224,12 +224,12 @@
     <Compile Include="BlogPost.ashx.vb">
       <DependentUpon>BlogPost.ashx</DependentUpon>
     </Compile>
-    <Compile Include="Components\Common\BlogModuleController.vb" />
+    <Compile Include="Components\Integration\BlogModuleController_Upgradeable.vb" />
     <Compile Include="Components\Common\DynatreeItem.vb" />
     <Compile Include="Components\Common\LocalizedText.vb" />
     <Compile Include="Components\Common\ModuleUrls.vb" />
     <Compile Include="Components\Common\PostBodyAndSummary.vb" />
-    <Compile Include="Components\Common\RemoteFile.vb" />
+    <Compile Include="Components\Common\WebPage.vb" />
     <Compile Include="Components\Entities\Blogs\BlogCalendarInfo.vb" />
     <Compile Include="Components\Entities\Blogs\BlogsController_Service.vb" />
     <Compile Include="Components\Entities\Comments\CommentsController_Service.vb" />
@@ -237,6 +237,7 @@
     <Compile Include="Components\Entities\Posts\PostsController_Service.vb" />
     <Compile Include="Components\Entities\Terms\TermsController_Service.vb" />
     <Compile Include="Components\Entities\Terms\TermsController.vb" />
+    <Compile Include="Components\Integration\BlogModuleController_Searchable.vb" />
     <Compile Include="Components\Integration\Integration.vb" />
     <Compile Include="Components\Rss\BlogRssFeed.vb" />
     <Compile Include="Components\Security\Security.vb" />
