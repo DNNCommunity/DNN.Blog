@@ -140,7 +140,7 @@ Namespace Entities.Comments
    objComment.ContentItemId = Post.ContentItemId
    objComment.CreatedByUserID = UserInfo.UserID
    objComment.ParentId = postData.ParentId
-   objComment.Comment = HttpUtility.HtmlEncode(SafeStringSimpleHtml(postData.Comment))
+   objComment.Comment = HttpUtility.HtmlEncode(SafeStringSimpleHtml(postData.Comment).Replace(vbCrLf, "<br />"))
    objComment.Approved = Security.CanApproveComment
    objComment.Author = SafeString(postData.Author)
    objComment.Email = SafeString(postData.Email)
@@ -232,8 +232,8 @@ Namespace Entities.Comments
     Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "Cannot parse the request"})
    Else
     Dim objComment As New CommentInfo With {.ContentItemId = Post.ContentItemId, .Author = GetDomain(sourceUrl), .Website = sourceUrl}
-    Dim comment As String = String.Format(DotNetNuke.Services.Localization.Localization.GetString("PingbackComment", SharedResourceFileName), objComment.Author, Environment.NewLine, Environment.NewLine, title)
-    objComment.Comment = HttpUtility.HtmlEncode(SafeStringSimpleHtml(comment))
+    Dim comment As String = String.Format(DotNetNuke.Services.Localization.Localization.GetString("PingbackComment", SharedResourceFileName), objComment.Author, sourceUrl, title)
+    objComment.Comment = HttpUtility.HtmlEncode(comment)
     objComment.Approved = Blog.AutoApprovePingBack
     objComment.CommentID = CommentsController.AddComment(Blog, Post, objComment)
     Return PingBackSuccess()
@@ -283,8 +283,8 @@ Namespace Entities.Comments
    End If
 
    Dim objComment As New CommentInfo With {.ContentItemId = Post.ContentItemId, .Author = blogName, .Website = sourceUrl}
-   Dim comment As String = String.Format(DotNetNuke.Services.Localization.Localization.GetString("TrackbackComment", SharedResourceFileName), blogName, Environment.NewLine, Environment.NewLine, title)
-   objComment.Comment = HttpUtility.HtmlEncode(SafeStringSimpleHtml(comment))
+   Dim comment As String = String.Format(DotNetNuke.Services.Localization.Localization.GetString("TrackbackComment", SharedResourceFileName), blogName, sourceUrl, title)
+   objComment.Comment = HttpUtility.HtmlEncode(comment)
    objComment.Approved = Blog.AutoApproveTrackBack
    objComment.CommentID = CommentsController.AddComment(Blog, Post, objComment)
    Return TrackBackResponse()
@@ -396,15 +396,14 @@ Namespace Entities.Comments
 
   Private Shared Sub CheckSourcePage(sourceUrl As String, targetUrl As String, ByRef sourceContainsLink As Boolean, ByRef title As String)
 
-   Dim remoteFile As New RemoteFile(New Uri(sourceUrl))
-   Dim html As String = remoteFile.GetFileAsString().ToUpperInvariant()
-
+   Dim remoteFile As New WebPage(New Uri(sourceUrl))
+   Dim html As String = remoteFile.GetFileAsString()
    Dim RegexTitle As New Regex("(?<=<title.*>)([\s\S]*)(?=</title>)", RegexOptions.IgnoreCase Or RegexOptions.Compiled)
    Dim titleMatch As Match = RegexTitle.Match(html)
-   If titleMatch.Success Then title = SafeString(titleMatch.Value.Trim())
-
+   If titleMatch.Success Then title = SafeString(titleMatch.Value.Trim(CChar(vbCrLf)).Trim())
+   html = html.ToUpperInvariant
    targetUrl = targetUrl.ToUpperInvariant
-   sourceContainsLink = html.Contains("href=""" & targetUrl & """") OrElse html.Contains("href='" & targetUrl & "'")
+   sourceContainsLink = html.Contains("HREF=""" & targetUrl & """") OrElse html.Contains("HREF='" & targetUrl & "'")
 
   End Sub
 #End Region

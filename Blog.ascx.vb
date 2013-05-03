@@ -42,9 +42,8 @@ Public Class Blog
     Response.Redirect(url, False)
    End If
 
-   AddBlogService()
    If Not Me.IsPostBack And BlogContext.ContentItemId > -1 Then
-    Dim scriptBlock As String = "(function ($, Sys) {$(document).ready(function () {blogService.viewPost(" & BlogContext.BlogId.ToString & ", " & BlogContext.ContentItemId.ToString & ")});} (jQuery, window.Sys));"
+    Dim scriptBlock As String = "(function ($, Sys) {$(document).ready(function () {setTimeout(function(){blogService.viewPost(" & BlogContext.BlogId.ToString & ", " & BlogContext.ContentItemId.ToString & ")},30000)});} (jQuery, window.Sys));"
     Page.ClientScript.RegisterClientScriptBlock(Me.GetType, "PostViewScript", scriptBlock, True)
    End If
 
@@ -101,7 +100,10 @@ Public Class Blog
   If Context.Items("PingBackLinkAdded") Is Nothing Then
    Dim pingbackUrl As String = Services.BlogRouteMapper.GetRoute(Services.BlogRouteMapper.ServiceControllers.Comments, "Pingback")
    pingbackUrl &= String.Format("?tabId={0}&moduleId={1}&blogId={2}&postId={3}", TabId, BlogContext.BlogModuleId, BlogContext.BlogId, BlogContext.ContentItemId)
-   Response.AppendHeader("x-pingback", pingbackUrl)
+   Dim link As New HtmlGenericControl("link")
+   link.Attributes.Add("rel", "pingback")
+   link.Attributes.Add("href", pingbackUrl)
+   Me.Page.Header.Controls.Add(link)
    Context.Items("PingBackLinkAdded") = True
   End If
  End Sub

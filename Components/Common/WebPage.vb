@@ -6,7 +6,7 @@ Imports System.Security
 Imports System.IO
 
 Namespace Common
- Friend NotInheritable Class RemoteFile
+ Public Class WebPage
 
 #Region " Properties "
   Private ReadOnly url As Uri

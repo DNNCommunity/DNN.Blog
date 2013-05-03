@@ -100,15 +100,21 @@ Namespace Common
 #Region " Event Handlers "
   Private Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
 
-   jQuery.RequestRegistration()
-   jQuery.RequestUIRegistration()
-   Dim script As New StringBuilder
-   script.AppendLine("<script type=""text/javascript"">")
-   script.AppendLine("//<![CDATA[")
-   script.AppendLine(String.Format("var appPath='{0}'", DotNetNuke.Common.ApplicationPath))
-   script.AppendLine("//]]>")
-   script.AppendLine("</script>")
-   UI.Utilities.ClientAPI.RegisterClientScriptBlock(Page, "blogAppPath", script.ToString)
+   If Context.Items("BlogModuleBaseInitialized") Is Nothing Then
+
+    jQuery.RequestRegistration()
+    jQuery.RequestUIRegistration()
+    Dim script As New StringBuilder
+    script.AppendLine("<script type=""text/javascript"">")
+    script.AppendLine("//<![CDATA[")
+    script.AppendLine(String.Format("var appPath='{0}'", DotNetNuke.Common.ApplicationPath))
+    script.AppendLine("//]]>")
+    script.AppendLine("</script>")
+    UI.Utilities.ClientAPI.RegisterClientScriptBlock(Page, "blogAppPath", script.ToString)
+    AddBlogService()
+
+    Context.Items("BlogModuleBaseInitialized") = True
+   End If
 
   End Sub
 #End Region

@@ -1,6 +1,6 @@
 (function ($, Sys) {
  $(document).ready(function () {
-  $('#[StorageControlId]').val('[Children]');
+  $('#[StorageControlId]').val('[CatIdList]');
   $('#[ID]').dynatree({
    onSelect: function (flag, node) {
     var selectedNodes = $("#[ID]").dynatree("getTree").serializeArray();
@@ -12,7 +12,7 @@
     $('#[StorageControlId]').val(res)
    },
    checkbox: true,
-   children: $.parseJSON($('#[StorageControlId]').val())
+   children: [Children]
   })
  });
 } (jQuery, window.Sys));

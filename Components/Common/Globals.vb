@@ -130,6 +130,16 @@ Namespace Common
    End Using
   End Function
 
+  Public Shared Sub WriteToFile(filePath As String, text As String)
+   WriteToFile(filePath, text, False)
+  End Sub
+  Public Shared Sub WriteToFile(filePath As String, text As String, append As Boolean)
+   Using sw As New IO.StreamWriter(filePath, append)
+    sw.Write(text)
+    sw.Flush()
+   End Using
+  End Sub
+
   Public Shared Function GetResource(resourceName As String) As String
    Dim res As String = ""
    Using stream As IO.Stream = System.Reflection.Assembly.GetExecutingAssembly.GetManifestResourceStream(resourceName)

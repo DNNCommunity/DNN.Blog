@@ -72,6 +72,12 @@ CREATE TABLE {databaseOwner}{objectQualifier}Blog_Blogs(
  [Copyright] [nvarchar](2000) NULL,
  [MustApproveGhostPosts] [bit] NOT NULL,
  [PublishAsOwner] [bit] NOT NULL,
+ [EnablePingBackSend] [bit] NULL,
+ [EnablePingBackReceive] [bit] NULL,
+ [AutoApprovePingBack] [bit] NULL,
+ [EnableTrackBackSend] [bit] NULL,
+ [EnableTrackBackReceive] [bit] NULL,
+ [AutoApproveTrackBack] [bit] NULL,
  [OwnerUserId] [int] NOT NULL,
  [CreatedByUserID] [int] NULL,
  [CreatedOnDate] [datetime] NULL,
@@ -311,6 +317,72 @@ ALTER TABLE {databaseOwner}{objectQualifier}Blog_Terms CHECK CONSTRAINT FK_{obje
 GO
 
 /******* TRIGGERS *******/
+/******* VIEWS *******/
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}vw_Blog_BlogPermissions'))
+DROP VIEW {databaseOwner}{objectQualifier}vw_Blog_BlogPermissions
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW {databaseOwner}{objectQualifier}vw_Blog_BlogPermissions
+AS
+SELECT     bp.AllowAccess, bp.BlogId, bp.Expires, bp.PermissionId, bp.RoleId, bp.UserId, ISNULL(u.Username, N'') AS Username, ISNULL(u.DisplayName, N'') AS DisplayName, 
+                      ISNULL(r.RoleName, N'') AS RoleName
+FROM         {databaseOwner}{objectQualifier}Blog_BlogPermissions AS bp LEFT OUTER JOIN
+                      {databaseOwner}{objectQualifier}Roles AS r ON bp.RoleId = r.RoleID LEFT OUTER JOIN
+                      {databaseOwner}{objectQualifier}Users AS u ON bp.UserId = u.UserID
+GO
+
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}vw_Blog_Blogs'))
+DROP VIEW {databaseOwner}{objectQualifier}vw_Blog_Blogs
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW {databaseOwner}{objectQualifier}vw_Blog_Blogs
+AS
+SELECT     b.BlogID, b.ModuleID, b.Title, b.Description, b.Image, b.Locale, b.FullLocalization, b.Published, b.IncludeImagesInFeed, b.IncludeAuthorInFeed, b.Syndicated, 
+                      b.SyndicationEmail, b.Copyright, b.MustApproveGhostPosts, b.PublishAsOwner, b.EnablePingBackSend, b.EnablePingBackReceive, b.AutoApprovePingBack, 
+                      b.EnableTrackBackSend, b.EnableTrackBackReceive, b.AutoApproveTrackBack, b.OwnerUserId, b.CreatedByUserID, b.CreatedOnDate, b.LastModifiedByUserID, 
+                      b.LastModifiedOnDate, u.DisplayName, u.Email, u.Username, p.NrPosts, p.LastPublishDate, p.NrViews, p.FirstPublishDate
+FROM         {databaseOwner}{objectQualifier}Blog_Blogs AS b INNER JOIN
+                      {databaseOwner}{objectQualifier}Users AS u ON b.OwnerUserId = u.UserID LEFT OUTER JOIN
+                          (SELECT     BlogID, COUNT(ContentItemId) AS NrPosts, SUM(ViewCount) AS NrViews, MAX(PublishedOnDate) AS LastPublishDate, MIN(PublishedOnDate) 
+                                                   AS FirstPublishDate
+                            FROM          {databaseOwner}{objectQualifier}Blog_Posts AS posts
+                            GROUP BY BlogID, Published
+                            HAVING      (Published = 1)) AS p ON p.BlogID = b.BlogID
+GO
+
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}vw_Blog_Comments'))
+DROP VIEW {databaseOwner}{objectQualifier}vw_Blog_Comments
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW {databaseOwner}{objectQualifier}vw_Blog_Comments
+AS
+SELECT     c.CommentID, c.ContentItemId, c.ParentId, c.Comment, c.Approved, c.Author, c.Website, c.Email, c.CreatedByUserID, c.CreatedOnDate, c.LastModifiedByUserID, 
+                      c.LastModifiedOnDate, ISNULL(u.Username, '') AS Username, ISNULL(u.DisplayName, c.Author) AS DisplayName,
+                          (SELECT     COUNT(*) AS Expr1
+                            FROM          {databaseOwner}{objectQualifier}Blog_CommentKarmas
+                            WHERE      (c.CommentID = c.CommentID) AND (Karma = 0)) AS Likes,
+                          (SELECT     COUNT(*) AS Expr1
+                            FROM          {databaseOwner}{objectQualifier}Blog_CommentKarmas AS {objectQualifier}Blog_CommentKarmas_2
+                            WHERE      (c.CommentID = c.CommentID) AND (Karma = 1)) AS Dislikes,
+                          (SELECT     COUNT(*) AS Expr1
+                            FROM          {databaseOwner}{objectQualifier}Blog_CommentKarmas AS {objectQualifier}Blog_CommentKarmas_1
+                            WHERE      (c.CommentID = c.CommentID) AND (Karma = 2)) AS Reports
+FROM         {databaseOwner}{objectQualifier}Blog_Comments AS c LEFT OUTER JOIN
+                      {databaseOwner}{objectQualifier}Users AS u ON c.CreatedByUserID = u.UserID
+GO
+
 /******* FUNCTIONS *******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_BlogList') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
 DROP FUNCTION {databaseOwner}{objectQualifier}Blog_BlogList
@@ -406,71 +478,6 @@ RETURN
   LEFT OUTER JOIN {databaseOwner}{objectQualifier}Blog_TermLocalization AS tl ON t.TermID = tl.TermID AND tl.Locale=@Locale)
 GO
 
-/******* VIEWS *******/
-IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}vw_Blog_BlogPermissions'))
-DROP VIEW {databaseOwner}{objectQualifier}vw_Blog_BlogPermissions
-GO
-
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE VIEW {databaseOwner}{objectQualifier}vw_Blog_BlogPermissions
-AS
-SELECT     bp.AllowAccess, bp.BlogId, bp.Expires, bp.PermissionId, bp.RoleId, bp.UserId, ISNULL(u.Username, N'') AS Username, ISNULL(u.DisplayName, N'') AS DisplayName, 
-                      ISNULL(r.RoleName, N'') AS RoleName
-FROM         {databaseOwner}{objectQualifier}Blog_BlogPermissions AS bp LEFT OUTER JOIN
-                      {databaseOwner}{objectQualifier}Roles AS r ON bp.RoleId = r.RoleID LEFT OUTER JOIN
-                      {databaseOwner}{objectQualifier}Users AS u ON bp.UserId = u.UserID
-GO
-
-IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}vw_Blog_Blogs'))
-DROP VIEW {databaseOwner}{objectQualifier}vw_Blog_Blogs
-GO
-
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE VIEW {databaseOwner}{objectQualifier}vw_Blog_Blogs
-AS
-SELECT     b.BlogID, b.ModuleID, b.Title, b.Description, b.Image, b.Locale, b.FullLocalization, b.Published, b.IncludeImagesInFeed, b.IncludeAuthorInFeed, b.Syndicated, 
-                      b.SyndicationEmail, b.Copyright, b.MustApproveGhostPosts, b.PublishAsOwner, b.OwnerUserId, b.CreatedByUserID, b.CreatedOnDate, b.LastModifiedByUserID, 
-                      b.LastModifiedOnDate, u.DisplayName, u.Email, u.Username, p.NrPosts, p.LastPublishDate, p.NrViews, p.FirstPublishDate
-FROM         {databaseOwner}{objectQualifier}Blog_Blogs AS b INNER JOIN
-                      {databaseOwner}{objectQualifier}Users AS u ON b.OwnerUserId = u.UserID LEFT OUTER JOIN
-                          (SELECT     BlogID, COUNT(ContentItemId) AS NrPosts, SUM(ViewCount) AS NrViews, MAX(PublishedOnDate) AS LastPublishDate, MIN(PublishedOnDate) 
-                                                   AS FirstPublishDate
-                            FROM          {databaseOwner}{objectQualifier}Blog_Posts AS posts
-                            GROUP BY BlogID, Published
-                            HAVING      (Published = 1)) AS p ON p.BlogID = b.BlogID
-GO
-
-IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}vw_Blog_Comments'))
-DROP VIEW {databaseOwner}{objectQualifier}vw_Blog_Comments
-GO
-
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE VIEW {databaseOwner}{objectQualifier}vw_Blog_Comments
-AS
-SELECT     c.CommentID, c.ContentItemId, c.ParentId, c.Comment, c.Approved, c.Author, c.Website, c.Email, c.CreatedByUserID, c.CreatedOnDate, c.LastModifiedByUserID, 
-                      c.LastModifiedOnDate, ISNULL(u.Username, '') AS Username, ISNULL(u.DisplayName, c.Author) AS DisplayName,
-                          (SELECT     COUNT(*) AS Expr1
-                            FROM          {databaseOwner}{objectQualifier}Blog_CommentKarmas
-                            WHERE      (c.CommentID = c.CommentID) AND (Karma = 0)) AS Likes,
-                          (SELECT     COUNT(*) AS Expr1
-                            FROM          {databaseOwner}{objectQualifier}Blog_CommentKarmas AS {objectQualifier}Blog_CommentKarmas_2
-                            WHERE      (c.CommentID = c.CommentID) AND (Karma = 1)) AS Dislikes,
-                          (SELECT     COUNT(*) AS Expr1
-                            FROM          {databaseOwner}{objectQualifier}Blog_CommentKarmas AS {objectQualifier}Blog_CommentKarmas_1
-                            WHERE      (c.CommentID = c.CommentID) AND (Karma = 2)) AS Reports
-FROM         {databaseOwner}{objectQualifier}Blog_Comments AS c LEFT OUTER JOIN
-                      {databaseOwner}{objectQualifier}Users AS u ON c.CreatedByUserID = u.UserID
-GO
-
 /******* SPROCS *******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_AddBlog') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_AddBlog
@@ -481,9 +488,15 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_AddBlog
+ @AutoApprovePingBack BIT, 
  @ModuleID INT, 
+ @AutoApproveTrackBack BIT, 
  @Copyright NVARCHAR (2000), 
  @Description NVARCHAR (2000), 
+ @EnablePingBackReceive BIT, 
+ @EnablePingBackSend BIT, 
+ @EnableTrackBackReceive BIT, 
+ @EnableTrackBackSend BIT, 
  @FullLocalization BIT, 
  @Image NVARCHAR (255), 
  @IncludeAuthorInFeed BIT, 
@@ -499,11 +512,17 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_AddBlog
  @CreatedByUser INT
 AS
 INSERT INTO {databaseOwner}{objectQualifier}Blog_Blogs (
+ [AutoApprovePingBack],
  [ModuleID],
+ [AutoApproveTrackBack],
  [Copyright],
  [CreatedByUserID],
  [CreatedOnDate],
  [Description],
+ [EnablePingBackReceive],
+ [EnablePingBackSend],
+ [EnableTrackBackReceive],
+ [EnableTrackBackSend],
  [FullLocalization],
  [Image],
  [IncludeAuthorInFeed],
@@ -519,7 +538,7 @@ INSERT INTO {databaseOwner}{objectQualifier}Blog_Blogs (
  [SyndicationEmail],
  [Title]
 )
- VALUES ( @ModuleID, @Copyright, @CreatedByUser, GETDATE(), @Description, @FullLocalization, @Image, @IncludeAuthorInFeed, @IncludeImagesInFeed, @CreatedByUser, GETDATE(), @Locale, @MustApproveGhostPosts, @OwnerUserId, @PublishAsOwner, @Published, @Syndicated, @SyndicationEmail, @Title)
+ VALUES ( @AutoApprovePingBack, @ModuleID, @AutoApproveTrackBack, @Copyright, @CreatedByUser, GETDATE(), @Description, @EnablePingBackReceive, @EnablePingBackSend, @EnableTrackBackReceive, @EnableTrackBackSend, @FullLocalization, @Image, @IncludeAuthorInFeed, @IncludeImagesInFeed, @CreatedByUser, GETDATE(), @Locale, @MustApproveGhostPosts, @OwnerUserId, @PublishAsOwner, @Published, @Syndicated, @SyndicationEmail, @Title)
 select SCOPE_IDENTITY()
 GO
 
@@ -2021,10 +2040,16 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdateBlog
- @BlogID INT, 
+ @AutoApprovePingBack BIT, 
  @ModuleID INT, 
+ @AutoApproveTrackBack BIT, 
+ @BlogID INT, 
  @Copyright NVARCHAR (2000), 
  @Description NVARCHAR (2000), 
+ @EnablePingBackReceive BIT, 
+ @EnablePingBackSend BIT, 
+ @EnableTrackBackReceive BIT, 
+ @EnableTrackBackSend BIT, 
  @FullLocalization BIT, 
  @Image NVARCHAR (255), 
  @IncludeAuthorInFeed BIT, 
@@ -2040,9 +2065,15 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdateBlog
  @UpdatedByUser INT
 AS
 UPDATE {databaseOwner}{objectQualifier}Blog_Blogs SET
+ [AutoApprovePingBack] = @AutoApprovePingBack,
  [ModuleID] = @ModuleID,
+ [AutoApproveTrackBack] = @AutoApproveTrackBack,
  [Copyright] = @Copyright,
  [Description] = @Description,
+ [EnablePingBackReceive] = @EnablePingBackReceive,
+ [EnablePingBackSend] = @EnablePingBackSend,
+ [EnableTrackBackReceive] = @EnableTrackBackReceive,
+ [EnableTrackBackSend] = @EnableTrackBackSend,
  [FullLocalization] = @FullLocalization,
  [Image] = @Image,
  [IncludeAuthorInFeed] = @IncludeAuthorInFeed,
@@ -2152,6 +2183,7 @@ END
 GO
 
 /******* DATA *******/
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}ContentTypes WHERE ContentType='DNN_Blog_Post')
 EXEC {databaseOwner}{objectQualifier}AddContentType 'DNN_Blog_Post'
 GO
 

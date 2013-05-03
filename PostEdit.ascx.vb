@@ -129,6 +129,12 @@ Public Class PostEdit
     End If
     cmdDelete.Visible = CBool(BlogContext.Post IsNot Nothing)
 
+    If BlogContext.Post Is Nothing Then
+     BlogContext.Post = New PostInfo
+     BlogContext.Post.Blog = BlogContext.Blog
+     BlogContext.Post.BlogID = BlogContext.Blog.BlogID
+    End If
+
     If Not BlogContext.Post Is Nothing Then
 
      Dim PostBody As New PostBodyAndSummary(BlogContext.Post, Settings.SummaryModel, True)
@@ -176,18 +182,18 @@ Public Class PostEdit
      ctlTags.Terms = BlogContext.Post.PostTags
      ctlCategories.SelectedCategories = BlogContext.Post.PostCategories
 
-    Else
+     'Else
 
-     ddLocale.Items.FindByValue("").Selected = True
-     ' Publishing
-     chkAllowComments.Checked = BlogContext.Blog.Permissions.ContainsPermissionKey("ADDCOMMENT")
-     ' Date
-     litTimezone.Text = BlogContext.UiTimeZone.DisplayName
-     Dim publishDate As Date = UtcToLocalTime(DateTime.Now.ToUniversalTime, BlogContext.UiTimeZone)
-     dpPostDate.Culture = Threading.Thread.CurrentThread.CurrentUICulture
-     dpPostDate.SelectedDate = publishDate
-     tpPostTime.Culture = Threading.Thread.CurrentThread.CurrentUICulture
-     tpPostTime.SelectedDate = publishDate
+     ' ddLocale.Items.FindByValue("").Selected = True
+     ' ' Publishing
+     ' chkAllowComments.Checked = BlogContext.Blog.Permissions.ContainsPermissionKey("ADDCOMMENT")
+     ' ' Date
+     ' litTimezone.Text = BlogContext.UiTimeZone.DisplayName
+     ' Dim publishDate As Date = UtcToLocalTime(DateTime.Now.ToUniversalTime, BlogContext.UiTimeZone)
+     ' dpPostDate.Culture = Threading.Thread.CurrentThread.CurrentUICulture
+     ' dpPostDate.SelectedDate = publishDate
+     ' tpPostTime.Culture = Threading.Thread.CurrentThread.CurrentUICulture
+     ' tpPostTime.SelectedDate = publishDate
 
     End If
 
@@ -306,7 +312,7 @@ Public Class PostEdit
 
     If firstPublish Then
 
-     PostsController.PublishPost(BlogContext.Post, True, UserInfo.UserID)
+     PostsController.PublishPost(BlogContext.Post, UserInfo.UserID)
 
     ElseIf BlogContext.Blog.MustApproveGhostPosts And UserId <> BlogContext.Blog.OwnerUserId Then
 

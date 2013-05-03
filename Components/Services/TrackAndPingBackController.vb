@@ -1,4 +1,5 @@
 ﻿Imports System.Linq
+Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.Entities.Posts
 Imports System.Net
 
@@ -9,6 +10,7 @@ Namespace Services
   Private Shared ReadOnly TrackbackLinkRegex As New Regex("trackback:ping=""([^""]+)""", RegexOptions.IgnoreCase Or RegexOptions.Compiled)
   Private Shared ReadOnly UrlsRegex As New Regex("<a.*?href=[""'](?<url>.*?)[""'].*?>(?<name>.*?)</a>", RegexOptions.IgnoreCase Or RegexOptions.Compiled)
   Private Property Post As PostInfo = Nothing
+  Private Property PortalSettings As DotNetNuke.Entities.Portals.PortalSettings = Nothing
 #End Region
 
 #Region " TrackbackMessage "
@@ -23,9 +25,9 @@ Namespace Services
 #End Region
 
 #Region " Constructors "
-   Public Sub New(post As PostInfo, urlToNotifyTrackback As Uri)
+   Public Sub New(post As PostInfo, urlToNotifyTrackback As Uri, portalSettings As DotNetNuke.Entities.Portals.PortalSettings)
     Me.Title = post.Title
-    Me.PostUrl = New Uri(post.PermaLink)
+    Me.PostUrl = New Uri(post.PermaLink(portalSettings))
     Me.Excerpt = post.Summary
     Me.BlogName = post.Blog.Title
     Me.UrlToNotifyTrackback = urlToNotifyTrackback
@@ -44,6 +46,7 @@ Namespace Services
 #Region " Constructors "
   Public Sub New(post As PostInfo)
    Me.Post = post
+   Me.PortalSettings = DotNetNuke.Entities.Portals.PortalSettings.Current
   End Sub
 #End Region
 
@@ -52,20 +55,20 @@ Namespace Services
 
    If Not Post.Blog.EnableTrackBackSend And Not Post.Blog.EnablePingBackSend Then Exit Sub
 
-   For Each url As Uri In GetUrlsFromContent(Post.Content)
+   For Each url As Uri In GetUrlsFromContent(HttpUtility.HtmlDecode(Post.Content))
 
     Dim trackbackSent As Boolean = False
     If Post.Blog.EnableTrackBackSend Then
-     Dim remoteFile As New RemoteFile(url)
+     Dim remoteFile As New WebPage(url)
      Dim pageContent As String = remoteFile.GetFileAsString
      Dim trackbackUrl As Uri = GetTrackBackUrlFromPage(pageContent)
      If trackbackUrl IsNot Nothing Then
-      Dim message As New TrackbackMessage(Post, trackbackUrl)
+      Dim message As New TrackbackMessage(Post, trackbackUrl, PortalSettings)
       trackbackSent = SendTrackback(message)
      End If
     End If
     If Not trackbackSent AndAlso Post.Blog.EnablePingBackSend Then
-     SendPingback(New Uri(Post.PermaLink), url)
+     SendPingback(New Uri(Post.PermaLink(PortalSettings)), url)
     End If
 
    Next
@@ -74,7 +77,7 @@ Namespace Services
 #End Region
 
 #Region " Trackback "
-  Public Shared Function SendTrackback(message As TrackbackMessage) As Boolean
+  Public Function SendTrackback(message As TrackbackMessage) As Boolean
 
    Dim request As HttpWebRequest = DirectCast(WebRequest.Create(message.UrlToNotifyTrackback), HttpWebRequest)
 
@@ -107,7 +110,7 @@ Namespace Services
 #End Region
 
 #Region " Pingback "
-  Public Shared Sub SendPingback(sourceUrl As Uri, targetUrl As Uri)
+  Public Sub SendPingback(sourceUrl As Uri, targetUrl As Uri)
 
    Try
 
@@ -120,9 +123,22 @@ Namespace Services
        pingUrl = response.Headers(k)
       End If
      Next
+     If String.IsNullOrEmpty(pingUrl) Then
+      Using reader As New IO.StreamReader(response.GetResponseStream())
+       Dim content As String = reader.ReadToEnd()
+       Dim m As Match = Regex.Match(content, "<link[^>]*rel=""pingback""[^>]*>|<link[^>]*rel='pingback'[^>]*>")
+       If m.Success Then
+        Dim link As String = m.Value
+        Dim m2 As Match = Regex.Match(link, "href=""(?<link>[^""]*)""|href='(?<link>[^']*)'")
+        If m2.Success Then
+         pingUrl = m2.Groups("link").Value.Replace("&amp;", "&")
+        End If
+       End If
+      End Using
+     End If
     End Using
 
-    Dim url As Uri
+    Dim url As Uri = Nothing
     If Not String.IsNullOrEmpty(pingUrl) AndAlso Uri.TryCreate(pingUrl, UriKind.Absolute, url) Then
      request = DirectCast(WebRequest.Create(url), HttpWebRequest)
      request.Method = "POST"

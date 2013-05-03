@@ -279,8 +279,8 @@
   <data name="Add.Text" xml:space="preserve">
     <value>Add</value>
   </data>
-  <data name="DeleteSelection.Text" xml:space="preserve">
-    <value>Delete Selection</value>
+  <data name="DeleteSelected.Text" xml:space="preserve">
+    <value>Delete Selected</value>
   </data>
   <data name="lblModifyPageDetails.Help" xml:space="preserve">
     <value>If checked the module will attempt to adjust the page title based on the blog's context, such as blog title, post title, etc</value>

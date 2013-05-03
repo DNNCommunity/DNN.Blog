@@ -46,7 +46,9 @@ Namespace Common
    If PostMapPath <> "" AndAlso Not IO.Directory.Exists(PostMapPath) Then IO.Directory.CreateDirectory(PostMapPath)
    If TermId > -1 Then Term = Entities.Terms.TermsController.GetTerm(TermId, BlogModuleId, Locale)
    If AuthorId > -1 Then Author = DotNetNuke.Entities.Users.UserController.GetUserById(blogModule.PortalId, AuthorId)
-   WLWRequest = CBool(context.Request.UserAgent.IndexOf("Windows Live Writer") > -1)
+   If context.Request.UserAgent IsNot Nothing Then
+    WLWRequest = CBool(context.Request.UserAgent.IndexOf("Windows Live Writer") > -1)
+   End If
 
    ' security
    Dim isStylePostRequest As Boolean = False

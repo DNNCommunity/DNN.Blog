@@ -58,7 +58,7 @@ Namespace Services
   End Function
 
   Public Shared Function GetRoute(controller As String, method As String) As String
-   Return DotNetNuke.Common.ResolveUrl(ServicePath & controller & "/" & method)
+   Return HttpContext.Current.Request.Url.Scheme & "://" & HttpContext.Current.Request.Url.Host & DotNetNuke.Common.ResolveUrl(ServicePath & controller & "/" & method)
   End Function
 
  End Class

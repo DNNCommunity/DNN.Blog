@@ -3,12 +3,12 @@
  <packages>
   <package name="DotNetNuke.Blog" type="Module" version="05.00.00">
    <friendlyName>Blog</friendlyName>
-   <description>The DotNetNuke Blog module is an easy to use content publishing module that is tightly integrated with the core DotNetNuke framework. It can be used in single or mutli-author enviornments and also permits content authoring using off-site tools such as Windows Live Writer.</description>
+   <description>The DotNetNuke Blog module is an easy to use content publishing module that is tightly integrated with the core DotNetNuke framework. It can be used in single or multi-author environments and also permits content authoring using off-site tools such as Windows Live Writer.</description>
    <iconFile>~/DesktopModules/Blog/Images/dnnBlog_32.png</iconFile>
    <owner>
     <name>DotNetNuke</name>
     <organization>DotNetNuke Corporation</organization>
-    <url>http://dnnblog.codeplex.com</url>
+    <url>http://dnnblog.org</url>
     <email/>
    </owner>
    <license src="License.txt"/>
@@ -21,8 +21,10 @@
      <desktopModule>
       <moduleName>Blog</moduleName>
       <foldername>Blog</foldername>
-      <businessControllerClass>DotNetNuke.Modules.Blog.Common.BlogModuleController, DOTNETNUKE.MODULES.BLOG</businessControllerClass>
+      <businessControllerClass>DotNetNuke.Modules.Blog.Integration.BlogModuleController, DOTNETNUKE.MODULES.BLOG</businessControllerClass>
       <supportedFeatures>
+       <supportedFeature type="Portable" />
+       <supportedFeature type="Searchable" />
        <supportedFeature type="Upgradable" />
       </supportedFeatures>
       <moduleDefinitions>
@@ -140,7 +142,7 @@
       <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
       <processorCommand>UpgradeModule</processorCommand>
       <attributes>
-       <businessControllerClass>DotNetNuke.Modules.Blog.Common.BlogModuleController, DOTNETNUKE.MODULES.BLOG</businessControllerClass>
+       <businessControllerClass>DotNetNuke.Modules.Blog.Integration.BlogModuleController, DOTNETNUKE.MODULES.BLOG</businessControllerClass>
        <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
        <upgradeVersionsList>05.00.00</upgradeVersionsList>
       </attributes>

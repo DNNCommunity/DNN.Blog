@@ -23,6 +23,10 @@ Namespace Common
 
 #Region " Constructors "
   Public Sub New(tabModuleId As Integer)
+   Me.New(tabModuleId, False)
+  End Sub
+
+  Public Sub New(tabModuleId As Integer, justLoadSettings As Boolean)
 
    _tabModuleId = tabModuleId
    _allSettings = (New DotNetNuke.Entities.Modules.ModuleController).GetTabModuleSettings(tabModuleId)
@@ -31,6 +35,7 @@ Namespace Common
    _allSettings.ReadValue("ShowComments", ShowComments)
    _allSettings.ReadValue("BlogModuleId", BlogModuleId)
    _allSettings.ReadValue("ShowAllLocales", ShowAllLocales)
+   If justLoadSettings Then Exit Sub
 
    ' Template Settings - first load defaults
    SetTemplate(Template)
