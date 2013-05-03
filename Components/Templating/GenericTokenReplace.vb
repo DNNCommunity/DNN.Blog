@@ -29,8 +29,8 @@ Namespace Templating
    Me.PropertySource("custom") = New CustomParameters(additionalParameters)
   End Sub
 
-  Public Sub AddResources(TemplateFileMapPath As String)
-   Me.PropertySource("resx") = New Resources(TemplateFileMapPath)
+  Public Sub AddResources(TemplateRelPath As String)
+   Me.PropertySource("resx") = New Resources(TemplateRelPath)
   End Sub
 
   Public Sub AddPropertySource(key As String, resource As IPropertyAccess)

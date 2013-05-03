@@ -173,6 +173,7 @@ Namespace Entities.Comments
    Dim tmgr As New TemplateManager(PortalSettings, ViewSettings.Template)
    With vt
     .TemplatePath = tmgr.TemplatePath
+    .TemplateRelPath = tmgr.TemplateRelPath
     .TemplateMapPath = tmgr.TemplateMapPath
     .DefaultReplacer = New BlogTokenReplace(ActiveModule, Security, Blog, Post, Settings, ViewSettings)
     .StartTemplate = "CommentsTemplate.html"

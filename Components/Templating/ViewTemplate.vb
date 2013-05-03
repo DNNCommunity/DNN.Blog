@@ -29,6 +29,7 @@ Namespace Templating
 #Region " Properties "
   Public Property Template As Template
   Public Property TemplatePath As String = ""
+  Public Property TemplateRelPath As String = ""
   Public Property TemplateMapPath As String = ""
   Public Property DefaultReplacer As GenericTokenReplace
   Public Property StartTemplate As String = "Template.html"
@@ -67,9 +68,9 @@ Namespace Templating
 
    RaiseEvent GetData("", params, dataSrc, args, Nothing)
    If dataSrc.Count > 0 Then
-    Template = New Template(ViewMapPath, StartTemplate, dataSrc(0), Nothing)
+    Template = New Template(ViewMapPath, TemplateRelPath, StartTemplate, dataSrc(0), Nothing)
    Else
-    Template = New Template(ViewMapPath, StartTemplate, DefaultReplacer, Nothing)
+    Template = New Template(ViewMapPath, TemplateRelPath, StartTemplate, DefaultReplacer, Nothing)
    End If
    AddHandler Template.GetData, AddressOf Template_GetData
 
@@ -118,7 +119,7 @@ Namespace Templating
    ' add js blocks
    If IO.Directory.Exists(ViewMapPath & "jsblocks") Then
     For Each f As IO.FileInfo In (New IO.DirectoryInfo(ViewMapPath & "jsblocks")).GetFiles("*.js")
-     Dim t As New Template(ViewMapPath & "jsblocks\", f.Name, DefaultReplacer, Nothing)
+     Dim t As New Template(ViewMapPath & "jsblocks\", ViewPath, f.Name, DefaultReplacer, Nothing)
      Dim s As String = t.ReplaceContents
      If Not s.StartsWith("<") Then
       s = String.Format("<script type=""text/javascript"">{0}//<![CDATA[{0}{1}//]]>{0}</script>", vbCrLf, s)

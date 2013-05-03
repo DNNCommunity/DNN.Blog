@@ -27,15 +27,19 @@ Namespace Templating
   Public Sub New(portalsettings As PortalSettings, template As String)
    If template.StartsWith("[G]") Then
     TemplatePath = DotNetNuke.Common.ResolveUrl(glbTemplatesPath) & Mid(template, 4) & "/"
+    TemplateRelPath = glbTemplatesPath & Mid(template, 4) & "/"
     TemplateMapPath = HttpContext.Current.Server.MapPath(DotNetNuke.Common.ResolveUrl(glbTemplatesPath)) & Mid(template, 4) & "\"
    Else
     TemplatePath = portalsettings.HomeDirectory & "/Blog/Templates/" & Mid(template, 4) & "/"
+    Dim pi As PortalInfo = (New PortalController).GetPortal(portalsettings.PortalId)
+    TemplateRelPath = "~/" & pi.HomeDirectory & "/" & Mid(template, 4) & "/"
     TemplateMapPath = portalsettings.HomeDirectoryMapPath & "\Blog\Templates\" & Mid(template, 4) & "\"
    End If
   End Sub
 
 #Region " Properties "
   Public Property TemplatePath As String
+  Public Property TemplateRelPath As String
   Public Property TemplateMapPath As String
 
   Private _templateSettings As TemplateSettings
@@ -53,7 +57,7 @@ Namespace Templating
 
   Public ReadOnly Property SharedResourcesFile() As String
    Get
-    Return TemplatePath & "resx/SharedResources"
+    Return TemplateRelPath & "resx/SharedResources"
    End Get
   End Property
 

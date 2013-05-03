@@ -11,14 +11,13 @@ Namespace Templating
   Private Property SecondaryResourceFile As String = ""
 
 #Region " Constructors "
-  Public Sub New(ByVal TemplateFileMapPath As String)
-   Dim f As New IO.FileInfo(TemplateFileMapPath)
-   Me.ResourcesPath = f.Directory.FullName
-   Me.PrimaryResourceFile = f.FullName
-   If Not f.Name.ToLower.EndsWith(".resx") Then
+  Public Sub New(ByVal TemplateRelPath As String)
+   Me.PrimaryResourceFile = TemplateRelPath
+   Me.ResourcesPath = TemplateRelPath.Substring(0, TemplateRelPath.LastIndexOf("/"))
+   If Not PrimaryResourceFile.ToLower.EndsWith(".resx") Then
     Me.PrimaryResourceFile = Me.PrimaryResourceFile & ".resx"
    End If
-   Me.SecondaryResourceFile = Me.ResourcesPath & "\resx\SharedResources.ascx.resx"
+   Me.SecondaryResourceFile = Me.ResourcesPath & "/resx/SharedResources.ascx.resx"
   End Sub
 #End Region
 

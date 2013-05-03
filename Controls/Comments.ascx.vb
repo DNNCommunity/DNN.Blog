@@ -60,6 +60,7 @@ Namespace Controls
    Dim tmgr As New TemplateManager(PortalSettings, ViewSettings.Template)
    With vtContents
     .TemplatePath = tmgr.TemplatePath
+    .TemplateRelPath = tmgr.TemplateRelPath
     .TemplateMapPath = tmgr.TemplateMapPath
     .DefaultReplacer = New BlogTokenReplace(Me)
     .StartTemplate = "CommentsTemplate.html"
