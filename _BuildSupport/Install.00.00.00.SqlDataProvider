@@ -394,11 +394,10 @@ GO
 CREATE VIEW {databaseOwner}{objectQualifier}vw_Blog_Posts
 AS
 SELECT     p.ContentItemId, p.BlogID, p.Title, p.Summary, p.Image, p.Published, p.PublishedOnDate, p.AllowComments, p.DisplayCopyright, p.Copyright, p.Locale, p.ViewCount, 
-                      ci.[Content], ci.CreatedByUserID, ci.CreatedOnDate, ci.LastModifiedByUserID, ci.LastModifiedOnDate, pl.Locale AS Expr1, pl.Title AS Expr2, pl.Summary AS Expr3, 
-                      pl.LocalizedContentItemId, u.Username, u.Email, u.DisplayName
+                      ci.CreatedByUserID, ci.CreatedOnDate, ci.LastModifiedByUserID, ci.LastModifiedOnDate, ci.[Content], ci.ContentTypeID, ci.TabID, ci.ModuleID, ci.ContentKey, 
+                      ci.Indexed, u.Username, u.Email, u.DisplayName
 FROM         {databaseOwner}{objectQualifier}Blog_Posts AS p LEFT OUTER JOIN
-                      {databaseOwner}{objectQualifier}Blog_PostLocalization AS pl ON p.ContentItemId = pl.ContentItemId INNER JOIN
-                      {databaseOwner}{objectQualifier}ContentItems AS ci ON p.ContentItemId = ci.ContentItemID AND pl.ContentItemId = ci.ContentItemID INNER JOIN
+                      {databaseOwner}{objectQualifier}ContentItems AS ci ON p.ContentItemId = ci.ContentItemID AND p.ContentItemId = ci.ContentItemID INNER JOIN
                       {databaseOwner}{objectQualifier}Users AS u ON ci.CreatedByUserID = u.UserID
 GO
 
@@ -437,16 +436,10 @@ RETURNS TABLE
 AS
 RETURN
 (SELECT
-  p.*, 
-  ci.CreatedByUserID, ci.CreatedOnDate, ci.LastModifiedByUserID, 
-  ci.LastModifiedOnDate, ci.[Content], ci.ContentTypeID, ci.TabID, 
-  ci.ModuleID, ci.ContentKey, ci.Indexed,
-  u.Username, u.Email, u.DisplayName,
+  p.*,
   pl.Locale AS AltLocale, pl.Title AS AltTitle, pl.Summary AS AltSummary, lci.Content AS AltContent
- FROM {databaseOwner}{objectQualifier}Blog_Posts AS p
-  INNER JOIN {databaseOwner}{objectQualifier}ContentItems AS ci ON p.ContentItemId = ci.ContentItemID
-  INNER JOIN {databaseOwner}{objectQualifier}Users AS u ON ci.CreatedByUserID = u.UserID
-  LEFT OUTER JOIN {databaseOwner}{objectQualifier}Blog_PostLocalization AS pl ON ci.ContentItemID = pl.ContentItemId AND pl.Locale=@Locale
+ FROM {databaseOwner}{objectQualifier}vw_Blog_Posts AS p
+  LEFT OUTER JOIN {databaseOwner}{objectQualifier}Blog_PostLocalization AS pl ON p.ContentItemID = pl.ContentItemId AND pl.Locale=@Locale
   LEFT OUTER JOIN {databaseOwner}{objectQualifier}ContentItems lci ON pl.LocalizedContentItemId=lci.ContentItemID)
 GO
 

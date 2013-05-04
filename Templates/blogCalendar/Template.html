@@ -1,0 +1,22 @@
+<input type="text" id="blogCalendar" class="gldp-el" gldp-id="mydate" />
+<div gldp-el="mydate" style="width:350px; height:300px;margin-top:-40px;">
+</div>
+<script type="text/javascript">
+ (function ($, Sys) {
+  $(document).ready(function () {
+   $('#blogCalendar').glDatePicker(
+{
+ onClick: (function (el, cell, date, data) {
+  var url = '[urls:posttermauthor|true]end=';
+  url += date.getFullYear()+'-'+(date.getMonth()+1).toString()+'-'+date.getDate();
+  window.location.href = encodeURI(url);
+ }),
+ showAlways: true,
+ selectableDateRange: [{
+  from: new Date(2000, 1, 1), to: new Date([date:now|yyyy], [date:now|MM], [date:now|dd])
+ }],
+ selectedDate: new Date([query:enddate|yyyy], [query:enddate|MM]-1, [query:enddate|dd])
+});
+  });
+ } (jQuery, window.Sys));
+</script>

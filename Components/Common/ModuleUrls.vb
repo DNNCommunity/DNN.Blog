@@ -77,6 +77,10 @@ Namespace Common
      If BlogId > -1 Then params.Add("Blog=" & BlogId.ToString)
      If ContentItemId > -1 Then params.Add("Post=" & ContentItemId.ToString)
      If AuthorId > -1 Then params.Add("Author=" & AuthorId.ToString)
+    Case "blogtermauthor"
+     If BlogId > -1 Then params.Add("Blog=" & BlogId.ToString)
+     If TermId > -1 Then params.Add("Term=" & TermId.ToString)
+     If AuthorId > -1 Then params.Add("Author=" & AuthorId.ToString)
     Case "posttermauthor"
      If ContentItemId > -1 Then params.Add("Post=" & ContentItemId.ToString)
      If TermId > -1 Then params.Add("Term=" & TermId.ToString)

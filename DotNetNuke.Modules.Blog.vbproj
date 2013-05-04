@@ -157,6 +157,10 @@
     <Content Include="css\font-awesome.css" />
     <Content Include="css\jquery.handsontable.css" />
     <Content Include="js\jquery.handsontable.js" />
+    <Content Include="Templates\blogCalendar\CalendarItem.html" />
+    <Content Include="Templates\blogCalendar\template.css" />
+    <Content Include="Templates\blogCalendar\Template.html" />
+    <Content Include="Templates\blogCalendar\template.js" />
     <Content Include="Templates\blogList\BlogImage.html" />
     <Content Include="Templates\blogList\Blog.html" />
     <Content Include="Templates\blogList\template.css" />
@@ -460,6 +464,11 @@
     <Folder Include="Templates\blogCalendarList\jsblocks\" />
     <Folder Include="Templates\blogCalendarList\js\" />
     <Folder Include="Templates\blogCalendarList\resx\" />
+    <Folder Include="Templates\blogCalendar\css\" />
+    <Folder Include="Templates\blogCalendar\images\" />
+    <Folder Include="Templates\blogCalendar\jsblocks\" />
+    <Folder Include="Templates\blogCalendar\js\" />
+    <Folder Include="Templates\blogCalendar\resx\" />
     <Folder Include="Templates\blogList\css\" />
     <Folder Include="Templates\blogList\images\" />
     <Folder Include="Templates\blogList\jsblocks\" />
