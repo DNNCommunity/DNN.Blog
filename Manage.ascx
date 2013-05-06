@@ -51,13 +51,13 @@
           title="Edit"
           style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Blog.CanEdit, "inline", "none") %>"></a>
        <a href="#" 
-          onclick="if (confirm('<%= LocalizeString("DeletePost") %>')) {blogService.deletePost(<%# Eval("BlogID") %>, <%# Eval("ContentItemID") %>, function() {$('#cmdDeletePost<%# Eval("ContentItemID") %>').parent().parent().hide()})};return false;"
+          onclick="if (confirm('<%= LocalizeJSString("DeletePost") %>')) {blogService.deletePost(<%# Eval("BlogID") %>, <%# Eval("ContentItemID") %>, function() {$('#cmdDeletePost<%# Eval("ContentItemID") %>').parent().parent().hide()})};return false;"
           id="cmdDeletePost<%# Eval("ContentItemID") %>"
           class="blogicon-remove icon16" 
           title="Delete"
           style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Blog.CanEdit, "inline", "none") %>"></a>
        <a href="#" 
-          onclick="if (confirm('<%= LocalizeString("ApprovePost") %>')) {blogService.approvePost(<%# Eval("BlogID") %>, <%# Eval("ContentItemID") %>, function() {$('#cmdApprovePost<%# Eval("ContentItemID") %>').hide();$('#approveTick<%# Eval("ContentItemID") %>').text('&#10003;')})};return false;" 
+          onclick="if (confirm('<%= LocalizeJSString("ApprovePost") %>')) {blogService.approvePost(<%# Eval("BlogID") %>, <%# Eval("ContentItemID") %>, function() {$('#cmdApprovePost<%# Eval("ContentItemID") %>').hide();$('#approveTick<%# Eval("ContentItemID") %>').text('&#10003;')})};return false;" 
           id="cmdApprovePost<%# Eval("ContentItemID") %>"
           class="blogicon-ok icon16" 
           title="Approve"
@@ -98,32 +98,32 @@
  $('#tabs').dnnTabs();
  var selectedBlog;
  var $dialogexport = $('<div class="dnnDialog"></div>')
-		.html('<p><%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Export.Help")) %></p><p><a id="blogMLDownloadLink" style=""><%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Download")) %></a></p>')
+		.html('<p><%=LocalizeJSString("Export.Help") %></p><p><a id="blogMLDownloadLink" style=""><%=LocalizeJSString("Download") %></a></p>')
 		.dialog({
 		 autoOpen: false,
 		 resizable: false,
 		 dialogClass: 'dnnFormPopup dnnClear',
-		 title: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Export")) %>',
+		 title: '<%=LocalizeJSString("Export") %>',
 		 height: 250,
 		 width: 500,
 		 open: function (e) {
 		  $('#blogMLDownloadLink').hide();
-		  $('.ui-dialog-buttonpane').find('button:contains("<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Export")) %>")').addClass('dnnPrimaryAction');
-		  $('.ui-dialog-buttonpane').find('button:contains("<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Cancel")) %>")').addClass('dnnSecondaryAction');
+		  $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeJSString("Export") %>")').addClass('dnnPrimaryAction');
+		  $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeJSString("Cancel") %>")').addClass('dnnSecondaryAction');
 		 },
 		 buttons: [
     {
-     text: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Cancel")) %>',
+     text: '<%=LocalizeJSString("Cancel") %>',
      click: function () {
       $(this).dialog("close");
      }
     },
     {
-     text: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Export")) %>',
+     text: '<%=LocalizeJSString("Export") %>',
      click: function () {
-      $('.ui-dialog-buttonpane').find('button:contains("<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Export")) %>")').attr("disabled", "disabled");
+      $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeJSString("Export") %>")').attr("disabled", "disabled");
       blogService.exportBlog(selectedBlog, function (returnValue) {
-       $('.ui-dialog-buttonpane').find('button:contains("<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Export")) %>")').removeAttr("disabled");
+       $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeJSString("Export") %>")').removeAttr("disabled");
        $('#blogMLDownloadLink').attr('href', returnValue);
        $('#blogMLDownloadLink').show();
       });

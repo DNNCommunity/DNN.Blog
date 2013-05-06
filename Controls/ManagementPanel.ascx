@@ -41,12 +41,12 @@
  $(document).ready(function () {
 <% If BlogContext.Security.CanAddPost %>
   var $dialogWLW = $('<div class="dnnDialog"></div>')
-		.html('<input type="text" id="txtWLWLink<%=ModuleId %>" style="width:95%"></input><br/><span><%=LocalizeString("WLW.Help") %></span>')
+		.html('<input type="text" id="txtWLWLink<%=ModuleId %>" style="width:95%"></input><br/><span><%=LocalizeJSString("WLW.Help") %></span>')
 		.dialog({
 		 autoOpen: false,
 		 resizable: false,
 		 dialogClass: 'dnnFormPopup dnnClear',
-		 title: '<%=LocalizeString("WLW") %>',
+		 title: '<%=LocalizeJSString("WLW") %>',
 		 height: 160,
 		 width: 500
 		});
@@ -62,7 +62,7 @@
 		 autoOpen: false,
 		 resizable: false,
 		 dialogClass: 'dnnFormPopup dnnClear',
-		 title: '<%=LocalizeString("cmdCopyModule") %>',
+		 title: '<%=LocalizeJSString("cmdCopyModule") %>',
 		 width: 800
 		});
 		$('#<%=cmdCopyModule.ClientId %>').click(function () {
@@ -74,27 +74,27 @@
  });
 <% End If %>
   var $dialogSearch = $('<div class="dnnDialog"></div>')
-		.html('<input type="text" id="txtSearch" style="width:95%"></input><br/><%=LocalizeString("SearchIn") %>&nbsp;<input type="checkbox" id="scopeAll<%=ModuleId %>" value="1" checked="1" /><%=LocalizeString("SearchAll") %><input type="checkbox" id="scopeTitle<%=ModuleId %>" value="1" checked="1" /><%=LocalizeString("Title") %><input type="checkbox" id="scopeContents<%=ModuleId %>" value="1" /><%=LocalizeString("Contents") %><% If BlogContext.Security.CanAddPost %><input type="checkbox" id="chkUnpublished<%=ModuleId %>" value="1" /><%=LocalizeString("Unpublished") %><% End If %>')
+		.html('<input type="text" id="txtSearch" style="width:95%"></input><br/><%=LocalizeJSString("SearchIn") %>&nbsp;<input type="checkbox" id="scopeAll<%=ModuleId %>" value="1" checked="1" /><%=LocalizeJSString("SearchAll") %><input type="checkbox" id="scopeTitle<%=ModuleId %>" value="1" checked="1" /><%=LocalizeJSString("Title") %><input type="checkbox" id="scopeContents<%=ModuleId %>" value="1" /><%=LocalizeJSString("Contents") %><% If BlogContext.Security.CanAddPost %><input type="checkbox" id="chkUnpublished<%=ModuleId %>" value="1" /><%=LocalizeJSString("Unpublished") %><% End If %>')
 		.dialog({
 		 autoOpen: false,
 		 resizable: false,
 		 dialogClass: 'dnnFormPopup dnnClear',
-		 title: '<%=LocalizeString("Search") %>',
+		 title: '<%=LocalizeJSString("Search") %>',
 		 height: 210,
 		 width: 500,
 		 open: function (e) {
-		  $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeString("Search") %>")').addClass('dnnPrimaryAction');
-		  $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeString("Cancel") %>")').addClass('dnnSecondaryAction');
+		  $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeJSString("Search") %>")').addClass('dnnPrimaryAction');
+		  $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeJSString("Cancel") %>")').addClass('dnnSecondaryAction');
 		 },
 		 buttons: [
     {
-     text: '<%=LocalizeString("Cancel") %>',
+     text: '<%=LocalizeJSString("Cancel") %>',
      click: function () {
       $(this).dialog("close");
      }
     },
     {
-     text: '<%=LocalizeString("Search") %>',
+     text: '<%=LocalizeJSString("Search") %>',
      click: function () {
       $(this).dialog("close");
       var url
@@ -129,22 +129,22 @@
 		 autoOpen: false,
 		 resizable: false,
 		 dialogClass: 'dnnFormPopup dnnClear',
-		 title: '<%=LocalizeString("BlogChoose") %>',
+		 title: '<%=LocalizeJSString("BlogChoose") %>',
 		 width: 500,
 		 open: function (e) {
-		  $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeString("cmdBlog") %>")').addClass('dnnPrimaryAction');
-		  $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeString("Cancel") %>")').addClass('dnnSecondaryAction');
+		  $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeJSString("cmdBlog") %>")').addClass('dnnPrimaryAction');
+		  $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeJSString("Cancel") %>")').addClass('dnnSecondaryAction');
     $('#ddBlog').width("100%");
 		 },
 		 buttons: [
     {
-     text: '<%=LocalizeString("Cancel") %>',
+     text: '<%=LocalizeJSString("Cancel") %>',
      click: function () {
       $(this).dialog("close");
      }
     },
     {
-     text: '<%=LocalizeString("cmdBlog") %>',
+     text: '<%=LocalizeJSString("cmdBlog") %>',
      click: function () {
       $(this).dialog("close");
       var url = '<%=EditUrl("PostEdit") %>';

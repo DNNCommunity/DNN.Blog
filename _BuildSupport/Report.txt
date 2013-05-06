@@ -76,7 +76,7 @@ clean.bindirectory:
 compile.projects:
 
      [echo] Building DotNetNuke.Modules.Blog.vbproj
-  [msbuild] Build started 04/05/2013 22:21:17.
+  [msbuild] Build started 04/05/2013 23:44:08.
   [msbuild] Overriding target "GetFrameworkPaths" in project "C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets" with target "GetFrameworkPaths" from project "C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.NETFramework.targets".
   [msbuild] Overriding target "SatelliteDllsProjectOutputGroup" in project "C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets" with target "SatelliteDllsProjectOutputGroup" from project "C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.WinFX.targets".
   [msbuild] Project "E:\Webroot\BLOGDEV\DesktopModules\Blog\DotNetNuke.Modules.Blog.vbproj" on node 1 (Rebuild target(s)).
@@ -3680,7 +3680,7 @@ compile.projects:
   [msbuild]     4 Warning(s)
   [msbuild]     0 Error(s)
   [msbuild] 
-  [msbuild] Time Elapsed 00:00:04.41
+  [msbuild] Time Elapsed 00:00:03.90
 
 make.doc:
 
@@ -3728,7 +3728,7 @@ make.codestats:
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\Image.vb Totals: [T] 178 [C] 0 [E] 24
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\LocalizedText.vb Totals: [T] 201 [C] 20 [E] 17
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\ModuleSettings.vb Totals: [T] 183 [C] 0 [E] 23
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\ModuleUrls.vb Totals: [T] 129 [C] 0 [E] 11
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\ModuleUrls.vb Totals: [T] 133 [C] 0 [E] 11
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\PostBodyAndSummary.vb Totals: [T] 116 [C] 0 [E] 8
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\ViewSettings.vb Totals: [T] 141 [C] 1 [E] 20
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\WebPage.vb Totals: [T] 78 [C] 0 [E] 10
@@ -3879,7 +3879,7 @@ make.codestats:
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\js\jquery.timeago.js Totals: [T] 162 [C] 19 [E] 13
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\js\tag-it.min.js Totals: [T] 16 [C] 0 [E] 0
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\glDatePicker.min.js Totals: [T] 16 [C] 1 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\template.js Totals: [T] 12 [C] 0 [E] 1
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\template.js Totals: [T] 0 [C] 0 [E] 0
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\tagCloud\js\jqcloud-1.0.3.min.js Totals: [T] 11 [C] 10 [E] 0
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\ar.js Totals: [T] 2 [C] 2 [E] 0
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\bg.js Totals: [T] 2 [C] 2 [E] 0
@@ -3976,7 +3976,7 @@ make.codestats:
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\TermsEditML.ascx Totals: [T] 43 [C] 0 [E] 9
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\TermsEditML.ascx.designer.vb Totals: [T] 42 [C] 29 [E] 6
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\TermsEditML.ascx.vb Totals: [T] 63 [C] 0 [E] 10
-[codestats] Totals: [VB]  [T] 43667 [C] 6849 [E] 5748
+[codestats] Totals: [VB]  [T] 43659 [C] 6849 [E] 5747
 
 check.sqlscripts:
 
@@ -4035,7 +4035,7 @@ make.package:
     [jsmin] Minified 'D:\Programs\Nant\Build\Resources\js\jquery.timeago.js' and saved False characters
     [jsmin] Skipping 'D:\Programs\Nant\Build\Resources\js\tag-it.min.js' as it's on the exclude list.
     [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\glDatePicker.min.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\template.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\template.js' and saved True characters
     [jsmin] Skipping 'D:\Programs\Nant\Build\Resources\Templates\tagCloud\js\jqcloud-1.0.3.min.js' as it's on the exclude list.
     [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\ar.js' and saved False characters
     [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\bg.js' and saved False characters
@@ -4190,5 +4190,5 @@ backup.project:
 
 BUILD SUCCEEDED
 
-Total time: 57.5 seconds.
+Total time: 50.4 seconds.
 

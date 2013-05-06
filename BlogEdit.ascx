@@ -103,10 +103,10 @@
  (function ($, Sys) {
   function setupDnnBlogSettings() {
    $('.dnnBlogDelete').dnnConfirm({
-    text: '<%= LocalizeString("msgDeleteBlog") %>',
-    yesText: '<%= Localization.GetString("Yes.Text", Localization.SharedResourceFile) %>',
-    noText: '<%= Localization.GetString("No.Text", Localization.SharedResourceFile) %>',
-    title: '<%= Localization.GetString("Confirm.Text", Localization.SharedResourceFile) %>'
+    text: '<%= LocalizeJSString("msgDeleteBlog") %>',
+    yesText: '<%= LocalizeJSString("Yes.Text", Localization.SharedResourceFile) %>',
+    noText: '<%= LocalizeJSString("No.Text", Localization.SharedResourceFile) %>',
+    title: '<%= LocalizeJSString("Confirm.Text", Localization.SharedResourceFile) %>'
    });
   };
 

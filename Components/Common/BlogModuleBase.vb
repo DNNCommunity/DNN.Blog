@@ -149,6 +149,14 @@ Namespace Common
   Public Sub AddCssFile(cssFilename As String)
    ClientResourceManager.RegisterStyleSheet(Page, ResolveUrl("~/DesktopModules/Blog/css/" & cssFilename), Web.Client.FileOrder.Css.ModuleCss)
   End Sub
+
+  Public Function LocalizeJSString(resourceKey As String) As String
+   Return UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString(resourceKey))
+  End Function
+
+  Public Function LocalizeJSString(resourceKey As String, resourceFile As String) As String
+   Return UI.Utilities.ClientAPI.GetSafeJSString(DotNetNuke.Services.Localization.Localization.GetString(resourceKey, resourceFile))
+  End Function
 #End Region
 
  End Class

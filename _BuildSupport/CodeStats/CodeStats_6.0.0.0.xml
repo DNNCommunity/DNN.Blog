@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <code-summaries>
-  <code-summary date="2013-05-04T22:21:22.0029296+02:00" buildname="6.0.0.0">
-    <linecount label="VB" totalLineCount="43667" emptyLineCount="5748" commentLineCount="6849">
+  <code-summary date="2013-05-04T23:44:12.9482421+02:00" buildname="6.0.0.0">
+    <linecount label="VB" totalLineCount="43659" emptyLineCount="5747" commentLineCount="6849">
       <file-summaries>
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\BlogML\Enumerators\BlogPostTypes.vb" totalLineCount="10" emptyLineCount="1" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\BlogML\Enumerators\CommentModerationTypes.vb" totalLineCount="7" emptyLineCount="0" commentLineCount="0" />
@@ -32,7 +32,7 @@
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\Image.vb" totalLineCount="178" emptyLineCount="24" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\LocalizedText.vb" totalLineCount="201" emptyLineCount="17" commentLineCount="20" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\ModuleSettings.vb" totalLineCount="183" emptyLineCount="23" commentLineCount="0" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\ModuleUrls.vb" totalLineCount="129" emptyLineCount="11" commentLineCount="0" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\ModuleUrls.vb" totalLineCount="133" emptyLineCount="11" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\PostBodyAndSummary.vb" totalLineCount="116" emptyLineCount="8" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\ViewSettings.vb" totalLineCount="141" emptyLineCount="20" commentLineCount="1" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\WebPage.vb" totalLineCount="78" emptyLineCount="10" commentLineCount="0" />
@@ -183,7 +183,7 @@
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\jquery.timeago.js" totalLineCount="162" emptyLineCount="13" commentLineCount="19" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\tag-it.min.js" totalLineCount="16" emptyLineCount="0" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\glDatePicker.min.js" totalLineCount="16" emptyLineCount="0" commentLineCount="1" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\template.js" totalLineCount="12" emptyLineCount="1" commentLineCount="0" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\template.js" totalLineCount="0" emptyLineCount="0" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\tagCloud\js\jqcloud-1.0.3.min.js" totalLineCount="11" emptyLineCount="0" commentLineCount="10" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\ar.js" totalLineCount="2" emptyLineCount="0" commentLineCount="2" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\bg.js" totalLineCount="2" emptyLineCount="0" commentLineCount="2" />

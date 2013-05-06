@@ -51,22 +51,20 @@ Public Class PostEdit
                                                                                                              Return b.OwnerUserId = UserId
                                                                                                             End Function)
     If blogList.Count > 0 Then
-     BlogContext.Blog = blogList(0)
-     BlogContext.Security = New Modules.Blog.Security.ContextSecurity(Settings.ModuleId, TabId, BlogContext.Blog, UserInfo)
+     Response.Redirect(EditUrl("Blog", blogList(0).BlogID.ToString, "PostEdit"), False)
     Else
      blogList = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, BlogContext.Locale).Values.Where(Function(b)
                                                                                                               Return (b.CanAdd And BlogContext.Security.CanAddPost) Or (b.CanEdit And BlogContext.Security.CanEditPost And BlogContext.ContentItemId > -1)
                                                                                                              End Function)
      If blogList.Count > 0 Then
-      BlogContext.Blog = blogList(0)
-      BlogContext.Security = New Modules.Blog.Security.ContextSecurity(Settings.ModuleId, TabId, BlogContext.Blog, UserInfo)
+      Response.Redirect(EditUrl("Blog", blogList(0).BlogID.ToString, "PostEdit"), False)
      Else
       Throw New Exception("Could not find a blog for you to post to")
      End If
     End If
    End If
 
-   If Not BlogContext.security.CanAddPost Then
+   If Not BlogContext.Security.CanAddPost Then
     Response.Redirect(NavigateURL("Access Denied"))
    End If
 
@@ -97,7 +95,7 @@ Public Class PostEdit
 
   Try
 
-   If Not BlogContext.security.CanEditPost And Not BlogContext.security.CanAddPost Then
+   If Not BlogContext.Security.CanEditPost And Not BlogContext.Security.CanAddPost Then
     Throw New Exception("You do not have access to this resource. Please check your login status.")
    End If
 

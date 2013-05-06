@@ -18,11 +18,11 @@ Namespace Controls
     cmdManageBlogs.Visible = BlogContext.Security.IsBlogger Or BlogContext.Security.CanApprovePost
     cmdAdmin.Visible = BlogContext.Security.IsEditor
     cmdBlog.Visible = BlogContext.Security.CanAddPost
+    wlwlink.Visible = BlogContext.Security.CanAddPost
     cmdEditPost.Visible = (BlogContext.Post IsNot Nothing) And BlogContext.Security.CanEditPost
     cmdCopyModule.Visible = BlogContext.Security.IsEditor
     pnlCopyModule.Visible = BlogContext.Security.IsEditor
     wlwlink.Title = LocalizeString("WLW")
-    wlwlink.Visible = BlogContext.Security.CanAddPost
     If BlogContext.Post IsNot Nothing Then
      cmdBlog.Text = LocalizeString("cmdEdit")
     End If
@@ -71,7 +71,7 @@ Namespace Controls
      cmdBlog.Visible = False
     End If
     For Each b As BlogInfo In blogList
-     BlogSelectListHtml &= String.Format("<option value=""{0}"">{1}</option>", b.BlogID, b.LocalizedTitle)
+     BlogSelectListHtml &= String.Format("<option value=""{0}"">{1}</option>", b.BlogID, UI.Utilities.ClientAPI.GetSafeJSString(b.LocalizedTitle))
     Next
     BlogSelectListHtml &= "</select>"
    End If
@@ -90,7 +90,15 @@ Namespace Controls
    If BlogContext.BlogId <> -1 Then
     Response.Redirect(EditUrl("Blog", BlogContext.BlogId.ToString, "PostEdit"), False)
    Else
-    Response.Redirect(EditUrl("PostEdit"), False)
+    If BlogContext.Security.IsEditor Then
+     Dim b1 As BlogInfo = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, BlogContext.Locale).Values.First
+     Response.Redirect(EditUrl("Blog", b1.BlogID.ToString, "PostEdit"), False)
+    Else
+     Dim b1 As BlogInfo = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, BlogContext.Locale).Values.FirstOrDefault(Function(b)
+                                                                                                                                 Return b.OwnerUserId = UserId Or b.CanAdd Or (b.CanEdit And BlogContext.ContentItemId > -1)
+                                                                                                                                End Function)
+     Response.Redirect(EditUrl("Blog", b1.BlogID.ToString, "PostEdit"), False)
+    End If
    End If
   End Sub
 
