@@ -22,7 +22,6 @@ Namespace Common
    If blogModule.ViewSettings.BlogModuleId <> -1 Then
     BlogModuleId = blogModule.ViewSettings.BlogModuleId
    End If
-   Security = New ContextSecurity(BlogModuleId, blogModule.TabId, Blog, blogModule.UserInfo)
    Locale = Threading.Thread.CurrentThread.CurrentCulture.Name
    If context.Request.UrlReferrer IsNot Nothing Then Referrer = context.Request.UrlReferrer.PathAndQuery
    RequestParams = context.Request.Params
@@ -49,6 +48,7 @@ Namespace Common
    If context.Request.UserAgent IsNot Nothing Then
     WLWRequest = CBool(context.Request.UserAgent.IndexOf("Windows Live Writer") > -1)
    End If
+   Security = New ContextSecurity(BlogModuleId, blogModule.TabId, Blog, blogModule.UserInfo)
 
    ' security
    Dim isStylePostRequest As Boolean = False

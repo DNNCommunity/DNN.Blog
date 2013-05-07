@@ -422,6 +422,24 @@ RETURN
   LEFT OUTER JOIN {databaseOwner}{objectQualifier}Blog_BlogLocalization AS bl ON b.BlogID = bl.BlogID AND bl.Locale=@Locale)
 GO
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Permissions') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION {databaseOwner}{objectQualifier}Blog_Permissions
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE FUNCTION {databaseOwner}{objectQualifier}Blog_Permissions ()
+RETURNS TABLE
+AS
+RETURN
+WITH e1(n) AS
+ (SELECT 1 UNION ALL SELECT 1 UNION ALL SELECT 1 UNION ALL 
+  SELECT 1 UNION ALL SELECT 1 UNION ALL SELECT 1)
+SELECT TOP 6 n = ROW_NUMBER() OVER (ORDER BY n) FROM e1 ORDER BY n
+GO
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_PostList') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
 DROP FUNCTION {databaseOwner}{objectQualifier}Blog_PostList
 GO
@@ -1588,7 +1606,15 @@ FROM
  WHERE
   b.ModuleID=@ModuleId
   AND bp.AllowAccess=1
-  AND (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4))) p
+  AND (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4) OR bp.RoleID=-1)
+ UNION
+ SELECT
+  1 AllowAccess, b2.BlogID, NULL, ps.n, -1, -1
+ FROM {databaseOwner}{objectQualifier}Blog_Blogs b2
+  INNER JOIN 
+  {databaseOwner}{objectQualifier}Blog_Permissions () ps ON 1=1
+ WHERE b2.OwnerUserId=@UserId
+ ) p
 GROUP BY p.PermissionId
 GO
 

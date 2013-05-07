@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <code-summaries>
-  <code-summary date="2013-05-04T23:44:12.9482421+02:00" buildname="6.0.0.0">
-    <linecount label="VB" totalLineCount="43659" emptyLineCount="5747" commentLineCount="6849">
+  <code-summary date="2013-05-07T20:28:02.7568359+02:00" buildname="6.0.0.0">
+    <linecount label="VB" totalLineCount="43673" emptyLineCount="5749" commentLineCount="6849">
       <file-summaries>
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\BlogML\Enumerators\BlogPostTypes.vb" totalLineCount="10" emptyLineCount="1" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\BlogML\Enumerators\CommentModerationTypes.vb" totalLineCount="7" emptyLineCount="0" commentLineCount="0" />
@@ -25,7 +25,7 @@
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\BlogML\BlogMLWriterBase.vb" totalLineCount="425" emptyLineCount="97" commentLineCount="7" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\BlogML\Pair.vb" totalLineCount="19" emptyLineCount="4" commentLineCount="3" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\BlogContextInfo.vb" totalLineCount="201" emptyLineCount="16" commentLineCount="2" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\BlogModuleBase.vb" totalLineCount="156" emptyLineCount="24" commentLineCount="20" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\BlogModuleBase.vb" totalLineCount="164" emptyLineCount="26" commentLineCount="20" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\DynatreeItem.vb" totalLineCount="11" emptyLineCount="0" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\Extensions.vb" totalLineCount="375" emptyLineCount="38" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\Globals.vb" totalLineCount="290" emptyLineCount="34" commentLineCount="19" />
@@ -128,7 +128,7 @@
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\LongTextEdit.vb" totalLineCount="207" emptyLineCount="16" commentLineCount="3" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\ManagementPanel.ascx" totalLineCount="183" emptyLineCount="0" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\ManagementPanel.ascx.designer.vb" totalLineCount="161" emptyLineCount="19" commentLineCount="120" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\ManagementPanel.ascx.vb" totalLineCount="102" emptyLineCount="10" commentLineCount="0" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\ManagementPanel.ascx.vb" totalLineCount="110" emptyLineCount="10" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\ShortTextEdit.vb" totalLineCount="199" emptyLineCount="25" commentLineCount="3" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\TagEdit.vb" totalLineCount="101" emptyLineCount="12" commentLineCount="1" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\TemplateSettings.ascx" totalLineCount="7" emptyLineCount="0" commentLineCount="0" />
@@ -276,7 +276,7 @@
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Manage.ascx.vb" totalLineCount="61" emptyLineCount="17" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\PostEdit.ascx" totalLineCount="105" emptyLineCount="7" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\PostEdit.ascx.designer.vb" totalLineCount="366" emptyLineCount="42" commentLineCount="281" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\PostEdit.ascx.vb" totalLineCount="401" emptyLineCount="67" commentLineCount="28" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\PostEdit.ascx.vb" totalLineCount="399" emptyLineCount="67" commentLineCount="28" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\TermsEditML.ascx" totalLineCount="43" emptyLineCount="9" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\TermsEditML.ascx.designer.vb" totalLineCount="42" emptyLineCount="6" commentLineCount="29" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\TermsEditML.ascx.vb" totalLineCount="63" emptyLineCount="10" commentLineCount="0" />

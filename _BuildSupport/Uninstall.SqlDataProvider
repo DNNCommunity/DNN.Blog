@@ -185,6 +185,10 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwn
 DROP FUNCTION {databaseOwner}{objectQualifier}Blog_BlogList
 GO
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Permissions') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION {databaseOwner}{objectQualifier}Blog_Permissions
+GO
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_PostList') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
 DROP FUNCTION {databaseOwner}{objectQualifier}Blog_PostList
 GO

@@ -43,7 +43,7 @@ Public Class Blog
    End If
 
    If Not Me.IsPostBack And BlogContext.ContentItemId > -1 Then
-    Dim scriptBlock As String = "(function ($, Sys) {$(document).ready(function () {setTimeout(function(){blogService.viewPost(" & BlogContext.BlogId.ToString & ", " & BlogContext.ContentItemId.ToString & ")},30000)});} (jQuery, window.Sys));"
+    Dim scriptBlock As String = "(function ($, Sys) {$(document).ready(function () {setTimeout(function(){blogService.viewPost(" & BlogContext.BlogId.ToString & ", " & BlogContext.ContentItemId.ToString & ")},60000)});} (jQuery, window.Sys));"
     Page.ClientScript.RegisterClientScriptBlock(Me.GetType, "PostViewScript", scriptBlock, True)
    End If
 

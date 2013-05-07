@@ -76,7 +76,7 @@ clean.bindirectory:
 compile.projects:
 
      [echo] Building DotNetNuke.Modules.Blog.vbproj
-  [msbuild] Build started 04/05/2013 23:44:08.
+  [msbuild] Build started 07/05/2013 20:27:58.
   [msbuild] Overriding target "GetFrameworkPaths" in project "C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets" with target "GetFrameworkPaths" from project "C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.NETFramework.targets".
   [msbuild] Overriding target "SatelliteDllsProjectOutputGroup" in project "C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets" with target "SatelliteDllsProjectOutputGroup" from project "C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.WinFX.targets".
   [msbuild] Project "E:\Webroot\BLOGDEV\DesktopModules\Blog\DotNetNuke.Modules.Blog.vbproj" on node 1 (Rebuild target(s)).
@@ -3680,7 +3680,7 @@ compile.projects:
   [msbuild]     4 Warning(s)
   [msbuild]     0 Error(s)
   [msbuild] 
-  [msbuild] Time Elapsed 00:00:03.90
+  [msbuild] Time Elapsed 00:00:03.70
 
 make.doc:
 
@@ -3721,7 +3721,7 @@ make.codestats:
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\BlogML\BlogMLWriterBase.vb Totals: [T] 425 [C] 7 [E] 97
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\BlogML\Pair.vb Totals: [T] 19 [C] 3 [E] 4
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\BlogContextInfo.vb Totals: [T] 201 [C] 2 [E] 16
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\BlogModuleBase.vb Totals: [T] 156 [C] 20 [E] 24
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\BlogModuleBase.vb Totals: [T] 164 [C] 20 [E] 26
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\DynatreeItem.vb Totals: [T] 11 [C] 0 [E] 0
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\Extensions.vb Totals: [T] 375 [C] 0 [E] 38
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\Globals.vb Totals: [T] 290 [C] 19 [E] 34
@@ -3824,7 +3824,7 @@ make.codestats:
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\LongTextEdit.vb Totals: [T] 207 [C] 3 [E] 16
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\ManagementPanel.ascx Totals: [T] 183 [C] 0 [E] 0
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\ManagementPanel.ascx.designer.vb Totals: [T] 161 [C] 120 [E] 19
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\ManagementPanel.ascx.vb Totals: [T] 102 [C] 0 [E] 10
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\ManagementPanel.ascx.vb Totals: [T] 110 [C] 0 [E] 10
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\ShortTextEdit.vb Totals: [T] 199 [C] 3 [E] 25
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\TagEdit.vb Totals: [T] 101 [C] 1 [E] 12
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\TemplateSettings.ascx Totals: [T] 7 [C] 0 [E] 0
@@ -3972,11 +3972,11 @@ make.codestats:
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Manage.ascx.vb Totals: [T] 61 [C] 0 [E] 17
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\PostEdit.ascx Totals: [T] 105 [C] 0 [E] 7
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\PostEdit.ascx.designer.vb Totals: [T] 366 [C] 281 [E] 42
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\PostEdit.ascx.vb Totals: [T] 401 [C] 28 [E] 67
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\PostEdit.ascx.vb Totals: [T] 399 [C] 28 [E] 67
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\TermsEditML.ascx Totals: [T] 43 [C] 0 [E] 9
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\TermsEditML.ascx.designer.vb Totals: [T] 42 [C] 29 [E] 6
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\TermsEditML.ascx.vb Totals: [T] 63 [C] 0 [E] 10
-[codestats] Totals: [VB]  [T] 43659 [C] 6849 [E] 5747
+[codestats] Totals: [VB]  [T] 43673 [C] 6849 [E] 5749
 
 check.sqlscripts:
 
@@ -4179,16 +4179,16 @@ backup.project:
      [echo] Backing Up to \\192.168.123.240\src
      [echo] Backing Up to D:\src
      [echo] Backing Up Install
-     [copy] Copying 1 file to 'D:\src\Blog\2013-5-4\Blog_06.00.00_Install.zip'.
+     [copy] Copying 1 file to 'D:\src\Blog\2013-5-7\Blog_06.00.00_Install.zip'.
      [echo] Backing Up Source
-     [copy] Copying 1 file to 'D:\src\Blog\2013-5-4\Blog_06.00.00_Source.zip'.
+     [copy] Copying 1 file to 'D:\src\Blog\2013-5-7\Blog_06.00.00_Source.zip'.
      [echo] Backing Up to G:\src
      [echo] Backing Up Install
-     [copy] Copying 1 file to 'G:\src\Blog\2013-5-4\Blog_06.00.00_Install.zip'.
+     [copy] Copying 1 file to 'G:\src\Blog\2013-5-7\Blog_06.00.00_Install.zip'.
      [echo] Backing Up Source
-     [copy] Copying 1 file to 'G:\src\Blog\2013-5-4\Blog_06.00.00_Source.zip'.
+     [copy] Copying 1 file to 'G:\src\Blog\2013-5-7\Blog_06.00.00_Source.zip'.
 
 BUILD SUCCEEDED
 
-Total time: 50.4 seconds.
+Total time: 49.1 seconds.
 
