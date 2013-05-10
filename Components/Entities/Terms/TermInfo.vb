@@ -140,7 +140,11 @@ Namespace Entities.Terms
     Case "title", "name"
      Return PropertyAccess.FormatString(Me.Name, strFormat)
     Case "parenttermid"
-     Return Me.ParentTermId.ToString
+     If ParentTermId Is Nothing Then
+      Return "0"
+     Else
+      Return Me.ParentTermId.ToString
+     End If
     Case "right"
      Return (Me.Right.ToString(OutputFormat, formatProvider))
     Case "termid"
