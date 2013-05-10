@@ -217,17 +217,16 @@ IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databa
 ALTER TABLE {databaseOwner}{objectQualifier}Blog_Tags DROP CONSTRAINT FK_{objectQualifier}Blog_Tags_Portals
 GO
 
-/******* BLOGS TABLE *******/
-DECLARE @tableID INT
-SET @tableID = (SELECT TOP 1 object_id FROM sys.objects
- WHERE name='{objectQualifier}Blog_Blogs');
-
+/******* REMOVE ALL TABLE CONSTRAINTS *******/
 declare @str varchar(max)
 declare cur cursor for
-SELECT 'ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs DROP CONSTRAINT '+c.name
+SELECT 'ALTER TABLE {databaseOwner}'+t.name+' DROP CONSTRAINT '+c.name
 FROM sys.objects c
-WHERE c.type IN ('C', 'F', 'PK', 'UQ', 'D')
-AND c.parent_object_id=@tableID
+ INNER JOIN sys.objects t ON t.object_id=c.parent_object_id
+WHERE
+ t.name LIKE '{objectQualifier}Blog_%'
+ AND c.type IN ('C', 'F', 'PK', 'UQ', 'D')
+ AND t.type='U'
 ORDER BY c.type
 
 open cur
@@ -241,9 +240,28 @@ close cur
 deallocate cur 
 GO
 
-DROP INDEX {databaseOwner}{objectQualifier}Blog_Blogs.IX_{objectQualifier}Blog_Blogs_PortalID
+/******* REMOVE ALL TABLE INDEXES *******/
+declare @str varchar(max)
+declare cur cursor for
+SELECT 'DROP INDEX {databaseOwner}'+t.name+'.'+i.name
+FROM sys.indexes i
+ INNER JOIN sys.objects t ON t.object_id=i.object_id
+WHERE
+ t.name LIKE '{objectQualifier}Blog_%'
+ AND NOT i.name IS NULL
+
+open cur
+FETCH NEXT FROM cur INTO @str
+WHILE (@@fetch_status = 0) BEGIN
+  EXEC (@str)
+  FETCH NEXT FROM cur INTO @str
+END
+
+close cur
+deallocate cur 
 GO
 
+/******* BLOGS TABLE *******/
 EXEC sp_rename '{databaseOwner}{objectQualifier}Blog_Blogs.[UserID]', 'OwnerUserId', 'COLUMN';
 GO
 
@@ -302,16 +320,7 @@ FROM {databaseOwner}{objectQualifier}Blog_Blogs b
  INNER JOIN {databaseOwner}{objectQualifier}Modules m ON m.PortalId=b.PortalId
  INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions md ON m.ModuleDefID=md.ModuleDefID
 WHERE
- md.FriendlyName='View_Blog'
-GO
-
-ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs ALTER COLUMN
- [ModuleID] [int] NOT NULL,
- [Description] [nvarchar](2000) NULL,
- [IncludeImagesInFeed] [bit] NOT NULL,
- [IncludeAuthorInFeed] [bit] NOT NULL,
- [MustApproveGhostPosts] [bit] NOT NULL,
- [PublishAsOwner] [bit] NOT NULL
+ md.DefinitionName='View_Blog'
 GO
 
 ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs ALTER COLUMN
@@ -355,13 +364,6 @@ ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs DROP COLUMN
  AuthorMode
 GO
 
-ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs
- ADD CONSTRAINT PK_{objectQualifier}Blog_Blogs_BlogID PRIMARY KEY CLUSTERED
-(
- [BlogID] ASC
-)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF)
-GO
-
 /******* ENTRIES->POSTS TABLE *******/
 SET ANSI_NULLS ON
 GO
@@ -380,23 +382,9 @@ CREATE TABLE {databaseOwner}{objectQualifier}Blog_Posts(
  [DisplayCopyright] [bit] NOT NULL,
  [Copyright] [nvarchar](255) NULL,
  [Locale] [nvarchar](50) NOT NULL,
- [ViewCount] [int] NULL,
- CONSTRAINT PK_{objectQualifier}Blog_Entries PRIMARY KEY CLUSTERED 
-(
- [ContentItemId] ASC
-)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF)
+ [ViewCount] [int] NULL
 )
 END;
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Posts') AND name = N'IX_{objectQualifier}Blog_Entries_AddedDate')
-CREATE NONCLUSTERED INDEX IX_{objectQualifier}Blog_Entries_AddedDate ON {databaseOwner}{objectQualifier}Blog_Posts 
-(
- [PublishedOnDate] ASC
-)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF);
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Posts') AND name = N'IX_{objectQualifier}Blog_Entries_BlogID')
-CREATE NONCLUSTERED INDEX IX_{objectQualifier}Blog_Entries_BlogID ON {databaseOwner}{objectQualifier}Blog_Posts 
-(
- [BlogID] ASC
-)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF)
 GO
 
 IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}ContentTypes WHERE ContentType='DNN_Blog_Post')
@@ -505,6 +493,15 @@ DEALLOCATE db_cursor
 END
 GO
 
+-- repair author ids - set to owner id
+UPDATE {databaseOwner}{objectQualifier}ContentItems
+SET CreatedByUserID=b.OwnerUserId
+FROM {databaseOwner}{objectQualifier}ContentItems ci
+ INNER JOIN {databaseOwner}{objectQualifier}Blog_Posts p ON p.ContentItemID=ci.ContentItemID
+ INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs b ON b.BlogID=p.BlogID
+WHERE ci.CreatedByUserID=-1
+GO
+
 /******* CATEGORIES *******/
 ALTER TABLE {databaseOwner}{objectQualifier}Blog_Categories ADD
  TermID INT NULL
@@ -517,11 +514,7 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{database
 BEGIN
 CREATE TABLE {databaseOwner}{objectQualifier}Blog_Terms(
  [TermID] [int] NOT NULL,
- [ViewOrder] [int] NOT NULL,
- CONSTRAINT PK_{objectQualifier}Blog_Terms PRIMARY KEY CLUSTERED 
-(
- [TermID] ASC
-)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF)
+ [ViewOrder] [int] NOT NULL
 )
 END
 GO
@@ -530,14 +523,14 @@ GO
 BEGIN
 DECLARE db_cursor CURSOR FOR  
 SELECT DISTINCT m.PortalID
-FROM dbo.BLOGT_Blog_Blogs b
- INNER JOIN dbo.BLOGT_Modules m ON m.ModuleID=b.ModuleID
+FROM {databaseOwner}{objectQualifier}Blog_Blogs b
+ INNER JOIN {databaseOwner}{objectQualifier}Modules m ON m.ModuleID=b.ModuleID
 DECLARE @PortalID INT
 
 DECLARE @ScopeType INT
-SET @ScopeType = (SELECT TOP 1 ScopeTypeID FROM dbo.BLOGT_Taxonomy_ScopeTypes WHERE ScopeType='Portal')
+SET @ScopeType = (SELECT TOP 1 ScopeTypeID FROM {databaseOwner}{objectQualifier}Taxonomy_ScopeTypes WHERE ScopeType='Portal')
 DECLARE @VocabTypeID INT
-SET @VocabTypeID = (SELECT TOP 1 VocabularyTypeID FROM dbo.BLOGT_Taxonomy_VocabularyTypes WHERE VocabularyType='Heirarchy')
+SET @VocabTypeID = (SELECT TOP 1 VocabularyTypeID FROM {databaseOwner}{objectQualifier}Taxonomy_VocabularyTypes WHERE VocabularyType='Heirarchy')
 
 OPEN db_cursor  
 FETCH NEXT FROM db_cursor INTO @PortalID
@@ -545,16 +538,16 @@ FETCH NEXT FROM db_cursor INTO @PortalID
 WHILE @@FETCH_STATUS = 0  
 BEGIN
 
- IF NOT EXISTS(SELECT * FROM dbo.BLOGT_Blog_Settings WHERE PortalID=@PortalID AND [Key]='VocabularyId' AND [Value]<>'-1')
-  AND (SELECT COUNT(*) FROM dbo.BLOGT_Blog_Categories WHERE PortalID=@PortalID)>0
+ IF NOT EXISTS(SELECT * FROM {databaseOwner}{objectQualifier}Blog_Settings WHERE PortalID=@PortalID AND [Key]='VocabularyId' AND [Value]<>'-1')
+  AND (SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}Blog_Categories WHERE PortalID=@PortalID)>0
  BEGIN
-  EXEC dbo.BLOGT_AddVocabulary @VocabTypeID, 'Blog Categories', '', 0, @PortalID, @ScopeType, -1;
+  EXEC {databaseOwner}{objectQualifier}AddVocabulary @VocabTypeID, 'Blog Categories', '', 0, @PortalID, @ScopeType, -1;
   DECLARE @VocabID INT
-  SET @VocabID = (SELECT TOP 1 VocabularyID FROM dbo.BLOGT_Taxonomy_Vocabularies WHERE Name='Blog Categories' AND ScopeID=@PortalID ORDER BY VocabularyID DESC);
+  SET @VocabID = (SELECT TOP 1 VocabularyID FROM {databaseOwner}{objectQualifier}Taxonomy_Vocabularies WHERE Name='Blog Categories' AND ScopeID=@PortalID ORDER BY VocabularyID DESC);
   
   -- add root terms
   DECLARE cur1 CURSOR FOR
-  SELECT CatID, Category FROM dbo.BLOGT_Blog_Categories
+  SELECT CatID, Category FROM {databaseOwner}{objectQualifier}Blog_Categories
    WHERE PortalID=@PortalID AND ParentID=0
   DECLARE @CatID INT
   DECLARE @CatName NVARCHAR(250)
@@ -566,10 +559,10 @@ BEGIN
   BEGIN
    DELETE FROM @Tmp
    INSERT INTO @Tmp
-   EXEC BLOGT_AddHeirarchicalTerm @VocabID, NULL, @CatName, '', 0, -1;
+   EXEC {databaseOwner}{objectQualifier}AddHeirarchicalTerm @VocabID, NULL, @CatName, '', 0, -1;
    SET @NewTermID = (SELECT TOP 1 ContentItemID FROM @Tmp)
-   UPDATE dbo.BLOGT_Blog_Categories SET TermID=@NewTermID WHERE CatID=@CatID;
-   INSERT INTO dbo.BLOGT_Blog_Terms (TermID, ViewOrder)
+   UPDATE {databaseOwner}{objectQualifier}Blog_Categories SET TermID=@NewTermID WHERE CatID=@CatID;
+   INSERT INTO {databaseOwner}{objectQualifier}Blog_Terms (TermID, ViewOrder)
     VALUES (@NewTermID, 0);
    FETCH NEXT FROM cur1 INTO @CatID, @CatName
   END
@@ -577,13 +570,13 @@ BEGIN
   DEALLOCATE cur1
   
   -- now keep sweeping through the tree
-  WHILE EXISTS (SELECT * FROM dbo.BLOGT_Blog_Categories WHERE PortalID=@PortalID AND TermID IS NULL)
+  WHILE EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}Blog_Categories WHERE PortalID=@PortalID AND TermID IS NULL)
   BEGIN
 
   DECLARE cur2 CURSOR FOR
-  SELECT c.CatID, c.Category, t.TermID FROM dbo.BLOGT_Blog_Categories c
-   INNER JOIN dbo.BLOGT_Blog_Categories cp ON cp.CatID=c.ParentID
-   INNER JOIN dbo.BLOGT_Taxonomy_Terms t ON t.TermID=cp.TermID
+  SELECT c.CatID, c.Category, t.TermID FROM {databaseOwner}{objectQualifier}Blog_Categories c
+   INNER JOIN {databaseOwner}{objectQualifier}Blog_Categories cp ON cp.CatID=c.ParentID
+   INNER JOIN {databaseOwner}{objectQualifier}Taxonomy_Terms t ON t.TermID=cp.TermID
    WHERE c.PortalID=@PortalID AND c.TermID IS NULL
   DECLARE @ParentTermID INT
   OPEN cur2
@@ -592,10 +585,10 @@ BEGIN
   BEGIN
    DELETE FROM @Tmp
    INSERT INTO @Tmp
-   EXEC BLOGT_AddHeirarchicalTerm @VocabID, @ParentTermID, @CatName, '', 0, -1;
+   EXEC {databaseOwner}{objectQualifier}AddHeirarchicalTerm @VocabID, @ParentTermID, @CatName, '', 0, -1;
    SET @NewTermID = (SELECT TOP 1 ContentItemID FROM @Tmp)
-   UPDATE dbo.BLOGT_Blog_Categories SET TermID=@NewTermID WHERE CatID=@CatID;
-   INSERT INTO dbo.BLOGT_Blog_Terms (TermID, ViewOrder)
+   UPDATE {databaseOwner}{objectQualifier}Blog_Categories SET TermID=@NewTermID WHERE CatID=@CatID;
+   INSERT INTO {databaseOwner}{objectQualifier}Blog_Terms (TermID, ViewOrder)
     VALUES (@NewTermID, 0);
    FETCH NEXT FROM cur2 INTO @CatID, @CatName, @ParentTermID
   END
@@ -604,8 +597,8 @@ BEGIN
 
   END
     
-  DELETE FROM dbo.BLOGT_Blog_Settings WHERE PortalID=@PortalID AND [Key]='VocabularyId';
-  INSERT INTO dbo.BLOGT_Blog_Settings (PortalID, [Key], [Value], [TabID])
+  DELETE FROM {databaseOwner}{objectQualifier}Blog_Settings WHERE PortalID=@PortalID AND [Key]='VocabularyId';
+  INSERT INTO {databaseOwner}{objectQualifier}Blog_Settings (PortalID, [Key], [Value], [TabID])
    VALUES (@PortalID, 'VocabularyId', CAST(@VocabID AS nvarchar(1024)), -1)
  END
  
@@ -620,8 +613,8 @@ GO
 BEGIN
 DECLARE db_cursor CURSOR FOR  
 SELECT DISTINCT m.PortalID
-FROM dbo.BLOGT_Blog_Blogs b
- INNER JOIN dbo.BLOGT_Modules m ON m.ModuleID=b.ModuleID
+FROM {databaseOwner}{objectQualifier}Blog_Blogs b
+ INNER JOIN {databaseOwner}{objectQualifier}Modules m ON m.ModuleID=b.ModuleID
 DECLARE @PortalID INT
 
 OPEN db_cursor  
@@ -630,15 +623,15 @@ FETCH NEXT FROM db_cursor INTO @PortalID
 WHILE @@FETCH_STATUS = 0  
 BEGIN
 
- IF EXISTS(SELECT * FROM dbo.BLOGT_Blog_Settings WHERE PortalID=@PortalID AND [Key]='VocabularyId' AND [Value]<>'-1')
-  AND (SELECT COUNT(*) FROM dbo.BLOGT_Blog_Categories WHERE PortalID=@PortalID AND TermID IS NULL)>0
+ IF EXISTS(SELECT * FROM {databaseOwner}{objectQualifier}Blog_Settings WHERE PortalID=@PortalID AND [Key]='VocabularyId' AND [Value]<>'-1')
+  AND (SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}Blog_Categories WHERE PortalID=@PortalID AND TermID IS NULL)>0
  BEGIN
   DECLARE @VocabID INT
-  SET @VocabID = (SELECT TOP 1 CAST([Value] AS INT) FROM dbo.BLOGT_Blog_Settings WHERE PortalID=@PortalID AND [Key]='VocabularyId');
-  UPDATE dbo.BLOGT_Blog_Categories
+  SET @VocabID = (SELECT TOP 1 CAST([Value] AS INT) FROM {databaseOwner}{objectQualifier}Blog_Settings WHERE PortalID=@PortalID AND [Key]='VocabularyId');
+  UPDATE {databaseOwner}{objectQualifier}Blog_Categories
   SET TermID=t.TermID
-  FROM dbo.BLOGT_Blog_Categories c
-   INNER JOIN dbo.BLOGT_Taxonomy_Terms t ON c.Category=t.Name AND t.VocabularyID=@VocabID
+  FROM {databaseOwner}{objectQualifier}Blog_Categories c
+   INNER JOIN {databaseOwner}{objectQualifier}Taxonomy_Terms t ON c.Category=t.Name AND t.VocabularyID=@VocabID
   WHERE c.PortalID=@PortalID AND c.TermID IS NULL
  END
  FETCH NEXT FROM db_cursor INTO @PortalID
@@ -649,21 +642,20 @@ END
 GO
 
 -- insert the category links
-INSERT INTO dbo.BLOGT_ContentItems_Tags
+INSERT INTO {databaseOwner}{objectQualifier}ContentItems_Tags
  (ContentItemID, TermID)
 SELECT
  e.ContentItemId, oc.TermID
 FROM
- dbo.BLOGT_Blog_Entries e
- INNER JOIN dbo.BLOGT_Blog_Entry_Categories ec ON e.EntryID=ec.EntryID
- INNER JOIN dbo.BLOGT_Blog_Categories oc ON oc.CatID=ec.CatID
+ {databaseOwner}{objectQualifier}Blog_Entries e
+ INNER JOIN {databaseOwner}{objectQualifier}Blog_Entry_Categories ec ON e.EntryID=ec.EntryID
+ INNER JOIN {databaseOwner}{objectQualifier}Blog_Categories oc ON oc.CatID=ec.CatID
 WHERE NOT oc.TermID IS NULL
- AND NOT EXISTS (SELECT * FROM dbo.BLOGT_ContentItems_Tags cit WHERE cit.ContentItemID=e.ContentItemId AND cit.TermID=oc.TermID)
+ AND NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}ContentItems_Tags cit WHERE cit.ContentItemID=e.ContentItemId AND cit.TermID=oc.TermID)
 GO
 
 /******* TAGS *******/
-
-INSERT INTO dbo.BLOGT_Taxonomy_Terms
+INSERT INTO {databaseOwner}{objectQualifier}Taxonomy_Terms
    ([VocabularyID]
    ,[ParentTermID]
    ,[Name]
@@ -676,60 +668,34 @@ INSERT INTO dbo.BLOGT_Taxonomy_Terms
    ,[LastModifiedByUserID]
    ,[LastModifiedOnDate])
 SELECT 1, NULL, t.Tag, '', 0, 0, 0, -1, GETDATE(), -1, GETDATE()
-FROM dbo.BLOGT_Blog_Tags t
- WHERE NOT EXISTS(SELECT * FROM dbo.BLOGT_Taxonomy_Terms WHERE Name=t.Tag AND VocabularyID=1)
+FROM {databaseOwner}{objectQualifier}Blog_Tags t
+ WHERE NOT EXISTS(SELECT * FROM {databaseOwner}{objectQualifier}Taxonomy_Terms WHERE Name=t.Tag AND VocabularyID=1)
 GO
 
 ALTER TABLE {databaseOwner}{objectQualifier}Blog_Tags ADD
  TermID INT NULL
 GO
 
-UPDATE dbo.BLOGT_Blog_Tags
+UPDATE {databaseOwner}{objectQualifier}Blog_Tags
 SET TermID=te.TermID
-FROM dbo.BLOGT_Blog_Tags ta
- INNER JOIN dbo.BLOGT_Taxonomy_Terms te ON te.Name=ta.Tag AND te.VocabularyID=1
+FROM {databaseOwner}{objectQualifier}Blog_Tags ta
+ INNER JOIN {databaseOwner}{objectQualifier}Taxonomy_Terms te ON te.Name=ta.Tag AND te.VocabularyID=1
 GO
 
 -- insert the tag links
-INSERT INTO dbo.BLOGT_ContentItems_Tags
+INSERT INTO {databaseOwner}{objectQualifier}ContentItems_Tags
  (ContentItemID, TermID)
 SELECT DISTINCT
  e.ContentItemId, ot.TermID
 FROM
- dbo.BLOGT_Blog_Entries e
- INNER JOIN dbo.BLOGT_Blog_Entry_Tags et ON e.EntryID=et.EntryID
- INNER JOIN dbo.BLOGT_Blog_Tags ot ON ot.TagID=et.TagID
+ {databaseOwner}{objectQualifier}Blog_Entries e
+ INNER JOIN {databaseOwner}{objectQualifier}Blog_Entry_Tags et ON e.EntryID=et.EntryID
+ INNER JOIN {databaseOwner}{objectQualifier}Blog_Tags ot ON ot.TagID=et.TagID
 WHERE NOT ot.TermID IS NULL
- AND NOT EXISTS (SELECT * FROM dbo.BLOGT_ContentItems_Tags cit WHERE cit.ContentItemID=e.ContentItemId AND cit.TermID=ot.TermID)
+ AND NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}ContentItems_Tags cit WHERE cit.ContentItemID=e.ContentItemId AND cit.TermID=ot.TermID)
 GO
 
 /******* COMMENTS *******/
-DECLARE @tableID INT
-SET @tableID = (SELECT TOP 1 object_id FROM sys.objects
- WHERE name='{objectQualifier}Blog_Comments');
-
-declare @str varchar(max)
-declare cur cursor for
-SELECT 'ALTER TABLE {databaseOwner}{objectQualifier}Blog_Comments DROP CONSTRAINT '+c.name
-FROM sys.objects c
-WHERE c.type IN ('C', 'F', 'PK', 'UQ', 'D')
-AND c.parent_object_id=@tableID
-ORDER BY c.type
-
-open cur
-FETCH NEXT FROM cur INTO @str
-WHILE (@@fetch_status = 0) BEGIN
-  EXEC (@str)
-  FETCH NEXT FROM cur INTO @str
-END
-
-close cur
-deallocate cur 
-GO
-
-DROP INDEX {databaseOwner}{objectQualifier}Blog_Comments.IX_{objectQualifier}Blog_Comments_EntryID
-GO
-
 ALTER TABLE {databaseOwner}{objectQualifier}Blog_Comments ADD
  [ContentItemId] [int] NULL,
  [ParentId] [int] NULL,
@@ -737,13 +703,13 @@ ALTER TABLE {databaseOwner}{objectQualifier}Blog_Comments ADD
  [LastModifiedOnDate] [datetime] NULL
 GO
 
-UPDATE dbo.BLOGT_Blog_Comments
+UPDATE {databaseOwner}{objectQualifier}Blog_Comments
 SET ContentItemId=e.ContentItemId
-FROM dbo.BLOGT_Blog_Comments c
- INNER JOIN dbo.BLOGT_Blog_Entries e ON e.EntryID=c.EntryID
+FROM {databaseOwner}{objectQualifier}Blog_Comments c
+ INNER JOIN {databaseOwner}{objectQualifier}Blog_Entries e ON e.EntryID=c.EntryID
 GO
 
-UPDATE dbo.BLOGT_Blog_Comments
+UPDATE {databaseOwner}{objectQualifier}Blog_Comments
 SET LastModifiedByUserID=UserID,
  LastModifiedOnDate=AddedDate
 GO
@@ -771,20 +737,13 @@ ALTER TABLE {databaseOwner}{objectQualifier}Blog_Comments
 GO
 
 ALTER TABLE {databaseOwner}{objectQualifier}Blog_Comments
- ADD CONSTRAINT PK_{objectQualifier}Blog_Comments_CommentID PRIMARY KEY CLUSTERED 
-(
- [CommentID] ASC
-)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF)
-GO
-
-ALTER TABLE {databaseOwner}{objectQualifier}Blog_Comments
  ALTER COLUMN [CreatedByUserID] [int] NULL
 GO
 
 /******* MODULE DEFINITION *******/
 UPDATE {databaseOwner}{objectQualifier}ModuleDefinitions
-SET FriendlyName='Blog'
-WHERE FriendlyName='View_Blog'
+SET DefinitionName='Blog', FriendlyName='Blog'
+WHERE DefinitionName='View_Blog'
 GO
 
 INSERT INTO {databaseOwner}{objectQualifier}TabModuleSettings
@@ -795,7 +754,18 @@ FROM {databaseOwner}{objectQualifier}TabModules tm
  INNER JOIN {databaseOwner}{objectQualifier}Modules m ON m.ModuleId=tm.ModuleId
  INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions md ON m.ModuleDefID=md.ModuleDefID
 WHERE
- md.FriendlyName='Blog_List'
+ md.DefinitionName='Blog_List'
+GO
+
+INSERT INTO {databaseOwner}{objectQualifier}TabModuleSettings
+ (TabModuleID, SettingName, SettingValue, CreatedByUserID, CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate)
+SELECT
+ tm.TabModuleId, 'ShowManagementPanel', 'False', -1, GETDATE(), -1, GETDATE()
+FROM {databaseOwner}{objectQualifier}TabModules tm
+ INNER JOIN {databaseOwner}{objectQualifier}Modules m ON m.ModuleId=tm.ModuleId
+ INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions md ON m.ModuleDefID=md.ModuleDefID
+WHERE
+ md.DefinitionName='Blog_List'
 GO
 
 INSERT INTO {databaseOwner}{objectQualifier}TabModuleSettings
@@ -806,7 +776,18 @@ FROM {databaseOwner}{objectQualifier}TabModules tm
  INNER JOIN {databaseOwner}{objectQualifier}Modules m ON m.ModuleId=tm.ModuleId
  INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions md ON m.ModuleDefID=md.ModuleDefID
 WHERE
- md.FriendlyName='Blog_Archive'
+ md.DefinitionName='Blog_Archive'
+GO
+
+INSERT INTO {databaseOwner}{objectQualifier}TabModuleSettings
+ (TabModuleID, SettingName, SettingValue, CreatedByUserID, CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate)
+SELECT
+ tm.TabModuleId, 'ShowManagementPanel', 'False', -1, GETDATE(), -1, GETDATE()
+FROM {databaseOwner}{objectQualifier}TabModules tm
+ INNER JOIN {databaseOwner}{objectQualifier}Modules m ON m.ModuleId=tm.ModuleId
+ INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions md ON m.ModuleDefID=md.ModuleDefID
+WHERE
+ md.DefinitionName='Blog_Archive'
 GO
 
 INSERT INTO {databaseOwner}{objectQualifier}TabModuleSettings
@@ -817,7 +798,18 @@ FROM {databaseOwner}{objectQualifier}TabModules tm
  INNER JOIN {databaseOwner}{objectQualifier}Modules m ON m.ModuleId=tm.ModuleId
  INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions md ON m.ModuleDefID=md.ModuleDefID
 WHERE
- md.FriendlyName='Blog_Categories'
+ md.DefinitionName='Blog_Categories'
+GO
+
+INSERT INTO {databaseOwner}{objectQualifier}TabModuleSettings
+ (TabModuleID, SettingName, SettingValue, CreatedByUserID, CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate)
+SELECT
+ tm.TabModuleId, 'ShowManagementPanel', 'False', -1, GETDATE(), -1, GETDATE()
+FROM {databaseOwner}{objectQualifier}TabModules tm
+ INNER JOIN {databaseOwner}{objectQualifier}Modules m ON m.ModuleId=tm.ModuleId
+ INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions md ON m.ModuleDefID=md.ModuleDefID
+WHERE
+ md.DefinitionName='Blog_Categories'
 GO
 
 INSERT INTO {databaseOwner}{objectQualifier}TabModuleSettings
@@ -828,63 +820,2299 @@ FROM {databaseOwner}{objectQualifier}TabModules tm
  INNER JOIN {databaseOwner}{objectQualifier}Modules m ON m.ModuleId=tm.ModuleId
  INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions md ON m.ModuleDefID=md.ModuleDefID
 WHERE
- md.FriendlyName='Blog_Tags'
+ md.DefinitionName='Blog_Tags'
 GO
 
-DELETE FROM {databaseOwner}{objectQualifier}TabModules tm
+INSERT INTO {databaseOwner}{objectQualifier}TabModuleSettings
+ (TabModuleID, SettingName, SettingValue, CreatedByUserID, CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate)
+SELECT
+ tm.TabModuleId, 'ShowManagementPanel', 'False', -1, GETDATE(), -1, GETDATE()
+FROM {databaseOwner}{objectQualifier}TabModules tm
  INNER JOIN {databaseOwner}{objectQualifier}Modules m ON m.ModuleId=tm.ModuleId
  INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions md ON m.ModuleDefID=md.ModuleDefID
 WHERE
- md.FriendlyName IN ('New_Blog','Search_Blog','Recent_Entries','Recent_Comments')
+ md.DefinitionName='Blog_Tags'
 GO
 
-DELETE FROM {databaseOwner}{objectQualifier}Modules m
+DELETE FROM {databaseOwner}{objectQualifier}TabModules
+ FROM  {databaseOwner}{objectQualifier}TabModules tm
+ INNER JOIN {databaseOwner}{objectQualifier}Modules m ON m.ModuleId=tm.ModuleId
  INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions md ON m.ModuleDefID=md.ModuleDefID
 WHERE
- md.FriendlyName IN ('New_Blog','Search_Blog','Recent_Entries','Recent_Comments')
+ md.DefinitionName IN ('New_Blog','Search_Blog','Recent_Entries','Recent_Comments')
 GO
 
-DELETE FROM {databaseOwner}{objectQualifier}ModuleDefinitions md
+DELETE FROM {databaseOwner}{objectQualifier}Modules
+ FROM {databaseOwner}{objectQualifier}Modules m
+ INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions md ON m.ModuleDefID=md.ModuleDefID
 WHERE
- md.FriendlyName IN ('New_Blog','Search_Blog','Recent_Entries','Recent_Comments')
+ md.DefinitionName IN ('New_Blog','Search_Blog','Recent_Entries','Recent_Comments')
+GO
+
+DELETE FROM {databaseOwner}{objectQualifier}ModuleDefinitions
+WHERE
+ DefinitionName IN ('New_Blog','Search_Blog','Recent_Entries','Recent_Comments')
 GO
 
 DECLARE @ModuleDefID INT
-SET @ModuleDefID = (SELECT TOP 1 [DesktopModuleID]
+SET @ModuleDefID = (SELECT TOP 1 [ModuleDefId]
                      FROM {databaseOwner}{objectQualifier}ModuleDefinitions
-                     WHERE FriendlyName='Blog')
+                     WHERE DefinitionName='Blog')
 UPDATE {databaseOwner}{objectQualifier}Modules
-SET ModuleDefId
+SET ModuleDefId=@ModuleDefID
 FROM {databaseOwner}{objectQualifier}Modules m
  INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions md ON m.ModuleDefID=md.ModuleDefID
  INNER JOIN {databaseOwner}{objectQualifier}DesktopModules dm ON dm.DesktopModuleID=md.DesktopModuleID
 WHERE
  dm.ModuleName='Blog'
- AND md.FriendlyName<>'Blog'
+ AND md.DefinitionName<>'Blog'
+GO
+
+DELETE FROM {databaseOwner}{objectQualifier}ModuleDefinitions
+WHERE
+ DefinitionName IN ('Blog_List','Blog_Archive','Blog_Categories','Blog_Tags')
+GO
+
+DELETE FROM {databaseOwner}{objectQualifier}ModuleControls
+FROM {databaseOwner}{objectQualifier}ModuleControls mc
+ INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions md ON md.ModuleDefID=mc.ModuleDefID
+WHERE md.DefinitionName='Blog'
 GO
 
 /******* SETTINGS *******/
+INSERT INTO {databaseOwner}{objectQualifier}TabModuleSettings
+ (TabModuleID, SettingName, SettingValue, CreatedByUserID, CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate)
+SELECT
+ tm.TabModuleId, 'BlogModuleId', x.ModuleID, -1, GETDATE(), -1, GETDATE()
+FROM {databaseOwner}{objectQualifier}TabModules tm
+ INNER JOIN {databaseOwner}{objectQualifier}Modules m ON m.ModuleId=tm.ModuleId
+ INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions md ON m.ModuleDefID=md.ModuleDefID
+ INNER JOIN (
+  SELECT DISTINCT m.PortalID, b.ModuleID
+  FROM {databaseOwner}{objectQualifier}Blog_Blogs b
+   INNER JOIN {databaseOwner}{objectQualifier}Modules m ON m.ModuleID=b.ModuleID
+ ) x ON x.PortalID=m.PortalID
+WHERE
+ md.DefinitionName='Blog' AND m.ModuleID<>x.ModuleID
+GO
 
+INSERT INTO {databaseOwner}{objectQualifier}ModuleSettings 
+ ([ModuleID],[SettingName],[SettingValue],[CreatedByUserID],[CreatedOnDate],[LastModifiedByUserID],[LastModifiedOnDate])
+SELECT
+ x.ModuleID, bs.[Key], bs.[Value], -1, GETDATE(), -1, GETDATE()
+FROM {databaseOwner}{objectQualifier}Blog_Settings bs
+ INNER JOIN (
+  SELECT DISTINCT m.PortalID, b.ModuleID
+  FROM {databaseOwner}{objectQualifier}Blog_Blogs b
+   INNER JOIN {databaseOwner}{objectQualifier}Modules m ON m.ModuleID=b.ModuleID
+ ) x ON x.PortalID=bs.PortalID
+WHERE bs.[Key] IN ('AllowWLW','AllowMultipleCategories','VocabularyId')
+GO
+
+INSERT INTO {databaseOwner}{objectQualifier}ModuleSettings 
+ ([ModuleID],[SettingName],[SettingValue],[CreatedByUserID],[CreatedOnDate],[LastModifiedByUserID],[LastModifiedOnDate])
+SELECT
+ x.ModuleID, 'RssAllowContentInFeed', bs.[Value], -1, GETDATE(), -1, GETDATE()
+FROM {databaseOwner}{objectQualifier}Blog_Settings bs
+ INNER JOIN (
+  SELECT DISTINCT m.PortalID, b.ModuleID
+  FROM {databaseOwner}{objectQualifier}Blog_Blogs b
+   INNER JOIN {databaseOwner}{objectQualifier}Modules m ON m.ModuleID=b.ModuleID
+ ) x ON x.PortalID=bs.PortalID
+WHERE bs.[Key] = 'IncludeBody'
+GO
+
+INSERT INTO {databaseOwner}{objectQualifier}ModuleSettings 
+ ([ModuleID],[SettingName],[SettingValue],[CreatedByUserID],[CreatedOnDate],[LastModifiedByUserID],[LastModifiedOnDate])
+SELECT
+ x.ModuleID, 'RssMaxNrItems', bs.[Value], -1, GETDATE(), -1, GETDATE()
+FROM {databaseOwner}{objectQualifier}Blog_Settings bs
+ INNER JOIN (
+  SELECT DISTINCT m.PortalID, b.ModuleID
+  FROM {databaseOwner}{objectQualifier}Blog_Blogs b
+   INNER JOIN {databaseOwner}{objectQualifier}Modules m ON m.ModuleID=b.ModuleID
+ ) x ON x.PortalID=bs.PortalID
+WHERE bs.[Key] = 'RecentRssEntriesMax'
+GO
+
+INSERT INTO {databaseOwner}{objectQualifier}ModuleSettings 
+ ([ModuleID],[SettingName],[SettingValue],[CreatedByUserID],[CreatedOnDate],[LastModifiedByUserID],[LastModifiedOnDate])
+SELECT
+ x.ModuleID, 'AutoGeneratedSummaryLength', bs.[Value], -1, GETDATE(), -1, GETDATE()
+FROM {databaseOwner}{objectQualifier}Blog_Settings bs
+ INNER JOIN (
+  SELECT DISTINCT m.PortalID, b.ModuleID
+  FROM {databaseOwner}{objectQualifier}Blog_Blogs b
+   INNER JOIN {databaseOwner}{objectQualifier}Modules m ON m.ModuleID=b.ModuleID
+ ) x ON x.PortalID=bs.PortalID
+WHERE bs.[Key] = 'SummaryMaxLength'
+GO
 
 /******* COMPLETING DATA SCHEMA *******/
-DROP TABLE dbo.BLOGT_Blog_MetaWeblogData
+/******* COMPLETING TABLES CREATION *******/
+DROP TABLE {databaseOwner}{objectQualifier}Blog_MetaWeblogData
 GO
 
-DROP TABLE dbo.BLOGT_Blog_Entry_Categories
+DROP TABLE {databaseOwner}{objectQualifier}Blog_Entry_Categories
 GO
 
-DROP TABLE dbo.BLOGT_Blog_Entry_Tags
+DROP TABLE {databaseOwner}{objectQualifier}Blog_Entry_Tags
 GO
 
-DROP TABLE dbo.BLOGT_Blog_Entries
+DROP TABLE {databaseOwner}{objectQualifier}Blog_Entries
 GO
 
-DROP TABLE dbo.BLOGT_Blog_Categories
+DROP TABLE {databaseOwner}{objectQualifier}Blog_Categories
 GO
 
-DROP TABLE dbo.BLOGT_Blog_Tags
+DROP TABLE {databaseOwner}{objectQualifier}Blog_Tags
 GO
 
-DROP TABLE dbo.BLOGT_Blog_Settings
+DROP TABLE {databaseOwner}{objectQualifier}Blog_Settings
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs
+ ADD CONSTRAINT PK_{objectQualifier}Blog_Blogs_BlogID PRIMARY KEY CLUSTERED
+(
+ [BlogID] ASC
+)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF)
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Blogs') AND name = N'IX_{objectQualifier}Blog_Blogs_ModuleID')
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}Blog_Blogs_ModuleID ON {databaseOwner}{objectQualifier}Blog_Blogs 
+(
+ [ModuleID] ASC
+)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF)
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Comments
+ ADD CONSTRAINT PK_{objectQualifier}Blog_Comments_CommentID PRIMARY KEY CLUSTERED 
+(
+ [CommentID] ASC
+)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF)
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Posts
+ ADD CONSTRAINT PK_{objectQualifier}Blog_Posts PRIMARY KEY CLUSTERED 
+(
+ [ContentItemId] ASC
+)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF)
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Posts') AND name = N'IX_{objectQualifier}Blog_Posts_BlogID')
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}Blog_Posts_BlogID ON {databaseOwner}{objectQualifier}Blog_Posts 
+(
+ [BlogID] ASC
+)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF);
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Posts') AND name = N'IX_{objectQualifier}Blog_Posts_PublishedOnDate')
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}Blog_Posts_PublishedOnDate ON {databaseOwner}{objectQualifier}Blog_Posts 
+(
+ [PublishedOnDate] ASC
+)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF)
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Terms
+ ADD CONSTRAINT PK_{objectQualifier}Blog_Terms PRIMARY KEY CLUSTERED 
+(
+ [TermID] ASC
+)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF)
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_BlogLocalization') AND type in (N'U'))
+BEGIN
+CREATE TABLE {databaseOwner}{objectQualifier}Blog_BlogLocalization(
+ [BlogID] [int] NOT NULL,
+ [Locale] [nvarchar](10) NOT NULL,
+ [Title] [nvarchar](255) NOT NULL,
+ [Description] [nvarchar](2000) NULL,
+ CONSTRAINT PK_{objectQualifier}Blog_BlogLocalization PRIMARY KEY CLUSTERED 
+(
+ [BlogID] ASC,
+ [Locale] ASC
+)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF)
+)
+END
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_BlogPermissions') AND type in (N'U'))
+BEGIN
+CREATE TABLE {databaseOwner}{objectQualifier}Blog_BlogPermissions(
+ [AllowAccess] [bit] NULL,
+ [BlogId] [int] NOT NULL,
+ [Expires] [datetime] NULL,
+ [PermissionId] [int] NOT NULL,
+ [RoleId] [int] NOT NULL,
+ [UserId] [int] NOT NULL,
+ CONSTRAINT PK_{objectQualifier}Blog_BlogPermissions PRIMARY KEY CLUSTERED 
+(
+ [BlogId] ASC,
+ [PermissionId] ASC,
+ [RoleId] ASC,
+ [UserId] ASC
+)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF)
+)
+END;
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_BlogPermissions') AND name = N'{objectQualifier}IX_Blog_BlogPermissions_PermissionId')
+CREATE NONCLUSTERED INDEX {objectQualifier}IX_Blog_BlogPermissions_PermissionId ON {databaseOwner}{objectQualifier}Blog_BlogPermissions 
+(
+ [PermissionId] ASC
+)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF);
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_BlogPermissions') AND name = N'{objectQualifier}IX_Blog_BlogPermissions_RoleId')
+CREATE NONCLUSTERED INDEX {objectQualifier}IX_Blog_BlogPermissions_RoleId ON {databaseOwner}{objectQualifier}Blog_BlogPermissions 
+(
+ [RoleId] ASC
+)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF)
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_CommentKarmas') AND type in (N'U'))
+BEGIN
+CREATE TABLE {databaseOwner}{objectQualifier}Blog_CommentKarmas(
+ [CommentId] [int] NOT NULL,
+ [UserId] [int] NOT NULL,
+ [Karma] [int] NOT NULL,
+ [Datime] [datetime] NOT NULL,
+ CONSTRAINT PK_{objectQualifier}Blog_CommentReports PRIMARY KEY CLUSTERED 
+(
+ [CommentId] ASC,
+ [UserId] ASC,
+ [Karma] ASC
+)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF)
+)
+END
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_PostLocalization') AND type in (N'U'))
+BEGIN
+CREATE TABLE {databaseOwner}{objectQualifier}Blog_PostLocalization(
+ [ContentItemId] [int] NOT NULL,
+ [Locale] [nvarchar](10) NOT NULL,
+ [Title] [nvarchar](255) NOT NULL,
+ [Summary] [nvarchar](max) NULL,
+ [LocalizedContentItemId] [int] NULL,
+ CONSTRAINT PK_{objectQualifier}Blog_PostLocalization PRIMARY KEY CLUSTERED 
+(
+ [ContentItemId] ASC,
+ [Locale] ASC
+)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF)
+)
+END
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_TermLocalization') AND type in (N'U'))
+BEGIN
+CREATE TABLE {databaseOwner}{objectQualifier}Blog_TermLocalization(
+ [TermID] [int] NOT NULL,
+ [Locale] [nvarchar](50) NOT NULL,
+ [Name] [nvarchar](250) NOT NULL,
+ [Description] [nvarchar](2500) NULL,
+ CONSTRAINT PK_{objectQualifier}Blog_TermLocalizations PRIMARY KEY CLUSTERED 
+(
+ [TermID] ASC,
+ [Locale] ASC
+)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF)
+)
+END
+GO
+
+/******* STRUCTURE *******/
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_BlogLocalization_Blogs') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_BlogLocalization'))
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_BlogLocalization  WITH CHECK ADD  CONSTRAINT FK_{objectQualifier}Blog_BlogLocalization_Blogs FOREIGN KEY([BlogID])
+REFERENCES {objectQualifier}Blog_Blogs ([BlogID])
+ON UPDATE CASCADE
+ON DELETE CASCADE
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_BlogLocalization_Blogs') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_BlogLocalization'))
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_BlogLocalization CHECK CONSTRAINT FK_{objectQualifier}Blog_BlogLocalization_Blogs
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_BlogPermissions_Blogs') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_BlogPermissions'))
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_BlogPermissions  WITH CHECK ADD  CONSTRAINT FK_{objectQualifier}Blog_BlogPermissions_Blogs FOREIGN KEY([BlogId])
+REFERENCES {objectQualifier}Blog_Blogs ([BlogID])
+ON DELETE CASCADE
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_BlogPermissions_Blogs') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_BlogPermissions'))
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_BlogPermissions CHECK CONSTRAINT FK_{objectQualifier}Blog_BlogPermissions_Blogs
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_Blogs_Modules') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Blogs'))
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs  WITH NOCHECK ADD  CONSTRAINT FK_{objectQualifier}Blog_Blogs_Modules FOREIGN KEY([ModuleID])
+REFERENCES {objectQualifier}Modules ([ModuleID])
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_Blogs_Modules') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Blogs'))
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs NOCHECK CONSTRAINT FK_{objectQualifier}Blog_Blogs_Modules
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_CommentReports_Comments') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_CommentKarmas'))
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_CommentKarmas  WITH CHECK ADD  CONSTRAINT FK_{objectQualifier}Blog_CommentReports_Comments FOREIGN KEY([CommentId])
+REFERENCES {objectQualifier}Blog_Comments ([CommentID])
+ON DELETE CASCADE
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_CommentReports_Comments') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_CommentKarmas'))
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_CommentKarmas CHECK CONSTRAINT FK_{objectQualifier}Blog_CommentReports_Comments
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_Comments') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Comments'))
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Comments  WITH CHECK ADD  CONSTRAINT FK_{objectQualifier}Blog_Comments FOREIGN KEY([ContentItemId])
+REFERENCES {objectQualifier}Blog_Posts ([ContentItemId])
+ON UPDATE CASCADE
+ON DELETE CASCADE
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_Comments') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Comments'))
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Comments CHECK CONSTRAINT FK_{objectQualifier}Blog_Comments
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_PostLocalization_ContentItems') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_PostLocalization'))
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_PostLocalization  WITH CHECK ADD  CONSTRAINT FK_{objectQualifier}Blog_PostLocalization_ContentItems FOREIGN KEY([ContentItemId])
+REFERENCES {objectQualifier}ContentItems ([ContentItemID])
+ON UPDATE CASCADE
+ON DELETE CASCADE
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_PostLocalization_ContentItems') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_PostLocalization'))
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_PostLocalization CHECK CONSTRAINT FK_{objectQualifier}Blog_PostLocalization_ContentItems
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_Entries_Blogs') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Posts'))
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Posts  WITH CHECK ADD  CONSTRAINT FK_{objectQualifier}Blog_Entries_Blogs FOREIGN KEY([BlogID])
+REFERENCES {objectQualifier}Blog_Blogs ([BlogID])
+ON DELETE CASCADE
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_Entries_Blogs') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Posts'))
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Posts CHECK CONSTRAINT FK_{objectQualifier}Blog_Entries_Blogs
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_Entries_ContentItems') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Posts'))
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Posts  WITH CHECK ADD  CONSTRAINT FK_{objectQualifier}Blog_Entries_ContentItems FOREIGN KEY([ContentItemId])
+REFERENCES {objectQualifier}ContentItems ([ContentItemID])
+ON DELETE CASCADE
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_Entries_ContentItems') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Posts'))
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Posts CHECK CONSTRAINT FK_{objectQualifier}Blog_Entries_ContentItems
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_TermLocalization_Taxonomy_Terms') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_TermLocalization'))
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_TermLocalization  WITH CHECK ADD  CONSTRAINT FK_{objectQualifier}Blog_TermLocalization_Taxonomy_Terms FOREIGN KEY([TermID])
+REFERENCES {objectQualifier}Taxonomy_Terms ([TermID])
+ON DELETE CASCADE
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_TermLocalization_Taxonomy_Terms') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_TermLocalization'))
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_TermLocalization CHECK CONSTRAINT FK_{objectQualifier}Blog_TermLocalization_Taxonomy_Terms
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_Terms_Terms') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Terms'))
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Terms  WITH CHECK ADD  CONSTRAINT FK_{objectQualifier}Blog_Terms_Terms FOREIGN KEY([TermID])
+REFERENCES {objectQualifier}Taxonomy_Terms ([TermID])
+ON DELETE CASCADE
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_Terms_Terms') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Terms'))
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_Terms CHECK CONSTRAINT FK_{objectQualifier}Blog_Terms_Terms
+GO
+
+/******* TRIGGERS *******/
+/******* VIEWS *******/
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}vw_Blog_BlogPermissions'))
+DROP VIEW {databaseOwner}{objectQualifier}vw_Blog_BlogPermissions
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW {databaseOwner}{objectQualifier}vw_Blog_BlogPermissions
+AS
+SELECT     bp.AllowAccess, bp.BlogId, bp.Expires, bp.PermissionId, bp.RoleId, bp.UserId, ISNULL(u.Username, N'') AS Username, ISNULL(u.DisplayName, N'') AS DisplayName, 
+                      ISNULL(r.RoleName, N'') AS RoleName
+FROM         {databaseOwner}{objectQualifier}Blog_BlogPermissions AS bp LEFT OUTER JOIN
+                      {databaseOwner}{objectQualifier}Roles AS r ON bp.RoleId = r.RoleID LEFT OUTER JOIN
+                      {databaseOwner}{objectQualifier}Users AS u ON bp.UserId = u.UserID
+GO
+
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}vw_Blog_Blogs'))
+DROP VIEW {databaseOwner}{objectQualifier}vw_Blog_Blogs
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW {databaseOwner}{objectQualifier}vw_Blog_Blogs
+AS
+SELECT     b.BlogID, b.ModuleID, b.Title, b.Description, b.Image, b.Locale, b.FullLocalization, b.Published, b.IncludeImagesInFeed, b.IncludeAuthorInFeed, b.Syndicated, 
+                      b.SyndicationEmail, b.Copyright, b.MustApproveGhostPosts, b.PublishAsOwner, b.EnablePingBackSend, b.EnablePingBackReceive, b.AutoApprovePingBack, 
+                      b.EnableTrackBackSend, b.EnableTrackBackReceive, b.AutoApproveTrackBack, b.OwnerUserId, b.CreatedByUserID, b.CreatedOnDate, b.LastModifiedByUserID, 
+                      b.LastModifiedOnDate, u.DisplayName, u.Email, u.Username, p.NrPosts, p.LastPublishDate, p.NrViews, p.FirstPublishDate
+FROM         {databaseOwner}{objectQualifier}Blog_Blogs AS b INNER JOIN
+                      {databaseOwner}{objectQualifier}Users AS u ON b.OwnerUserId = u.UserID LEFT OUTER JOIN
+                          (SELECT     BlogID, COUNT(ContentItemId) AS NrPosts, SUM(ViewCount) AS NrViews, MAX(PublishedOnDate) AS LastPublishDate, MIN(PublishedOnDate) 
+                                                   AS FirstPublishDate
+                            FROM          {databaseOwner}{objectQualifier}Blog_Posts AS posts
+                            GROUP BY BlogID, Published
+                            HAVING      (Published = 1)) AS p ON p.BlogID = b.BlogID
+GO
+
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}vw_Blog_Comments'))
+DROP VIEW {databaseOwner}{objectQualifier}vw_Blog_Comments
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW {databaseOwner}{objectQualifier}vw_Blog_Comments
+AS
+SELECT     c.CommentID, c.ContentItemId, c.ParentId, c.Comment, c.Approved, c.Author, c.Website, c.Email, c.CreatedByUserID, c.CreatedOnDate, c.LastModifiedByUserID, 
+                      c.LastModifiedOnDate, ISNULL(u.Username, '') AS Username, ISNULL(u.DisplayName, c.Author) AS DisplayName,
+                          (SELECT     COUNT(*) AS Expr1
+                            FROM          {databaseOwner}{objectQualifier}Blog_CommentKarmas
+                            WHERE      (c.CommentID = c.CommentID) AND (Karma = 0)) AS Likes,
+                          (SELECT     COUNT(*) AS Expr1
+                            FROM          {databaseOwner}{objectQualifier}Blog_CommentKarmas AS {objectQualifier}Blog_CommentKarmas_2
+                            WHERE      (c.CommentID = c.CommentID) AND (Karma = 1)) AS Dislikes,
+                          (SELECT     COUNT(*) AS Expr1
+                            FROM          {databaseOwner}{objectQualifier}Blog_CommentKarmas AS {objectQualifier}Blog_CommentKarmas_1
+                            WHERE      (c.CommentID = c.CommentID) AND (Karma = 2)) AS Reports
+FROM         {databaseOwner}{objectQualifier}Blog_Comments AS c LEFT OUTER JOIN
+                      {databaseOwner}{objectQualifier}Users AS u ON c.CreatedByUserID = u.UserID
+GO
+
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}vw_Blog_Posts'))
+DROP VIEW {databaseOwner}{objectQualifier}vw_Blog_Posts
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW {databaseOwner}{objectQualifier}vw_Blog_Posts
+AS
+SELECT     p.ContentItemId, p.BlogID, p.Title, p.Summary, p.Image, p.Published, p.PublishedOnDate, p.AllowComments, p.DisplayCopyright, p.Copyright, p.Locale, p.ViewCount, 
+                      ci.CreatedByUserID, ci.CreatedOnDate, ci.LastModifiedByUserID, ci.LastModifiedOnDate, ci.[Content], ci.ContentTypeID, ci.TabID, ci.ModuleID, ci.ContentKey, 
+                      ci.Indexed, u.Username, u.Email, u.DisplayName
+FROM         {databaseOwner}{objectQualifier}Blog_Posts AS p LEFT OUTER JOIN
+                      {databaseOwner}{objectQualifier}ContentItems AS ci ON p.ContentItemId = ci.ContentItemID AND p.ContentItemId = ci.ContentItemID INNER JOIN
+                      {databaseOwner}{objectQualifier}Users AS u ON ci.CreatedByUserID = u.UserID
+GO
+
+/******* FUNCTIONS *******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_BlogList') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION {databaseOwner}{objectQualifier}Blog_BlogList
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE FUNCTION {databaseOwner}{objectQualifier}Blog_BlogList
+ (@Locale NVARCHAR(10))
+RETURNS TABLE
+AS
+RETURN
+(SELECT 
+  b.*, 
+  bl.Locale AS AltLocale, bl.Title AS AltTitle, bl.[Description] AS AltDescription
+ FROM {databaseOwner}{objectQualifier}vw_Blog_Blogs AS b
+  LEFT OUTER JOIN {databaseOwner}{objectQualifier}Blog_BlogLocalization AS bl ON b.BlogID = bl.BlogID AND bl.Locale=@Locale)
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Permissions') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION {databaseOwner}{objectQualifier}Blog_Permissions
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE FUNCTION {databaseOwner}{objectQualifier}Blog_Permissions ()
+RETURNS TABLE
+AS
+RETURN
+WITH e1(n) AS
+ (SELECT 1 UNION ALL SELECT 1 UNION ALL SELECT 1 UNION ALL 
+  SELECT 1 UNION ALL SELECT 1 UNION ALL SELECT 1)
+SELECT TOP 6 n = ROW_NUMBER() OVER (ORDER BY n) FROM e1 ORDER BY n
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_PostList') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION {databaseOwner}{objectQualifier}Blog_PostList
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE FUNCTION {databaseOwner}{objectQualifier}Blog_PostList
+ (@Locale NVARCHAR(10))
+RETURNS TABLE
+AS
+RETURN
+(SELECT
+  p.*, 
+  pl.Locale AS AltLocale, pl.Title AS AltTitle, pl.Summary AS AltSummary, lci.Content AS AltContent
+ FROM {databaseOwner}{objectQualifier}vw_Blog_Posts AS p
+  LEFT OUTER JOIN {databaseOwner}{objectQualifier}Blog_PostLocalization AS pl ON p.ContentItemID = pl.ContentItemId AND pl.Locale=@Locale
+  LEFT OUTER JOIN {databaseOwner}{objectQualifier}ContentItems lci ON pl.LocalizedContentItemId=lci.ContentItemID)
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Split') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION {databaseOwner}{objectQualifier}Blog_Split
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE FUNCTION {databaseOwner}{objectQualifier}Blog_Split (@s NVARCHAR(4000), @sep CHAR(1))
+RETURNS table
+AS
+RETURN (
+    WITH Pieces(pn, start, stop) AS (
+      SELECT 1, 1, CHARINDEX(@sep, @s)
+      UNION ALL
+      SELECT pn + 1, stop + 1, CHARINDEX(@sep, @s, stop + 1)
+      FROM Pieces
+      WHERE stop > 0
+    )
+    SELECT pn,
+      SUBSTRING(@s, start, CASE WHEN stop > 0 THEN stop-start ELSE 512 END) AS s
+    FROM Pieces
+  )
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_TermList') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION {databaseOwner}{objectQualifier}Blog_TermList
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE FUNCTION {databaseOwner}{objectQualifier}Blog_TermList
+ (@Locale NVARCHAR(10))
+RETURNS TABLE
+AS
+RETURN
+(SELECT
+  t.*,
+  bt.ViewOrder,
+  tl.Locale AS AltLocale, tl.Name AS AltName, tl.Description AS AltDescription
+ FROM {databaseOwner}{objectQualifier}Taxonomy_Terms AS t
+  LEFT OUTER JOIN {databaseOwner}{objectQualifier}Blog_Terms AS bt ON bt.TermID=t.TermID
+  LEFT OUTER JOIN {databaseOwner}{objectQualifier}Blog_TermLocalization AS tl ON t.TermID = tl.TermID AND tl.Locale=@Locale)
+GO
+
+/******* SPROCS *******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_AddBlog') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_AddBlog
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_AddBlog
+ @AutoApprovePingBack BIT, 
+ @ModuleID INT, 
+ @AutoApproveTrackBack BIT, 
+ @Copyright NVARCHAR (2000), 
+ @Description NVARCHAR (2000), 
+ @EnablePingBackReceive BIT, 
+ @EnablePingBackSend BIT, 
+ @EnableTrackBackReceive BIT, 
+ @EnableTrackBackSend BIT, 
+ @FullLocalization BIT, 
+ @Image NVARCHAR (255), 
+ @IncludeAuthorInFeed BIT, 
+ @IncludeImagesInFeed BIT, 
+ @Locale NVARCHAR (50), 
+ @MustApproveGhostPosts BIT, 
+ @OwnerUserId INT, 
+ @PublishAsOwner BIT, 
+ @Published BIT, 
+ @Syndicated BIT, 
+ @SyndicationEmail NVARCHAR (255), 
+ @Title NVARCHAR (255), 
+ @CreatedByUser INT
+AS
+INSERT INTO {databaseOwner}{objectQualifier}Blog_Blogs (
+ [AutoApprovePingBack],
+ [ModuleID],
+ [AutoApproveTrackBack],
+ [Copyright],
+ [CreatedByUserID],
+ [CreatedOnDate],
+ [Description],
+ [EnablePingBackReceive],
+ [EnablePingBackSend],
+ [EnableTrackBackReceive],
+ [EnableTrackBackSend],
+ [FullLocalization],
+ [Image],
+ [IncludeAuthorInFeed],
+ [IncludeImagesInFeed],
+ [LastModifiedByUserID],
+ [LastModifiedOnDate],
+ [Locale],
+ [MustApproveGhostPosts],
+ [OwnerUserId],
+ [PublishAsOwner],
+ [Published],
+ [Syndicated],
+ [SyndicationEmail],
+ [Title]
+)
+ VALUES ( @AutoApprovePingBack, @ModuleID, @AutoApproveTrackBack, @Copyright, @CreatedByUser, GETDATE(), @Description, @EnablePingBackReceive, @EnablePingBackSend, @EnableTrackBackReceive, @EnableTrackBackSend, @FullLocalization, @Image, @IncludeAuthorInFeed, @IncludeImagesInFeed, @CreatedByUser, GETDATE(), @Locale, @MustApproveGhostPosts, @OwnerUserId, @PublishAsOwner, @Published, @Syndicated, @SyndicationEmail, @Title)
+select SCOPE_IDENTITY()
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_AddBlogPermission') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_AddBlogPermission
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_AddBlogPermission
+ @AllowAccess BIT, 
+ @BlogId INT, 
+ @Expires DATETIME, 
+ @PermissionId INT, 
+ @RoleId INT, 
+ @UserId INT
+AS
+INSERT INTO {databaseOwner}{objectQualifier}Blog_BlogPermissions (
+ [AllowAccess],
+ [BlogId],
+ [Expires],
+ [PermissionId],
+ [RoleId],
+ [UserId])
+VALUES (
+ @AllowAccess,
+ @BlogId,
+ @Expires,
+ @PermissionId,
+ @RoleId,
+ @UserId)
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_AddComment') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_AddComment
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_AddComment
+ @Approved BIT, 
+ @Author NVARCHAR (50), 
+ @Comment NVARCHAR (MAX), 
+ @ContentItemId INT, 
+ @Email NVARCHAR (255), 
+ @ParentId INT, 
+ @Website NVARCHAR (255), 
+ @CreatedByUser INT
+AS
+INSERT INTO {databaseOwner}{objectQualifier}Blog_Comments (
+ [Approved],
+ [Author],
+ [Comment],
+ [ContentItemId],
+ [CreatedByUserID],
+ [CreatedOnDate],
+ [Email],
+ [LastModifiedByUserID],
+ [LastModifiedOnDate],
+ [ParentId],
+ [Website]
+)
+ VALUES ( @Approved, @Author, @Comment, @ContentItemId, @CreatedByUser, GETDATE(), @Email, @CreatedByUser, GETDATE(), @ParentId, @Website)
+select SCOPE_IDENTITY()
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_AddCommentKarma') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_AddCommentKarma
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_AddCommentKarma
+ @CommentId INT, 
+ @UserId INT,
+ @Karma INT
+AS
+DECLARE @Res INT
+SET @Res = -1;
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}Blog_CommentKarmas WHERE CommentId=@CommentId AND UserId=@UserId AND Karma=@Karma)
+BEGIN
+ INSERT INTO {databaseOwner}{objectQualifier}Blog_CommentKarmas
+  (CommentId, UserId, Karma, Datime)
+ VALUES
+  (@CommentId, @UserId, @Karma, GETDATE());
+ SET @Res = @CommentId;
+END
+SELECT @Res
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_AddPost') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_AddPost
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_AddPost
+ @AllowComments BIT, 
+ @BlogID INT,
+ @Content NVARCHAR(MAX),
+ @Copyright NVARCHAR (255), 
+ @DisplayCopyright BIT, 
+ @Image NVARCHAR (255), 
+ @Locale VARCHAR (10), 
+ @Published BIT, 
+ @PublishedOnDate DATETIME, 
+ @Summary NVARCHAR (MAX),
+ @TermIds NVARCHAR(1000),
+ @Title NVARCHAR (255),
+ @ViewCount INT, 
+ @CreatedByUser INT
+AS
+DECLARE @ContentTypeID INT
+SET @ContentTypeID = (SELECT TOP 1 ContentTypeID FROM {databaseOwner}{objectQualifier}ContentTypes WHERE ContentType='DNN_Blog_Post')
+DECLARE @ModuleId INT
+SET @ModuleId = (SELECT TOP 1 ModuleId FROM {databaseOwner}{objectQualifier}Blog_Blogs WHERE BlogID=@BlogID)
+DECLARE @Tmp TABLE (ContentItemID INT)
+INSERT INTO @Tmp
+EXEC {databaseOwner}{objectQualifier}AddContentItem @Content, @ContentTypeID, -1, @ModuleId, NULL, 0, @CreatedByUser;
+DECLARE @ContentItemID INT
+SET @ContentItemID = (SELECT TOP 1 ContentItemID FROM @Tmp)
+INSERT INTO {databaseOwner}{objectQualifier}Blog_Posts (
+ [AllowComments],
+ [BlogID],
+ [ContentItemId],
+ [Copyright],
+ [DisplayCopyright],
+ [Image],
+ [Locale],
+ [Published],
+ [PublishedOnDate],
+ [Summary],
+ [Title],
+ [ViewCount]
+)
+ VALUES (  @AllowComments, @BlogID, @ContentItemID, @Copyright, @DisplayCopyright, @Image, @Locale, @Published, @PublishedOnDate, @Summary, @Title, @ViewCount);
+IF @TermIds<>''
+BEGIN
+ DECLARE @ids TABLE (s NVARCHAR(512))
+ INSERT INTO @ids (s) SELECT s FROM {databaseOwner}{objectQualifier}Blog_Split(@TermIds,';');
+ INSERT INTO {databaseOwner}{objectQualifier}ContentItems_Tags ([ContentItemID], [TermID])
+ SELECT @ContentItemID, CAST(i.s AS INT)
+ FROM @ids i;
+END
+SELECT @ContentItemID
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_AddPostView') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_AddPostView
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_AddPostView
+ @ContentTypeID INT
+AS
+UPDATE {databaseOwner}{objectQualifier}Blog_Posts
+SET [ViewCount] = ISNULL([ViewCount],0) + 1
+WHERE [ContentItemId]=@ContentTypeID
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_ApproveComment') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_ApproveComment
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ApproveComment
+ @CommentId INT
+AS
+UPDATE {databaseOwner}{objectQualifier}Blog_Comments
+SET Approved=1
+WHERE CommentID=@CommentId
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_DeleteBlog') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_DeleteBlog
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_DeleteBlog
+ @BlogID INT
+AS
+DELETE FROM {databaseOwner}{objectQualifier}Blog_Blogs
+WHERE
+ [BlogID] = @BlogID
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_DeleteBlogPermissions') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_DeleteBlogPermissions
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_DeleteBlogPermissions 
+ @BlogId INT
+AS
+BEGIN
+DELETE FROM {databaseOwner}{objectQualifier}Blog_BlogPermissions
+WHERE BlogId=@BlogId
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_DeleteComment') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_DeleteComment
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_DeleteComment
+ @CommentID INT
+AS
+DELETE FROM {databaseOwner}{objectQualifier}Blog_Comments
+WHERE
+ [CommentID] = @CommentID
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_DeletePost') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_DeletePost
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_DeletePost
+ @ContentItemId INT
+AS
+DELETE FROM {databaseOwner}{objectQualifier}ContentItems
+WHERE
+ ContentItemId = @ContentItemId;
+DELETE FROM {databaseOwner}{objectQualifier}Blog_Posts
+WHERE
+ ContentItemId = @ContentItemId;
+ 
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetAuthors') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetAuthors
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetAuthors
+ @ModuleId INT,
+ @BlogID INT
+AS
+SELECT
+ *
+FROM {databaseOwner}{objectQualifier}vw_Users u
+ INNER JOIN (
+SELECT
+ ci.CreatedByUserID, COUNT(ci.ContentItemID) NrPosts, SUM(ViewCount) AS NrViews, MAX(p.PublishedOnDate) LastPublishDate, MIN(p.PublishedOnDate) FirstPublishDate 
+FROM {databaseOwner}{objectQualifier}Blog_Posts p
+ INNER JOIN {databaseOwner}{objectQualifier}ContentItems ci ON ci.ContentItemID=p.ContentItemId AND p.Published=1
+ INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs b ON p.BlogID=b.BlogID AND b.ModuleID=@ModuleId AND (@BlogID=-1 OR b.BlogID=@BlogID)
+GROUP BY ci.CreatedByUserID
+ ) ub ON ub.CreatedByUserID=u.UserID
+ORDER BY u.LastName
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetBlog') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlog
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlog
+ @BlogId INT,
+ @UserId INT,
+ @Locale NVARCHAR(10)
+AS
+BEGIN
+SELECT
+ b.*,
+(SELECT COUNT(*)
+ FROM {databaseOwner}{objectQualifier}Blog_BlogPermissions bp
+ LEFT JOIN (SELECT ur.UserID, ur.RoleID  
+    FROM {databaseOwner}{objectQualifier}UserRoles ur  
+    WHERE (ur.EffectiveDate <= GETDATE() OR ur.EffectiveDate IS NULL) AND (ur.ExpiryDate >= GETDATE() OR ur.ExpiryDate IS NULL)
+    and ur.UserID=@UserID) r  ON r.RoleID=bp.RoleId
+ WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4)) AND bp.BlogId=b.BlogID AND bp.PermissionId=0) AS CanEdit,
+(SELECT COUNT(*)
+ FROM {databaseOwner}{objectQualifier}Blog_BlogPermissions bp
+ LEFT JOIN (SELECT ur.UserID, ur.RoleID  
+    FROM {databaseOwner}{objectQualifier}UserRoles ur  
+    WHERE (ur.EffectiveDate <= GETDATE() OR ur.EffectiveDate IS NULL) AND (ur.ExpiryDate >= GETDATE() OR ur.ExpiryDate IS NULL)
+    and ur.UserID=@UserID) r  ON r.RoleID=bp.RoleId
+ WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4)) AND bp.BlogId=b.BlogID AND bp.PermissionId=1) AS CanAdd,
+(SELECT COUNT(*)
+ FROM {databaseOwner}{objectQualifier}Blog_BlogPermissions bp
+ LEFT JOIN (SELECT ur.UserID, ur.RoleID  
+    FROM {databaseOwner}{objectQualifier}UserRoles ur  
+    WHERE (ur.EffectiveDate <= GETDATE() OR ur.EffectiveDate IS NULL) AND (ur.ExpiryDate >= GETDATE() OR ur.ExpiryDate IS NULL)
+    and ur.UserID=@UserID) r  ON r.RoleID=bp.RoleId
+ WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4)) AND bp.BlogId=b.BlogID AND bp.PermissionId=2) AS CanApprove
+ 
+FROM {databaseOwner}{objectQualifier}Blog_BlogList(@Locale) b
+ WHERE b.BlogID=@BlogId
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetBlogCalendar') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlogCalendar
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlogCalendar
+ @ModuleId INT,
+ @BlogId INT,
+ @Locale NVARCHAR(10)
+AS
+SELECT
+ PostMonth, 
+ PostYear,
+ COUNT(*) PostCount,
+ SUM(ViewCount) ViewCount
+FROM
+(SELECT
+  MONTH(p.PublishedOnDate) PostMonth, YEAR(p.PublishedOnDate) PostYear, p.ViewCount
+ FROM {databaseOwner}{objectQualifier}Blog_Posts p
+ INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs b ON b.BlogID=p.BlogID
+ WHERE
+  p.Published=1 
+  AND (p.BlogID=@BlogId OR @BlogId=-1) 
+  AND b.ModuleID=@ModuleId
+  AND (@Locale IS NULL OR ISNULL(p.Locale, b.Locale)=@Locale)) pd
+GROUP BY PostYear, PostMonth
+ORDER BY PostYear DESC, PostMonth DESC
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetBlogLocalizations') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlogLocalizations
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlogLocalizations
+ @BlogId INT
+AS
+BEGIN
+SELECT
+ bl.*
+FROM {databaseOwner}{objectQualifier}Blog_BlogLocalization bl
+WHERE bl.BlogID=@BlogId
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetBlogPermissionsByBlog') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlogPermissionsByBlog
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlogPermissionsByBlog
+ @BlogId INT
+AS
+BEGIN
+SELECT bp.*
+FROM {databaseOwner}{objectQualifier}vw_Blog_BlogPermissions bp
+WHERE bp.BlogId=@BlogId
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetBlogsByModule') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlogsByModule
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlogsByModule
+ @ModuleId INT,
+ @UserId INT,
+ @Locale NVARCHAR(10)
+AS
+BEGIN
+SELECT
+ b.*,
+(SELECT COUNT(*)
+ FROM {databaseOwner}{objectQualifier}Blog_BlogPermissions bp
+ LEFT JOIN (SELECT ur.UserID, ur.RoleID  
+    FROM {databaseOwner}{objectQualifier}UserRoles ur  
+    WHERE (ur.EffectiveDate <= GETDATE() OR ur.EffectiveDate IS NULL) AND (ur.ExpiryDate >= GETDATE() OR ur.ExpiryDate IS NULL)
+    and ur.UserID=@UserID) r  ON r.RoleID=bp.RoleId
+ WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4)) AND bp.BlogId=b.BlogID AND bp.PermissionId=0) AS CanEdit,
+(SELECT COUNT(*)
+ FROM {databaseOwner}{objectQualifier}Blog_BlogPermissions bp
+ LEFT JOIN (SELECT ur.UserID, ur.RoleID  
+    FROM {databaseOwner}{objectQualifier}UserRoles ur  
+    WHERE (ur.EffectiveDate <= GETDATE() OR ur.EffectiveDate IS NULL) AND (ur.ExpiryDate >= GETDATE() OR ur.ExpiryDate IS NULL)
+    and ur.UserID=@UserID) r  ON r.RoleID=bp.RoleId
+ WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4)) AND bp.BlogId=b.BlogID AND bp.PermissionId=1) AS CanAdd,
+(SELECT COUNT(*)
+ FROM {databaseOwner}{objectQualifier}Blog_BlogPermissions bp
+ LEFT JOIN (SELECT ur.UserID, ur.RoleID  
+    FROM {databaseOwner}{objectQualifier}UserRoles ur  
+    WHERE (ur.EffectiveDate <= GETDATE() OR ur.EffectiveDate IS NULL) AND (ur.ExpiryDate >= GETDATE() OR ur.ExpiryDate IS NULL)
+    and ur.UserID=@UserID) r  ON r.RoleID=bp.RoleId
+ WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4)) AND bp.BlogId=b.BlogID AND bp.PermissionId=2) AS CanApprove
+ 
+FROM {databaseOwner}{objectQualifier}Blog_BlogList(@Locale) b
+WHERE b.ModuleID=@ModuleId
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetComment') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetComment
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetComment
+ @CommentID INT
+AS
+SELECT
+ *
+FROM
+ {databaseOwner}{objectQualifier}vw_Blog_Comments
+WHERE
+ [CommentID] = @CommentID
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetCommentsByContentItem') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetCommentsByContentItem
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetCommentsByContentItem
+ @ContentItemId INT,
+ @IncludeNonApproved BIT
+AS
+SELECT
+ c.*
+FROM
+ {databaseOwner}{objectQualifier}vw_Blog_Comments c
+WHERE
+ c.ContentItemId = @ContentItemId
+ AND (c.Approved = 1 OR @IncludeNonApproved = 1)
+ORDER BY
+ c.CreatedOnDate DESC
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetCommentsByModuleId') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetCommentsByModuleId
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetCommentsByModuleId
+ @ModuleId INT
+AS
+SELECT
+ c.*
+FROM
+ {databaseOwner}{objectQualifier}vw_Blog_Comments c
+ INNER JOIN {databaseOwner}{objectQualifier}ContentItems ci ON ci.ContentItemID=c.ContentItemId
+WHERE
+ ci.ModuleID=@ModuleId
+ORDER BY
+ c.CreatedOnDate DESC
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetPost') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetPost
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetPost
+ @ContentItemId INT,
+ @ModuleId INT,
+ @Locale NVARCHAR(10)
+AS
+SELECT
+ p.*,
+ (SELECT COUNT(c.CommentID) FROM {databaseOwner}{objectQualifier}Blog_Comments c WHERE c.ContentItemId=p.ContentItemId AND c.Approved=1) AS NrComments
+FROM
+ {databaseOwner}{objectQualifier}Blog_PostList(@Locale) p
+WHERE
+ p.[ContentItemId] = @ContentItemId
+ AND p.ModuleId = @ModuleId
+ 
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetPostLocalizations') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetPostLocalizations
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetPostLocalizations
+ @ContentItemId INT
+AS
+SELECT
+ pl.*,
+ lci.Content
+FROM
+ {databaseOwner}{objectQualifier}Blog_PostLocalization pl
+  LEFT OUTER JOIN {databaseOwner}{objectQualifier}ContentItems lci ON pl.LocalizedContentItemId=lci.ContentItemID
+WHERE
+ pl.[ContentItemId] = @ContentItemId
+ 
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetPosts') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetPosts
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetPosts
+ @ModuleId INT,
+ @BlogID INT,
+ @DisplayLocale NVARCHAR(10),
+ @UserId INT,
+ @UserIsAdmin BIT,
+ @Published INT,
+ @LimitToLocale NVARCHAR(10),
+ @EndDate DATETIME,
+ @AuthorUserId INT,
+ @PageIndex INT = -1,
+ @PageSize INT = 0,
+ @OrderBy VARCHAR(100) = ''
+AS
+DECLARE 
+ @PageLowerBound INT, 
+ @PageUpperBound INT, 
+ @RowsToReturn INT
+EXEC {databaseOwner}{objectQualifier}CalculatePagingInformation @PageIndex, @PageSize, @RowsToReturn output, @PageLowerBound output, @PageUpperBound output;
+DECLARE @Blogs TABLE (
+ [BlogID] INT,
+ [Locale] VARCHAR(10),
+ [HasPrivilege] INT);
+INSERT INTO @Blogs
+SELECT
+ b.BlogId,
+ b.Locale,
+(SELECT COUNT(*)
+ FROM {databaseOwner}{objectQualifier}Blog_BlogPermissions bp
+ LEFT JOIN (SELECT ur.UserID, ur.RoleID  
+    FROM {databaseOwner}{objectQualifier}UserRoles ur
+    WHERE (ur.EffectiveDate <= GETDATE() OR ur.EffectiveDate IS NULL) AND (ur.ExpiryDate >= GETDATE() OR ur.ExpiryDate IS NULL)
+    and ur.UserID=@UserID) r  ON r.RoleID=bp.RoleId
+ WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4)) AND bp.BlogId=b.BlogID AND bp.PermissionId IN (0,1,2)) AS [HasPrivilege]
+FROM {databaseOwner}{objectQualifier}Blog_Blogs b
+WHERE b.ModuleID=@ModuleId;
+SELECT
+ Tbl.*,
+ (SELECT COUNT(c.CommentID) FROM {databaseOwner}{objectQualifier}Blog_Comments c WHERE c.ContentItemId=tbl.ContentItemId AND c.Approved=1) AS NrComments
+FROM
+(SELECT
+ p.*,
+ ROW_NUMBER() OVER
+ (ORDER BY
+  CASE @OrderBy WHEN 'ALLOWCOMMENTS DESC' THEN p.[AllowComments] END DESC,
+  CASE @OrderBy WHEN 'ALLOWCOMMENTS' THEN p.[AllowComments] END ASC,
+  CASE @OrderBy WHEN 'ALLOWCOMMENTS ASC' THEN p.[AllowComments] END ASC,
+  CASE @OrderBy WHEN 'BLOGID DESC' THEN p.[BlogID] END DESC,
+  CASE @OrderBy WHEN 'BLOGID' THEN p.[BlogID] END ASC,
+  CASE @OrderBy WHEN 'BLOGID ASC' THEN p.[BlogID] END ASC,
+  CASE @OrderBy WHEN 'CONTENTITEMID DESC' THEN p.[ContentItemId] END DESC,
+  CASE @OrderBy WHEN 'CONTENTITEMID' THEN p.[ContentItemId] END ASC,
+  CASE @OrderBy WHEN 'CONTENTITEMID ASC' THEN p.[ContentItemId] END ASC,
+  CASE @OrderBy WHEN 'COPYRIGHT DESC' THEN p.[Copyright] END DESC,
+  CASE @OrderBy WHEN 'COPYRIGHT' THEN p.[Copyright] END ASC,
+  CASE @OrderBy WHEN 'COPYRIGHT ASC' THEN p.[Copyright] END ASC,
+  CASE @OrderBy WHEN 'CREATEDBYUSERID DESC' THEN p.[CreatedByUserId] END DESC,
+  CASE @OrderBy WHEN 'CREATEDBYUSERID' THEN p.[CreatedByUserId] END ASC,
+  CASE @OrderBy WHEN 'CREATEDBYUSERID ASC' THEN p.[CreatedByUserId] END ASC,
+  CASE @OrderBy WHEN 'CREATEDONDATE DESC' THEN p.[CreatedOnDate] END DESC,
+  CASE @OrderBy WHEN 'CREATEDONDATE' THEN p.[CreatedOnDate] END ASC,
+  CASE @OrderBy WHEN 'CREATEDONDATE ASC' THEN p.[CreatedOnDate] END ASC,
+  CASE @OrderBy WHEN 'DISPLAYCOPYRIGHT DESC' THEN p.[DisplayCopyright] END DESC,
+  CASE @OrderBy WHEN 'DISPLAYCOPYRIGHT' THEN p.[DisplayCopyright] END ASC,
+  CASE @OrderBy WHEN 'DISPLAYCOPYRIGHT ASC' THEN p.[DisplayCopyright] END ASC,
+  CASE @OrderBy WHEN 'IMAGE DESC' THEN p.[Image] END DESC,
+  CASE @OrderBy WHEN 'IMAGE' THEN p.[Image] END ASC,
+  CASE @OrderBy WHEN 'IMAGE ASC' THEN p.[Image] END ASC,
+  CASE @OrderBy WHEN 'LASTMODIFIEDBYUSERID DESC' THEN p.[LastModifiedByUserID] END DESC,
+  CASE @OrderBy WHEN 'LASTMODIFIEDBYUSERID' THEN p.[LastModifiedByUserID] END ASC,
+  CASE @OrderBy WHEN 'LASTMODIFIEDBYUSERID ASC' THEN p.[LastModifiedByUserID] END ASC,
+  CASE @OrderBy WHEN 'LASTMODIFIEDONDATE DESC' THEN p.[LastModifiedOnDate] END DESC,
+  CASE @OrderBy WHEN 'LASTMODIFIEDONDATE' THEN p.[LastModifiedOnDate] END ASC,
+  CASE @OrderBy WHEN 'LASTMODIFIEDONDATE ASC' THEN p.[LastModifiedOnDate] END ASC,
+  CASE @OrderBy WHEN 'PUBLISHED DESC' THEN p.[Published] END DESC,
+  CASE @OrderBy WHEN 'PUBLISHED' THEN p.[Published] END ASC,
+  CASE @OrderBy WHEN 'PUBLISHED ASC' THEN p.[Published] END ASC,
+  CASE @OrderBy WHEN 'PUBLISHEDONDATE DESC' THEN p.[PublishedOnDate] END DESC,
+  CASE @OrderBy WHEN 'PUBLISHEDONDATE' THEN p.[PublishedOnDate] END ASC,
+  CASE @OrderBy WHEN 'PUBLISHEDONDATE ASC' THEN p.[PublishedOnDate] END ASC,
+  CASE @OrderBy WHEN 'TITLE DESC' THEN p.[Title] END DESC,
+  CASE @OrderBy WHEN 'TITLE' THEN p.[Title] END ASC,
+  CASE @OrderBy WHEN 'TITLE ASC' THEN p.[Title] END ASC,
+  CASE @OrderBy WHEN 'VIEWCOUNT DESC' THEN p.[ViewCount] END DESC,
+  CASE @OrderBy WHEN 'VIEWCOUNT' THEN p.[ViewCount] END ASC,
+  CASE @OrderBy WHEN 'VIEWCOUNT ASC' THEN p.[ViewCount] END ASC
+) AS RowNum
+FROM
+ {databaseOwner}{objectQualifier}Blog_PostList(@DisplayLocale) p
+ INNER JOIN @Blogs b ON b.BlogID=p.BlogID
+WHERE
+ (p.BlogID = @BlogID OR @BlogID=-1)
+ AND (p.PublishedOnDate < @EndDate)
+ AND (p.CreatedByUserId=@AuthorUserId OR @AuthorUserId=-1)
+ AND (CAST(p.Published AS INT)=@Published OR @Published=-1)
+ AND (p.Published=1 OR @UserIsAdmin=1 OR p.CreatedByUserId=@UserId OR b.HasPrivilege>0)
+ AND (@LimitToLocale IS NULL OR ISNULL(p.Locale, b.Locale)=@LimitToLocale)
+ ) AS Tbl
+WHERE RowNum > @PageLowerBound AND RowNum < @PageUpperBound
+ORDER BY RowNum;
+SELECT COUNT (*) AS TotalRecords
+FROM
+ {databaseOwner}{objectQualifier}Blog_PostList(@DisplayLocale) p
+ INNER JOIN @Blogs b ON b.BlogID=p.BlogID
+WHERE
+ (p.BlogID = @BlogID OR @BlogID=-1)
+ AND (p.PublishedOnDate < @EndDate)
+ AND (p.CreatedByUserId=@AuthorUserId OR @AuthorUserId=-1)
+ AND (CAST(p.Published AS INT)=@Published OR @Published=-1)
+ AND (p.Published=1 OR @UserIsAdmin=1 OR p.CreatedByUserId=@UserId OR b.HasPrivilege>0)
+ AND (@LimitToLocale IS NULL OR ISNULL(p.Locale, b.Locale)=@LimitToLocale)
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetPostsByBlog') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetPostsByBlog
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetPostsByBlog
+ @BlogID INT,
+ @DisplayLocale NVARCHAR(10),
+ @PageIndex INT = -1,
+ @PageSize INT = 0,
+ @OrderBy VARCHAR(100) = ''
+AS
+DECLARE 
+ @PageLowerBound INT, 
+ @PageUpperBound INT, 
+ @RowsToReturn INT
+EXEC {databaseOwner}{objectQualifier}CalculatePagingInformation @PageIndex, @PageSize, @RowsToReturn output, @PageLowerBound output, @PageUpperBound output;
+SELECT 
+ Tbl.*,
+ (SELECT COUNT(c.CommentID) FROM {databaseOwner}{objectQualifier}Blog_Comments c WHERE c.ContentItemId=tbl.ContentItemId AND c.Approved=1) AS NrComments
+FROM
+(SELECT
+ p.*,
+ ROW_NUMBER() OVER
+ (ORDER BY
+  CASE @OrderBy WHEN 'ALLOWCOMMENTS DESC' THEN p.[AllowComments] END DESC,
+  CASE @OrderBy WHEN 'ALLOWCOMMENTS' THEN p.[AllowComments] END ASC,
+  CASE @OrderBy WHEN 'ALLOWCOMMENTS ASC' THEN p.[AllowComments] END ASC,
+  CASE @OrderBy WHEN 'BLOGID DESC' THEN p.[BlogID] END DESC,
+  CASE @OrderBy WHEN 'BLOGID' THEN p.[BlogID] END ASC,
+  CASE @OrderBy WHEN 'BLOGID ASC' THEN p.[BlogID] END ASC,
+  CASE @OrderBy WHEN 'CONTENTITEMID DESC' THEN p.[ContentItemId] END DESC,
+  CASE @OrderBy WHEN 'CONTENTITEMID' THEN p.[ContentItemId] END ASC,
+  CASE @OrderBy WHEN 'CONTENTITEMID ASC' THEN p.[ContentItemId] END ASC,
+  CASE @OrderBy WHEN 'COPYRIGHT DESC' THEN p.[Copyright] END DESC,
+  CASE @OrderBy WHEN 'COPYRIGHT' THEN p.[Copyright] END ASC,
+  CASE @OrderBy WHEN 'COPYRIGHT ASC' THEN p.[Copyright] END ASC,
+  CASE @OrderBy WHEN 'CREATEDBYUSERID DESC' THEN p.[CreatedByUserId] END DESC,
+  CASE @OrderBy WHEN 'CREATEDBYUSERID' THEN p.[CreatedByUserId] END ASC,
+  CASE @OrderBy WHEN 'CREATEDBYUSERID ASC' THEN p.[CreatedByUserId] END ASC,
+  CASE @OrderBy WHEN 'CREATEDONDATE DESC' THEN p.[CreatedOnDate] END DESC,
+  CASE @OrderBy WHEN 'CREATEDONDATE' THEN p.[CreatedOnDate] END ASC,
+  CASE @OrderBy WHEN 'CREATEDONDATE ASC' THEN p.[CreatedOnDate] END ASC,
+  CASE @OrderBy WHEN 'DISPLAYCOPYRIGHT DESC' THEN p.[DisplayCopyright] END DESC,
+  CASE @OrderBy WHEN 'DISPLAYCOPYRIGHT' THEN p.[DisplayCopyright] END ASC,
+  CASE @OrderBy WHEN 'DISPLAYCOPYRIGHT ASC' THEN p.[DisplayCopyright] END ASC,
+  CASE @OrderBy WHEN 'IMAGE DESC' THEN p.[Image] END DESC,
+  CASE @OrderBy WHEN 'IMAGE' THEN p.[Image] END ASC,
+  CASE @OrderBy WHEN 'IMAGE ASC' THEN p.[Image] END ASC,
+  CASE @OrderBy WHEN 'LASTMODIFIEDBYUSERID DESC' THEN p.[LastModifiedByUserID] END DESC,
+  CASE @OrderBy WHEN 'LASTMODIFIEDBYUSERID' THEN p.[LastModifiedByUserID] END ASC,
+  CASE @OrderBy WHEN 'LASTMODIFIEDBYUSERID ASC' THEN p.[LastModifiedByUserID] END ASC,
+  CASE @OrderBy WHEN 'LASTMODIFIEDONDATE DESC' THEN p.[LastModifiedOnDate] END DESC,
+  CASE @OrderBy WHEN 'LASTMODIFIEDONDATE' THEN p.[LastModifiedOnDate] END ASC,
+  CASE @OrderBy WHEN 'LASTMODIFIEDONDATE ASC' THEN p.[LastModifiedOnDate] END ASC,
+  CASE @OrderBy WHEN 'PUBLISHED DESC' THEN p.[Published] END DESC,
+  CASE @OrderBy WHEN 'PUBLISHED' THEN p.[Published] END ASC,
+  CASE @OrderBy WHEN 'PUBLISHED ASC' THEN p.[Published] END ASC,
+  CASE @OrderBy WHEN 'PUBLISHEDONDATE DESC' THEN p.[PublishedOnDate] END DESC,
+  CASE @OrderBy WHEN 'PUBLISHEDONDATE' THEN p.[PublishedOnDate] END ASC,
+  CASE @OrderBy WHEN 'PUBLISHEDONDATE ASC' THEN p.[PublishedOnDate] END ASC,
+  CASE @OrderBy WHEN 'TITLE DESC' THEN p.[Title] END DESC,
+  CASE @OrderBy WHEN 'TITLE' THEN p.[Title] END ASC,
+  CASE @OrderBy WHEN 'TITLE ASC' THEN p.[Title] END ASC,
+  CASE @OrderBy WHEN 'VIEWCOUNT DESC' THEN p.[ViewCount] END DESC,
+  CASE @OrderBy WHEN 'VIEWCOUNT' THEN p.[ViewCount] END ASC,
+  CASE @OrderBy WHEN 'VIEWCOUNT ASC' THEN p.[ViewCount] END ASC
+) AS RowNum
+FROM
+ {databaseOwner}{objectQualifier}Blog_PostList(@DisplayLocale) p
+WHERE
+ (p.BlogID = @BlogID OR @BlogID=-1)
+ ) AS Tbl
+WHERE RowNum > @PageLowerBound AND RowNum < @PageUpperBound
+ORDER BY RowNum;
+SELECT COUNT (*) AS TotalRecords
+FROM
+ {databaseOwner}{objectQualifier}Blog_PostList(@DisplayLocale) p
+WHERE
+ (p.BlogID = @BlogID OR @BlogID=-1)
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetPostsByTerm') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetPostsByTerm
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetPostsByTerm
+ @ModuleId INT,
+ @BlogID INT,
+ @DisplayLocale NVARCHAR(10),
+ @UserId INT,
+ @UserIsAdmin BIT,
+ @TermID INT,
+ @Published INT,
+ @LimitToLocale NVARCHAR(10),
+ @EndDate DATETIME,
+ @AuthorUserId INT,
+ @PageIndex INT = -1,
+ @PageSize INT = 0,
+ @OrderBy VARCHAR(100) = ''
+AS
+DECLARE 
+ @PageLowerBound INT, 
+ @PageUpperBound INT, 
+ @RowsToReturn INT
+EXEC {databaseOwner}{objectQualifier}CalculatePagingInformation @PageIndex, @PageSize, @RowsToReturn output, @PageLowerBound output, @PageUpperBound output;
+DECLARE @Blogs TABLE (
+ [BlogID] INT,
+ [Locale] VARCHAR(10),
+ [HasPrivilege] INT);
+INSERT INTO @Blogs
+SELECT
+ b.BlogId,
+ b.Locale,
+(SELECT COUNT(*)
+ FROM {databaseOwner}{objectQualifier}Blog_BlogPermissions bp
+ LEFT JOIN (SELECT ur.UserID, ur.RoleID  
+    FROM {databaseOwner}{objectQualifier}UserRoles ur
+    WHERE (ur.EffectiveDate <= GETDATE() OR ur.EffectiveDate IS NULL) AND (ur.ExpiryDate >= GETDATE() OR ur.ExpiryDate IS NULL)
+    and ur.UserID=@UserID) r  ON r.RoleID=bp.RoleId
+ WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4)) AND bp.BlogId=b.BlogID AND bp.PermissionId IN (0,1,2)) AS [HasPrivilege]
+FROM {databaseOwner}{objectQualifier}Blog_Blogs b
+WHERE b.ModuleID=@ModuleId;
+SELECT 
+ Tbl.*,
+ (SELECT COUNT(c.CommentID) FROM {databaseOwner}{objectQualifier}Blog_Comments c WHERE c.ContentItemId=tbl.ContentItemId AND c.Approved=1) AS NrComments
+FROM
+(SELECT
+ p.*,
+ ROW_NUMBER() OVER
+ (ORDER BY
+  CASE @OrderBy WHEN 'ALLOWCOMMENTS DESC' THEN p.[AllowComments] END DESC,
+  CASE @OrderBy WHEN 'ALLOWCOMMENTS' THEN p.[AllowComments] END ASC,
+  CASE @OrderBy WHEN 'ALLOWCOMMENTS ASC' THEN p.[AllowComments] END ASC,
+  CASE @OrderBy WHEN 'BLOGID DESC' THEN p.[BlogID] END DESC,
+  CASE @OrderBy WHEN 'BLOGID' THEN p.[BlogID] END ASC,
+  CASE @OrderBy WHEN 'BLOGID ASC' THEN p.[BlogID] END ASC,
+  CASE @OrderBy WHEN 'CONTENTITEMID DESC' THEN p.[ContentItemId] END DESC,
+  CASE @OrderBy WHEN 'CONTENTITEMID' THEN p.[ContentItemId] END ASC,
+  CASE @OrderBy WHEN 'CONTENTITEMID ASC' THEN p.[ContentItemId] END ASC,
+  CASE @OrderBy WHEN 'COPYRIGHT DESC' THEN p.[Copyright] END DESC,
+  CASE @OrderBy WHEN 'COPYRIGHT' THEN p.[Copyright] END ASC,
+  CASE @OrderBy WHEN 'COPYRIGHT ASC' THEN p.[Copyright] END ASC,
+  CASE @OrderBy WHEN 'CREATEDBYUSERID DESC' THEN p.[CreatedByUserId] END DESC,
+  CASE @OrderBy WHEN 'CREATEDBYUSERID' THEN p.[CreatedByUserId] END ASC,
+  CASE @OrderBy WHEN 'CREATEDBYUSERID ASC' THEN p.[CreatedByUserId] END ASC,
+  CASE @OrderBy WHEN 'CREATEDONDATE DESC' THEN p.[CreatedOnDate] END DESC,
+  CASE @OrderBy WHEN 'CREATEDONDATE' THEN p.[CreatedOnDate] END ASC,
+  CASE @OrderBy WHEN 'CREATEDONDATE ASC' THEN p.[CreatedOnDate] END ASC,
+  CASE @OrderBy WHEN 'DISPLAYCOPYRIGHT DESC' THEN p.[DisplayCopyright] END DESC,
+  CASE @OrderBy WHEN 'DISPLAYCOPYRIGHT' THEN p.[DisplayCopyright] END ASC,
+  CASE @OrderBy WHEN 'DISPLAYCOPYRIGHT ASC' THEN p.[DisplayCopyright] END ASC,
+  CASE @OrderBy WHEN 'IMAGE DESC' THEN p.[Image] END DESC,
+  CASE @OrderBy WHEN 'IMAGE' THEN p.[Image] END ASC,
+  CASE @OrderBy WHEN 'IMAGE ASC' THEN p.[Image] END ASC,
+  CASE @OrderBy WHEN 'LASTMODIFIEDBYUSERID DESC' THEN p.[LastModifiedByUserID] END DESC,
+  CASE @OrderBy WHEN 'LASTMODIFIEDBYUSERID' THEN p.[LastModifiedByUserID] END ASC,
+  CASE @OrderBy WHEN 'LASTMODIFIEDBYUSERID ASC' THEN p.[LastModifiedByUserID] END ASC,
+  CASE @OrderBy WHEN 'LASTMODIFIEDONDATE DESC' THEN p.[LastModifiedOnDate] END DESC,
+  CASE @OrderBy WHEN 'LASTMODIFIEDONDATE' THEN p.[LastModifiedOnDate] END ASC,
+  CASE @OrderBy WHEN 'LASTMODIFIEDONDATE ASC' THEN p.[LastModifiedOnDate] END ASC,
+  CASE @OrderBy WHEN 'PUBLISHED DESC' THEN p.[Published] END DESC,
+  CASE @OrderBy WHEN 'PUBLISHED' THEN p.[Published] END ASC,
+  CASE @OrderBy WHEN 'PUBLISHED ASC' THEN p.[Published] END ASC,
+  CASE @OrderBy WHEN 'PUBLISHEDONDATE DESC' THEN p.[PublishedOnDate] END DESC,
+  CASE @OrderBy WHEN 'PUBLISHEDONDATE' THEN p.[PublishedOnDate] END ASC,
+  CASE @OrderBy WHEN 'PUBLISHEDONDATE ASC' THEN p.[PublishedOnDate] END ASC,
+  CASE @OrderBy WHEN 'TITLE DESC' THEN p.[Title] END DESC,
+  CASE @OrderBy WHEN 'TITLE' THEN p.[Title] END ASC,
+  CASE @OrderBy WHEN 'TITLE ASC' THEN p.[Title] END ASC,
+  CASE @OrderBy WHEN 'VIEWCOUNT DESC' THEN p.[ViewCount] END DESC,
+  CASE @OrderBy WHEN 'VIEWCOUNT' THEN p.[ViewCount] END ASC,
+  CASE @OrderBy WHEN 'VIEWCOUNT ASC' THEN p.[ViewCount] END ASC
+) AS RowNum
+FROM
+ {databaseOwner}{objectQualifier}Blog_PostList(@DisplayLocale) p
+ INNER JOIN {databaseOwner}{objectQualifier}ContentItems_Tags t ON t.ContentItemID=p.ContentItemId AND t.TermID=@TermID
+ INNER JOIN @Blogs b ON b.BlogID=p.BlogID
+WHERE
+ (p.BlogID = @BlogID OR @BlogID=-1)
+ AND (p.PublishedOnDate < @EndDate)
+ AND (p.CreatedByUserId=@AuthorUserId OR @AuthorUserId=-1)
+ AND (CAST(p.Published AS INT)=@Published OR @Published=-1)
+ AND (p.Published=1 OR @UserIsAdmin=1 OR p.CreatedByUserId=@UserId OR b.HasPrivilege>0)
+ AND (@LimitToLocale IS NULL OR ISNULL(p.Locale, b.Locale)=@LimitToLocale)
+ ) AS Tbl
+WHERE RowNum > @PageLowerBound AND RowNum < @PageUpperBound
+ORDER BY RowNum;
+SELECT COUNT (*) AS TotalRecords
+FROM
+ {databaseOwner}{objectQualifier}Blog_PostList(@DisplayLocale) p
+ INNER JOIN {databaseOwner}{objectQualifier}ContentItems_Tags t ON t.ContentItemID=p.ContentItemId AND t.TermID=@TermID
+ INNER JOIN @Blogs b ON b.BlogID=p.BlogID
+WHERE
+ (p.BlogID = @BlogID OR @BlogID=-1)
+ AND (p.PublishedOnDate < @EndDate)
+ AND (p.CreatedByUserId=@AuthorUserId OR @AuthorUserId=-1)
+ AND (CAST(p.Published AS INT)=@Published OR @Published=-1)
+ AND (p.Published=1 OR @UserIsAdmin=1 OR p.CreatedByUserId=@UserId OR b.HasPrivilege>0)
+ AND (@LimitToLocale IS NULL OR ISNULL(p.Locale, b.Locale)=@LimitToLocale)
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetTerm') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetTerm
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetTerm
+ @TermId INT,
+ @ModuleId INT,
+ @Locale NVARCHAR(10)
+AS
+SELECT
+ t.*,
+ (SELECT COUNT(*) FROM
+  {databaseOwner}{objectQualifier}ContentItems_Tags tags
+  INNER JOIN {databaseOwner}{objectQualifier}Blog_Posts posts ON posts.ContentItemId=tags.ContentItemID
+  INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs blogs ON posts.BlogID=blogs.BlogID
+  WHERE posts.Published=1 AND blogs.Published=1 AND blogs.ModuleID=@ModuleId AND tags.TermID=t.TermID
+ ) AS TotalPosts
+FROM
+ {databaseOwner}{objectQualifier}Blog_TermList(@Locale) t
+WHERE
+ t.TermID=@TermId
+ 
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetTermLocalizations') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetTermLocalizations
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetTermLocalizations
+ @TermId INT
+AS
+SELECT
+ tl.*
+FROM
+ {databaseOwner}{objectQualifier}Blog_TermLocalization tl
+WHERE
+ tl.TermID=@TermId
+ 
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetTermsByModule') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetTermsByModule
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetTermsByModule
+ @ModuleId INT,
+ @Locale NVARCHAR(10)
+AS
+SELECT * FROM
+(SELECT
+ t.*,
+ (SELECT COUNT(*) FROM
+  {databaseOwner}{objectQualifier}ContentItems_Tags tags
+  INNER JOIN {databaseOwner}{objectQualifier}Blog_Posts posts ON posts.ContentItemId=tags.ContentItemID
+  INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs blogs ON posts.BlogID=blogs.BlogID
+  WHERE posts.Published=1 AND blogs.Published=1 AND blogs.ModuleID=@ModuleId AND tags.TermID=t.TermID
+ ) AS TotalPosts
+FROM
+ {databaseOwner}{objectQualifier}Blog_TermList(@Locale) t) AllTerms
+WHERE
+ AllTerms.TotalPosts>0
+ORDER BY AllTerms.ViewOrder, AllTerms.Name
+ 
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetTermsByPost') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetTermsByPost
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetTermsByPost
+ @ContentItemId INT,
+ @ModuleId INT,
+ @Locale NVARCHAR(10)
+AS
+SELECT
+ t.*,
+ (SELECT COUNT(*) FROM
+  {databaseOwner}{objectQualifier}ContentItems_Tags tags
+  INNER JOIN {databaseOwner}{objectQualifier}Blog_Posts entries ON entries.ContentItemId=tags.ContentItemID
+  INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs blogs ON entries.BlogID=blogs.BlogID
+  WHERE entries.Published=1 AND blogs.Published=1 AND blogs.ModuleID=@ModuleId AND tags.TermID=t.TermID
+ ) AS TotalPosts
+FROM
+ {databaseOwner}{objectQualifier}ContentItems_Tags tag
+ INNER JOIN {databaseOwner}{objectQualifier}Blog_Posts p ON p.ContentItemId=tag.ContentItemID
+ INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs b ON p.BlogID=b.BlogID
+ INNER JOIN {databaseOwner}{objectQualifier}Blog_TermList(@Locale) t ON tag.TermID=t.TermID
+WHERE
+ tag.ContentItemID = @ContentItemId
+ AND b.ModuleId = @ModuleId
+ORDER BY t.ViewOrder, t.Name
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetTermsByVocabulary') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetTermsByVocabulary
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetTermsByVocabulary
+ @ModuleId INT,
+ @VocabularyId INT,
+ @Locale NVARCHAR(10)
+AS
+SELECT
+ t.*,
+ (SELECT COUNT(*) FROM
+  {databaseOwner}{objectQualifier}ContentItems_Tags tags
+  INNER JOIN {databaseOwner}{objectQualifier}Blog_Posts posts ON posts.ContentItemId=tags.ContentItemID
+  INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs blogs ON posts.BlogID=blogs.BlogID
+  WHERE posts.Published=1 AND blogs.Published=1 AND blogs.ModuleID=@ModuleId AND tags.TermID=t.TermID
+ ) AS TotalPosts
+FROM
+ {databaseOwner}{objectQualifier}Blog_TermList(@Locale) t
+WHERE t.VocabularyID=@VocabularyId
+ORDER BY t.ViewOrder, t.Name
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetUserPermissionsByModule') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetUserPermissionsByModule
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetUserPermissionsByModule
+ @ModuleID INT,
+ @UserId INT
+AS
+SELECT p.PermissionId, MAX(CAST(p.AllowAccess AS INT)) HasPermission
+FROM
+(SELECT bp.*
+ FROM {databaseOwner}{objectQualifier}Blog_BlogPermissions bp
+ INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs b ON b.BlogID=bp.BlogId
+ LEFT JOIN (SELECT ur.UserID, ur.RoleID  
+    FROM {databaseOwner}{objectQualifier}UserRoles ur  
+    WHERE (ur.EffectiveDate <= GETDATE() OR ur.EffectiveDate IS NULL) AND (ur.ExpiryDate >= GETDATE() OR ur.ExpiryDate IS NULL)
+    and ur.UserID=@UserID) r  ON r.RoleID=bp.RoleId
+ WHERE
+  b.ModuleID=@ModuleId
+  AND bp.AllowAccess=1
+  AND (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4) OR bp.RoleID=-1)
+ UNION
+ SELECT
+  1 AllowAccess, b2.BlogID, NULL, ps.n, -1, -1
+ FROM {databaseOwner}{objectQualifier}Blog_Blogs b2
+  INNER JOIN 
+  {databaseOwner}{objectQualifier}Blog_Permissions () ps ON 1=1
+ WHERE b2.OwnerUserId=@UserId
+ ) p
+GROUP BY p.PermissionId
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetUsersByBlogPermission') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetUsersByBlogPermission
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetUsersByBlogPermission
+ @PortalId INT,
+ @BlogId INT,
+ @PermissionId INT
+AS
+SELECT DISTINCT * FROM
+(SELECT
+ u.*
+FROM
+ {databaseOwner}{objectQualifier}vw_Users u
+ INNER JOIN {databaseOwner}{objectQualifier}UserRoles ur ON ur.UserID=u.UserID
+ INNER JOIN {databaseOwner}{objectQualifier}Blog_BlogPermissions bp ON bp.RoleId=ur.RoleID AND bp.PermissionId=@PermissionId
+WHERE
+ (ISNULL(ur.EffectiveDate, DATEADD(day, - 1, GETDATE())) < GETDATE()) AND (ISNULL(ur.ExpiryDate, DATEADD(day, 1, GETDATE())) > GETDATE())
+UNION
+SELECT
+ u.*
+FROM
+ {databaseOwner}{objectQualifier}vw_Users u
+ INNER JOIN {databaseOwner}{objectQualifier}Blog_BlogPermissions bp ON bp.UserId=u.UserID AND bp.PermissionId=@PermissionId) x
+ 
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_SearchPosts') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_SearchPosts
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_SearchPosts
+ @ModuleId INT,
+ @BlogID INT,
+ @DisplayLocale NVARCHAR(10),
+ @UserId INT,
+ @UserIsAdmin BIT,
+ @SearchText NVARCHAR(1000),
+ @SearchTitle BIT,
+ @SearchContents BIT,
+ @Published INT,
+ @LimitToLocale NVARCHAR(10),
+ @EndDate DATETIME,
+ @AuthorUserId INT,
+ @PageIndex INT = -1,
+ @PageSize INT = 0,
+ @OrderBy VARCHAR(100) = ''
+AS
+DECLARE 
+ @PageLowerBound INT, 
+ @PageUpperBound INT, 
+ @RowsToReturn INT
+EXEC {databaseOwner}{objectQualifier}CalculatePagingInformation @PageIndex, @PageSize, @RowsToReturn output, @PageLowerBound output, @PageUpperBound output;
+DECLARE @Blogs TABLE (
+ [BlogID] INT,
+ [Locale] VARCHAR(10),
+ [HasPrivilege] INT);
+INSERT INTO @Blogs
+SELECT
+ b.BlogId,
+ b.Locale,
+(SELECT COUNT(*)
+ FROM {databaseOwner}{objectQualifier}Blog_BlogPermissions bp
+ LEFT JOIN (SELECT ur.UserID, ur.RoleID  
+    FROM {databaseOwner}{objectQualifier}UserRoles ur
+    WHERE (ur.EffectiveDate <= GETDATE() OR ur.EffectiveDate IS NULL) AND (ur.ExpiryDate >= GETDATE() OR ur.ExpiryDate IS NULL)
+    and ur.UserID=@UserID) r  ON r.RoleID=bp.RoleId
+ WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4)) AND bp.BlogId=b.BlogID AND bp.PermissionId IN (0,1,2)) AS [HasPrivilege]
+FROM {databaseOwner}{objectQualifier}Blog_Blogs b
+WHERE b.ModuleID=@ModuleId;
+SELECT
+ Tbl.*,
+ (SELECT COUNT(c.CommentID) FROM {databaseOwner}{objectQualifier}Blog_Comments c WHERE c.ContentItemId=tbl.ContentItemId AND c.Approved=1) AS NrComments
+FROM
+(SELECT
+ p.*,
+ ROW_NUMBER() OVER
+ (ORDER BY
+  CASE @OrderBy WHEN 'ALLOWCOMMENTS DESC' THEN p.[AllowComments] END DESC,
+  CASE @OrderBy WHEN 'ALLOWCOMMENTS' THEN p.[AllowComments] END ASC,
+  CASE @OrderBy WHEN 'ALLOWCOMMENTS ASC' THEN p.[AllowComments] END ASC,
+  CASE @OrderBy WHEN 'BLOGID DESC' THEN p.[BlogID] END DESC,
+  CASE @OrderBy WHEN 'BLOGID' THEN p.[BlogID] END ASC,
+  CASE @OrderBy WHEN 'BLOGID ASC' THEN p.[BlogID] END ASC,
+  CASE @OrderBy WHEN 'CONTENTITEMID DESC' THEN p.[ContentItemId] END DESC,
+  CASE @OrderBy WHEN 'CONTENTITEMID' THEN p.[ContentItemId] END ASC,
+  CASE @OrderBy WHEN 'CONTENTITEMID ASC' THEN p.[ContentItemId] END ASC,
+  CASE @OrderBy WHEN 'COPYRIGHT DESC' THEN p.[Copyright] END DESC,
+  CASE @OrderBy WHEN 'COPYRIGHT' THEN p.[Copyright] END ASC,
+  CASE @OrderBy WHEN 'COPYRIGHT ASC' THEN p.[Copyright] END ASC,
+  CASE @OrderBy WHEN 'CREATEDBYUSERID DESC' THEN p.[CreatedByUserId] END DESC,
+  CASE @OrderBy WHEN 'CREATEDBYUSERID' THEN p.[CreatedByUserId] END ASC,
+  CASE @OrderBy WHEN 'CREATEDBYUSERID ASC' THEN p.[CreatedByUserId] END ASC,
+  CASE @OrderBy WHEN 'CREATEDONDATE DESC' THEN p.[CreatedOnDate] END DESC,
+  CASE @OrderBy WHEN 'CREATEDONDATE' THEN p.[CreatedOnDate] END ASC,
+  CASE @OrderBy WHEN 'CREATEDONDATE ASC' THEN p.[CreatedOnDate] END ASC,
+  CASE @OrderBy WHEN 'DISPLAYCOPYRIGHT DESC' THEN p.[DisplayCopyright] END DESC,
+  CASE @OrderBy WHEN 'DISPLAYCOPYRIGHT' THEN p.[DisplayCopyright] END ASC,
+  CASE @OrderBy WHEN 'DISPLAYCOPYRIGHT ASC' THEN p.[DisplayCopyright] END ASC,
+  CASE @OrderBy WHEN 'IMAGE DESC' THEN p.[Image] END DESC,
+  CASE @OrderBy WHEN 'IMAGE' THEN p.[Image] END ASC,
+  CASE @OrderBy WHEN 'IMAGE ASC' THEN p.[Image] END ASC,
+  CASE @OrderBy WHEN 'LASTMODIFIEDBYUSERID DESC' THEN p.[LastModifiedByUserID] END DESC,
+  CASE @OrderBy WHEN 'LASTMODIFIEDBYUSERID' THEN p.[LastModifiedByUserID] END ASC,
+  CASE @OrderBy WHEN 'LASTMODIFIEDBYUSERID ASC' THEN p.[LastModifiedByUserID] END ASC,
+  CASE @OrderBy WHEN 'LASTMODIFIEDONDATE DESC' THEN p.[LastModifiedOnDate] END DESC,
+  CASE @OrderBy WHEN 'LASTMODIFIEDONDATE' THEN p.[LastModifiedOnDate] END ASC,
+  CASE @OrderBy WHEN 'LASTMODIFIEDONDATE ASC' THEN p.[LastModifiedOnDate] END ASC,
+  CASE @OrderBy WHEN 'PUBLISHED DESC' THEN p.[Published] END DESC,
+  CASE @OrderBy WHEN 'PUBLISHED' THEN p.[Published] END ASC,
+  CASE @OrderBy WHEN 'PUBLISHED ASC' THEN p.[Published] END ASC,
+  CASE @OrderBy WHEN 'PUBLISHEDONDATE DESC' THEN p.[PublishedOnDate] END DESC,
+  CASE @OrderBy WHEN 'PUBLISHEDONDATE' THEN p.[PublishedOnDate] END ASC,
+  CASE @OrderBy WHEN 'PUBLISHEDONDATE ASC' THEN p.[PublishedOnDate] END ASC,
+  CASE @OrderBy WHEN 'TITLE DESC' THEN p.[Title] END DESC,
+  CASE @OrderBy WHEN 'TITLE' THEN p.[Title] END ASC,
+  CASE @OrderBy WHEN 'TITLE ASC' THEN p.[Title] END ASC,
+  CASE @OrderBy WHEN 'VIEWCOUNT DESC' THEN p.[ViewCount] END DESC,
+  CASE @OrderBy WHEN 'VIEWCOUNT' THEN p.[ViewCount] END ASC,
+  CASE @OrderBy WHEN 'VIEWCOUNT ASC' THEN p.[ViewCount] END ASC
+) AS RowNum
+FROM
+ {databaseOwner}{objectQualifier}Blog_PostList(@DisplayLocale) p
+ INNER JOIN @Blogs b ON b.BlogID=p.BlogID
+WHERE
+ ((p.Title LIKE '%'+@SearchText+'%' AND @SearchTitle=1) OR (p.Content LIKE '%'+@SearchText+'%' AND @SearchContents=1))
+ AND (p.BlogID = @BlogID OR @BlogID=-1)
+ AND (p.PublishedOnDate < @EndDate)
+ AND (p.CreatedByUserId=@AuthorUserId OR @AuthorUserId=-1)
+ AND (CAST(p.Published AS INT)=@Published OR @Published=-1)
+ AND (p.Published=1 OR @UserIsAdmin=1 OR p.CreatedByUserId=@UserId OR b.HasPrivilege>0)
+ AND (@LimitToLocale IS NULL OR ISNULL(p.Locale, b.Locale)=@LimitToLocale)
+ ) AS Tbl
+WHERE RowNum > @PageLowerBound AND RowNum < @PageUpperBound
+ORDER BY RowNum;
+SELECT COUNT (*) AS TotalRecords
+FROM
+ {databaseOwner}{objectQualifier}Blog_PostList(@DisplayLocale) p
+ INNER JOIN @Blogs b ON b.BlogID=p.BlogID
+WHERE
+ ((p.Title LIKE '%'+@SearchText+'%' AND @SearchTitle=1) OR (p.Content LIKE '%'+@SearchText+'%' AND @SearchContents=1))
+ AND (p.BlogID = @BlogID OR @BlogID=-1)
+ AND (p.PublishedOnDate < @EndDate)
+ AND (p.CreatedByUserId=@AuthorUserId OR @AuthorUserId=-1)
+ AND (CAST(p.Published AS INT)=@Published OR @Published=-1)
+ AND (p.Published=1 OR @UserIsAdmin=1 OR p.CreatedByUserId=@UserId OR b.HasPrivilege>0)
+ AND (@LimitToLocale IS NULL OR ISNULL(p.Locale, b.Locale)=@LimitToLocale)
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_SearchPostsByTerm') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_SearchPostsByTerm
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_SearchPostsByTerm
+ @ModuleId INT,
+ @BlogID INT,
+ @DisplayLocale NVARCHAR(10),
+ @UserId INT,
+ @UserIsAdmin BIT,
+ @TermID INT,
+ @SearchText NVARCHAR(1000),
+ @SearchTitle BIT,
+ @SearchContents BIT,
+ @Published INT,
+ @LimitToLocale NVARCHAR(10),
+ @EndDate DATETIME,
+ @AuthorUserId INT,
+ @PageIndex INT = -1,
+ @PageSize INT = 0,
+ @OrderBy VARCHAR(100) = ''
+AS
+DECLARE 
+ @PageLowerBound INT, 
+ @PageUpperBound INT, 
+ @RowsToReturn INT
+EXEC {databaseOwner}{objectQualifier}CalculatePagingInformation @PageIndex, @PageSize, @RowsToReturn output, @PageLowerBound output, @PageUpperBound output;
+DECLARE @Blogs TABLE (
+ [BlogID] INT,
+ [Locale] VARCHAR(10),
+ [HasPrivilege] INT);
+INSERT INTO @Blogs
+SELECT
+ b.BlogId,
+ b.Locale,
+(SELECT COUNT(*)
+ FROM {databaseOwner}{objectQualifier}Blog_BlogPermissions bp
+ LEFT JOIN (SELECT ur.UserID, ur.RoleID  
+    FROM {databaseOwner}{objectQualifier}UserRoles ur
+    WHERE (ur.EffectiveDate <= GETDATE() OR ur.EffectiveDate IS NULL) AND (ur.ExpiryDate >= GETDATE() OR ur.ExpiryDate IS NULL)
+    and ur.UserID=@UserID) r  ON r.RoleID=bp.RoleId
+ WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4)) AND bp.BlogId=b.BlogID AND bp.PermissionId IN (0,1,2)) AS [HasPrivilege]
+FROM {databaseOwner}{objectQualifier}Blog_Blogs b
+WHERE b.ModuleID=@ModuleId;
+SELECT
+ Tbl.*,
+ (SELECT COUNT(c.CommentID) FROM {databaseOwner}{objectQualifier}Blog_Comments c WHERE c.ContentItemId=tbl.ContentItemId AND c.Approved=1) AS NrComments
+FROM
+(SELECT
+ p.*,
+ ROW_NUMBER() OVER
+ (ORDER BY
+  CASE @OrderBy WHEN 'ALLOWCOMMENTS DESC' THEN p.[AllowComments] END DESC,
+  CASE @OrderBy WHEN 'ALLOWCOMMENTS' THEN p.[AllowComments] END ASC,
+  CASE @OrderBy WHEN 'ALLOWCOMMENTS ASC' THEN p.[AllowComments] END ASC,
+  CASE @OrderBy WHEN 'BLOGID DESC' THEN p.[BlogID] END DESC,
+  CASE @OrderBy WHEN 'BLOGID' THEN p.[BlogID] END ASC,
+  CASE @OrderBy WHEN 'BLOGID ASC' THEN p.[BlogID] END ASC,
+  CASE @OrderBy WHEN 'CONTENTITEMID DESC' THEN p.[ContentItemId] END DESC,
+  CASE @OrderBy WHEN 'CONTENTITEMID' THEN p.[ContentItemId] END ASC,
+  CASE @OrderBy WHEN 'CONTENTITEMID ASC' THEN p.[ContentItemId] END ASC,
+  CASE @OrderBy WHEN 'COPYRIGHT DESC' THEN p.[Copyright] END DESC,
+  CASE @OrderBy WHEN 'COPYRIGHT' THEN p.[Copyright] END ASC,
+  CASE @OrderBy WHEN 'COPYRIGHT ASC' THEN p.[Copyright] END ASC,
+  CASE @OrderBy WHEN 'CREATEDBYUSERID DESC' THEN p.[CreatedByUserId] END DESC,
+  CASE @OrderBy WHEN 'CREATEDBYUSERID' THEN p.[CreatedByUserId] END ASC,
+  CASE @OrderBy WHEN 'CREATEDBYUSERID ASC' THEN p.[CreatedByUserId] END ASC,
+  CASE @OrderBy WHEN 'CREATEDONDATE DESC' THEN p.[CreatedOnDate] END DESC,
+  CASE @OrderBy WHEN 'CREATEDONDATE' THEN p.[CreatedOnDate] END ASC,
+  CASE @OrderBy WHEN 'CREATEDONDATE ASC' THEN p.[CreatedOnDate] END ASC,
+  CASE @OrderBy WHEN 'DISPLAYCOPYRIGHT DESC' THEN p.[DisplayCopyright] END DESC,
+  CASE @OrderBy WHEN 'DISPLAYCOPYRIGHT' THEN p.[DisplayCopyright] END ASC,
+  CASE @OrderBy WHEN 'DISPLAYCOPYRIGHT ASC' THEN p.[DisplayCopyright] END ASC,
+  CASE @OrderBy WHEN 'IMAGE DESC' THEN p.[Image] END DESC,
+  CASE @OrderBy WHEN 'IMAGE' THEN p.[Image] END ASC,
+  CASE @OrderBy WHEN 'IMAGE ASC' THEN p.[Image] END ASC,
+  CASE @OrderBy WHEN 'LASTMODIFIEDBYUSERID DESC' THEN p.[LastModifiedByUserID] END DESC,
+  CASE @OrderBy WHEN 'LASTMODIFIEDBYUSERID' THEN p.[LastModifiedByUserID] END ASC,
+  CASE @OrderBy WHEN 'LASTMODIFIEDBYUSERID ASC' THEN p.[LastModifiedByUserID] END ASC,
+  CASE @OrderBy WHEN 'LASTMODIFIEDONDATE DESC' THEN p.[LastModifiedOnDate] END DESC,
+  CASE @OrderBy WHEN 'LASTMODIFIEDONDATE' THEN p.[LastModifiedOnDate] END ASC,
+  CASE @OrderBy WHEN 'LASTMODIFIEDONDATE ASC' THEN p.[LastModifiedOnDate] END ASC,
+  CASE @OrderBy WHEN 'PUBLISHED DESC' THEN p.[Published] END DESC,
+  CASE @OrderBy WHEN 'PUBLISHED' THEN p.[Published] END ASC,
+  CASE @OrderBy WHEN 'PUBLISHED ASC' THEN p.[Published] END ASC,
+  CASE @OrderBy WHEN 'PUBLISHEDONDATE DESC' THEN p.[PublishedOnDate] END DESC,
+  CASE @OrderBy WHEN 'PUBLISHEDONDATE' THEN p.[PublishedOnDate] END ASC,
+  CASE @OrderBy WHEN 'PUBLISHEDONDATE ASC' THEN p.[PublishedOnDate] END ASC,
+  CASE @OrderBy WHEN 'TITLE DESC' THEN p.[Title] END DESC,
+  CASE @OrderBy WHEN 'TITLE' THEN p.[Title] END ASC,
+  CASE @OrderBy WHEN 'TITLE ASC' THEN p.[Title] END ASC,
+  CASE @OrderBy WHEN 'VIEWCOUNT DESC' THEN p.[ViewCount] END DESC,
+  CASE @OrderBy WHEN 'VIEWCOUNT' THEN p.[ViewCount] END ASC,
+  CASE @OrderBy WHEN 'VIEWCOUNT ASC' THEN p.[ViewCount] END ASC
+) AS RowNum
+FROM
+ {databaseOwner}{objectQualifier}Blog_PostList(@DisplayLocale) p
+ INNER JOIN {databaseOwner}{objectQualifier}ContentItems_Tags t ON t.ContentItemID=p.ContentItemId AND t.TermID=@TermID
+ INNER JOIN @Blogs b ON b.BlogID=p.BlogID
+WHERE
+ ((p.Title LIKE '%'+@SearchText+'%' AND @SearchTitle=1) OR (p.Content LIKE '%'+@SearchText+'%' AND @SearchContents=1))
+ AND (p.BlogID = @BlogID OR @BlogID=-1)
+ AND (p.PublishedOnDate < @EndDate)
+ AND (p.CreatedByUserId=@AuthorUserId OR @AuthorUserId=-1)
+ AND (CAST(p.Published AS INT)=@Published OR @Published=-1)
+ AND (p.Published=1 OR @UserIsAdmin=1 OR p.CreatedByUserId=@UserId OR b.HasPrivilege>0)
+ AND (@LimitToLocale IS NULL OR ISNULL(p.Locale, b.Locale)=@LimitToLocale)
+ ) AS Tbl
+WHERE RowNum > @PageLowerBound AND RowNum < @PageUpperBound
+ORDER BY RowNum;
+SELECT COUNT (*) AS TotalRecords
+FROM
+ {databaseOwner}{objectQualifier}Blog_PostList(@DisplayLocale) p
+ INNER JOIN {databaseOwner}{objectQualifier}ContentItems_Tags t ON t.ContentItemID=p.ContentItemId AND t.TermID=@TermID
+ INNER JOIN @Blogs b ON b.BlogID=p.BlogID
+WHERE
+ ((p.Title LIKE '%'+@SearchText+'%' AND @SearchTitle=1) OR (p.Content LIKE '%'+@SearchText+'%' AND @SearchContents=1))
+ AND (p.BlogID = @BlogID OR @BlogID=-1)
+ AND (p.PublishedOnDate < @EndDate)
+ AND (p.CreatedByUserId=@AuthorUserId OR @AuthorUserId=-1)
+ AND (CAST(p.Published AS INT)=@Published OR @Published=-1)
+ AND (p.Published=1 OR @UserIsAdmin=1 OR p.CreatedByUserId=@UserId OR b.HasPrivilege>0)
+ AND (@LimitToLocale IS NULL OR ISNULL(p.Locale, b.Locale)=@LimitToLocale)
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_SetBlogLocalization') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_SetBlogLocalization
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_SetBlogLocalization
+ @BlogID INT,
+ @Locale NVARCHAR(10),
+ @Title NVARCHAR(255),
+ @Description NVARCHAR(2000)
+AS
+IF @Title='' AND (@Description IS NULL OR @Description = '')
+ DELETE FROM {databaseOwner}{objectQualifier}Blog_BlogLocalization
+ WHERE BlogID = @BlogID AND [Locale] = @Locale
+ELSE BEGIN
+ IF EXISTS (SELECT BlogID FROM {databaseOwner}{objectQualifier}Blog_BlogLocalization WHERE BlogID = @BlogID AND [Locale] = @Locale)
+  UPDATE {databaseOwner}{objectQualifier}Blog_BlogLocalization
+   SET [Title] = @Title, [Description] = @Description
+   WHERE BlogID = @BlogID AND [Locale] = @Locale
+ ELSE
+  INSERT INTO {databaseOwner}{objectQualifier}Blog_BlogLocalization
+   (BlogID, [Locale], [Title], [Description])
+   VALUES (@BlogID, @Locale, @Title, @Description)
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_SetPostLocalization') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_SetPostLocalization
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_SetPostLocalization
+ @PostID INT,
+ @Locale NVARCHAR(10),
+ @Title NVARCHAR(255),
+ @Summary NVARCHAR(MAX),
+ @Content NVARCHAR(MAX),
+ @UpdatedByUser INT
+AS
+DECLARE @LocalizedContentItemId INT
+SET @LocalizedContentItemId = NULL
+IF @Content=''
+ BEGIN
+  IF EXISTS (SELECT ContentItemId FROM {databaseOwner}{objectQualifier}Blog_PostLocalization WHERE ContentItemId = @PostID AND [Locale] = @Locale AND NOT LocalizedContentItemId IS NULL)
+   DELETE FROM {databaseOwner}{objectQualifier}ContentItems
+   WHERE ContentItemID IN (SELECT LocalizedContentItemId FROM {databaseOwner}{objectQualifier}Blog_PostLocalization WHERE ContentItemId = @PostID AND [Locale] = @Locale AND NOT LocalizedContentItemId IS NULL)
+ END
+ELSE
+ BEGIN 
+  DECLARE @ContentTypeID INT
+  SET @ContentTypeID = (SELECT TOP 1 ContentTypeID FROM {databaseOwner}{objectQualifier}ContentItems WHERE ContentItemID=@PostID)
+  DECLARE @ModuleId INT
+  SET @ModuleId = (SELECT TOP 1 ModuleId FROM {databaseOwner}{objectQualifier}ContentItems WHERE ContentItemID=@PostID)
+  IF EXISTS (SELECT ContentItemId FROM {databaseOwner}{objectQualifier}Blog_PostLocalization WHERE ContentItemId = @PostID AND [Locale] = @Locale AND NOT LocalizedContentItemId IS NULL)
+   BEGIN
+    SET @LocalizedContentItemId = (SELECT TOP 1 LocalizedContentItemId FROM {databaseOwner}{objectQualifier}Blog_PostLocalization WHERE ContentItemId = @PostID AND [Locale] = @Locale AND NOT LocalizedContentItemId IS NULL)
+    EXEC {databaseOwner}{objectQualifier}UpdateContentItem @LocalizedContentItemId, @Content, @ContentTypeID, -1, @ModuleId, NULL, 0, @UpdatedByUser
+   END
+  ELSE
+   BEGIN
+    DECLARE @Tmp TABLE (ContentItemID INT)
+    INSERT INTO @Tmp
+    EXEC {databaseOwner}{objectQualifier}AddContentItem @Content, @ContentTypeID, -1, @ModuleId, NULL, 0, @UpdatedByUser;
+    SET @LocalizedContentItemId = (SELECT TOP 1 ContentItemID FROM @Tmp)
+   END
+ END
+IF @Title='' AND (@Summary IS NULL OR @Summary = '') AND (@Content IS NULL OR @Content = '')
+ DELETE FROM {databaseOwner}{objectQualifier}Blog_PostLocalization
+ WHERE ContentItemId = @PostID AND [Locale] = @Locale
+ELSE
+BEGIN
+ IF EXISTS (SELECT ContentItemId FROM {databaseOwner}{objectQualifier}Blog_PostLocalization WHERE ContentItemId = @PostID AND [Locale] = @Locale)
+  UPDATE {databaseOwner}{objectQualifier}Blog_PostLocalization
+   SET [Title] = @Title, [Summary] = @Summary, [LocalizedContentItemId]=@LocalizedContentItemId
+   WHERE ContentItemId = @PostID AND [Locale] = @Locale
+ ELSE
+  INSERT INTO {databaseOwner}{objectQualifier}Blog_PostLocalization
+   (ContentItemId, [Locale], [Title], [Summary], [LocalizedContentItemId])
+   VALUES (@PostID, @Locale, @Title, @Summary, @LocalizedContentItemId)
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_SetTerm') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_SetTerm
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_SetTerm
+ @TermID INT,
+ @VocabularyID INT,
+ @ParentTermID INT,
+ @ViewOrder INT,
+ @Name NVARCHAR(250),
+ @Description NVARCHAR(2500),
+ @CreatedByUserID INT
+AS
+IF @ParentTermID<1
+SET @ParentTermID = NULL;
+IF EXISTS (SELECT TermID FROM {databaseOwner}{objectQualifier}Taxonomy_Terms WHERE TermID = @TermID)
+BEGIN
+ IF ISNULL(@Description,'')=''
+  SET @Description = (SELECT TOP 1 [Description] FROM {databaseOwner}{objectQualifier}Taxonomy_Terms WHERE TermID = @TermID);
+ EXEC {databaseOwner}{objectQualifier}UpdateHeirarchicalTerm @TermID, @VocabularyID, @ParentTermID, @Name, @Description, 0, @CreatedByUserID;
+END
+ELSE
+BEGIN
+ DECLARE @ResultSet TABLE (NewTermID INT);
+ INSERT INTO @ResultSet (NewTermID)
+  EXEC {databaseOwner}{objectQualifier}AddHeirarchicalTerm @VocabularyID, @ParentTermID, @Name, @Description, 0, @CreatedByUserID;
+ SET @TermID = (SELECT TOP 1 NewTermID FROM @ResultSet);
+END
+IF EXISTS (SELECT TermID FROM {databaseOwner}{objectQualifier}Blog_Terms WHERE TermID = @TermID)
+BEGIN
+ UPDATE {databaseOwner}{objectQualifier}Blog_Terms
+ SET ViewOrder=@ViewOrder
+ WHERE TermID=@TermID;
+END
+ELSE
+BEGIN
+ INSERT INTO {databaseOwner}{objectQualifier}Blog_Terms
+  (TermID, ViewOrder)
+ VALUES
+  (@TermID, @ViewOrder);
+END
+SELECT @TermID
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_SetTermLocalization') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_SetTermLocalization
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_SetTermLocalization
+ @TermID INT,
+ @Locale NVARCHAR(10),
+ @Name NVARCHAR(250),
+ @Description NVARCHAR(2500)
+AS
+IF @Name='' AND (@Description IS NULL OR @Description = '')
+ DELETE FROM {databaseOwner}{objectQualifier}Blog_TermLocalization
+ WHERE TermID = @TermID AND [Locale] = @Locale
+ELSE BEGIN
+ IF EXISTS (SELECT TermID FROM {databaseOwner}{objectQualifier}Blog_TermLocalization WHERE TermID = @TermID AND [Locale] = @Locale)
+  UPDATE {databaseOwner}{objectQualifier}Blog_TermLocalization
+   SET [Name] = @Name, [Description] = @Description
+   WHERE TermID = @TermID AND [Locale] = @Locale
+ ELSE
+  INSERT INTO {databaseOwner}{objectQualifier}Blog_TermLocalization
+   (TermID, [Locale], [Name], [Description])
+   VALUES (@TermID, @Locale, @Name, @Description)
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_UpdateBlog') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdateBlog
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdateBlog
+ @AutoApprovePingBack BIT, 
+ @ModuleID INT, 
+ @AutoApproveTrackBack BIT, 
+ @BlogID INT, 
+ @Copyright NVARCHAR (2000), 
+ @Description NVARCHAR (2000), 
+ @EnablePingBackReceive BIT, 
+ @EnablePingBackSend BIT, 
+ @EnableTrackBackReceive BIT, 
+ @EnableTrackBackSend BIT, 
+ @FullLocalization BIT, 
+ @Image NVARCHAR (255), 
+ @IncludeAuthorInFeed BIT, 
+ @IncludeImagesInFeed BIT, 
+ @Locale NVARCHAR (50), 
+ @MustApproveGhostPosts BIT, 
+ @OwnerUserId INT, 
+ @PublishAsOwner BIT, 
+ @Published BIT, 
+ @Syndicated BIT, 
+ @SyndicationEmail NVARCHAR (255), 
+ @Title NVARCHAR (255), 
+ @UpdatedByUser INT
+AS
+UPDATE {databaseOwner}{objectQualifier}Blog_Blogs SET
+ [AutoApprovePingBack] = @AutoApprovePingBack,
+ [ModuleID] = @ModuleID,
+ [AutoApproveTrackBack] = @AutoApproveTrackBack,
+ [Copyright] = @Copyright,
+ [Description] = @Description,
+ [EnablePingBackReceive] = @EnablePingBackReceive,
+ [EnablePingBackSend] = @EnablePingBackSend,
+ [EnableTrackBackReceive] = @EnableTrackBackReceive,
+ [EnableTrackBackSend] = @EnableTrackBackSend,
+ [FullLocalization] = @FullLocalization,
+ [Image] = @Image,
+ [IncludeAuthorInFeed] = @IncludeAuthorInFeed,
+ [IncludeImagesInFeed] = @IncludeImagesInFeed,
+ [LastModifiedByUserID] = @UpdatedByUser,
+ [LastModifiedOnDate] = GETDATE(),
+ [Locale] = @Locale,
+ [MustApproveGhostPosts] = @MustApproveGhostPosts,
+ [OwnerUserId] = @OwnerUserId,
+ [PublishAsOwner] = @PublishAsOwner,
+ [Published] = @Published,
+ [Syndicated] = @Syndicated,
+ [SyndicationEmail] = @SyndicationEmail,
+ [Title] = @Title
+WHERE
+ [BlogID] = @BlogID
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_UpdateComment') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdateComment
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdateComment
+ @Approved BIT, 
+ @Author NVARCHAR (50), 
+ @Comment NVARCHAR (MAX), 
+ @CommentID INT, 
+ @ContentItemId INT, 
+ @Email NVARCHAR (255), 
+ @ParentId INT, 
+ @Website NVARCHAR (255), 
+ @UpdatedByUser INT
+AS
+UPDATE {databaseOwner}{objectQualifier}Blog_Comments SET
+ [Approved] = @Approved,
+ [Author] = @Author,
+ [Comment] = @Comment,
+ [ContentItemId] = @ContentItemId,
+ [Email] = @Email,
+ [LastModifiedByUserID] = @UpdatedByUser,
+ [LastModifiedOnDate] = GETDATE(),
+ [ParentId] = @ParentId,
+ [Website] = @Website
+WHERE
+ [CommentID] = @CommentID
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_UpdatePost') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdatePost
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdatePost
+ @AllowComments BIT, 
+ @BlogID INT, 
+ @Content NVARCHAR(MAX),
+ @ContentItemId INT, 
+ @Copyright NVARCHAR (255), 
+ @DisplayCopyright BIT, 
+ @Image NVARCHAR (255), 
+ @Locale VARCHAR (10), 
+ @Published BIT, 
+ @PublishedOnDate DATETIME, 
+ @Summary NVARCHAR (MAX), 
+ @TermIds NVARCHAR(1000),
+ @Title NVARCHAR (255),
+ @ViewCount INT,
+ @UpdatedByUser INT
+AS
+DECLARE @ContentTypeID INT
+SET @ContentTypeID = (SELECT TOP 1 ContentTypeID FROM {databaseOwner}{objectQualifier}ContentTypes WHERE ContentType='DNN_Blog_Post')
+DECLARE @ModuleId INT
+SET @ModuleId = (SELECT TOP 1 ModuleId FROM {databaseOwner}{objectQualifier}Blog_Blogs WHERE BlogID=@BlogID)
+EXEC {databaseOwner}{objectQualifier}UpdateContentItem @ContentItemId, @Content, @ContentTypeID, -1, @ModuleId, NULL, 0, @UpdatedByUser
+UPDATE {databaseOwner}{objectQualifier}Blog_Posts SET
+ [AllowComments] = @AllowComments,
+ [BlogID] = @BlogID,
+ [Copyright] = @Copyright,
+ [DisplayCopyright] = @DisplayCopyright,
+ [Image] = @Image,
+ [Locale] = @Locale,
+ [Published] = @Published,
+ [PublishedOnDate] = @PublishedOnDate,
+ [Summary] = @Summary,
+ [Title] = @Title,
+ [ViewCount]=@ViewCount
+WHERE
+ [ContentItemId] = @ContentItemId;
+ 
+IF @TermIds<>''
+BEGIN
+ DECLARE @ids TABLE (s NVARCHAR(512))
+ INSERT INTO @ids (s) SELECT s FROM {databaseOwner}{objectQualifier}Blog_Split(@TermIds,';');
+ DELETE FROM {databaseOwner}{objectQualifier}ContentItems_Tags
+ WHERE ContentItemID=@ContentItemId;
+ INSERT INTO {databaseOwner}{objectQualifier}ContentItems_Tags ([ContentItemID], [TermID])
+ SELECT @ContentItemID, CAST(i.s AS INT)
+ FROM @ids i;
+END
 GO
 
