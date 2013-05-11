@@ -10,7 +10,7 @@
   <fieldset>
    <div class="dnnFormItem">
     <dnn:Label ID="lblTitle" runat="server" controlname="txtTitle" suffix=":" />
-    <blog:ShortTextEdit id="txtTitle" runat="server" Required="True" Width="520" TextBoxWidth="450" CssClass="blog_rte" />
+    <blog:ShortTextEdit id="txtTitle" runat="server" Required="True" RequiredResourceKey="Title.Required" Width="520" TextBoxWidth="450" CssClass="blog_rte" />
    </div>
    <div class="dnnFormItem">
     <dnn:Label ID="lblDescription" runat="server" controlname="txtDescription" suffix=":" />

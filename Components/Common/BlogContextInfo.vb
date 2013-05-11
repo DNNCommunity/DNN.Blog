@@ -60,7 +60,7 @@ Namespace Common
      ContentItemId = -1
     End If
    End If
-   If Blog IsNot Nothing AndAlso Not Blog.Published AndAlso Not Security.IsOwner AndAlso Not isStylePostRequest Then
+   If Blog IsNot Nothing AndAlso Not Blog.Published AndAlso Not Security.IsOwner AndAlso Not Security.UserIsAdmin AndAlso Not isStylePostRequest Then
     Blog = Nothing
     BlogId = -1
    End If

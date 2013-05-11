@@ -1,10 +1,8 @@
-<input type="text" id="blogCalendar" class="gldp-el" gldp-id="mydate" />
-<div gldp-el="mydate" style="width:350px; height:300px;margin-top:-40px;">
-</div>
+<input type="text" id="blogCalendar[module:moduleid]" class="gldp-el" style="width:300px;" />
 <script type="text/javascript">
  (function ($, Sys) {
   $(document).ready(function () {
-   $('#blogCalendar').glDatePicker(
+   $('#blogCalendar[module:moduleid]').glDatePicker(
 {
  onClick: (function (el, cell, date, data) {
   var url = '[urls:posttermauthor|true]end=';

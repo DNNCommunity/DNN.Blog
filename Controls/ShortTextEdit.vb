@@ -116,7 +116,7 @@ Namespace Controls
     Dim rv As New RequiredFieldValidator
     With rv
      .Display = ValidatorDisplay.Dynamic
-     .ErrorMessage = "<br />" & DotNetNuke.Services.Localization.Localization.GetString("Required.Error", SharedResourceFileName)
+     .ErrorMessage = String.Format("<div class=""dnnFormMessage dnnFormError"">{0}</div>", DotNetNuke.Services.Localization.Localization.GetString(RequiredResourceKey, Me))
      .CssClass = "NormalRed"
      .ControlToValidate = txtMain.ID
     End With
@@ -133,7 +133,7 @@ Namespace Controls
     Dim rv As New RegularExpressionValidator
     With rv
      .Display = ValidatorDisplay.Dynamic
-     .ErrorMessage = "<br />" & DotNetNuke.Services.Localization.Localization.GetString("Expression.Error", SharedResourceFileName)
+     .ErrorMessage = String.Format("<div class=""dnnFormMessage dnnFormError"">{0}</div>", DotNetNuke.Services.Localization.Localization.GetString(RegexResourceKey, Me))
      .CssClass = "NormalRed"
      .ControlToValidate = txtMain.ID
      .ValidationExpression = Regex
@@ -192,7 +192,9 @@ Namespace Controls
 
 #Region " Properties "
   Public Property Required As Boolean = False
+  Public Property RequiredResourceKey As String = "Required.Error"
   Public Property Regex As String = ""
+  Public Property RegexResourceKey As String = "Expression.Error"
 #End Region
 
  End Class

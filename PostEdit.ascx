@@ -7,7 +7,7 @@
 	<h2 id="dnnSitePanel-BlogContent" class="dnnFormSectionHead"><a href="" class="dnnFormSectionExpanded"><%= LocalizeString("Title")%></a></h2>
 	<fieldset>
 		<dnn:Label ID="lblTitle" runat="server" controlname="treeCategories" suffix=":" CssClass="dnnLeft" /><br />
-  <blog:ShortTextEdit id="txtTitle" runat="server" Required="True" CssClass="blog_rte_full" CssPrefix="blog_rte_" />
+  <blog:ShortTextEdit id="txtTitle" runat="server" Required="True" CssClass="blog_rte_full" RequiredResourceKey="Title.Required" CssPrefix="blog_rte_" />
 
 		<dnn:Label ID="lblSummary" runat="server" controlname="txtDescription" suffix=":" CssClass="dnnLeft" />
   <div style="display:block;float:clear">&nbsp;</div>

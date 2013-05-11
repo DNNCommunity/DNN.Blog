@@ -1,22 +1,4 @@
-﻿div.blogCalList_item
+﻿div.gldp-default
 {
- padding: 0x;
- margin:0x;
-}
-span.blogCalList_stat, span.blogCalList_stat span
-{
- color: #999;
-}
-span.blogCalList_stat span
-{
- margin-right:4px;
-}
-span.blogCalList_stat
-{
- width:50px;
- float:right;
-}
-.blogCalList_list
-{
- margin-bottom: 30px;
+ margin-top:-40px;
 }

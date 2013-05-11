@@ -160,7 +160,6 @@
     <Content Include="Templates\blogCalendar\CalendarItem.html" />
     <Content Include="Templates\blogCalendar\template.css" />
     <Content Include="Templates\blogCalendar\Template.html" />
-    <Content Include="Templates\blogCalendar\template.js" />
     <Content Include="Templates\blogList\BlogImage.html" />
     <Content Include="Templates\blogList\Blog.html" />
     <Content Include="Templates\blogList\template.css" />
@@ -190,10 +189,10 @@
     <Content Include="Templates\_default\AuthorBanner.html" />
     <Content Include="Templates\_default\BlogBanner.html" />
     <Content Include="Templates\_default\CommentReplyBar.html" />
+    <Content Include="Templates\_default\css\shCore.css" />
+    <Content Include="Templates\_default\css\shCoreDefault.css" />
     <Content Include="Templates\_default\SearchBanner.html" />
     <Content Include="Templates\_default\css\jquery.fancybox-1.3.4.css" />
-    <Content Include="Templates\_default\js\jquery.fancybox-1.3.4.pack.js" />
-    <Content Include="Templates\_default\js\jquery.sharrre.min.js" />
     <Content Include="Templates\_default\Page.html" />
     <Content Include="Templates\_default\PostTag.html" />
     <Content Include="Templates\_default\template.js" />
@@ -444,8 +443,6 @@
     <Content Include="Blog.ascx" />
     <Content Include="module.css" />
     <Content Include="Controls\ViewSettings.ascx" />
-    <Content Include="Templates\tagCloud\css\jqcloud.css" />
-    <Content Include="Templates\tagCloud\js\jqcloud-1.0.3.min.js" />
     <Content Include="Templates\tagCloud\Tag.html" />
     <Content Include="Templates\tagCloud\template.css" />
     <Content Include="Templates\tagCloud\Template.html" />
@@ -485,8 +482,10 @@
     <Folder Include="Templates\categoryList\jsblocks\" />
     <Folder Include="Templates\categoryList\js\" />
     <Folder Include="Templates\categoryList\resx\" />
+    <Folder Include="Templates\tagCloud\css\" />
     <Folder Include="Templates\tagCloud\images\" />
     <Folder Include="Templates\tagCloud\jsblocks\" />
+    <Folder Include="Templates\tagCloud\js\" />
     <Folder Include="Templates\tagCloud\resx\" />
     <Folder Include="Templates\tagList\css\" />
     <Folder Include="Templates\tagList\images\" />
@@ -499,6 +498,7 @@
     <Folder Include="Templates\timelineJS\js\" />
     <Folder Include="Templates\_default\images\" />
     <Folder Include="Templates\_default\jsblocks\" />
+    <Folder Include="Templates\_default\js\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_LocalResources\Blog.ascx.resx" />
