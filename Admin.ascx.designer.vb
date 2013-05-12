@@ -338,6 +338,15 @@ Partial Public Class Admin
  Protected WithEvents cmdEditCategoriesML As Global.System.Web.UI.WebControls.LinkButton
 
  '''<summary>
+ '''cmdCreateVocabulary control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents cmdCreateVocabulary As Global.System.Web.UI.WebControls.LinkButton
+
+ '''<summary>
  '''treeState control.
  '''</summary>
  '''<remarks>

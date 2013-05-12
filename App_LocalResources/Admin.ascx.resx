@@ -274,7 +274,7 @@
     <value>Edit Categories Localization</value>
   </data>
   <data name="LeavePage.Confirm" xml:space="preserve">
-    <value>Do you wish to leave this page without saving changes?</value>
+    <value>Do you wish to leave this page and save changes?</value>
   </data>
   <data name="Add.Text" xml:space="preserve">
     <value>Add</value>
@@ -287,5 +287,17 @@
   </data>
   <data name="lblModifyPageDetails.Text" xml:space="preserve">
     <value>Modify Page Details</value>
+  </data>
+  <data name="AddCategories.Help" xml:space="preserve">
+    <value>Add the following categories (one per line):</value>
+  </data>
+  <data name="AddCategories.Title" xml:space="preserve">
+    <value>Add Categories</value>
+  </data>
+  <data name="cmdCreateVocabulary.Text" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="NoVocabulary.Text" xml:space="preserve">
+    <value>Currently there is no vocabulary defined for this module. Please select one on the previous tab or create one first.</value>
   </data>
 </root>

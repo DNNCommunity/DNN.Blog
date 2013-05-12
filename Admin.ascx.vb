@@ -31,13 +31,25 @@ Public Class Admin
  End Sub
 
  Private Sub cmdEditTagsML_Click(sender As Object, e As System.EventArgs) Handles cmdEditTagsML.Click
+  SaveChanges()
   Response.Redirect(EditUrl("TermsEditML"), False)
  End Sub
 
  Private Sub cmdEditCategoriesML_Click(sender As Object, e As System.EventArgs) Handles cmdEditCategoriesML.Click
+  SaveChanges()
   If Settings.VocabularyId > -1 Then
    Response.Redirect(EditUrl("VocabularyId", Settings.VocabularyId.ToString, "TermsEditML"), False)
   End If
+ End Sub
+
+ Private Sub cmdCreateVocabulary_Click(sender As Object, e As System.EventArgs) Handles cmdCreateVocabulary.Click
+  Settings.VocabularyId = Integration.Integration.CreateNewVocabulary(PortalId).VocabularyId
+  Me.DataBind()
+ End Sub
+
+ Private Sub ddVocabularyId_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles ddVocabularyId.SelectedIndexChanged
+  Settings.VocabularyId = ddVocabularyId.SelectedValue.ToInt
+  Me.DataBind()
  End Sub
 
  Private Sub cmdCancel_Click(sender As Object, e As System.EventArgs) Handles cmdCancel.Click
@@ -45,6 +57,11 @@ Public Class Admin
  End Sub
 
  Private Sub cmdUpdateSettings_Click(sender As Object, e As System.EventArgs) Handles cmdUpdate.Click
+  SaveChanges()
+  Response.Redirect(DotNetNuke.Common.NavigateURL(TabId), False)
+ End Sub
+
+ Private Sub SaveChanges()
   Settings.AllowAttachments = chkAllowAttachments.Checked
   Settings.SummaryModel = CType(ddSummaryModel.SelectedValue.ToInt, SummaryType)
   Settings.AllowMultipleCategories = chkAllowMultipleCategories.Checked
@@ -80,7 +97,6 @@ Public Class Admin
    Next
    Categories = Entities.Terms.TermsController.GetTermsByVocabulary(ModuleId, Settings.VocabularyId, BlogContext.Locale, True) ' clear the cache
   End If
-  Response.Redirect(DotNetNuke.Common.NavigateURL(TabId), False)
  End Sub
 
  Private Sub AddOrUpdateCategory(parentId As Integer, viewOrder As Integer, category As Common.DynatreeItem, ByRef returnedIds As List(Of Integer))
@@ -122,6 +138,7 @@ Public Class Admin
   txtRssTtl.Text = Settings.RssTtl.ToString
 
   txtWLWRecentPostsMax.Text = Settings.WLWRecentPostsMax.ToString
+  ddVocabularyId.Items.Clear()
   ddVocabularyId.DataSource = Common.Globals.GetPortalVocabularies(PortalId)
   ddVocabularyId.DataBind()
   ddVocabularyId.Items.Insert(0, New ListItem(LocalizeString("NoneSpecified"), "-1"))

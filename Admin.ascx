@@ -32,7 +32,7 @@
 	</div>
 	<div class="dnnFormItem">
 		<dnn:label id="lblVocabularyId" runat="server" controlname="ddVocabularyId" suffix=":" />
-		<asp:DropDownList ID="ddVocabularyId" runat="server" DataValueField="VocabularyID" DataTextField="Name" />
+		<asp:DropDownList ID="ddVocabularyId" runat="server" DataValueField="VocabularyID" DataTextField="Name" AutoPostBack="true" />
 	</div>
 	<div class="dnnFormItem">
 		<dnn:label id="lblWLWRecentPostsMax" runat="server" controlname="txtWLWRecentPostsMax" suffix=":" />
@@ -94,14 +94,16 @@
 </fieldset>
  </div>
  <div id="Categories" class="dnnClear">
-  <div class="dnnLeft">
-   <textarea id="txtNewCategories" rows="10" cols="60"></textarea><br />
+  <% If Settings.VocabularyId > -1 %>
+   <div id="categoryTree">
+   </div><br />
    <button class="dnnSecondaryAction" id="btnAddCategories"><%= LocalizeString("Add")%></button>
    <button class="dnnSecondaryAction" id="btnDeleteCategory"><%= LocalizeString("DeleteSelected")%></button>
    <asp:LinkButton runat="server" ID="cmdEditCategoriesML" resourcekey="cmdEditCategoriesML" CssClass="dnnSecondaryAction" />
-  </div>
-  <div id="categoryTree" class="dnnLeft">
-  </div>
+  <% Else%>
+   <div class="dnnFormMessage dnnFormWarning"><%= LocalizeString("NoVocabulary")%></div>
+   <asp:LinkButton runat="server" ID="cmdCreateVocabulary" resourcekey="cmdCreateVocabulary" CssClass="dnnPrimaryAction" />
+  <% End If %>
   <asp:HiddenField runat="server" ID="treeState" />
  </div>
 </div>
@@ -117,12 +119,35 @@
 (function ($, Sys) {
  $('#tabs').dnnTabs();
  var selectedBlog;
+ var $dialogAddCategories;
  $('#btnDeleteCategory').click(function () {
    $("#categoryTree").dynatree("getActiveNode").remove();
    $('#<%= treeState.ClientID %>').val(JSON.stringify($("#categoryTree").dynatree("getRoot").toDict(true).children));
   return false;
  });
- $('#btnAddCategories').click(function () {
+ <% If Settings.VocabularyId > -1 %>
+  $dialogAddCategories = $('<div class="dnnDialog"></div>')
+		.html('<div class="dnnFormMessage dnnFormWarning"><%=LocalizeJSString("AddCategories.Help") %></div><div><textarea rows="5" id="txtNewCategories" style="width:95%"></textarea></div>')
+		.dialog({
+		 autoOpen: false,
+		 resizable: false,
+		 dialogClass: 'dnnFormPopup dnnClear',
+		 title: '<%=LocalizeJSString("AddCategories.Title") %>',
+		 width: 500,
+		 open: function (e) {
+		  $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeJSString("Add") %>")').addClass('dnnPrimaryAction');
+		  $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeJSString("Cancel") %>")').addClass('dnnSecondaryAction');
+		 },
+		 buttons: [
+    {
+     text: '<%=LocalizeJSString("Cancel") %>',
+     click: function () {
+      $(this).dialog("close");
+     }
+    },
+    {
+     text: '<%=LocalizeJSString("Add") %>',
+     click: function () {
   var rootNode = $("#categoryTree").dynatree("getRoot");
   var lines = $('#txtNewCategories').val().split('\n');
   $.each(lines, function (n, elem) {
@@ -137,7 +162,14 @@
   });
   $('#txtNewCategories').val('');
   $('#<%= treeState.ClientID %>').val(JSON.stringify($("#categoryTree").dynatree("getRoot").toDict(true).children));
-  return false;
+      $(this).dialog("close");
+    }}
+    ]
+		});
+  <% End If %>
+  $('#btnAddCategories').click(function () {
+   $dialogAddCategories.dialog('open');
+   return false;
  });
  function editNode(node) {
   var prevTitle = node.data.title,
