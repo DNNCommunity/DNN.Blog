@@ -19,9 +19,15 @@ Namespace Common
   Public Sub New(context As HttpContext, blogModule As BlogModuleBase)
 
    BlogModuleId = blogModule.ModuleId
+
+   ' Initialize values from View Settings
    If blogModule.ViewSettings.BlogModuleId <> -1 Then
     BlogModuleId = blogModule.ViewSettings.BlogModuleId
    End If
+   BlogId = blogModule.ViewSettings.BlogId
+   TermId = blogModule.ViewSettings.TermId
+   AuthorId = blogModule.ViewSettings.AuthorId
+
    Locale = Threading.Thread.CurrentThread.CurrentCulture.Name
    If context.Request.UrlReferrer IsNot Nothing Then Referrer = context.Request.UrlReferrer.PathAndQuery
    RequestParams = context.Request.Params

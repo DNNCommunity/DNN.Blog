@@ -305,29 +305,31 @@ Public Class Blog
      Replacers.Add(New BlogTokenReplace(Me, bci))
     Next
 
-   Case "authors"
+   Case "authors", "allauthors"
 
+    Dim blogToShow As Integer = BlogContext.BlogId
+    If DataSource.ToLower = "allauthors" Then blogToShow = -1
     Dim sort As String = ""
     Parameters.ReadValue("sort", sort)
     Select Case sort.ToLower
      Case "username"
-      For Each u As PostAuthor In PostsController.GetAuthors(Settings.ModuleId, BlogContext.BlogId).OrderBy(Function(t) t.Username)
+      For Each u As PostAuthor In PostsController.GetAuthors(Settings.ModuleId, blogToShow).OrderBy(Function(t) t.Username)
        Replacers.Add(New BlogTokenReplace(Me, New LazyLoadingUser(u)))
       Next
      Case "email"
-      For Each u As PostAuthor In PostsController.GetAuthors(Settings.ModuleId, BlogContext.BlogId).OrderBy(Function(t) t.Email)
+      For Each u As PostAuthor In PostsController.GetAuthors(Settings.ModuleId, blogToShow).OrderBy(Function(t) t.Email)
        Replacers.Add(New BlogTokenReplace(Me, New LazyLoadingUser(u)))
       Next
      Case "firstname"
-      For Each u As PostAuthor In PostsController.GetAuthors(Settings.ModuleId, BlogContext.BlogId).OrderBy(Function(t) t.FirstName)
+      For Each u As PostAuthor In PostsController.GetAuthors(Settings.ModuleId, blogToShow).OrderBy(Function(t) t.FirstName)
        Replacers.Add(New BlogTokenReplace(Me, New LazyLoadingUser(u)))
       Next
      Case "displayname"
-      For Each u As PostAuthor In PostsController.GetAuthors(Settings.ModuleId, BlogContext.BlogId).OrderBy(Function(t) t.DisplayName)
+      For Each u As PostAuthor In PostsController.GetAuthors(Settings.ModuleId, blogToShow).OrderBy(Function(t) t.DisplayName)
        Replacers.Add(New BlogTokenReplace(Me, New LazyLoadingUser(u)))
       Next
      Case Else ' last name
-      For Each u As PostAuthor In PostsController.GetAuthors(Settings.ModuleId, BlogContext.BlogId)
+      For Each u As PostAuthor In PostsController.GetAuthors(Settings.ModuleId, blogToShow)
        Replacers.Add(New BlogTokenReplace(Me, New LazyLoadingUser(u)))
       Next
     End Select

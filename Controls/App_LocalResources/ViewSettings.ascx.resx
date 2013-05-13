@@ -150,4 +150,25 @@
   <data name="lblShowAllLocales.Text" xml:space="preserve">
     <value>Show All Languages</value>
   </data>
+  <data name="All.Text" xml:space="preserve">
+    <value>&lt; All &gt;</value>
+  </data>
+  <data name="lblAuthorId.Help" xml:space="preserve">
+    <value>If you select an author from this dropdown only posts from this author will be shown</value>
+  </data>
+  <data name="lblAuthorId.Text" xml:space="preserve">
+    <value>Author To Show</value>
+  </data>
+  <data name="lblBlogId.Help" xml:space="preserve">
+    <value>If you select one blog from this dropdown you will limit what is shown to this blog</value>
+  </data>
+  <data name="lblBlogId.Text" xml:space="preserve">
+    <value>Blog To Show</value>
+  </data>
+  <data name="lblTermId.Help" xml:space="preserve">
+    <value>If you select a category from this dropdown only posts in that category will be shown</value>
+  </data>
+  <data name="lblTermId.Text" xml:space="preserve">
+    <value>Category To Show</value>
+  </data>
 </root>

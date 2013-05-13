@@ -1,14 +1,23 @@
+Imports System.Linq
+
 Imports DotNetNuke.Modules.Blog.Common.Globals
+Imports DotNetNuke.Modules.Blog.Entities.Blogs
+Imports DotNetNuke.Modules.Blog.Entities.Terms
+Imports DotNetNuke.Modules.Blog.Entities.Posts
 
 Namespace Controls
  Public Class ViewSettings
   Inherits DotNetNuke.Entities.Modules.ModuleSettingsBase
 
 #Region " Properties "
+  Private Property BlogModuleId As Integer = ModuleId
+
   Private _settings As Common.ModuleSettings
   Public Shadows Property Settings() As Common.ModuleSettings
    Get
-    If _settings Is Nothing Then _settings = Common.ModuleSettings.GetModuleSettings(ModuleId)
+    If _settings Is Nothing Then
+     _settings = Common.ModuleSettings.GetModuleSettings(BlogModuleId)
+    End If
     Return _settings
    End Get
    Set(ByVal value As Common.ModuleSettings)
@@ -29,8 +38,39 @@ Namespace Controls
 #End Region
 
 #Region " Page Events "
-  Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+  Private Sub Page_Init(sender As Object, e As System.EventArgs) Handles Me.Init
+   If ViewSettings.BlogModuleId > -1 Then
+    BlogModuleId = ViewSettings.BlogModuleId
+   Else
+    BlogModuleId = ModuleId
+   End If
+  End Sub
 
+  Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+  End Sub
+
+  Private Sub ddBlogModuleId_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles ddBlogModuleId.SelectedIndexChanged
+   BlogModuleId = CInt(ddBlogModuleId.SelectedValue)
+   LoadDropdowns()
+  End Sub
+#End Region
+
+#Region " Private Methods "
+  Private Sub LoadDropdowns()
+   ddBlogId.Items.Clear()
+   ddBlogId.DataSource = BlogsController.GetBlogsByModule(BlogModuleId, UserId, Threading.Thread.CurrentThread.CurrentCulture.Name).Values.Where(Function(b)
+                                                                                                                                                  Return b.Published = True
+                                                                                                                                                 End Function).OrderBy(Function(b) b.Title)
+   ddBlogId.DataBind()
+   ddBlogId.Items.Insert(0, New ListItem(LocalizeString("All"), "-1"))
+
+   ddTermId.DataSource = TermsController.GetTermsByVocabulary(BlogModuleId, Settings.VocabularyId, Threading.Thread.CurrentThread.CurrentCulture.Name).Values.OrderBy(Function(t) t.LocalizedName)
+   ddTermId.DataBind()
+   ddTermId.Items.Insert(0, New ListItem(LocalizeString("All"), "-1"))
+
+   ddAuthorId.DataSource = PostsController.GetAuthors(BlogModuleId, -1).OrderBy(Function(t) t.DisplayName)
+   ddAuthorId.DataBind()
+   ddAuthorId.Items.Insert(0, New ListItem(LocalizeString("All"), "-1"))
   End Sub
 #End Region
 
@@ -49,6 +89,7 @@ Namespace Controls
     For Each d As IO.DirectoryInfo In (New IO.DirectoryInfo(Settings.PortalTemplatesMapPath)).GetDirectories
      ddTemplate.Items.Add(New ListItem(d.Name & " [Local]", "[P]" & d.Name))
     Next
+
     ddBlogModuleId.Items.Clear()
     ddBlogModuleId.DataSource = (New DotNetNuke.Entities.Modules.ModuleController).GetModulesByDefinition(PortalId, "Blog")
     ddBlogModuleId.DataBind()
@@ -57,12 +98,28 @@ Namespace Controls
     Catch ex As Exception
     End Try
     ddBlogModuleId.Items.Insert(0, New ListItem(LocalizeString("NoParent"), "-1"))
+    Try
+     ddBlogModuleId.Items.FindByValue(ViewSettings.BlogModuleId.ToString).Selected = True
+    Catch ex As Exception
+    End Try
+
+    LoadDropdowns()
+
+    Try
+     ddBlogId.Items.FindByValue(ViewSettings.BlogId.ToString).Selected = True
+    Catch ex As Exception
+    End Try
+    Try
+     ddTermId.Items.FindByValue(ViewSettings.TermId.ToString).Selected = True
+    Catch ex As Exception
+    End Try
+    Try
+     ddAuthorId.Items.FindByValue(ViewSettings.AuthorId.ToString).Selected = True
+    Catch ex As Exception
+    End Try
 
    End If
-   Try
-    ddBlogModuleId.Items.FindByValue(ViewSettings.BlogModuleId.ToString).Selected = True
-   Catch ex As Exception
-   End Try
+
    chkShowManagementPanel.Checked = ViewSettings.ShowManagementPanel
    chkShowComments.Checked = ViewSettings.ShowComments
    chkShowAllLocales.Checked = ViewSettings.ShowAllLocales
@@ -79,6 +136,9 @@ Namespace Controls
    ViewSettings.ShowManagementPanel = chkShowManagementPanel.Checked
    ViewSettings.ShowComments = chkShowComments.Checked
    ViewSettings.ShowAllLocales = chkShowAllLocales.Checked
+   ViewSettings.BlogId = CInt(ddBlogId.SelectedValue)
+   ViewSettings.TermId = CInt(ddTermId.SelectedValue)
+   ViewSettings.AuthorId = CInt(ddAuthorId.SelectedValue)
    ViewSettings.Template = ddTemplate.SelectedValue
    ViewSettings.UpdateSettings()
 

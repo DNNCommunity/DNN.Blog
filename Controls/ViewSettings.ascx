@@ -5,7 +5,19 @@
 <fieldset>
 	<div class="dnnFormItem">
   <dnn:label id="lblBlogModuleId" runat="server" controlname="ddBlogModuleId" suffix=":" />
-  <asp:DropDownList runat="server" ID="ddBlogModuleId" DataTextField="ModuleTitle" DataValueField="ModuleId" />
+  <asp:DropDownList runat="server" ID="ddBlogModuleId" DataTextField="ModuleTitle" DataValueField="ModuleId" AutoPostBack="true" />
+	</div>			
+	<div class="dnnFormItem">
+  <dnn:label id="lblBlogId" runat="server" controlname="ddBlogId" suffix=":" />
+  <asp:DropDownList runat="server" ID="ddBlogId" DataTextField="LocalizedTitle" DataValueField="BlogId" />
+	</div>			
+	<div class="dnnFormItem">
+  <dnn:label id="lblTermId" runat="server" controlname="ddTermId" suffix=":" />
+  <asp:DropDownList runat="server" ID="ddTermId" DataTextField="LocalizedName" DataValueField="TermId" />
+	</div>			
+	<div class="dnnFormItem">
+  <dnn:label id="lblAuthorId" runat="server" controlname="ddAuthorId" suffix=":" />
+  <asp:DropDownList runat="server" ID="ddAuthorId" DataTextField="DisplayName" DataValueField="UserId" />
 	</div>			
 	<div class="dnnFormItem">
   <dnn:label id="lblTemplate" runat="server" controlname="ddTemplate" suffix=":" />

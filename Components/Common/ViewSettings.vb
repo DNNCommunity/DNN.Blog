@@ -17,6 +17,9 @@ Namespace Common
   Public Property ShowComments As Boolean = True
   Public Property BlogModuleId As Integer = -1
   Public Property ShowAllLocales As Boolean = True
+  Public Property BlogId As Integer = -1
+  Public Property TermId As Integer = -1
+  Public Property AuthorId As Integer = -1
   Public Property TemplateSettings As New Dictionary(Of String, String)
   Private Property TemplateManager As Templating.TemplateManager
 #End Region
@@ -35,6 +38,9 @@ Namespace Common
    _allSettings.ReadValue("ShowComments", ShowComments)
    _allSettings.ReadValue("BlogModuleId", BlogModuleId)
    _allSettings.ReadValue("ShowAllLocales", ShowAllLocales)
+   _allSettings.ReadValue("BlogId", BlogId)
+   _allSettings.ReadValue("TermId", TermId)
+   _allSettings.ReadValue("AuthorId", AuthorId)
    If justLoadSettings Then Exit Sub
 
    ' Template Settings - first load defaults
@@ -66,6 +72,9 @@ Namespace Common
    objModules.UpdateTabModuleSetting(tabModuleId, "ShowComments", ShowComments.ToString)
    objModules.UpdateTabModuleSetting(tabModuleId, "BlogModuleId", BlogModuleId.ToString)
    objModules.UpdateTabModuleSetting(tabModuleId, "ShowAllLocales", ShowAllLocales.ToString)
+   objModules.UpdateTabModuleSetting(tabModuleId, "BlogId", BlogId.ToString)
+   objModules.UpdateTabModuleSetting(tabModuleId, "TermId", TermId.ToString)
+   objModules.UpdateTabModuleSetting(tabModuleId, "AuthorId", AuthorId.ToString)
 
    Dim CacheKey As String = "TabModuleSettings" & tabModuleId.ToString
    DotNetNuke.Common.Utilities.DataCache.SetCache(CacheKey, Me)
