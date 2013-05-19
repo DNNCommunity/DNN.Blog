@@ -64,7 +64,7 @@ Namespace Entities.Blogs
   Public Function PermaLink(tab As DotNetNuke.Entities.Tabs.TabInfo) As String
    If String.IsNullOrEmpty(_permaLink) Then
     _permaLink = ApplicationURL(tab.TabID) & "&Blog=" & BlogID.ToString
-    _permaLink = FriendlyUrl(tab, _permaLink, GetSafePageName(Title))
+    _permaLink = FriendlyUrl(tab, _permaLink, GetSafePageName(LocalizedTitle))
    End If
    Return _permaLink
   End Function

@@ -17,10 +17,12 @@
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 ' DEALINGS IN THE SOFTWARE.
 '
+Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Entities.Content.Taxonomy
 Imports DotNetNuke.Entities.Modules
 Imports DotNetNuke.Services.Tokens
+Imports DotNetNuke.Modules.Blog.Common.Globals
 
 Namespace Entities.Terms
  Public Class TermInfo
@@ -173,6 +175,8 @@ Namespace Entities.Terms
      Return PropertyAccess.FormatString(Me.LocalizedName, strFormat)
     Case "localizeddescription"
      Return PropertyAccess.FormatString(Me.LocalizedDescription, strFormat)
+    Case "link", "permalink"
+     Return PermaLink(DotNetNuke.Entities.Portals.PortalSettings.Current)
     Case Else
      PropertyNotFound = True
    End Select
@@ -185,6 +189,21 @@ Namespace Entities.Terms
     Return CacheLevel.fullyCacheable
    End Get
   End Property
+#End Region
+
+#Region " Public Methods "
+  Public Function PermaLink(portalSettings As DotNetNuke.Entities.Portals.PortalSettings) As String
+   Return PermaLink(portalSettings.ActiveTab)
+  End Function
+
+  Private _permaLink As String = ""
+  Public Function PermaLink(tab As DotNetNuke.Entities.Tabs.TabInfo) As String
+   If String.IsNullOrEmpty(_permaLink) Then
+    _permaLink = ApplicationURL(tab.TabID) & "&Term=" & TermId.ToString
+    _permaLink = FriendlyUrl(tab, _permaLink, GetSafePageName(LocalizedName))
+   End If
+   Return _permaLink
+  End Function
 #End Region
 
  End Class
