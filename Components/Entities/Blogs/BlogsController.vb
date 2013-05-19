@@ -56,6 +56,23 @@ Namespace Entities.Blogs
 
   End Function
 
+  Public Shared Function GetBlogsByPortal(portalId As Int32, userId As Integer, locale As String) As Dictionary(Of Integer, BlogInfo)
+
+   Dim res As Dictionary(Of Integer, BlogInfo) = DotNetNuke.Common.Utilities.CBO.FillDictionary(Of Integer, BlogInfo)("BlogID", DataProvider.Instance().GetBlogsByPortal(portalId, userId, locale))
+   If userId > -1 Then
+    For Each b As BlogInfo In res.Values
+     If b.OwnerUserId = userId Then
+      b.CanAdd = True
+      b.CanEdit = True
+      b.CanApprove = True
+      b.IsOwner = True
+     End If
+    Next
+   End If
+   Return res
+
+  End Function
+
   Public Shared Function GetBlogCalendar(moduleId As Integer, blogId As Integer, locale As String) As List(Of BlogCalendarInfo)
    Return DotNetNuke.Common.Utilities.CBO.FillCollection(Of BlogCalendarInfo)(DataProvider.Instance.GetBlogCalendar(moduleId, blogId, locale))
   End Function

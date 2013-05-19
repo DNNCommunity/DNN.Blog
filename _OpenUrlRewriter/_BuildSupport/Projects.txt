@@ -1,0 +1,1 @@
+DotNetNuke.Modules.Blog.vbproj;06.00.00

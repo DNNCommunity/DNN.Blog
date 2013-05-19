@@ -209,6 +209,8 @@ Namespace Entities.Blogs
      Return PropertyAccess.FormatString(Me.LocalizedTitle, strFormat)
     Case "localizeddescription"
      Return PropertyAccess.FormatString(Me.LocalizedDescription, strFormat)
+    Case "link", "permalink"
+     Return PermaLink(DotNetNuke.Entities.Portals.PortalSettings.Current)
     Case Else
      PropertyNotFound = True
    End Select

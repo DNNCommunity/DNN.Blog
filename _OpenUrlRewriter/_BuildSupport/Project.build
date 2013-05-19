@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!-- targets to be executed, when omitted from command line default is run -->
+<project name="Blog" default="all" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://nant.sf.net/release/0.91/nant.xsd D:\Programs\Nant\schema\nant.xsd" xmlns="http://nant.sf.net/release/0.91/nant.xsd">
+ <include buildfile="D:\Programs\Nant\Bring2mind.build" />
+ <property value="Blog" name="modulename" />
+ <property value="DotNetNuke.Modules.Blog" name="backupdir" />
+ <property value="Install,Source" name="packages" />
+ <call target="set.parameters" />
+ <property value="DotNetNuke.Modules" name="prefix" />
+ <property value="${basedirectory}_Installation" name="installationdir"/>
+ <property value="DotNetNuke.Modules.Blog.dll" name="mainassemblyfilename"/>
+ <property name="packagename" value="Blog"/>
+ <property value="dotnetnuke.blog.pagescript.js,jqcloud-1.0.3.min.js,tag-it.min.js,jquery.dynatree.min.js,jquery.fancybox-1.3.4.pack.js,jquery.sharrre.min.js" name="excludejsfiles" />
+</project>

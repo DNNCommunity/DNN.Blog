@@ -416,7 +416,7 @@ RETURNS TABLE
 AS
 RETURN
 (SELECT 
-  b.*,
+  b.*, 
   bl.Locale AS AltLocale, bl.Title AS AltTitle, bl.[Description] AS AltDescription
  FROM {databaseOwner}{objectQualifier}vw_Blog_Blogs AS b
   LEFT OUTER JOIN {databaseOwner}{objectQualifier}Blog_BlogLocalization AS bl ON b.BlogID = bl.BlogID AND bl.Locale=@Locale)
@@ -454,7 +454,7 @@ RETURNS TABLE
 AS
 RETURN
 (SELECT
-  p.*,
+  p.*, 
   pl.Locale AS AltLocale, pl.Title AS AltTitle, pl.Summary AS AltSummary, lci.Content AS AltContent
  FROM {databaseOwner}{objectQualifier}vw_Blog_Posts AS p
   LEFT OUTER JOIN {databaseOwner}{objectQualifier}Blog_PostLocalization AS pl ON p.ContentItemID = pl.ContentItemId AND pl.Locale=@Locale
@@ -822,7 +822,6 @@ WHERE
 DELETE FROM {databaseOwner}{objectQualifier}Blog_Posts
 WHERE
  ContentItemId = @ContentItemId;
- 
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetAuthors') AND type in (N'P', N'PC'))
@@ -1006,6 +1005,50 @@ WHERE b.ModuleID=@ModuleId
 END
 GO
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetBlogsByPortal') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlogsByPortal
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlogsByPortal
+ @PortalId INT,
+ @UserId INT,
+ @Locale NVARCHAR(10)
+AS
+BEGIN
+SELECT
+ b.*,
+(SELECT COUNT(*)
+ FROM {databaseOwner}{objectQualifier}Blog_BlogPermissions bp
+ LEFT JOIN (SELECT ur.UserID, ur.RoleID  
+    FROM {databaseOwner}{objectQualifier}UserRoles ur  
+    WHERE (ur.EffectiveDate <= GETDATE() OR ur.EffectiveDate IS NULL) AND (ur.ExpiryDate >= GETDATE() OR ur.ExpiryDate IS NULL)
+    and ur.UserID=@UserID) r  ON r.RoleID=bp.RoleId
+ WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4)) AND bp.BlogId=b.BlogID AND bp.PermissionId=0) AS CanEdit,
+(SELECT COUNT(*)
+ FROM {databaseOwner}{objectQualifier}Blog_BlogPermissions bp
+ LEFT JOIN (SELECT ur.UserID, ur.RoleID  
+    FROM {databaseOwner}{objectQualifier}UserRoles ur  
+    WHERE (ur.EffectiveDate <= GETDATE() OR ur.EffectiveDate IS NULL) AND (ur.ExpiryDate >= GETDATE() OR ur.ExpiryDate IS NULL)
+    and ur.UserID=@UserID) r  ON r.RoleID=bp.RoleId
+ WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4)) AND bp.BlogId=b.BlogID AND bp.PermissionId=1) AS CanAdd,
+(SELECT COUNT(*)
+ FROM {databaseOwner}{objectQualifier}Blog_BlogPermissions bp
+ LEFT JOIN (SELECT ur.UserID, ur.RoleID  
+    FROM {databaseOwner}{objectQualifier}UserRoles ur  
+    WHERE (ur.EffectiveDate <= GETDATE() OR ur.EffectiveDate IS NULL) AND (ur.ExpiryDate >= GETDATE() OR ur.ExpiryDate IS NULL)
+    and ur.UserID=@UserID) r  ON r.RoleID=bp.RoleId
+ WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4)) AND bp.BlogId=b.BlogID AND bp.PermissionId=2) AS CanApprove
+ 
+FROM {databaseOwner}{objectQualifier}Blog_BlogList(@Locale) b
+ INNER JOIN {databaseOwner}{objectQualifier}Modules m ON b.ModuleID=m.ModuleID
+WHERE m.PortalID=@PortalId
+END
+GO
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetComment') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetComment
 GO
@@ -1091,7 +1134,6 @@ FROM
 WHERE
  p.[ContentItemId] = @ContentItemId
  AND p.ModuleId = @ModuleId
- 
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetPostLocalizations') AND type in (N'P', N'PC'))
@@ -1113,7 +1155,6 @@ FROM
   LEFT OUTER JOIN {databaseOwner}{objectQualifier}ContentItems lci ON pl.LocalizedContentItemId=lci.ContentItemID
 WHERE
  pl.[ContentItemId] = @ContentItemId
- 
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetPosts') AND type in (N'P', N'PC'))
@@ -1471,7 +1512,6 @@ FROM
  {databaseOwner}{objectQualifier}Blog_TermList(@Locale) t
 WHERE
  t.TermID=@TermId
- 
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetTermLocalizations') AND type in (N'P', N'PC'))
@@ -1491,7 +1531,6 @@ FROM
  {databaseOwner}{objectQualifier}Blog_TermLocalization tl
 WHERE
  tl.TermID=@TermId
- 
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetTermsByModule') AND type in (N'P', N'PC'))
@@ -1520,7 +1559,6 @@ FROM
 WHERE
  AllTerms.TotalPosts>0
 ORDER BY AllTerms.ViewOrder, AllTerms.Name
- 
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetTermsByPost') AND type in (N'P', N'PC'))
@@ -1646,7 +1684,6 @@ SELECT
 FROM
  {databaseOwner}{objectQualifier}vw_Users u
  INNER JOIN {databaseOwner}{objectQualifier}Blog_BlogPermissions bp ON bp.UserId=u.UserID AND bp.PermissionId=@PermissionId) x
- 
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_SearchPosts') AND type in (N'P', N'PC'))

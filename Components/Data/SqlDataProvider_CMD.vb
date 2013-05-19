@@ -47,6 +47,10 @@ Namespace Data
    Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "GetBlogsByModule", moduleId, userId, locale), IDataReader)
   End Function
 
+  Public Overrides Function GetBlogsByPortal(portalId As Int32, userId As Int32, locale As String) As IDataReader
+   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "GetBlogsByPortal", portalId, userId, locale), IDataReader)
+  End Function
+
   Public Overrides Function GetPostLocalizations(contentItemId As Int32) As IDataReader
    Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "GetPostLocalizations", contentItemId), IDataReader)
   End Function

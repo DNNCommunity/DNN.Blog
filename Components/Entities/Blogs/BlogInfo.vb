@@ -23,7 +23,9 @@ Imports System.Runtime.Serialization
 Imports System.Xml
 Imports System.Xml.Schema
 Imports System.Xml.Serialization
+Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Common.Utilities
+Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Entities.Modules
 Imports DotNetNuke.Services.Tokens
 Imports DotNetNuke.Entities.Users
@@ -53,6 +55,19 @@ Namespace Entities.Blogs
   Public Property CanApprove As Boolean = False
   <DataMember()>
   Public Property IsOwner As Boolean = False
+
+  Public Function PermaLink(portalSettings As DotNetNuke.Entities.Portals.PortalSettings) As String
+   Return PermaLink(portalSettings.ActiveTab)
+  End Function
+
+  Private _permaLink As String = ""
+  Public Function PermaLink(tab As DotNetNuke.Entities.Tabs.TabInfo) As String
+   If String.IsNullOrEmpty(_permaLink) Then
+    _permaLink = ApplicationURL(tab.TabID) & "&Blog=" & BlogID.ToString
+    _permaLink = FriendlyUrl(tab, _permaLink, GetSafePageName(Title))
+   End If
+   Return _permaLink
+  End Function
 
  End Class
 
