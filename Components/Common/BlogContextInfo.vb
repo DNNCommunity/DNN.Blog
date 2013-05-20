@@ -55,6 +55,9 @@ Namespace Common
     WLWRequest = CBool(context.Request.UserAgent.IndexOf("Windows Live Writer") > -1)
    End If
    Security = New ContextSecurity(BlogModuleId, blogModule.TabId, Blog, blogModule.UserInfo)
+   If EndDate < Now.AddDays(-1) Then
+    EndDate = EndDate.Date.AddDays(1).AddMinutes(-1)
+   End If
 
    ' security
    Dim isStylePostRequest As Boolean = False
