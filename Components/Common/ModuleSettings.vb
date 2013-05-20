@@ -179,5 +179,53 @@ Namespace Common
   End Property
 #End Region
 
+#Region " Serialization "
+  Public Sub Serialize(writer As XmlWriter)
+   writer.WriteStartElement("Settings")
+   writer.WriteElementString("AllowWLW", AllowWLW.ToString)
+   writer.WriteElementString("AllowMultipleCategories", AllowMultipleCategories.ToString)
+   writer.WriteElementString("VocabularyId", VocabularyId.ToString)
+   writer.WriteElementString("AllowAttachments", AllowAttachments.ToString)
+   writer.WriteElementString("SummaryModel", SummaryModel.ToString)
+   writer.WriteElementString("StyleDetectionUrl", StyleDetectionUrl)
+   writer.WriteElementString("WLWRecentPostsMax", WLWRecentPostsMax.ToString)
+   writer.WriteElementString("AllowAllLocales", AllowAllLocales.ToString)
+   writer.WriteElementString("ModifyPageDetails", ModifyPageDetails.ToString)
+
+   writer.WriteElementString("RssEmail", RssEmail)
+   writer.WriteElementString("RssDefaultNrItems", RssDefaultNrItems.ToString)
+   writer.WriteElementString("RssMaxNrItems", RssMaxNrItems.ToString)
+   writer.WriteElementString("RssTtl", RssTtl.ToString)
+   writer.WriteElementString("RssImageWidth", RssImageWidth.ToString)
+   writer.WriteElementString("RssImageHeight", RssImageHeight.ToString)
+   writer.WriteElementString("RssImageSizeAllowOverride", RssImageSizeAllowOverride.ToString)
+   writer.WriteElementString("RssAllowContentInFeed", RssAllowContentInFeed.ToString)
+   writer.WriteElementString("RssDefaultCopyright", RssDefaultCopyright)
+   writer.WriteEndElement() ' settings
+  End Sub
+
+  Public Sub Deserialize(reader As XmlReader)
+   Boolean.TryParse(readElement(reader, "AllowWLW"), AllowWLW)
+   Boolean.TryParse(readElement(reader, "AllowMultipleCategories"), AllowMultipleCategories)
+   Integer.TryParse(readElement(reader, "VocabularyId"), VocabularyId)
+   Boolean.TryParse(readElement(reader, "AllowAttachments"), AllowAttachments)
+   SummaryType.TryParse(readElement(reader, "SummaryModel"), SummaryModel)
+   StyleDetectionUrl = readElement(reader, "StyleDetectionUrl")
+   Integer.TryParse(readElement(reader, "WLWRecentPostsMax"), WLWRecentPostsMax)
+   Boolean.TryParse(readElement(reader, "AllowAllLocales"), AllowAllLocales)
+   Boolean.TryParse(readElement(reader, "ModifyPageDetails"), ModifyPageDetails)
+
+   RssEmail = readElement(reader, "RssEmail")
+   Integer.TryParse(readElement(reader, "RssDefaultNrItems"), RssDefaultNrItems)
+   Integer.TryParse(readElement(reader, "RssMaxNrItems"), RssMaxNrItems)
+   Integer.TryParse(readElement(reader, "RssTtl"), RssTtl)
+   Integer.TryParse(readElement(reader, "RssImageWidth"), RssImageWidth)
+   Integer.TryParse(readElement(reader, "RssImageHeight"), RssImageHeight)
+   Boolean.TryParse(readElement(reader, "RssImageSizeAllowOverride"), RssImageSizeAllowOverride)
+   Boolean.TryParse(readElement(reader, "RssAllowContentInFeed"), RssAllowContentInFeed)
+   RssDefaultCopyright = readElement(reader, "RssDefaultCopyright")
+  End Sub
+#End Region
+
  End Class
 End Namespace

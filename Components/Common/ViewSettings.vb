@@ -1,6 +1,7 @@
 ﻿Imports System.Xml
 Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Services.Tokens
+Imports DotNetNuke.Modules.Blog.Common.Globals
 
 Namespace Common
  Public Class ViewSettings
@@ -144,6 +145,32 @@ Namespace Common
      Return ""
    End Select
   End Function
+#End Region
+
+#Region " Serialization "
+  Public Sub Serialize(writer As XmlWriter)
+   writer.WriteStartElement("ViewSettings")
+   writer.WriteElementString("Template", Template)
+   writer.WriteElementString("ShowManagementPanel", ShowManagementPanel.ToString)
+   writer.WriteElementString("ShowComments", ShowComments.ToString)
+   writer.WriteElementString("BlogModuleId", BlogModuleId.ToString)
+   writer.WriteElementString("ShowAllLocales", ShowAllLocales.ToString)
+   writer.WriteElementString("BlogId", BlogId.ToString)
+   writer.WriteElementString("TermId", TermId.ToString)
+   writer.WriteElementString("AuthorId", AuthorId.ToString)
+   writer.WriteEndElement() ' viewsettings
+  End Sub
+
+  Public Sub Deserialize(reader As XmlReader)
+   Template = readElement(reader, "Template")
+   Boolean.TryParse(readElement(reader, "ShowManagementPanel"), ShowManagementPanel)
+   Boolean.TryParse(readElement(reader, "ShowComments"), ShowComments)
+   Integer.TryParse(readElement(reader, "BlogModuleId"), BlogModuleId)
+   Boolean.TryParse(readElement(reader, "ShowAllLocales"), ShowAllLocales)
+   Integer.TryParse(readElement(reader, "BlogId"), BlogId)
+   Integer.TryParse(readElement(reader, "TermId"), TermId)
+   Integer.TryParse(readElement(reader, "AuthorId"), AuthorId)
+  End Sub
 #End Region
 
  End Class

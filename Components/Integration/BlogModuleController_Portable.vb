@@ -17,7 +17,13 @@ Namespace Integration
    Using sw As New IO.StringWriter(strXml)
     Using xml As New XmlTextWriter(sw)
      xml.WriteStartElement("dnnblog")
-     ' todo: settings
+     Dim ms As ModuleSettings = ModuleSettings.GetModuleSettings(ModuleID)
+     ms.Serialize(xml)
+     Dim tabMods As ArrayList = (New ModuleController).GetAllTabsModulesByModuleID(ModuleID)
+     If tabMods.Count > 0 Then
+      Dim vs As ViewSettings = ViewSettings.GetViewSettings(CType(tabMods(0), ModuleInfo).TabModuleID)
+      vs.Serialize(xml)
+     End If
      For Each b As BlogInfo In BlogsController.GetBlogsByModule(ModuleID, "").Values
       b.WriteXml(xml)
      Next
@@ -36,6 +42,17 @@ Namespace Integration
       If strXml.Read() Then
        strXml.ReadStartElement("dnnblog") ' advance to content
        If strXml.ReadState <> ReadState.EndOfFile And strXml.NodeType <> XmlNodeType.None And strXml.LocalName <> "" Then
+        strXml.ReadStartElement("Settings")
+        Dim settings As ModuleSettings = ModuleSettings.GetModuleSettings(ModuleID)
+        settings.Deserialize(strXml)
+        settings.UpdateSettings()
+        strXml.ReadStartElement("ViewSettings")
+        Dim tabMods As ArrayList = (New ModuleController).GetAllTabsModulesByModuleID(ModuleID)
+        If tabMods.Count > 0 Then
+         Dim vs As ViewSettings = ViewSettings.GetViewSettings(CType(tabMods(0), ModuleInfo).TabModuleID)
+         vs.Deserialize(strXml)
+         vs.UpdateSettings()
+        End If
         Do
          strXml.ReadStartElement("Blog")
          Dim blog As New BlogInfo
