@@ -10,6 +10,7 @@ Namespace Common
 #Region " Private Members "
   Private _allSettings As Hashtable = Nothing
   Private _moduleId As Integer = -1
+  Private _importedModuleId As Integer = -1
 #End Region
 
 #Region " Properties "
@@ -130,6 +131,7 @@ Namespace Common
    objModules.UpdateModuleSetting(_moduleId, "RssImageSizeAllowOverride", RssImageSizeAllowOverride.ToString)
    objModules.UpdateModuleSetting(_moduleId, "RssAllowContentInFeed", RssAllowContentInFeed.ToString)
    objModules.UpdateModuleSetting(_moduleId, "RssDefaultCopyright", RssDefaultCopyright)
+   If _importedModuleId > -1 Then objModules.UpdateModuleSetting(_moduleId, "ImportedModuleID", _importedModuleId.ToString)
 
    Dim CacheKey As String = "ModuleSettings" & _moduleId.ToString
    DotNetNuke.Common.Utilities.DataCache.SetCache(CacheKey, Me)
@@ -182,6 +184,7 @@ Namespace Common
 #Region " Serialization "
   Public Sub Serialize(writer As XmlWriter)
    writer.WriteStartElement("Settings")
+   writer.WriteElementString("ModuleID", ModuleId.ToString)
    writer.WriteElementString("AllowWLW", AllowWLW.ToString)
    writer.WriteElementString("AllowMultipleCategories", AllowMultipleCategories.ToString)
    writer.WriteElementString("VocabularyId", VocabularyId.ToString)
@@ -205,6 +208,7 @@ Namespace Common
   End Sub
 
   Public Sub Deserialize(reader As XmlReader)
+   Integer.TryParse(readElement(reader, "ModuleID"), _importedModuleId)
    Boolean.TryParse(readElement(reader, "AllowWLW"), AllowWLW)
    Boolean.TryParse(readElement(reader, "AllowMultipleCategories"), AllowMultipleCategories)
    Integer.TryParse(readElement(reader, "VocabularyId"), VocabularyId)
