@@ -209,6 +209,14 @@ Namespace Entities.Posts
    Return DotNetNuke.Common.Utilities.CBO.FillCollection(Of PostAuthor)(DataProvider.Instance.GetAuthors(moduleId, blogId))
   End Function
 
+  Public Shared Function GetPostByLegacyEntryId(entryId As Int32, portalId As Int32, locale As String) As PostInfo
+   Return CType(CBO.FillObject(DataProvider.Instance().GetPostByLegacyEntryId(entryId, portalId, locale), GetType(PostInfo)), PostInfo)
+  End Function
+
+  Public Shared Function GetPostByLegacyUrl(url As String, portalId As Int32, locale As String) As PostInfo
+   Return CType(CBO.FillObject(DataProvider.Instance().GetPostByLegacyUrl(url, portalId, locale), GetType(PostInfo)), PostInfo)
+  End Function
+
 #Region " Private Methods "
 #End Region
 

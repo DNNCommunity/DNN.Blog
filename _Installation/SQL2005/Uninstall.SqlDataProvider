@@ -1,4 +1,4 @@
-/******* SPROCS *******/
+﻿/******* SPROCS *******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_AddBlog') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_AddBlog
 GO
@@ -13,6 +13,10 @@ GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_AddCommentKarma') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_AddCommentKarma
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_AddLegacyUrl') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_AddLegacyUrl
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_AddPost') AND type in (N'P', N'PC'))
@@ -85,6 +89,14 @@ GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetPost') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetPost
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetPostByLegacyEntryId') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetPostByLegacyEntryId
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetPostByLegacyUrl') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetPostByLegacyUrl
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetPostLocalizations') AND type in (N'P', N'PC'))
@@ -227,6 +239,10 @@ IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databa
 ALTER TABLE {databaseOwner}{objectQualifier}Blog_Comments DROP CONSTRAINT FK_{objectQualifier}Blog_Comments
 GO
 
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_LegacyUrls_Posts') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_LegacyUrls'))
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_LegacyUrls DROP CONSTRAINT FK_{objectQualifier}Blog_LegacyUrls_Posts
+GO
+
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_PostLocalization_ContentItems') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_PostLocalization'))
 ALTER TABLE {databaseOwner}{objectQualifier}Blog_PostLocalization DROP CONSTRAINT FK_{objectQualifier}Blog_PostLocalization_ContentItems
 GO
@@ -266,6 +282,10 @@ GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Comments') AND type in (N'U'))
 DROP TABLE {databaseOwner}{objectQualifier}Blog_Comments
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_LegacyUrls') AND type in (N'U'))
+DROP TABLE {databaseOwner}{objectQualifier}Blog_LegacyUrls
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_PostLocalization') AND type in (N'U'))

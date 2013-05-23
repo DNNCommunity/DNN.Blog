@@ -144,6 +144,12 @@ Namespace Data
 
 #End Region
 
+#Region " LegacyUrl Methods "
+	Public Overrides Sub AddLegacyUrl(contentItemId As Int32, entryId As Int32, url As String)
+		SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "AddLegacyUrl", contentItemId, GetNull(entryId), url)
+	End Sub
+#End Region
+
 #Region " Post Methods "
 
   Public Overrides Function GetPost(contentItemId As Int32, moduleId As Int32, locale As String) As IDataReader

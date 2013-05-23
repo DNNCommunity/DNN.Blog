@@ -16,6 +16,8 @@ Namespace Data
   Public MustOverride Function GetBlogPermissionsByBlog(blogId As Int32) As IDataReader
   Public MustOverride Function GetBlogsByModule(moduleId As Int32, userId As Int32, locale As String) As IDataReader
   Public MustOverride Function GetBlogsByPortal(portalId As Int32, userId As Int32, locale As String) As IDataReader
+  Public MustOverride Function GetPostByLegacyEntryId(entryId As Int32, portalId As Int32, locale As String) As IDataReader
+  Public MustOverride Function GetPostByLegacyUrl(url As String, portalId As Int32, locale As String) As IDataReader
   Public MustOverride Function GetPostLocalizations(contentItemId As Int32) As IDataReader
   Public MustOverride Function GetPosts(moduleId As Int32, blogID As Int32, displayLocale As String, userId As Int32, userIsAdmin As Boolean, published As Int32, limitToLocale As String, endDate As Date, authorUserId As Int32, pageIndex As Int32, pageSize As Int32, orderBy As String) As IDataReader
   Public MustOverride Function GetPostsByTerm(moduleId As Int32, blogID As Int32, displayLocale As String, userId As Int32, userIsAdmin As Boolean, termID As Int32, published As Int32, limitToLocale As String, endDate As Date, authorUserId As Int32, pageIndex As Int32, pageSize As Int32, orderBy As String) As IDataReader

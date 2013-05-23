@@ -42,6 +42,14 @@ Public Class Blog
     Response.Redirect(url, False)
    End If
 
+   If BlogContext.ContentItemId = -1 AndAlso BlogContext.LegacyEntryId > -1 Then
+    ' we have a legacy url
+    Dim p As PostInfo = PostsController.GetPostByLegacyEntryId(BlogContext.LegacyEntryId, PortalId, BlogContext.Locale)
+    If p IsNot Nothing Then
+     Response.RedirectPermanent(p.PermaLink(PortalSettings), False)
+    End If
+   End If
+
    If Not Me.IsPostBack And BlogContext.ContentItemId > -1 Then
     Dim scriptBlock As String = "(function ($, Sys) {$(document).ready(function () {setTimeout(function(){blogService.viewPost(" & BlogContext.BlogId.ToString & ", " & BlogContext.ContentItemId.ToString & ")},60000)});} (jQuery, window.Sys));"
     Page.ClientScript.RegisterClientScriptBlock(Me.GetType, "PostViewScript", scriptBlock, True)

@@ -169,6 +169,24 @@ END
 GO
 
 
+Adding BLOGDEV_Blog_LegacyUrls
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[BLOGDEV_Blog_LegacyUrls]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[BLOGDEV_Blog_LegacyUrls](
+	[Url] [nvarchar](300) NOT NULL,
+	[EntryId] [int] NULL,
+	[ContentItemId] [int] NOT NULL,
+ CONSTRAINT [PK_BLOGDEV_Blog_LegacyUrls] PRIMARY KEY CLUSTERED 
+(
+	[Url] ASC
+)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF)
+)
+END
+GO
+
+
 Adding BLOGDEV_Blog_PostLocalization
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
@@ -310,6 +328,15 @@ ON UPDATE CASCADE
 ON DELETE CASCADE
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_BLOGDEV_Blog_Comments]') AND parent_object_id = OBJECT_ID(N'[dbo].[BLOGDEV_Blog_Comments]'))
 ALTER TABLE [dbo].[BLOGDEV_Blog_Comments] CHECK CONSTRAINT [FK_BLOGDEV_Blog_Comments]
+GO
+
+
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_BLOGDEV_Blog_LegacyUrls_Posts]') AND parent_object_id = OBJECT_ID(N'[dbo].[BLOGDEV_Blog_LegacyUrls]'))
+ALTER TABLE [dbo].[BLOGDEV_Blog_LegacyUrls]  WITH CHECK ADD  CONSTRAINT [FK_BLOGDEV_Blog_LegacyUrls_Posts] FOREIGN KEY([ContentItemId])
+REFERENCES [BLOGDEV_Blog_Posts] ([ContentItemId])
+ON DELETE CASCADE
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_BLOGDEV_Blog_LegacyUrls_Posts]') AND parent_object_id = OBJECT_ID(N'[dbo].[BLOGDEV_Blog_LegacyUrls]'))
+ALTER TABLE [dbo].[BLOGDEV_Blog_LegacyUrls] CHECK CONSTRAINT [FK_BLOGDEV_Blog_LegacyUrls_Posts]
 GO
 
 
@@ -718,6 +745,32 @@ BEGIN
  SET @Res = @CommentId;
 END
 SELECT @Res
+GO
+
+
+Adding BLOGDEV_Blog_AddLegacyUrl
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[BLOGDEV_Blog_AddLegacyUrl]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[BLOGDEV_Blog_AddLegacyUrl]
+GO
+
+
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+
+CREATE PROCEDURE dbo.BLOGDEV_Blog_AddLegacyUrl
+ @ContentItemId INT, 
+ @EntryId INT, 
+ @Url NVARCHAR (300)
+AS
+
+INSERT INTO dbo.BLOGDEV_Blog_LegacyUrls (
+ [Url],
+ [ContentItemId],
+ [EntryId]
+)
+ VALUES ( @Url, @ContentItemId, @EntryId)
+
+
 GO
 
 
@@ -1207,6 +1260,60 @@ FROM
 WHERE
  p.[ContentItemId] = @ContentItemId
  AND p.ModuleId = @ModuleId
+GO
+
+
+Adding BLOGDEV_Blog_GetPostByLegacyEntryId
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[BLOGDEV_Blog_GetPostByLegacyEntryId]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[BLOGDEV_Blog_GetPostByLegacyEntryId]
+GO
+
+
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+CREATE PROCEDURE [dbo].[BLOGDEV_Blog_GetPostByLegacyEntryId]
+ @EntryId INT,
+ @PortalId INT,
+ @Locale NVARCHAR(10)
+AS
+SELECT
+ p.*,
+ (SELECT COUNT(c.CommentID) FROM dbo.BLOGDEV_Blog_Comments c WHERE c.ContentItemId=p.ContentItemId AND c.Approved=1) AS NrComments
+FROM
+ dbo.BLOGDEV_Blog_PostList(@Locale) p
+  INNER JOIN dbo.BLOGDEV_Blog_LegacyUrls lu ON lu.ContentItemId=p.ContentItemId
+  INNER JOIN dbo.BLOGDEV_Modules m ON m.ModuleID=p.ModuleID
+WHERE
+ m.PortalID=@PortalId
+ AND lu.EntryId=@EntryId
+ 
+GO
+
+
+Adding BLOGDEV_Blog_GetPostByLegacyUrl
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[BLOGDEV_Blog_GetPostByLegacyUrl]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[BLOGDEV_Blog_GetPostByLegacyUrl]
+GO
+
+
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+CREATE PROCEDURE [dbo].[BLOGDEV_Blog_GetPostByLegacyUrl]
+ @Url NVARCHAR(300),
+ @PortalId INT,
+ @Locale NVARCHAR(10)
+AS
+SELECT
+ p.*,
+ (SELECT COUNT(c.CommentID) FROM dbo.BLOGDEV_Blog_Comments c WHERE c.ContentItemId=p.ContentItemId AND c.Approved=1) AS NrComments
+FROM
+ dbo.BLOGDEV_Blog_PostList(@Locale) p
+  INNER JOIN dbo.BLOGDEV_Blog_LegacyUrls lu ON lu.ContentItemId=p.ContentItemId
+  INNER JOIN dbo.BLOGDEV_Modules m ON m.ModuleID=p.ModuleID
+WHERE
+ m.PortalID=@PortalId
+ AND lu.Url=@Url
+ 
 GO
 
 
@@ -2384,6 +2491,12 @@ DROP PROCEDURE [dbo].[BLOGDEV_Blog_AddCommentKarma]
 GO
 
 
+Adding BLOGDEV_Blog_AddLegacyUrl
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[BLOGDEV_Blog_AddLegacyUrl]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[BLOGDEV_Blog_AddLegacyUrl]
+GO
+
+
 Adding BLOGDEV_Blog_AddPost
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[BLOGDEV_Blog_AddPost]') AND type in (N'P', N'PC'))
 DROP PROCEDURE [dbo].[BLOGDEV_Blog_AddPost]
@@ -2489,6 +2602,18 @@ GO
 Adding BLOGDEV_Blog_GetPost
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[BLOGDEV_Blog_GetPost]') AND type in (N'P', N'PC'))
 DROP PROCEDURE [dbo].[BLOGDEV_Blog_GetPost]
+GO
+
+
+Adding BLOGDEV_Blog_GetPostByLegacyEntryId
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[BLOGDEV_Blog_GetPostByLegacyEntryId]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[BLOGDEV_Blog_GetPostByLegacyEntryId]
+GO
+
+
+Adding BLOGDEV_Blog_GetPostByLegacyUrl
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[BLOGDEV_Blog_GetPostByLegacyUrl]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[BLOGDEV_Blog_GetPostByLegacyUrl]
 GO
 
 
@@ -2695,6 +2820,11 @@ ALTER TABLE [dbo].[BLOGDEV_Blog_Comments] DROP CONSTRAINT [FK_BLOGDEV_Blog_Comme
 GO
 
 
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_BLOGDEV_Blog_LegacyUrls_Posts]') AND parent_object_id = OBJECT_ID(N'[dbo].[BLOGDEV_Blog_LegacyUrls]'))
+ALTER TABLE [dbo].[BLOGDEV_Blog_LegacyUrls] DROP CONSTRAINT [FK_BLOGDEV_Blog_LegacyUrls_Posts]
+GO
+
+
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_BLOGDEV_Blog_PostLocalization_ContentItems]') AND parent_object_id = OBJECT_ID(N'[dbo].[BLOGDEV_Blog_PostLocalization]'))
 ALTER TABLE [dbo].[BLOGDEV_Blog_PostLocalization] DROP CONSTRAINT [FK_BLOGDEV_Blog_PostLocalization_ContentItems]
 GO
@@ -2751,6 +2881,12 @@ DROP TABLE [dbo].[BLOGDEV_Blog_Comments]
 GO
 
 
+Adding BLOGDEV_Blog_LegacyUrls
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[BLOGDEV_Blog_LegacyUrls]') AND type in (N'U'))
+DROP TABLE [dbo].[BLOGDEV_Blog_LegacyUrls]
+GO
+
+
 Adding BLOGDEV_Blog_PostLocalization
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[BLOGDEV_Blog_PostLocalization]') AND type in (N'U'))
 DROP TABLE [dbo].[BLOGDEV_Blog_PostLocalization]
@@ -2779,5 +2915,5 @@ Finished Script Creation
 
 BUILD SUCCEEDED
 
-Total time: 5 seconds.
+Total time: 3.9 seconds.
 

@@ -51,6 +51,14 @@ Namespace Data
    Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "GetBlogsByPortal", portalId, userId, locale), IDataReader)
   End Function
 
+  Public Overrides Function GetPostByLegacyEntryId(entryId As Int32, portalId As Int32, locale As String) As IDataReader
+   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "GetPostByLegacyEntryId", entryId, portalId, locale), IDataReader)
+  End Function
+
+  Public Overrides Function GetPostByLegacyUrl(url As String, portalId As Int32, locale As String) As IDataReader
+   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "GetPostByLegacyUrl", url, portalId, locale), IDataReader)
+  End Function
+
   Public Overrides Function GetPostLocalizations(contentItemId As Int32) As IDataReader
    Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "GetPostLocalizations", contentItemId), IDataReader)
   End Function

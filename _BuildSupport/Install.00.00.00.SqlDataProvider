@@ -145,6 +145,23 @@ GO
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_LegacyUrls') AND type in (N'U'))
+BEGIN
+CREATE TABLE {databaseOwner}{objectQualifier}Blog_LegacyUrls(
+ [Url] [nvarchar](300) NOT NULL,
+ [EntryId] [int] NULL,
+ [ContentItemId] [int] NOT NULL,
+ CONSTRAINT PK_{objectQualifier}Blog_LegacyUrls PRIMARY KEY CLUSTERED 
+(
+ [Url] ASC
+)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF)
+)
+END
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_PostLocalization') AND type in (N'U'))
 BEGIN
 CREATE TABLE {databaseOwner}{objectQualifier}Blog_PostLocalization(
@@ -273,6 +290,14 @@ ON UPDATE CASCADE
 ON DELETE CASCADE
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_Comments') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Comments'))
 ALTER TABLE {databaseOwner}{objectQualifier}Blog_Comments CHECK CONSTRAINT FK_{objectQualifier}Blog_Comments
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_LegacyUrls_Posts') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_LegacyUrls'))
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_LegacyUrls  WITH CHECK ADD  CONSTRAINT FK_{objectQualifier}Blog_LegacyUrls_Posts FOREIGN KEY([ContentItemId])
+REFERENCES {objectQualifier}Blog_Posts ([ContentItemId])
+ON DELETE CASCADE
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_LegacyUrls_Posts') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_LegacyUrls'))
+ALTER TABLE {databaseOwner}{objectQualifier}Blog_LegacyUrls CHECK CONSTRAINT FK_{objectQualifier}Blog_LegacyUrls_Posts
 GO
 
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Blog_PostLocalization_ContentItems') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_PostLocalization'))
@@ -663,6 +688,27 @@ BEGIN
  SET @Res = @CommentId;
 END
 SELECT @Res
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_AddLegacyUrl') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_AddLegacyUrl
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_AddLegacyUrl
+ @ContentItemId INT, 
+ @EntryId INT, 
+ @Url NVARCHAR (300)
+AS
+INSERT INTO {databaseOwner}{objectQualifier}Blog_LegacyUrls (
+ [Url],
+ [ContentItemId],
+ [EntryId]
+)
+ VALUES ( @Url, @ContentItemId, @EntryId)
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_AddPost') AND type in (N'P', N'PC'))
@@ -1134,6 +1180,58 @@ FROM
 WHERE
  p.[ContentItemId] = @ContentItemId
  AND p.ModuleId = @ModuleId
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetPostByLegacyEntryId') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetPostByLegacyEntryId
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetPostByLegacyEntryId
+ @EntryId INT,
+ @PortalId INT,
+ @Locale NVARCHAR(10)
+AS
+SELECT
+ p.*,
+ (SELECT COUNT(c.CommentID) FROM {databaseOwner}{objectQualifier}Blog_Comments c WHERE c.ContentItemId=p.ContentItemId AND c.Approved=1) AS NrComments
+FROM
+ {databaseOwner}{objectQualifier}Blog_PostList(@Locale) p
+  INNER JOIN {databaseOwner}{objectQualifier}Blog_LegacyUrls lu ON lu.ContentItemId=p.ContentItemId
+  INNER JOIN {databaseOwner}{objectQualifier}Modules m ON m.ModuleID=p.ModuleID
+WHERE
+ m.PortalID=@PortalId
+ AND lu.EntryId=@EntryId
+ 
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetPostByLegacyUrl') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetPostByLegacyUrl
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetPostByLegacyUrl
+ @Url NVARCHAR(300),
+ @PortalId INT,
+ @Locale NVARCHAR(10)
+AS
+SELECT
+ p.*,
+ (SELECT COUNT(c.CommentID) FROM {databaseOwner}{objectQualifier}Blog_Comments c WHERE c.ContentItemId=p.ContentItemId AND c.Approved=1) AS NrComments
+FROM
+ {databaseOwner}{objectQualifier}Blog_PostList(@Locale) p
+  INNER JOIN {databaseOwner}{objectQualifier}Blog_LegacyUrls lu ON lu.ContentItemId=p.ContentItemId
+  INNER JOIN {databaseOwner}{objectQualifier}Modules m ON m.ModuleID=p.ModuleID
+WHERE
+ m.PortalID=@PortalId
+ AND lu.Url=@Url
+ 
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetPostLocalizations') AND type in (N'P', N'PC'))

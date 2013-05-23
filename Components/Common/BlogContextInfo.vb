@@ -41,6 +41,7 @@ Namespace Common
    context.Request.Params.ReadValue("t", SearchTitle)
    context.Request.Params.ReadValue("c", SearchContents)
    context.Request.Params.ReadValue("u", SearchUnpublished)
+   context.Request.Params.ReadValue("EntryId", LegacyEntryId)
    If ContentItemId > -1 Then Post = Entities.Posts.PostsController.GetPost(ContentItemId, BlogModuleId, Locale)
    If BlogId > -1 And Post IsNot Nothing AndAlso Post.BlogID <> BlogId Then Post = Nothing ' double check in case someone is hacking to retrieve an Post from another blog
    If BlogId = -1 And Post IsNot Nothing Then BlogId = Post.BlogID
@@ -129,6 +130,7 @@ Namespace Common
   Public Property WLWRequest As Boolean = False
   Public Property UiTimeZone As TimeZoneInfo
   Public Property Security As ContextSecurity
+  Public Property LegacyEntryId As Integer = -1
 #End Region
 
 #Region " IPropertyAccess Implementation "

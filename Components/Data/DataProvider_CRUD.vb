@@ -51,6 +51,10 @@ Namespace Data
   Public MustOverride Sub DeleteComment(commentID As Int32)
 #End Region
 
+#Region " LegacyUrl Methods "
+	Public MustOverride Sub AddLegacyUrl(contentItemId As Int32, entryId As Int32, url As String)
+#End Region
+
 #Region " Post Methods "
   Public MustOverride Function GetPost(contentItemId As Int32, moduleId As Int32, locale As String) As IDataReader
   Public MustOverride Function AddPost(allowComments As Boolean, blogID As Int32, content As String, copyright As String, displayCopyright As Boolean, image As String, locale As String, published As Boolean, publishedOnDate As Date, summary As String, termIds As String, title As String, viewCount As Int32, createdByUser As Int32) As Integer

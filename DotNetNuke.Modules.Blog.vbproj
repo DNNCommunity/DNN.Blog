@@ -233,6 +233,9 @@
     <Compile Include="BlogPost.ashx.vb">
       <DependentUpon>BlogPost.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Components\Entities\LegacyUrls\LegacyUrlInfo_Interfaces.vb" />
+    <Compile Include="Components\Entities\LegacyUrls\LegacyUrlInfo_Properties.vb" />
+    <Compile Include="Components\Entities\LegacyUrls\LegacyUrlsController_CRUD.vb" />
     <Compile Include="Components\Integration\BlogModuleController_Portable.vb" />
     <Compile Include="Components\Integration\BlogModuleController_Upgradeable.vb" />
     <Compile Include="Components\Common\DynatreeItem.vb" />
