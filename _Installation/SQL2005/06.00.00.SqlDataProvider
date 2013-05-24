@@ -460,6 +460,14 @@ FROM {databaseOwner}{objectQualifier}Blog_Entries e
 END
 GO
 
+UPDATE {databaseOwner}{objectQualifier}ContentItems
+SET ModuleId=b.ModuleId
+FROM {databaseOwner}{objectQualifier}ContentItems ci
+ INNER JOIN {databaseOwner}{objectQualifier}Blog_Entries e ON ci.ContentItemID=e.ContentItemId
+ INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs b ON b.BlogID=e.BlogID
+WHERE ci.ModuleId=-1
+GO
+
 -- now the posts table
 BEGIN
 DECLARE db_cursor CURSOR FOR  

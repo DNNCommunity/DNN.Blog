@@ -5,7 +5,7 @@
    $('#blogCalendar[module:moduleid]').glDatePicker(
 {
  onClick: (function (el, cell, date, data) {
-  var url = '[urls:posttermauthor|true]end=';
+  var url = '[urls:blogtermauthor|true]end=';
   url += date.getFullYear()+'-'+(date.getMonth()+1).toString()+'-'+date.getDate();
   window.location.href = encodeURI(url);
  }),

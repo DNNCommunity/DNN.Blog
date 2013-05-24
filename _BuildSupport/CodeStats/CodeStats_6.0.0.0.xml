@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <code-summaries>
-  <code-summary date="2013-05-14T21:47:09.6708984+02:00" buildname="6.0.0.0">
-    <linecount label="VB" totalLineCount="43906" emptyLineCount="5775" commentLineCount="6899">
+  <code-summary date="2013-05-24T15:43:21.4970703+02:00" buildname="6.0.0.0">
+    <linecount label="VB" totalLineCount="48294" emptyLineCount="6430" commentLineCount="8084">
       <file-summaries>
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\BlogML\Enumerators\BlogPostTypes.vb" totalLineCount="10" emptyLineCount="1" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\BlogML\Enumerators\CommentModerationTypes.vb" totalLineCount="7" emptyLineCount="0" commentLineCount="0" />
@@ -24,31 +24,31 @@
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\BlogML\BlogMLResource.vb" totalLineCount="86" emptyLineCount="19" commentLineCount="2" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\BlogML\BlogMLWriterBase.vb" totalLineCount="425" emptyLineCount="97" commentLineCount="7" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\BlogML\Pair.vb" totalLineCount="19" emptyLineCount="4" commentLineCount="3" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\BlogContextInfo.vb" totalLineCount="207" emptyLineCount="18" commentLineCount="3" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\BlogContextInfo.vb" totalLineCount="212" emptyLineCount="18" commentLineCount="3" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\BlogModuleBase.vb" totalLineCount="164" emptyLineCount="26" commentLineCount="20" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\DynatreeItem.vb" totalLineCount="11" emptyLineCount="0" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\Extensions.vb" totalLineCount="375" emptyLineCount="38" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\Globals.vb" totalLineCount="290" emptyLineCount="34" commentLineCount="19" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\Image.vb" totalLineCount="178" emptyLineCount="24" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\LocalizedText.vb" totalLineCount="201" emptyLineCount="17" commentLineCount="20" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\ModuleSettings.vb" totalLineCount="183" emptyLineCount="23" commentLineCount="0" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\ModuleSettings.vb" totalLineCount="235" emptyLineCount="27" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\ModuleUrls.vb" totalLineCount="133" emptyLineCount="11" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\PostBodyAndSummary.vb" totalLineCount="116" emptyLineCount="8" commentLineCount="0" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\ViewSettings.vb" totalLineCount="150" emptyLineCount="20" commentLineCount="1" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\ViewSettings.vb" totalLineCount="177" emptyLineCount="22" commentLineCount="1" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\WebPage.vb" totalLineCount="78" emptyLineCount="10" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Data\DataProvider.vb" totalLineCount="28" emptyLineCount="4" commentLineCount="19" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Data\DataProvider_CMD.vb" totalLineCount="37" emptyLineCount="5" commentLineCount="0" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Data\DataProvider_CRUD.vb" totalLineCount="63" emptyLineCount="15" commentLineCount="4" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Data\DataProvider_CMD.vb" totalLineCount="40" emptyLineCount="5" commentLineCount="0" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Data\DataProvider_CRUD.vb" totalLineCount="67" emptyLineCount="16" commentLineCount="4" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Data\DataProvider_FK.vb" totalLineCount="28" emptyLineCount="9" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Data\SqlDataProvider.vb" totalLineCount="31" emptyLineCount="4" commentLineCount="19" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Data\SqlDataProvider_CMD.vb" totalLineCount="117" emptyLineCount="31" commentLineCount="0" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Data\SqlDataProvider_CRUD.vb" totalLineCount="170" emptyLineCount="50" commentLineCount="3" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Data\SqlDataProvider_CMD.vb" totalLineCount="129" emptyLineCount="34" commentLineCount="0" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Data\SqlDataProvider_CRUD.vb" totalLineCount="176" emptyLineCount="51" commentLineCount="3" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Data\SqlDataProvider_FK.vb" totalLineCount="43" emptyLineCount="12" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Blogs\BlogCalendarInfo.vb" totalLineCount="126" emptyLineCount="9" commentLineCount="20" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Blogs\BlogInfo.vb" totalLineCount="59" emptyLineCount="6" commentLineCount="19" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Blogs\BlogInfo_Interfaces.vb" totalLineCount="393" emptyLineCount="18" commentLineCount="53" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Blogs\BlogInfo.vb" totalLineCount="74" emptyLineCount="8" commentLineCount="19" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Blogs\BlogInfo_Interfaces.vb" totalLineCount="395" emptyLineCount="18" commentLineCount="53" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Blogs\BlogInfo_Properties.vb" totalLineCount="158" emptyLineCount="12" commentLineCount="12" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Blogs\BlogsController.vb" totalLineCount="65" emptyLineCount="14" commentLineCount="19" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Blogs\BlogsController.vb" totalLineCount="82" emptyLineCount="17" commentLineCount="19" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Blogs\BlogsController_CRUD.vb" totalLineCount="52" emptyLineCount="18" commentLineCount="2" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Blogs\BlogsController_FK.vb" totalLineCount="23" emptyLineCount="7" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Blogs\BlogsController_Service.vb" totalLineCount="164" emptyLineCount="17" commentLineCount="2" />
@@ -59,18 +59,21 @@
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Comments\CommentsController_CRUD.vb" totalLineCount="47" emptyLineCount="18" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Comments\CommentsController_FK.vb" totalLineCount="34" emptyLineCount="12" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Comments\CommentsController_Service.vb" totalLineCount="414" emptyLineCount="52" commentLineCount="1" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\LegacyUrls\LegacyUrlInfo_Interfaces.vb" totalLineCount="59" emptyLineCount="8" commentLineCount="20" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\LegacyUrls\LegacyUrlInfo_Properties.vb" totalLineCount="33" emptyLineCount="8" commentLineCount="0" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\LegacyUrls\LegacyUrlsController_CRUD.vb" totalLineCount="27" emptyLineCount="8" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Posts\PostAuthor.vb" totalLineCount="101" emptyLineCount="7" commentLineCount="20" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Posts\PostInfo.vb" totalLineCount="97" emptyLineCount="9" commentLineCount="19" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Posts\PostInfo_Interfaces.vb" totalLineCount="351" emptyLineCount="25" commentLineCount="53" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Posts\PostInfo_Properties.vb" totalLineCount="150" emptyLineCount="14" commentLineCount="18" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Posts\PostsController.vb" totalLineCount="217" emptyLineCount="36" commentLineCount="20" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Posts\PostsController.vb" totalLineCount="225" emptyLineCount="38" commentLineCount="20" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Posts\PostsController_CRUD.vb" totalLineCount="59" emptyLineCount="20" commentLineCount="2" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Posts\PostsController_Service.vb" totalLineCount="78" emptyLineCount="8" commentLineCount="0" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Terms\TermInfo.vb" totalLineCount="191" emptyLineCount="14" commentLineCount="31" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Terms\TermInfo.vb" totalLineCount="210" emptyLineCount="16" commentLineCount="31" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Terms\TermsController.vb" totalLineCount="133" emptyLineCount="15" commentLineCount="19" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Terms\TermsController_Service.vb" totalLineCount="45" emptyLineCount="6" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Integration\Services\NotificationServiceController.vb" totalLineCount="143" emptyLineCount="15" commentLineCount="19" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Integration\BlogModuleController_Portable.vb" totalLineCount="102" emptyLineCount="10" commentLineCount="1" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Integration\BlogModuleController_Portable.vb" totalLineCount="123" emptyLineCount="10" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Integration\BlogModuleController_Searchable.vb" totalLineCount="35" emptyLineCount="7" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Integration\BlogModuleController_Upgradeable.vb" totalLineCount="22" emptyLineCount="5" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Integration\FileController.vb" totalLineCount="75" emptyLineCount="15" commentLineCount="19" />
@@ -109,7 +112,7 @@
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Templating\BlogTokenReplace.vb" totalLineCount="232" emptyLineCount="30" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Templating\CustomParameters.vb" totalLineCount="51" emptyLineCount="6" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Templating\GenericTokenReplace.vb" totalLineCount="47" emptyLineCount="11" commentLineCount="0" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Templating\LazyLoadingUser.vb" totalLineCount="84" emptyLineCount="11" commentLineCount="0" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Templating\LazyLoadingUser.vb" totalLineCount="99" emptyLineCount="11" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Templating\Resources.vb" totalLineCount="50" emptyLineCount="6" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Templating\Template.vb" totalLineCount="234" emptyLineCount="24" commentLineCount="23" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Templating\TemplateController.vb" totalLineCount="92" emptyLineCount="12" commentLineCount="19" />
@@ -183,6 +186,37 @@
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\jquery.timeago.js" totalLineCount="162" emptyLineCount="13" commentLineCount="19" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\tag-it.min.js" totalLineCount="16" emptyLineCount="0" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\glDatePicker.min.js" totalLineCount="16" emptyLineCount="0" commentLineCount="1" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushAppleScript.js" totalLineCount="84" emptyLineCount="25" commentLineCount="4" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushAS3.js" totalLineCount="43" emptyLineCount="8" commentLineCount="9" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushBash.js" totalLineCount="59" emptyLineCount="7" commentLineCount="15" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushColdFusion.js" totalLineCount="84" emptyLineCount="8" commentLineCount="53" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushCpp.js" totalLineCount="81" emptyLineCount="8" commentLineCount="49" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushCSharp.js" totalLineCount="49" emptyLineCount="8" commentLineCount="9" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushCss.js" totalLineCount="75" emptyLineCount="10" commentLineCount="28" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushDelphi.js" totalLineCount="39" emptyLineCount="5" commentLineCount="12" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushDiff.js" totalLineCount="25" emptyLineCount="4" commentLineCount="2" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushErlang.js" totalLineCount="36" emptyLineCount="6" commentLineCount="9" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushGroovy.js" totalLineCount="51" emptyLineCount="7" commentLineCount="16" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushHaxe.js" totalLineCount="64" emptyLineCount="11" commentLineCount="13" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushJava.js" totalLineCount="41" emptyLineCount="6" commentLineCount="8" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushJavaFX.js" totalLineCount="42" emptyLineCount="6" commentLineCount="4" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushJScript.js" totalLineCount="36" emptyLineCount="7" commentLineCount="7" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushPerl.js" totalLineCount="80" emptyLineCount="12" commentLineCount="36" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushPhp.js" totalLineCount="72" emptyLineCount="8" commentLineCount="39" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushPlain.js" totalLineCount="17" emptyLineCount="4" commentLineCount="2" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushPowerShell.js" totalLineCount="59" emptyLineCount="10" commentLineCount="19" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushPython.js" totalLineCount="48" emptyLineCount="9" commentLineCount="12" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushRuby.js" totalLineCount="39" emptyLineCount="8" commentLineCount="7" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushSass.js" totalLineCount="83" emptyLineCount="12" commentLineCount="28" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushScala.js" totalLineCount="35" emptyLineCount="7" commentLineCount="5" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushSql.js" totalLineCount="51" emptyLineCount="8" commentLineCount="20" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushTypeScript.js" totalLineCount="39" emptyLineCount="8" commentLineCount="10" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushVb.js" totalLineCount="40" emptyLineCount="6" commentLineCount="15" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushXml.js" totalLineCount="53" emptyLineCount="9" commentLineCount="5" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\jquery.fancybox-1.3.4.pack.js" totalLineCount="46" emptyLineCount="1" commentLineCount="17" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\jquery.sharrre.min.js" totalLineCount="7" emptyLineCount="0" commentLineCount="6" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\shCore.js" totalLineCount="2501" emptyLineCount="382" commentLineCount="682" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\template.js" totalLineCount="76" emptyLineCount="0" commentLineCount="24" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\tagCloud\js\jqcloud-1.0.3.min.js" totalLineCount="11" emptyLineCount="0" commentLineCount="10" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\ar.js" totalLineCount="2" emptyLineCount="0" commentLineCount="2" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\bg.js" totalLineCount="2" emptyLineCount="0" commentLineCount="2" />
@@ -261,7 +295,7 @@
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Admin.ascx.vb" totalLineCount="154" emptyLineCount="23" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Blog.ascx" totalLineCount="14" emptyLineCount="5" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Blog.ascx.designer.vb" totalLineCount="51" emptyLineCount="7" commentLineCount="36" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Blog.ascx.vb" totalLineCount="400" emptyLineCount="53" commentLineCount="2" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Blog.ascx.vb" totalLineCount="408" emptyLineCount="54" commentLineCount="3" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\BlogEdit.ascx" totalLineCount="121" emptyLineCount="2" commentLineCount="1" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\BlogEdit.ascx.designer.vb" totalLineCount="402" emptyLineCount="46" commentLineCount="309" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\BlogEdit.ascx.vb" totalLineCount="218" emptyLineCount="20" commentLineCount="3" />

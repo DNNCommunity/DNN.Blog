@@ -55,12 +55,12 @@
       <HintPath>_References\CookComputing.XmlRpcV2.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DotNetNuke, Version=7.0.1.266, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke, Version=7.0.4.180, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>_References\DotNetNuke.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DotNetNuke.Web, Version=7.0.1.266, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke.Web, Version=7.0.4.180, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>_References\DotNetNuke.Web.dll</HintPath>
       <Private>False</Private>
