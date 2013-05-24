@@ -40,8 +40,9 @@ Namespace Templating
    Me.UserId = userId
   End Sub
 
-  Public Sub New(portalId As Integer, userName As String)
+  Public Sub New(portalId As Integer, userId As Integer, userName As String)
    Me.PortalId = portalId
+   Me.UserId = userId
    Me.Username = userName
   End Sub
 
@@ -62,10 +63,24 @@ Namespace Templating
 #Region " IPropertyAccess Implementation "
   Public Function GetProperty(strPropertyName As String, strFormat As String, formatProvider As System.Globalization.CultureInfo, AccessingUser As DotNetNuke.Entities.Users.UserInfo, AccessLevel As DotNetNuke.Services.Tokens.Scope, ByRef PropertyNotFound As Boolean) As String Implements DotNetNuke.Services.Tokens.IPropertyAccess.GetProperty
    Dim res As String = Null.NullString
-   If _postAuthor IsNot Nothing Then
-    res = _postAuthor.GetProperty(strPropertyName, strFormat, formatProvider, AccessingUser, AccessLevel, PropertyNotFound)
-   Else
-    res = User.GetProperty(strPropertyName, strFormat, formatProvider, AccessingUser, AccessLevel, PropertyNotFound)
+   Select strPropertyName.ToLower
+    Case "profilepic"
+     PropertyNotFound = False
+     If IsNumeric(strFormat) Then
+      res = DotNetNuke.Common.ResolveUrl(String.Format("~/profilepic.ashx?userid={0}&w={1}&h={1}", UserId, strFormat))
+     Else
+      res = DotNetNuke.Common.ResolveUrl(String.Format("~/profilepic.ashx?userid={0}&w={1}&h={1}", UserId, 50))
+     End If
+    Case "profileurl"
+     PropertyNotFound = False
+     res = DotNetNuke.Common.Globals.UserProfileURL(UserId)
+   End Select
+   If PropertyNotFound Then
+    If _postAuthor IsNot Nothing Then
+     res = _postAuthor.GetProperty(strPropertyName, strFormat, formatProvider, AccessingUser, AccessLevel, PropertyNotFound)
+    Else
+     res = User.GetProperty(strPropertyName, strFormat, formatProvider, AccessingUser, AccessLevel, PropertyNotFound)
+    End If
    End If
    If PropertyNotFound Then
     res = User.Profile.GetPropertyValue(strPropertyName)

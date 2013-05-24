@@ -21,7 +21,7 @@ Namespace Templating
    Me.PropertySource("viewsettings") = viewSettings
    If blog IsNot Nothing Then
     Me.PropertySource("blog") = blog
-    Me.PropertySource("owner") = New LazyLoadingUser(PortalSettings.PortalId, blog.Username)
+    Me.PropertySource("owner") = New LazyLoadingUser(PortalSettings.PortalId, blog.OwnerUserId, blog.Username)
    End If
    If post IsNot Nothing Then
     Me.PropertySource("post") = post
@@ -40,15 +40,15 @@ Namespace Templating
    Me.PropertySource("viewsettings") = viewSettings
    If Post IsNot Nothing Then
     Me.PropertySource("post") = Post
-    Me.PropertySource("author") = New LazyLoadingUser(PortalSettings.PortalId, Post.Username)
+    Me.PropertySource("author") = New LazyLoadingUser(PortalSettings.PortalId, Post.CreatedByUserID, Post.Username)
     Me.PropertySource("blog") = Post.Blog
-    Me.PropertySource("owner") = New LazyLoadingUser(PortalSettings.PortalId, Post.Blog.Username)
+    Me.PropertySource("owner") = New LazyLoadingUser(PortalSettings.PortalId, Post.Blog.OwnerUserId, Post.Blog.Username)
    ElseIf blog IsNot Nothing Then
     Me.PropertySource("blog") = blog
-    Me.PropertySource("owner") = New LazyLoadingUser(PortalSettings.PortalId, blog.Username)
+    Me.PropertySource("owner") = New LazyLoadingUser(PortalSettings.PortalId, blog.OwnerUserId, blog.Username)
    End If
    Me.PropertySource("comment") = comment
-   Me.PropertySource("commenter") = New LazyLoadingUser(PortalSettings.PortalId, comment.Username)
+   Me.PropertySource("commenter") = New LazyLoadingUser(PortalSettings.PortalId, comment.CreatedByUserID, comment.Username)
 
   End Sub
 
@@ -64,11 +64,11 @@ Namespace Templating
    Me.PropertySource("viewsettings") = blogModule.ViewSettings
    If blogModule.BlogContext.Blog IsNot Nothing Then
     Me.PropertySource("blog") = blogModule.BlogContext.Blog
-    Me.PropertySource("owner") = New LazyLoadingUser(PortalSettings.PortalId, blogModule.BlogContext.Blog.Username)
+    Me.PropertySource("owner") = New LazyLoadingUser(PortalSettings.PortalId, blogModule.BlogContext.Blog.OwnerUserId, blogModule.BlogContext.Blog.Username)
    End If
    If blogModule.BlogContext.Post IsNot Nothing Then
     Me.PropertySource("post") = blogModule.BlogContext.Post
-    Me.PropertySource("author") = New LazyLoadingUser(PortalSettings.PortalId, blogModule.BlogContext.Post.Username)
+    Me.PropertySource("author") = New LazyLoadingUser(PortalSettings.PortalId, blogModule.BlogContext.Post.CreatedByUserID, blogModule.BlogContext.Post.Username)
    End If
    If blogModule.BlogContext.Term IsNot Nothing Then
     Me.PropertySource("selectedterm") = blogModule.BlogContext.Term
@@ -91,10 +91,10 @@ Namespace Templating
    Me.PropertySource("settings") = blogModule.Settings
    Me.PropertySource("viewsettings") = blogModule.ViewSettings
    Me.PropertySource("blog") = blog
-   Me.PropertySource("owner") = New LazyLoadingUser(PortalSettings.PortalId, blog.Username)
+   Me.PropertySource("owner") = New LazyLoadingUser(PortalSettings.PortalId, blog.OwnerUserId, blog.Username)
    If blogModule.BlogContext.Post IsNot Nothing Then
     Me.PropertySource("post") = blogModule.BlogContext.Post
-    Me.PropertySource("author") = New LazyLoadingUser(PortalSettings.PortalId, blogModule.BlogContext.Post.Username)
+    Me.PropertySource("author") = New LazyLoadingUser(PortalSettings.PortalId, blogModule.BlogContext.Post.CreatedByUserID, blogModule.BlogContext.Post.Username)
    ElseIf blogModule.BlogContext.Author IsNot Nothing Then
     Me.PropertySource("author") = blogModule.BlogContext.Author
    End If
@@ -121,7 +121,7 @@ Namespace Templating
    Me.PropertySource("calendar") = objBlogCalendar
    If blogModule.BlogContext.Post IsNot Nothing Then
     Me.PropertySource("post") = blogModule.BlogContext.Post
-    Me.PropertySource("author") = New LazyLoadingUser(PortalSettings.PortalId, blogModule.BlogContext.Post.Username)
+    Me.PropertySource("author") = New LazyLoadingUser(PortalSettings.PortalId, blogModule.BlogContext.Post.CreatedByUserID, blogModule.BlogContext.Post.Username)
    ElseIf blogModule.BlogContext.Author IsNot Nothing Then
     Me.PropertySource("author") = blogModule.BlogContext.Author
    End If
@@ -167,9 +167,9 @@ Namespace Templating
    Me.PropertySource("settings") = blogModule.Settings
    Me.PropertySource("viewsettings") = blogModule.ViewSettings
    Me.PropertySource("post") = Post
-   Me.PropertySource("author") = New LazyLoadingUser(PortalSettings.PortalId, Post.Username)
+   Me.PropertySource("author") = New LazyLoadingUser(PortalSettings.PortalId, Post.CreatedByUserID, Post.Username)
    Me.PropertySource("blog") = Post.Blog
-   Me.PropertySource("owner") = New LazyLoadingUser(PortalSettings.PortalId, Post.Blog.Username)
+   Me.PropertySource("owner") = New LazyLoadingUser(PortalSettings.PortalId, Post.Blog.OwnerUserId, Post.Blog.Username)
    If blogModule.BlogContext.Term IsNot Nothing Then
     Me.PropertySource("selectedterm") = blogModule.BlogContext.Term
    End If
@@ -189,12 +189,12 @@ Namespace Templating
    Me.PropertySource("viewsettings") = blogModule.ViewSettings
    If Post IsNot Nothing Then
     Me.PropertySource("post") = Post
-    Me.PropertySource("author") = New LazyLoadingUser(PortalSettings.PortalId, Post.Username)
+    Me.PropertySource("author") = New LazyLoadingUser(PortalSettings.PortalId, Post.CreatedByUserID, Post.Username)
     Me.PropertySource("blog") = Post.Blog
-    Me.PropertySource("owner") = New LazyLoadingUser(PortalSettings.PortalId, Post.Blog.Username)
+    Me.PropertySource("owner") = New LazyLoadingUser(PortalSettings.PortalId, Post.Blog.OwnerUserId, Post.Blog.Username)
    ElseIf blogModule.BlogContext.Blog IsNot Nothing Then
     Me.PropertySource("blog") = blogModule.BlogContext.Blog
-    Me.PropertySource("owner") = New LazyLoadingUser(PortalSettings.PortalId, blogModule.BlogContext.Blog.Username)
+    Me.PropertySource("owner") = New LazyLoadingUser(PortalSettings.PortalId, blogModule.BlogContext.Blog.OwnerUserId, blogModule.BlogContext.Blog.Username)
    End If
    Me.PropertySource("term") = term
    If blogModule.BlogContext.Term IsNot Nothing Then
@@ -216,15 +216,15 @@ Namespace Templating
    Me.PropertySource("viewsettings") = blogModule.ViewSettings
    If Post IsNot Nothing Then
     Me.PropertySource("post") = Post
-    Me.PropertySource("author") = New LazyLoadingUser(PortalSettings.PortalId, Post.Username)
+    Me.PropertySource("author") = New LazyLoadingUser(PortalSettings.PortalId, Post.CreatedByUserID, Post.Username)
     Me.PropertySource("blog") = Post.Blog
-    Me.PropertySource("owner") = New LazyLoadingUser(PortalSettings.PortalId, Post.Blog.Username)
+    Me.PropertySource("owner") = New LazyLoadingUser(PortalSettings.PortalId, Post.Blog.OwnerUserId, Post.Blog.Username)
    ElseIf blogModule.BlogContext.Blog IsNot Nothing Then
     Me.PropertySource("blog") = blogModule.BlogContext.Blog
-    Me.PropertySource("owner") = New LazyLoadingUser(PortalSettings.PortalId, blogModule.BlogContext.Blog.Username)
+    Me.PropertySource("owner") = New LazyLoadingUser(PortalSettings.PortalId, blogModule.BlogContext.Blog.OwnerUserId, blogModule.BlogContext.Blog.Username)
    End If
    Me.PropertySource("comment") = comment
-   Me.PropertySource("commenter") = New LazyLoadingUser(PortalSettings.PortalId, comment.Username)
+   Me.PropertySource("commenter") = New LazyLoadingUser(PortalSettings.PortalId, comment.CreatedByUserID, comment.Username)
 
   End Sub
 
