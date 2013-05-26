@@ -141,8 +141,7 @@ Public Class BlogPost
    Dim i As Integer = 0
    For Each objTerm As Term In colCategories
     res(i).categoryId = objTerm.TermId
-    If objTerm.ParentTermId = DotNetNuke.Common.Utilities.Null.NullInteger Then
-     ' the way vocabs are setup for categories, this shouldn't happen
+    If objTerm.ParentTermId Is Nothing Then
      res(i).parentId = 0
     Else
      res(i).parentId = Convert.ToInt32(objTerm.ParentTermId)
@@ -355,7 +354,7 @@ Public Class BlogPost
     Dim termController As ITermController = DotNetNuke.Entities.Content.Common.Util.GetTermController()
     Dim colCategories As IQueryable(Of Term) = termController.GetTermsByVocabulary(Settings.VocabularyId)
     For Each objTerm As Term In colCategories
-     categories.Add(New Services.WLW.MetaWeblog.CategoryInfo() With {.categoryId = objTerm.TermId.ToString, .categoryName = objTerm.Name, .description = objTerm.Description, .htmlUrl = "http://google.com", .parentId = objTerm.ParentTermId.ToString, .rssUrl = "http://google.com"})
+     categories.Add(New Services.WLW.MetaWeblog.CategoryInfo() With {.categoryId = objTerm.TermId.ToString, .categoryName = objTerm.Name, .description = objTerm.Description, .htmlUrl = "http://google.com", .parentId = objTerm.ParentTermId.ToStringOrZero, .rssUrl = "http://google.com"})
     Next
    End If
   Catch ex As BlogPostException

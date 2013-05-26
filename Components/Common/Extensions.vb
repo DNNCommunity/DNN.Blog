@@ -409,6 +409,15 @@ Namespace Common
    Next
    Return String.Join(separator, res.ToArray)
   End Function
+
+  <System.Runtime.CompilerServices.Extension()>
+  Public Function ToStringOrZero(value As Integer?) As String
+   If value Is Nothing Then
+    Return "0"
+   Else
+    Return value.ToString
+   End If
+  End Function
 #End Region
 
 #Region " Other "

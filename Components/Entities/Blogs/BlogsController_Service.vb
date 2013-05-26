@@ -74,7 +74,7 @@ Namespace Entities.Blogs
      categoryML.Description = ""
      categoryML.Title = c.Name
      categoryML.ID = c.TermId.ToString
-     categoryML.ParentRef = c.ParentTermId.ToString
+     categoryML.ParentRef = c.ParentTermId.ToStringOrZero
      TargetBlogML.Categories.Add(categoryML)
     Next
    End If

@@ -194,6 +194,8 @@ Namespace Entities.Posts
    ' not implemented
   End Sub
   Friend Property ImportedFiles As List(Of BlogML.Xml.BlogMLAttachment)
+  Friend Property ImportedTags As List(Of String)
+  Friend Property ImportedCategories As List(Of String)
 
   Public Sub FromXml(xml As XmlNode)
    If xml Is Nothing Then Exit Sub
@@ -220,6 +222,15 @@ Namespace Entities.Posts
     xFile.ReadValue("Path", f.Path)
     f.Data = Convert.FromBase64String(xFile.SelectSingleNode("Data").InnerText)
     ImportedFiles.Add(f)
+   Next
+
+   ImportedTags = New List(Of String)
+   For Each xTag As XmlNode In xml.SelectNodes("Tag")
+    ImportedTags.Add(xTag.InnerText)
+   Next
+   ImportedCategories = New List(Of String)
+   For Each xCategory As XmlNode In xml.SelectNodes("Category")
+    ImportedCategories.Add(xCategory.InnerText)
    Next
 
   End Sub
@@ -289,6 +300,12 @@ Namespace Entities.Posts
    writer.WriteElementString("Locale", Locale)
    writer.WriteElementString("Username", Username)
    writer.WriteElementString("Email", Email)
+   For Each t As Entities.Terms.TermInfo In Me.PostTags
+    writer.WriteElementString("Tag", t.Name)
+   Next
+   For Each t As Entities.Terms.TermInfo In Me.PostCategories
+    writer.WriteElementString("Category", t.Name)
+   Next
    writer.WriteEndElement() ' Post
   End Sub
 #End Region

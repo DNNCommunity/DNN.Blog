@@ -23,6 +23,8 @@ Imports DotNetNuke.Entities.Content.Taxonomy
 Imports DotNetNuke.Entities.Modules
 Imports DotNetNuke.Services.Tokens
 Imports DotNetNuke.Modules.Blog.Common.Globals
+Imports System.Linq
+Imports System.Xml
 
 Namespace Entities.Terms
  Public Class TermInfo
@@ -142,11 +144,7 @@ Namespace Entities.Terms
     Case "title", "name"
      Return PropertyAccess.FormatString(Me.Name, strFormat)
     Case "parenttermid"
-     If ParentTermId Is Nothing Then
-      Return "0"
-     Else
-      Return Me.ParentTermId.ToString
-     End If
+     Return Me.ParentTermId.ToStringOrZero
     Case "right"
      Return (Me.Right.ToString(OutputFormat, formatProvider))
     Case "termid"
@@ -191,6 +189,34 @@ Namespace Entities.Terms
   End Property
 #End Region
 
+#Region " (De)serialization "
+  Friend Property ImportedChildTerms As List(Of TermInfo)
+  Public Sub FromXml(xml As XmlNode)
+   If xml Is Nothing Then Exit Sub
+   xml.ReadValue("Name", Name)
+   xml.ReadValue("NameLocalizations", NameLocalizations)
+   xml.ReadValue("Description", Description)
+   xml.ReadValue("DescriptionLocalizations", DescriptionLocalizations)
+   For Each xTerm As XmlNode In xml.SelectNodes("Term")
+    Dim t As New TermInfo
+    t.FromXml(xTerm)
+    ImportedChildTerms.Add(t)
+   Next
+  End Sub
+
+  Public Sub WriteXml(writer As XmlWriter, vocabulary As List(Of TermInfo))
+   writer.WriteStartElement("Term")
+   writer.WriteElementString("Name", Name)
+   writer.WriteElementString("NameLocalizations", NameLocalizations.ToString)
+   writer.WriteElementString("Description", Description)
+   writer.WriteElementString("DescriptionLocalizations", DescriptionLocalizations.ToString)
+   For Each t As TermInfo In vocabulary.Where(Function(x) CBool(x.ParentTermId IsNot Nothing AndAlso x.ParentTermId = TermId))
+    t.WriteXml(writer, vocabulary)
+   Next
+   writer.WriteEndElement() ' Term
+  End Sub
+#End Region
+
 #Region " Public Methods "
   Public Function PermaLink(portalSettings As DotNetNuke.Entities.Portals.PortalSettings) As String
    Return PermaLink(portalSettings.ActiveTab)
@@ -203,6 +229,18 @@ Namespace Entities.Terms
     _permaLink = FriendlyUrl(tab, _permaLink, GetSafePageName(LocalizedName))
    End If
    Return _permaLink
+  End Function
+
+  Public Function FlatClone() As TermInfo
+   Dim res As New TermInfo
+   With res
+    .Name = Me.Name
+    .NameLocalizations = Me.NameLocalizations
+    .Name = Me.Description
+    .DescriptionLocalizations = Me.DescriptionLocalizations
+    .Weight = Me.Weight
+   End With
+   Return res
   End Function
 #End Region
 

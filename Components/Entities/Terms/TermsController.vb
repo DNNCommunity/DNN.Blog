@@ -21,6 +21,7 @@ Imports System.Linq
 
 Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Entities.Content.Taxonomy
+Imports System.Xml
 
 Namespace Entities.Terms
  Partial Public Class TermsController
@@ -75,11 +76,62 @@ Namespace Entities.Terms
      res.Add(existantTerm)
     ElseIf autoCreate And name <> "" Then
      Dim termId As Integer = DotNetNuke.Entities.Content.Common.Util.GetTermController().AddTerm(New Term(vocabularyId) With {.Name = name})
-     res.Add(New TermInfo(name) With {.Description = "", .ParentTermId = 0, .TermId = termId, .TotalPosts = 0, .Weight = 0})
+     res.Add(New TermInfo(name) With {.Description = "", .TermId = termId, .TotalPosts = 0, .Weight = 0})
     End If
    Next
    Return res
   End Function
+
+#Region " (De)serialization "
+  Public Shared Function FromXml(xml As XmlNode) As List(Of TermInfo)
+   Dim res As New List(Of TermInfo)
+   If xml Is Nothing Then Return res
+   For Each xTerm As XmlNode In xml.SelectNodes("Term")
+    Dim t As New TermInfo
+    t.FromXml(xTerm)
+    res.Add(t)
+   Next
+   Return res
+  End Function
+
+  Public Shared Sub WriteVocabulary(writer As XmlTextWriter, name As String, vocabulary As List(Of TermInfo))
+   writer.WriteStartElement(name)
+   For Each t As TermInfo In vocabulary.Where(Function(x) CBool(x.ParentTermId Is Nothing))
+    t.WriteXml(writer, vocabulary)
+   Next
+   writer.WriteEndElement() ' Vocabulary
+  End Sub
+
+  Public Shared Sub AddTags(moduleId As Integer, tagList As List(Of TermInfo))
+   Dim allTags As Dictionary(Of String, TermInfo) = GetTermsByVocabulary(moduleId, 1, "")
+   For Each t As TermInfo In tagList
+    If Not allTags.ContainsKey(t.Name) Then
+     Dim newTerm As New Term(1) With {.Name = t.Name, .Description = t.Description}
+     newTerm.TermId = DotNetNuke.Entities.Content.Common.Util.GetTermController().AddTerm(newTerm)
+     For Each l As String In t.NameLocalizations.Locales
+      Data.DataProvider.Instance.SetTermLocalization(newTerm.TermId, l, t.NameLocalizations(l), t.DescriptionLocalizations(l))
+     Next
+    End If
+   Next
+  End Sub
+
+  Public Shared Sub AddVocabulary(vocabularyId As Integer, vocabulary As List(Of TermInfo))
+   For Each t As TermInfo In vocabulary.Where(Function(x) CBool(x.ParentTermId Is Nothing))
+    AddTerm(vocabularyId, vocabulary, 0, t)
+   Next
+  End Sub
+
+  Private Shared Sub AddTerm(vocabularyId As Integer, vocabulary As List(Of TermInfo), parentId As Integer, term As TermInfo)
+   Dim newTerm As New Term(vocabularyId) With {.Name = term.Name, .Description = term.Description, .ParentTermId = parentId}
+   newTerm.TermId = DotNetNuke.Entities.Content.Common.Util.GetTermController().AddTerm(newTerm)
+   For Each l As String In term.NameLocalizations.Locales
+    Data.DataProvider.Instance.SetTermLocalization(newTerm.TermId, l, term.NameLocalizations(l), term.DescriptionLocalizations(l))
+   Next
+   For Each t As TermInfo In vocabulary.Where(Function(x) CBool(x.ParentTermId = term.TermId))
+    AddTerm(vocabularyId, vocabulary, newTerm.TermId, t)
+   Next
+  End Sub
+#End Region
 
 #Region " UI Functions "
   Public Shared Function GetCategoryTreeAsJson(vocabulary As Dictionary(Of String, TermInfo)) As String
