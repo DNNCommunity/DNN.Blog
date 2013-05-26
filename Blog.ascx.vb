@@ -23,6 +23,7 @@ Public Class Blog
 
 #Region " Event Handlers "
  Private Sub Page_Init1(sender As Object, e As System.EventArgs) Handles Me.Init
+  Integration.BlogModuleController.CheckupOnImportedFiles(ModuleId)
   ctlComments.ModuleConfiguration = Me.ModuleConfiguration
   ctlComments.BlogContext = Me.BlogContext
   ctlManagement.ModuleConfiguration = Me.ModuleConfiguration
@@ -32,8 +33,6 @@ Public Class Blog
  Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
   If Context.Items("BlogPageInitialized") Is Nothing Then
-
-   Integration.BlogModuleController.CheckupOnImportedFiles(ModuleId)
 
    ' wlw style detection post redirect?
    If Not String.IsNullOrEmpty(Settings.StyleDetectionUrl) And BlogContext.WLWRequest Then

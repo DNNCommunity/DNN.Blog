@@ -34,6 +34,7 @@ Namespace Data
   Public MustOverride Sub SetPostLocalization(postID As Int32, locale As String, title As String, summary As String, content As String, updatedByUser As Int32)
   Public MustOverride Function SetTerm(termID As Int32, vocabularyID As Int32, parentTermID As Int32, viewOrder As Int32, name As String, description As String, createdByUserID As Int32) As Integer
   Public MustOverride Sub SetTermLocalization(termID As Int32, locale As String, name As String, description As String)
+  Public MustOverride Sub UpdateModuleWiring(portalId As Int32, oldModuleId As Int32, newModuleId As Int32)
 
  End Class
 

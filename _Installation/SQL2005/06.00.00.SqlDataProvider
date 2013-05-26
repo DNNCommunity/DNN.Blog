@@ -3216,6 +3216,29 @@ WHERE
  [CommentID] = @CommentID
 GO
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_UpdateModuleWiring') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdateModuleWiring
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdateModuleWiring
+ @PortalId INT,
+ @OldModuleId INT,
+ @NewModuleId INT
+AS
+UPDATE {databaseOwner}{objectQualifier}TabModuleSettings
+SET SettingValue=CAST(@NewModuleId AS NVARCHAR(10))
+FROM {databaseOwner}{objectQualifier}TabModuleSettings tms
+ INNER JOIN {databaseOwner}{objectQualifier}TabModules tm ON tms.TabModuleID=tm.TabModuleID
+ INNER JOIN {databaseOwner}{objectQualifier}Modules m ON m.ModuleID=tm.ModuleID
+WHERE tms.SettingName='BlogModuleId'
+ AND m.PortalID=@PortalId
+ AND tms.SettingValue=CAST(@OldModuleId AS NVARCHAR(10))
+GO
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_UpdatePost') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdatePost
 GO

@@ -123,6 +123,10 @@ Namespace Data
    SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "SetTermLocalization", termID, locale, name, description)
   End Sub
 
+  Public Overrides Sub UpdateModuleWiring(portalId As Int32, oldModuleId As Int32, newModuleId As Int32)
+   SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "UpdateModuleWiring", portalId, oldModuleId, newModuleId)
+  End Sub
+
  End Class
 
 End Namespace

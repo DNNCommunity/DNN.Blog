@@ -42,6 +42,13 @@ Namespace Common
    _allSettings.ReadValue("BlogId", BlogId)
    _allSettings.ReadValue("TermId", TermId)
    _allSettings.ReadValue("AuthorId", AuthorId)
+   If BlogModuleId > -1 Then ' security check
+    Dim parentModule As DotNetNuke.Entities.Modules.ModuleInfo = (New DotNetNuke.Entities.Modules.ModuleController).GetModule(BlogModuleId)
+    Dim thisTabModule As DotNetNuke.Entities.Modules.ModuleInfo = (New DotNetNuke.Entities.Modules.ModuleController).GetTabModule(tabModuleId)
+    If parentModule.PortalID <> thisTabModule.PortalID Then
+     BlogModuleId = -1
+    End If
+   End If
    If justLoadSettings Then Exit Sub
 
    ' Template Settings - first load defaults

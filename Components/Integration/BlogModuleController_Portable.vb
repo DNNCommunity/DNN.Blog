@@ -28,7 +28,9 @@ Namespace Integration
         Dim t As String = line.Substring(0, 1)
         Dim oldId As Integer = Integer.Parse(line.Substring(1, line.IndexOf("-") - 1))
         Dim newId As Integer = Integer.Parse(line.Substring(line.IndexOf("-") + 1))
-        If t = "B" Then
+        If t = "M" Then
+         Data.DataProvider.Instance.UpdateModuleWiring(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, oldId, newId)
+        ElseIf t = "B" Then
          Dim d As New IO.DirectoryInfo(String.Format("{0}Blog\Files\{1}\", DotNetNuke.Entities.Portals.PortalSettings.Current.HomeDirectoryMapPath, oldId))
          If d.Exists Then
           d.MoveTo(String.Format("{0}Blog\Files\{1}\", DotNetNuke.Entities.Portals.PortalSettings.Current.HomeDirectoryMapPath, newId))
@@ -80,6 +82,7 @@ Namespace Integration
    Using sw As New IO.StringWriter(strXml)
     Using xml As New XmlTextWriter(sw)
      xml.WriteStartElement("dnnblog")
+     xml.WriteElementString("ModuleId", ModuleID.ToString)
      Dim tabMods As ArrayList = (New ModuleController).GetAllTabsModulesByModuleID(ModuleID)
      If tabMods.Count > 0 Then
       Dim vs As ViewSettings = ViewSettings.GetViewSettings(CType(tabMods(0), ModuleInfo).TabModuleID)
@@ -108,6 +111,9 @@ Namespace Integration
 
     Dim xContent As XmlNode = DotNetNuke.Common.GetContent(Content, "dnnblog")
     Dim importReport As New StringBuilder
+    Dim oldModuleId As Integer = -1
+    xContent.ReadValue("ModuleId", oldModuleId)
+    importReport.AppendFormat("M{0}-{1}" & vbCrLf, oldModuleId, ModuleID)
 
     Dim tabMods As ArrayList = (New ModuleController).GetAllTabsModulesByModuleID(ModuleID)
     If tabMods.Count > 0 Then
