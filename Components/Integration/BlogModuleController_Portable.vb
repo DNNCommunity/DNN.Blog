@@ -39,76 +39,66 @@ Namespace Integration
   Public Sub ImportModule(ByVal ModuleID As Integer, ByVal Content As String, ByVal Version As String, ByVal UserID As Integer) Implements DotNetNuke.Entities.Modules.IPortable.ImportModule
    Try
 
-    Using sr As New IO.StringReader(Content)
-     Using strXml As XmlReader = XmlReader.Create(sr)
-      If strXml.Read() Then
-       strXml.ReadStartElement("dnnblog") ' advance to content
-       If strXml.ReadState <> ReadState.EndOfFile And strXml.NodeType <> XmlNodeType.None And strXml.LocalName <> "" Then
-        strXml.ReadStartElement("ViewSettings")
-        Dim tabMods As ArrayList = (New ModuleController).GetAllTabsModulesByModuleID(ModuleID)
-        If tabMods.Count > 0 Then
-         Dim vs As ViewSettings = ViewSettings.GetViewSettings(CType(tabMods(0), ModuleInfo).TabModuleID)
-         vs.Deserialize(strXml)
-         vs.UpdateSettings()
-         If vs.BlogModuleId = -1 Then
-          strXml.ReadStartElement("Settings")
-          Dim settings As ModuleSettings = ModuleSettings.GetModuleSettings(ModuleID)
-          settings.Deserialize(strXml)
-          settings.UpdateSettings()
+    Dim c As XmlNode = DotNetNuke.Common.GetContent(Content, "dnnblog")
+
+    Dim tabMods As ArrayList = (New ModuleController).GetAllTabsModulesByModuleID(ModuleID)
+    If tabMods.Count > 0 Then
+     Dim vs As ViewSettings = ViewSettings.GetViewSettings(CType(tabMods(0), ModuleInfo).TabModuleID)
+     vs.FromXml(c.SelectSingleNode("ViewSettings"))
+     vs.UpdateSettings()
+     If vs.BlogModuleId < 1 Then
+      Dim settings As ModuleSettings = ModuleSettings.GetModuleSettings(ModuleID)
+      settings.FromXml(c.SelectSingleNode("Settings"))
+      settings.UpdateSettings()
+      For Each xBlog As XmlNode In c.SelectNodes("Blog")
+       Dim blog As New BlogInfo
+       blog.FromXml(xBlog)
+       blog.ModuleID = ModuleID
+       blog.OwnerUserId = UserID
+       blog.BlogID = BlogsController.AddBlog(blog, UserID)
+       If blog.ImportedFiles.Count > 0 Then
+        Dim blogDir As String = GetBlogDirectoryMapPath(blog.BlogID)
+        IO.Directory.CreateDirectory(blogDir)
+        For Each att As BlogML.Xml.BlogMLAttachment In blog.ImportedFiles
+         If att.Embedded And att.Data IsNot Nothing Then
+          Dim filename As String = att.Path
+          If filename = "" Then filename = att.Url
+          filename = filename.Replace("/", "\")
+          If filename.IndexOf("\") > 0 Then filename = filename.Substring(filename.LastIndexOf("\") + 1)
+          IO.File.WriteAllBytes(blogDir & filename, att.Data)
          End If
-        End If
-        Do
-         strXml.ReadStartElement("Blog")
-         Dim blog As New BlogInfo
-         blog.ReadXml(strXml)
-         blog.ModuleID = ModuleID
-         blog.OwnerUserId = UserID
-         blog.BlogID = BlogsController.AddBlog(blog, UserID)
-         If blog.ImportedFiles.Count > 0 Then
-          Dim blogDir As String = GetBlogDirectoryMapPath(blog.BlogID)
-          IO.Directory.CreateDirectory(blogDir)
-          For Each att As BlogML.Xml.BlogMLAttachment In blog.ImportedFiles
-           If att.Embedded And att.Data IsNot Nothing Then
-            Dim filename As String = att.Path
-            If filename = "" Then filename = att.Url
-            filename = filename.Replace("/", "\")
-            If filename.IndexOf("\") > 0 Then filename = filename.Substring(filename.LastIndexOf("\") + 1)
-            IO.File.WriteAllBytes(blogDir & filename, att.Data)
-           End If
-          Next
-         End If
-         For Each p As PostInfo In blog.ImportedPosts
-          p.BlogID = blog.BlogID
-          PostsController.AddPost(p, UserID)
-          If p.ImportedFiles.Count > 0 Then
-           Dim postDir As String = GetPostDirectoryMapPath(p)
-           Dim postPath As String = GetPostDirectoryPath(p)
-           IO.Directory.CreateDirectory(postDir)
-           For Each att As BlogML.Xml.BlogMLAttachment In p.ImportedFiles
-            If att.Embedded And att.Data IsNot Nothing Then
-             Dim filename As String = att.Path
-             If filename = "" Then filename = att.Url
-             filename = filename.Replace("/", "\")
-             If filename.IndexOf("\") > 0 Then filename = filename.Substring(filename.LastIndexOf("\") + 1)
-             IO.File.WriteAllBytes(postDir & filename, att.Data)
-             p.Content = p.Content.Replace(filename, postPath & filename)
-             For Each l As String In p.ContentLocalizations.Locales
-              p.ContentLocalizations(l) = p.ContentLocalizations(l).Replace(filename, postPath & filename)
-             Next
-             If Not String.IsNullOrEmpty(p.Summary) Then p.Summary = p.Summary.Replace(filename, postPath & filename)
-             For Each l As String In p.SummaryLocalizations.Locales
-              p.SummaryLocalizations(l) = p.SummaryLocalizations(l).Replace(filename, postPath & filename)
-             Next
-            End If
+        Next
+       End If
+       For Each p As PostInfo In blog.ImportedPosts
+        p.BlogID = blog.BlogID
+        PostsController.AddPost(p, UserID)
+        If p.ImportedFiles.Count > 0 Then
+         Dim postDir As String = GetPostDirectoryMapPath(p)
+         Dim postPath As String = GetPostDirectoryPath(p)
+         IO.Directory.CreateDirectory(postDir)
+         For Each att As BlogML.Xml.BlogMLAttachment In p.ImportedFiles
+          If att.Embedded And att.Data IsNot Nothing Then
+           Dim filename As String = att.Path
+           If filename = "" Then filename = att.Url
+           filename = filename.Replace("/", "\")
+           If filename.IndexOf("\") > 0 Then filename = filename.Substring(filename.LastIndexOf("\") + 1)
+           IO.File.WriteAllBytes(postDir & filename, att.Data)
+           p.Content = p.Content.Replace(filename, postPath & filename)
+           For Each l As String In p.ContentLocalizations.Locales
+            p.ContentLocalizations(l) = p.ContentLocalizations(l).Replace(filename, postPath & filename)
            Next
-           PostsController.UpdatePost(p, UserID)
+           If Not String.IsNullOrEmpty(p.Summary) Then p.Summary = p.Summary.Replace(filename, postPath & filename)
+           For Each l As String In p.SummaryLocalizations.Locales
+            p.SummaryLocalizations(l) = p.SummaryLocalizations(l).Replace(filename, postPath & filename)
+           Next
           End If
          Next
-        Loop While strXml.ReadToNextSibling("Blog")
-       End If
-      End If
-     End Using
-    End Using
+         PostsController.UpdatePost(p, UserID)
+        End If
+       Next
+      Next
+     End If
+    End If
 
    Catch ex As Exception
     Exceptions.LogException(ex)

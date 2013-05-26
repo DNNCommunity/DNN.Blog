@@ -207,27 +207,28 @@ Namespace Common
    writer.WriteEndElement() ' settings
   End Sub
 
-  Public Sub Deserialize(reader As XmlReader)
-   Integer.TryParse(readElement(reader, "ModuleID"), _importedModuleId)
-   Boolean.TryParse(readElement(reader, "AllowWLW"), AllowWLW)
-   Boolean.TryParse(readElement(reader, "AllowMultipleCategories"), AllowMultipleCategories)
-   Integer.TryParse(readElement(reader, "VocabularyId"), VocabularyId)
-   Boolean.TryParse(readElement(reader, "AllowAttachments"), AllowAttachments)
-   SummaryType.TryParse(readElement(reader, "SummaryModel"), SummaryModel)
-   StyleDetectionUrl = readElement(reader, "StyleDetectionUrl")
-   Integer.TryParse(readElement(reader, "WLWRecentPostsMax"), WLWRecentPostsMax)
-   Boolean.TryParse(readElement(reader, "AllowAllLocales"), AllowAllLocales)
-   Boolean.TryParse(readElement(reader, "ModifyPageDetails"), ModifyPageDetails)
+  Public Sub FromXml(xml As XmlNode)
+   If xml Is Nothing Then Exit Sub
+   xml.ReadValue("ModuleID", _importedModuleId)
+   xml.ReadValue("AllowWLW", AllowWLW)
+   xml.ReadValue("AllowMultipleCategories", AllowMultipleCategories)
+   xml.ReadValue("VocabularyId", VocabularyId)
+   xml.ReadValue("AllowAttachments", AllowAttachments)
+   xml.ReadValue("SummaryModel", SummaryModel)
+   xml.ReadValue("StyleDetectionUrl", StyleDetectionUrl)
+   xml.ReadValue("WLWRecentPostsMax", WLWRecentPostsMax)
+   xml.ReadValue("AllowAllLocales", AllowAllLocales)
+   xml.ReadValue("ModifyPageDetails", ModifyPageDetails)
 
-   RssEmail = readElement(reader, "RssEmail")
-   Integer.TryParse(readElement(reader, "RssDefaultNrItems"), RssDefaultNrItems)
-   Integer.TryParse(readElement(reader, "RssMaxNrItems"), RssMaxNrItems)
-   Integer.TryParse(readElement(reader, "RssTtl"), RssTtl)
-   Integer.TryParse(readElement(reader, "RssImageWidth"), RssImageWidth)
-   Integer.TryParse(readElement(reader, "RssImageHeight"), RssImageHeight)
-   Boolean.TryParse(readElement(reader, "RssImageSizeAllowOverride"), RssImageSizeAllowOverride)
-   Boolean.TryParse(readElement(reader, "RssAllowContentInFeed"), RssAllowContentInFeed)
-   RssDefaultCopyright = readElement(reader, "RssDefaultCopyright")
+   xml.ReadValue("RssEmail", RssEmail)
+   xml.ReadValue("RssDefaultNrItems", RssDefaultNrItems)
+   xml.ReadValue("RssMaxNrItems", RssMaxNrItems)
+   xml.ReadValue("RssTtl", RssTtl)
+   xml.ReadValue("RssImageWidth", RssImageWidth)
+   xml.ReadValue("RssImageHeight", RssImageHeight)
+   xml.ReadValue("RssImageSizeAllowOverride", RssImageSizeAllowOverride)
+   xml.ReadValue("RssAllowContentInFeed", RssAllowContentInFeed)
+   xml.ReadValue("RssDefaultCopyright", RssDefaultCopyright)
   End Sub
 #End Region
 

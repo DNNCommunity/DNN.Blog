@@ -191,51 +191,38 @@ Namespace Entities.Posts
   ''' </history>
   ''' -----------------------------------------------------------------------------
   Public Sub ReadXml(reader As XmlReader) Implements IXmlSerializable.ReadXml
-   Try
-
-    reader.ReadStartElement("Files") ' advance to files
-    ImportedFiles = New List(Of BlogML.Xml.BlogMLAttachment)
-    If reader.ReadToDescendant("File") Then ' advance to file
-     Do
-      Dim f As New BlogML.Xml.BlogMLAttachment
-      f.Path = readElement(reader, "Path")
-      Dim bufferSize As Integer = 1000
-      Dim buffer(bufferSize) As Byte
-      Dim readBytes As Integer = 0
-      Do
-       readBytes = reader.ReadElementContentAsBase64(buffer, 0, bufferSize)
-      Loop While bufferSize <= readBytes
-      f.Data = buffer
-      ImportedFiles.Add(f)
-     Loop While reader.ReadToNextSibling("File")
-    End If
-
-    ReadMultiLingualText(reader, "Title", Title, TitleLocalizations)
-    ReadMultiLingualText(reader, "Summary", Summary, SummaryLocalizations)
-    ReadMultiLingualText(reader, "Content", Content, ContentLocalizations)
-
-    Title = readElement(reader, "Title")
-    Summary = readElement(reader, "Summary")
-    Content = readElement(reader, "Content")
-    Image = readElement(reader, "Image")
-    Boolean.TryParse(readElement(reader, "Published"), Published)
-    Date.TryParse(readElement(reader, "PublishedOnDate"), PublishedOnDate)
-    Boolean.TryParse(readElement(reader, "AllowComments"), AllowComments)
-    Boolean.TryParse(readElement(reader, "DisplayCopyright"), DisplayCopyright)
-    Copyright = readElement(reader, "Copyright")
-    Locale = readElement(reader, "Locale")
-    Username = readElement(reader, "Username")
-    Email = readElement(reader, "Email")
-
-   Catch ex As Exception
-    ' log exception as DNN import routine does not do that
-    DotNetNuke.Services.Exceptions.LogException(ex)
-    ' re-raise exception to make sure import routine displays a visible error to the user
-    Throw New Exception("An error occured during import of an Post", ex)
-   End Try
-
+   ' not implemented
   End Sub
   Friend Property ImportedFiles As List(Of BlogML.Xml.BlogMLAttachment)
+
+  Public Sub FromXml(xml As XmlNode)
+   If xml Is Nothing Then Exit Sub
+
+   xml.ReadValue("Title", Title)
+   xml.ReadValue("TitleLocalizations", TitleLocalizations)
+   xml.ReadValue("Summary", Summary)
+   xml.ReadValue("SummaryLocalizations", SummaryLocalizations)
+   xml.ReadValue("Content", Content)
+   xml.ReadValue("ContentLocalizations", ContentLocalizations)
+   xml.ReadValue("Image", Image)
+   xml.ReadValue("Published", Published)
+   xml.ReadValue("PublishedOnDate", PublishedOnDate)
+   xml.ReadValue("AllowComments", AllowComments)
+   xml.ReadValue("DisplayCopyright", DisplayCopyright)
+   xml.ReadValue("Copyright", Copyright)
+   xml.ReadValue("Locale", Locale)
+   xml.ReadValue("Username", Username)
+   xml.ReadValue("Email", Email)
+
+   ImportedFiles = New List(Of BlogML.Xml.BlogMLAttachment)
+   For Each xFile As XmlNode In xml.SelectNodes("Files/File")
+    Dim f As New BlogML.Xml.BlogMLAttachment
+    xFile.ReadValue("Path", f.Path)
+    f.Data = Convert.FromBase64String(xFile.SelectSingleNode("Data").InnerText)
+    ImportedFiles.Add(f)
+   Next
+
+  End Sub
 
   ''' -----------------------------------------------------------------------------
   ''' <summary>
@@ -249,7 +236,6 @@ Namespace Entities.Posts
   ''' -----------------------------------------------------------------------------
   Public Sub WriteXml(writer As XmlWriter) Implements IXmlSerializable.WriteXml
    writer.WriteStartElement("Post")
-
    writer.WriteStartElement("Files")
    ' pack files
    Dim postDir As String = GetPostDirectoryMapPath(BlogID, ContentItemId)
@@ -288,10 +274,12 @@ Namespace Entities.Posts
     Next
    End If
    writer.WriteEndElement() ' Files
-
-   WriteMultiLingualText(writer, "Title", Title, TitleLocalizations)
-   WriteMultiLingualText(writer, "Summary", newSummary, newSummaryLocalized)
-   WriteMultiLingualText(writer, "Content", newContent, newContentLocalized)
+   writer.WriteElementString("Title", Title)
+   writer.WriteElementString("TitleLocalizations", TitleLocalizations.ToString)
+   writer.WriteElementString("Summary", Summary)
+   writer.WriteElementString("SummaryLocalizations", SummaryLocalizations.ToString)
+   writer.WriteElementString("Content", Content)
+   writer.WriteElementString("ContentLocalizations", ContentLocalizations.ToString)
    writer.WriteElementString("Image", Image)
    writer.WriteElementString("Published", Published.ToString())
    writer.WriteElementString("PublishedOnDate", PublishedOnDate.ToString())

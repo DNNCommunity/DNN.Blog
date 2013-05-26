@@ -161,15 +161,16 @@ Namespace Common
    writer.WriteEndElement() ' viewsettings
   End Sub
 
-  Public Sub Deserialize(reader As XmlReader)
-   Template = readElement(reader, "Template")
-   Boolean.TryParse(readElement(reader, "ShowManagementPanel"), ShowManagementPanel)
-   Boolean.TryParse(readElement(reader, "ShowComments"), ShowComments)
-   Integer.TryParse(readElement(reader, "BlogModuleId"), BlogModuleId)
-   Boolean.TryParse(readElement(reader, "ShowAllLocales"), ShowAllLocales)
-   Integer.TryParse(readElement(reader, "BlogId"), BlogId)
-   Integer.TryParse(readElement(reader, "TermId"), TermId)
-   Integer.TryParse(readElement(reader, "AuthorId"), AuthorId)
+  Public Sub FromXml(xml As XmlNode)
+   If xml Is Nothing Then Exit Sub
+   xml.ReadValue("Template", Template)
+   xml.ReadValue("ShowManagementPanel", ShowManagementPanel)
+   xml.ReadValue("ShowComments", ShowComments)
+   xml.ReadValue("BlogModuleId", BlogModuleId)
+   xml.ReadValue("ShowAllLocales", ShowAllLocales)
+   xml.ReadValue("BlogId", BlogId)
+   xml.ReadValue("TermId", TermId)
+   xml.ReadValue("AuthorId", AuthorId)
   End Sub
 #End Region
 

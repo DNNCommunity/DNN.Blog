@@ -112,6 +112,11 @@ Namespace Common
    Loop
   End Sub
 
+  Public Sub FromXml(xml As XmlNode)
+   If xml Is Nothing Then Exit Sub
+
+  End Sub
+
   Public Function ToConcatenatedString() As String
    Dim res As New StringBuilder
    For Each l As String In _texts.Keys

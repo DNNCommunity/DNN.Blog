@@ -1,6 +1,7 @@
 ﻿Imports System.Linq
 Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.Entities.Terms
+Imports System.Xml
 
 Namespace Common
  Module Extensions
@@ -259,6 +260,98 @@ Namespace Common
      Variable = TimeSpan.Parse(CType(ValueTable.Item(ValueName), String))
     Catch ex As Exception
     End Try
+   End If
+  End Sub
+
+  <System.Runtime.CompilerServices.Extension()>
+  Public Sub ReadValue(ByRef ValueTable As XmlNode, ValueName As String, ByRef Variable As Integer)
+   If Not ValueTable.SelectSingleNode(ValueName) Is Nothing Then
+    Try
+     Variable = CType(ValueTable.SelectSingleNode(ValueName).InnerText, Integer)
+    Catch ex As Exception
+    End Try
+   End If
+  End Sub
+
+  <System.Runtime.CompilerServices.Extension()>
+  Public Sub ReadValue(ByRef ValueTable As XmlNode, ValueName As String, ByRef Variable As Long)
+   If Not ValueTable.SelectSingleNode(ValueName) Is Nothing Then
+    Try
+     Variable = CType(ValueTable.SelectSingleNode(ValueName).InnerText, Long)
+    Catch ex As Exception
+    End Try
+   End If
+  End Sub
+
+  <System.Runtime.CompilerServices.Extension()>
+  Public Sub ReadValue(ByRef ValueTable As XmlNode, ValueName As String, ByRef Variable As String)
+   If Not ValueTable.SelectSingleNode(ValueName) Is Nothing Then
+    Try
+     Variable = CType(ValueTable.SelectSingleNode(ValueName).InnerText, String)
+    Catch ex As Exception
+    End Try
+   End If
+  End Sub
+
+  <System.Runtime.CompilerServices.Extension()>
+  Public Sub ReadValue(ByRef ValueTable As XmlNode, ValueName As String, ByRef Variable As Boolean)
+   If Not ValueTable.SelectSingleNode(ValueName) Is Nothing Then
+    Try
+     Variable = CType(ValueTable.SelectSingleNode(ValueName).InnerText, Boolean)
+    Catch ex As Exception
+    End Try
+   End If
+  End Sub
+
+  <System.Runtime.CompilerServices.Extension()>
+  Public Sub ReadValue(ByRef ValueTable As XmlNode, ValueName As String, ByRef Variable As Date)
+   If Not ValueTable.SelectSingleNode(ValueName) Is Nothing Then
+    Try
+     Variable = CType(ValueTable.SelectSingleNode(ValueName).InnerText, Date)
+    Catch ex As Exception
+    End Try
+   End If
+  End Sub
+
+  <System.Runtime.CompilerServices.Extension()>
+  Public Sub ReadValue(ByRef ValueTable As XmlNode, ValueName As String, ByRef Variable As SummaryType)
+   If Not ValueTable.SelectSingleNode(ValueName) Is Nothing Then
+    Try
+     Variable = CType(CType(ValueTable.SelectSingleNode(ValueName).InnerText, Integer), SummaryType)
+    Catch ex As Exception
+    End Try
+   End If
+  End Sub
+
+  <System.Runtime.CompilerServices.Extension()>
+  Public Sub ReadValue(ByRef ValueTable As XmlNode, ValueName As String, ByRef Variable As LocalizationType)
+   If Not ValueTable.SelectSingleNode(ValueName) Is Nothing Then
+    Try
+     Variable = CType(CType(ValueTable.SelectSingleNode(ValueName).InnerText, Integer), LocalizationType)
+    Catch ex As Exception
+    End Try
+   End If
+  End Sub
+
+  <System.Runtime.CompilerServices.Extension()>
+  Public Sub ReadValue(ByRef ValueTable As XmlNode, ValueName As String, ByRef Variable As TimeSpan)
+   If Not ValueTable.SelectSingleNode(ValueName) Is Nothing Then
+    Try
+     Variable = TimeSpan.Parse(CType(ValueTable.SelectSingleNode(ValueName).InnerText, String))
+    Catch ex As Exception
+    End Try
+   End If
+  End Sub
+
+  <System.Runtime.CompilerServices.Extension()>
+  Public Sub ReadValue(ByRef ValueTable As XmlNode, ValueName As String, ByRef Variable As LocalizedText)
+   If Not ValueTable.SelectSingleNode(ValueName) Is Nothing Then
+    If Not ValueTable.SelectSingleNode(ValueName).SelectSingleNode("MLText") Is Nothing Then
+     If Variable Is Nothing Then Variable = New LocalizedText
+     For Each t As XmlNode In ValueTable.SelectSingleNode(ValueName).SelectSingleNode("MLText").SelectNodes("Text")
+      Variable.Add(t.Attributes("Locale").InnerText, t.InnerText)
+     Next
+    End If
    End If
   End Sub
 #End Region

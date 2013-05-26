@@ -261,66 +261,54 @@ Namespace Entities.Blogs
   ''' </history>
   ''' -----------------------------------------------------------------------------
   Public Sub ReadXml(reader As XmlReader) Implements IXmlSerializable.ReadXml
-   Try
-
-    ReadMultiLingualText(reader, "Title", Title, TitleLocalizations)
-    ReadMultiLingualText(reader, "Description", Description, DescriptionLocalizations)
-    Image = readElement(reader, "Image")
-    Locale = readElement(reader, "Locale")
-    Boolean.TryParse(readElement(reader, "FullLocalization"), FullLocalization)
-    Boolean.TryParse(readElement(reader, "Published"), Published)
-    Boolean.TryParse(readElement(reader, "IncludeImagesInFeed"), IncludeImagesInFeed)
-    Boolean.TryParse(readElement(reader, "IncludeAuthorInFeed"), IncludeAuthorInFeed)
-    Boolean.TryParse(readElement(reader, "Syndicated"), Syndicated)
-    SyndicationEmail = readElement(reader, "SyndicationEmail")
-    Copyright = readElement(reader, "Copyright")
-    Boolean.TryParse(readElement(reader, "MustApproveGhostPosts"), MustApproveGhostPosts)
-    Boolean.TryParse(readElement(reader, "PublishAsOwner"), PublishAsOwner)
-    Boolean.TryParse(readElement(reader, "EnablePingBackSend"), EnablePingBackSend)
-    Boolean.TryParse(readElement(reader, "EnablePingBackReceive"), EnablePingBackReceive)
-    Boolean.TryParse(readElement(reader, "AutoApprovePingBack"), AutoApprovePingBack)
-    Boolean.TryParse(readElement(reader, "EnableTrackBackSend"), EnableTrackBackSend)
-    Boolean.TryParse(readElement(reader, "EnableTrackBackReceive"), EnableTrackBackReceive)
-    Boolean.TryParse(readElement(reader, "AutoApproveTrackBack"), AutoApproveTrackBack)
-    Username = readElement(reader, "Username")
-    Email = readElement(reader, "Email")
-    ImportedPosts = New List(Of Posts.PostInfo)
-    reader.ReadStartElement("Posts") ' advance to content
-    If reader.ReadState <> ReadState.EndOfFile And reader.NodeType <> XmlNodeType.None And reader.LocalName <> "" Then
-     Do
-      reader.ReadStartElement("Post")
-      Dim post As New Posts.PostInfo
-      post.ReadXml(reader)
-      ImportedPosts.Add(post)
-     Loop While reader.ReadToNextSibling("Post")
-    End If
-    reader.ReadStartElement("Files") ' advance to files
-    ImportedFiles = New List(Of BlogML.Xml.BlogMLAttachment)
-    If reader.ReadState <> ReadState.EndOfFile And reader.NodeType <> XmlNodeType.None And reader.LocalName <> "" Then
-     Do
-      reader.ReadStartElement("File")
-      Dim f As New BlogML.Xml.BlogMLAttachment
-      f.Path = readElement(reader, "Path")
-      Dim bufferSize As Integer = 1000
-      Dim buffer(bufferSize) As Byte
-      Dim readBytes As Integer = 0
-      Do
-       readBytes = reader.ReadElementContentAsBase64(buffer, 0, bufferSize)
-      Loop While bufferSize <= readBytes
-      f.Data = buffer
-      ImportedFiles.Add(f)
-     Loop While reader.ReadToNextSibling("File")
-    End If
-   Catch ex As Exception
-    ' log exception as DNN import routine does not do that
-    DotNetNuke.Services.Exceptions.LogException(ex)
-    ' re-raise exception to make sure import routine displays a visible error to the user
-    Throw New Exception("An error occured during import of an Blog", ex)
-   End Try
-
+   ' not implemented
   End Sub
   Friend Property ImportedPosts As List(Of Posts.PostInfo)
   Friend Property ImportedFiles As List(Of BlogML.Xml.BlogMLAttachment)
+
+  Public Sub FromXml(xml As XmlNode)
+   If xml Is Nothing Then Exit Sub
+
+   xml.ReadValue("Title", Title)
+   xml.ReadValue("TitleLocalizations", TitleLocalizations)
+   xml.ReadValue("Description", Description)
+   xml.ReadValue("DescriptionLocalizations", DescriptionLocalizations)
+   xml.ReadValue("Image", Image)
+   xml.ReadValue("Locale", Locale)
+   xml.ReadValue("FullLocalization", FullLocalization)
+   xml.ReadValue("Published", Published)
+   xml.ReadValue("IncludeImagesInFeed", IncludeImagesInFeed)
+   xml.ReadValue("IncludeAuthorInFeed", IncludeAuthorInFeed)
+   xml.ReadValue("Syndicated", Syndicated)
+   xml.ReadValue("SyndicationEmail", SyndicationEmail)
+   xml.ReadValue("Copyright", Copyright)
+   xml.ReadValue("MustApproveGhostPosts", MustApproveGhostPosts)
+   xml.ReadValue("PublishAsOwner", PublishAsOwner)
+   xml.ReadValue("EnablePingBackSend", EnablePingBackSend)
+   xml.ReadValue("EnablePingBackReceive", EnablePingBackReceive)
+   xml.ReadValue("AutoApprovePingBack", AutoApprovePingBack)
+   xml.ReadValue("EnableTrackBackSend", EnableTrackBackSend)
+   xml.ReadValue("EnableTrackBackReceive", EnableTrackBackReceive)
+   xml.ReadValue("AutoApproveTrackBack", AutoApproveTrackBack)
+   xml.ReadValue("Username", Username)
+   xml.ReadValue("Email", Email)
+
+   ImportedPosts = New List(Of Posts.PostInfo)
+   For Each xPost As XmlNode In xml.SelectNodes("Posts/Post")
+    Dim post As New Posts.PostInfo
+    post.fromXml(xPost)
+    ImportedPosts.Add(post)
+   Next
+
+   ImportedFiles = New List(Of BlogML.Xml.BlogMLAttachment)
+   For Each xFile As XmlNode In xml.SelectNodes("Files/File")
+    Dim f As New BlogML.Xml.BlogMLAttachment
+    xFile.ReadValue("Path", f.Path)
+    f.Data = Convert.FromBase64String(xFile.SelectSingleNode("Data").InnerText)
+    ImportedFiles.Add(f)
+   Next
+
+  End Sub
 
   ''' -----------------------------------------------------------------------------
   ''' <summary>
@@ -334,8 +322,10 @@ Namespace Entities.Blogs
   ''' -----------------------------------------------------------------------------
   Public Sub WriteXml(writer As XmlWriter) Implements IXmlSerializable.WriteXml
    writer.WriteStartElement("Blog")
-   WriteMultiLingualText(writer, "Title", Title, TitleLocalizations)
-   WriteMultiLingualText(writer, "Description", Description, DescriptionLocalizations)
+   writer.WriteElementString("Title", Title)
+   writer.WriteElementString("TitleLocalizations", TitleLocalizations.ToString)
+   writer.WriteElementString("Description", Description)
+   writer.WriteElementString("DescriptionLocalizations", DescriptionLocalizations.ToString)
    writer.WriteElementString("Image", Image)
    writer.WriteElementString("Locale", Locale)
    writer.WriteElementString("FullLocalization", FullLocalization.ToString())
