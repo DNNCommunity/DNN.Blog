@@ -33,6 +33,8 @@ Public Class Blog
 
   If Context.Items("BlogPageInitialized") Is Nothing Then
 
+   Integration.BlogModuleController.CheckupOnImportedFiles(ModuleId)
+
    ' wlw style detection post redirect?
    If Not String.IsNullOrEmpty(Settings.StyleDetectionUrl) And BlogContext.WLWRequest Then
     ' we have a style detection post in storage and it's being requested

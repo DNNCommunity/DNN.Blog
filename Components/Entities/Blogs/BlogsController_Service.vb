@@ -135,6 +135,7 @@ Namespace Entities.Blogs
       If fs.Length > 0 Then
        fs.Read(fileData, 0, CInt(fs.Length - 1))
        att.Data = fileData
+       att.Embedded = True
       Else
        'Empty File
       End If

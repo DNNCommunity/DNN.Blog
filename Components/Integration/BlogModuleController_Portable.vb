@@ -11,6 +11,67 @@ Namespace Integration
  Partial Public Class BlogModuleController
   Implements IPortable
 
+  Private Const LogFilePattern As String = "{0}BlogImport_{1}.resources"
+
+#Region " Post Import Logic "
+  Public Shared Sub CheckupOnImportedFiles(moduleId As Integer)
+   Dim CacheKey As String = "CheckupOnImportedFiles" & moduleId.ToString
+   If DotNetNuke.Common.Utilities.DataCache.GetCache(CacheKey) Is Nothing Then
+    Dim logFile As String = String.Format(LogFilePattern, DotNetNuke.Common.HostMapPath, moduleId)
+    If IO.File.Exists(logFile) Then
+     Using sr As New IO.StreamReader(logFile)
+      Dim line As String
+      Dim currentBlog As Integer = -1
+      Do
+       line = sr.ReadLine()
+       If Not String.IsNullOrEmpty(line) Then
+        Dim t As String = line.Substring(0, 1)
+        Dim oldId As Integer = Integer.Parse(line.Substring(1, line.IndexOf("-") - 1))
+        Dim newId As Integer = Integer.Parse(line.Substring(line.IndexOf("-") + 1))
+        If t = "B" Then
+         Dim d As New IO.DirectoryInfo(String.Format("{0}Blog\Files\{1}\", DotNetNuke.Entities.Portals.PortalSettings.Current.HomeDirectoryMapPath, oldId))
+         If d.Exists Then
+          d.MoveTo(String.Format("{0}Blog\Files\{1}\", DotNetNuke.Entities.Portals.PortalSettings.Current.HomeDirectoryMapPath, newId))
+         End If
+         currentBlog = newId
+        ElseIf t = "P" Then
+         Dim d As New IO.DirectoryInfo(String.Format("{0}Blog\Files\{1}\{2}\", DotNetNuke.Entities.Portals.PortalSettings.Current.HomeDirectoryMapPath, currentBlog, oldId))
+         If d.Exists Then
+          d.MoveTo(String.Format("{0}Blog\Files\{1}\{2}\", DotNetNuke.Entities.Portals.PortalSettings.Current.HomeDirectoryMapPath, currentBlog, newId))
+         End If
+         If d.GetFiles("*.*").Count = 0 Then
+         Else
+          Dim post As PostInfo = PostsController.GetPost(newId, moduleId, "")
+          If post IsNot Nothing Then
+           Dim postPath As String = GetPostDirectoryPath(post)
+           For Each f As IO.FileInfo In d.GetFiles("*.*")
+            Dim filename As String = f.Name
+            Dim reg As String = "\&quot;([^\&]*)" & filename & "\&quot;"
+            Dim repl As String = "&quot;" & postPath & filename & "&quot;"
+            post.Content = Regex.Replace(post.Content, reg, repl)
+            For Each l As String In post.ContentLocalizations.Locales
+             post.ContentLocalizations(l) = Regex.Replace(post.ContentLocalizations(l), reg, repl)
+            Next
+            If Not String.IsNullOrEmpty(post.Summary) Then post.Summary = Regex.Replace(post.Summary, reg, repl)
+            For Each l As String In post.SummaryLocalizations.Locales
+             post.SummaryLocalizations(l) = Regex.Replace(post.SummaryLocalizations(l), reg, repl)
+            Next
+           Next
+           PostsController.UpdatePost(post, -1)
+          End If
+         End If
+        End If
+       End If
+      Loop Until line Is Nothing
+      sr.ReadLine()
+     End Using
+     IO.File.Delete(logFile)
+    End If
+    DotNetNuke.Common.Utilities.DataCache.SetCache(CacheKey, True)
+   End If
+  End Sub
+#End Region
+
 #Region " IPortable Methods "
 
   Public Function ExportModule(ByVal ModuleID As Integer) As String Implements IPortable.ExportModule
@@ -46,6 +107,7 @@ Namespace Integration
    Try
 
     Dim xContent As XmlNode = DotNetNuke.Common.GetContent(Content, "dnnblog")
+    Dim importReport As New StringBuilder
 
     Dim tabMods As ArrayList = (New ModuleController).GetAllTabsModulesByModuleID(ModuleID)
     If tabMods.Count > 0 Then
@@ -74,19 +136,7 @@ Namespace Integration
        blog.ModuleID = ModuleID
        blog.OwnerUserId = UserID
        blog.BlogID = BlogsController.AddBlog(blog, UserID)
-       If blog.ImportedFiles.Count > 0 Then
-        Dim blogDir As String = GetBlogDirectoryMapPath(blog.BlogID)
-        IO.Directory.CreateDirectory(blogDir)
-        For Each att As BlogML.Xml.BlogMLAttachment In blog.ImportedFiles
-         If att.Embedded And att.Data IsNot Nothing Then
-          Dim filename As String = att.Path
-          If filename = "" Then filename = att.Url
-          filename = filename.Replace("/", "\")
-          If filename.IndexOf("\") > 0 Then filename = filename.Substring(filename.LastIndexOf("\") + 1)
-          IO.File.WriteAllBytes(blogDir & filename, att.Data)
-         End If
-        Next
-       End If
+       importReport.AppendFormat("B{0}-{1}" & vbCrLf, blog.ImportedBlogId, blog.BlogID)
        For Each p As PostInfo In blog.ImportedPosts
         p.BlogID = blog.BlogID
         For Each tagName As String In p.ImportedTags
@@ -100,33 +150,14 @@ Namespace Integration
          End If
         Next
         PostsController.AddPost(p, UserID)
-        If p.ImportedFiles.Count > 0 Then
-         Dim postDir As String = GetPostDirectoryMapPath(p)
-         Dim postPath As String = GetPostDirectoryPath(p)
-         IO.Directory.CreateDirectory(postDir)
-         For Each att As BlogML.Xml.BlogMLAttachment In p.ImportedFiles
-          If att.Embedded And att.Data IsNot Nothing Then
-           Dim filename As String = att.Path
-           If filename = "" Then filename = att.Url
-           filename = filename.Replace("/", "\")
-           If filename.IndexOf("\") > 0 Then filename = filename.Substring(filename.LastIndexOf("\") + 1)
-           IO.File.WriteAllBytes(postDir & filename, att.Data)
-           p.Content = p.Content.Replace(filename, postPath & filename)
-           For Each l As String In p.ContentLocalizations.Locales
-            p.ContentLocalizations(l) = p.ContentLocalizations(l).Replace(filename, postPath & filename)
-           Next
-           If Not String.IsNullOrEmpty(p.Summary) Then p.Summary = p.Summary.Replace(filename, postPath & filename)
-           For Each l As String In p.SummaryLocalizations.Locales
-            p.SummaryLocalizations(l) = p.SummaryLocalizations(l).Replace(filename, postPath & filename)
-           Next
-          End If
-         Next
-         PostsController.UpdatePost(p, UserID)
-        End If
+        importReport.AppendFormat("P{0}-{1}" & vbCrLf, p.ImportedPostId, p.ContentItemId)
        Next
       Next
      End If
     End If
+
+    Dim importLogFile As String = String.Format(LogFilePattern, DotNetNuke.Common.HostMapPath, ModuleID)
+    Common.Globals.WriteToFile(importLogFile, importReport.ToString)
 
    Catch ex As Exception
     Exceptions.LogException(ex)

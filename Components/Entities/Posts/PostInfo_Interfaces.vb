@@ -193,13 +193,16 @@ Namespace Entities.Posts
   Public Sub ReadXml(reader As XmlReader) Implements IXmlSerializable.ReadXml
    ' not implemented
   End Sub
-  Friend Property ImportedFiles As List(Of BlogML.Xml.BlogMLAttachment)
+
+  Friend Property ImportedPostId As Integer = -1
+  Friend Property ImportedFiles As List(Of String)
   Friend Property ImportedTags As List(Of String)
   Friend Property ImportedCategories As List(Of String)
 
   Public Sub FromXml(xml As XmlNode)
    If xml Is Nothing Then Exit Sub
 
+   xml.ReadValue("PostId", ImportedPostId)
    xml.ReadValue("Title", Title)
    xml.ReadValue("TitleLocalizations", TitleLocalizations)
    xml.ReadValue("Summary", Summary)
@@ -216,14 +219,10 @@ Namespace Entities.Posts
    xml.ReadValue("Username", Username)
    xml.ReadValue("Email", Email)
 
-   ImportedFiles = New List(Of BlogML.Xml.BlogMLAttachment)
+   ImportedFiles = New List(Of String)
    For Each xFile As XmlNode In xml.SelectNodes("Files/File")
-    Dim f As New BlogML.Xml.BlogMLAttachment
-    xFile.ReadValue("Path", f.Path)
-    f.Data = Convert.FromBase64String(xFile.SelectSingleNode("Data").InnerText)
-    ImportedFiles.Add(f)
+    ImportedFiles.Add(xFile.InnerText)
    Next
-
    ImportedTags = New List(Of String)
    For Each xTag As XmlNode In xml.SelectNodes("Tag")
     ImportedTags.Add(xTag.InnerText)
@@ -247,44 +246,7 @@ Namespace Entities.Posts
   ''' -----------------------------------------------------------------------------
   Public Sub WriteXml(writer As XmlWriter) Implements IXmlSerializable.WriteXml
    writer.WriteStartElement("Post")
-   writer.WriteStartElement("Files")
-   ' pack files
-   Dim postDir As String = GetPostDirectoryMapPath(BlogID, ContentItemId)
-   Dim newSummary As String = Summary
-   Dim newSummaryLocalized As LocalizedText = SummaryLocalizations
-   Dim newContent As String = Content
-   Dim newContentLocalized As LocalizedText = ContentLocalizations
-   If IO.Directory.Exists(postDir) Then
-    For Each f As String In IO.Directory.GetFiles(postDir)
-     Dim fileName As String = IO.Path.GetFileName(f)
-     Dim regexPattern As String = "&quot;([^\s]*)\/" & fileName & "&quot;"
-     Dim options As RegexOptions = RegexOptions.Singleline Or RegexOptions.IgnoreCase
-     newSummary = Regex.Replace(newSummary, regexPattern, "&quot;" & fileName & "&quot;", options)
-     For Each l As String In newSummaryLocalized.Locales
-      If Not String.IsNullOrEmpty(newSummaryLocalized(l)) Then
-       newSummaryLocalized(l) = Regex.Replace(newSummaryLocalized(l), regexPattern, "&quot;" & fileName & "&quot;", options)
-      End If
-     Next
-     newContent = Regex.Replace(newContent, regexPattern, "&quot;" & fileName & "&quot;", options)
-     For Each l As String In newContentLocalized.Locales
-      If Not String.IsNullOrEmpty(newContentLocalized(l)) Then
-       newContentLocalized(l) = Regex.Replace(newContentLocalized(l), regexPattern, "&quot;" & fileName & "&quot;", options)
-      End If
-     Next
-     Dim att As New BlogML.Xml.BlogMLAttachment With {.Embedded = True, .Path = fileName}
-     Using fs As New IO.FileStream(f, IO.FileMode.Open)
-      Dim fileData(CInt(fs.Length - 1)) As Byte
-      If fs.Length > 0 Then
-       fs.Read(fileData, 0, CInt(fs.Length - 1))
-       att.Data = fileData
-      Else
-       'Empty File
-      End If
-     End Using
-     att.WriteAttachmentToXml(writer)
-    Next
-   End If
-   writer.WriteEndElement() ' Files
+   writer.WriteElementString("PostId", ContentItemId.ToString)
    writer.WriteElementString("Title", Title)
    writer.WriteElementString("TitleLocalizations", TitleLocalizations.ToString)
    writer.WriteElementString("Summary", Summary)
@@ -300,6 +262,20 @@ Namespace Entities.Posts
    writer.WriteElementString("Locale", Locale)
    writer.WriteElementString("Username", Username)
    writer.WriteElementString("Email", Email)
+   writer.WriteStartElement("Files")
+   ' pack files
+   Dim postDir As String = GetPostDirectoryMapPath(BlogID, ContentItemId)
+   Dim newSummary As String = Summary
+   Dim newSummaryLocalized As LocalizedText = SummaryLocalizations
+   Dim newContent As String = Content
+   Dim newContentLocalized As LocalizedText = ContentLocalizations
+   If IO.Directory.Exists(postDir) Then
+    For Each f As String In IO.Directory.GetFiles(postDir)
+     Dim fileName As String = IO.Path.GetFileName(f)
+     writer.WriteElementString("File", fileName)
+    Next
+   End If
+   writer.WriteEndElement() ' Files
    For Each t As Entities.Terms.TermInfo In Me.PostTags
     writer.WriteElementString("Tag", t.Name)
    Next

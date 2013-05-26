@@ -263,12 +263,15 @@ Namespace Entities.Blogs
   Public Sub ReadXml(reader As XmlReader) Implements IXmlSerializable.ReadXml
    ' not implemented
   End Sub
+
+  Friend Property ImportedBlogId As Integer = -1
   Friend Property ImportedPosts As List(Of Posts.PostInfo)
-  Friend Property ImportedFiles As List(Of BlogML.Xml.BlogMLAttachment)
+  Friend Property ImportedFiles As List(Of String)
 
   Public Sub FromXml(xml As XmlNode)
    If xml Is Nothing Then Exit Sub
 
+   xml.ReadValue("BlogId", ImportedBlogId)
    xml.ReadValue("Title", Title)
    xml.ReadValue("TitleLocalizations", TitleLocalizations)
    xml.ReadValue("Description", Description)
@@ -300,12 +303,9 @@ Namespace Entities.Blogs
     ImportedPosts.Add(post)
    Next
 
-   ImportedFiles = New List(Of BlogML.Xml.BlogMLAttachment)
+   ImportedFiles = New List(Of String)
    For Each xFile As XmlNode In xml.SelectNodes("Files/File")
-    Dim f As New BlogML.Xml.BlogMLAttachment
-    xFile.ReadValue("Path", f.Path)
-    f.Data = Convert.FromBase64String(xFile.SelectSingleNode("Data").InnerText)
-    ImportedFiles.Add(f)
+    ImportedFiles.Add(xFile.InnerText)
    Next
 
   End Sub
@@ -322,6 +322,7 @@ Namespace Entities.Blogs
   ''' -----------------------------------------------------------------------------
   Public Sub WriteXml(writer As XmlWriter) Implements IXmlSerializable.WriteXml
    writer.WriteStartElement("Blog")
+   writer.WriteElementString("BlogId", BlogID.ToString)
    writer.WriteElementString("Title", Title)
    writer.WriteElementString("TitleLocalizations", TitleLocalizations.ToString)
    writer.WriteElementString("Description", Description)
@@ -361,17 +362,7 @@ Namespace Entities.Blogs
    If IO.Directory.Exists(postDir) Then
     For Each f As String In IO.Directory.GetFiles(postDir)
      Dim fileName As String = IO.Path.GetFileName(f)
-     Dim att As New BlogML.Xml.BlogMLAttachment With {.Embedded = True, .Path = fileName}
-     Using fs As New IO.FileStream(f, IO.FileMode.Open)
-      Dim fileData(CInt(fs.Length - 1)) As Byte
-      If fs.Length > 0 Then
-       fs.Read(fileData, 0, CInt(fs.Length - 1))
-       att.Data = fileData
-      Else
-       'Empty File
-      End If
-     End Using
-     att.WriteAttachmentToXml(writer)
+     writer.WriteElementString("File", fileName)
     Next
    End If
    writer.WriteEndElement() ' Files
