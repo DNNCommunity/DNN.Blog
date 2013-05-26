@@ -145,6 +145,7 @@ Public Class BlogEdit
      .Permissions = ctlPermissions.Permissions
      If BlogContext.BlogId = -1 Then
       .BlogID = BlogsController.AddBlog(BlogContext.Blog, UserId)
+      BlogContext.BlogId = .BlogID
      Else
       BlogsController.UpdateBlog(BlogContext.Blog, UserId)
      End If
