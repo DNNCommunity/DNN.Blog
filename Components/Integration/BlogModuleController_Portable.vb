@@ -75,7 +75,6 @@ Namespace Integration
 #End Region
 
 #Region " IPortable Methods "
-
   Public Function ExportModule(ByVal ModuleID As Integer) As String Implements IPortable.ExportModule
 
    Dim strXml As New StringBuilder

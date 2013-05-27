@@ -23,6 +23,7 @@ Namespace Common
   Public Property AuthorId As Integer = -1
   Public Property TemplateSettings As New Dictionary(Of String, String)
   Private Property TemplateManager As Templating.TemplateManager
+  Friend Property CanCache As Boolean = True
 #End Region
 
 #Region " Constructors "
@@ -47,6 +48,7 @@ Namespace Common
     Dim thisTabModule As DotNetNuke.Entities.Modules.ModuleInfo = (New DotNetNuke.Entities.Modules.ModuleController).GetTabModule(tabModuleId)
     If parentModule.PortalID <> thisTabModule.PortalID Then
      BlogModuleId = -1
+     CanCache = False
     End If
    End If
    If justLoadSettings Then Exit Sub
@@ -61,7 +63,7 @@ Namespace Common
    Dim settings As ViewSettings = CType(DotNetNuke.Common.Utilities.DataCache.GetCache(CacheKey), ViewSettings)
    If settings Is Nothing Then
     settings = New ViewSettings(tabModuleId)
-    DotNetNuke.Common.Utilities.DataCache.SetCache(CacheKey, settings)
+    If settings.CanCache Then DotNetNuke.Common.Utilities.DataCache.SetCache(CacheKey, settings)
    End If
    Return settings
   End Function
