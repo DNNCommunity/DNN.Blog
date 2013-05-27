@@ -418,9 +418,8 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE VIEW {databaseOwner}{objectQualifier}vw_Blog_Posts
 AS
-SELECT     p.ContentItemId, p.BlogID, p.Title, p.Summary, p.Image, p.Published, p.PublishedOnDate, p.AllowComments, p.DisplayCopyright, p.Copyright, p.Locale, p.ViewCount, 
-                      ci.CreatedByUserID, ci.CreatedOnDate, ci.LastModifiedByUserID, ci.LastModifiedOnDate, ci.[Content], ci.ContentTypeID, ci.TabID, ci.ModuleID, ci.ContentKey, 
-                      ci.Indexed, u.Username, u.Email, u.DisplayName
+SELECT     p.BlogID, p.Title, p.Summary, p.Image, p.Published, p.PublishedOnDate, p.AllowComments, p.DisplayCopyright, p.Copyright, p.Locale, p.ViewCount, 
+                      ci.*, u.Username, u.Email, u.DisplayName
 FROM         {databaseOwner}{objectQualifier}Blog_Posts AS p LEFT OUTER JOIN
                       {databaseOwner}{objectQualifier}ContentItems AS ci ON p.ContentItemId = ci.ContentItemID AND p.ContentItemId = ci.ContentItemID INNER JOIN
                       {databaseOwner}{objectQualifier}Users AS u ON ci.CreatedByUserID = u.UserID
