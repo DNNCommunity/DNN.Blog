@@ -6,8 +6,8 @@
    <description>The DotNetNuke Blog module is an easy to use content publishing module that is tightly integrated with the core DotNetNuke framework. It can be used in single or multi-author environments and also permits content authoring using off-site tools such as Windows Live Writer.</description>
    <iconFile>~/DesktopModules/Blog/Images/dnnBlog_32.png</iconFile>
    <owner>
-    <name>DotNetNuke</name>
-    <organization>DotNetNuke Corporation</organization>
+    <name>Peter Donker</name>
+    <organization>Bring2mind</organization>
     <url>http://dnnblog.org</url>
     <email/>
    </owner>
