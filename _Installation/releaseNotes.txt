@@ -1,8 +1,14 @@
 ﻿<h3>Blog 6.0.0</h3>
 <p class="Contributor">
- DotNetNuke&reg; <br />
+ Peter Donker (Bring2mind)<br />
+ <a href="http://www.bring2mind.net" target="_blank">http://www.bring2mind.net</a><br />
+ For DotNetNuke&reg; <br />
  <a href="mailto:support@dotnetnuke.com">support@dotnetnuke.com</a><br />
- <a href="http://www.dotnetnuke.com">http://www.dotnetnuke.com</a><br />
+ <a href="http://www.dotnetnuke.com" target="_blank">http://www.dotnetnuke.com</a>
+</p>
+<p class="Contributor">
+ Project Website: <a href="http://dnnblog.org" target="_blank">http://dnnblog.org</a><br />
+ Like us on Facebook: <a href="https://www.facebook.com/DNNBlog" target="_blank">https://www.facebook.com/DNNBlog</a>
 </p>
 <hr/>
 <div class="License">
