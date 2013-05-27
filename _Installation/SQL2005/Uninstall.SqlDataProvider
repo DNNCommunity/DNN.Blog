@@ -1,4 +1,13 @@
-﻿/******* SPROCS *******/
+﻿/******* DATA *******/
+DELETE FROM {databaseOwner}{objectQualifier}ContentItems
+FROM {databaseOwner}{objectQualifier}ContentItems ci
+ INNER JOIN {databaseOwner}{objectQualifier}Blog_Posts p ON p.ContentItemId=ci.ContentItemID
+GO
+
+DELETE FROM {databaseOwner}{objectQualifier}ContentTypes WHERE ContentType='DNN_Blog_Post'
+GO
+
+/******* SPROCS *******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_AddBlog') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_AddBlog
 GO
@@ -175,6 +184,10 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwn
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdateComment
 GO
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_UpdateModuleWiring') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdateModuleWiring
+GO
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_UpdatePost') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdatePost
 GO
@@ -303,4 +316,3 @@ GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Terms') AND type in (N'U'))
 DROP TABLE {databaseOwner}{objectQualifier}Blog_Terms
 GO
-
