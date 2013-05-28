@@ -196,9 +196,6 @@
   <data name="Metadata.Text" xml:space="preserve">
     <value>Metadata</value>
   </data>
-  <data name="Title.Text" xml:space="preserve">
-    <value>Title and Summary</value>
-  </data>
   <data name="PublishTimeZoneNote.Text" xml:space="preserve">
     <value>The publish date is based on your profile timezone of: </value>
   </data>
@@ -210,5 +207,8 @@
   </data>
   <data name="Title.Required" xml:space="preserve">
     <value>A title is required for the post</value>
+  </data>
+  <data name="Title.Text" xml:space="preserve">
+    <value>Title and Summary</value>
   </data>
 </root>

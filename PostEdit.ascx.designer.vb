@@ -14,6 +14,24 @@ Option Explicit On
 Partial Public Class PostEdit
 
  '''<summary>
+ '''lblSummaryPrecedingWarning control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lblSummaryPrecedingWarning As Global.System.Web.UI.WebControls.Label
+
+ '''<summary>
+ '''teBlogPost control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents teBlogPost As Global.DotNetNuke.Modules.Blog.Controls.LongTextEdit
+
+ '''<summary>
  '''lblTitle control.
  '''</summary>
  '''<remarks>
@@ -50,22 +68,112 @@ Partial Public Class PostEdit
  Protected WithEvents txtDescription As Global.DotNetNuke.Modules.Blog.Controls.LongTextEdit
 
  '''<summary>
- '''lblSummaryPrecedingWarning control.
+ '''rowLocale control.
  '''</summary>
  '''<remarks>
  '''Auto-generated field.
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
- Protected WithEvents lblSummaryPrecedingWarning As Global.System.Web.UI.WebControls.Label
+ Protected WithEvents rowLocale As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
  '''<summary>
- '''teBlogPost control.
+ '''lblLocale control.
  '''</summary>
  '''<remarks>
  '''Auto-generated field.
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
- Protected WithEvents teBlogPost As Global.DotNetNuke.Modules.Blog.Controls.LongTextEdit
+ Protected WithEvents lblLocale As Global.System.Web.UI.UserControl
+
+ '''<summary>
+ '''ddLocale control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents ddLocale As Global.System.Web.UI.WebControls.DropDownList
+
+ '''<summary>
+ '''lblImage control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lblImage As Global.System.Web.UI.UserControl
+
+ '''<summary>
+ '''imgPostImage control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents imgPostImage As Global.System.Web.UI.WebControls.Image
+
+ '''<summary>
+ '''fileImage control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents fileImage As Global.System.Web.UI.WebControls.FileUpload
+
+ '''<summary>
+ '''cmdImageRemove control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents cmdImageRemove As Global.System.Web.UI.WebControls.LinkButton
+
+ '''<summary>
+ '''pnlCategories control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents pnlCategories As Global.System.Web.UI.WebControls.Panel
+
+ '''<summary>
+ '''lblCategories control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lblCategories As Global.System.Web.UI.UserControl
+
+ '''<summary>
+ '''ctlCategories control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents ctlCategories As Global.DotNetNuke.Modules.Blog.Controls.CategorySelect
+
+ '''<summary>
+ '''lblTags control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lblTags As Global.System.Web.UI.UserControl
+
+ '''<summary>
+ '''ctlTags control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents ctlTags As Global.DotNetNuke.Modules.Blog.Controls.TagEdit
 
  '''<summary>
  '''pnlPublished control.
@@ -201,114 +309,6 @@ Partial Public Class PostEdit
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
  Protected WithEvents litTimezone As Global.System.Web.UI.WebControls.Literal
-
- '''<summary>
- '''rowLocale control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents rowLocale As Global.System.Web.UI.HtmlControls.HtmlGenericControl
-
- '''<summary>
- '''lblLocale control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents lblLocale As Global.System.Web.UI.UserControl
-
- '''<summary>
- '''ddLocale control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents ddLocale As Global.System.Web.UI.WebControls.DropDownList
-
- '''<summary>
- '''lblImage control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents lblImage As Global.System.Web.UI.UserControl
-
- '''<summary>
- '''imgPostImage control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents imgPostImage As Global.System.Web.UI.WebControls.Image
-
- '''<summary>
- '''fileImage control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents fileImage As Global.System.Web.UI.WebControls.FileUpload
-
- '''<summary>
- '''cmdImageRemove control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents cmdImageRemove As Global.System.Web.UI.WebControls.LinkButton
-
- '''<summary>
- '''pnlCategories control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents pnlCategories As Global.System.Web.UI.WebControls.Panel
-
- '''<summary>
- '''lblCategories control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents lblCategories As Global.System.Web.UI.UserControl
-
- '''<summary>
- '''ctlCategories control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents ctlCategories As Global.DotNetNuke.Modules.Blog.Controls.CategorySelect
-
- '''<summary>
- '''lblTags control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents lblTags As Global.System.Web.UI.UserControl
-
- '''<summary>
- '''ctlTags control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents ctlTags As Global.DotNetNuke.Modules.Blog.Controls.TagEdit
 
  '''<summary>
  '''cmdSave control.

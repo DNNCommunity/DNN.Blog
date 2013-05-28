@@ -4,7 +4,18 @@
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="blog" Namespace="DotNetNuke.Modules.Blog.Controls" Assembly="DotNetNuke.Modules.Blog" %>
 <div class="dnnForm dnnBlogEditPost dnnClear" id="dnnBlogEditPost">
-	<h2 id="dnnSitePanel-BlogContent" class="dnnFormSectionHead"><a href="" class="dnnFormSectionExpanded"><%= LocalizeString("Title")%></a></h2>
+ <ul class="dnnAdminTabNav">
+  <li><a href="#dnnBlogEditContent"><%= LocalizeString("Content")%></a></li>
+  <li><a href="#dnnBlogEditMetadata"><%= LocalizeString("Metadata")%></a></li>
+  <li><a href="#dnnBlogEditPublishing"><%= LocalizeString("Publishing")%></a></li>
+ </ul>
+ <div class="dnnClear" id="dnnBlogEditContent">
+	<fieldset>
+  <asp:Label runat="server" ID="lblSummaryPrecedingWarning" resourcekey="lblSummaryPrecedingWarning" Visible="false" CssClass="dnnFormMessage dnnFormWarning" />
+  <blog:LongTextEdit id="teBlogPost" runat="server" Width="100%" TextBoxHeight="500" TextBoxWidth="100%" ShowRichTextBox="True" CssClass="blog_rte" CssPrefix="blog_rte_" />
+	</fieldset>
+ </div>
+ <div class="dnnClear" id="dnnBlogEditMetadata">
 	<fieldset>
 		<dnn:Label ID="lblTitle" runat="server" controlname="treeCategories" suffix=":" CssClass="dnnLeft" /><br />
   <blog:ShortTextEdit id="txtTitle" runat="server" Required="True" CssClass="blog_rte_full" RequiredResourceKey="Title.Required" CssPrefix="blog_rte_" />
@@ -12,13 +23,32 @@
 		<dnn:Label ID="lblSummary" runat="server" controlname="txtDescription" suffix=":" CssClass="dnnLeft" />
   <div style="display:block;float:clear">&nbsp;</div>
   <blog:LongTextEdit id="txtDescription" runat="server" Width="100%" TextBoxWidth="100%" TextBoxHeight="300" CssPrefix="blog_rte_" />
+  <div class="dnnFormItem" id="rowLocale" runat="server">
+   <dnn:Label ID="lblLocale" runat="server" controlname="ddLocale" suffix=":" />
+   <asp:DropDownList ID="ddLocale" runat="server" DataTextField="NativeName" />
+  </div>
+  <div class="dnnFormItem">
+   <dnn:Label ID="lblImage" runat="server" controlname="fileImage" suffix=":" />
+   <div style="float:left;">
+   <asp:Image runat="server" ID="imgPostImage" /><br /><br />
+   <asp:FileUpload runat="server" ID="fileImage" Width="300" />&nbsp;
+   <asp:LinkButton runat="server" ID="cmdImageRemove" resourcekey="cmdImageRemove" cssclass="dnnSecondaryAction" />
+   </div>
+  </div>
+		<asp:Panel ID="pnlCategories" runat="server" class="dnnFormItem">
+			<dnn:Label ID="lblCategories" ResourceKey="lblCategories" runat="server" controlname="dtCategories" suffix=":" />
+			<div class="dnnLeft">
+    <blog:CategorySelect ID="ctlCategories" runat="server" />
+			</div>    
+		</asp:Panel>
+  <div class="dnnClear"></div>
+		<div style="display:block">
+			<dnn:Label ID="lblTags" runat="server" controlname="txtTags" suffix=":" /><div></div>
+			<blog:TagEdit ID="ctlTags" runat="server" width="500px" AllowSpaces="True" />	
+		</div>
 	</fieldset>
-	<h2 id="H1" class="dnnFormSectionHead"><a href="" class="dnnFormSectionExpanded"><%= LocalizeString("Content")%></a></h2>
-	<fieldset>
-  <asp:Label runat="server" ID="lblSummaryPrecedingWarning" resourcekey="lblSummaryPrecedingWarning" Visible="false" CssClass="dnnFormMessage dnnFormWarning" />
-  <blog:LongTextEdit id="teBlogPost" runat="server" Width="100%" TextBoxHeight="500" TextBoxWidth="100%" ShowRichTextBox="True" CssClass="blog_rte" CssPrefix="blog_rte_" />
-	</fieldset>
-	<h2 id="H3" class="dnnFormSectionHead"><a href="" class="dnnFormSectionExpanded"><%= LocalizeString("Publishing")%></a></h2>
+ </div>
+ <div class="dnnClear" id="dnnBlogEditPublishing">
 	<fieldset>
 		<asp:Panel ID="pnlPublished" runat="server" class="dnnFormItem">
 			<dnn:Label ID="lblPublished" runat="server" controlname="chkPublished" suffix=":" />
@@ -47,33 +77,7 @@
    <em><%= LocalizeString("PublishTimeZoneNote")%>&nbsp;<asp:Literal runat="server" ID="litTimezone" /></em>
 		</div>
 	</fieldset>
-	<h2 id="H2" class="dnnFormSectionHead"><a href="" class="dnnFormSectionExpanded"><%= LocalizeString("Metadata")%></a></h2>
-	<fieldset>
-  <div class="dnnFormItem" id="rowLocale" runat="server">
-   <dnn:Label ID="lblLocale" runat="server" controlname="ddLocale" suffix=":" />
-   <asp:DropDownList ID="ddLocale" runat="server" DataTextField="NativeName" />
-  </div>
-  <div class="dnnFormItem">
-   <dnn:Label ID="lblImage" runat="server" controlname="fileImage" suffix=":" />
-   <div style="float:left;">
-   <asp:Image runat="server" ID="imgPostImage" /><br /><br />
-   <asp:FileUpload runat="server" ID="fileImage" Width="300" />&nbsp;
-   <asp:LinkButton runat="server" ID="cmdImageRemove" resourcekey="cmdImageRemove" cssclass="dnnSecondaryAction" />
-   </div>
-  </div>
-		<asp:Panel ID="pnlCategories" runat="server" class="dnnFormItem">
-			<dnn:Label ID="lblCategories" ResourceKey="lblCategories" runat="server" controlname="dtCategories" suffix=":" />
-			<div class="dnnLeft">
-    <blog:CategorySelect ID="ctlCategories" runat="server" />
-			</div>    
-		</asp:Panel>
-  <div class="dnnClear"></div>
-		<div style="display:block">
-			<dnn:Label ID="lblTags" runat="server" controlname="txtTags" suffix=":" /><div></div>
-			<blog:TagEdit ID="ctlTags" runat="server" width="500px" AllowSpaces="True" />	
-		</div>
-	</fieldset>
-
+ </div>
 	<ul class="dnnActions">
 		<li><asp:LinkButton ID="cmdSave" runat="server" CssClass="dnnPrimaryAction" resourcekey="cmdSave" /></li>
 		<li><asp:HyperLink ID="hlCancel" ResourceKey="cmdCancel" runat="server" CssClass="dnnSecondaryAction" /></li>
@@ -90,7 +94,7 @@
 
   $(document).ready(function () {
 
-   $('#dnnBlogEditPost').dnnPanels();
+   $('#dnnBlogEditPost').dnnTabs();
 
    $('.dnnPostDelete').dnnConfirm({
     text: '<%= LocalizeJSString("DeleteItem") %>',
