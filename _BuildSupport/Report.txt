@@ -76,7 +76,7 @@ clean.bindirectory:
 compile.projects:
 
      [echo] Building DotNetNuke.Modules.Blog.vbproj
-  [msbuild] Build started 27/05/2013 21:42:26.
+  [msbuild] Build started 28/05/2013 10:37:57.
   [msbuild] Overriding target "GetFrameworkPaths" in project "C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets" with target "GetFrameworkPaths" from project "C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.NETFramework.targets".
   [msbuild] Overriding target "SatelliteDllsProjectOutputGroup" in project "C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets" with target "SatelliteDllsProjectOutputGroup" from project "C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.WinFX.targets".
   [msbuild] Project "E:\Webroot\BLOGDEV\DesktopModules\Blog\DotNetNuke.Modules.Blog.vbproj" on node 1 (Rebuild target(s)).
@@ -3680,7 +3680,7 @@ compile.projects:
   [msbuild]     4 Warning(s)
   [msbuild]     0 Error(s)
   [msbuild] 
-  [msbuild] Time Elapsed 00:00:03.87
+  [msbuild] Time Elapsed 00:00:03.79
 
 make.doc:
 
@@ -3727,10 +3727,10 @@ make.codestats:
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\Globals.vb Totals: [T] 291 [C] 42 [E] 35
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\Image.vb Totals: [T] 198 [C] 19 [E] 25
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\LocalizedText.vb Totals: [T] 226 [C] 39 [E] 20
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\ModuleSettings.vb Totals: [T] 256 [C] 19 [E] 28
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\ModuleSettings.vb Totals: [T] 257 [C] 19 [E] 28
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\ModuleUrls.vb Totals: [T] 153 [C] 19 [E] 12
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\PostBodyAndSummary.vb Totals: [T] 136 [C] 19 [E] 9
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\ViewSettings.vb Totals: [T] 207 [C] 20 [E] 23
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\ViewSettings.vb Totals: [T] 208 [C] 20 [E] 23
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\WebPage.vb Totals: [T] 98 [C] 19 [E] 11
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Data\DataProvider.vb Totals: [T] 28 [C] 19 [E] 4
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Data\DataProvider_CMD.vb Totals: [T] 61 [C] 19 [E] 6
@@ -3765,7 +3765,7 @@ make.codestats:
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Posts\PostsController.vb Totals: [T] 192 [C] 20 [E] 40
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Posts\PostsController_CRUD.vb Totals: [T] 79 [C] 21 [E] 21
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Posts\PostsController_Service.vb Totals: [T] 98 [C] 19 [E] 9
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Terms\TermInfo.vb Totals: [T] 249 [C] 31 [E] 20
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Terms\TermInfo.vb Totals: [T] 250 [C] 31 [E] 20
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Terms\TermsController.vb Totals: [T] 186 [C] 19 [E] 21
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Terms\TermsController_Service.vb Totals: [T] 65 [C] 19 [E] 7
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Integration\Services\NotificationServiceController.vb Totals: [T] 143 [C] 19 [E] 15
@@ -3774,7 +3774,7 @@ make.codestats:
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Integration\BlogModuleController_Upgradeable.vb Totals: [T] 42 [C] 19 [E] 6
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Integration\FileController.vb Totals: [T] 75 [C] 19 [E] 15
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Integration\Integration.vb Totals: [T] 59 [C] 19 [E] 7
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Integration\JournalController.vb Totals: [T] 181 [C] 61 [E] 24
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Integration\JournalController.vb Totals: [T] 183 [C] 61 [E] 24
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Integration\NotificationController.vb Totals: [T] 312 [C] 64 [E] 50
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Integration\NotificationKey.vb Totals: [T] 53 [C] 19 [E] 6
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Rss\BlogRssFeed.vb Totals: [T] 313 [C] 34 [E] 28
@@ -3787,8 +3787,8 @@ make.codestats:
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Security\Permissions\BlogPermissionInfo_Properties.vb Totals: [T] 54 [C] 21 [E] 7
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Security\Permissions\BlogPermissionsController.vb Totals: [T] 192 [C] 19 [E] 25
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Security\Permissions\BlogPermissionsController_CRUD.vb Totals: [T] 48 [C] 19 [E] 10
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Security\Permissions\PermissionCollection.vb Totals: [T] 160 [C] 20 [E] 24
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Security\Permissions\PermissionInfo_Properties.vb Totals: [T] 50 [C] 19 [E] 9
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Security\Permissions\PermissionCollection.vb Totals: [T] 161 [C] 20 [E] 24
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Security\Permissions\PermissionInfo_Properties.vb Totals: [T] 51 [C] 19 [E] 9
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Security\Permissions\PermissionsController.vb Totals: [T] 41 [C] 19 [E] 6
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Security\BlogUser.vb Totals: [T] 142 [C] 24 [E] 16
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Security\ContextSecurity.vb Totals: [T] 224 [C] 19 [E] 19
@@ -3812,7 +3812,7 @@ make.codestats:
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Templating\Resources.vb Totals: [T] 70 [C] 19 [E] 7
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Templating\Template.vb Totals: [T] 234 [C] 23 [E] 24
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Templating\TemplateController.vb Totals: [T] 92 [C] 19 [E] 12
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Templating\TemplateManager.vb Totals: [T] 79 [C] 19 [E] 8
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Templating\TemplateManager.vb Totals: [T] 80 [C] 19 [E] 8
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Templating\TemplateRepeaterItem.vb Totals: [T] 78 [C] 19 [E] 7
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Templating\TemplateSetting.vb Totals: [T] 41 [C] 19 [E] 8
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Templating\TemplateSettings.vb Totals: [T] 48 [C] 19 [E] 6
@@ -4009,7 +4009,7 @@ make.codestats:
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\TermsEditML.ascx Totals: [T] 43 [C] 0 [E] 9
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\TermsEditML.ascx.designer.vb Totals: [T] 42 [C] 29 [E] 6
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\TermsEditML.ascx.vb Totals: [T] 83 [C] 19 [E] 11
-[codestats] Totals: [VB]  [T] 50142 [C] 9659 [E] 6551
+[codestats] Totals: [VB]  [T] 50150 [C] 9659 [E] 6551
 
 check.sqlscripts:
 
@@ -4248,16 +4248,16 @@ backup.project:
      [echo] Backing Up to \\192.168.123.240\src
      [echo] Backing Up to D:\src
      [echo] Backing Up Install
-     [copy] Copying 1 file to 'D:\src\Blog\2013-5-27\Blog_06.00.00_Install.zip'.
+     [copy] Copying 1 file to 'D:\src\Blog\2013-5-28\Blog_06.00.00_Install.zip'.
      [echo] Backing Up Source
-     [copy] Copying 1 file to 'D:\src\Blog\2013-5-27\Blog_06.00.00_Source.zip'.
+     [copy] Copying 1 file to 'D:\src\Blog\2013-5-28\Blog_06.00.00_Source.zip'.
      [echo] Backing Up to G:\src
      [echo] Backing Up Install
-     [copy] Copying 1 file to 'G:\src\Blog\2013-5-27\Blog_06.00.00_Install.zip'.
+     [copy] Copying 1 file to 'G:\src\Blog\2013-5-28\Blog_06.00.00_Install.zip'.
      [echo] Backing Up Source
-     [copy] Copying 1 file to 'G:\src\Blog\2013-5-27\Blog_06.00.00_Source.zip'.
+     [copy] Copying 1 file to 'G:\src\Blog\2013-5-28\Blog_06.00.00_Source.zip'.
 
 BUILD SUCCEEDED
 
-Total time: 72.4 seconds.
+Total time: 60.2 seconds.
 

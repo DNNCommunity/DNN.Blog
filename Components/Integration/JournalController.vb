@@ -43,6 +43,7 @@ Namespace Integration
   ''' <param name="url"></param>
   ''' <remarks></remarks>
   Public Shared Sub AddBlogPostToJournal(objPost As PostInfo, portalId As Integer, tabId As Integer, journalUserId As Integer, url As String)
+   If journalUserId = -1 Then Exit Sub
    Dim objectKey As String = ContentTypeName + "_" + ContentTypeName + "_" + String.Format("{0}:{1}", objPost.BlogID, objPost.ContentItemId)
    Dim ji As JournalItem = DotNetNuke.Services.Journal.JournalController.Instance.GetJournalItemByKey(portalId, objectKey)
 
@@ -90,6 +91,7 @@ Namespace Integration
   ''' <param name="journalUserId"></param>
   ''' <param name="url"></param>
   Public Shared Sub AddOrUpdateCommentInJournal(objBlog As BlogInfo, objPost As PostInfo, objComment As Entities.Comments.CommentInfo, portalId As Integer, tabId As Integer, journalUserId As Integer, url As String)
+   If journalUserId = -1 Then Exit Sub
    Dim objectKey As String = ContentTypeName + "_" + JournalCommentTypeName + "_" + String.Format("{0}:{1}", objPost.ContentItemId.ToString(), objComment.CommentID.ToString())
    Dim ji As JournalItem = DotNetNuke.Services.Journal.JournalController.Instance.GetJournalItemByKey(portalId, objectKey)
    If Not ji Is Nothing Then
