@@ -44,7 +44,7 @@ Namespace Entities.Terms
   End Function
 
   Public Shared Function GetTermsByVocabulary(moduleId As Int32, vocabularyId As Int32, locale As String, clearCache As Boolean) As Dictionary(Of String, TermInfo)
-   Dim CacheKey As String = "BlogCategories" & moduleId.ToString & locale
+   Dim CacheKey As String = String.Format("BlogVocab-{0}-{1}-{2}", moduleId, vocabularyId, locale)
    Dim res As Dictionary(Of String, TermInfo) = CType(DotNetNuke.Common.Utilities.DataCache.GetCache(CacheKey), Dictionary(Of String, TermInfo))
    If res Is Nothing Or clearCache Then
     res = New Dictionary(Of String, TermInfo)(StringComparer.CurrentCultureIgnoreCase)
