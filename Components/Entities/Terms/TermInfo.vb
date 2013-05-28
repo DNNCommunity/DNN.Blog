@@ -28,6 +28,7 @@ Imports System.Linq
 Imports System.Xml
 
 Namespace Entities.Terms
+ <Serializable()>
  Public Class TermInfo
   Inherits Term
   Implements IHydratable

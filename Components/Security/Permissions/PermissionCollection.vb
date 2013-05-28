@@ -22,6 +22,7 @@ Imports DotNetNuke.Modules.Blog.Security.Security
 
 Namespace Security.Permissions
 
+ <Serializable()>
  Public Class PermissionCollection
   Implements IDictionary(Of String, PermissionInfo)
 

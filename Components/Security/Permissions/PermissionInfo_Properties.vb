@@ -22,6 +22,7 @@ Imports System
 Imports System.Runtime.Serialization
 
 Namespace Security.Permissions
+ <Serializable()>
  Partial Public Class PermissionInfo
 
 #Region " Private Members "

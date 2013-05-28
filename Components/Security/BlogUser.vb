@@ -28,7 +28,7 @@ Namespace Security
  ''' object so we don't have to keep on looking this up.
  ''' </summary>
  ''' <remarks></remarks>
- <Serializable()> _
+ <Serializable()>
  Public Class BlogUser
   Inherits UserInfo
 

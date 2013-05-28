@@ -24,6 +24,7 @@ Imports DotNetNuke.Services.Tokens
 Imports DotNetNuke.Modules.Blog.Common.Globals
 
 Namespace Common
+ <Serializable()>
  Public Class ViewSettings
   Implements IPropertyAccess
 

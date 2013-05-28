@@ -22,6 +22,7 @@ Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Modules.Blog.Common.Globals
 
 Namespace Templating
+ <Serializable()>
  Public Class TemplateManager
 
   Public Sub New(portalsettings As PortalSettings, template As String)
