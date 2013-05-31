@@ -38,7 +38,7 @@ Namespace Controls
     cmdManageBlogs.Visible = BlogContext.Security.IsBlogger Or BlogContext.Security.CanApprovePost
     cmdAdmin.Visible = BlogContext.Security.IsEditor
     cmdBlog.Visible = BlogContext.Security.CanAddPost
-    wlwlink.Visible = BlogContext.Security.CanAddPost
+    wlwlink.Visible = BlogContext.Security.CanAddPost And Settings.AllowWLW
     cmdEditPost.Visible = (BlogContext.Post IsNot Nothing) And BlogContext.Security.CanEditPost
     cmdCopyModule.Visible = BlogContext.Security.IsEditor
     pnlCopyModule.Visible = BlogContext.Security.IsEditor
