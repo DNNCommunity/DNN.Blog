@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <code-summaries>
-  <code-summary date="2013-05-28T10:38:01.3720703+02:00" buildname="6.0.0.0">
-    <linecount label="VB" totalLineCount="50150" emptyLineCount="6551" commentLineCount="9659">
+  <code-summary date="2013-06-04T15:46:10.0937500+02:00" buildname="6.0.0.0">
+    <linecount label="VB" totalLineCount="50154" emptyLineCount="6550" commentLineCount="9659">
       <file-summaries>
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\BlogML\Enumerators\BlogPostTypes.vb" totalLineCount="10" emptyLineCount="1" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\BlogML\Enumerators\CommentModerationTypes.vb" totalLineCount="7" emptyLineCount="0" commentLineCount="0" />
@@ -307,7 +307,7 @@
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Manage.ascx" totalLineCount="140" emptyLineCount="2" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Manage.ascx.designer.vb" totalLineCount="51" emptyLineCount="7" commentLineCount="36" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Manage.ascx.vb" totalLineCount="81" emptyLineCount="18" commentLineCount="19" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\PostEdit.ascx" totalLineCount="105" emptyLineCount="7" commentLineCount="0" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\PostEdit.ascx" totalLineCount="109" emptyLineCount="6" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\PostEdit.ascx.designer.vb" totalLineCount="366" emptyLineCount="42" commentLineCount="281" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\PostEdit.ascx.vb" totalLineCount="419" emptyLineCount="68" commentLineCount="47" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\TermsEditML.ascx" totalLineCount="43" emptyLineCount="9" commentLineCount="0" />

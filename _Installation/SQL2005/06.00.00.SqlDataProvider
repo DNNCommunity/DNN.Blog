@@ -369,6 +369,14 @@ ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs DROP COLUMN
  AuthorMode
 GO
 
+/******* Fix for Blog_Entries table *******/
+UPDATE {databaseOwner}{objectQualifier}Blog_Entries
+SET CreatedUserId=b.OwnerUserId
+FROM {databaseOwner}{objectQualifier}Blog_Entries e
+ INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs b ON e.BlogID=b.BlogID
+WHERE e.CreatedUserId IS NULL
+GO
+
 /******* ENTRIES->POSTS TABLE *******/
 SET ANSI_NULLS ON
 GO
