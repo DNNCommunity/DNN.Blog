@@ -84,6 +84,7 @@ Namespace Controls
      td.Controls.Add(New LiteralControl(SupportedLocales(DefaultLanguage).Text))
     End If
     Dim ib As New ImageButton
+    ib.ID = Me.ID & "_cmdMinmax"
     td.Controls.Add(New LiteralControl("&nbsp;"))
     td.Controls.Add(ib)
 
