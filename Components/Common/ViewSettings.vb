@@ -117,6 +117,8 @@ Namespace Common
    For Each key As String In TemplateSettings.Keys
     objModules.UpdateTabModuleSetting(_tabModuleId, "t_" & key, TemplateSettings(key))
    Next
+   Dim CacheKey As String = "TabModuleSettings" & _tabModuleId.ToString
+   DotNetNuke.Common.Utilities.DataCache.SetCache(CacheKey, Me)
   End Sub
 
   Public Sub SetTemplateSetting(key As String, value As String)

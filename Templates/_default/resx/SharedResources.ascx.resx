@@ -150,6 +150,12 @@
   <data name="LikeComment.Text" xml:space="preserve">
     <value>Like Comment</value>
   </data>
+  <data name="pagesize.Help" xml:space="preserve">
+    <value>Specify the number of posts to show per page. -1 = do not page.</value>
+  </data>
+  <data name="pagesize.Text" xml:space="preserve">
+    <value>Page Size</value>
+  </data>
   <data name="Posts.Text" xml:space="preserve">
     <value>post(s)</value>
   </data>

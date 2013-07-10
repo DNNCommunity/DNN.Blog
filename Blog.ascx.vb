@@ -107,6 +107,7 @@ Public Class Blog
    Context.Items("BlogPageInitialized") = True
   End If
 
+  ViewSettings.TemplateSettings.ReadValue("pagesize", _pageSize)
   Me.Request.Params.ReadValue("Page", _reqPage)
   DataBind()
 

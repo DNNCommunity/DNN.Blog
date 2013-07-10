@@ -195,6 +195,7 @@
     <Content Include="Templates\_default\css\jquery.fancybox-1.3.4.css" />
     <Content Include="Templates\_default\Page.html" />
     <Content Include="Templates\_default\PostTag.html" />
+    <Content Include="Templates\_default\Settings.xml" />
     <Content Include="Templates\_default\template.js" />
     <Content Include="TermsEditML.ascx" />
     <Content Include="App_LocalResources\TermsEditML.ascx.resx" />
