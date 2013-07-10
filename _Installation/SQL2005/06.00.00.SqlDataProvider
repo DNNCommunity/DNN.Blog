@@ -2209,6 +2209,7 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetPosts
  @LimitToLocale NVARCHAR(10),
  @EndDate DATETIME,
  @AuthorUserId INT,
+ @OnlyActionable BIT,
  @PageIndex INT = -1,
  @PageSize INT = 0,
  @OrderBy VARCHAR(100) = ''
@@ -2221,7 +2222,8 @@ EXEC {databaseOwner}{objectQualifier}CalculatePagingInformation @PageIndex, @Pag
 DECLARE @Blogs TABLE (
  [BlogID] INT,
  [Locale] VARCHAR(10),
- [HasPrivilege] INT);
+ [HasPrivilege] INT,
+ [Owner] INT);
 INSERT INTO @Blogs
 SELECT
  b.BlogId,
@@ -2232,7 +2234,8 @@ SELECT
     FROM {databaseOwner}{objectQualifier}UserRoles ur
     WHERE (ur.EffectiveDate <= GETDATE() OR ur.EffectiveDate IS NULL) AND (ur.ExpiryDate >= GETDATE() OR ur.ExpiryDate IS NULL)
     and ur.UserID=@UserID) r  ON r.RoleID=bp.RoleId
- WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4)) AND bp.BlogId=b.BlogID AND bp.PermissionId IN (0,1,2)) AS [HasPrivilege]
+ WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4)) AND bp.BlogId=b.BlogID AND bp.PermissionId IN (0,1,2)) AS [HasPrivilege],
+ b.OwnerUserId
 FROM {databaseOwner}{objectQualifier}Blog_Blogs b
 WHERE b.ModuleID=@ModuleId;
 SELECT
@@ -2296,6 +2299,7 @@ WHERE
  AND (CAST(p.Published AS INT)=@Published OR @Published=-1)
  AND (p.Published=1 OR @UserIsAdmin=1 OR p.CreatedByUserId=@UserId OR b.HasPrivilege>0)
  AND (@LimitToLocale IS NULL OR ISNULL(p.Locale, b.Locale)=@LimitToLocale)
+ AND (@OnlyActionable=0 OR (p.CreatedByUserID=@UserId OR b.HasPrivilege>0 OR b.[Owner]=@UserId OR @UserIsAdmin=1))
  ) AS Tbl
 WHERE RowNum > @PageLowerBound AND RowNum < @PageUpperBound
 ORDER BY RowNum;
@@ -2310,6 +2314,7 @@ WHERE
  AND (CAST(p.Published AS INT)=@Published OR @Published=-1)
  AND (p.Published=1 OR @UserIsAdmin=1 OR p.CreatedByUserId=@UserId OR b.HasPrivilege>0)
  AND (@LimitToLocale IS NULL OR ISNULL(p.Locale, b.Locale)=@LimitToLocale)
+ AND (@OnlyActionable=0 OR (p.CreatedByUserID=@UserId OR b.HasPrivilege>0 OR b.[Owner]=@UserId OR @UserIsAdmin=1))
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetPostsByBlog') AND type in (N'P', N'PC'))
