@@ -39,7 +39,7 @@ Namespace Controls
     cmdAdmin.Visible = BlogContext.Security.IsEditor
     cmdBlog.Visible = BlogContext.Security.CanAddPost
     wlwlink.Visible = BlogContext.Security.CanAddPost And Settings.AllowWLW
-    cmdEditPost.Visible = (BlogContext.Post IsNot Nothing) And BlogContext.Security.CanEditPost
+    cmdEditPost.Visible = (BlogContext.Post IsNot Nothing) And (BlogContext.Security.CanEditPost Or BlogContext.Security.CanEditThisPost(BlogContext.Post))
     cmdCopyModule.Visible = BlogContext.Security.IsEditor
     pnlCopyModule.Visible = BlogContext.Security.IsEditor
     wlwlink.Title = LocalizeString("WLW")

@@ -49,13 +49,13 @@
        <a href="<%# EditUrl("Post", Eval("ContentItemId"), "PostEdit") %>" 
           class="blogicon-edit icon16" 
           title="Edit"
-          style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Blog.CanEdit, "inline", "none") %>"></a>
+          style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Blog.CanEdit OR BlogContext.Security.CanEditThisPost(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo)), "inline", "none") %>"></a>
        <a href="#" 
           onclick="if (confirm('<%= LocalizeJSString("DeletePost") %>')) {blogService.deletePost(<%# Eval("BlogID") %>, <%# Eval("ContentItemID") %>, function() {$('#cmdDeletePost<%# Eval("ContentItemID") %>').parent().parent().hide()})};return false;"
           id="cmdDeletePost<%# Eval("ContentItemID") %>"
           class="blogicon-remove icon16" 
           title="Delete"
-          style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Blog.CanEdit, "inline", "none") %>"></a>
+          style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Blog.CanEdit OR BlogContext.Security.CanEditThisPost(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo)), "inline", "none") %>"></a>
        <a href="#" 
           onclick="if (confirm('<%= LocalizeJSString("ApprovePost") %>')) {blogService.approvePost(<%# Eval("BlogID") %>, <%# Eval("ContentItemID") %>, function() {$('#cmdApprovePost<%# Eval("ContentItemID") %>').hide();$('#approveTick<%# Eval("ContentItemID") %>').text('&#10003;')})};return false;" 
           id="cmdApprovePost<%# Eval("ContentItemID") %>"

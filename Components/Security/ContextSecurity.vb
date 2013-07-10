@@ -42,10 +42,12 @@ Namespace Security
   Private _userIsAdmin As Boolean = False
   Private _isBlogger As Boolean = False
   Private _isEditor As Boolean = False
+  Private _userId As Integer = -1
 #End Region
 
 #Region " Constructor "
   Public Sub New(moduleId As Integer, tabId As Integer, blog As BlogInfo, user As UserInfo)
+   _userId = user.UserID
    If blog IsNot Nothing Then
     IsOwner = CBool(blog.CreatedByUserID = user.UserID)
     _canAdd = blog.CanAdd
@@ -93,6 +95,12 @@ Namespace Security
     Return _canEdit Or IsOwner Or UserIsAdmin
    End Get
   End Property
+  Public Function CanEditThisPost(post As Posts.PostInfo) As Boolean
+   If CanEditPost Then Return True
+   If post Is Nothing Then Return False
+   If post.CreatedByUserID = _userId And Not post.Published Then Return True
+   Return False
+  End Function
 
   Public ReadOnly Property CanAddPost() As Boolean
    Get

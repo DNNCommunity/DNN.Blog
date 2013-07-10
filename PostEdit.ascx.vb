@@ -84,9 +84,9 @@ Public Class PostEdit
     End If
    End If
 
-   If Not BlogContext.Security.CanAddPost Then
-    Response.Redirect(NavigateURL("Access Denied"))
-   End If
+   'If Not BlogContext.Security.CanAddPost Then
+   ' Response.Redirect(NavigateURL("Access Denied"))
+   'End If
 
    txtTitle.DefaultLanguage = BlogContext.Blog.Locale
    txtDescription.DefaultLanguage = BlogContext.Blog.Locale
@@ -115,7 +115,7 @@ Public Class PostEdit
 
   Try
 
-   If Not BlogContext.Security.CanEditPost And Not BlogContext.Security.CanAddPost Then
+   If Not BlogContext.Security.CanEditPost And Not (BlogContext.Security.CanAddPost And BlogContext.Post Is Nothing) And Not BlogContext.Security.CanEditThisPost(BlogContext.Post) Then
     Throw New Exception("You do not have access to this resource. Please check your login status.")
    End If
 
