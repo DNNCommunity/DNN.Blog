@@ -39,7 +39,7 @@
  <div id="Posts" class="dnnClear">
   <div class="coreMessaging" id="blogPostsError"></div>
   <dnn:DNNGrid id="grdPosts" autogeneratecolumns="false" cssclass="dnnGrid dnnSecurityRolesGrid"
-   runat="server" allowpaging="True" allowcustompaging="True" enableviewstate="True"
+   runat="server" allowpaging="True" allowcustompaging="True" enableviewstate="True" AllowSorting="true"
    onneeddatasource="GetPosts">
    <MasterTableView>
     <Columns>
@@ -64,12 +64,8 @@
           style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Blog.CanApprove AND NOT CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Published, "inline", "none") %>"></a>
       </ItemTemplate>
      </dnn:DnnGridTemplateColumn>
-     <dnn:DnnGridTemplateColumn HeaderText="Date">
-      <ItemTemplate>
-       <asp:Label ID="Label2" Runat="server" Text='<%# CDate(Eval("PublishedOnDate")).ToString("d") %>' ToolTip='<%# CDate(Eval("PublishedOnDate")).ToString("U") %>' />
-      </ItemTemplate>
-     </dnn:DnnGridTemplateColumn>
-     <dnn:DnnGridBoundColumn datafield="Title" headertext="Title"/>
+     <dnn:DnnGridBoundColumn datafield="PublishedOnDate" headertext="Date" AllowSorting="True" SortExpression="PublishedOnDate" DataFormatString="{0:g}" />
+     <dnn:DnnGridBoundColumn datafield="Title" headertext="Title" AllowSorting="True" SortExpression="Title" />
      <dnn:DnnGridTemplateColumn HeaderText="Published">
       <ItemStyle Width="30px" HorizontalAlign="Center"></ItemStyle>
       <ItemTemplate>
