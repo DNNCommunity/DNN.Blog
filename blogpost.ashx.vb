@@ -288,12 +288,13 @@ Public Class BlogPost
 
  Public Function editPost(postid As String, username As String, password As String, mwlPost As Post, publish As Boolean) As Boolean Implements IMetaWeblog.editPost
   InitializeMethodCall(username, password, "", postid)
-  RequireEditPermission()
 
   Dim success As Boolean = False
   Try
+
    mwlPost.postid = postid
    Dim newPost As PostInfo = ToBlogPost(mwlPost)
+   RequireEditPermission(newPost) ' security moved here to cater for editing of non-approved post
    AddCategoriesAndKeyWords(newPost, mwlPost)
    If RequestedBlog.MustApproveGhostPosts And Not Security.CanApprovePost Then
     newPost.Published = False
@@ -525,6 +526,18 @@ Public Class BlogPost
  Private Sub RequireEditPermission()
   If Security IsNot Nothing Then
    If Security.CanEditPost Then
+    Exit Sub
+   End If
+  End If
+  Throw New XmlRpcFaultException(0, GetString("Blog Access Denied", "Your access to this blog is not permitted. Please check your credentials."))
+ End Sub
+
+ Private Sub RequireEditPermission(existingPost As PostInfo)
+  If Security IsNot Nothing Then
+   If Security.CanEditPost Then
+    Exit Sub
+   End If
+   If Security.CanEditThisPost(existingPost) Then
     Exit Sub
    End If
   End If
