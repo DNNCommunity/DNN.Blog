@@ -133,7 +133,7 @@
          </moduleControl>
         </moduleControls>
         <permissions>
-         <permission code="DNN_BLOG_MODULE" key="BLOGGER" name="Blogger"/>
+         <permission code="DNN_BLOG_MODULE" key="BLOGGER" name="Create Blog"/>
         </permissions>
        </moduleDefinition>
       </moduleDefinitions>

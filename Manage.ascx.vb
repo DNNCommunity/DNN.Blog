@@ -35,6 +35,7 @@ Public Class Manage
   If Not BlogContext.security.CanDoSomethingWithPosts Then
    Throw New Exception("You do not have access to this resource. Please check your login status.")
   End If
+  cmdAdd.Visible = BlogContext.Security.IsBlogger
 
   If Not Me.IsPostBack Then
    Me.DataBind()
