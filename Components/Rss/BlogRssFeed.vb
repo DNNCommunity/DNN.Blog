@@ -170,7 +170,7 @@ Namespace Rss
      If Term IsNot Nothing Then
       Posts = PostsController.GetPostsByTerm(moduleId, BlogId, Locale, TermId, 1, Language, Date.Now.ToUniversalTime, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
      Else
-      Posts = PostsController.GetPosts(moduleId, BlogId, Locale, 1, Language, Date.Now.ToUniversalTime, -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
+      Posts = PostsController.GetPosts(moduleId, BlogId, Locale, 1, Language, Date.Now.ToUniversalTime, -1, False, 0, RecordsToSend, "PUBLISHEDONDATE DESC", TotalRecords, -1, False).Values
      End If
     End If
     WriteRss(CacheFile)

@@ -68,7 +68,7 @@ Public Class Manage
 
  Public Sub GetPosts()
 
-  grdPosts.DataSource = PostsController.GetPosts(Settings.ModuleId, -1, BlogContext.Locale, -1, "", Now, -1, grdPosts.CurrentPageIndex, grdPosts.PageSize, "PUBLISHEDONDATE DESC", _totalPosts, UserId, BlogContext.Security.UserIsAdmin).Values
+  grdPosts.DataSource = PostsController.GetPosts(Settings.ModuleId, -1, BlogContext.Locale, -1, "", Now, -1, True, grdPosts.CurrentPageIndex, grdPosts.PageSize, "PUBLISHEDONDATE DESC", _totalPosts, UserId, BlogContext.Security.UserIsAdmin).Values
   grdPosts.VirtualItemCount = _totalPosts
 
  End Sub

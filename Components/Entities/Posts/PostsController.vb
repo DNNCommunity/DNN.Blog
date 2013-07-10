@@ -66,7 +66,7 @@ Namespace Entities.Posts
    'CompletePostDelete(contentItemId, blogId, PostId, portalId, vocabularyId)
   End Sub
 
-  Public Shared Function GetPosts(moduleId As Int32, blogID As Int32, displayLocale As String, published As Integer, limitToLocale As String, endDate As Date, authorUserId As Int32, pageIndex As Int32, pageSize As Int32, orderBy As String, ByRef totalRecords As Integer, userId As Integer, userIsAdmin As Boolean) As Dictionary(Of Integer, PostInfo)
+  Public Shared Function GetPosts(moduleId As Int32, blogID As Int32, displayLocale As String, published As Integer, limitToLocale As String, endDate As Date, authorUserId As Int32, onlyActionable As Boolean, pageIndex As Int32, pageSize As Int32, orderBy As String, ByRef totalRecords As Integer, userId As Integer, userIsAdmin As Boolean) As Dictionary(Of Integer, PostInfo)
 
    If pageIndex < 0 Then
     pageIndex = 0
@@ -74,7 +74,7 @@ Namespace Entities.Posts
    End If
 
    Dim res As New Dictionary(Of Integer, PostInfo)
-   Using ir As IDataReader = DataProvider.Instance().GetPosts(moduleId, blogID, displayLocale, userId, userIsAdmin, published, limitToLocale, endDate, authorUserId, pageIndex, pageSize, orderBy)
+   Using ir As IDataReader = DataProvider.Instance().GetPosts(moduleId, blogID, displayLocale, userId, userIsAdmin, published, limitToLocale, endDate, authorUserId, onlyActionable, pageIndex, pageSize, orderBy)
     res = DotNetNuke.Common.Utilities.CBO.FillDictionary(Of Integer, PostInfo)("ContentItemID", ir, False)
     ir.NextResult()
     totalRecords = DotNetNuke.Common.Globals.GetTotalRecords(ir)
