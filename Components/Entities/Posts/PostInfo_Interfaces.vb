@@ -166,7 +166,7 @@ Namespace Entities.Posts
      Return (Me.LastModifiedByUserID.ToString(OutputFormat, formatProvider))
     Case "lastmodifiedondate"
      Return (Me.LastModifiedOnDate.ToString(OutputFormat, formatProvider))
-    Case "content"
+    Case "content", "contents"
      Return Me.Content.OutputHtml(strFormat)
     Case "hasimage"
      Return CBool(Me.Image <> "").ToString(formatProvider)

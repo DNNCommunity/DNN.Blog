@@ -478,7 +478,11 @@ Namespace Common
     Case "js"
      Return HttpUtility.HtmlDecode(encodedHtml).Replace("""", "\""").Replace("'", "\'").Replace(vbCrLf, "\r\n")
     Case Else
-     Return HttpUtility.HtmlDecode(encodedHtml)
+     If IsNumeric(strFormat) Then
+      Return RemoveHtmlTags(HttpUtility.HtmlDecode(encodedHtml)).Substring(0, Integer.Parse(strFormat))
+     Else
+      Return HttpUtility.HtmlDecode(encodedHtml)
+     End If
    End Select
   End Function
 

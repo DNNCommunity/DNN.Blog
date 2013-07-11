@@ -55,6 +55,7 @@ Namespace Common
 
   Public Sub New(Post As PostInfo, summaryModel As SummaryType, includeLocalizations As Boolean)
    Body = HttpUtility.HtmlDecode(Post.Content)
+   If Body Is Nothing Then Body = ""
    If summaryModel = SummaryType.PlainTextIndependent Then
     Summary = Post.Summary
    Else
