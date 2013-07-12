@@ -14,24 +14,6 @@ Option Explicit On
 Partial Public Class PostEdit
 
  '''<summary>
- '''lblSummaryPrecedingWarning control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents lblSummaryPrecedingWarning As Global.System.Web.UI.WebControls.Label
-
- '''<summary>
- '''teBlogPost control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents teBlogPost As Global.DotNetNuke.Modules.Blog.Controls.LongTextEdit
-
- '''<summary>
  '''lblTitle control.
  '''</summary>
  '''<remarks>
@@ -48,6 +30,24 @@ Partial Public Class PostEdit
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
  Protected WithEvents txtTitle As Global.DotNetNuke.Modules.Blog.Controls.ShortTextEdit
+
+ '''<summary>
+ '''lblSummaryPrecedingWarning control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents lblSummaryPrecedingWarning As Global.System.Web.UI.WebControls.Label
+
+ '''<summary>
+ '''teBlogPost control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents teBlogPost As Global.DotNetNuke.Modules.Blog.Controls.LongTextEdit
 
  '''<summary>
  '''lblSummary control.

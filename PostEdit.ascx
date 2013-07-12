@@ -11,15 +11,14 @@
  </ul>
  <div class="dnnClear" id="dnnBlogEditContent">
 	<fieldset>
+		<dnn:Label ID="lblTitle" runat="server" controlname="treeCategories" suffix=":" CssClass="dnnLeft" /><br />
+  <blog:ShortTextEdit id="txtTitle" runat="server" Required="True" CssClass="blog_rte_full" RequiredResourceKey="Title.Required" CssPrefix="blog_rte_" />
   <asp:Label runat="server" ID="lblSummaryPrecedingWarning" resourcekey="lblSummaryPrecedingWarning" Visible="false" CssClass="dnnFormMessage dnnFormWarning" />
   <blog:LongTextEdit id="teBlogPost" runat="server" Width="100%" TextBoxHeight="500" TextBoxWidth="100%" ShowRichTextBox="True" CssClass="blog_rte" CssPrefix="blog_rte_" />
 	</fieldset>
  </div>
  <div class="dnnClear" id="dnnBlogEditMetadata">
 	<fieldset>
-		<dnn:Label ID="lblTitle" runat="server" controlname="treeCategories" suffix=":" CssClass="dnnLeft" /><br />
-  <blog:ShortTextEdit id="txtTitle" runat="server" Required="True" CssClass="blog_rte_full" RequiredResourceKey="Title.Required" CssPrefix="blog_rte_" />
-
 		<dnn:Label ID="lblSummary" runat="server" controlname="txtDescription" suffix=":" CssClass="dnnLeft" />
   <div style="display:block;float:clear">&nbsp;</div>
   <blog:LongTextEdit id="txtDescription" runat="server" Width="100%" TextBoxWidth="100%" TextBoxHeight="300" CssPrefix="blog_rte_" />
