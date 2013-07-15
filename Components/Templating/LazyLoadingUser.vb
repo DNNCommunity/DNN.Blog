@@ -82,30 +82,27 @@ Namespace Templating
 
 #Region " IPropertyAccess Implementation "
   Public Function GetProperty(strPropertyName As String, strFormat As String, formatProvider As System.Globalization.CultureInfo, AccessingUser As DotNetNuke.Entities.Users.UserInfo, AccessLevel As DotNetNuke.Services.Tokens.Scope, ByRef PropertyNotFound As Boolean) As String Implements DotNetNuke.Services.Tokens.IPropertyAccess.GetProperty
-   Dim res As String = Null.NullString
    Select strPropertyName.ToLower
     Case "profilepic"
-     PropertyNotFound = False
      If IsNumeric(strFormat) Then
-      res = DotNetNuke.Common.ResolveUrl(String.Format("~/profilepic.ashx?userid={0}&w={1}&h={1}", UserId, strFormat))
+      Return DotNetNuke.Common.ResolveUrl(String.Format("~/profilepic.ashx?userid={0}&w={1}&h={1}", UserId, strFormat))
      Else
-      res = DotNetNuke.Common.ResolveUrl(String.Format("~/profilepic.ashx?userid={0}&w={1}&h={1}", UserId, 50))
+      Return DotNetNuke.Common.ResolveUrl(String.Format("~/profilepic.ashx?userid={0}&w={1}&h={1}", UserId, 50))
      End If
     Case "profileurl"
-     PropertyNotFound = False
-     res = DotNetNuke.Common.Globals.UserProfileURL(UserId)
+     Return DotNetNuke.Common.Globals.UserProfileURL(UserId)
    End Select
-   If PropertyNotFound Then
-    If _postAuthor IsNot Nothing Then
-     res = _postAuthor.GetProperty(strPropertyName, strFormat, formatProvider, AccessingUser, AccessLevel, PropertyNotFound)
-    Else
-     res = User.GetProperty(strPropertyName, strFormat, formatProvider, AccessingUser, AccessLevel, PropertyNotFound)
-    End If
+   If _postAuthor IsNot Nothing Then
+    Return _postAuthor.GetProperty(strPropertyName, strFormat, formatProvider, AccessingUser, AccessLevel, PropertyNotFound)
+   Else
+    Return User.GetProperty(strPropertyName, strFormat, formatProvider, AccessingUser, AccessLevel, PropertyNotFound)
    End If
    If PropertyNotFound Then
-    res = User.Profile.GetPropertyValue(strPropertyName)
+    Dim res As String = User.Profile.GetPropertyValue(strPropertyName)
+    If Not String.IsNullOrEmpty(res) Then Return res
    End If
-   Return res
+   PropertyNotFound = True
+   Return Null.NullString
   End Function
 
   Public ReadOnly Property Cacheability() As DotNetNuke.Services.Tokens.CacheLevel Implements DotNetNuke.Services.Tokens.IPropertyAccess.Cacheability

@@ -107,7 +107,6 @@ Namespace Entities.Posts
     Case Else
      Return MyBase.GetProperty(strPropertyName, strFormat, formatProvider, AccessingUser, AccessLevel, PropertyNotFound)
    End Select
-   Return Null.NullString
   End Function
 
   Public Shadows ReadOnly Property Cacheability() As DotNetNuke.Services.Tokens.CacheLevel Implements DotNetNuke.Services.Tokens.IPropertyAccess.Cacheability
