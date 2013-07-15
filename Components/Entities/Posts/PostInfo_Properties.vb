@@ -43,7 +43,7 @@ Namespace Entities.Posts
   <DataMember()>
   Public Property Image As String = ""
   <DataMember()>
-  Public Property Published As Boolean = True
+  Public Property Published As Boolean = False
   <DataMember()>
   Public Property PublishedOnDate As Date = Date.Now.ToUniversalTime
   <DataMember()>

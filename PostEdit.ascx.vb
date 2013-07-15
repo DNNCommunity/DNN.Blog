@@ -151,6 +151,7 @@ Public Class PostEdit
      BlogContext.Post = New PostInfo
      BlogContext.Post.Blog = BlogContext.Blog
      BlogContext.Post.BlogID = BlogContext.Blog.BlogID
+     BlogContext.Post.Published = True
     End If
 
     If Not BlogContext.Post Is Nothing Then
@@ -199,19 +200,6 @@ Public Class PostEdit
      End If
      ctlTags.Terms = BlogContext.Post.PostTags
      ctlCategories.SelectedCategories = BlogContext.Post.PostCategories
-
-     'Else
-
-     ' ddLocale.Items.FindByValue("").Selected = True
-     ' ' Publishing
-     ' chkAllowComments.Checked = BlogContext.Blog.Permissions.ContainsPermissionKey("ADDCOMMENT")
-     ' ' Date
-     ' litTimezone.Text = BlogContext.UiTimeZone.DisplayName
-     ' Dim publishDate As Date = UtcToLocalTime(DateTime.Now.ToUniversalTime, BlogContext.UiTimeZone)
-     ' dpPostDate.Culture = Threading.Thread.CurrentThread.CurrentUICulture
-     ' dpPostDate.SelectedDate = publishDate
-     ' tpPostTime.Culture = Threading.Thread.CurrentThread.CurrentUICulture
-     ' tpPostTime.SelectedDate = publishDate
 
     End If
 
