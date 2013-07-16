@@ -116,6 +116,20 @@ Namespace Templating
      ClientResourceManager.RegisterScript(Me.Page, ViewPath & "js/" & f.Name)
     Next
    End If
+   ' localized js files?
+   Dim locale As String = Threading.Thread.CurrentThread.CurrentCulture.Name.ToLower
+   If IO.Directory.Exists(ViewMapPath & "js\" & locale) Then
+    For Each f As IO.FileInfo In (New IO.DirectoryInfo(ViewMapPath & "js\" & locale)).GetFiles("*.js")
+     ClientResourceManager.RegisterScript(Me.Page, ViewPath & "js/" & locale & "/" & f.Name)
+    Next
+   Else ' check generic culture
+    locale = Threading.Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.ToLower
+    If IO.Directory.Exists(ViewMapPath & "js\" & locale) Then
+     For Each f As IO.FileInfo In (New IO.DirectoryInfo(ViewMapPath & "js\" & locale)).GetFiles("*.js")
+      ClientResourceManager.RegisterScript(Me.Page, ViewPath & "js/" & locale & "/" & f.Name)
+     Next
+    End If
+   End If
    ' add js blocks
    If IO.Directory.Exists(ViewMapPath & "jsblocks") Then
     For Each f As IO.FileInfo In (New IO.DirectoryInfo(ViewMapPath & "jsblocks")).GetFiles("*.js")
