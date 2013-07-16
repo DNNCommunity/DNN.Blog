@@ -1,24 +1,27 @@
-<input type="text" id="blogCalendar[module:moduleid]" class="gldp-el" style="width:300px;" />
+<div id="blogCal[module:moduleid]"></div>
 <script type="text/javascript">
  (function ($, Sys) {
   $(document).ready(function () {
-   $('#blogCalendar[module:moduleid]').glDatePicker(
-{
- onClick: (function (el, cell, date, data) {
-  var url = '[urls:blogtermauthor|true]end=';
-  url += date.getFullYear()+'-'+(date.getMonth()+1).toString()+'-'+date.getDate();
-  window.location.href = encodeURI(url);
- }),
- showAlways: true,
- selectableDateRange: [{
-  from: new Date(2000, 1, 1), to: new Date([date:now|yyyy], [date:now|MM], [date:now|dd])
- }],
- selectedDate: new Date([query:enddate|yyyy], [query:enddate|MM]-1, [query:enddate|dd]),
- specialDates: [
-  [subtemplate|CalendarItem.html|posts]
-  {date: new Date('[datetime:now|yyyy/MM/dd]'), data: {}, cssClass: 'selected'}
- ]
-});
+   var selDates =[
+    [subtemplate|CalendarItem.html|posts|pagesize=100]'0001-01-01'
+   ];
+   $('#blogCal[module:moduleid]').datepicker({
+   onSelect: function(dateText, inst) {
+    var url = '[urls:blogtermauthor|true]end=';
+    url += dateText;
+    window.location.href = encodeURI(url);
+   },
+   dateFormat: "yy-mm-dd",
+   beforeShowDay: function(date) {
+     var sDate = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();
+     if ($.inArray(sDate, selDates) >=0 ) {
+      return [true,'selectedDate'];
+     } else {
+      return [true,''];
+     }
+    }
+   });
+   $('#blogCal[module:moduleid]').datepicker('setDate', '[query:enddate|yyyy]-[query:enddate|MM]-[query:enddate|dd]');
   });
  } (jQuery, window.Sys));
 </script>

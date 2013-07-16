@@ -1,10 +1,6 @@
-﻿div.gldp-default
-{
- margin-top:-40px;
+﻿.ui-datepicker-calendar td.selectedDate .ui-state-default {
+ background: url("../images/ui-bg_glass_75_e6e6e6_1x400.png") repeat-x scroll 50% 50% #64BB5D;
 }
-.gldp-default .blogDate {
-    background: #777 repeat scroll 0 0 transparent;
-    border-color: #CC0000;
-    color: #FFFFFF;
-    font-weight: bold;
+.ui-datepicker-calendar td.ui-datepicker-current-day .ui-state-default {
+ background: url("../images/ui-bg_glass_75_e6e6e6_1x400.png") repeat-x scroll 50% 50% #EEA303;
 }
