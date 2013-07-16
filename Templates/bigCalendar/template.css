@@ -1,0 +1,10 @@
+﻿div.gldp-default
+{
+ margin-top:-40px;
+}
+.gldp-default .blogDate {
+    background: #777 repeat scroll 0 0 transparent;
+    border-color: #CC0000;
+    color: #FFFFFF;
+    font-weight: bold;
+}
