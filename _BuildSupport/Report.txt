@@ -76,7 +76,7 @@ clean.bindirectory:
 compile.projects:
 
      [echo] Building DotNetNuke.Modules.Blog.vbproj
-  [msbuild] Build started 04/06/2013 15:46:03.
+  [msbuild] Build started 19/07/2013 20:48:28.
   [msbuild] Overriding target "GetFrameworkPaths" in project "C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets" with target "GetFrameworkPaths" from project "C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.NETFramework.targets".
   [msbuild] Overriding target "SatelliteDllsProjectOutputGroup" in project "C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets" with target "SatelliteDllsProjectOutputGroup" from project "C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.WinFX.targets".
   [msbuild] Project "E:\Webroot\BLOGDEV\DesktopModules\Blog\DotNetNuke.Modules.Blog.vbproj" on node 1 (Rebuild target(s)).
@@ -3156,12 +3156,12 @@ compile.projects:
   [msbuild]               DotNetNuke, Version=7.0.4.180, Culture=neutral, processorArchitecture=MSIL
   [msbuild]               DotNetNuke.Web, Version=7.0.4.180, Culture=neutral, processorArchitecture=MSIL
   [msbuild]               DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, processorArchitecture=MSIL
-  [msbuild]           E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.Web.dll
-  [msbuild]             Project file item includes which caused reference "E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.Web.dll".
-  [msbuild]               DotNetNuke.Web, Version=7.0.4.180, Culture=neutral, processorArchitecture=MSIL
   [msbuild]           E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.dll
   [msbuild]             Project file item includes which caused reference "E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.dll".
   [msbuild]               DotNetNuke, Version=7.0.4.180, Culture=neutral, processorArchitecture=MSIL
+  [msbuild]               DotNetNuke.Web, Version=7.0.4.180, Culture=neutral, processorArchitecture=MSIL
+  [msbuild]           E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.Web.dll
+  [msbuild]             Project file item includes which caused reference "E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.Web.dll".
   [msbuild]               DotNetNuke.Web, Version=7.0.4.180, Culture=neutral, processorArchitecture=MSIL
   [msbuild]       References which depend on "DotNetNuke.WebUtility, Version=4.2.0.185, Culture=neutral, PublicKeyToken=null" [].
   [msbuild]           E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.WebControls.dll
@@ -3177,12 +3177,12 @@ compile.projects:
   [msbuild]               DotNetNuke, Version=7.0.4.180, Culture=neutral, processorArchitecture=MSIL
   [msbuild]               DotNetNuke.Web, Version=7.0.4.180, Culture=neutral, processorArchitecture=MSIL
   [msbuild]               DotNetNuke.Web.Client, Version=6.1.2.0, Culture=neutral, processorArchitecture=MSIL
-  [msbuild]           E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.Web.dll
-  [msbuild]             Project file item includes which caused reference "E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.Web.dll".
-  [msbuild]               DotNetNuke.Web, Version=7.0.4.180, Culture=neutral, processorArchitecture=MSIL
   [msbuild]           E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.dll
   [msbuild]             Project file item includes which caused reference "E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.dll".
   [msbuild]               DotNetNuke, Version=7.0.4.180, Culture=neutral, processorArchitecture=MSIL
+  [msbuild]               DotNetNuke.Web, Version=7.0.4.180, Culture=neutral, processorArchitecture=MSIL
+  [msbuild]           E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.Web.dll
+  [msbuild]             Project file item includes which caused reference "E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.Web.dll".
   [msbuild]               DotNetNuke.Web, Version=7.0.4.180, Culture=neutral, processorArchitecture=MSIL
   [msbuild]       References which depend on "DotNetNuke.Web.Client, Version=6.1.0.272, Culture=neutral, PublicKeyToken=null" [].
   [msbuild]           E:\Webroot\BLOGDEV\DesktopModules\Blog\_References\DotNetNuke.WebUtility.dll
@@ -3331,7 +3331,7 @@ compile.projects:
   [msbuild]   
   [msbuild]     Public Shadows Function GetProperty(strPropertyName As String, strFormat As String, formatProvider As System.Globalization.CultureInfo, AccessingUser As DotNetNuke.Entities.Users.UserInfo, AccessLevel As DotNetNuke.Services.Tokens.Scope, ByRef PropertyNotFound As Boolean) As String Implements DotNetNuke.Services.Tokens.IPropertyAccess.GetProperty
   [msbuild]                                                                                                                                                                                                                                                                                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  [msbuild] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Posts\PostAuthor.vb(113,103): warning BC42015: 'Services.Tokens.IPropertyAccess.Cacheability' is already implemented by the base class 'Entities.Users.UserInfo'. Re-implementation of property assumed. [E:\Webroot\BLOGDEV\DesktopModules\Blog\DotNetNuke.Modules.Blog.vbproj]
+  [msbuild] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Posts\PostAuthor.vb(112,103): warning BC42015: 'Services.Tokens.IPropertyAccess.Cacheability' is already implemented by the base class 'Entities.Users.UserInfo'. Re-implementation of property assumed. [E:\Webroot\BLOGDEV\DesktopModules\Blog\DotNetNuke.Modules.Blog.vbproj]
   [msbuild]   
   [msbuild]     Public Shadows ReadOnly Property Cacheability() As DotNetNuke.Services.Tokens.CacheLevel Implements DotNetNuke.Services.Tokens.IPropertyAccess.Cacheability
   [msbuild]                                                                                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -3343,6 +3343,10 @@ compile.projects:
   [msbuild]   
   [msbuild]     Public Overrides Property KeyID() As Integer Implements IHydratable.KeyID
   [msbuild]                                                             ~~~~~~~~~~~~~~~~~
+  [msbuild] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Templating\LazyLoadingUser.vb(101,9): warning BC42024: Unused local variable: 'res'. [E:\Webroot\BLOGDEV\DesktopModules\Blog\DotNetNuke.Modules.Blog.vbproj]
+  [msbuild]   
+  [msbuild]       Dim res As String = User.Profile.GetPropertyValue(strPropertyName)
+  [msbuild]           ~~~                                                           
   [msbuild] Done executing task "Vbc".
   [msbuild] Task "CallTarget" skipped, due to false condition; ('$(TargetsTriggeredByCompilation)' != '') was evaluated as ('' != '').
   [msbuild] Done building target "CoreCompile" in project "DotNetNuke.Modules.Blog.vbproj".
@@ -3545,6 +3549,7 @@ compile.projects:
   [msbuild]   Copying file from "Templates\_default\SearchBanner.html" to "E:\Webroot\BLOGDEV\DesktopModules\Blog\bin\_PublishedWebsites\DotNetNuke.Modules.Blog\Templates\_default\SearchBanner.html".
   [msbuild]   Copying file from "Templates\_default\Page.html" to "E:\Webroot\BLOGDEV\DesktopModules\Blog\bin\_PublishedWebsites\DotNetNuke.Modules.Blog\Templates\_default\Page.html".
   [msbuild]   Copying file from "Templates\_default\PostTag.html" to "E:\Webroot\BLOGDEV\DesktopModules\Blog\bin\_PublishedWebsites\DotNetNuke.Modules.Blog\Templates\_default\PostTag.html".
+  [msbuild]   Copying file from "Templates\_default\Settings.xml" to "E:\Webroot\BLOGDEV\DesktopModules\Blog\bin\_PublishedWebsites\DotNetNuke.Modules.Blog\Templates\_default\Settings.xml".
   [msbuild]   Copying file from "Templates\_default\template.js" to "E:\Webroot\BLOGDEV\DesktopModules\Blog\bin\_PublishedWebsites\DotNetNuke.Modules.Blog\Templates\_default\template.js".
   [msbuild]   Copying file from "Templates\_default\TermBanner.html" to "E:\Webroot\BLOGDEV\DesktopModules\Blog\bin\_PublishedWebsites\DotNetNuke.Modules.Blog\Templates\_default\TermBanner.html".
   [msbuild]   Copying file from "Templates\_default\Tag.html" to "E:\Webroot\BLOGDEV\DesktopModules\Blog\bin\_PublishedWebsites\DotNetNuke.Modules.Blog\Templates\_default\Tag.html".
@@ -3673,14 +3678,15 @@ compile.projects:
   [msbuild] "E:\Webroot\BLOGDEV\DesktopModules\Blog\DotNetNuke.Modules.Blog.vbproj" (Rebuild target) (1) ->
   [msbuild] (CoreCompile target) -> 
   [msbuild]   E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Posts\PostAuthor.vb(90,297): warning BC42015: 'Services.Tokens.IPropertyAccess.GetProperty' is already implemented by the base class 'Entities.Users.UserInfo'. Re-implementation of function assumed. [E:\Webroot\BLOGDEV\DesktopModules\Blog\DotNetNuke.Modules.Blog.vbproj]
-  [msbuild]   E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Posts\PostAuthor.vb(113,103): warning BC42015: 'Services.Tokens.IPropertyAccess.Cacheability' is already implemented by the base class 'Entities.Users.UserInfo'. Re-implementation of property assumed. [E:\Webroot\BLOGDEV\DesktopModules\Blog\DotNetNuke.Modules.Blog.vbproj]
+  [msbuild]   E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Posts\PostAuthor.vb(112,103): warning BC42015: 'Services.Tokens.IPropertyAccess.Cacheability' is already implemented by the base class 'Entities.Users.UserInfo'. Re-implementation of property assumed. [E:\Webroot\BLOGDEV\DesktopModules\Blog\DotNetNuke.Modules.Blog.vbproj]
   [msbuild]   E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Posts\PostInfo_Interfaces.vb(56,59): warning BC42015: 'Entities.Modules.IHydratable.Fill' is already implemented by the base class 'Entities.Content.ContentItem'. Re-implementation of sub assumed. [E:\Webroot\BLOGDEV\DesktopModules\Blog\DotNetNuke.Modules.Blog.vbproj]
   [msbuild]   E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Posts\PostInfo_Interfaces.vb(89,59): warning BC42015: 'Entities.Modules.IHydratable.KeyID' is already implemented by the base class 'Entities.Content.ContentItem'. Re-implementation of property assumed. [E:\Webroot\BLOGDEV\DesktopModules\Blog\DotNetNuke.Modules.Blog.vbproj]
+  [msbuild]   E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Templating\LazyLoadingUser.vb(101,9): warning BC42024: Unused local variable: 'res'. [E:\Webroot\BLOGDEV\DesktopModules\Blog\DotNetNuke.Modules.Blog.vbproj]
   [msbuild] 
-  [msbuild]     4 Warning(s)
+  [msbuild]     5 Warning(s)
   [msbuild]     0 Error(s)
   [msbuild] 
-  [msbuild] Time Elapsed 00:00:06.31
+  [msbuild] Time Elapsed 00:00:03.82
 
 make.doc:
 
@@ -3723,14 +3729,14 @@ make.codestats:
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\BlogContextInfo.vb Totals: [T] 232 [C] 22 [E] 19
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\BlogModuleBase.vb Totals: [T] 164 [C] 20 [E] 26
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\DynatreeItem.vb Totals: [T] 31 [C] 19 [E] 1
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\Extensions.vb Totals: [T] 497 [C] 19 [E] 49
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\Extensions.vb Totals: [T] 501 [C] 19 [E] 49
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\Globals.vb Totals: [T] 291 [C] 42 [E] 35
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\Image.vb Totals: [T] 198 [C] 19 [E] 25
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\LocalizedText.vb Totals: [T] 226 [C] 39 [E] 20
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\ModuleSettings.vb Totals: [T] 257 [C] 19 [E] 28
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\ModuleUrls.vb Totals: [T] 153 [C] 19 [E] 12
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\PostBodyAndSummary.vb Totals: [T] 136 [C] 19 [E] 9
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\ViewSettings.vb Totals: [T] 208 [C] 20 [E] 23
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\PostBodyAndSummary.vb Totals: [T] 137 [C] 19 [E] 9
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\ViewSettings.vb Totals: [T] 210 [C] 20 [E] 23
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\WebPage.vb Totals: [T] 98 [C] 19 [E] 11
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Data\DataProvider.vb Totals: [T] 28 [C] 19 [E] 4
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Data\DataProvider_CMD.vb Totals: [T] 61 [C] 19 [E] 6
@@ -3758,7 +3764,7 @@ make.codestats:
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\LegacyUrls\LegacyUrlInfo_Interfaces.vb Totals: [T] 79 [C] 39 [E] 9
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\LegacyUrls\LegacyUrlInfo_Properties.vb Totals: [T] 53 [C] 19 [E] 9
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\LegacyUrls\LegacyUrlsController_CRUD.vb Totals: [T] 47 [C] 19 [E] 9
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Posts\PostAuthor.vb Totals: [T] 121 [C] 39 [E] 8
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Posts\PostAuthor.vb Totals: [T] 120 [C] 39 [E] 8
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Posts\PostInfo.vb Totals: [T] 98 [C] 19 [E] 10
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Posts\PostInfo_Interfaces.vb Totals: [T] 352 [C] 70 [E] 24
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Entities\Posts\PostInfo_Properties.vb Totals: [T] 170 [C] 37 [E] 15
@@ -3791,7 +3797,7 @@ make.codestats:
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Security\Permissions\PermissionInfo_Properties.vb Totals: [T] 51 [C] 19 [E] 9
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Security\Permissions\PermissionsController.vb Totals: [T] 41 [C] 19 [E] 6
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Security\BlogUser.vb Totals: [T] 142 [C] 24 [E] 16
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Security\ContextSecurity.vb Totals: [T] 224 [C] 19 [E] 19
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Security\ContextSecurity.vb Totals: [T] 232 [C] 19 [E] 19
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Security\Security.vb Totals: [T] 37 [C] 19 [E] 4
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Services\WLW\Blogger\IBlogger.vb Totals: [T] 48 [C] 26 [E] 7
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Services\WLW\MetaWeblog\IMetaWeblog.vb Totals: [T] 276 [C] 128 [E] 45
@@ -3808,7 +3814,7 @@ make.codestats:
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Templating\BlogTokenReplace.vb Totals: [T] 251 [C] 19 [E] 30
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Templating\CustomParameters.vb Totals: [T] 71 [C] 19 [E] 7
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Templating\GenericTokenReplace.vb Totals: [T] 67 [C] 19 [E] 12
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Templating\LazyLoadingUser.vb Totals: [T] 119 [C] 19 [E] 12
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Templating\LazyLoadingUser.vb Totals: [T] 116 [C] 19 [E] 12
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Templating\Resources.vb Totals: [T] 70 [C] 19 [E] 7
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Templating\Template.vb Totals: [T] 234 [C] 23 [E] 24
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Templating\TemplateController.vb Totals: [T] 92 [C] 19 [E] 12
@@ -3818,17 +3824,17 @@ make.codestats:
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Templating\TemplateSettings.vb Totals: [T] 48 [C] 19 [E] 6
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Templating\TemplateSettingValue.vb Totals: [T] 33 [C] 19 [E] 5
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Templating\TokenReplace.vb Totals: [T] 390 [C] 155 [E] 42
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Templating\ViewTemplate.vb Totals: [T] 135 [C] 22 [E] 16
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Templating\ViewTemplate.vb Totals: [T] 149 [C] 23 [E] 16
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\CategorySelect.vb Totals: [T] 118 [C] 21 [E] 16
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\Comments.ascx Totals: [T] 68 [C] 0 [E] 3
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\Comments.ascx.designer.vb Totals: [T] 26 [C] 15 [E] 4
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\Comments.ascx.vb Totals: [T] 94 [C] 19 [E] 17
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\LocalizedTextEdit.vb Totals: [T] 196 [C] 19 [E] 25
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\LongTextEdit.vb Totals: [T] 227 [C] 22 [E] 17
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\LongTextEdit.vb Totals: [T] 228 [C] 22 [E] 17
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\ManagementPanel.ascx Totals: [T] 183 [C] 0 [E] 0
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\ManagementPanel.ascx.designer.vb Totals: [T] 161 [C] 120 [E] 19
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\ManagementPanel.ascx.vb Totals: [T] 130 [C] 19 [E] 11
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\ShortTextEdit.vb Totals: [T] 221 [C] 22 [E] 26
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\ShortTextEdit.vb Totals: [T] 222 [C] 22 [E] 26
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\TagEdit.vb Totals: [T] 121 [C] 20 [E] 13
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\TemplateSettings.ascx Totals: [T] 7 [C] 0 [E] 0
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\TemplateSettings.ascx.designer.vb Totals: [T] 53 [C] 36 [E] 7
@@ -3881,7 +3887,75 @@ make.codestats:
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\js\jquery.handsontable.js Totals: [T] 7701 [C] 921 [E] 845
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\js\jquery.timeago.js Totals: [T] 162 [C] 19 [E] 13
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\js\tag-it.min.js Totals: [T] 16 [C] 0 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\glDatePicker.min.js Totals: [T] 16 [C] 1 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\bigCalendar\js\glDatePicker.min.js Totals: [T] 16 [C] 1 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\af\jquery.ui.datepicker-af.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\ar\jquery.ui.datepicker-ar.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\ar-dz\jquery.ui.datepicker-ar-DZ.js Totals: [T] 23 [C] 3 [E] 1
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\az\jquery.ui.datepicker-az.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\bg\jquery.ui.datepicker-bg.js Totals: [T] 24 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\bs\jquery.ui.datepicker-bs.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\ca\jquery.ui.datepicker-ca.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\cs\jquery.ui.datepicker-cs.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\cy-gb\jquery.ui.datepicker-cy-GB.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\da\jquery.ui.datepicker-da.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\de\jquery.ui.datepicker-de.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\el\jquery.ui.datepicker-el.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\en-au\jquery.ui.datepicker-en-AU.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\en-gb\jquery.ui.datepicker-en-GB.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\en-nz\jquery.ui.datepicker-en-NZ.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\eo\jquery.ui.datepicker-eo.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\es\jquery.ui.datepicker-es.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\et\jquery.ui.datepicker-et.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\eu\jquery.ui.datepicker-eu.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\fa\jquery.ui.datepicker-fa.js Totals: [T] 59 [C] 36 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\fi\jquery.ui.datepicker-fi.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\fo\jquery.ui.datepicker-fo.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\fr\jquery.ui.datepicker-fr.js Totals: [T] 25 [C] 6 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\fr-ch\jquery.ui.datepicker-fr-CH.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\gl\jquery.ui.datepicker-gl.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\he\jquery.ui.datepicker-he.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\hi\jquery.ui.datepicker-hi.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\hr\jquery.ui.datepicker-hr.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\hu\jquery.ui.datepicker-hu.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\hy\jquery.ui.datepicker-hy.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\id\jquery.ui.datepicker-id.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\is\jquery.ui.datepicker-is.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\it\jquery.ui.datepicker-it.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\ja\jquery.ui.datepicker-ja.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\ka\jquery.ui.datepicker-ka.js Totals: [T] 21 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\kk\jquery.ui.datepicker-kk.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\km\jquery.ui.datepicker-km.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\ko\jquery.ui.datepicker-ko.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\lb\jquery.ui.datepicker-lb.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\lt\jquery.ui.datepicker-lt.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\lv\jquery.ui.datepicker-lv.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\mk\jquery.ui.datepicker-mk.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\ml\jquery.ui.datepicker-ml.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\ms\jquery.ui.datepicker-ms.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\nl\jquery.ui.datepicker-nl.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\nl-be\jquery.ui.datepicker-nl-BE.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\no\jquery.ui.datepicker-no.js Totals: [T] 23 [C] 2 [E] 1
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\pl\jquery.ui.datepicker-pl.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\pt\jquery.ui.datepicker-pt.js Totals: [T] 22 [C] 3 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\pt-br\jquery.ui.datepicker-pt-BR.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\rm\jquery.ui.datepicker-rm.js Totals: [T] 21 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\ro\jquery.ui.datepicker-ro.js Totals: [T] 26 [C] 7 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\ru\jquery.ui.datepicker-ru.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\sk\jquery.ui.datepicker-sk.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\sl\jquery.ui.datepicker-sl.js Totals: [T] 24 [C] 5 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\sq\jquery.ui.datepicker-sq.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\sr\jquery.ui.datepicker-sr.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\sr-sr\jquery.ui.datepicker-sr-SR.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\sv\jquery.ui.datepicker-sv.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\ta\jquery.ui.datepicker-ta.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\th\jquery.ui.datepicker-th.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\tj\jquery.ui.datepicker-tj.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\tr\jquery.ui.datepicker-tr.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\uk\jquery.ui.datepicker-uk.js Totals: [T] 24 [C] 5 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\vi\jquery.ui.datepicker-vi.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\zh-cn\jquery.ui.datepicker-zh-CN.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\zh-hk\jquery.ui.datepicker-zh-HK.js Totals: [T] 23 [C] 4 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\zh-tw\jquery.ui.datepicker-zh-TW.js Totals: [T] 23 [C] 4 [E] 0
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushAppleScript.js Totals: [T] 84 [C] 4 [E] 25
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushAS3.js Totals: [T] 43 [C] 9 [E] 8
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushBash.js Totals: [T] 59 [C] 15 [E] 7
@@ -3914,45 +3988,45 @@ make.codestats:
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\shCore.js Totals: [T] 2501 [C] 682 [E] 382
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\template.js Totals: [T] 76 [C] 24 [E] 0
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\tagCloud\js\jqcloud-1.0.3.min.js Totals: [T] 11 [C] 10 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\ar.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\bg.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\ca.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\cz.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\de.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\dk.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\el.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\en.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\es.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\eu.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\fi.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\fo.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\fr.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\hu.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\hy.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\id.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\is.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\it.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\iw.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\ja.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\ko.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\kr.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\nl.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\no.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\pl.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\pt-br.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\pt.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\ru.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\sk.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\sl.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\sr-cy.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\sr-la.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\sv.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\ta.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\tl.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\tr.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\zh-ch.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\zh-cn.js Totals: [T] 2 [C] 2 [E] 0
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\locale\zh-tw.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\ar\ar.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\bg\bg.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\ca\ca.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\cz\cz.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\de\de.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\dk\dk.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\el\el.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\en\en.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\es\es.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\eu\eu.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\fi\fi.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\fo\fo.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\fr\fr.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\hu\hu.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\hu\hy.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\id\id.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\is\is.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\it\it.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\iw\iw.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\ja\ja.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\ko\ko.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\kr\kr.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\nl\nl.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\no\no.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\pl\pl.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\pt\pt.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\pt-br\pt-br.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\ru\ru.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\sk\sk.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\sl\sl.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\sr-cy\sr-cy.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\sr-la\sr-la.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\sv\sv.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\ta\ta.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\tl\tl.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\tr\tr.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\zh-ch\zh-ch.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\zh-cn\zh-cn.js Totals: [T] 2 [C] 2 [E] 0
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\zh-tw\zh-tw.js Totals: [T] 2 [C] 2 [E] 0
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\0-storyjs-embed.js Totals: [T] 45 [C] 7 [E] 8
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\timeline.js Totals: [T] 9875 [C] 1146 [E] 1635
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\_default\js\highlighter\shBrushAppleScript.js Totals: [T] 84 [C] 4 [E] 25
@@ -3991,7 +4065,7 @@ make.codestats:
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Admin.ascx.vb Totals: [T] 174 [C] 19 [E] 24
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Blog.ascx Totals: [T] 14 [C] 0 [E] 5
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Blog.ascx.designer.vb Totals: [T] 51 [C] 36 [E] 7
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Blog.ascx.vb Totals: [T] 429 [C] 22 [E] 55
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Blog.ascx.vb Totals: [T] 430 [C] 22 [E] 55
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\BlogEdit.ascx Totals: [T] 121 [C] 1 [E] 2
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\BlogEdit.ascx.designer.vb Totals: [T] 402 [C] 309 [E] 46
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\BlogEdit.ascx.vb Totals: [T] 239 [C] 22 [E] 21
@@ -3999,17 +4073,17 @@ make.codestats:
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\BlogImport.ascx Totals: [T] 93 [C] 1 [E] 1
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\BlogImport.ascx.designer.vb Totals: [T] 159 [C] 120 [E] 19
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\BlogImport.ascx.vb Totals: [T] 154 [C] 24 [E] 14
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\blogpost.ashx.vb Totals: [T] 700 [C] 63 [E] 78
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Manage.ascx Totals: [T] 140 [C] 0 [E] 2
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\blogpost.ashx.vb Totals: [T] 713 [C] 63 [E] 80
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Manage.ascx Totals: [T] 136 [C] 0 [E] 2
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Manage.ascx.designer.vb Totals: [T] 51 [C] 36 [E] 7
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Manage.ascx.vb Totals: [T] 81 [C] 19 [E] 18
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\PostEdit.ascx Totals: [T] 109 [C] 0 [E] 6
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\Manage.ascx.vb Totals: [T] 89 [C] 19 [E] 17
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\PostEdit.ascx Totals: [T] 108 [C] 0 [E] 5
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\PostEdit.ascx.designer.vb Totals: [T] 366 [C] 281 [E] 42
-[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\PostEdit.ascx.vb Totals: [T] 419 [C] 47 [E] 68
+[codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\PostEdit.ascx.vb Totals: [T] 407 [C] 39 [E] 66
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\TermsEditML.ascx Totals: [T] 43 [C] 0 [E] 9
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\TermsEditML.ascx.designer.vb Totals: [T] 42 [C] 29 [E] 6
 [codestats] E:\Webroot\BLOGDEV\DesktopModules\Blog\TermsEditML.ascx.vb Totals: [T] 83 [C] 19 [E] 11
-[codestats] Totals: [VB]  [T] 50154 [C] 9659 [E] 6550
+[codestats] Totals: [VB]  [T] 51789 [C] 9955 [E] 6550
 
 check.sqlscripts:
 
@@ -4018,8 +4092,8 @@ check.sqlscripts:
 make.package:
 
    [delete] Deleting directory 'D:\Programs\Nant\Build\Resources'.
-     [copy] Copying 241 files to 'D:\Programs\Nant\Build\Resources'.
-     [copy] Copying 76 files to 'D:\Programs\Nant\Build\Resources'.
+     [copy] Copying 326 files to 'D:\Programs\Nant\Build\Resources'.
+     [copy] Copying 77 files to 'D:\Programs\Nant\Build\Resources'.
      [echo] Compacting JS files
     [jsmin] Minifying Javascript
     [jsmin] Minified 'D:\Programs\Nant\Build\Resources\js\time-ago-locales\jquery.timeago.ar.js' and saved False characters
@@ -4067,7 +4141,75 @@ make.package:
     [jsmin] Minified 'D:\Programs\Nant\Build\Resources\js\jquery.handsontable.js' and saved False characters
     [jsmin] Minified 'D:\Programs\Nant\Build\Resources\js\jquery.timeago.js' and saved False characters
     [jsmin] Skipping 'D:\Programs\Nant\Build\Resources\js\tag-it.min.js' as it's on the exclude list.
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\glDatePicker.min.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\bigCalendar\js\glDatePicker.min.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\af\jquery.ui.datepicker-af.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\ar\jquery.ui.datepicker-ar.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\ar-dz\jquery.ui.datepicker-ar-DZ.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\az\jquery.ui.datepicker-az.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\bg\jquery.ui.datepicker-bg.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\bs\jquery.ui.datepicker-bs.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\ca\jquery.ui.datepicker-ca.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\cs\jquery.ui.datepicker-cs.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\cy-gb\jquery.ui.datepicker-cy-GB.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\da\jquery.ui.datepicker-da.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\de\jquery.ui.datepicker-de.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\el\jquery.ui.datepicker-el.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\en-au\jquery.ui.datepicker-en-AU.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\en-gb\jquery.ui.datepicker-en-GB.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\en-nz\jquery.ui.datepicker-en-NZ.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\eo\jquery.ui.datepicker-eo.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\es\jquery.ui.datepicker-es.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\et\jquery.ui.datepicker-et.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\eu\jquery.ui.datepicker-eu.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\fa\jquery.ui.datepicker-fa.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\fi\jquery.ui.datepicker-fi.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\fo\jquery.ui.datepicker-fo.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\fr\jquery.ui.datepicker-fr.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\fr-ch\jquery.ui.datepicker-fr-CH.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\gl\jquery.ui.datepicker-gl.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\he\jquery.ui.datepicker-he.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\hi\jquery.ui.datepicker-hi.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\hr\jquery.ui.datepicker-hr.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\hu\jquery.ui.datepicker-hu.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\hy\jquery.ui.datepicker-hy.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\id\jquery.ui.datepicker-id.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\is\jquery.ui.datepicker-is.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\it\jquery.ui.datepicker-it.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\ja\jquery.ui.datepicker-ja.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\ka\jquery.ui.datepicker-ka.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\kk\jquery.ui.datepicker-kk.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\km\jquery.ui.datepicker-km.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\ko\jquery.ui.datepicker-ko.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\lb\jquery.ui.datepicker-lb.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\lt\jquery.ui.datepicker-lt.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\lv\jquery.ui.datepicker-lv.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\mk\jquery.ui.datepicker-mk.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\ml\jquery.ui.datepicker-ml.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\ms\jquery.ui.datepicker-ms.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\nl\jquery.ui.datepicker-nl.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\nl-be\jquery.ui.datepicker-nl-BE.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\no\jquery.ui.datepicker-no.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\pl\jquery.ui.datepicker-pl.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\pt\jquery.ui.datepicker-pt.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\pt-br\jquery.ui.datepicker-pt-BR.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\rm\jquery.ui.datepicker-rm.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\ro\jquery.ui.datepicker-ro.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\ru\jquery.ui.datepicker-ru.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\sk\jquery.ui.datepicker-sk.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\sl\jquery.ui.datepicker-sl.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\sq\jquery.ui.datepicker-sq.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\sr\jquery.ui.datepicker-sr.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\sr-sr\jquery.ui.datepicker-sr-SR.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\sv\jquery.ui.datepicker-sv.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\ta\jquery.ui.datepicker-ta.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\th\jquery.ui.datepicker-th.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\tj\jquery.ui.datepicker-tj.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\tr\jquery.ui.datepicker-tr.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\uk\jquery.ui.datepicker-uk.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\vi\jquery.ui.datepicker-vi.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\zh-cn\jquery.ui.datepicker-zh-CN.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\zh-hk\jquery.ui.datepicker-zh-HK.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\blogCalendar\js\zh-tw\jquery.ui.datepicker-zh-TW.js' and saved False characters
     [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\oldBlog\js\highlighter\shBrushAppleScript.js' and saved False characters
     [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\oldBlog\js\highlighter\shBrushAS3.js' and saved False characters
     [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\oldBlog\js\highlighter\shBrushBash.js' and saved False characters
@@ -4100,45 +4242,45 @@ make.package:
     [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\oldBlog\js\shCore.js' and saved False characters
     [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\oldBlog\template.js' and saved False characters
     [jsmin] Skipping 'D:\Programs\Nant\Build\Resources\Templates\tagCloud\js\jqcloud-1.0.3.min.js' as it's on the exclude list.
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\ar.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\bg.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\ca.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\cz.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\de.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\dk.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\el.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\en.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\es.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\eu.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\fi.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\fo.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\fr.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\hu.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\hy.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\id.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\is.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\it.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\iw.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\ja.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\ko.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\kr.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\nl.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\no.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\pl.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\pt-br.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\pt.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\ru.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\sk.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\sl.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\sr-cy.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\sr-la.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\sv.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\ta.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\tl.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\tr.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\zh-ch.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\zh-cn.js' and saved False characters
-    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\locale\zh-tw.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\ar\ar.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\bg\bg.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\ca\ca.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\cz\cz.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\de\de.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\dk\dk.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\el\el.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\en\en.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\es\es.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\eu\eu.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\fi\fi.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\fo\fo.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\fr\fr.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\hu\hu.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\hu\hy.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\id\id.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\is\is.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\it\it.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\iw\iw.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\ja\ja.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\ko\ko.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\kr\kr.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\nl\nl.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\no\no.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\pl\pl.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\pt\pt.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\pt-br\pt-br.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\ru\ru.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\sk\sk.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\sl\sl.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\sr-cy\sr-cy.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\sr-la\sr-la.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\sv\sv.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\ta\ta.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\tl\tl.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\tr\tr.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\zh-ch\zh-ch.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\zh-cn\zh-cn.js' and saved False characters
+    [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\zh-tw\zh-tw.js' and saved False characters
     [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\0-storyjs-embed.js' and saved False characters
     [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\timelineJS\js\timeline.js' and saved False characters
     [jsmin] Minified 'D:\Programs\Nant\Build\Resources\Templates\_default\js\highlighter\shBrushAppleScript.js' and saved False characters
@@ -4178,8 +4320,10 @@ make.package:
 [compilecss] Compiling D:\Programs\Nant\Build\Resources\css\jquery.handsontable.css
 [compilecss] Compiling D:\Programs\Nant\Build\Resources\css\tagit.css
 [compilecss] Compiling D:\Programs\Nant\Build\Resources\Templates\authorList\template.css
-[compilecss] Compiling D:\Programs\Nant\Build\Resources\Templates\blogCalendar\css\glDatePicker.default.css
-[compilecss] Compiling D:\Programs\Nant\Build\Resources\Templates\blogCalendar\css\glDatePicker.flatwhite.css
+[compilecss] Compiling D:\Programs\Nant\Build\Resources\Templates\bigCalendar\css\glDatePicker.default.css
+[compilecss] Compiling D:\Programs\Nant\Build\Resources\Templates\bigCalendar\css\glDatePicker.flatwhite.css
+[compilecss] Compiling D:\Programs\Nant\Build\Resources\Templates\bigCalendar\template.css
+[compilecss] Compiling D:\Programs\Nant\Build\Resources\Templates\blogCalendar\css\datepicker-ui.css
 [compilecss] Compiling D:\Programs\Nant\Build\Resources\Templates\blogCalendar\template.css
 [compilecss] Compiling D:\Programs\Nant\Build\Resources\Templates\blogCalendarList\template.css
 [compilecss] Compiling D:\Programs\Nant\Build\Resources\Templates\blogList\template.css
@@ -4218,7 +4362,7 @@ make.package:
 [compilecss] Compiling D:\Programs\Nant\Build\Resources\module.css
 [compilecss] Replacing css/font-awesome.css
 [compilecss] Replacing ../images/fontawesome-webfont.eot?v=3.0.1
-      [zip] Zipping 317 files to 'D:\Programs\Nant\Build\Package\Resources.zip'.
+      [zip] Zipping 403 files to 'D:\Programs\Nant\Build\Package\Resources.zip'.
      [copy] Copying 2 files to 'D:\Programs\Nant\Build\Package'.
      [copy] Copying 3 files to 'D:\Programs\Nant\Build\Package'.
      [copy] Copying 18 files to 'D:\Programs\Nant\Build\Package'.
@@ -4230,9 +4374,9 @@ make.package:
 make.package:
 
    [delete] Deleting directory 'D:\Programs\Nant\Build\Resources'.
-     [copy] Copying 393 files to 'D:\Programs\Nant\Build\Resources'.
-     [copy] Copying 76 files to 'D:\Programs\Nant\Build\Resources'.
-      [zip] Zipping 469 files to 'D:\Programs\Nant\Build\Package\Resources.zip'.
+     [copy] Copying 478 files to 'D:\Programs\Nant\Build\Resources'.
+     [copy] Copying 77 files to 'D:\Programs\Nant\Build\Resources'.
+      [zip] Zipping 555 files to 'D:\Programs\Nant\Build\Package\Resources.zip'.
      [copy] Copying 2 files to 'D:\Programs\Nant\Build\Package'.
      [copy] Copying 3 files to 'D:\Programs\Nant\Build\Package'.
      [copy] Copying 18 files to 'D:\Programs\Nant\Build\Package'.
@@ -4248,16 +4392,16 @@ backup.project:
      [echo] Backing Up to \\192.168.123.240\src
      [echo] Backing Up to D:\src
      [echo] Backing Up Install
-     [copy] Copying 1 file to 'D:\src\Blog\2013-6-4\Blog_06.00.00_Install.zip'.
+     [copy] Copying 1 file to 'D:\src\Blog\2013-7-19\Blog_06.00.00_Install.zip'.
      [echo] Backing Up Source
-     [copy] Copying 1 file to 'D:\src\Blog\2013-6-4\Blog_06.00.00_Source.zip'.
+     [copy] Copying 1 file to 'D:\src\Blog\2013-7-19\Blog_06.00.00_Source.zip'.
      [echo] Backing Up to G:\src
      [echo] Backing Up Install
-     [copy] Copying 1 file to 'G:\src\Blog\2013-6-4\Blog_06.00.00_Install.zip'.
+     [copy] Copying 1 file to 'G:\src\Blog\2013-7-19\Blog_06.00.00_Install.zip'.
      [echo] Backing Up Source
-     [copy] Copying 1 file to 'G:\src\Blog\2013-6-4\Blog_06.00.00_Source.zip'.
+     [copy] Copying 1 file to 'G:\src\Blog\2013-7-19\Blog_06.00.00_Source.zip'.
 
 BUILD SUCCEEDED
 
-Total time: 61.8 seconds.
+Total time: 53 seconds.
 
