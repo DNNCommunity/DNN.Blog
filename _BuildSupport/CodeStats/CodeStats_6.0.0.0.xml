@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <code-summaries>
-  <code-summary date="2013-07-19T20:48:32.6894531+02:00" buildname="6.0.0.0">
-    <linecount label="VB" totalLineCount="51789" emptyLineCount="6550" commentLineCount="9955">
+  <code-summary date="2013-07-20T11:59:28.2587891+02:00" buildname="6.0.0.0">
+    <linecount label="VB" totalLineCount="51806" emptyLineCount="6551" commentLineCount="9956">
       <file-summaries>
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\BlogML\Enumerators\BlogPostTypes.vb" totalLineCount="10" emptyLineCount="1" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\BlogML\Enumerators\CommentModerationTypes.vb" totalLineCount="7" emptyLineCount="0" commentLineCount="0" />
@@ -25,7 +25,7 @@
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\BlogML\BlogMLWriterBase.vb" totalLineCount="425" emptyLineCount="97" commentLineCount="7" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\BlogML\Pair.vb" totalLineCount="19" emptyLineCount="4" commentLineCount="3" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\BlogContextInfo.vb" totalLineCount="232" emptyLineCount="19" commentLineCount="22" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\BlogModuleBase.vb" totalLineCount="164" emptyLineCount="26" commentLineCount="20" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\BlogModuleBase.vb" totalLineCount="174" emptyLineCount="27" commentLineCount="20" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\DynatreeItem.vb" totalLineCount="31" emptyLineCount="1" commentLineCount="19" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\Extensions.vb" totalLineCount="501" emptyLineCount="49" commentLineCount="19" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Components\Common\Globals.vb" totalLineCount="291" emptyLineCount="35" commentLineCount="42" />
@@ -126,7 +126,7 @@
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\CategorySelect.vb" totalLineCount="118" emptyLineCount="16" commentLineCount="21" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\Comments.ascx" totalLineCount="68" emptyLineCount="3" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\Comments.ascx.designer.vb" totalLineCount="26" emptyLineCount="4" commentLineCount="15" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\Comments.ascx.vb" totalLineCount="94" emptyLineCount="17" commentLineCount="19" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\Comments.ascx.vb" totalLineCount="101" emptyLineCount="17" commentLineCount="20" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\LocalizedTextEdit.vb" totalLineCount="196" emptyLineCount="25" commentLineCount="19" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\LongTextEdit.vb" totalLineCount="228" emptyLineCount="17" commentLineCount="22" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\ManagementPanel.ascx" totalLineCount="183" emptyLineCount="0" commentLineCount="0" />
@@ -140,44 +140,44 @@
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\ViewSettings.ascx" totalLineCount="38" emptyLineCount="1" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\ViewSettings.ascx.designer.vb" totalLineCount="161" emptyLineCount="19" commentLineCount="120" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Controls\ViewSettings.ascx.vb" totalLineCount="169" emptyLineCount="25" commentLineCount="19" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.ar.js" totalLineCount="32" emptyLineCount="0" commentLineCount="2" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.bg.js" totalLineCount="18" emptyLineCount="0" commentLineCount="1" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.bs.js" totalLineCount="49" emptyLineCount="3" commentLineCount="1" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.ca.js" totalLineCount="18" emptyLineCount="0" commentLineCount="1" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.cy.js" totalLineCount="20" emptyLineCount="0" commentLineCount="1" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.cz.js" totalLineCount="18" emptyLineCount="0" commentLineCount="1" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.da.js" totalLineCount="18" emptyLineCount="0" commentLineCount="1" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.de.js" totalLineCount="18" emptyLineCount="0" commentLineCount="1" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.el.js" totalLineCount="18" emptyLineCount="0" commentLineCount="1" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.en.js" totalLineCount="20" emptyLineCount="0" commentLineCount="1" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.es.js" totalLineCount="18" emptyLineCount="0" commentLineCount="1" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.fa.js" totalLineCount="22" emptyLineCount="1" commentLineCount="3" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.fi.js" totalLineCount="28" emptyLineCount="1" commentLineCount="10" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.fr.js" totalLineCount="17" emptyLineCount="0" commentLineCount="2" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.he.js" totalLineCount="18" emptyLineCount="0" commentLineCount="1" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.hr.js" totalLineCount="49" emptyLineCount="3" commentLineCount="1" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.hu.js" totalLineCount="18" emptyLineCount="0" commentLineCount="1" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.hy.js" totalLineCount="18" emptyLineCount="0" commentLineCount="1" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.id.js" totalLineCount="18" emptyLineCount="0" commentLineCount="1" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.it.js" totalLineCount="16" emptyLineCount="0" commentLineCount="1" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.ja.js" totalLineCount="19" emptyLineCount="0" commentLineCount="1" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.ko.js" totalLineCount="17" emptyLineCount="0" commentLineCount="1" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.mk.js" totalLineCount="20" emptyLineCount="0" commentLineCount="1" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.nl.js" totalLineCount="20" emptyLineCount="0" commentLineCount="1" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.no.js" totalLineCount="18" emptyLineCount="0" commentLineCount="1" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.pl.js" totalLineCount="31" emptyLineCount="1" commentLineCount="3" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.pt-br.js" totalLineCount="16" emptyLineCount="0" commentLineCount="1" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.pt.js" totalLineCount="16" emptyLineCount="0" commentLineCount="1" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.ro.js" totalLineCount="18" emptyLineCount="0" commentLineCount="1" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.ru.js" totalLineCount="34" emptyLineCount="1" commentLineCount="4" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.sk.js" totalLineCount="18" emptyLineCount="0" commentLineCount="1" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.sv.js" totalLineCount="18" emptyLineCount="0" commentLineCount="1" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.th.js" totalLineCount="20" emptyLineCount="0" commentLineCount="1" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.tr.js" totalLineCount="16" emptyLineCount="0" commentLineCount="1" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.uk.js" totalLineCount="34" emptyLineCount="1" commentLineCount="4" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.uz.js" totalLineCount="19" emptyLineCount="0" commentLineCount="1" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.zh-CN.js" totalLineCount="20" emptyLineCount="0" commentLineCount="1" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\time-ago-locales\jquery.timeago.zh-TW.js" totalLineCount="20" emptyLineCount="0" commentLineCount="1" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\ar\jquery.timeago.ar.js" totalLineCount="32" emptyLineCount="0" commentLineCount="2" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\bg\jquery.timeago.bg.js" totalLineCount="18" emptyLineCount="0" commentLineCount="1" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\bs\jquery.timeago.bs.js" totalLineCount="49" emptyLineCount="3" commentLineCount="1" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\ca\jquery.timeago.ca.js" totalLineCount="18" emptyLineCount="0" commentLineCount="1" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\cy\jquery.timeago.cy.js" totalLineCount="20" emptyLineCount="0" commentLineCount="1" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\cz\jquery.timeago.cz.js" totalLineCount="18" emptyLineCount="0" commentLineCount="1" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\da\jquery.timeago.da.js" totalLineCount="18" emptyLineCount="0" commentLineCount="1" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\de\jquery.timeago.de.js" totalLineCount="18" emptyLineCount="0" commentLineCount="1" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\el\jquery.timeago.el.js" totalLineCount="18" emptyLineCount="0" commentLineCount="1" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\en\jquery.timeago.en.js" totalLineCount="20" emptyLineCount="0" commentLineCount="1" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\es\jquery.timeago.es.js" totalLineCount="18" emptyLineCount="0" commentLineCount="1" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\fa\jquery.timeago.fa.js" totalLineCount="22" emptyLineCount="1" commentLineCount="3" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\fi\jquery.timeago.fi.js" totalLineCount="28" emptyLineCount="1" commentLineCount="10" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\fr\jquery.timeago.fr.js" totalLineCount="17" emptyLineCount="0" commentLineCount="2" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\he\jquery.timeago.he.js" totalLineCount="18" emptyLineCount="0" commentLineCount="1" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\hr\jquery.timeago.hr.js" totalLineCount="49" emptyLineCount="3" commentLineCount="1" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\hu\jquery.timeago.hu.js" totalLineCount="18" emptyLineCount="0" commentLineCount="1" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\hy\jquery.timeago.hy.js" totalLineCount="18" emptyLineCount="0" commentLineCount="1" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\id\jquery.timeago.id.js" totalLineCount="18" emptyLineCount="0" commentLineCount="1" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\it\jquery.timeago.it.js" totalLineCount="16" emptyLineCount="0" commentLineCount="1" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\ja\jquery.timeago.ja.js" totalLineCount="19" emptyLineCount="0" commentLineCount="1" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\ko\jquery.timeago.ko.js" totalLineCount="17" emptyLineCount="0" commentLineCount="1" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\mk\jquery.timeago.mk.js" totalLineCount="20" emptyLineCount="0" commentLineCount="1" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\nl\jquery.timeago.nl.js" totalLineCount="20" emptyLineCount="0" commentLineCount="1" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\no\jquery.timeago.no.js" totalLineCount="18" emptyLineCount="0" commentLineCount="1" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\pl\jquery.timeago.pl.js" totalLineCount="31" emptyLineCount="1" commentLineCount="3" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\pt\jquery.timeago.pt.js" totalLineCount="16" emptyLineCount="0" commentLineCount="1" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\pt-br\jquery.timeago.pt-br.js" totalLineCount="16" emptyLineCount="0" commentLineCount="1" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\ro\jquery.timeago.ro.js" totalLineCount="18" emptyLineCount="0" commentLineCount="1" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\ru\jquery.timeago.ru.js" totalLineCount="34" emptyLineCount="1" commentLineCount="4" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\sk\jquery.timeago.sk.js" totalLineCount="18" emptyLineCount="0" commentLineCount="1" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\sv\jquery.timeago.sv.js" totalLineCount="18" emptyLineCount="0" commentLineCount="1" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\th\jquery.timeago.th.js" totalLineCount="20" emptyLineCount="0" commentLineCount="1" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\tr\jquery.timeago.tr.js" totalLineCount="16" emptyLineCount="0" commentLineCount="1" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\uk\jquery.timeago.uk.js" totalLineCount="34" emptyLineCount="1" commentLineCount="4" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\uz\jquery.timeago.uz.js" totalLineCount="19" emptyLineCount="0" commentLineCount="1" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\zh-cn\jquery.timeago.zh-CN.js" totalLineCount="20" emptyLineCount="0" commentLineCount="1" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\zh-tw\jquery.timeago.zh-TW.js" totalLineCount="20" emptyLineCount="0" commentLineCount="1" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\dotnetnuke.blog.js" totalLineCount="186" emptyLineCount="13" commentLineCount="1" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\dotnetnuke.blog.pagescript.js" totalLineCount="9" emptyLineCount="0" commentLineCount="0" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\js\jquery.dynatree.min.js" totalLineCount="4" emptyLineCount="0" commentLineCount="3" />
@@ -254,37 +254,37 @@
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\zh-cn\jquery.ui.datepicker-zh-CN.js" totalLineCount="23" emptyLineCount="0" commentLineCount="4" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\zh-hk\jquery.ui.datepicker-zh-HK.js" totalLineCount="23" emptyLineCount="0" commentLineCount="4" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\blogCalendar\js\zh-tw\jquery.ui.datepicker-zh-TW.js" totalLineCount="23" emptyLineCount="0" commentLineCount="4" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushAppleScript.js" totalLineCount="84" emptyLineCount="25" commentLineCount="4" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushAS3.js" totalLineCount="43" emptyLineCount="8" commentLineCount="9" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushBash.js" totalLineCount="59" emptyLineCount="7" commentLineCount="15" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushColdFusion.js" totalLineCount="84" emptyLineCount="8" commentLineCount="53" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushCpp.js" totalLineCount="81" emptyLineCount="8" commentLineCount="49" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushCSharp.js" totalLineCount="49" emptyLineCount="8" commentLineCount="9" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushCss.js" totalLineCount="75" emptyLineCount="10" commentLineCount="28" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushDelphi.js" totalLineCount="39" emptyLineCount="5" commentLineCount="12" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushDiff.js" totalLineCount="25" emptyLineCount="4" commentLineCount="2" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushErlang.js" totalLineCount="36" emptyLineCount="6" commentLineCount="9" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushGroovy.js" totalLineCount="51" emptyLineCount="7" commentLineCount="16" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushHaxe.js" totalLineCount="64" emptyLineCount="11" commentLineCount="13" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushJava.js" totalLineCount="41" emptyLineCount="6" commentLineCount="8" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushJavaFX.js" totalLineCount="42" emptyLineCount="6" commentLineCount="4" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushJScript.js" totalLineCount="36" emptyLineCount="7" commentLineCount="7" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushPerl.js" totalLineCount="80" emptyLineCount="12" commentLineCount="36" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushPhp.js" totalLineCount="72" emptyLineCount="8" commentLineCount="39" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushPlain.js" totalLineCount="17" emptyLineCount="4" commentLineCount="2" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushPowerShell.js" totalLineCount="59" emptyLineCount="10" commentLineCount="19" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushPython.js" totalLineCount="48" emptyLineCount="9" commentLineCount="12" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushRuby.js" totalLineCount="39" emptyLineCount="8" commentLineCount="7" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushSass.js" totalLineCount="83" emptyLineCount="12" commentLineCount="28" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushScala.js" totalLineCount="35" emptyLineCount="7" commentLineCount="5" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushSql.js" totalLineCount="51" emptyLineCount="8" commentLineCount="20" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushTypeScript.js" totalLineCount="39" emptyLineCount="8" commentLineCount="10" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushVb.js" totalLineCount="40" emptyLineCount="6" commentLineCount="15" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\highlighter\shBrushXml.js" totalLineCount="53" emptyLineCount="9" commentLineCount="5" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\jquery.fancybox-1.3.4.pack.js" totalLineCount="46" emptyLineCount="1" commentLineCount="17" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\jquery.sharrre.min.js" totalLineCount="7" emptyLineCount="0" commentLineCount="6" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\js\shCore.js" totalLineCount="2501" emptyLineCount="382" commentLineCount="682" />
-        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\oldBlog\template.js" totalLineCount="76" emptyLineCount="0" commentLineCount="24" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\classicBlog\js\highlighter\shBrushAppleScript.js" totalLineCount="84" emptyLineCount="25" commentLineCount="4" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\classicBlog\js\highlighter\shBrushAS3.js" totalLineCount="43" emptyLineCount="8" commentLineCount="9" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\classicBlog\js\highlighter\shBrushBash.js" totalLineCount="59" emptyLineCount="7" commentLineCount="15" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\classicBlog\js\highlighter\shBrushColdFusion.js" totalLineCount="84" emptyLineCount="8" commentLineCount="53" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\classicBlog\js\highlighter\shBrushCpp.js" totalLineCount="81" emptyLineCount="8" commentLineCount="49" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\classicBlog\js\highlighter\shBrushCSharp.js" totalLineCount="49" emptyLineCount="8" commentLineCount="9" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\classicBlog\js\highlighter\shBrushCss.js" totalLineCount="75" emptyLineCount="10" commentLineCount="28" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\classicBlog\js\highlighter\shBrushDelphi.js" totalLineCount="39" emptyLineCount="5" commentLineCount="12" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\classicBlog\js\highlighter\shBrushDiff.js" totalLineCount="25" emptyLineCount="4" commentLineCount="2" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\classicBlog\js\highlighter\shBrushErlang.js" totalLineCount="36" emptyLineCount="6" commentLineCount="9" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\classicBlog\js\highlighter\shBrushGroovy.js" totalLineCount="51" emptyLineCount="7" commentLineCount="16" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\classicBlog\js\highlighter\shBrushHaxe.js" totalLineCount="64" emptyLineCount="11" commentLineCount="13" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\classicBlog\js\highlighter\shBrushJava.js" totalLineCount="41" emptyLineCount="6" commentLineCount="8" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\classicBlog\js\highlighter\shBrushJavaFX.js" totalLineCount="42" emptyLineCount="6" commentLineCount="4" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\classicBlog\js\highlighter\shBrushJScript.js" totalLineCount="36" emptyLineCount="7" commentLineCount="7" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\classicBlog\js\highlighter\shBrushPerl.js" totalLineCount="80" emptyLineCount="12" commentLineCount="36" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\classicBlog\js\highlighter\shBrushPhp.js" totalLineCount="72" emptyLineCount="8" commentLineCount="39" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\classicBlog\js\highlighter\shBrushPlain.js" totalLineCount="17" emptyLineCount="4" commentLineCount="2" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\classicBlog\js\highlighter\shBrushPowerShell.js" totalLineCount="59" emptyLineCount="10" commentLineCount="19" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\classicBlog\js\highlighter\shBrushPython.js" totalLineCount="48" emptyLineCount="9" commentLineCount="12" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\classicBlog\js\highlighter\shBrushRuby.js" totalLineCount="39" emptyLineCount="8" commentLineCount="7" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\classicBlog\js\highlighter\shBrushSass.js" totalLineCount="83" emptyLineCount="12" commentLineCount="28" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\classicBlog\js\highlighter\shBrushScala.js" totalLineCount="35" emptyLineCount="7" commentLineCount="5" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\classicBlog\js\highlighter\shBrushSql.js" totalLineCount="51" emptyLineCount="8" commentLineCount="20" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\classicBlog\js\highlighter\shBrushTypeScript.js" totalLineCount="39" emptyLineCount="8" commentLineCount="10" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\classicBlog\js\highlighter\shBrushVb.js" totalLineCount="40" emptyLineCount="6" commentLineCount="15" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\classicBlog\js\highlighter\shBrushXml.js" totalLineCount="53" emptyLineCount="9" commentLineCount="5" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\classicBlog\js\jquery.fancybox-1.3.4.pack.js" totalLineCount="46" emptyLineCount="1" commentLineCount="17" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\classicBlog\js\jquery.sharrre.min.js" totalLineCount="7" emptyLineCount="0" commentLineCount="6" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\classicBlog\js\shCore.js" totalLineCount="2501" emptyLineCount="382" commentLineCount="682" />
+        <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\classicBlog\template.js" totalLineCount="76" emptyLineCount="0" commentLineCount="24" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\tagCloud\js\jqcloud-1.0.3.min.js" totalLineCount="11" emptyLineCount="0" commentLineCount="10" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\ar\ar.js" totalLineCount="2" emptyLineCount="0" commentLineCount="2" />
         <file-summary name="E:\Webroot\BLOGDEV\DesktopModules\Blog\Templates\timelineJS\js\bg\bg.js" totalLineCount="2" emptyLineCount="0" commentLineCount="2" />

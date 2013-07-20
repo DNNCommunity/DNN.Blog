@@ -157,6 +157,9 @@
     <Content Include="css\font-awesome.css" />
     <Content Include="css\jquery.handsontable.css" />
     <Content Include="js\jquery.handsontable.js" />
+    <Content Include="Templates\bigCalendar\CalendarItem.html" />
+    <Content Include="Templates\bigCalendar\template.css" />
+    <Content Include="Templates\bigCalendar\Template.html" />
     <Content Include="Templates\blogCalendar\CalendarItem.html" />
     <Content Include="Templates\blogCalendar\template.css" />
     <Content Include="Templates\blogCalendar\Template.html" />
@@ -173,6 +176,24 @@
     <Content Include="Templates\categoryList\Category.html" />
     <Content Include="Templates\categoryList\template.css" />
     <Content Include="Templates\categoryList\Template.html" />
+    <Content Include="Templates\classicBlog\BlogBanner.html" />
+    <Content Include="Templates\classicBlog\Cat.html" />
+    <Content Include="Templates\classicBlog\Comment.html" />
+    <Content Include="Templates\classicBlog\CommentApprove.html" />
+    <Content Include="Templates\classicBlog\CommentApproveBar.html" />
+    <Content Include="Templates\classicBlog\CommentsTemplate.html" />
+    <Content Include="Templates\classicBlog\List.html" />
+    <Content Include="Templates\classicBlog\Page.html" />
+    <Content Include="Templates\classicBlog\Post.html" />
+    <Content Include="Templates\classicBlog\PostDetails.html" />
+    <Content Include="Templates\classicBlog\PostTag.html" />
+    <Content Include="Templates\classicBlog\PostThumbnail.html" />
+    <Content Include="Templates\classicBlog\Settings.xml" />
+    <Content Include="Templates\classicBlog\Tag.html" />
+    <Content Include="Templates\classicBlog\template.css" />
+    <Content Include="Templates\classicBlog\Template.html" />
+    <Content Include="Templates\classicBlog\template.js" />
+    <Content Include="Templates\classicBlog\TermBanner.html" />
     <Content Include="Templates\tagList\Tag.html" />
     <Content Include="Templates\tagList\template.css" />
     <Content Include="Templates\tagList\Template.html" />
@@ -219,6 +240,7 @@
     <Content Include="PostEdit.ascx" />
     <Content Include="Templates\_default\resx\SharedResources.ascx.resx" />
     <Content Include="Templates\timelineJS\resx\SharedResources.ascx.resx" />
+    <Content Include="Templates\classicBlog\resx\SharedResources.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BlogImage.ashx.vb">
@@ -466,6 +488,11 @@
     <Folder Include="Templates\authorList\jsblocks\" />
     <Folder Include="Templates\authorList\js\" />
     <Folder Include="Templates\authorList\resx\" />
+    <Folder Include="Templates\bigCalendar\css\" />
+    <Folder Include="Templates\bigCalendar\images\" />
+    <Folder Include="Templates\bigCalendar\jsblocks\" />
+    <Folder Include="Templates\bigCalendar\js\" />
+    <Folder Include="Templates\bigCalendar\resx\" />
     <Folder Include="Templates\blogCalendarList\css\" />
     <Folder Include="Templates\blogCalendarList\images\" />
     <Folder Include="Templates\blogCalendarList\jsblocks\" />
@@ -486,6 +513,10 @@
     <Folder Include="Templates\categoryList\jsblocks\" />
     <Folder Include="Templates\categoryList\js\" />
     <Folder Include="Templates\categoryList\resx\" />
+    <Folder Include="Templates\classicBlog\css\" />
+    <Folder Include="Templates\classicBlog\images\" />
+    <Folder Include="Templates\classicBlog\jsblocks\" />
+    <Folder Include="Templates\classicBlog\js\" />
     <Folder Include="Templates\tagCloud\css\" />
     <Folder Include="Templates\tagCloud\images\" />
     <Folder Include="Templates\tagCloud\jsblocks\" />
