@@ -95,6 +95,16 @@ Namespace Common
     Return CType(MyBase.Page, DotNetNuke.Framework.CDefault)
    End Get
   End Property
+
+  Private _BlogModuleMapPath As String = ""
+  Public ReadOnly Property BlogModuleMapPath As String
+   Get
+    If String.IsNullOrEmpty(_BlogModuleMapPath) Then
+     _BlogModuleMapPath = Server.MapPath("~/DesktopModules/Blog") & "\"
+    End If
+    Return _BlogModuleMapPath
+   End Get
+  End Property
 #End Region
 
 #Region " Event Handlers "
