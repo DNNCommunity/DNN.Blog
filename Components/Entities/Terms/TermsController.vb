@@ -67,7 +67,7 @@ Namespace Entities.Terms
   End Function
 
   Public Shared Function GetTermList(moduleId As Integer, termList As List(Of String), vocabularyId As Integer, autoCreate As Boolean, locale As String) As List(Of TermInfo)
-   Dim vocab As Dictionary(Of String, TermInfo) = GetTermsByVocabulary(moduleId, vocabularyId, locale)
+   Dim vocab As Dictionary(Of String, TermInfo) = GetTermsByVocabulary(moduleId, vocabularyId, locale, True)
    Dim res As New List(Of TermInfo)
    For Each termName As String In termList
     Dim name As String = termName

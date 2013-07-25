@@ -84,10 +84,6 @@ Public Class PostEdit
     End If
    End If
 
-   'If Not BlogContext.Security.CanAddPost Then
-   ' Response.Redirect(NavigateURL("Access Denied"))
-   'End If
-
    txtTitle.DefaultLanguage = BlogContext.Blog.Locale
    txtDescription.DefaultLanguage = BlogContext.Blog.Locale
    teBlogPost.DefaultLanguage = BlogContext.Blog.Locale
@@ -125,6 +121,9 @@ Public Class PostEdit
     If Settings.VocabularyId < 1 Then
      pnlCategories.Visible = False
     End If
+    ' Clear the tags and categories cache
+    Entities.Terms.TermsController.GetTermsByVocabulary(ModuleId, Settings.VocabularyId, Threading.Thread.CurrentThread.CurrentCulture.Name, True)
+    Entities.Terms.TermsController.GetTermsByVocabulary(ModuleId, 1, Threading.Thread.CurrentThread.CurrentCulture.Name, True)
 
     If Settings.AllowAllLocales Then
      ddLocale.DataSource = System.Globalization.CultureInfo.GetCultures(Globalization.CultureTypes.SpecificCultures)
