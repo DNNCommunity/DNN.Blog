@@ -211,9 +211,9 @@ Namespace Templating
       End If
      Case "!=", "<>"
       If IsNumeric(leftside) And IsNumeric(rightside) Then
-       result = CBool(Single.Parse(leftside) < Single.Parse(rightside))
+       result = CBool(Single.Parse(leftside) <> Single.Parse(rightside))
       Else
-       result = CBool(leftside < rightside)
+       result = CBool(leftside <> rightside)
       End If
      Case Else
     End Select
