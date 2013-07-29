@@ -120,7 +120,7 @@ Public Class Blog
    Dim link As New HtmlGenericControl("link")
    link.Attributes.Add("rel", "wlwmanifest")
    link.Attributes.Add("type", "application/wlwmanifest+xml")
-   link.Attributes.Add("href", ResolveUrl(ManifestFilePath(TabId, ModuleId)))
+   link.Attributes.Add("href", ResolveUrl(ManifestFilePath(TabId, ViewSettings.BlogModuleId)))
    Me.Page.Header.Controls.Add(link)
    Context.Items("WLWManifestLinkAdded") = True
   End If

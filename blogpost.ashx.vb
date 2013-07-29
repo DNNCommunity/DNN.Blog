@@ -382,7 +382,7 @@ Public Class BlogPost
     Dim termController As ITermController = DotNetNuke.Entities.Content.Common.Util.GetTermController()
     Dim colCategories As IQueryable(Of Term) = termController.GetTermsByVocabulary(Settings.VocabularyId)
     For Each objTerm As Term In colCategories
-     categories.Add(New Services.WLW.MetaWeblog.MetaWebLogCategoryInfo() With {.description = objTerm.Description, .htmlUrl = "http://google.com", .rssUrl = "http://google.com"})
+     categories.Add(New Services.WLW.MetaWeblog.MetaWebLogCategoryInfo() With {.description = objTerm.Name, .htmlUrl = "http://google.com", .rssUrl = "http://google.com"})
     Next
    End If
   Catch ex As BlogPostException

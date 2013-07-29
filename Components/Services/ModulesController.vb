@@ -96,7 +96,7 @@ Namespace Services
 
    Dim res As New HttpResponseMessage(HttpStatusCode.OK)
 
-   Using out As New IO.StringWriter
+   Using out As New StringWriterWithEncoding(Encoding.UTF8)
     Using output As New XmlTextWriter(out)
      Dim bs As ModuleSettings = ModuleSettings.GetModuleSettings(ActiveModule.ModuleID)
 
@@ -111,7 +111,7 @@ Namespace Services
      output.WriteElementString("supportsCategories", CBool(bs.VocabularyId <> -1).ToYesNo)
      output.WriteElementString("supportsCustomDate", "Yes")
      output.WriteElementString("supportsKeywords", "Yes")
-     output.WriteElementString("supportsTrackbacks", "No")
+     output.WriteElementString("supportsTrackbacks", "Yes")
      output.WriteElementString("supportsEmbeds", "No")
      output.WriteElementString("supportsAuthor", "No")
      output.WriteElementString("supportsExcerpt", (CBool(bs.SummaryModel = Globals.SummaryType.PlainTextIndependent)).ToYesNo)
@@ -120,9 +120,9 @@ Namespace Services
      output.WriteElementString("supportsPageParent", "No")
      output.WriteElementString("supportsPageOrder", "No")
      output.WriteElementString("supportsEmptyTitles", "No")
-     output.WriteElementString("supportsExtendedPosts", (CBool(bs.SummaryModel = Globals.SummaryType.HtmlPrecedesPost)).ToYesNo)
+     output.WriteElementString("supportsExtendedEntries", (CBool(bs.SummaryModel = Globals.SummaryType.HtmlPrecedesPost)).ToYesNo)
      output.WriteElementString("supportsCommentPolicy", "Yes")
-     output.WriteElementString("supportsPingPolicy", "No")
+     output.WriteElementString("supportsPingPolicy", "Yes")
      output.WriteElementString("supportsPostAsDraft", "Yes")
      output.WriteElementString("supportsFileUpload", "Yes")
      output.WriteElementString("supportsSlug", "No")
@@ -151,5 +151,25 @@ Namespace Services
 #End Region
 
  End Class
+
+#Region " Helper Class for Manifest Writing "
+ Public Class StringWriterWithEncoding
+  Inherits IO.StringWriter
+
+  Private Property _Encoding As Encoding
+
+  Public Sub New(enc As Encoding)
+   MyBase.New()
+   Me._Encoding = enc
+  End Sub
+
+  Public Overrides ReadOnly Property Encoding As System.Text.Encoding
+   Get
+    Return _Encoding
+   End Get
+  End Property
+
+ End Class
+#End Region
 
 End Namespace
