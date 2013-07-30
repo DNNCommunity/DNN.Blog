@@ -230,6 +230,12 @@ Namespace Security.Controls
 
    If role.RoleID = AdministratorRoleId Then
     Return False
+   ElseIf role.RoleID = -1 Then ' all users
+    If objPerm.PermissionId = BlogPermissionTypes.ADD Or objPerm.PermissionId = BlogPermissionTypes.APPROVE Or objPerm.PermissionId = BlogPermissionTypes.EDIT Then
+     Return False
+    Else
+     Return True
+    End If
    Else
     Return True
    End If
@@ -269,16 +275,12 @@ Namespace Security.Controls
 
    Dim permission As Boolean
 
-   'If role.RoleID = AdministratorRoleId Then
-   ' permission = True
-   'Else
    Dim objBlogPermission As BlogPermissionInfo = BlogHasRolePermission(objPerm.PermissionId, role.RoleID)
    If Not objBlogPermission Is Nothing Then
     permission = objBlogPermission.AllowAccess
    Else
     permission = False
    End If
-   'End If
 
    Return permission
 

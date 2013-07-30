@@ -464,11 +464,7 @@ Namespace Security.Controls
 
    If RoleGroupId < 0 Then
     Dim r As New RoleInfo
-    r.RoleID = Integer.Parse(glbRoleUnauthUser)
-    r.RoleName = glbRoleUnauthUserName
-    _roles.Add(r)
-    r = New RoleInfo
-    r.RoleID = Integer.Parse(glbRoleAllUsers)
+    r.RoleID = -1 ' all users
     r.RoleName = glbRoleAllUsersName
     _roles.Add(r)
    End If
