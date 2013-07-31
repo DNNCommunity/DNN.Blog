@@ -30,7 +30,7 @@ Namespace Common
   Public Property SummaryLocalizations As New LocalizedText
 
 #Region " Constructors "
-  Public Sub New(contentEditor As Controls.LongTextEdit, summaryEditor As Controls.LongTextEdit, summaryModel As SummaryType, includeLocalizations As Boolean)
+  Public Sub New(contentEditor As Controls.LongTextEdit, summaryEditor As Controls.LongTextEdit, summaryModel As SummaryType, includeLocalizations As Boolean, autoGenerateSummaryIfEmpty As Boolean, autoGenerateLength As Integer)
    Me.Body = contentEditor.DefaultText
    Me.Summary = Trim(summaryEditor.DefaultText)
    If Summary = "&lt;p&gt;&amp;#160;&lt;/p&gt;" Then Summary = "" ' an empty editor in DNN returns this
@@ -51,9 +51,15 @@ Namespace Common
       Me.SummaryLocalizations(l) = RemoveHtmlTags(Me.SummaryLocalizations(l))
      Next
    End Select
+   If autoGenerateSummaryIfEmpty And autoGenerateLength > 0 Then
+    If Summary = "" Then Summary = GetSummary(Body, autoGenerateLength, summaryModel)
+    For Each l As String In Me.SummaryLocalizations.Locales
+     If SummaryLocalizations(l) = "" Then SummaryLocalizations(l) = GetSummary(BodyLocalizations(l), autoGenerateLength, summaryModel)
+    Next
+   End If
   End Sub
 
-  Public Sub New(Post As PostInfo, summaryModel As SummaryType, includeLocalizations As Boolean)
+  Public Sub New(Post As PostInfo, summaryModel As SummaryType, includeLocalizations As Boolean, autoGenerateSummaryIfEmpty As Boolean, autoGenerateLength As Integer)
    Body = HttpUtility.HtmlDecode(Post.Content)
    If Body Is Nothing Then Body = ""
    If summaryModel = SummaryType.PlainTextIndependent Then
@@ -81,9 +87,15 @@ Namespace Common
      End If
     Next
    End If
+   If autoGenerateSummaryIfEmpty And autoGenerateLength > 0 Then
+    If Summary = "" Then Summary = GetSummary(Body, autoGenerateLength, summaryModel)
+    For Each l As String In Me.SummaryLocalizations.Locales
+     If SummaryLocalizations(l) = "" Then SummaryLocalizations(l) = GetSummary(BodyLocalizations(l), autoGenerateLength, summaryModel)
+    Next
+   End If
   End Sub
 
-  Public Sub New(post As Services.WLW.MetaWeblog.Post, summaryModel As SummaryType)
+  Public Sub New(post As Services.WLW.MetaWeblog.Post, summaryModel As SummaryType, autoGenerateSummaryIfEmpty As Boolean, autoGenerateLength As Integer)
    Select Case summaryModel
     Case SummaryType.HtmlIndependent
      Body = post.description
@@ -94,6 +106,9 @@ Namespace Common
      Body = post.description
      Summary = post.mt_excerpt
    End Select
+   If autoGenerateSummaryIfEmpty And autoGenerateLength > 0 Then
+    If Summary = "" Then Summary = GetSummary(Body, autoGenerateLength, summaryModel)
+   End If
   End Sub
 #End Region
 
