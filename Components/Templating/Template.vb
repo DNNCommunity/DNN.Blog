@@ -43,7 +43,7 @@ Namespace Templating
    Me.ViewRelPath = ViewRelPath
    Me.FileName = Filename
    Me.Replacer = Replacer
-   Me.Replacer.AddResources(ViewRelPath & Filename)
+   Me.Replacer.AddResources(ViewRelPath & "App_LocalResources/" & Filename)
    If item IsNot Nothing Then Me.Replacer.AddPropertySource("item", item)
   End Sub
 
@@ -53,7 +53,7 @@ Namespace Templating
    Me.FileName = Filename
    Me.Replacer = Replacer
    Me.Replacer.AddCustomParameters(Arguments)
-   Me.Replacer.AddResources(ViewRelPath & Filename)
+   Me.Replacer.AddResources(ViewRelPath & "App_LocalResources/" & Filename)
    If item IsNot Nothing Then Me.Replacer.AddPropertySource("item", item)
   End Sub
 #End Region

@@ -37,7 +37,7 @@ Namespace Templating
    If Not PrimaryResourceFile.ToLower.EndsWith(".resx") Then
     Me.PrimaryResourceFile = Me.PrimaryResourceFile & ".resx"
    End If
-   Me.SecondaryResourceFile = Me.ResourcesPath & "/resx/SharedResources.ascx.resx"
+   Me.SecondaryResourceFile = Me.ResourcesPath & "/SharedResources.ascx.resx"
   End Sub
 #End Region
 

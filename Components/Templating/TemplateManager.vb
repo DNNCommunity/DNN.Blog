@@ -58,7 +58,7 @@ Namespace Templating
 
   Public ReadOnly Property SharedResourcesFile() As String
    Get
-    Return TemplateRelPath & "resx/SharedResources"
+    Return TemplateRelPath & "App_LocalResources/SharedResources"
    End Get
   End Property
 
