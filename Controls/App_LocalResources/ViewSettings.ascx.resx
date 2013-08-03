@@ -129,20 +129,8 @@
   <data name="lblBlogModuleId.Text" xml:space="preserve">
     <value>Parent Blog Module</value>
   </data>
-  <data name="lblShowManagementPanel.Help" xml:space="preserve">
-    <value>If selected the management panel will show up at the top of this module</value>
-  </data>
-  <data name="lblShowManagementPanel.Text" xml:space="preserve">
-    <value>Show Management Panel</value>
-  </data>
   <data name="NoParent.Text" xml:space="preserve">
     <value>&lt; This module has its own content &gt;</value>
-  </data>
-  <data name="lblShowComments.Help" xml:space="preserve">
-    <value>If selected the comments are shown on this module</value>
-  </data>
-  <data name="lblShowComments.Text" xml:space="preserve">
-    <value>Show Comments</value>
   </data>
   <data name="lblShowAllLocales.Help" xml:space="preserve">
     <value>If selected then posts in all languages will be shown regardless of the user's selection</value>

@@ -24,14 +24,6 @@
   <asp:DropDownList runat="server" ID="ddTemplate" />
 	</div>			
 	<div class="dnnFormItem">
-		<dnn:label id="lblShowManagementPanel" runat="server" controlname="chkShowManagementPanel" suffix=":" />
-		<asp:CheckBox ID="chkShowManagementPanel" runat="server" />
-	</div>
-	<div class="dnnFormItem">
-		<dnn:label id="lblShowComments" runat="server" controlname="chkShowComments" suffix=":" />
-		<asp:CheckBox ID="chkShowComments" runat="server" />
-	</div>
-	<div class="dnnFormItem">
 		<dnn:label id="lblShowAllLocales" runat="server" controlname="chkShowAllLocales" suffix=":" />
 		<asp:CheckBox ID="chkShowAllLocales" runat="server" />
 	</div>

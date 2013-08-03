@@ -406,8 +406,8 @@ Public Class Blog
   End With
   vtContents.DataBind()
 
-  ctlComments.Visible = ViewSettings.ShowComments AndAlso BlogContext.Security.CanViewComments
-  ctlManagement.Visible = ViewSettings.ShowManagementPanel
+  ctlComments.Visible = CBool(ViewSettings.BlogModuleId = -1) AndAlso BlogContext.Security.CanViewComments
+  ctlManagement.Visible = CBool(ViewSettings.BlogModuleId = -1)
 
  End Sub
 #End Region

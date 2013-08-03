@@ -35,8 +35,6 @@ Namespace Common
 
 #Region " Properties "
   Public Property Template As String = "[G]_default"
-  Public Property ShowManagementPanel As Boolean = True
-  Public Property ShowComments As Boolean = True
   Public Property BlogModuleId As Integer = -1
   Public Property ShowAllLocales As Boolean = True
   Public Property BlogId As Integer = -1
@@ -57,8 +55,6 @@ Namespace Common
    _tabModuleId = tabModuleId
    _allSettings = (New DotNetNuke.Entities.Modules.ModuleController).GetTabModuleSettings(tabModuleId)
    _allSettings.ReadValue("Template", Template)
-   _allSettings.ReadValue("ShowManagementPanel", ShowManagementPanel)
-   _allSettings.ReadValue("ShowComments", ShowComments)
    _allSettings.ReadValue("BlogModuleId", BlogModuleId)
    _allSettings.ReadValue("ShowAllLocales", ShowAllLocales)
    _allSettings.ReadValue("BlogId", BlogId)
@@ -99,8 +95,6 @@ Namespace Common
 
    Dim objModules As New DotNetNuke.Entities.Modules.ModuleController
    objModules.UpdateTabModuleSetting(tabModuleId, "Template", Template)
-   objModules.UpdateTabModuleSetting(tabModuleId, "ShowManagementPanel", ShowManagementPanel.ToString)
-   objModules.UpdateTabModuleSetting(tabModuleId, "ShowComments", ShowComments.ToString)
    objModules.UpdateTabModuleSetting(tabModuleId, "BlogModuleId", BlogModuleId.ToString)
    objModules.UpdateTabModuleSetting(tabModuleId, "ShowAllLocales", ShowAllLocales.ToString)
    objModules.UpdateTabModuleSetting(tabModuleId, "BlogId", BlogId.ToString)
@@ -183,8 +177,6 @@ Namespace Common
   Public Sub Serialize(writer As XmlWriter)
    writer.WriteStartElement("ViewSettings")
    writer.WriteElementString("Template", Template)
-   writer.WriteElementString("ShowManagementPanel", ShowManagementPanel.ToString)
-   writer.WriteElementString("ShowComments", ShowComments.ToString)
    writer.WriteElementString("BlogModuleId", BlogModuleId.ToString)
    writer.WriteElementString("ShowAllLocales", ShowAllLocales.ToString)
    writer.WriteElementString("BlogId", BlogId.ToString)
@@ -196,8 +188,6 @@ Namespace Common
   Public Sub FromXml(xml As XmlNode)
    If xml Is Nothing Then Exit Sub
    xml.ReadValue("Template", Template)
-   xml.ReadValue("ShowManagementPanel", ShowManagementPanel)
-   xml.ReadValue("ShowComments", ShowComments)
    xml.ReadValue("BlogModuleId", BlogModuleId)
    xml.ReadValue("ShowAllLocales", ShowAllLocales)
    xml.ReadValue("BlogId", BlogId)

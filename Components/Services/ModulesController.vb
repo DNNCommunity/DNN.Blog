@@ -62,8 +62,6 @@ Namespace Services
    Dim newSettings As New Common.ViewSettings(-1)
    newSettings.BlogModuleId = ActiveModule.ModuleID
    newSettings.Template = postData.template
-   newSettings.ShowManagementPanel = False
-   newSettings.ShowComments = False
 
    Dim objModule As New ModuleInfo
    objModule.Initialize(PortalSettings.PortalId)

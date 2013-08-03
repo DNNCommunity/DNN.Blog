@@ -140,8 +140,6 @@ Namespace Controls
 
    End If
 
-   chkShowManagementPanel.Checked = ViewSettings.ShowManagementPanel
-   chkShowComments.Checked = ViewSettings.ShowComments
    chkShowAllLocales.Checked = ViewSettings.ShowAllLocales
    Try
     ddTemplate.Items.FindByValue(ViewSettings.Template).Selected = True
@@ -153,8 +151,6 @@ Namespace Controls
   Public Overrides Sub UpdateSettings()
 
    ViewSettings.BlogModuleId = CInt(ddBlogModuleId.SelectedValue)
-   ViewSettings.ShowManagementPanel = chkShowManagementPanel.Checked
-   ViewSettings.ShowComments = chkShowComments.Checked
    ViewSettings.ShowAllLocales = chkShowAllLocales.Checked
    ViewSettings.BlogId = CInt(ddBlogId.SelectedValue)
    ViewSettings.TermId = CInt(ddTermId.SelectedValue)
