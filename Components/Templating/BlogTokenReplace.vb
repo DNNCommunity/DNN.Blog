@@ -30,6 +30,15 @@ Namespace Templating
  Public Class BlogTokenReplace
   Inherits GenericTokenReplace
 
+  Public Sub New(moduleId As Integer)
+   MyBase.new(Scope.DefaultSettings)
+
+   Dim actModule As DotNetNuke.Entities.Modules.ModuleInfo = (New DotNetNuke.Entities.Modules.ModuleController).GetModule(moduleId)
+   Me.ModuleInfo = actModule
+   Me.UseObjectLessExpression = False
+
+  End Sub
+
   Public Sub New(actModule As DotNetNuke.Entities.Modules.ModuleInfo, security As Modules.Blog.Security.ContextSecurity, blog As BlogInfo, post As PostInfo, settings As Common.ModuleSettings, viewSettings As ViewSettings)
    MyBase.new(Scope.DefaultSettings)
 

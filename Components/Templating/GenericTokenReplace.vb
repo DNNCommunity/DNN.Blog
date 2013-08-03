@@ -21,7 +21,7 @@
 Imports DotNetNuke.Services.Tokens
 
 Namespace Templating
- Public Class GenericTokenReplace
+ Public MustInherit Class GenericTokenReplace
   Inherits TokenReplace
 
   Public Property PrimaryObject As Object = Nothing

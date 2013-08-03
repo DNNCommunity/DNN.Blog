@@ -141,7 +141,7 @@ Namespace Common
 
     ' Load initialization snippet
     Dim scriptBlock As String = Common.Globals.ReadFile(DotNetNuke.Common.ApplicationMapPath & "\DesktopModules\Blog\js\dotnetnuke.blog.pagescript.js")
-    Dim tr As New Templating.GenericTokenReplace(Scope.DefaultSettings, BlogContext.BlogModuleId)
+    Dim tr As New Templating.BlogTokenReplace(BlogContext.BlogModuleId)
     tr.AddResources("~/DesktopModules/Blog/App_LocalResources/SharedResources.resx")
     scriptBlock = tr.ReplaceTokens(scriptBlock)
     scriptBlock = "<script type=""text/javascript"">" & vbCrLf & "//<![CDATA[" & vbCrLf & scriptBlock & vbCrLf & "//]]>" & vbCrLf & "</script>"
