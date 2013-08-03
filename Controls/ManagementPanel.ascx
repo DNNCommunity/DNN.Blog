@@ -32,7 +32,7 @@
   </div>
   <div class="dnnRight">
    <a href="#" class="dnnSecondaryAction" onclick="$('#<%=pnlCopyModule.ClientId %>').dialog('close')"><%=LocalizeString("cmdCancel") %></a>
-   <a href="<%= NavigateUrl() %>" id="cmdAdd<%=ModuleId %>" class="dnnPrimaryAction"><%=LocalizeString("cmdAdd") %></a>
+   <a href="#" id="cmdAdd<%=ModuleId %>" class="dnnPrimaryAction"><%=LocalizeString("cmdAdd") %></a>
   </div>
  </div>
 </div>
@@ -70,7 +70,12 @@
    return false;
   });
  $('#cmdAdd<%=ModuleId %>').click(function () {
-  blogService.addModule($('#<%=ddPane.ClientId %>').val(), $('#<%=ddPosition.ClientId %>').val(), $('#<%=txtTitle.ClientId %>').val(), $('#<%=ddTemplate.ClientId %>').val());
+  blogService.addModule($('#<%=ddPane.ClientId %>').val(), $('#<%=ddPosition.ClientId %>').val(), $('#<%=txtTitle.ClientId %>').val(), $('#<%=ddTemplate.ClientId %>').val(),
+  function() {
+   location.reload()
+  });
+  $('#<%=pnlCopyModule.ClientId %>').dialog('close');
+  return false;
  });
 <% End If %>
   var $dialogSearch = $('<div class="dnnDialog"></div>')
