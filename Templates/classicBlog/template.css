@@ -38,12 +38,6 @@ ul.ui-autocomplete{overflow:hidden;clear:both;}
 .dateFix input, .dateFix textarea{float: none;}
 /* workarounds */
 * html .ui-autocomplete { width:1px; } /* without this, the menu expands to 100% in IE6 */
-/* Menu */
-.ui-menu {list-style:none; padding: 1px; display:block;}
-.ui-menu .ui-menu {margin-top: -3px;}
-.ui-menu .ui-menu-item { cursor: pointer; background: #e3e3e3; margin:0px; padding: 2px; width: 100%; }
-.ui-menu .ui-menu-item a { text-decoration:none;display:block;color:#007CBC !important;font-weight:bold;font-size:1.1em;padding-top:0.4em;}
-.ui-menu .ui-menu-item a.ui-state-hover, .ui-menu .ui-menu-item a.ui-state-active { }
 /* Tagging */
 ul.qaRecentTags, ul.qaRecentTags li{list-style:none;margin:0px 0px 0px -8px;padding:0px 0px 5px 0px;min-height: 28px;width: 188px;}
 .rtTag{line-height: 14px;float: left;}
@@ -76,13 +70,6 @@ ul.rlbList {list-style:none;}
 
 
 .divMainViewDialog{padding: 16px;}
-.ui-dialog.ui-widget{border:5px #ccc solid;background:#fff;-webkit-box-shadow: 0px 0px 20px 5px #999;-moz-box-shadow: 0px 0px 20px 5px #999;box-shadow: 0px 0px 20px 5px #999;-webkit-border-radius: 8px;-moz-border-radius: 8px;border-radius: 8px;}
-.ui-dialog-titlebar{padding:1.1em 1.2em;position:relative;background:#4E4E4E;background:-moz-linear-gradient(top, #4E4E4E 0%, #282828 100%);overflow:hidden;
-				background:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#4E4E4E), color-stop(100%,#282828));filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#4E4E4E', endColorstr='#282828',GradientType=0);
-				color:#fff;font-weight:bold;text-shadow:0px 1px 1px #000;cursor:move;-webkit-border-top-left-radius: 4px;-webkit-border-top-right-radius: 4px;-webkit-border-bottom-right-radius: 0px;
-				-webkit-border-bottom-left-radius: 0px;-moz-border-radius-topleft: 4px;-moz-border-radius-topright: 4px;-moz-border-radius-bottomright: 0px;-moz-border-radius-bottomleft: 0px;border-top-left-radius: 4px;
-				border-top-right-radius: 4px;border-bottom-right-radius: 0px;border-bottom-left-radius: 0px;font-size:14px;}
-	a.ui-dialog-titlebar-close.ui-corner-all{text-indent: -9999em;display: block;position: absolute;right: 10px;top: 10px;background: url(../../images/close-icn.png) no-repeat;height: 24px;width: 24px;}
 		
 
 /* Button Group Styles */
