@@ -227,7 +227,7 @@ Public Class PostEdit
      BlogContext.Post.Blog = BlogContext.Blog
     End If
     If BlogContext.ContentItemId = -1 And Not BlogContext.Security.CanAddPost Then Throw New Exception("You can't add posts to this blog")
-    If BlogContext.ContentItemId <> -1 And Not BlogContext.Security.CanEditPost Then Throw New Exception("You're not allowed to edit this post")
+    If BlogContext.ContentItemId <> -1 And Not BlogContext.Security.CanEditThisPost(BlogContext.Post) Then Throw New Exception("You're not allowed to edit this post")
 
     Dim firstPublish As Boolean = CBool((Not BlogContext.Post.Published) And chkPublished.Checked)
 

@@ -82,7 +82,7 @@ Namespace Common
 
    ' security
    Dim isStylePostRequest As Boolean = False
-   If Post IsNot Nothing AndAlso Not Post.Published AndAlso Not Security.IsEditor Then
+   If Post IsNot Nothing AndAlso Not (Post.Published Or Security.CanEditThisPost(Post)) AndAlso Not Security.IsEditor Then
     If Post.Title.Contains("3bfe001a-32de-4114-a6b4-4005b770f6d7") And WLWRequest Then
      isStylePostRequest = True
     Else

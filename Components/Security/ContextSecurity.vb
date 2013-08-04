@@ -98,7 +98,11 @@ Namespace Security
   Public Function CanEditThisPost(post As Posts.PostInfo) As Boolean
    If CanEditPost Then Return True
    If post Is Nothing Then Return False
+   If post.Blog.MustApproveGhostPosts AndAlso Not CanApprovePost Then
    If post.CreatedByUserID = _userId And Not post.Published Then Return True
+   Else
+    If post.CreatedByUserID = _userId Then Return True
+   End If
    Return False
   End Function
 
