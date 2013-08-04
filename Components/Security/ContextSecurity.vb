@@ -38,6 +38,7 @@ Namespace Security
   Private _canApprove As Boolean = False
   Private _canAddComment As Boolean = False
   Private _canApproveComment As Boolean = False
+  Private _canAutoApproveComment As Boolean = False
   Private _canViewComment As Boolean = False
   Private _userIsAdmin As Boolean = False
   Private _isBlogger As Boolean = False
@@ -55,6 +56,7 @@ Namespace Security
     _canApprove = blog.CanApprove
     _canViewComment = blog.Permissions.CurrentUserHasPermission("VIEWCOMMENT")
     _canApproveComment = blog.Permissions.CurrentUserHasPermission("APPROVECOMMENT")
+    _canAutoApproveComment = blog.Permissions.CurrentUserHasPermission("AUTOAPPROVECOMMENT")
     _canAddComment = blog.Permissions.CurrentUserHasPermission("ADDCOMMENT")
    Else
     Using ir As IDataReader = Data.DataProvider.Instance().GetUserPermissionsByModule(moduleId, user.UserID)
@@ -136,6 +138,12 @@ Namespace Security
    End Get
   End Property
 
+  Public ReadOnly Property CanAutoApproveComment() As Boolean
+   Get
+    Return _canAutoApproveComment Or IsOwner Or UserIsAdmin
+   End Get
+  End Property
+
   Public ReadOnly Property CanDoSomethingWithPosts As Boolean
    Get
     Return _canEdit Or _canAdd Or _canApprove Or _isBlogger Or UserIsAdmin
@@ -199,6 +207,10 @@ Namespace Security
      Return Me.CanApproveComment.ToString
     Case "canapprovecommentyesno"
      Return PropertyAccess.Boolean2LocalizedYesNo(Me.CanApproveComment, formatProvider)
+    Case "canautoapprovecomment"
+     Return Me.CanAutoApproveComment.ToString
+    Case "canautoapprovecommentyesno"
+     Return PropertyAccess.Boolean2LocalizedYesNo(Me.CanAutoApproveComment, formatProvider)
     Case "candosomethingwithposts"
      Return Me.CanDoSomethingWithPosts.ToString
     Case "candosomethingwithpostsyesno"

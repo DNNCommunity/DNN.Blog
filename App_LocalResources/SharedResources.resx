@@ -238,4 +238,7 @@
   <data name="TrackbackComment.Text" xml:space="preserve">
     <value>Trackback from {0}&lt;br/&gt;&lt;br/&gt;&lt;a href="{1}"&gt;{2}&lt;/a&gt;</value>
   </data>
+  <data name="AUTOAPPROVECOMMENT.Permission" xml:space="preserve">
+    <value>Auto Approve Comment</value>
+  </data>
 </root>

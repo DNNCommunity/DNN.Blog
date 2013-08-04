@@ -28,6 +28,7 @@ Namespace Security
    ADDCOMMENT = 3
    APPROVECOMMENT = 4
    VIEWCOMMENT = 5
+   AUTOAPPROVECOMMENT = 6
   End Enum
 
   Public Const glbRoleNothing As Integer = -4

@@ -121,6 +121,8 @@ Namespace Security.Permissions
      Return BlogPermissionTypes.APPROVE
     Case "APPROVECOMMENT"
      Return BlogPermissionTypes.APPROVECOMMENT
+    Case "AUTOAPPROVECOMMENT"
+     Return BlogPermissionTypes.AUTOAPPROVECOMMENT
     Case "EDIT"
      Return BlogPermissionTypes.EDIT
     Case Else
@@ -162,6 +164,8 @@ Namespace Security.Permissions
        .PermissionKey = "ADDCOMMENT"
       Case BlogPermissionTypes.APPROVECOMMENT
        .PermissionKey = "APPROVECOMMENT"
+      Case BlogPermissionTypes.AUTOAPPROVECOMMENT
+       .PermissionKey = "AUTOAPPROVECOMMENT"
      End Select
      .RoleId = Convert.ToInt32(Null.SetNull(dr("RoleID"), objBlogPermission.RoleId))
      If .RoleId > -1 Then

@@ -161,7 +161,7 @@ Namespace Entities.Comments
    objComment.CreatedByUserID = UserInfo.UserID
    objComment.ParentId = postData.ParentId
    objComment.Comment = HttpUtility.HtmlEncode(SafeStringSimpleHtml(postData.Comment).Replace(vbCrLf, "<br />"))
-   objComment.Approved = Security.CanApproveComment Or Post.CreatedByUserID = UserInfo.UserID
+   objComment.Approved = Security.CanAutoApproveComment Or Security.CanApproveComment Or Post.CreatedByUserID = UserInfo.UserID
    objComment.Author = SafeString(postData.Author)
    objComment.Email = SafeString(postData.Email)
    objComment.Website = SafeString(postData.Website)
