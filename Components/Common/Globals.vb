@@ -171,15 +171,25 @@ Namespace Common
    If encoded Then
     res = HttpUtility.HtmlDecode(res)
    End If
-   res = RemoveHtmlTags(body).SubstringWithoutException(0, autoGenerateLength)
+   res = TryToGetFirstParagraph(res)
+   res = RemoveHtmlTags(res).SubstringWithoutException(0, autoGenerateLength)
+   If res.Length >= autoGenerateLength Then res &= " ..."
    If Not summaryModel = SummaryType.PlainTextIndependent Then
-    res = String.Format("<p>{0} ...</p>", res)
+    res = String.Format("<p>{0}</p>", res)
    End If
    If encoded Then
     Return HttpUtility.HtmlEncode(res)
    Else
     Return res
    End If
+  End Function
+
+  Public Shared Function TryToGetFirstParagraph(inputString As String) As String
+   Dim m As Match = Regex.Match(inputString, "(?s)(?i)<p[^>]*>((?:(?!</p>).)*)(?-i)(?-s)")
+   If m.Success Then
+    Return m.Groups(1).Value
+   End If
+   Return inputString
   End Function
 
   Public Shared Function RemoveHtmlTags(inputString As String) As String
