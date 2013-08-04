@@ -68,6 +68,7 @@
 		<div class="dnnFormItem">
 			<dnn:Label ID="lblPublishDate" runat="server" ControlName="dpPostDate" Suffix=":" />
 			<div class="dnnLeft">
+    <asp:CheckBox runat="server" ID="chkPublishNow" ResourceKey="Now" />
 				<dnnweb:DnnDatePicker ID="dpPostDate" runat="server" CssClass="dateFix" />
 				<dnnweb:DnnTimePicker ID="tpPostTime" runat="server" TimeView-Columns="4" ShowPopupOnFocus="true" CssClass="dateFix" />
 			</div>
@@ -93,7 +94,7 @@
 
   $(document).ready(function () {
 
-   $('#dnnBlogEditPost').dnnTabs();
+   $('#dnnBlogEditPost').dnnTabs({ selected: 0 });
 
    $('.dnnPostDelete').dnnConfirm({
     text: '<%= LocalizeJSString("DeleteItem") %>',
@@ -102,7 +103,23 @@
     title: '<%= LocalizeJSString("Confirm.Text", Localization.SharedResourceFile) %>'
    });
 
+   $('#<%= chkPublishNow.ClientID %>').click(function () {
+    setDateSelector();
+   });
+
+   setDateSelector();
+
   });
+
+  function setDateSelector() {
+   if ($('#<%= chkPublishNow.ClientID %>').is(':checked')) {
+    $('#<%= dpPostDate.ClientID %>_wrapper').hide();
+    $('#<%= tpPostTime.ClientID %>_wrapper').hide();
+   } else {
+    $('#<%= dpPostDate.ClientID %>_wrapper').show();
+    $('#<%= tpPostTime.ClientID %>_wrapper').show();
+   }
+  }
 
  } (jQuery, window.Sys));
 </script>  

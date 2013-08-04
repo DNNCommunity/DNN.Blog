@@ -284,6 +284,15 @@ Partial Public Class PostEdit
  Protected WithEvents lblPublishDate As Global.System.Web.UI.UserControl
 
  '''<summary>
+ '''chkPublishNow control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents chkPublishNow As Global.System.Web.UI.WebControls.CheckBox
+
+ '''<summary>
  '''dpPostDate control.
  '''</summary>
  '''<remarks>

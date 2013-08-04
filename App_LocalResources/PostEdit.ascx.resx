@@ -211,4 +211,7 @@
   <data name="Title.Text" xml:space="preserve">
     <value>Title and Summary</value>
   </data>
+  <data name="Now.Text" xml:space="preserve">
+    <value>Now</value>
+  </data>
 </root>

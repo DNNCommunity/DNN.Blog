@@ -151,6 +151,7 @@ Public Class PostEdit
      BlogContext.Post.Blog = BlogContext.Blog
      BlogContext.Post.BlogID = BlogContext.Blog.BlogID
      BlogContext.Post.Published = True
+     chkPublishNow.Checked = True
     End If
 
     If Not BlogContext.Post Is Nothing Then
@@ -244,12 +245,16 @@ Public Class PostEdit
     BlogContext.Post.DisplayCopyright = chkDisplayCopyright.Checked
     BlogContext.Post.Copyright = txtCopyright.Text
     ' Date
-    BlogContext.Post.PublishedOnDate = CDate(dpPostDate.SelectedDate)
-    Dim hour As Integer = tpPostTime.SelectedDate.Value.Hour
-    Dim minute As Integer = tpPostTime.SelectedDate.Value.Minute
-    BlogContext.Post.PublishedOnDate = BlogContext.Post.PublishedOnDate.AddHours(hour)
-    BlogContext.Post.PublishedOnDate = BlogContext.Post.PublishedOnDate.AddMinutes(minute)
-    BlogContext.Post.PublishedOnDate = TimeZoneInfo.ConvertTimeToUtc(BlogContext.Post.PublishedOnDate, BlogContext.UiTimeZone)
+    If chkPublishNow.Checked Then
+     BlogContext.Post.PublishedOnDate = Now.ToUniversalTime
+    Else
+     BlogContext.Post.PublishedOnDate = CDate(dpPostDate.SelectedDate)
+     Dim hour As Integer = tpPostTime.SelectedDate.Value.Hour
+     Dim minute As Integer = tpPostTime.SelectedDate.Value.Minute
+     BlogContext.Post.PublishedOnDate = BlogContext.Post.PublishedOnDate.AddHours(hour)
+     BlogContext.Post.PublishedOnDate = BlogContext.Post.PublishedOnDate.AddMinutes(minute)
+     BlogContext.Post.PublishedOnDate = TimeZoneInfo.ConvertTimeToUtc(BlogContext.Post.PublishedOnDate, BlogContext.UiTimeZone)
+    End If
 
     ' Categories, Tags
     Dim terms As New List(Of TermInfo)
