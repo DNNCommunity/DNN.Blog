@@ -166,6 +166,7 @@ Namespace Common
   End Function
 
   Public Shared Function GetSummary(body As String, autoGenerateLength As Integer, summaryModel As SummaryType) As String
+   If String.IsNullOrEmpty(body) Then Return ""
    Dim res As String = RemoveHtmlTags(body).Substring(0, autoGenerateLength)
    If summaryModel = SummaryType.PlainTextIndependent Then
     Return res
