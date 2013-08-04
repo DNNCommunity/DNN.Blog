@@ -165,13 +165,20 @@ Namespace Common
    Return value.ToString
   End Function
 
-  Public Shared Function GetSummary(body As String, autoGenerateLength As Integer, summaryModel As SummaryType) As String
+  Public Shared Function GetSummary(body As String, autoGenerateLength As Integer, summaryModel As SummaryType, encoded As Boolean) As String
    If String.IsNullOrEmpty(body) Then Return ""
-   Dim res As String = RemoveHtmlTags(body).Substring(0, autoGenerateLength)
-   If summaryModel = SummaryType.PlainTextIndependent Then
-    Return res
+   Dim res As String = body
+   If encoded Then
+    res = HttpUtility.HtmlDecode(res)
+   End If
+   res = RemoveHtmlTags(body).SubstringWithoutException(0, autoGenerateLength)
+   If Not summaryModel = SummaryType.PlainTextIndependent Then
+    res = String.Format("<p>{0} ...</p>", res)
+   End If
+   If encoded Then
+    Return HttpUtility.HtmlEncode(res)
    Else
-    Return String.Format("<p>{0} ...</p>", res)
+    Return res
    End If
   End Function
 

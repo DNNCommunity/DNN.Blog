@@ -479,11 +479,32 @@ Namespace Common
      Return HttpUtility.HtmlDecode(encodedHtml).Replace("""", "\""").Replace("'", "\'").Replace(vbCrLf, "\r\n")
     Case Else
      If IsNumeric(strFormat) Then
-      Return RemoveHtmlTags(HttpUtility.HtmlDecode(encodedHtml)).Substring(0, Integer.Parse(strFormat))
+      Return RemoveHtmlTags(HttpUtility.HtmlDecode(encodedHtml)).SubstringWithoutException(0, Integer.Parse(strFormat))
      Else
       Return HttpUtility.HtmlDecode(encodedHtml)
      End If
    End Select
+  End Function
+
+  <System.Runtime.CompilerServices.Extension()>
+  Public Function SubstringWithoutException(input As String, startIndex As Integer, length As Integer) As String
+   If String.IsNullOrEmpty(input) Then Return ""
+   If startIndex > 0 Then
+    If startIndex >= input.Length Then
+     Return ""
+    End If
+    If startIndex + length > input.Length Then
+     Return input.Substring(startIndex, input.Length - startIndex)
+    Else
+     Return input.Substring(startIndex, length)
+    End If
+   Else
+    If length > input.Length Then
+     Return input.Substring(0, input.Length - startIndex)
+    Else
+     Return input.Substring(0, length)
+    End If
+   End If
   End Function
 
   <System.Runtime.CompilerServices.Extension()>

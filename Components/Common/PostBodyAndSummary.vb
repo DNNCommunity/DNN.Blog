@@ -52,9 +52,9 @@ Namespace Common
      Next
    End Select
    If autoGenerateSummaryIfEmpty And autoGenerateLength > 0 Then
-    If Summary = "" Then Summary = GetSummary(Body, autoGenerateLength, summaryModel)
+    If Summary = "" Then Summary = GetSummary(Body, autoGenerateLength, summaryModel, True)
     For Each l As String In Me.SummaryLocalizations.Locales
-     If SummaryLocalizations(l) = "" Then SummaryLocalizations(l) = GetSummary(BodyLocalizations(l), autoGenerateLength, summaryModel)
+     If SummaryLocalizations(l) = "" Then SummaryLocalizations(l) = GetSummary(BodyLocalizations(l), autoGenerateLength, summaryModel, True)
     Next
    End If
   End Sub
@@ -88,9 +88,9 @@ Namespace Common
     Next
    End If
    If autoGenerateSummaryIfEmpty And autoGenerateLength > 0 Then
-    If Summary = "" Then Summary = GetSummary(Body, autoGenerateLength, summaryModel)
+    If Summary = "" Then Summary = GetSummary(Body, autoGenerateLength, summaryModel, False)
     For Each l As String In Me.SummaryLocalizations.Locales
-     If SummaryLocalizations(l) = "" Then SummaryLocalizations(l) = GetSummary(BodyLocalizations(l), autoGenerateLength, summaryModel)
+     If SummaryLocalizations(l) = "" Then SummaryLocalizations(l) = GetSummary(BodyLocalizations(l), autoGenerateLength, summaryModel, False)
     Next
    End If
   End Sub
@@ -107,7 +107,7 @@ Namespace Common
      Summary = post.mt_excerpt
    End Select
    If autoGenerateSummaryIfEmpty And autoGenerateLength > 0 Then
-    If Summary = "" Then Summary = GetSummary(Body, autoGenerateLength, summaryModel)
+    If Summary = "" Then Summary = GetSummary(Body, autoGenerateLength, summaryModel, False)
    End If
   End Sub
 #End Region
