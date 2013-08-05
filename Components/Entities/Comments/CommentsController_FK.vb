@@ -37,15 +37,15 @@ Namespace Entities.Comments
 
  Partial Public Class CommentsController
 
-  Public Shared Function GetCommentsByContentItem(contentItemId As Int32 , IncludeNonApproved As Boolean) As List(Of CommentInfo)
+  Public Shared Function GetCommentsByContentItem(contentItemId As Int32, IncludeNonApproved As Boolean, userId As Integer) As List(Of CommentInfo)
 
-   Return DotNetNuke.Common.Utilities.CBO.FillCollection(Of CommentInfo)(DataProvider.Instance().GetCommentsByContentItem(contentItemId, IncludeNonApproved))
+   Return DotNetNuke.Common.Utilities.CBO.FillCollection(Of CommentInfo)(DataProvider.Instance().GetCommentsByContentItem(contentItemId, IncludeNonApproved, userId))
 
   End Function
 
-  Public Shared Function GetCommentsByModule(moduleId As Int32) As List(Of CommentInfo)
+  Public Shared Function GetCommentsByModule(moduleId As Int32, userId As Integer) As List(Of CommentInfo)
 
-   Return DotNetNuke.Common.Utilities.CBO.FillCollection(Of CommentInfo)(DataProvider.Instance().GetCommentsByModuleId(moduleId))
+   Return DotNetNuke.Common.Utilities.CBO.FillCollection(Of CommentInfo)(DataProvider.Instance().GetCommentsByModuleId(moduleId, userId))
 
   End Function
 

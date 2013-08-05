@@ -146,10 +146,6 @@ Namespace Data
 
 #Region " Comment Methods "
 
-  Public Overrides Function GetComment(commentID As Int32) As IDataReader
-   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "GetComment", commentID), IDataReader)
-  End Function
-
   Public Overrides Function AddComment(approved As Boolean, author As String, comment As String, contentItemId As Int32, email As String, parentId As Int32, website As String, createdByUser As Int32) As Integer
    Return CType(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "AddComment", approved, GetNull(author), comment, contentItemId, GetNull(email), GetNull(parentId), GetNull(website), createdByUser), Integer)
   End Function

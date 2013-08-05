@@ -1330,19 +1330,21 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE VIEW {databaseOwner}{objectQualifier}vw_Blog_Comments
 AS
-SELECT     c.CommentID, c.ContentItemId, c.ParentId, c.Comment, c.Approved, c.Author, c.Website, c.Email, c.CreatedByUserID, c.CreatedOnDate, c.LastModifiedByUserID, 
-                      c.LastModifiedOnDate, ISNULL(u.Username, '') AS Username, ISNULL(u.DisplayName, c.Author) AS DisplayName,
-                          (SELECT     COUNT(*) AS Expr1
-                            FROM          {databaseOwner}{objectQualifier}Blog_CommentKarmas
-                            WHERE      (c.CommentID = c.CommentID) AND (Karma = 0)) AS Likes,
-                          (SELECT     COUNT(*) AS Expr1
-                            FROM          {databaseOwner}{objectQualifier}Blog_CommentKarmas AS {objectQualifier}Blog_CommentKarmas_2
-                            WHERE      (c.CommentID = c.CommentID) AND (Karma = 1)) AS Dislikes,
-                          (SELECT     COUNT(*) AS Expr1
-                            FROM          {databaseOwner}{objectQualifier}Blog_CommentKarmas AS {objectQualifier}Blog_CommentKarmas_1
-                            WHERE      (c.CommentID = c.CommentID) AND (Karma = 2)) AS Reports
-FROM         {databaseOwner}{objectQualifier}Blog_Comments AS c LEFT OUTER JOIN
-                      {databaseOwner}{objectQualifier}Users AS u ON c.CreatedByUserID = u.UserID
+SELECT
+ c.*,
+ ISNULL(u.Username, '') AS Username,
+ ISNULL(u.DisplayName, c.Author) AS DisplayName,
+ (SELECT COUNT(ck1.UserId) AS Expr1
+   FROM {databaseOwner}{objectQualifier}Blog_CommentKarmas ck1
+   WHERE (ck1.CommentID = c.CommentID) AND (ck1.Karma = 0)) AS Likes,
+ (SELECT COUNT(ck2.UserId) AS Expr1
+   FROM {databaseOwner}{objectQualifier}Blog_CommentKarmas AS ck2
+   WHERE (ck2.CommentID = c.CommentID) AND (ck2.Karma = 1)) AS Dislikes,
+ (SELECT COUNT(ck3.UserId) AS Expr1
+   FROM {databaseOwner}{objectQualifier}Blog_CommentKarmas AS ck3
+   WHERE (ck3.CommentID = c.CommentID) AND (ck3.Karma = 2)) AS Reports
+FROM {databaseOwner}{objectQualifier}Blog_Comments AS c
+ LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u ON c.CreatedByUserID = u.UserID
 GO
 
 IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}vw_Blog_Posts'))
@@ -2038,14 +2040,22 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetComment
- @CommentID INT
+ @CommentID INT,
+ @UserID INT
 AS
 SELECT
- *
+ c.*,
+ (SELECT COUNT(ck1.Datime) FROM {databaseOwner}{objectQualifier}Blog_CommentKarmas ck1
+  WHERE ck1.UserId=@UserID AND ck1.CommentId=c.CommentID AND ck1.Karma=0) AS Liked,
+ (SELECT COUNT(ck2.Datime) FROM {databaseOwner}{objectQualifier}Blog_CommentKarmas ck2
+  WHERE ck2.UserId=@UserID AND ck2.CommentId=c.CommentID AND ck2.Karma=1) AS Disliked,
+ (SELECT COUNT(ck3.Datime) FROM {databaseOwner}{objectQualifier}Blog_CommentKarmas ck3
+  WHERE ck3.UserId=@UserID AND ck3.CommentId=c.CommentID AND ck3.Karma=2) AS Reported
 FROM
- {databaseOwner}{objectQualifier}vw_Blog_Comments
+ {databaseOwner}{objectQualifier}vw_Blog_Comments c
 WHERE
- [CommentID] = @CommentID
+ c.CommentID = @CommentID
+ 
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetCommentsByContentItem') AND type in (N'P', N'PC'))
@@ -2058,10 +2068,17 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetCommentsByContentItem
  @ContentItemId INT,
- @IncludeNonApproved BIT
+ @IncludeNonApproved BIT,
+ @UserID INT
 AS
 SELECT
- c.*
+ c.*,
+ (SELECT COUNT(ck1.Datime) FROM {databaseOwner}{objectQualifier}Blog_CommentKarmas ck1
+  WHERE ck1.UserId=@UserID AND ck1.CommentId=c.CommentID AND ck1.Karma=0) AS Liked,
+ (SELECT COUNT(ck2.Datime) FROM {databaseOwner}{objectQualifier}Blog_CommentKarmas ck2
+  WHERE ck2.UserId=@UserID AND ck2.CommentId=c.CommentID AND ck2.Karma=1) AS Disliked,
+ (SELECT COUNT(ck3.Datime) FROM {databaseOwner}{objectQualifier}Blog_CommentKarmas ck3
+  WHERE ck3.UserId=@UserID AND ck3.CommentId=c.CommentID AND ck3.Karma=2) AS Reported
 FROM
  {databaseOwner}{objectQualifier}vw_Blog_Comments c
 WHERE
@@ -2080,10 +2097,17 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetCommentsByModuleId
- @ModuleId INT
+ @ModuleId INT,
+ @UserID INT
 AS
 SELECT
- c.*
+ c.*,
+ (SELECT COUNT(ck1.Datime) FROM {databaseOwner}{objectQualifier}Blog_CommentKarmas ck1
+  WHERE ck1.UserId=@UserID AND ck1.CommentId=c.CommentID AND ck1.Karma=0) AS Liked,
+ (SELECT COUNT(ck2.Datime) FROM {databaseOwner}{objectQualifier}Blog_CommentKarmas ck2
+  WHERE ck2.UserId=@UserID AND ck2.CommentId=c.CommentID AND ck2.Karma=1) AS Disliked,
+ (SELECT COUNT(ck3.Datime) FROM {databaseOwner}{objectQualifier}Blog_CommentKarmas ck3
+  WHERE ck3.UserId=@UserID AND ck3.CommentId=c.CommentID AND ck3.Karma=2) AS Reported
 FROM
  {databaseOwner}{objectQualifier}vw_Blog_Comments c
  INNER JOIN {databaseOwner}{objectQualifier}ContentItems ci ON ci.ContentItemID=c.ContentItemId

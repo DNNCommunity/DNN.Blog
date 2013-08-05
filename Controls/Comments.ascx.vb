@@ -51,7 +51,7 @@ Namespace Controls
     End If
    End If
    If BlogContext.Post IsNot Nothing AndAlso BlogContext.Security.CanViewComments AndAlso BlogContext.Post.AllowComments Then
-    AllComments = CommentsController.GetCommentsByContentItem(BlogContext.Post.ContentItemId, BlogContext.Security.CanApproveComment)
+    AllComments = CommentsController.GetCommentsByContentItem(BlogContext.Post.ContentItemId, BlogContext.Security.CanApproveComment, UserId)
     DataBind()
    End If
 

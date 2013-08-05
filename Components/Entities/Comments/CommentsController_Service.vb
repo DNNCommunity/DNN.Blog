@@ -188,7 +188,7 @@ Namespace Entities.Comments
    End If
    If Not Security.CanViewComments Then Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = ""})
    Dim ViewSettings As ViewSettings = ViewSettings.GetViewSettings(ActiveModule.TabModuleID)
-   AllComments = CommentsController.GetCommentsByContentItem(Post.ContentItemId, Security.CanApproveComment)
+   AllComments = CommentsController.GetCommentsByContentItem(Post.ContentItemId, Security.CanApproveComment, UserInfo.UserID)
    Dim vt As New ViewTemplate
    Dim tmgr As New TemplateManager(PortalSettings, ViewSettings.Template)
    With vt
@@ -316,7 +316,7 @@ Namespace Entities.Comments
 #Region " Private Methods "
   Private Sub SetContext(data As CommentDTO)
    Blog = BlogsController.GetBlog(data.BlogId, UserInfo.UserID, Threading.Thread.CurrentThread.CurrentCulture.Name)
-   Comment = CommentsController.GetComment(data.CommentId)
+   Comment = CommentsController.GetComment(data.CommentId, UserInfo.UserID)
   End Sub
 
   Private Sub SetContext(data As FullCommentDTO)
@@ -362,7 +362,7 @@ Namespace Entities.Comments
   End Function
 
   Private Shared Function IsFirstPingBack(post As PostInfo, sourceUrl As String) As Boolean
-   For Each c As CommentInfo In CommentsController.GetCommentsByContentItem(post.ContentItemId, True)
+   For Each c As CommentInfo In CommentsController.GetCommentsByContentItem(post.ContentItemId, True, -1)
     If c.Website.ToString.Equals(sourceUrl, StringComparison.OrdinalIgnoreCase) Then Return False
    Next
    Return True

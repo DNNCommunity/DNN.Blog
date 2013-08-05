@@ -134,7 +134,7 @@ Namespace Integration.Services
    CommentId = nKey.CommentId
    Blog = BlogsController.GetBlog(BlogId, UserInfo.UserID, Threading.Thread.CurrentThread.CurrentCulture.Name)
    Post = PostsController.GetPost(ContentItemId, BlogModuleId, Threading.Thread.CurrentThread.CurrentCulture.Name)
-   Comment = CommentsController.GetComment(CommentId)
+   Comment = CommentsController.GetComment(CommentId, UserInfo.UserID)
   End Sub
 #End Region
 

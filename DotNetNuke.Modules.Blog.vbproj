@@ -204,12 +204,10 @@
     <Content Include="Templates\timelineJS\Template.html" />
     <Content Include="Templates\_default\CommentsTemplate.html" />
     <Content Include="Templates\_default\Comment.html" />
-    <Content Include="Templates\_default\CommentApprove.html" />
     <Content Include="Templates\_default\CommentApproveBar.html" />
     <Content Include="Templates\_default\CommentKarmaBar.html" />
     <Content Include="Templates\_default\AuthorBanner.html" />
     <Content Include="Templates\_default\BlogBanner.html" />
-    <Content Include="Templates\_default\CommentReplyBar.html" />
     <Content Include="Templates\_default\css\shCore.css" />
     <Content Include="Templates\_default\css\shCoreDefault.css" />
     <Content Include="Templates\_default\SearchBanner.html" />

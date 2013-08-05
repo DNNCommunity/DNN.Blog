@@ -65,7 +65,6 @@ Namespace Data
 #End Region
 
 #Region " Comment Methods "
-  Public MustOverride Function GetComment(commentID As Int32) As IDataReader
   Public MustOverride Function AddComment(approved As Boolean, author As String, comment As String, contentItemId As Int32, email As String, parentId As Int32, website As String, createdByUser As Int32) As Integer
   Public MustOverride Sub UpdateComment(approved As Boolean, author As String, comment As String, commentID As Int32, contentItemId As Int32, email As String, parentId As Int32, website As String, updatedByUser As Int32)
   Public MustOverride Sub DeleteComment(commentID As Int32)

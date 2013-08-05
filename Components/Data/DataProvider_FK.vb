@@ -34,8 +34,6 @@ Namespace Data
 #End Region
 
 #Region " Comment Methods "
-  Public MustOverride Function GetCommentsByContentItem(contentItemId As Int32, IncludeNonApproved As Boolean) As IDataReader
-  Public MustOverride Function GetCommentsByModuleId(moduleId As Int32) As IDataReader
 #End Region
 
 #Region " Post Methods "

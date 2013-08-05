@@ -43,13 +43,6 @@ Namespace Data
 #End Region
 
 #Region " Comment Methods "
-  Public Overrides Function GetCommentsByContentItem(contentItemId As Int32, IncludeNonApproved As Boolean) As IDataReader
-   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "GetCommentsByContentItem", contentItemId, IncludeNonApproved), IDataReader)
-  End Function
-
-  Public Overrides Function GetCommentsByModuleId(moduleId As Int32) As IDataReader
-   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "GetCommentsByModuleId", moduleId), IDataReader)
-  End Function
 #End Region
 
 #Region " Post Methods "

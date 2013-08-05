@@ -22,10 +22,11 @@ Imports System
 Imports System.Runtime.Serialization
 
 Namespace Entities.Comments
-  Partial Public Class CommentInfo
+ Partial Public Class CommentInfo
+
 #Region " Private Members "
 #End Region
-	
+
 #Region " Constructors "
   Public Sub New()
   End Sub
@@ -66,6 +67,12 @@ Namespace Entities.Comments
   Public Property Dislikes As Int32 = 0
   <DataMember()>
   Public Property Reports As Int32 = 0
+  <DataMember()>
+  Public Property Liked As Int32 = 0
+  <DataMember()>
+  Public Property Disliked As Int32 = 0
+  <DataMember()>
+  Public Property Reported As Int32 = 0
 #End Region
 
  End Class

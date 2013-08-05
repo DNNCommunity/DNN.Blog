@@ -37,12 +37,6 @@ Namespace Entities.Comments
 
  Partial Public Class CommentsController
 
-  Public Shared Function GetComment(commentID As Int32) As CommentInfo
-
-   Return CType(CBO.FillObject(DataProvider.Instance().GetComment(commentID), GetType(CommentInfo)), CommentInfo)
-
-  End Function
-
  Public Shared Function AddComment(ByRef objComment As CommentInfo, createdByUser As Integer) As Integer
 
   objComment.CommentID = CType(DataProvider.Instance().AddComment(objComment.Approved, objComment.Author, objComment.Comment, objComment.ContentItemId, objComment.Email, objComment.ParentId, objComment.Website, createdByUser), Integer)

@@ -66,10 +66,12 @@ Namespace Entities.Comments
    LastModifiedOnDate = CDate(Null.SetNull(dr.Item("LastModifiedOnDate"), LastModifiedOnDate))
    Username = Convert.ToString(Null.SetNull(dr.Item("Username"), Username))
    DisplayName = Convert.ToString(Null.SetNull(dr.Item("DisplayName"), DisplayName))
-  Likes = Convert.ToInt32(Null.SetNull(dr.Item("Likes"), Likes))
-  Dislikes = Convert.ToInt32(Null.SetNull(dr.Item("Dislikes"), Dislikes))
-  Reports = Convert.ToInt32(Null.SetNull(dr.Item("Reports"), Reports))
-
+   Likes = Convert.ToInt32(Null.SetNull(dr.Item("Likes"), Likes))
+   Dislikes = Convert.ToInt32(Null.SetNull(dr.Item("Dislikes"), Dislikes))
+   Reports = Convert.ToInt32(Null.SetNull(dr.Item("Reports"), Reports))
+   Liked = Convert.ToInt32(Null.SetNull(dr.Item("Liked"), Likes))
+   Disliked = Convert.ToInt32(Null.SetNull(dr.Item("Disliked"), Dislikes))
+   Reported = Convert.ToInt32(Null.SetNull(dr.Item("Reported"), Reports))
   End Sub
   ''' -----------------------------------------------------------------------------
   ''' <summary>
@@ -135,12 +137,28 @@ Namespace Entities.Comments
      Return PropertyAccess.FormatString(Me.Username, strFormat)
     Case "displayname"
      Return PropertyAccess.FormatString(Me.DisplayName, strFormat)
-   Case "likes"
-    Return (Me.Likes.ToString(OutputFormat, formatProvider))
-   Case "dislikes"
-    Return (Me.Dislikes.ToString(OutputFormat, formatProvider))
-   Case "reports"
-    Return (Me.Reports.ToString(OutputFormat, formatProvider))
+    Case "likes"
+     Return (Me.Likes.ToString(OutputFormat, formatProvider))
+    Case "dislikes"
+     Return (Me.Dislikes.ToString(OutputFormat, formatProvider))
+    Case "reports"
+     Return (Me.Reports.ToString(OutputFormat, formatProvider))
+    Case "liked"
+     Return Me.Liked.ToBool.ToString
+    Case "likedyesno"
+     Return PropertyAccess.Boolean2LocalizedYesNo(Me.Liked.ToBool, formatProvider)
+    Case "disliked"
+     Return Me.Disliked.ToBool.ToString
+    Case "dislikedyesno"
+     Return PropertyAccess.Boolean2LocalizedYesNo(Me.Disliked.ToBool, formatProvider)
+    Case "reported"
+     Return Me.Reported.ToBool.ToString
+    Case "reportedyesno"
+     Return PropertyAccess.Boolean2LocalizedYesNo(Me.Reported.ToBool, formatProvider)
+    Case "karmaed"
+     Return (Me.Reported + Me.Liked + Me.Disliked).ToBool.ToString
+    Case "karmaedyesno"
+     Return PropertyAccess.Boolean2LocalizedYesNo((Me.Reported + Me.Liked + Me.Disliked).ToBool, formatProvider)
     Case Else
      PropertyNotFound = True
    End Select
@@ -261,9 +279,9 @@ Namespace Entities.Comments
    writer.WriteElementString("LastModifiedOnDate", LastModifiedOnDate.ToString())
    writer.WriteElementString("Username", Username)
    writer.WriteElementString("DisplayName", DisplayName)
-   writer.WriteElementString("Likes",  Likes.ToString())
-   writer.WriteElementString("Dislikes",  Dislikes.ToString())
-   writer.WriteElementString("Reports",  Reports.ToString())
+   writer.WriteElementString("Likes", Likes.ToString())
+   writer.WriteElementString("Dislikes", Dislikes.ToString())
+   writer.WriteElementString("Reports", Reports.ToString())
    writer.WriteEndElement()
   End Sub
 #End Region

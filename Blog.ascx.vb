@@ -315,15 +315,15 @@ Public Class Blog
    Case "comments"
 
     If callingObject IsNot Nothing AndAlso TypeOf callingObject Is PostInfo Then
-     For Each c As CommentInfo In CommentsController.GetCommentsByContentItem(CType(callingObject, PostInfo).ContentItemId, False)
+     For Each c As CommentInfo In CommentsController.GetCommentsByContentItem(CType(callingObject, PostInfo).ContentItemId, False, UserId)
       Replacers.Add(New BlogTokenReplace(Me, BlogContext.Post, c))
      Next
     ElseIf BlogContext.Post IsNot Nothing Then
-     For Each c As CommentInfo In CommentsController.GetCommentsByContentItem(BlogContext.Post.ContentItemId, False)
+     For Each c As CommentInfo In CommentsController.GetCommentsByContentItem(BlogContext.Post.ContentItemId, False, UserId)
       Replacers.Add(New BlogTokenReplace(Me, BlogContext.Post, c))
      Next
     Else
-     For Each c As CommentInfo In CommentsController.GetCommentsByModule(ModuleId)
+     For Each c As CommentInfo In CommentsController.GetCommentsByModule(ModuleId, UserId)
       Replacers.Add(New BlogTokenReplace(Me, BlogContext.Post, c))
      Next
     End If
