@@ -254,6 +254,15 @@ a.blog_commentLinkSelected
 {
  border-bottom: 0px;
 }
+.ModBlogC .post-details .socialbar
+{
+ font-size:1.5em;
+ border-radius: 0.4em;
+ border: 1px solid #999; padding: 4px; margin-bottom:8px;}
+.ModBlogC .post-details .socialbar .sharrre a
+{
+ padding-left: 10px;
+}
 .ModBlogC .post-details header, .ModBlogC .selectbanner
 {
  background-color: #364050;
@@ -334,47 +343,28 @@ a.blog_commentLinkSelected
 	padding: 10px;
 	margin-right: 4px;
 }
+.ModBlogC .blog_comments
+{
+ padding: 10px 0px 10px 0px;
+}
+.ModBlogC .blog_comments .blog_comment_totals
+{
+ padding-left:10px;
+ font-weight: bold;
+}
 .ModBlogC .blog_comment
 {
- padding:15px 0px 0px 10px;
+ padding:10px 0px 0px 10px;
 }
-.ModBlogC .blog_commentwhen abbr, .ModBlogC .blog_commentwho
+.ModBlogC .blog_comment .blog_comment_pic
 {
- color: #333;
+ float: left;
+ padding:2px 5px 5px 0px;
 }
-.ModBlogC .blog_commentdetails
+.ModBlogC .blog_comment .blog_comment_details
 {
- clear:both;
- background-color: #ccc;
- background-image: url("images/bg1.png");
- padding: 4px 8px;
-	border-radius: 0.4em;
-	margin-top:6px;
 }
-.ModBlogC .blog_commentdetails div
+.ModBlogC .blog_comment .blog_comment_details .blog_comment_actions
 {
- display: inline; 
-}
-.ModBlogC div.blog_commentbuttons
-{
- float:right;
-}
-.ModBlogC div.blog_commentbuttons a
-{
- color: #333;
- font-size: 1.2em;
- margin-right:4px;
-}
-.ModBlogC div.blog_comments, .ModBlogC .socialbar
-{
-	margin-top:30px;
- padding: 8px;
-	border-radius: 0.4em;
- border: 1px solid #999;
-}
-
-.ModBlogC .socialbar .socialicons
-{
- font-size: 1.5em;
- padding: 4px 6px;
+ color: #888;
 }

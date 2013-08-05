@@ -1,17 +1,39 @@
-<div class="blog_commentbuttons">
+[if|1][comment:karmaed][=]False[/if]
+<span id="commentLikeAndDislikeLink[comment:CommentID]">
+<span id="commentLikeLink[comment:CommentID]"> &middot;
  <a href="#"
-  id="commentLikeLink[comment:CommentID]"
-  class="blogicon-thumbs-up"
+  class="blog_comment_actionbtn"
   title="[resx:LikeComment]"
-  onclick="karmaToggle(this, [blog:blogid], [comment:CommentID], 0);return false;"></a>
+  onclick="karmaToggle([blog:blogid], [comment:CommentID], 0, null, function() {
+   $('#commentLikeAndDislikeLink[comment:CommentID]').hide();
+   var el = $('#commentLikes[comment:CommentID]');
+   var num = parseInt(el.text());
+   el.text(num+1);
+  });return false;">[resx:Like]</a>
+</span>
+<span id="commentDislikeLink[comment:CommentID]"> &middot;
  <a href="#"
-  id="commentDislikeLink[comment:CommentID]"
-  class="blogicon-thumbs-down"
+  class="blog_comment_actionbtn"
   title="[resx:DislikeComment]"
-  onclick="karmaToggle(this, [blog:blogid], [comment:CommentID], 1);return false;"></a>
+  onclick="karmaToggle([blog:blogid], [comment:CommentID], 1, null, function() {
+   $('#commentLikeAndDislikeLink[comment:CommentID]').hide();
+   var el = $('#commentDislikes[comment:CommentID]');
+   var num = parseInt(el.text());
+   el.text(num+1);
+  });return false;">[resx:Dislike]</a>
+</span>
+</span>
+[endif|1]
+[if|3][comment:reported][=]False[/if]
+<span id="commentReportLink[comment:CommentID]"> &middot;
  <a href="#" 
-  id="commentReportLink[comment:CommentID]"
-  class="blogicon-warning-sign"
+  class="blog_comment_actionbtn"
   title="[resx:ReportComment]"
-  onclick="karmaToggle(this, [blog:blogid], [comment:CommentID], 2, '[resx:ReportComment.Confirm]');return false;"></a>
-</div>
+  onclick="karmaToggle([blog:blogid], [comment:CommentID], 2, '[resx:ReportComment.Confirm]', function() {
+   $('#commentReportLink[comment:CommentID]').hide();
+   var el = $('#commentReports[comment:CommentID]');
+   var num = parseInt(el.text());
+   el.text(num+1);
+  });return false;">[resx:Report]</a>
+</span>
+[endif|3]

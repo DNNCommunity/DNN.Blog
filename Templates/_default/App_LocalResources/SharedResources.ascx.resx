@@ -139,7 +139,7 @@
     <value>Delete the comment? This cannot be undone.</value>
   </data>
   <data name="DeleteComment.Text" xml:space="preserve">
-    <value>Delete</value>
+    <value>delete</value>
   </data>
   <data name="DislikeComment.Text" xml:space="preserve">
     <value>Dislike Comment</value>
@@ -160,7 +160,7 @@
     <value>post(s)</value>
   </data>
   <data name="Reply.Text" xml:space="preserve">
-    <value>Reply</value>
+    <value>reply</value>
   </data>
   <data name="ReportComment.Confirm" xml:space="preserve">
     <value>Do you wish to report this comment as inappropriate?</value>
@@ -179,5 +179,20 @@
   </data>
   <data name="ReadMore.Text" xml:space="preserve">
     <value>Read more ...</value>
+  </data>
+  <data name="Approve.Text" xml:space="preserve">
+    <value>approve</value>
+  </data>
+  <data name="Delete.Text" xml:space="preserve">
+    <value>delete</value>
+  </data>
+  <data name="Dislike.Text" xml:space="preserve">
+    <value>dislike</value>
+  </data>
+  <data name="Like.Text" xml:space="preserve">
+    <value>like</value>
+  </data>
+  <data name="Report.Text" xml:space="preserve">
+    <value>report</value>
   </data>
 </root>

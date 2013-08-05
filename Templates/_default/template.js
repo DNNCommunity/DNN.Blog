@@ -57,17 +57,15 @@
   SyntaxHighlighter.all();
  });
 } (jQuery, window.Sys));
-function karmaToggle(btn, blogId, commentId, karma, confirmation) {
- if (!$(btn).is('.blog_commentLinkSelected')) {
+function karmaToggle(blogId, commentId, karma, confirmation, success) {
   if (confirmation != null) {
    if (!confirm(confirmation)) {
     return false;
    }
   }
-  blogService.karmaComment(blogId, commentId, karma, function() {$(btn).addClass('blog_commentLinkSelected')})
- };
- return false;
-}
+  blogService.karmaComment(blogId, commentId, karma, success)
+  return false;
+};
 function shpath() {
  var args = arguments, result = [];
  for (var i = 0; i < args.length; i++)

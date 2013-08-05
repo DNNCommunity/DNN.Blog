@@ -1,11 +1,28 @@
 <div class="blog_comment" id="commentDiv[comment:CommentID]">
- [comment:comment]
- <div class="blog_commentdetails">
-  <div class="blog_commentwhen"><abbr title="[comment:CreatedOnDateUTC|u]" class="blog_commenttimeago"></abbr></div>
-  <div class="blog_commentwho">[resx:By] [comment:displayname]</div>
-  [subtemplate|CommentApproveBar.html|security:canapprovecomment|True]
-  [subtemplate|CommentKarmaBar.html|security:loggedin|True]
-  [subtemplate|CommentReplyBar.html|security:canaddcomment|True]
+ <div class="blog_comment_pic">
+  <img style="width:32px;height:32px;" alt="[comment:displayname]" src="[commenter:profilepic|32]" />
  </div>
- [subtemplate|Comment.html|Comments|]
+ <div class="blog_comment_details">
+  <div class="blog_comment_content">
+   <a href="[commenter:profileurl]">[commenter:displayname]</a>&nbsp;
+   [comment:comment]
+  </div>
+  <div class="blog_comment_actions">
+   <abbr title="[comment:CreatedOnDateUTC|u]" class="blog_commenttimeago"></abbr>
+   [subtemplate|CommentKarmaBar.html|security:loggedin|True]
+   [subtemplate|CommentApproveBar.html|security:canapprovecomment|True]
+   [if|1][security:canaddcomment][=]True[/if]
+   <span> &middot; 
+    <a href="#" 
+     class="blog_comment_actionbtn"
+     onclick="commentParentId=[comment:commentId];$dialogComment.dialog('open');return false;" title="[resx:Reply]">[resx:Reply]</a>
+   </span>
+   [endif|1]
+   <span> &middot; </span>
+   <span class="blogicon-thumbs-up"></span><span id="commentLikes[comment:CommentID]"> [comment:likes] </span>
+   <span class="blogicon-thumbs-down"></span><span id="commentDislikes[comment:CommentID]"> [comment:dislikes] </span>
+   <span class="blogicon-warning-sign"></span><span id="commentReports[comment:CommentID]"> [comment:reports] </span>
+  </div>
+  [subtemplate|Comment.html|Comments|]
+ </div>
 </div>
