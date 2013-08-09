@@ -307,7 +307,7 @@ Public Class Blog
 
    Case "allcategories"
 
-    For Each t As TermInfo In TermsController.GetTermsByVocabulary(Settings.ModuleId, Settings.VocabularyId, BlogContext.Locale).Values
+    For Each t As TermInfo In TermsController.GetTermsByModule(Settings.ModuleId, BlogContext.Locale).Where(Function(x) x.VocabularyId = Settings.VocabularyId).ToList
      Replacers.Add(New BlogTokenReplace(Me, Nothing, t))
     Next
     _usePaging = False
