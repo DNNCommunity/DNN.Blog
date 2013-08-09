@@ -66,14 +66,19 @@ Namespace Common
   Private _webRequest As WebRequest
 
   Public Function GetFileAsString() As String
-   Using response As WebResponse = Me.GetWebResponse()
-    If response Is Nothing Then
-     Return String.Empty
-    End If
-    Using reader As New StreamReader(response.GetResponseStream())
-     Return reader.ReadToEnd()
+   Try
+    Using response As WebResponse = Me.GetWebResponse()
+     If response Is Nothing Then
+      Return String.Empty
+     End If
+     Using reader As New StreamReader(response.GetResponseStream())
+      Return reader.ReadToEnd()
+     End Using
     End Using
-   End Using
+   Catch ex As Exception
+    DotNetNuke.Services.Exceptions.LogException(New Exception(String.Format("Track/Pingback Verification Request To '{0}' Failed", Me.Uri.PathAndQuery), ex))
+    Return ""
+   End Try
   End Function
 #End Region
 
