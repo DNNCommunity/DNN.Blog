@@ -76,7 +76,7 @@ Public Class Manage
     sortorder = String.Format("{0}", grdPosts.MasterTableView.SortExpressions(0).FieldName).ToUpper
    End If
   End If
-  grdPosts.DataSource = PostsController.GetPosts(Settings.ModuleId, -1, BlogContext.Locale, -1, "", Now, -1, True, grdPosts.CurrentPageIndex, grdPosts.PageSize, sortorder, _totalPosts, UserId, BlogContext.Security.UserIsAdmin).Values
+  grdPosts.DataSource = PostsController.GetPosts(Settings.ModuleId, -1, BlogContext.Locale, -1, "", Nothing, -1, True, grdPosts.CurrentPageIndex, grdPosts.PageSize, sortorder, _totalPosts, UserId, BlogContext.Security.UserIsAdmin).Values
   grdPosts.VirtualItemCount = _totalPosts
 
  End Sub
