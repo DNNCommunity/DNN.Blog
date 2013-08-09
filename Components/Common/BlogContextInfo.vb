@@ -78,6 +78,10 @@ Namespace Common
    Security = New ContextSecurity(BlogModuleId, blogModule.TabId, Blog, blogModule.UserInfo)
    If EndDate < Now.AddDays(-1) Then
     EndDate = EndDate.Date.AddDays(1).AddMinutes(-1)
+   ElseIf Security.CanAddPost Then
+    EndDate = Nothing
+   Else
+    EndDate = Now ' security measure to stop people prying into future posts
    End If
 
    ' security
