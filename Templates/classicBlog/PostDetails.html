@@ -1,5 +1,9 @@
 <div class="dnnForm dnnViewEntry dnnClear">
- <h2>[Post:localizedtitle]</h2>
+ <h2>[Post:localizedtitle]
+[if|1][Post:published][=]False[/if]
+  <span class="unpublished">[resx:Unpublished]</span>
+[endif|1]
+ </h2>
  <div class="vbHeader dnnClear">[resx:by] <a href="[urls:module|true]author=[post:CreatedByUserID]">[post:displayname]</a> [resx:on] <span>[post:publishedondate|d]</span>
   <div class="dnnRight">
    <div id="sharrre" data-url="[post:link]" data-text="share"></div>

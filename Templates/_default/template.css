@@ -74,6 +74,14 @@
  margin: 0 0 2em 0;
 }
 
+.ModBlogC .is-post .info .date .unpublished div
+{
+ display:block;
+ padding-top:10px;
+ font-size: 1.4em;
+ color: #f00;
+}
+
 .ModBlogC .is-post .info .tags
 {
  margin: 0;

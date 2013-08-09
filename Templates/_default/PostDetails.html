@@ -18,6 +18,11 @@
    <span class="month">[Post:PublishedOnDate|MMM]</span>
    <span class="day">[Post:PublishedOnDate|dd]</span>
    <span class="year">[Post:PublishedOnDate|yyyy]</span>
+[if|1][Post:published][=]False[/if]
+  <span class="unpublished">
+   <div class="blogicon-warning-sign" title="[resx:Unpublished]"></div>
+  </span>
+[endif|1]
   </span>
  </div>
  <div class="socialbar">

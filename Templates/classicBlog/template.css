@@ -67,7 +67,10 @@ span.fb_edge_comment_widget.fb_iframe_widget iframe{width:401px !important;}
 /* Category Selection, overrides Telerik */
 ul.rlbList {list-style:none;}
 
-
+.unpublished
+{
+ color: #f00;
+}
 
 .divMainViewDialog{padding: 16px;}
 		
