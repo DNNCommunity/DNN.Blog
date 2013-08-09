@@ -111,7 +111,7 @@ Namespace Controls
   Public Sub CreateMissingTerms()
    For Each t As TermInfo In Terms
     If t.TermId = -1 Then
-     t.TermId = DotNetNuke.Entities.Content.Common.Util.GetTermController().AddTerm(New Term(VocabularyId) With {.Name = t.Name})
+     t.TermId = DotNetNuke.Entities.Content.Common.Util.GetTermController().AddTerm(New Term(VocabularyId) With {.Name = t.Name.Trim})
     End If
    Next
   End Sub

@@ -70,7 +70,7 @@ Namespace Entities.Terms
    Dim vocab As Dictionary(Of String, TermInfo) = GetTermsByVocabulary(moduleId, vocabularyId, locale, True)
    Dim res As New List(Of TermInfo)
    For Each termName As String In termList
-    Dim name As String = termName
+    Dim name As String = termName.Trim
     Dim existantTerm As TermInfo = Nothing
     If vocab.ContainsKey(name) Then existantTerm = vocab(name)
     If existantTerm IsNot Nothing Then
@@ -107,7 +107,7 @@ Namespace Entities.Terms
    Dim allTags As Dictionary(Of String, TermInfo) = GetTermsByVocabulary(moduleId, 1, "")
    For Each t As TermInfo In tagList
     If Not allTags.ContainsKey(t.Name) Then
-     Dim newTerm As New Term(1) With {.Name = t.Name, .Description = t.Description}
+     Dim newTerm As New Term(1) With {.Name = t.Name.Trim, .Description = t.Description}
      newTerm.TermId = DotNetNuke.Entities.Content.Common.Util.GetTermController().AddTerm(newTerm)
      For Each l As String In t.NameLocalizations.Locales
       Data.DataProvider.Instance.SetTermLocalization(newTerm.TermId, l, t.NameLocalizations(l), t.DescriptionLocalizations(l))
@@ -123,7 +123,7 @@ Namespace Entities.Terms
   End Sub
 
   Private Shared Sub AddTerm(vocabularyId As Integer, vocabulary As List(Of TermInfo), parentId As Integer, term As TermInfo)
-   Dim newTerm As New Term(vocabularyId) With {.Name = term.Name, .Description = term.Description, .ParentTermId = parentId}
+   Dim newTerm As New Term(vocabularyId) With {.Name = term.Name.Trim, .Description = term.Description, .ParentTermId = parentId}
    newTerm.TermId = DotNetNuke.Entities.Content.Common.Util.GetTermController().AddTerm(newTerm)
    For Each l As String In term.NameLocalizations.Locales
     Data.DataProvider.Instance.SetTermLocalization(newTerm.TermId, l, term.NameLocalizations(l), term.DescriptionLocalizations(l))
