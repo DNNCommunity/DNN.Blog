@@ -55,6 +55,7 @@ var $dialogComment;
        } else {
         blogService.getCommentsHtml(<%=BlogContext.BlogId %>, <%=BlogContext.ContentItemId %>, function(data) {
          $('#blog_allcomments<%=ModuleId %>').html(data.Result);
+         $("abbr.blog_commenttimeago").timeago();
         });
        }
       });

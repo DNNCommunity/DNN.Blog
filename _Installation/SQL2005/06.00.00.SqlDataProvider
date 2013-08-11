@@ -1874,21 +1874,21 @@ SELECT
     FROM {databaseOwner}{objectQualifier}UserRoles ur  
     WHERE (ur.EffectiveDate <= GETDATE() OR ur.EffectiveDate IS NULL) AND (ur.ExpiryDate >= GETDATE() OR ur.ExpiryDate IS NULL)
     and ur.UserID=@UserID) r  ON r.RoleID=bp.RoleId
- WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4)) AND bp.BlogId=b.BlogID AND bp.PermissionId=0) AS CanEdit,
+ WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4) OR bp.RoleId=-1) AND bp.BlogId=b.BlogID AND bp.PermissionId=0) AS CanEdit,
 (SELECT COUNT(*)
  FROM {databaseOwner}{objectQualifier}Blog_BlogPermissions bp
  LEFT JOIN (SELECT ur.UserID, ur.RoleID  
     FROM {databaseOwner}{objectQualifier}UserRoles ur  
     WHERE (ur.EffectiveDate <= GETDATE() OR ur.EffectiveDate IS NULL) AND (ur.ExpiryDate >= GETDATE() OR ur.ExpiryDate IS NULL)
     and ur.UserID=@UserID) r  ON r.RoleID=bp.RoleId
- WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4)) AND bp.BlogId=b.BlogID AND bp.PermissionId=1) AS CanAdd,
+ WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4) OR bp.RoleId=-1) AND bp.BlogId=b.BlogID AND bp.PermissionId=1) AS CanAdd,
 (SELECT COUNT(*)
  FROM {databaseOwner}{objectQualifier}Blog_BlogPermissions bp
  LEFT JOIN (SELECT ur.UserID, ur.RoleID  
     FROM {databaseOwner}{objectQualifier}UserRoles ur  
     WHERE (ur.EffectiveDate <= GETDATE() OR ur.EffectiveDate IS NULL) AND (ur.ExpiryDate >= GETDATE() OR ur.ExpiryDate IS NULL)
     and ur.UserID=@UserID) r  ON r.RoleID=bp.RoleId
- WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4)) AND bp.BlogId=b.BlogID AND bp.PermissionId=2) AS CanApprove
+ WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4) OR bp.RoleId=-1) AND bp.BlogId=b.BlogID AND bp.PermissionId=2) AS CanApprove
  
 FROM {databaseOwner}{objectQualifier}Blog_BlogList(@Locale) b
  WHERE b.BlogID=@BlogId
@@ -1986,21 +1986,21 @@ SELECT
     FROM {databaseOwner}{objectQualifier}UserRoles ur  
     WHERE (ur.EffectiveDate <= GETDATE() OR ur.EffectiveDate IS NULL) AND (ur.ExpiryDate >= GETDATE() OR ur.ExpiryDate IS NULL)
     and ur.UserID=@UserID) r  ON r.RoleID=bp.RoleId
- WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4)) AND bp.BlogId=b.BlogID AND bp.PermissionId=0) AS CanEdit,
+ WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4) OR bp.RoleId=-1) AND bp.BlogId=b.BlogID AND bp.PermissionId=0) AS CanEdit,
 (SELECT COUNT(*)
  FROM {databaseOwner}{objectQualifier}Blog_BlogPermissions bp
  LEFT JOIN (SELECT ur.UserID, ur.RoleID  
     FROM {databaseOwner}{objectQualifier}UserRoles ur  
     WHERE (ur.EffectiveDate <= GETDATE() OR ur.EffectiveDate IS NULL) AND (ur.ExpiryDate >= GETDATE() OR ur.ExpiryDate IS NULL)
     and ur.UserID=@UserID) r  ON r.RoleID=bp.RoleId
- WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4)) AND bp.BlogId=b.BlogID AND bp.PermissionId=1) AS CanAdd,
+ WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4) OR bp.RoleId=-1) AND bp.BlogId=b.BlogID AND bp.PermissionId=1) AS CanAdd,
 (SELECT COUNT(*)
  FROM {databaseOwner}{objectQualifier}Blog_BlogPermissions bp
  LEFT JOIN (SELECT ur.UserID, ur.RoleID  
     FROM {databaseOwner}{objectQualifier}UserRoles ur  
     WHERE (ur.EffectiveDate <= GETDATE() OR ur.EffectiveDate IS NULL) AND (ur.ExpiryDate >= GETDATE() OR ur.ExpiryDate IS NULL)
     and ur.UserID=@UserID) r  ON r.RoleID=bp.RoleId
- WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4)) AND bp.BlogId=b.BlogID AND bp.PermissionId=2) AS CanApprove
+ WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4) OR bp.RoleId=-1) AND bp.BlogId=b.BlogID AND bp.PermissionId=2) AS CanApprove
  
 FROM {databaseOwner}{objectQualifier}Blog_BlogList(@Locale) b
 WHERE b.ModuleID=@ModuleId
@@ -2029,21 +2029,21 @@ SELECT
     FROM {databaseOwner}{objectQualifier}UserRoles ur  
     WHERE (ur.EffectiveDate <= GETDATE() OR ur.EffectiveDate IS NULL) AND (ur.ExpiryDate >= GETDATE() OR ur.ExpiryDate IS NULL)
     and ur.UserID=@UserID) r  ON r.RoleID=bp.RoleId
- WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4)) AND bp.BlogId=b.BlogID AND bp.PermissionId=0) AS CanEdit,
+ WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4) OR bp.RoleId=-1) AND bp.BlogId=b.BlogID AND bp.PermissionId=0) AS CanEdit,
 (SELECT COUNT(*)
  FROM {databaseOwner}{objectQualifier}Blog_BlogPermissions bp
  LEFT JOIN (SELECT ur.UserID, ur.RoleID  
     FROM {databaseOwner}{objectQualifier}UserRoles ur  
     WHERE (ur.EffectiveDate <= GETDATE() OR ur.EffectiveDate IS NULL) AND (ur.ExpiryDate >= GETDATE() OR ur.ExpiryDate IS NULL)
     and ur.UserID=@UserID) r  ON r.RoleID=bp.RoleId
- WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4)) AND bp.BlogId=b.BlogID AND bp.PermissionId=1) AS CanAdd,
+ WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4) OR bp.RoleId=-1) AND bp.BlogId=b.BlogID AND bp.PermissionId=1) AS CanAdd,
 (SELECT COUNT(*)
  FROM {databaseOwner}{objectQualifier}Blog_BlogPermissions bp
  LEFT JOIN (SELECT ur.UserID, ur.RoleID  
     FROM {databaseOwner}{objectQualifier}UserRoles ur  
     WHERE (ur.EffectiveDate <= GETDATE() OR ur.EffectiveDate IS NULL) AND (ur.ExpiryDate >= GETDATE() OR ur.ExpiryDate IS NULL)
     and ur.UserID=@UserID) r  ON r.RoleID=bp.RoleId
- WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4)) AND bp.BlogId=b.BlogID AND bp.PermissionId=2) AS CanApprove
+ WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4) OR bp.RoleId=-1) AND bp.BlogId=b.BlogID AND bp.PermissionId=2) AS CanApprove
  
 FROM {databaseOwner}{objectQualifier}Blog_BlogList(@Locale) b
  INNER JOIN {databaseOwner}{objectQualifier}Modules m ON b.ModuleID=m.ModuleID
@@ -2128,6 +2128,23 @@ DECLARE
  @PageUpperBound INT, 
  @RowsToReturn INT
 EXEC {databaseOwner}{objectQualifier}CalculatePagingInformation @PageIndex, @PageSize, @RowsToReturn output, @PageLowerBound output, @PageUpperBound output;
+DECLARE @Blogs TABLE (
+ [BlogID] INT,
+ [CanViewComment] INT,
+ [Owner] INT);
+INSERT INTO @Blogs
+SELECT
+ b.BlogId,
+(SELECT COUNT(*)
+ FROM {databaseOwner}{objectQualifier}Blog_BlogPermissions bp
+ LEFT JOIN (SELECT ur.UserID, ur.RoleID  
+    FROM {databaseOwner}{objectQualifier}UserRoles ur
+    WHERE (ur.EffectiveDate <= GETDATE() OR ur.EffectiveDate IS NULL) AND (ur.ExpiryDate >= GETDATE() OR ur.ExpiryDate IS NULL)
+    and ur.UserID=@UserID) r  ON r.RoleID=bp.RoleId
+ WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4) OR bp.RoleId=-1) AND bp.BlogId=b.BlogID AND bp.PermissionId = 5) AS [CanViewComment],
+ b.OwnerUserId
+FROM {databaseOwner}{objectQualifier}Blog_Blogs b
+WHERE b.ModuleID=@ModuleId;
 SELECT
  Tbl.*,
  (SELECT COUNT(ck1.Datime) FROM {databaseOwner}{objectQualifier}Blog_CommentKarmas ck1
@@ -2189,7 +2206,9 @@ FROM
 ) AS RowNum
   FROM {databaseOwner}{objectQualifier}vw_Blog_Comments c
  INNER JOIN {databaseOwner}{objectQualifier}ContentItems ci ON ci.ContentItemID=c.ContentItemId
-  WHERE ci.ModuleID=@ModuleId) AS Tbl
+   INNER JOIN {databaseOwner}{objectQualifier}Blog_Posts p ON p.ContentItemId=c.ContentItemId
+   INNER JOIN @Blogs b ON b.BlogID = p.BlogID
+  WHERE ci.ModuleID=@ModuleId AND (b.CanViewComment>0 OR b.[Owner]=@UserID)) AS Tbl
 WHERE RowNum > @PageLowerBound AND RowNum < @PageUpperBound
 ORDER BY RowNum;
 SELECT COUNT (*) AS TotalRecords
@@ -2337,7 +2356,7 @@ SELECT
     FROM {databaseOwner}{objectQualifier}UserRoles ur
     WHERE (ur.EffectiveDate <= GETDATE() OR ur.EffectiveDate IS NULL) AND (ur.ExpiryDate >= GETDATE() OR ur.ExpiryDate IS NULL)
     and ur.UserID=@UserID) r  ON r.RoleID=bp.RoleId
- WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4)) AND bp.BlogId=b.BlogID AND bp.PermissionId IN (0,1,2)) AS [HasPrivilege],
+ WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4) OR bp.RoleId=-1) AND bp.BlogId=b.BlogID AND bp.PermissionId IN (0,1,2)) AS [HasPrivilege],
  b.OwnerUserId
 FROM {databaseOwner}{objectQualifier}Blog_Blogs b
 WHERE b.ModuleID=@ModuleId;
@@ -2548,7 +2567,7 @@ SELECT
     FROM {databaseOwner}{objectQualifier}UserRoles ur
     WHERE (ur.EffectiveDate <= GETDATE() OR ur.EffectiveDate IS NULL) AND (ur.ExpiryDate >= GETDATE() OR ur.ExpiryDate IS NULL)
     and ur.UserID=@UserID) r  ON r.RoleID=bp.RoleId
- WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4)) AND bp.BlogId=b.BlogID AND bp.PermissionId IN (0,1,2)) AS [HasPrivilege],
+ WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4) OR bp.RoleId=-1) AND bp.BlogId=b.BlogID AND bp.PermissionId IN (0,1,2)) AS [HasPrivilege],
  b.OwnerUserId
 FROM {databaseOwner}{objectQualifier}Blog_Blogs b
 WHERE b.ModuleID=@ModuleId;
@@ -2876,7 +2895,7 @@ SELECT
     FROM {databaseOwner}{objectQualifier}UserRoles ur
     WHERE (ur.EffectiveDate <= GETDATE() OR ur.EffectiveDate IS NULL) AND (ur.ExpiryDate >= GETDATE() OR ur.ExpiryDate IS NULL)
     and ur.UserID=@UserID) r  ON r.RoleID=bp.RoleId
- WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4)) AND bp.BlogId=b.BlogID AND bp.PermissionId IN (0,1,2)) AS [HasPrivilege],
+ WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4) OR bp.RoleId=-1) AND bp.BlogId=b.BlogID AND bp.PermissionId IN (0,1,2)) AS [HasPrivilege],
  b.OwnerUserId
 FROM {databaseOwner}{objectQualifier}Blog_Blogs b
 WHERE b.ModuleID=@ModuleId;
@@ -3005,7 +3024,7 @@ SELECT
     FROM {databaseOwner}{objectQualifier}UserRoles ur
     WHERE (ur.EffectiveDate <= GETDATE() OR ur.EffectiveDate IS NULL) AND (ur.ExpiryDate >= GETDATE() OR ur.ExpiryDate IS NULL)
     and ur.UserID=@UserID) r  ON r.RoleID=bp.RoleId
- WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4)) AND bp.BlogId=b.BlogID AND bp.PermissionId IN (0,1,2)) AS [HasPrivilege],
+ WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4) OR bp.RoleId=-1) AND bp.BlogId=b.BlogID AND bp.PermissionId IN (0,1,2)) AS [HasPrivilege],
  b.OwnerUserId
 FROM {databaseOwner}{objectQualifier}Blog_Blogs b
 WHERE b.ModuleID=@ModuleId;
