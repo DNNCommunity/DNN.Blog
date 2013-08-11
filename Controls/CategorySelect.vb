@@ -57,7 +57,7 @@ Namespace Controls
 #End Region
 
 #Region " Event Handlers "
-  Private Sub TagEdit_Init(sender As Object, e As System.EventArgs) Handles Me.Init
+  Private Sub CategorySelect_Init(sender As Object, e As System.EventArgs) Handles Me.Init
    ClientResourceManager.RegisterScript(Page, ResolveUrl("~/DesktopModules/Blog/js/jquery.dynatree.min.js"))
    If Me.CssClass = "" Then Me.CssClass = "category-control"
    ClientResourceManager.RegisterStyleSheet(Page, ResolveUrl("~/DesktopModules/Blog/css/dynatree.css"), Web.Client.FileOrder.Css.ModuleCss)
@@ -65,7 +65,7 @@ Namespace Controls
    Storage = New HiddenField With {.ID = StorageControlId}
   End Sub
 
-  Private Sub TagEdit_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+  Private Sub CategorySelect_Load(sender As Object, e As System.EventArgs) Handles Me.Load
 
    MainControlId = Me.ClientID & "_CategorySelect"
    If Me.Page.IsPostBack Then

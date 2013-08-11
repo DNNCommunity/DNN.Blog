@@ -1365,7 +1365,17 @@ GO
 CREATE VIEW {databaseOwner}{objectQualifier}vw_Blog_Posts
 AS
 SELECT
- p.*, 
+ p.[BlogID],
+ p.[Title],
+ p.[Summary],
+ p.[Image],
+ p.[Published],
+ p.[PublishedOnDate],
+ p.[AllowComments],
+ p.[DisplayCopyright],
+ p.[Copyright],
+ p.[Locale],
+ p.[ViewCount],
  ci.*,
  u.Username, u.Email, u.DisplayName
 FROM

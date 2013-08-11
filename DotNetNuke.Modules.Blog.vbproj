@@ -231,7 +231,6 @@
     <Content Include="js\dotnetnuke.blog.js" />
     <Content Include="js\dotnetnuke.blog.pagescript.js" />
     <Content Include="js\jquery.dynatree.min.js" />
-    <Content Include="js\jquery.dynatree.pagescript.js" />
     <Content Include="js\jquery.timeago.js" />
     <Content Include="js\tag-it.min.js" />
     <Content Include="Manage.ascx" />
