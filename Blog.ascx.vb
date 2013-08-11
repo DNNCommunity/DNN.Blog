@@ -170,9 +170,9 @@ Public Class Blog
 
    Case "blogs"
 
-    Dim blogList As IEnumerable(Of BlogInfo) = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, BlogContext.Locale).Values.Where(Function(b)
-                                                                                                                                             Return b.Published = True
-                                                                                                                                            End Function).OrderBy(Function(b) b.Title)
+    Dim blogList As IEnumerable(Of BlogInfo) = BlogsController.GetBlogsByModule(BlogContext.BlogModuleId, UserId, BlogContext.Locale).Values.Where(Function(b)
+                                                                                                                                                    Return b.Published = True
+                                                                                                                                                   End Function).OrderBy(Function(b) b.Title)
     Parameters.ReadValue("pagesize", _pageSize)
     If _pageSize > 0 Then
      _usePaging = True
@@ -255,7 +255,7 @@ Public Class Blog
       Replacers.Add(New BlogTokenReplace(Me, BlogContext.Post, t))
      Next
     Else
-     For Each t As TermInfo In TermsController.GetTermsByModule(Settings.ModuleId, BlogContext.Locale)
+     For Each t As TermInfo In TermsController.GetTermsByModule(BlogContext.BlogModuleId, BlogContext.Locale)
       Replacers.Add(New BlogTokenReplace(Me, Nothing, t))
      Next
     End If
@@ -263,7 +263,7 @@ Public Class Blog
 
    Case "allterms"
 
-    For Each t As TermInfo In TermsController.GetTermsByModule(Settings.ModuleId, BlogContext.Locale)
+    For Each t As TermInfo In TermsController.GetTermsByModule(BlogContext.BlogModuleId, BlogContext.Locale)
      Replacers.Add(New BlogTokenReplace(Me, Nothing, t))
     Next
     _usePaging = False
@@ -279,7 +279,7 @@ Public Class Blog
       Replacers.Add(New BlogTokenReplace(Me, BlogContext.Post, t))
      Next
     Else
-     For Each t As TermInfo In TermsController.GetTermsByModule(Settings.ModuleId, BlogContext.Locale).Where(Function(x) x.VocabularyId = 1).ToList
+     For Each t As TermInfo In TermsController.GetTermsByModule(BlogContext.BlogModuleId, BlogContext.Locale).Where(Function(x) x.VocabularyId = 1).ToList
       Replacers.Add(New BlogTokenReplace(Me, Nothing, t))
      Next
     End If
@@ -287,7 +287,7 @@ Public Class Blog
 
    Case "allkeywords", "alltags"
 
-    For Each t As TermInfo In TermsController.GetTermsByModule(Settings.ModuleId, BlogContext.Locale).Where(Function(x) x.VocabularyId = 1).ToList
+    For Each t As TermInfo In TermsController.GetTermsByModule(BlogContext.BlogModuleId, BlogContext.Locale).Where(Function(x) x.VocabularyId = 1).ToList
      Replacers.Add(New BlogTokenReplace(Me, Nothing, t))
     Next
     _usePaging = False
@@ -303,7 +303,7 @@ Public Class Blog
       Replacers.Add(New BlogTokenReplace(Me, BlogContext.Post, t))
      Next
     Else
-     For Each t As TermInfo In TermsController.GetTermsByModule(Settings.ModuleId, BlogContext.Locale).Where(Function(x) x.VocabularyId <> 1).ToList
+     For Each t As TermInfo In TermsController.GetTermsByModule(BlogContext.BlogModuleId, BlogContext.Locale).Where(Function(x) x.VocabularyId <> 1).ToList
       Replacers.Add(New BlogTokenReplace(Me, Nothing, t))
      Next
     End If
@@ -311,7 +311,7 @@ Public Class Blog
 
    Case "allcategories"
 
-    For Each t As TermInfo In TermsController.GetTermsByModule(Settings.ModuleId, BlogContext.Locale).Where(Function(x) x.VocabularyId = Settings.VocabularyId).ToList
+    For Each t As TermInfo In TermsController.GetTermsByModule(BlogContext.BlogModuleId, BlogContext.Locale).Where(Function(x) x.VocabularyId = Settings.VocabularyId).ToList
      Replacers.Add(New BlogTokenReplace(Me, Nothing, t))
     Next
     _usePaging = False
@@ -327,7 +327,7 @@ Public Class Blog
       Replacers.Add(New BlogTokenReplace(Me, BlogContext.Post, c))
      Next
     Else
-     For Each c As CommentInfo In CommentsController.GetCommentsByModule(ModuleId, UserId)
+     For Each c As CommentInfo In CommentsController.GetCommentsByModule(BlogContext.BlogModuleId, UserId)
       Replacers.Add(New BlogTokenReplace(Me, BlogContext.Post, c))
      Next
     End If
@@ -335,7 +335,7 @@ Public Class Blog
 
    Case "calendar", "blogcalendar"
 
-    For Each bci As BlogCalendarInfo In BlogsController.GetBlogCalendar(Settings.ModuleId, BlogContext.BlogId, BlogContext.ShowLocale)
+    For Each bci As BlogCalendarInfo In BlogsController.GetBlogCalendar(BlogContext.BlogModuleId, BlogContext.BlogId, BlogContext.ShowLocale)
      Replacers.Add(New BlogTokenReplace(Me, bci))
     Next
 
@@ -347,23 +347,23 @@ Public Class Blog
     Parameters.ReadValue("sort", sort)
     Select Case sort.ToLower
      Case "username"
-      For Each u As PostAuthor In PostsController.GetAuthors(Settings.ModuleId, blogToShow).OrderBy(Function(t) t.Username)
+      For Each u As PostAuthor In PostsController.GetAuthors(BlogContext.BlogModuleId, blogToShow).OrderBy(Function(t) t.Username)
        Replacers.Add(New BlogTokenReplace(Me, New LazyLoadingUser(u)))
       Next
      Case "email"
-      For Each u As PostAuthor In PostsController.GetAuthors(Settings.ModuleId, blogToShow).OrderBy(Function(t) t.Email)
+      For Each u As PostAuthor In PostsController.GetAuthors(BlogContext.BlogModuleId, blogToShow).OrderBy(Function(t) t.Email)
        Replacers.Add(New BlogTokenReplace(Me, New LazyLoadingUser(u)))
       Next
      Case "firstname"
-      For Each u As PostAuthor In PostsController.GetAuthors(Settings.ModuleId, blogToShow).OrderBy(Function(t) t.FirstName)
+      For Each u As PostAuthor In PostsController.GetAuthors(BlogContext.BlogModuleId, blogToShow).OrderBy(Function(t) t.FirstName)
        Replacers.Add(New BlogTokenReplace(Me, New LazyLoadingUser(u)))
       Next
      Case "displayname"
-      For Each u As PostAuthor In PostsController.GetAuthors(Settings.ModuleId, blogToShow).OrderBy(Function(t) t.DisplayName)
+      For Each u As PostAuthor In PostsController.GetAuthors(BlogContext.BlogModuleId, blogToShow).OrderBy(Function(t) t.DisplayName)
        Replacers.Add(New BlogTokenReplace(Me, New LazyLoadingUser(u)))
       Next
      Case Else ' last name
-      For Each u As PostAuthor In PostsController.GetAuthors(Settings.ModuleId, blogToShow)
+      For Each u As PostAuthor In PostsController.GetAuthors(BlogContext.BlogModuleId, blogToShow)
        Replacers.Add(New BlogTokenReplace(Me, New LazyLoadingUser(u)))
       Next
     End Select
