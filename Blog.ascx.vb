@@ -339,9 +339,15 @@ Public Class Blog
    Case "allcomments"
 
     Parameters.ReadValue("pagesize", _pageSize)
+    Dim loadPosts As Boolean = False
+    Parameters.ReadValue("loadposts", loadPosts)
     If _pageSize < 1 Then _pageSize = 10 ' we will not list "all Posts"
     For Each c As CommentInfo In CommentsController.GetCommentsByModule(BlogContext.BlogModuleId, UserId, _reqPage - 1, _pageSize, "CREATEDONDATE DESC", _totalRecords).Values
-     Replacers.Add(New BlogTokenReplace(Me, BlogContext.Post, c))
+     If loadPosts Then
+      Replacers.Add(New BlogTokenReplace(Me, PostsController.GetPost(c.ContentItemId, BlogContext.BlogModuleId, BlogContext.Locale), c))
+     Else
+      Replacers.Add(New BlogTokenReplace(Me, Nothing, c))
+     End If
     Next
 
    Case "calendar", "blogcalendar"

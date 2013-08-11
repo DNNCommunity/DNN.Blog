@@ -3,7 +3,15 @@
   <img style="width:32px;height:32px;" alt="[comment:displayname]" src="[commenter:profilepic|32]" />
  </div>
  <div class="commentList_comment_content">
-  <a href="[viewsettings:url]post=[comment:contentitemid]#commentDiv[comment:CommentID]">[commenter:displayname]&nbsp;
+  <a href="[viewsettings:url]post=[comment:contentitemid]#commentDiv[comment:CommentID]" title="[comment:comment]">[commenter:displayname]&nbsp;
    [comment:comment|200]</a>
+ </div>
+ <div class="commentList_comment_details">
+  [resx:In] [post:localizedtitle]
+ </div>
+ <div class="commentList_comment_details">
+  <span class="blogicon-thumbs-up"></span><span id="commentLikes[comment:CommentID]"> [comment:likes] </span>
+  <span class="blogicon-thumbs-down"></span><span id="commentDislikes[comment:CommentID]"> [comment:dislikes] </span>
+  <span class="blogicon-warning-sign"></span><span id="commentReports[comment:CommentID]"> [comment:reports] </span>
  </div>
 </div>
