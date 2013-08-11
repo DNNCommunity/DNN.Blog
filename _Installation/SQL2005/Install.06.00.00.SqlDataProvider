@@ -1181,23 +1181,84 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetCommentsByModuleId
  @ModuleId INT,
- @UserID INT
+ @UserID INT,
+ @PageIndex INT = -1,
+ @PageSize INT = 0,
+ @OrderBy VARCHAR(100) = ''
 AS
+DECLARE 
+ @PageLowerBound INT, 
+ @PageUpperBound INT, 
+ @RowsToReturn INT
+EXEC {databaseOwner}{objectQualifier}CalculatePagingInformation @PageIndex, @PageSize, @RowsToReturn output, @PageLowerBound output, @PageUpperBound output;
 SELECT
- c.*,
+ Tbl.*,
  (SELECT COUNT(ck1.Datime) FROM {databaseOwner}{objectQualifier}Blog_CommentKarmas ck1
-  WHERE ck1.UserId=@UserID AND ck1.CommentId=c.CommentID AND ck1.Karma=0) AS Liked,
+  WHERE ck1.UserId=@UserID AND ck1.CommentId=Tbl.CommentID AND ck1.Karma=0) AS Liked,
  (SELECT COUNT(ck2.Datime) FROM {databaseOwner}{objectQualifier}Blog_CommentKarmas ck2
-  WHERE ck2.UserId=@UserID AND ck2.CommentId=c.CommentID AND ck2.Karma=1) AS Disliked,
+  WHERE ck2.UserId=@UserID AND ck2.CommentId=Tbl.CommentID AND ck2.Karma=1) AS Disliked,
  (SELECT COUNT(ck3.Datime) FROM {databaseOwner}{objectQualifier}Blog_CommentKarmas ck3
-  WHERE ck3.UserId=@UserID AND ck3.CommentId=c.CommentID AND ck3.Karma=2) AS Reported
+  WHERE ck3.UserId=@UserID AND ck3.CommentId=Tbl.CommentID AND ck3.Karma=2) AS Reported
 FROM
- {databaseOwner}{objectQualifier}vw_Blog_Comments c
+(SELECT
+ c.*,
+ ROW_NUMBER() OVER
+ (ORDER BY
+  CASE @OrderBy WHEN 'APPROVED DESC' THEN c.[Approved] END DESC,
+  CASE @OrderBy WHEN 'APPROVED' THEN c.[Approved] END ASC,
+  CASE @OrderBy WHEN 'APPROVED ASC' THEN c.[Approved] END ASC,
+  CASE @OrderBy WHEN 'AUTHOR DESC' THEN c.[Author] END DESC,
+  CASE @OrderBy WHEN 'AUTHOR' THEN c.[Author] END ASC,
+  CASE @OrderBy WHEN 'AUTHOR ASC' THEN c.[Author] END ASC,
+  CASE @OrderBy WHEN 'COMMENT DESC' THEN c.[Comment] END DESC,
+  CASE @OrderBy WHEN 'COMMENT' THEN c.[Comment] END ASC,
+  CASE @OrderBy WHEN 'COMMENT ASC' THEN c.[Comment] END ASC,
+  CASE @OrderBy WHEN 'COMMENTID DESC' THEN c.[CommentID] END DESC,
+  CASE @OrderBy WHEN 'COMMENTID' THEN c.[CommentID] END ASC,
+  CASE @OrderBy WHEN 'COMMENTID ASC' THEN c.[CommentID] END ASC,
+  CASE @OrderBy WHEN 'CONTENTITEMID DESC' THEN c.[ContentItemId] END DESC,
+  CASE @OrderBy WHEN 'CONTENTITEMID' THEN c.[ContentItemId] END ASC,
+  CASE @OrderBy WHEN 'CONTENTITEMID ASC' THEN c.[ContentItemId] END ASC,
+  CASE @OrderBy WHEN 'CREATEDBYUSERID DESC' THEN c.[CreatedByUserID] END DESC,
+  CASE @OrderBy WHEN 'CREATEDBYUSERID' THEN c.[CreatedByUserID] END ASC,
+  CASE @OrderBy WHEN 'CREATEDBYUSERID ASC' THEN c.[CreatedByUserID] END ASC,
+  CASE @OrderBy WHEN 'CREATEDONDATE DESC' THEN c.[CreatedOnDate] END DESC,
+  CASE @OrderBy WHEN 'CREATEDONDATE' THEN c.[CreatedOnDate] END ASC,
+  CASE @OrderBy WHEN 'CREATEDONDATE ASC' THEN c.[CreatedOnDate] END ASC,
+  CASE @OrderBy WHEN 'EMAIL DESC' THEN c.[Email] END DESC,
+  CASE @OrderBy WHEN 'EMAIL' THEN c.[Email] END ASC,
+  CASE @OrderBy WHEN 'EMAIL ASC' THEN c.[Email] END ASC,
+  CASE @OrderBy WHEN 'LASTMODIFIEDBYUSERID DESC' THEN c.[LastModifiedByUserID] END DESC,
+  CASE @OrderBy WHEN 'LASTMODIFIEDBYUSERID' THEN c.[LastModifiedByUserID] END ASC,
+  CASE @OrderBy WHEN 'LASTMODIFIEDBYUSERID ASC' THEN c.[LastModifiedByUserID] END ASC,
+  CASE @OrderBy WHEN 'LASTMODIFIEDONDATE DESC' THEN c.[LastModifiedOnDate] END DESC,
+  CASE @OrderBy WHEN 'LASTMODIFIEDONDATE' THEN c.[LastModifiedOnDate] END ASC,
+  CASE @OrderBy WHEN 'LASTMODIFIEDONDATE ASC' THEN c.[LastModifiedOnDate] END ASC,
+  CASE @OrderBy WHEN 'PARENTID DESC' THEN c.[ParentId] END DESC,
+  CASE @OrderBy WHEN 'PARENTID' THEN c.[ParentId] END ASC,
+  CASE @OrderBy WHEN 'PARENTID ASC' THEN c.[ParentId] END ASC,
+  CASE @OrderBy WHEN 'WEBSITE DESC' THEN c.[Website] END DESC,
+  CASE @OrderBy WHEN 'WEBSITE' THEN c.[Website] END ASC,
+  CASE @OrderBy WHEN 'WEBSITE ASC' THEN c.[Website] END ASC,
+  CASE @OrderBy WHEN 'LIKES DESC' THEN c.[Likes] END DESC,
+  CASE @OrderBy WHEN 'LIKES' THEN c.[Likes] END ASC,
+  CASE @OrderBy WHEN 'LIKES ASC' THEN c.[Likes] END ASC,
+  CASE @OrderBy WHEN 'DISLIKES DESC' THEN c.[Dislikes] END DESC,
+  CASE @OrderBy WHEN 'DISLIKES' THEN c.[Dislikes] END ASC,
+  CASE @OrderBy WHEN 'DISLIKES ASC' THEN c.[Dislikes] END ASC,
+  CASE @OrderBy WHEN 'REPORTS DESC' THEN c.[Reports] END DESC,
+  CASE @OrderBy WHEN 'REPORTS' THEN c.[Reports] END ASC,
+  CASE @OrderBy WHEN 'REPORTS ASC' THEN c.[Reports] END ASC
+) AS RowNum
+  FROM {databaseOwner}{objectQualifier}vw_Blog_Comments c
+   INNER JOIN {databaseOwner}{objectQualifier}ContentItems ci ON ci.ContentItemID=c.ContentItemId
+  WHERE ci.ModuleID=@ModuleId) AS Tbl
+WHERE RowNum > @PageLowerBound AND RowNum < @PageUpperBound
+ORDER BY RowNum;
+SELECT COUNT (*) AS TotalRecords
+FROM {databaseOwner}{objectQualifier}vw_Blog_Comments c
  INNER JOIN {databaseOwner}{objectQualifier}ContentItems ci ON ci.ContentItemID=c.ContentItemId
-WHERE
- ci.ModuleID=@ModuleId
-ORDER BY
- c.CreatedOnDate DESC
+WHERE ci.ModuleID=@ModuleId;
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetPost') AND type in (N'P', N'PC'))

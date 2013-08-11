@@ -159,6 +159,9 @@ Namespace Entities.Comments
      Return (Me.Reported + Me.Liked + Me.Disliked).ToBool.ToString
     Case "karmaedyesno"
      Return PropertyAccess.Boolean2LocalizedYesNo((Me.Reported + Me.Liked + Me.Disliked).ToBool, formatProvider)
+    Case "posturl"
+     Dim _Link As String = DotNetNuke.Common.ApplicationURL(DotNetNuke.Entities.Portals.PortalSettings.Current.ActiveTab.TabID) & "&Post=" & ContentItemId.ToString
+     Return DotNetNuke.Common.FriendlyUrl(DotNetNuke.Entities.Portals.PortalSettings.Current.ActiveTab, _Link)
     Case Else
      PropertyNotFound = True
    End Select

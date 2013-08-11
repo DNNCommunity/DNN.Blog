@@ -322,16 +322,27 @@ Public Class Blog
      For Each c As CommentInfo In CommentsController.GetCommentsByContentItem(CType(callingObject, PostInfo).ContentItemId, False, UserId)
       Replacers.Add(New BlogTokenReplace(Me, BlogContext.Post, c))
      Next
+     _usePaging = False
     ElseIf BlogContext.Post IsNot Nothing Then
      For Each c As CommentInfo In CommentsController.GetCommentsByContentItem(BlogContext.Post.ContentItemId, False, UserId)
       Replacers.Add(New BlogTokenReplace(Me, BlogContext.Post, c))
      Next
+     _usePaging = False
     Else
-     For Each c As CommentInfo In CommentsController.GetCommentsByModule(BlogContext.BlogModuleId, UserId)
+     Parameters.ReadValue("pagesize", _pageSize)
+     If _pageSize < 1 Then _pageSize = 10 ' we will not list "all Posts"
+     For Each c As CommentInfo In CommentsController.GetCommentsByModule(BlogContext.BlogModuleId, UserId, _reqPage - 1, _pageSize, "CREATEDONDATE DESC", _totalRecords).Values
       Replacers.Add(New BlogTokenReplace(Me, BlogContext.Post, c))
      Next
     End If
-    _usePaging = False
+
+   Case "allcomments"
+
+    Parameters.ReadValue("pagesize", _pageSize)
+    If _pageSize < 1 Then _pageSize = 10 ' we will not list "all Posts"
+    For Each c As CommentInfo In CommentsController.GetCommentsByModule(BlogContext.BlogModuleId, UserId, _reqPage - 1, _pageSize, "CREATEDONDATE DESC", _totalRecords).Values
+     Replacers.Add(New BlogTokenReplace(Me, BlogContext.Post, c))
+    Next
 
    Case "calendar", "blogcalendar"
 

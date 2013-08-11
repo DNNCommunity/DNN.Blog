@@ -194,6 +194,10 @@
     <Content Include="Templates\classicBlog\Template.html" />
     <Content Include="Templates\classicBlog\template.js" />
     <Content Include="Templates\classicBlog\TermBanner.html" />
+    <Content Include="Templates\commentList\Comment.html" />
+    <Content Include="Templates\commentList\Settings.xml" />
+    <Content Include="Templates\commentList\template.css" />
+    <Content Include="Templates\commentList\Template.html" />
     <Content Include="Templates\tagList\Tag.html" />
     <Content Include="Templates\tagList\template.css" />
     <Content Include="Templates\tagList\Template.html" />
@@ -238,6 +242,7 @@
     <Content Include="Templates\_default\App_LocalResources\SharedResources.ascx.resx" />
     <Content Include="Templates\timelineJS\App_LocalResources\SharedResources.ascx.resx" />
     <Content Include="Templates\classicBlog\App_LocalResources\SharedResources.ascx.resx" />
+    <Content Include="Templates\commentList\App_LocalResources\SharedResources.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BlogImage.ashx.vb">
@@ -514,6 +519,10 @@
     <Folder Include="Templates\classicBlog\images\" />
     <Folder Include="Templates\classicBlog\jsblocks\" />
     <Folder Include="Templates\classicBlog\js\" />
+    <Folder Include="Templates\commentList\css\" />
+    <Folder Include="Templates\commentList\images\" />
+    <Folder Include="Templates\commentList\jsblocks\" />
+    <Folder Include="Templates\commentList\js\" />
     <Folder Include="Templates\tagCloud\App_LocalResources\" />
     <Folder Include="Templates\tagCloud\css\" />
     <Folder Include="Templates\tagCloud\images\" />

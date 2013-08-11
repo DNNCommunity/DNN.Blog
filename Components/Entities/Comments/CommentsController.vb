@@ -49,6 +49,23 @@ Namespace Entities.Comments
 
   End Function
 
+  Public Shared Function GetCommentsByModule(moduleId As Int32, userID As Int32, pageIndex As Int32, pageSize As Int32, orderBy As String, ByRef totalRecords As Integer) As Dictionary(Of Integer, CommentInfo)
+
+   If pageIndex < 0 Then
+    pageIndex = 0
+    pageSize = Integer.MaxValue
+   End If
+
+   Dim res As New Dictionary(Of Integer, CommentInfo)
+   Using ir As IDataReader = DataProvider.Instance().GetCommentsByModuleId(moduleId, userID, pageIndex, pageSize, orderBy)
+    res = DotNetNuke.Common.Utilities.CBO.FillDictionary(Of Integer, CommentInfo)("CommentId", ir, False)
+    ir.NextResult()
+    totalRecords = DotNetNuke.Common.Globals.GetTotalRecords(ir)
+   End Using
+   Return res
+
+  End Function
+
   Public Shared Function AddComment(blog As BlogInfo, Post As PostInfo, ByRef comment As CommentInfo) As Integer
 
    AddComment(comment, PortalSettings.Current.UserId)

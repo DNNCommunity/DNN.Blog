@@ -43,12 +43,6 @@ Namespace Entities.Comments
 
   End Function
 
-  Public Shared Function GetCommentsByModule(moduleId As Int32, userId As Integer) As List(Of CommentInfo)
-
-   Return DotNetNuke.Common.Utilities.CBO.FillCollection(Of CommentInfo)(DataProvider.Instance().GetCommentsByModuleId(moduleId, userId))
-
-  End Function
-
  End Class
 End Namespace
 

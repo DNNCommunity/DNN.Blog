@@ -1,0 +1,10 @@
+﻿.ModBlogC .commentList .commentList_comment
+{
+ clear:both;
+ padding-bottom: 6px;
+}
+.ModBlogC .commentList .commentList_comment .commentList_comment_pic
+{
+ float: left;
+ padding:2px 5px 5px 0px;
+}

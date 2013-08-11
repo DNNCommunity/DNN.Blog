@@ -38,7 +38,7 @@ Namespace Data
   Public MustOverride Function GetBlogsByPortal(portalId As Int32, userId As Int32, locale As String) As IDataReader
   Public MustOverride Function GetComment(commentID As Int32, userID As Int32) As IDataReader
   Public MustOverride Function GetCommentsByContentItem(contentItemId As Int32, includeNonApproved As Boolean, userID As Int32) As IDataReader
-  Public MustOverride Function GetCommentsByModuleId(moduleId As Int32, userID As Int32) As IDataReader
+  Public MustOverride Function GetCommentsByModuleId(moduleId As Int32, userID As Int32, pageIndex As Int32, pageSize As Int32, orderBy As String) As IDataReader
   Public MustOverride Function GetPostByLegacyEntryId(entryId As Int32, portalId As Int32, locale As String) As IDataReader
   Public MustOverride Function GetPostByLegacyUrl(url As String, portalId As Int32, locale As String) As IDataReader
   Public MustOverride Function GetPostLocalizations(contentItemId As Int32) As IDataReader

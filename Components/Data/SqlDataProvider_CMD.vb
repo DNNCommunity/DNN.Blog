@@ -79,8 +79,8 @@ Namespace Data
    Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "GetCommentsByContentItem", contentItemId, includeNonApproved, userID), IDataReader)
   End Function
 
-  Public Overrides Function GetCommentsByModuleId(moduleId As Int32, userID As Int32) As IDataReader
-   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "GetCommentsByModuleId", moduleId, userID), IDataReader)
+  Public Overrides Function GetCommentsByModuleId(moduleId As Int32, userID As Int32, pageIndex As Int32, pageSize As Int32, orderBy As String) As IDataReader
+   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "GetCommentsByModuleId", moduleId, userID, pageIndex, pageSize, orderBy), IDataReader)
   End Function
 
   Public Overrides Function GetPostByLegacyEntryId(entryId As Int32, portalId As Int32, locale As String) As IDataReader
