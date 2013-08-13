@@ -53,7 +53,7 @@ Namespace Entities.Posts
   <DataMember()>
   Public Property Copyright As String = ""
   <DataMember()>
-  Public Property Locale As String = ""
+  Public Property Locale As String = Nothing
   <DataMember()>
   Public Property ViewCount As Int32 = 0
   <DataMember()>

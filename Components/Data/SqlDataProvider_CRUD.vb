@@ -173,7 +173,7 @@ Namespace Data
   End Function
 
   Public Overrides Function AddPost(allowComments As Boolean, blogID As Int32, content As String, copyright As String, displayCopyright As Boolean, image As String, locale As String, published As Boolean, publishedOnDate As Date, summary As String, termIds As String, title As String, viewCount As Int32, createdByUser As Int32) As Integer
-   Return CType(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "AddPost", allowComments, blogID, content, copyright, displayCopyright, image, locale, published, publishedOnDate, summary, termIds, title, viewCount, createdByUser), Integer)
+   Return CType(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "AddPost", allowComments, blogID, content, copyright, displayCopyright, image, GetNull(locale), published, publishedOnDate, summary, termIds, title, viewCount, createdByUser), Integer)
   End Function
 
   Public Overrides Sub UpdatePost(allowComments As Boolean, blogID As Int32, content As String, contentItemId As Int32, copyright As String, displayCopyright As Boolean, image As String, locale As String, published As Boolean, publishedOnDate As Date, summary As String, termIds As String, title As String, viewCount As Int32, updatedByUser As Int32)

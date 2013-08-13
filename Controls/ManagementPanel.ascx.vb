@@ -75,7 +75,7 @@ Namespace Controls
    If Not String.IsNullOrEmpty(BlogContext.SearchString) Then
     RssLink &= String.Format("&search={0}&t={1}&c={2}", HttpUtility.UrlEncode(BlogContext.SearchString), BlogContext.SearchTitle, BlogContext.SearchContents)
    End If
-   If BlogContext.ShowLocale <> "" Then RssLink &= String.Format("&language={0}", BlogContext.ShowLocale)
+   If Not String.IsNullOrEmpty(BlogContext.ShowLocale) Then RssLink &= String.Format("&language={0}", BlogContext.ShowLocale)
    If BlogContext.Security.CanAddPost Then
     BlogSelectListHtml = "<select id=""ddBlog"">"
     Dim blogList As IEnumerable(Of BlogInfo) = Nothing

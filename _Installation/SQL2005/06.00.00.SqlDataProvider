@@ -411,7 +411,7 @@ CREATE TABLE {databaseOwner}{objectQualifier}Blog_Posts(
  [AllowComments] [bit] NULL,
  [DisplayCopyright] [bit] NOT NULL,
  [Copyright] [nvarchar](255) NULL,
- [Locale] [nvarchar](50) NOT NULL,
+ [Locale] [nvarchar](50) NULL,
  [ViewCount] [int] NULL
 )
 END;

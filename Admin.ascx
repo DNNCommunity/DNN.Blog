@@ -51,16 +51,6 @@
 		<asp:CheckBox ID="chkModifyPageDetails" runat="server" />
 	</div>
 </fieldset>
-<h2 id="H2" class="dnnFormSectionHead"><a href="" class="dnnFormSectionExpanded"><%= LocalizeString("Localization")%></a></h2>
-<fieldset>
-	<div class="dnnFormItem">
-		<dnn:label id="lblAllowAllLocales" runat="server" controlname="chkAllowAllLocales" suffix=":" />
-		<asp:CheckBox ID="chkAllowAllLocales" runat="server" />
-	</div>
-	<div class="dnnFormItem">
-  <asp:LinkButton runat="server" ID="cmdEditTagsML" resourcekey="cmdEditTagsML" CssClass="dnnSecondaryAction" />
-	</div>
-</fieldset>
 <h2 id="H3" class="dnnFormSectionHead"><a href="" class="dnnFormSectionExpanded"><%= LocalizeString("RSS")%></a></h2>
 <fieldset>
 	<div class="dnnFormItem">
@@ -107,7 +97,6 @@
    </div><br />
    <button class="dnnSecondaryAction" id="btnAddCategories"><%= LocalizeString("Add")%></button>
    <button class="dnnSecondaryAction" id="btnDeleteCategory"><%= LocalizeString("DeleteSelected")%></button>
-   <asp:LinkButton runat="server" ID="cmdEditCategoriesML" resourcekey="cmdEditCategoriesML" CssClass="dnnSecondaryAction" />
   <% Else%>
    <div class="dnnFormMessage dnnFormWarning"><%= LocalizeString("NoVocabulary")%></div>
    <asp:LinkButton runat="server" ID="cmdCreateVocabulary" resourcekey="cmdCreateVocabulary" CssClass="dnnPrimaryAction" />
@@ -116,6 +105,8 @@
  </div>
 </div>
 <p class="updatecancelbar">
+ <asp:LinkButton runat="server" ID="cmdEditTagsML" resourcekey="cmdEditTagsML" CssClass="dnnSecondaryAction" />
+ <asp:LinkButton runat="server" ID="cmdEditCategoriesML" resourcekey="cmdEditCategoriesML" CssClass="dnnSecondaryAction" />
  <asp:LinkButton runat="server" ID="cmdCancel" resourcekey="cmdCancel" CssClass="dnnSecondaryAction" />
  <asp:LinkButton runat="server" ID="cmdUpdate" resourcekey="cmdUpdate" CssClass="dnnPrimaryAction" />
 </p>

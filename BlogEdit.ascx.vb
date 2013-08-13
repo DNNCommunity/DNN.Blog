@@ -18,6 +18,7 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
+Imports System.Linq
 Imports DotNetNuke.Common
 Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Services.Exceptions
@@ -61,13 +62,8 @@ Public Class BlogEdit
    txtDescription.InitialBind()
 
    If BlogContext.IsMultiLingualSite Then
-    If Settings.AllowAllLocales Then
-     ddLocale.DataSource = System.Globalization.CultureInfo.GetCultures(Globalization.CultureTypes.SpecificCultures)
-     ddLocale.DataValueField = "Name"
-    Else
-     ddLocale.DataSource = DotNetNuke.Services.Localization.LocaleController.Instance.GetLocales(PortalId).Values
-     ddLocale.DataValueField = "Code"
-    End If
+    ddLocale.DataSource = DotNetNuke.Services.Localization.LocaleController.Instance.GetLocales(PortalId).Values.OrderBy(Function(t) t.NativeName)
+    ddLocale.DataValueField = "Code"
     ddLocale.DataBind()
     Try
      ddLocale.Items.FindByValue(BlogContext.Blog.Locale).Selected = True

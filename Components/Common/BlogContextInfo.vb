@@ -101,7 +101,7 @@ Namespace Common
 
    ' set urls for use in module
    ModuleUrls = New ModuleUrls(blogModule.TabId, BlogId, ContentItemId, TermId, AuthorId)
-   IsMultiLingualSite = CBool((New DotNetNuke.Services.Localization.LocaleController).GetLocales(blogModule.PortalId).Count > 1)
+   IsMultiLingualSite = CBool(DotNetNuke.Services.Localization.LocaleController.Instance.GetLocales(blogModule.PortalId).Count > 1)
    If Not blogModule.ViewSettings.ShowAllLocales Then
     ShowLocale = Locale
    End If
@@ -148,7 +148,7 @@ Namespace Common
   Public Property SearchContents As Boolean = False
   Public Property SearchUnpublished As Boolean = False
   Public Property IsMultiLingualSite As Boolean = False
-  Public Property ShowLocale As String = ""
+  Public Property ShowLocale As String = Nothing
   Public Property Locale As String = ""
   Public Property Referrer As String = ""
   Public Property WLWRequest As Boolean = False

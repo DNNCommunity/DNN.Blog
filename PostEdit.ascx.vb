@@ -125,16 +125,21 @@ Public Class PostEdit
     Entities.Terms.TermsController.GetTermsByVocabulary(ModuleId, Settings.VocabularyId, Threading.Thread.CurrentThread.CurrentCulture.Name, True)
     Entities.Terms.TermsController.GetTermsByVocabulary(ModuleId, 1, Threading.Thread.CurrentThread.CurrentCulture.Name, True)
 
-    If Settings.AllowAllLocales Then
-     ddLocale.DataSource = System.Globalization.CultureInfo.GetCultures(Globalization.CultureTypes.SpecificCultures)
-     ddLocale.DataValueField = "Name"
-    Else
-     ddLocale.DataSource = DotNetNuke.Services.Localization.LocaleController.Instance.GetLocales(PortalId).Values
+    If BlogContext.IsMultiLingualSite And Not BlogContext.Blog.FullLocalization Then
+     ddLocale.DataSource = DotNetNuke.Services.Localization.LocaleController.Instance.GetLocales(PortalId).Values.OrderBy(Function(t) t.NativeName)
      ddLocale.DataValueField = "Code"
+     ddLocale.DataBind()
+     ddLocale.Items.Insert(0, New ListItem(LocalizeString("DefaultLocale"), ""))
+     rowLocale.Visible = True
+     If BlogContext.Locale <> BlogContext.Blog.Locale Then
+      Try
+       ddLocale.Items.FindByValue(BlogContext.Locale).Selected = True
+      Catch ex As Exception
+      End Try
+     End If
+    Else
+     rowLocale.Visible = False
     End If
-    ddLocale.DataBind()
-    ddLocale.Items.Insert(0, New ListItem(LocalizeString("DefaultLocale"), ""))
-    rowLocale.Visible = CBool(BlogContext.IsMultiLingualSite And Not BlogContext.Blog.FullLocalization)
 
     ' Buttons
     If BlogContext.BlogId > -1 Then

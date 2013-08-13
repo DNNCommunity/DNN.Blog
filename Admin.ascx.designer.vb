@@ -176,33 +176,6 @@ Partial Public Class Admin
  Protected WithEvents chkModifyPageDetails As Global.System.Web.UI.WebControls.CheckBox
 
  '''<summary>
- '''lblAllowAllLocales control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents lblAllowAllLocales As Global.System.Web.UI.UserControl
-
- '''<summary>
- '''chkAllowAllLocales control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents chkAllowAllLocales As Global.System.Web.UI.WebControls.CheckBox
-
- '''<summary>
- '''cmdEditTagsML control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents cmdEditTagsML As Global.System.Web.UI.WebControls.LinkButton
-
- '''<summary>
  '''lblRssDefaultNrItems control.
  '''</summary>
  '''<remarks>
@@ -365,15 +338,6 @@ Partial Public Class Admin
  Protected WithEvents chkRssImageSizeAllowOverride As Global.System.Web.UI.WebControls.CheckBox
 
  '''<summary>
- '''cmdEditCategoriesML control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents cmdEditCategoriesML As Global.System.Web.UI.WebControls.LinkButton
-
- '''<summary>
  '''cmdCreateVocabulary control.
  '''</summary>
  '''<remarks>
@@ -390,6 +354,24 @@ Partial Public Class Admin
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
  Protected WithEvents treeState As Global.System.Web.UI.WebControls.HiddenField
+
+ '''<summary>
+ '''cmdEditTagsML control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents cmdEditTagsML As Global.System.Web.UI.WebControls.LinkButton
+
+ '''<summary>
+ '''cmdEditCategoriesML control.
+ '''</summary>
+ '''<remarks>
+ '''Auto-generated field.
+ '''To modify move field declaration from designer file to code-behind file.
+ '''</remarks>
+ Protected WithEvents cmdEditCategoriesML As Global.System.Web.UI.WebControls.LinkButton
 
  '''<summary>
  '''cmdCancel control.
