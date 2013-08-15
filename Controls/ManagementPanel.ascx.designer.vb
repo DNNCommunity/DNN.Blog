@@ -69,6 +69,15 @@ Namespace Controls
   Protected WithEvents cmdBlog As Global.System.Web.UI.WebControls.LinkButton
 
   '''<summary>
+  '''doclink control.
+  '''</summary>
+  '''<remarks>
+  '''Auto-generated field.
+  '''To modify move field declaration from designer file to code-behind file.
+  '''</remarks>
+  Protected WithEvents doclink As Global.System.Web.UI.HtmlControls.HtmlAnchor
+
+  '''<summary>
   '''wlwlink control.
   '''</summary>
   '''<remarks>

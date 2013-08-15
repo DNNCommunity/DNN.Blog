@@ -95,6 +95,11 @@ Namespace Controls
     Next
     BlogSelectListHtml &= "</select>"
    End If
+   If BlogContext.Security.IsBlogger Or BlogContext.Security.IsEditor Or BlogContext.Security.UserIsAdmin Then
+    doclink.Visible = True
+    doclink.HRef = ResolveUrl("~/DesktopModules/Blog/Manual/manual.html")
+    doclink.Title = LocalizeString("Documentation")
+   End If
 
   End Sub
 

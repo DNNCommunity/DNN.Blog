@@ -195,4 +195,10 @@
   <data name="SearchAll.Text" xml:space="preserve">
     <value>In all content</value>
   </data>
+  <data name="Home.Text" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Documentation.Text" xml:space="preserve">
+    <value>Documentation</value>
+  </data>
 </root>
