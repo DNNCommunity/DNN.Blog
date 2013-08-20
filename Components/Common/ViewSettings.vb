@@ -168,7 +168,12 @@ Namespace Common
      If TemplateSettings.ContainsKey(strPropertyName) Then
       Return PropertyAccess.FormatString(CStr(TemplateSettings(strPropertyName)), strFormat)
      End If
-     Return ""
+     Select Case strPropertyName.ToLower
+      Case "termid", "authorid", "blogid", "blogmoduleid"
+       Return "-1"
+      Case Else
+       Return ""
+     End Select
    End Select
   End Function
 #End Region
