@@ -46,6 +46,9 @@ td.blog_rte_defaulttext input, td.blog_rte_localization input
 {
  width:97%;
 }
+.RadPicker_Default .riTextBox {
+ height: 32px !important;
+}
 
 /* Comments */
 .blogComments{width:100%;border: 1px solid #e3e3e3;}
