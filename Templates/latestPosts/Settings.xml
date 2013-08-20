@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templateSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\Settings.xsd">
+ <templateSetting>
+  <key>pagesize</key>
+  <valueType>integer</valueType>
+  <defaultValue>10</defaultValue>
+ </templateSetting>
+ <templateSetting>
+  <key>url</key>
+  <valueType>string</valueType>
+  <defaultValue></defaultValue>
+ </templateSetting>
+</templateSettings>

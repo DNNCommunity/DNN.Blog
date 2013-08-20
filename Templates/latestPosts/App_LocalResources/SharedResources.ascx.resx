@@ -117,52 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="approve.Text" xml:space="preserve">
-    <value>Approve</value>
-  </data>
-  <data name="author.Text" xml:space="preserve">
-    <value>Author</value>
-  </data>
-  <data name="by.Text" xml:space="preserve">
-    <value>By</value>
-  </data>
-  <data name="comment.Text" xml:space="preserve">
-    <value>Comment</value>
-  </data>
-  <data name="comments.Text" xml:space="preserve">
-    <value>Comments</value>
-  </data>
-  <data name="commentssofar.Text" xml:space="preserve">
-    <value>comment(s) so far...</value>
-  </data>
-  <data name="created.Text" xml:space="preserve">
-    <value>Created:</value>
-  </data>
-  <data name="delete.Text" xml:space="preserve">
-    <value>Delete</value>
-  </data>
-  <data name="fileunder.Text" xml:space="preserve">
-    <value>File Under:</value>
-  </data>
-  <data name="on.Text" xml:space="preserve">
-    <value>on</value>
-  </data>
-  <data name="posts.Text" xml:space="preserve">
-    <value>post(s)</value>
-  </data>
-  <data name="readmore.Text" xml:space="preserve">
-    <value>Read More »</value>
-  </data>
-  <data name="term.Text" xml:space="preserve">
-    <value>Term</value>
-  </data>
-  <data name="Unpublished.Text" xml:space="preserve">
-    <value>Unpublished</value>
-  </data>
   <data name="pagesize.Help" xml:space="preserve">
     <value>Specify the number of posts to show per page. -1 = do not page.</value>
   </data>
   <data name="pagesize.Text" xml:space="preserve">
     <value>Page Size</value>
+  </data>
+  <data name="url.Help" xml:space="preserve">
+    <value>Paste the target page url here and make sure to end it with a '?' or an ampersand ('&amp;'). The template will add 'post=123' to the end of it to load the post.</value>
+  </data>
+  <data name="url.Text" xml:space="preserve">
+    <value>Url to target page</value>
   </data>
 </root>

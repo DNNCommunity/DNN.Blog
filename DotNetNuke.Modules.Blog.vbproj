@@ -198,6 +198,10 @@
     <Content Include="Templates\commentList\Settings.xml" />
     <Content Include="Templates\commentList\template.css" />
     <Content Include="Templates\commentList\Template.html" />
+    <Content Include="Templates\latestPosts\Post.html" />
+    <Content Include="Templates\latestPosts\Settings.xml" />
+    <Content Include="Templates\latestPosts\template.css" />
+    <Content Include="Templates\latestPosts\Template.html" />
     <Content Include="Templates\tagList\Tag.html" />
     <Content Include="Templates\tagList\template.css" />
     <Content Include="Templates\tagList\Template.html" />
@@ -243,6 +247,7 @@
     <Content Include="Templates\timelineJS\App_LocalResources\SharedResources.ascx.resx" />
     <Content Include="Templates\classicBlog\App_LocalResources\SharedResources.ascx.resx" />
     <Content Include="Templates\commentList\App_LocalResources\SharedResources.ascx.resx" />
+    <Content Include="Templates\latestPosts\App_LocalResources\SharedResources.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BlogImage.ashx.vb">
@@ -523,6 +528,10 @@
     <Folder Include="Templates\commentList\images\" />
     <Folder Include="Templates\commentList\jsblocks\" />
     <Folder Include="Templates\commentList\js\" />
+    <Folder Include="Templates\latestPosts\css\" />
+    <Folder Include="Templates\latestPosts\images\" />
+    <Folder Include="Templates\latestPosts\jsblocks\" />
+    <Folder Include="Templates\latestPosts\js\" />
     <Folder Include="Templates\tagCloud\App_LocalResources\" />
     <Folder Include="Templates\tagCloud\css\" />
     <Folder Include="Templates\tagCloud\images\" />
