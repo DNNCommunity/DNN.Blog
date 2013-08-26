@@ -105,3 +105,6 @@ _Packages/
 Documentation/
 _OpenUrlRewriter/_References/
 _Documentation/_Resources/
+_BuildSupport/CodeStats/
+_BuildSupport/*.SqlDataProvider
+_BuildSupport/Report.txt
