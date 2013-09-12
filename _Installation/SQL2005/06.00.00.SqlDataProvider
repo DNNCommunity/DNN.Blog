@@ -328,6 +328,11 @@ SET ModuleID=-1
 WHERE ModuleID IS NULL
 GO
 
+UPDATE {databaseOwner}{objectQualifier}Blog_Blogs
+SET CreatedByUserID=OwnerUserId
+WHERE CreatedByUserID IS NULL
+GO
+
 ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs ALTER COLUMN
  [ModuleID] [int] NOT NULL
 GO
