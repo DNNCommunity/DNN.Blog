@@ -546,17 +546,19 @@ WHERE ci.CreatedByUserID=-1
 GO
 
 -- Add the legacy urls
-UPDATE {databaseOwner}{objectQualifier}Blog_Entries
-SET [PermaLink] = 'EntryId=' + CAST([EntryId] AS NVARCHAR(6))
-WHERE [PermaLink] IS NULL
-GO
-
 INSERT INTO {databaseOwner}{objectQualifier}Blog_LegacyUrls
  ([Url], [EntryId], [ContentItemId])
 SELECT
- ISNULL([PermaLink],''), [EntryID], [ContentItemId] 
-FROM {databaseOwner}{objectQualifier}Blog_Entries
-WHERE [ContentItemId]<>-1
+ y.[PermaLink], y.[EntryID], e.ContentItemID
+FROM
+(SELECT
+ [PermaLink], MIN([EntryID]) EntryID
+FROM
+ (SELECT * FROM {databaseOwner}{objectQualifier}Blog_Entries
+   WHERE [ContentItemId]<>-1
+   AND NOT [PermaLink] IS NULL) x
+  GROUP BY [PermaLink]) y
+ INNER JOIN {databaseOwner}{objectQualifier}Blog_Entries e ON e.EntryID=y.EntryID
 GO
 
 /******* CATEGORIES *******/
