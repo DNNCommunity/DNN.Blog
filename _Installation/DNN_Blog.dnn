@@ -30,6 +30,7 @@
       </supportedFeatures>
       <moduleDefinitions>
        <moduleDefinition>
+        <definitionName>DNNBlog.Blog</definitionName>
         <friendlyName>Blog</friendlyName>
         <defaultCacheTime>-1</defaultCacheTime>
         <moduleControls>

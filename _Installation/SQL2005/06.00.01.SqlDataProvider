@@ -1,0 +1,12 @@
+﻿UPDATE {databaseOwner}{objectQualifier}Blog_Blogs
+SET CreatedByUserID=OwnerUserId
+WHERE CreatedByUserID IS NULL
+GO
+
+UPDATE {databaseOwner}{objectQualifier}ModuleDefinitions
+SET DefinitionName='DNNBlog.Blog'
+FROM {databaseOwner}{objectQualifier}ModuleDefinitions md
+ INNER JOIN {databaseOwner}{objectQualifier}DesktopModules dm ON dm.DesktopModuleID=md.DesktopModuleID
+WHERE md.DefinitionName='Blog'
+ AND dm.ModuleName='Blog'
+GO
