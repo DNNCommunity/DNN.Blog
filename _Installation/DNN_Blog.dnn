@@ -149,6 +149,27 @@
       </attributes>
      </eventMessage>
     </component>
+    <component type="Config">
+     <config>
+      <configFile>web.config</configFile>
+      <install>
+       <configuration>
+        <nodes>
+         <node path="/configuration/dotnetnuke/sitemap/providers" action="update" key="name" collision="overwrite">
+          <add name="blogSitemapProvider" type="DotNetNuke.Modules.Blog.Integration.BlogSiteMapProvider, DOTNETNUKE.MODULES.BLOG" providerPath="~\DesktopModules\Blog\" />
+         </node>
+        </nodes>
+       </configuration>
+      </install>
+      <uninstall>
+       <configuration>
+        <nodes>
+         <node path="/configuration/dotnetnuke/sitemap/providers/add[@name='blogSitemapProvider']" action="remove" />
+        </nodes>
+       </configuration>
+      </uninstall>
+     </config>
+    </component>
    </components>
   </package>
  </packages>
