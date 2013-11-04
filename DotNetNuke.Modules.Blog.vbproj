@@ -94,7 +94,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Net.Http, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    <Reference Include="System.Net.Http, Version=4.0.30319.17929 built by: FX45RTMREL built by: FX45RTMREL, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>_References\System.Net.Http.dll</HintPath>
       <Private>False</Private>
@@ -227,7 +227,6 @@
     <Content Include="TermsEditML.ascx" />
     <Content Include="App_LocalResources\TermsEditML.ascx.resx" />
     <Content Include="_Installation\license.txt" />
-    <Content Include="_Installation\releaseNotes.txt" />
     <Content Include="App_LocalResources\Admin.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
@@ -578,7 +577,9 @@
     <None Include="Templates\Settings.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="_Installation\DNN_Blog.dnn" />
+    <None Include="_Installation\DNN_Blog.dnn">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

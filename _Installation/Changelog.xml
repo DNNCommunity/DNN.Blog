@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="D:\Programs\Nant\ChangelogToVersionDoc.xsl"?>
+<changelog project="" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="D:\Programs\Nant\Changelog.xsd">
+ <release version="06.00.00">
+  <change type="Change">Complete rewrite of the module</change>
+  <change type="New Feature">UI completely based on templates</change>
+  <change type="New Feature">Bloggers can have any number of blogs</change>
+  <change type="Change">Blogs now tied to module instead of portal</change>
+  <change type="New Feature">Every blog has a set of permissions that govern ghost writing and commenting</change>
+  <change type="Enhancement">Just one single module definition now</change>
+  <change type="New Feature">You can point the module to another to use the other's blog content</change>
+  <change type="New Feature">"Hybrid multilingual capable module"</change>
+  <change type="New Feature">Full localization: every blog post has optional translations</change>
+  <change type="New Feature">Regular localization: every blog post is labeled with a locale</change>
+  <change type="New Feature">Categories and tags can be translated</change>
+  <change type="New Feature">Select an image for each blog and post</change>
+  <change type="Enhancement">Proper editor for categories</change>
+  <change type="New Feature">BlogML import and export</change>
+  <change type="Enhancement">DNN 7 services layer to make a much more fluent UI</change>
+ </release>
+ <release version="06.00.01">
+  <change type="Fix">Changed the name of the module definition to avoid clash with Evoq Social</change>
+  <change type="Fix">Increased robustness in v6 upgrade script to cater for some unusual situations that have surfaced</change>
+  <change type="New Feature">Addition of sitemap provider</change>
+ </release>
+</changelog>
