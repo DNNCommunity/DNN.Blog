@@ -57,6 +57,12 @@ Namespace Controls
      For Each d As IO.DirectoryInfo In (New IO.DirectoryInfo(Settings.PortalTemplatesMapPath)).GetDirectories
       ddTemplate.Items.Add(New ListItem(d.Name & " [Local]", "[P]" & d.Name))
      Next
+     Dim skinTemplatePath As String = Server.MapPath(DotNetNuke.UI.Skins.Skin.GetSkin(Me.Page).SkinPath) & "Templates\Blog\"
+     If IO.Directory.Exists(skinTemplatePath) Then
+      For Each d As IO.DirectoryInfo In (New IO.DirectoryInfo(skinTemplatePath)).GetDirectories
+       ddTemplate.Items.Add(New ListItem(d.Name & " [Skin]", "[S]" & d.Name))
+      Next
+     End If
      For intItem As Integer = 0 To PortalSettings.ActiveTab.Panes.Count - 1
       ddPane.Items.Add(Convert.ToString(PortalSettings.ActiveTab.Panes(intItem)))
      Next intItem

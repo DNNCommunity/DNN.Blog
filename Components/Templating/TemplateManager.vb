@@ -30,6 +30,10 @@ Namespace Templating
     TemplatePath = DotNetNuke.Common.ResolveUrl(glbTemplatesPath) & Mid(template, 4) & "/"
     TemplateRelPath = glbTemplatesPath & Mid(template, 4) & "/"
     TemplateMapPath = HttpContext.Current.Server.MapPath(DotNetNuke.Common.ResolveUrl(glbTemplatesPath)) & Mid(template, 4) & "\"
+   ElseIf template.StartsWith("[S]") Then
+    TemplatePath = portalsettings.ActiveTab.SkinPath & "Templates/Blog/" & Mid(template, 4) & "/"
+    TemplateRelPath = "~" & TemplatePath.Substring(DotNetNuke.Common.ApplicationPath.Length)
+    TemplateMapPath = HttpContext.Current.Server.MapPath(TemplatePath)
    Else
     TemplatePath = portalsettings.HomeDirectory & "/Blog/Templates/" & Mid(template, 4) & "/"
     Dim pi As PortalInfo = (New PortalController).GetPortal(portalsettings.PortalId)

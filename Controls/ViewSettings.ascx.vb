@@ -109,6 +109,12 @@ Namespace Controls
     For Each d As IO.DirectoryInfo In (New IO.DirectoryInfo(Settings.PortalTemplatesMapPath)).GetDirectories
      ddTemplate.Items.Add(New ListItem(d.Name & " [Local]", "[P]" & d.Name))
     Next
+    Dim skinTemplatePath As String = Server.MapPath(DotNetNuke.UI.Skins.Skin.GetSkin(CType(Me.Page, Framework.PageBase)).SkinPath) & "Templates\Blog\"
+    If IO.Directory.Exists(skinTemplatePath) Then
+     For Each d As IO.DirectoryInfo In (New IO.DirectoryInfo(skinTemplatePath)).GetDirectories
+      ddTemplate.Items.Add(New ListItem(d.Name & " [Skin]", "[S]" & d.Name))
+     Next
+    End If
 
     ddBlogModuleId.Items.Clear()
     ddBlogModuleId.DataSource = (New DotNetNuke.Entities.Modules.ModuleController).GetModulesByDefinition(PortalId, "Blog")
