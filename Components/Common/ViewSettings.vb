@@ -169,8 +169,14 @@ Namespace Common
       Return PropertyAccess.FormatString(CStr(TemplateSettings(strPropertyName)), strFormat)
      End If
      Select Case strPropertyName.ToLower
-      Case "termid", "authorid", "blogid", "blogmoduleid"
-       Return "-1"
+      Case "termid"
+       Return (Me.TermId.ToString(OutputFormat, formatProvider))
+      Case "authorid"
+       Return (Me.AuthorId.ToString(OutputFormat, formatProvider))
+      Case "blogid"
+       Return (Me.BlogId.ToString(OutputFormat, formatProvider))
+      Case "blogmoduleid"
+       Return (Me.BlogModuleId.ToString(OutputFormat, formatProvider))
       Case Else
        Return ""
      End Select
