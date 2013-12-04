@@ -23,4 +23,9 @@
   <change type="Fix">Increased robustness in v6 upgrade script to cater for some unusual situations that have surfaced</change>
   <change type="New Feature">Addition of sitemap provider</change>
  </release>
+ <release version="06.00.02">
+  <change type="Fix">Fixes to v 6 migration script</change>
+  <change type="Fix">Fix to ViewSettings token replace</change>
+  <change type="Enhancement">Support for templates to be included in skin folder so they can be distributed with skins</change>
+ </release>
 </changelog>
