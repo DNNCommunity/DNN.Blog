@@ -193,7 +193,7 @@ Namespace Rss
   End Sub
 
   Public Sub WriteRss(fileName As String)
-   Using fs As New IO.FileStream(fileName, IO.FileMode.OpenOrCreate, IO.FileAccess.Write)
+   Using fs As New IO.FileStream(fileName, IO.FileMode.Create, IO.FileAccess.Write)
     Using xtw As New XmlTextWriter(fs, Encoding.UTF8)
      WriteRss(xtw)
      xtw.Flush()
