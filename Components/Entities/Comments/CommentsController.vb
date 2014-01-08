@@ -117,6 +117,7 @@ Namespace Entities.Comments
      Dim title As String = String.Format(GetString("CommentReportedNotify", SharedResourceFileName), user.DisplayName)
      Dim post As PostInfo = PostsController.GetPost(comment.ContentItemId, callingModule.ModuleID, "")
      Dim summary As String = String.Format(GetString("CommentReportedNotify.Body", SharedResourceFileName), user.DisplayName, comment.DisplayName, comment.Comment, post.PermaLink(PortalSettings.Current), post.Title)
+     NotificationController.ReportComment(comment, post.Blog, post, callingModule.PortalID, summary, title)
     End If
     Return ret
    End If
