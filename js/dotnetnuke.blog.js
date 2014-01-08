@@ -1,15 +1,16 @@
-function BlogService($, settings, servicesFramework) {
- var baseServicepath = servicesFramework.getServiceRoot('Blog') + 'Posts/';
- var commentsServicepath = servicesFramework.getServiceRoot('Blog') + 'Comments/';
- var modulesServicepath = servicesFramework.getServiceRoot('Blog') + 'Modules/';
- var blogServicepath = servicesFramework.getServiceRoot('Blog') + 'Blogs/';
- var termServicepath = servicesFramework.getServiceRoot('Blog') + 'Terms/';
+function BlogService($, settings, mid) {
+ var moduleId = mid;
+ var baseServicepath = $.dnnSF(moduleId).getServiceRoot('Blog') + 'Posts/';
+ var commentsServicepath = $.dnnSF(moduleId).getServiceRoot('Blog') + 'Comments/';
+ var modulesServicepath = $.dnnSF(moduleId).getServiceRoot('Blog') + 'Modules/';
+ var blogServicepath = $.dnnSF(moduleId).getServiceRoot('Blog') + 'Blogs/';
+ var termServicepath = $.dnnSF(moduleId).getServiceRoot('Blog') + 'Terms/';
 
  this.approvePost = function (blogId, PostId, success) {
   $.ajax({
    type: "POST",
    url: baseServicepath + "Approve",
-   beforeSend: servicesFramework.setModuleHeaders,
+   beforeSend: $.dnnSF(moduleId).setModuleHeaders,
    data: { blogId: blogId, PostId: PostId }
   }).done(function (data) {
    if (success != undefined) {
@@ -24,7 +25,7 @@ function BlogService($, settings, servicesFramework) {
   $.ajax({
    type: "POST",
    url: baseServicepath + "Delete",
-   beforeSend: servicesFramework.setModuleHeaders,
+   beforeSend: $.dnnSF(moduleId).setModuleHeaders,
    data: { blogId: blogId, PostId: PostId }
   }).done(function (data) {
    if (success != undefined) {
@@ -39,7 +40,7 @@ function BlogService($, settings, servicesFramework) {
   $.ajax({
    type: "POST",
    url: baseServicepath + "View",
-   beforeSend: servicesFramework.setModuleHeaders,
+   beforeSend: $.dnnSF(moduleId).setModuleHeaders,
    data: { blogId: blogId, PostId: PostId }
   }).done(function (data) {
    if (success != undefined) {
@@ -54,7 +55,7 @@ function BlogService($, settings, servicesFramework) {
   $.ajax({
    type: "POST",
    url: commentsServicepath + "Approve",
-   beforeSend: servicesFramework.setModuleHeaders,
+   beforeSend: $.dnnSF(moduleId).setModuleHeaders,
    data: { blogId: blogId, commentId: commentId, karma: 0 }
   }).done(function (data) {
    if (success != undefined) {
@@ -69,7 +70,7 @@ function BlogService($, settings, servicesFramework) {
   $.ajax({
    type: "POST",
    url: commentsServicepath + "Delete",
-   beforeSend: servicesFramework.setModuleHeaders,
+   beforeSend: $.dnnSF(moduleId).setModuleHeaders,
    data: { blogId: blogId, commentId: commentId, karma: 0 }
   }).done(function (data) {
    if (success != undefined) {
@@ -84,7 +85,7 @@ function BlogService($, settings, servicesFramework) {
   $.ajax({
    type: "POST",
    url: commentsServicepath + "Karma",
-   beforeSend: servicesFramework.setModuleHeaders,
+   beforeSend: $.dnnSF(moduleId).setModuleHeaders,
    data: { blogId: blogId, commentId: commentId, karma: karma }
   }).done(function (data) {
    if (data.Result == 'exists') {
@@ -102,7 +103,7 @@ function BlogService($, settings, servicesFramework) {
   $.ajax({
    type: "POST",
    url: commentsServicepath + "Add",
-   beforeSend: servicesFramework.setModuleHeaders,
+   beforeSend: $.dnnSF(moduleId).setModuleHeaders,
    data: { blogId: blogId, postId: postId, parentId: parentId, comment: comment, author: author, website: website, email: email }
   }).done(function (data) {
    if (success != undefined) {
@@ -117,7 +118,7 @@ function BlogService($, settings, servicesFramework) {
   $.ajax({
    type: "GET",
    url: commentsServicepath + "List",
-   beforeSend: servicesFramework.setModuleHeaders,
+   beforeSend: $.dnnSF(moduleId).setModuleHeaders,
    data: { blogId: blogId, postId: postId }
   }).done(function (data) {
    if (success != undefined) {
@@ -132,7 +133,7 @@ function BlogService($, settings, servicesFramework) {
   $.ajax({
    type: "POST",
    url: modulesServicepath + "Add",
-   beforeSend: servicesFramework.setModuleHeaders,
+   beforeSend: $.dnnSF(moduleId).setModuleHeaders,
    data: { paneName: paneName, position: position, title: title, template: template }
   }).done(function (data) {
    if (success != undefined) {
@@ -147,7 +148,7 @@ function BlogService($, settings, servicesFramework) {
   $.ajax({
    type: "POST",
    url: blogServicepath + "Export",
-   beforeSend: servicesFramework.setModuleHeaders,
+   beforeSend: $.dnnSF(moduleId).setModuleHeaders,
    data: { blogId: blogId }
   }).done(function (data) {
    if (success != undefined) {
@@ -162,7 +163,7 @@ function BlogService($, settings, servicesFramework) {
   $.ajax({
    type: "GET",
    url: termServicepath + "VocabularyML",
-   beforeSend: servicesFramework.setModuleHeaders,
+   beforeSend: $.dnnSF(moduleId).setModuleHeaders,
    data: { vocabularyId: vocabularyId }
   }).done(function (data) {
    if (success != undefined) {

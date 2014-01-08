@@ -5,5 +5,5 @@ jQuery(function ($) {
    serverErrorWithDescriptionText: '[resx:ServerErrorWithDescription]',
    errorBoxId: '#blogServiceErrorBox[module:moduleId]'
   },
-  $.dnnSF([module:moduleID]));
+  [module:moduleID]);
 });
