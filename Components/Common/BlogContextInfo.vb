@@ -118,11 +118,11 @@ Namespace Common
 
   Public Shared Function GetBlogContext(ByRef context As HttpContext, blogModule As BlogModuleBase) As BlogContextInfo
    Dim res As BlogContextInfo
-   If context.Items("BlogContext") Is Nothing Then
+   If context.Items("BlogContext" & blogModule.TabModuleId.ToString) Is Nothing Then
     res = New BlogContextInfo(context, blogModule)
-    context.Items("BlogContext") = res
+    context.Items("BlogContext" & blogModule.TabModuleId.ToString) = res
    Else
-    res = CType(context.Items("BlogContext"), BlogContextInfo)
+    res = CType(context.Items("BlogContext" & blogModule.TabModuleId.ToString), BlogContextInfo)
    End If
    Return res
   End Function
