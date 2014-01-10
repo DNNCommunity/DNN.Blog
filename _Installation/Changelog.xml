@@ -28,4 +28,10 @@
   <change type="Fix">Fix to ViewSettings token replace</change>
   <change type="Enhancement">Support for templates to be included in skin folder so they can be distributed with skins</change>
  </release>
+ <release version="06.00.03">
+  <change type="Fix">Fix/workaround to service scripts in light of breaking changes/bug in DNN 7.2</change>
+  <change type="Fix">Fix to feed logic that caused some feed cache files to not be correct XML</change>
+  <change type="Fix">Fix to revent two blog modules on the page accidentally showing the same content</change>
+  <change type="Fix">Making sure that a notification is sent when a comment has been reported</change>
+ </release>
 </changelog>
