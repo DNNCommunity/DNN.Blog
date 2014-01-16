@@ -1,5 +1,6 @@
 (function ($, Sys) {
  $(document).ready(function () {
+  $("a > img").parent().colorbox();
   $("abbr.blog_commenttimeago").timeago();
   $('#cmdComment').click(function () {
    $dialogComment.dialog('open');
