@@ -1,6 +1,6 @@
 (function ($, Sys) {
  $(document).ready(function () {
-  $("a > img").parent().colorbox();
+  $('a[href$=".gif"], a[href$=".jpg"], a[href$=".png"], a[href$=".bmp"]').colorbox();
   $("abbr.blog_commenttimeago").timeago();
   $('#cmdComment').click(function () {
    $dialogComment.dialog('open');
@@ -28,7 +28,6 @@
     });
    }
   });
-  $('a[href$=".gif"], a[href$=".jpg"], a[href$=".png"], a[href$=".bmp"]').fancybox();
   SyntaxHighlighter.autoloader.apply(null, shpath(
   'applescript            @shBrushAppleScript.js',
   'actionscript3 as3      @shBrushAS3.js',
