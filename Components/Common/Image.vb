@@ -45,6 +45,7 @@ Namespace Common
 #End Region
 
   Public Property IsValidExtension As Boolean = True
+  Public Property MimeType As String = "image/jpeg"
 
 #Region " Constructors "
   Public Sub New(originalFilePath As String)
@@ -56,6 +57,12 @@ Namespace Common
     _originalWidth = _thisImage.Width
     _originalHeight = _thisImage.Height
     _imgRatio = Convert.ToSingle(OriginalHeight / OriginalWidth)
+    Select Case _extension
+     Case glbGifFileType
+      MimeType = "image/gif"
+     Case glbPngFileType
+      MimeType = "image/png"
+    End Select
    Else
     IsValidExtension = False
    End If

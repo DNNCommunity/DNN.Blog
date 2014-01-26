@@ -59,12 +59,27 @@ Public Class BlogImage
    End If
    Dim files() As String = IO.Directory.GetFiles(path, String.Format("{0}-{1}-{2}-{3}.*", Key, Width, Height, Crop))
    If files.Length > 0 Then
+    Select Case IO.Path.GetExtension(files(0)).ToLower
+     Case ".jpg"
+      context.Response.ContentType = "image/jpeg"
+     Case ".png"
+      context.Response.ContentType = "image/png"
+     Case ".gif"
+      context.Response.ContentType = "image/gif"
+     Case ".bmp"
+      context.Response.ContentType = "image/bmp"
+     Case ".tif", ".tiff"
+      context.Response.ContentType = "image/tiff"
+     Case Else
+      Exit Sub
+    End Select
     context.Response.WriteFile(files(0))
    Else
     files = IO.Directory.GetFiles(path, String.Format("{0}.*", Key))
     If files.Length > 0 Then
      Dim img As New Common.Image(files(0))
      If img.IsValidExtension Then
+      context.Response.ContentType = img.MimeType
       Dim newImg As String = img.ResizeImage(Width, Height, Crop)
       context.Response.WriteFile(newImg)
       img.Dispose()
