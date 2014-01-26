@@ -282,8 +282,11 @@ Namespace Rss
    writer.WriteElementString("link", item.PermaLink)
    writer.WriteElementString("description", RemoveHtmlTags(HttpUtility.HtmlDecode(item.Summary)))
    ' optional elements
-   If item.Blog.IncludeAuthorInFeed Then writer.WriteElementString("author", String.Format("{0} ({1})", item.Email, item.DisplayName))
-   For Each t As TermInfo In TermsController.GetTermsByPost(item.ContentItemId, settings.ModuleId, Locale)
+   If item.Blog.IncludeAuthorInFeed Then
+    writer.WriteElementString("author", String.Format("{0} ({1})", item.Email, item.DisplayName))
+    writer.WriteElementString(nsBlogPre, "author", item.DisplayName)
+   End If
+   For Each t As TermInfo In TermsController.GetTermsByPost(item.ContentItemId, Settings.ModuleId, Locale)
     writer.WriteElementString("category", t.LocalizedName)
    Next
    writer.WriteElementString("guid", String.Format("post={0}", item.ContentItemId))
