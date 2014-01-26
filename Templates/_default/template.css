@@ -376,3 +376,7 @@ a.blog_commentLinkSelected
 {
  color: #888;
 }
+.ModBlogC .blog_topPad
+{
+ padding-top:20px;
+}
