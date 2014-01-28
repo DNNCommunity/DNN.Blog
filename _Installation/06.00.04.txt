@@ -1,3 +1,4 @@
+DesktopModules\Blog\Templates\_default\js\jquery.fancybox-1.3.4.pack.js
 DesktopModules\Blog\App_LocalResources\Archive.ascx.resx
 DesktopModules\Blog\App_LocalResources\ArchiveSettings.ascx.resx
 DesktopModules\Blog\App_LocalResources\BlogList.ascx.resx
@@ -112,3 +113,4 @@ DesktopModules\Blog\ViewTags.ascx
 DesktopModules\Blog\ViewTagsSettings.ascx
 DesktopModules\Blog\wlwblog.xml
 DesktopModules\Blog\WLWManifest.aspx
+DesktopModules\Blog\Templates\_default\js\jquery.fancybox-1.3.4.pack.js
