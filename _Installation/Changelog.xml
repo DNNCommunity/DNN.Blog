@@ -34,4 +34,11 @@
   <change type="Fix">Fix to revent two blog modules on the page accidentally showing the same content</change>
   <change type="Fix">Making sure that a notification is sent when a comment has been reported</change>
  </release>
+ <release version="06.00.04">
+  <change type="Change">Switched to Colorbox as lightbox plugin for default template as Fancybox was out of date and has switched to a non-commercial license</change>
+  <change type="Fix">Fix to image handler so it will include mime-type in response</change>
+  <change type="Enhancement">Include plain text author in feed RSS and not just the default RSS 2 fashion</change>
+  <change type="Fix">Resolved issues with downloading old posts and post categories in WLW</change>
+  <change type="Fix">Fixed width issues on a number of admin screen text boxes</change>
+ </release>
 </changelog>
