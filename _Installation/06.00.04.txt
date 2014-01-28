@@ -1,4 +1,5 @@
 DesktopModules\Blog\Templates\_default\js\jquery.fancybox-1.3.4.pack.js
+DesktopModules\Blog\Templates\_default\css\jquery.fancybox-1.3.4.css
 DesktopModules\Blog\App_LocalResources\Archive.ascx.resx
 DesktopModules\Blog\App_LocalResources\ArchiveSettings.ascx.resx
 DesktopModules\Blog\App_LocalResources\BlogList.ascx.resx
