@@ -173,16 +173,15 @@ Public Class BlogPost
 
   Dim colCategories As List(Of TermInfo)
   colCategories = RequestedPost.Terms
-  Dim res(colCategories.Count - 1) As Category
+  Dim res As New List(Of Category)
   Dim i As Integer = 0
   For Each objTerm As Term In colCategories
    If objTerm.VocabularyId > 1 Then
-    res(i).categoryId = objTerm.TermId.ToString()
-    res(i).categoryName = objTerm.Name
+    res.Add(New Category With {.categoryId = objTerm.TermId.ToString(), .categoryName = objTerm.Name})
    End If
    i += 1
   Next
-  Return res
+  Return res.ToArray
 
  End Function
 
@@ -198,7 +197,7 @@ Public Class BlogPost
   Dim posts As New List(Of Post)
   Try
    Dim totalRecs As Integer
-   Dim arPosts As Dictionary(Of Integer, PostInfo) = PostsController.GetPostsByBlog(ModuleId, CInt(blogid), Locale, UserInfo.UserID, 1, Settings.WLWRecentPostsMax, "PublishedOnDate DESC", totalRecs)
+   Dim arPosts As Dictionary(Of Integer, PostInfo) = PostsController.GetPostsByBlog(ModuleId, CInt(blogid), Locale, UserInfo.UserID, 0, Settings.WLWRecentPostsMax, "PublishedOnDate DESC", totalRecs)
    For Each Post As PostInfo In arPosts.Values
     posts.Add(ToMwlPost(Post))
    Next
