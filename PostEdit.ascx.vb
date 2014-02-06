@@ -312,8 +312,10 @@ Public Class PostEdit
     End If
 
     ' Add if new, otherwise update
+    Dim publishingUserId As Integer = UserId
+    If BlogContext.Blog.PublishAsOwner Then publishingUserId = BlogContext.Blog.OwnerUserId
     If BlogContext.ContentItemId = -1 Then
-     BlogContext.Post.ContentItemId = PostsController.AddPost(BlogContext.Post, UserId)
+     BlogContext.Post.ContentItemId = PostsController.AddPost(BlogContext.Post, publishingUserId)
      BlogContext.ContentItemId = BlogContext.Post.ContentItemId
      If savedFile <> "" Then ' move file if it was saved
       saveDir = GetPostDirectoryMapPath(BlogContext.Post)
@@ -322,7 +324,7 @@ Public Class PostEdit
       IO.File.Move(savedFile, dest)
      End If
     Else
-     PostsController.UpdatePost(BlogContext.Post, UserId)
+     PostsController.UpdatePost(BlogContext.Post, publishingUserId)
     End If
 
     If firstPublish Then
