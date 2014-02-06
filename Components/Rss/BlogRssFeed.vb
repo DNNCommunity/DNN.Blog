@@ -284,7 +284,7 @@ Namespace Rss
    ' optional elements
    If item.Blog.IncludeAuthorInFeed Then
     writer.WriteElementString("author", String.Format("{0} ({1})", item.Email, item.DisplayName))
-    writer.WriteElementString(nsBlogPre, "author", item.DisplayName)
+    writer.WriteElementString(nsBlogPre, "author", nsBlogFull, item.DisplayName)
    End If
    For Each t As TermInfo In TermsController.GetTermsByPost(item.ContentItemId, Settings.ModuleId, Locale)
     writer.WriteElementString("category", t.LocalizedName)
