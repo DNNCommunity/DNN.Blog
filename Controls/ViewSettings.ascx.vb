@@ -147,6 +147,8 @@ Namespace Controls
    End If
 
    chkShowAllLocales.Checked = ViewSettings.ShowAllLocales
+   chkModifyPageDetails.Checked = ViewSettings.ModifyPageDetails
+
    Try
     ddTemplate.Items.FindByValue(ViewSettings.Template).Selected = True
    Catch ex As Exception
@@ -158,6 +160,7 @@ Namespace Controls
 
    ViewSettings.BlogModuleId = CInt(ddBlogModuleId.SelectedValue)
    ViewSettings.ShowAllLocales = chkShowAllLocales.Checked
+   ViewSettings.ModifyPageDetails = chkModifyPageDetails.Checked
    ViewSettings.BlogId = CInt(ddBlogId.SelectedValue)
    ViewSettings.TermId = CInt(ddTermId.SelectedValue)
    ViewSettings.AuthorId = CInt(ddAuthorId.SelectedValue)

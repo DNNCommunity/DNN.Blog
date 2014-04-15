@@ -12,114 +12,132 @@ Option Explicit On
 
 Namespace Controls
 
- Partial Public Class ViewSettings
+    Partial Public Class ViewSettings
 
-  '''<summary>
-  '''lblBlogModuleId control.
-  '''</summary>
-  '''<remarks>
-  '''Auto-generated field.
-  '''To modify move field declaration from designer file to code-behind file.
-  '''</remarks>
-  Protected WithEvents lblBlogModuleId As Global.System.Web.UI.UserControl
+        '''<summary>
+        '''lblBlogModuleId control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblBlogModuleId As Global.System.Web.UI.UserControl
 
-  '''<summary>
-  '''ddBlogModuleId control.
-  '''</summary>
-  '''<remarks>
-  '''Auto-generated field.
-  '''To modify move field declaration from designer file to code-behind file.
-  '''</remarks>
-  Protected WithEvents ddBlogModuleId As Global.System.Web.UI.WebControls.DropDownList
+        '''<summary>
+        '''ddBlogModuleId control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents ddBlogModuleId As Global.System.Web.UI.WebControls.DropDownList
 
-  '''<summary>
-  '''lblBlogId control.
-  '''</summary>
-  '''<remarks>
-  '''Auto-generated field.
-  '''To modify move field declaration from designer file to code-behind file.
-  '''</remarks>
-  Protected WithEvents lblBlogId As Global.System.Web.UI.UserControl
+        '''<summary>
+        '''lblBlogId control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblBlogId As Global.System.Web.UI.UserControl
 
-  '''<summary>
-  '''ddBlogId control.
-  '''</summary>
-  '''<remarks>
-  '''Auto-generated field.
-  '''To modify move field declaration from designer file to code-behind file.
-  '''</remarks>
-  Protected WithEvents ddBlogId As Global.System.Web.UI.WebControls.DropDownList
+        '''<summary>
+        '''ddBlogId control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents ddBlogId As Global.System.Web.UI.WebControls.DropDownList
 
-  '''<summary>
-  '''lblTermId control.
-  '''</summary>
-  '''<remarks>
-  '''Auto-generated field.
-  '''To modify move field declaration from designer file to code-behind file.
-  '''</remarks>
-  Protected WithEvents lblTermId As Global.System.Web.UI.UserControl
+        '''<summary>
+        '''lblTermId control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblTermId As Global.System.Web.UI.UserControl
 
-  '''<summary>
-  '''ddTermId control.
-  '''</summary>
-  '''<remarks>
-  '''Auto-generated field.
-  '''To modify move field declaration from designer file to code-behind file.
-  '''</remarks>
-  Protected WithEvents ddTermId As Global.System.Web.UI.WebControls.DropDownList
+        '''<summary>
+        '''ddTermId control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents ddTermId As Global.System.Web.UI.WebControls.DropDownList
 
-  '''<summary>
-  '''lblAuthorId control.
-  '''</summary>
-  '''<remarks>
-  '''Auto-generated field.
-  '''To modify move field declaration from designer file to code-behind file.
-  '''</remarks>
-  Protected WithEvents lblAuthorId As Global.System.Web.UI.UserControl
+        '''<summary>
+        '''lblAuthorId control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblAuthorId As Global.System.Web.UI.UserControl
 
-  '''<summary>
-  '''ddAuthorId control.
-  '''</summary>
-  '''<remarks>
-  '''Auto-generated field.
-  '''To modify move field declaration from designer file to code-behind file.
-  '''</remarks>
-  Protected WithEvents ddAuthorId As Global.System.Web.UI.WebControls.DropDownList
+        '''<summary>
+        '''ddAuthorId control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents ddAuthorId As Global.System.Web.UI.WebControls.DropDownList
 
-  '''<summary>
-  '''lblTemplate control.
-  '''</summary>
-  '''<remarks>
-  '''Auto-generated field.
-  '''To modify move field declaration from designer file to code-behind file.
-  '''</remarks>
-  Protected WithEvents lblTemplate As Global.System.Web.UI.UserControl
+        '''<summary>
+        '''lblTemplate control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblTemplate As Global.System.Web.UI.UserControl
 
-  '''<summary>
-  '''ddTemplate control.
-  '''</summary>
-  '''<remarks>
-  '''Auto-generated field.
-  '''To modify move field declaration from designer file to code-behind file.
-  '''</remarks>
-  Protected WithEvents ddTemplate As Global.System.Web.UI.WebControls.DropDownList
+        '''<summary>
+        '''ddTemplate control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents ddTemplate As Global.System.Web.UI.WebControls.DropDownList
 
-  '''<summary>
-  '''lblShowAllLocales control.
-  '''</summary>
-  '''<remarks>
-  '''Auto-generated field.
-  '''To modify move field declaration from designer file to code-behind file.
-  '''</remarks>
-  Protected WithEvents lblShowAllLocales As Global.System.Web.UI.UserControl
+        '''<summary>
+        '''lblShowAllLocales control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblShowAllLocales As Global.System.Web.UI.UserControl
 
-  '''<summary>
-  '''chkShowAllLocales control.
-  '''</summary>
-  '''<remarks>
-  '''Auto-generated field.
-  '''To modify move field declaration from designer file to code-behind file.
-  '''</remarks>
-  Protected WithEvents chkShowAllLocales As Global.System.Web.UI.WebControls.CheckBox
- End Class
+        '''<summary>
+        '''chkShowAllLocales control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents chkShowAllLocales As Global.System.Web.UI.WebControls.CheckBox
+
+        '''<summary>
+        '''lblModifyPageDetails control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblModifyPageDetails As Global.System.Web.UI.UserControl
+
+        '''<summary>
+        '''chkModifyPageDetails control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents chkModifyPageDetails As Global.System.Web.UI.WebControls.CheckBox
+    End Class
 End Namespace

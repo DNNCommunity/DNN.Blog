@@ -283,10 +283,10 @@
     <value>Delete Selected</value>
   </data>
   <data name="lblModifyPageDetails.Help" xml:space="preserve">
-    <value>If checked the module will attempt to adjust the page title based on the blog's context, such as blog title, post title, etc</value>
+    <value>If checked the module will force the page title based on the blog's context, such as blog title, post title, etc</value>
   </data>
   <data name="lblModifyPageDetails.Text" xml:space="preserve">
-    <value>Modify Page Details</value>
+    <value>Force Page Details on ALL modules</value>
   </data>
   <data name="AddCategories.Help" xml:space="preserve">
     <value>Add the following categories (one per line):</value>
