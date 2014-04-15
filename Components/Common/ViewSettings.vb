@@ -37,6 +37,7 @@ Namespace Common
   Public Property Template As String = "[G]_default"
   Public Property BlogModuleId As Integer = -1
   Public Property ShowAllLocales As Boolean = True
+  Public Property ModifyPageDetails As Boolean = False
   Public Property BlogId As Integer = -1
   Public Property TermId As Integer = -1
   Public Property AuthorId As Integer = -1
@@ -57,6 +58,7 @@ Namespace Common
    _allSettings.ReadValue("Template", Template)
    _allSettings.ReadValue("BlogModuleId", BlogModuleId)
    _allSettings.ReadValue("ShowAllLocales", ShowAllLocales)
+   _allSettings.ReadValue("ModifyPageDetails", ModifyPageDetails)
    _allSettings.ReadValue("BlogId", BlogId)
    _allSettings.ReadValue("TermId", TermId)
    _allSettings.ReadValue("AuthorId", AuthorId)
@@ -97,6 +99,7 @@ Namespace Common
    objModules.UpdateTabModuleSetting(tabModuleId, "Template", Template)
    objModules.UpdateTabModuleSetting(tabModuleId, "BlogModuleId", BlogModuleId.ToString)
    objModules.UpdateTabModuleSetting(tabModuleId, "ShowAllLocales", ShowAllLocales.ToString)
+   objModules.UpdateTabModuleSetting(tabModuleId, "ModifyPageDetails", ModifyPageDetails.ToString)
    objModules.UpdateTabModuleSetting(tabModuleId, "BlogId", BlogId.ToString)
    objModules.UpdateTabModuleSetting(tabModuleId, "TermId", TermId.ToString)
    objModules.UpdateTabModuleSetting(tabModuleId, "AuthorId", AuthorId.ToString)
@@ -190,6 +193,7 @@ Namespace Common
    writer.WriteElementString("Template", Template)
    writer.WriteElementString("BlogModuleId", BlogModuleId.ToString)
    writer.WriteElementString("ShowAllLocales", ShowAllLocales.ToString)
+   writer.WriteElementString("ModifyPageDetails", ModifyPageDetails.ToString)
    writer.WriteElementString("BlogId", BlogId.ToString)
    writer.WriteElementString("TermId", TermId.ToString)
    writer.WriteElementString("AuthorId", AuthorId.ToString)
@@ -201,6 +205,7 @@ Namespace Common
    xml.ReadValue("Template", Template)
    xml.ReadValue("BlogModuleId", BlogModuleId)
    xml.ReadValue("ShowAllLocales", ShowAllLocales)
+   xml.ReadValue("ModifyPageDetails", ModifyPageDetails)
    xml.ReadValue("BlogId", BlogId)
    xml.ReadValue("TermId", TermId)
    xml.ReadValue("AuthorId", AuthorId)

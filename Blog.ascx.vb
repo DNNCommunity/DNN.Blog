@@ -79,20 +79,41 @@ Public Class Blog
    AddWLWManifestLink()
 
    If Settings.ModifyPageDetails Then
-    If BlogContext.Post IsNot Nothing Then
-     Page.Title = BlogContext.Post.LocalizedTitle
-     Page.Description = BlogContext.Post.LocalizedSummary
-     Page.KeyWords = String.Join(",", BlogContext.Post.Terms.ToStringArray)
-    ElseIf BlogContext.Blog IsNot Nothing Then
-     Page.Title = BlogContext.Blog.LocalizedTitle
-     Page.Description = BlogContext.Blog.LocalizedDescription
-    ElseIf BlogContext.Author IsNot Nothing Then
-     Page.Title = BlogContext.Author.DisplayName
-     Page.Description = BlogContext.Author.Profile.Biography
-    ElseIf BlogContext.Term IsNot Nothing Then
-     Page.Title = BlogContext.Term.LocalizedName
-     Page.Description = BlogContext.Term.LocalizedDescription
-    End If
+     ' force modify on all modules
+     If Settings.ModifyPageDetails Then
+       If BlogContext.Post IsNot Nothing Then
+         Page.Title = BlogContext.Post.LocalizedTitle
+         Page.Description = BlogContext.Post.LocalizedSummary
+         Page.KeyWords = String.Join(",", BlogContext.Post.Terms.ToStringArray)
+       ElseIf BlogContext.Blog IsNot Nothing Then
+         Page.Title = BlogContext.Blog.LocalizedTitle
+         Page.Description = BlogContext.Blog.LocalizedDescription
+       ElseIf BlogContext.Author IsNot Nothing Then
+         Page.Title = BlogContext.Author.DisplayName
+         Page.Description = BlogContext.Author.Profile.Biography
+       ElseIf BlogContext.Term IsNot Nothing Then
+         Page.Title = BlogContext.Term.LocalizedName
+         Page.Description = BlogContext.Term.LocalizedDescription
+       End If
+     End If
+   Else
+     ' modify on selected modules only
+     If ViewSettings.ModifyPageDetails Then
+       If BlogContext.Post IsNot Nothing Then
+         Page.Title = BlogContext.Post.LocalizedTitle
+         Page.Description = BlogContext.Post.LocalizedSummary
+         Page.KeyWords = String.Join(",", BlogContext.Post.Terms.ToStringArray)
+       ElseIf BlogContext.Blog IsNot Nothing Then
+         Page.Title = BlogContext.Blog.LocalizedTitle
+         Page.Description = BlogContext.Blog.LocalizedDescription
+       ElseIf BlogContext.Author IsNot Nothing Then
+         Page.Title = BlogContext.Author.DisplayName
+         Page.Description = BlogContext.Author.Profile.Biography
+       ElseIf BlogContext.Term IsNot Nothing Then
+         Page.Title = BlogContext.Term.LocalizedName
+         Page.Description = BlogContext.Term.LocalizedDescription
+       End If
+     End If
    End If
 
    If BlogContext.Post IsNot Nothing AndAlso BlogContext.Blog IsNot Nothing Then
