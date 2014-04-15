@@ -29,7 +29,7 @@
  <a href="#" 
   class="blog_comment_actionbtn"
   title="[resx:ReportComment]"
-  onclick="karmaToggle([blog:blogid], [comment:CommentID], 2, '[resx:ReportComment.Confirm]', function() {
+  onclick="karmaToggle([blog:blogid], [comment:CommentID], 2, '[resx:ReportComment.Confirm|jssafe]', function() {
    $('#commentReportLink[comment:CommentID]').hide();
    var el = $('#commentReports[comment:CommentID]');
    var num = parseInt(el.text());

@@ -9,6 +9,6 @@
 <a href="#" 
    class="blog_comment_actionbtn"
    title="[resx:DeleteComment]"
-   onclick="if (confirm('[resx:DeleteComment.Confirm]')) {blogService.deleteComment([blog:blogid], [comment:CommentID], function() 
+   onclick="if (confirm('[resx:DeleteComment.Confirm|jssafe]')) {blogService.deleteComment([blog:blogid], [comment:CommentID], function() 
     {$('#commentDiv[comment:CommentID]').hide()})};return false;">[resx:DeleteComment]</a>
 </span>

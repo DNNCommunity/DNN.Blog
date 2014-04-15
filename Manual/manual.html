@@ -852,7 +852,9 @@ E.g. The entry point for the default template (Template.html) contains the follo
 
 <p>There’s a template object “resx” reserved for resources (i.e. texts that are stored in resource files). The first place the module will look is App_LocalResources/TemplateFilename.ascx.resx. If it can’t find it in there it will look in App_LocalResources/SharedResources.ascx.resx. It will follow the regular cascading lookup pattern to find localized texts. I.e. looking in App_LocalResources/SharedResources.ascx.nl-NL.resx for the nl-NL text.</p>
 
-<p>Note: when using the tokens in your template you need to be aware that this is cade sensitive. So [resx:MyButton.Text] is not the same as [resx:mybutton.text].</p>
+<p>Format: one option is available for the format part of the token: "jsSafe". This will make sure that any quotes get escaped so the text can be used safely in Javascript. E.g. [resx:ServerError|jssafe].</p>
+
+<p>Note: when using the tokens in your template you need to be aware that this is case sensitive. So [resx:MyButton.Text] is not the same as [resx:mybutton.text].</p>
 
 <h4><a id="templatejs"></a>Javascript</h4>
 

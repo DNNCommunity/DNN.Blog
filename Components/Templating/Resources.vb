@@ -60,6 +60,10 @@ Namespace Templating
     res = GetString(strPropertyName, SecondaryResourceFile)
    End If
    If res IsNot Nothing Then
+    Select Case OutputFormat.ToLower
+     Case "js", "jssafe"
+      res = UI.Utilities.ClientAPI.GetSafeJSString(res)
+    End Select
     Return res
    End If
    Return Null.NullString
