@@ -81,7 +81,7 @@ Namespace Common
    ElseIf Security.CanAddPost Then
     EndDate = Nothing
    Else
-    EndDate = Now ' security measure to stop people prying into future posts
+                EndDate = DateTime.Now.ToUniversalTime ' security measure to stop people prying into future posts
    End If
 
    ' security
@@ -134,7 +134,7 @@ Namespace Common
   Public Property ContentItemId As Integer = -1
   Public Property TermId As Integer = -1
   Public Property AuthorId As Integer = -1
-  Public Property EndDate As Date = DateTime.Now
+        Public Property EndDate As Date = DateTime.Now.ToUniversalTime
   Public Property Blog As Entities.Blogs.BlogInfo = Nothing
   Public Property Post As Entities.Posts.PostInfo = Nothing
   Public Property Term As Entities.Terms.TermInfo = Nothing
