@@ -153,17 +153,11 @@
   <data name="lblBlogId.Text" xml:space="preserve">
     <value>Blog To Show</value>
   </data>
-  <data name="lblTermId.Help" xml:space="preserve">
-    <value>If you select a category from this dropdown only posts in that category will be shown</value>
-  </data>
-  <data name="lblTermId.Text" xml:space="preserve">
-    <value>Category To Show</value>
-  </data>
   <data name="lblCategories.Help" xml:space="preserve">
-    <value>If you select a category only posts in that category will be shown</value>
+    <value>If you select one or more categories, only posts in (*any*) of those categories will be shown. If none are seletced, all posts will be shown.</value>
   </data>
   <data name="lblCategories.Text" xml:space="preserve">
-    <value>Category To Show</value>
+    <value>Categories To Show</value>
   </data>
   <data name="lblModifyPageDetails.Help" xml:space="preserve">
     <value>If checked the module will attempt to adjust teh page title based on the blog's context, such as blog title, post title, etc.</value>

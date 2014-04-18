@@ -45,7 +45,6 @@ Namespace Common
     BlogModuleId = blogModule.ViewSettings.BlogModuleId
    End If
    BlogId = blogModule.ViewSettings.BlogId
-   TermId = blogModule.ViewSettings.TermId
    Categories = blogModule.ViewSettings.Categories
    AuthorId = blogModule.ViewSettings.AuthorId
 
@@ -235,10 +234,6 @@ Namespace Common
    End Get
   End Property
 #End Region
-
-Shared Function GetBlogContext(httpContext As HttpContext, viewSettings As Controls.ViewSettings) As BlogContextInfo
-Throw New NotImplementedException
- End Function
 
  End Class
 
