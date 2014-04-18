@@ -31,7 +31,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("DotNetNuke Blog Module")> 
 <Assembly: AssemblyCompany("DotNetNuke Corp.")> 
 <Assembly: AssemblyProduct("http://www.dotnetnuke.com")> 
-<Assembly: AssemblyCopyright("Copyright 2002-2012 by DotNetNuke.")> 
+<Assembly: AssemblyCopyright("Copyright 2002-2014 by DotNetNuke.")> 
 <Assembly: AssemblyTrademark("DotNetNuke")> 
 
 ' Version information for an assembly consists of the following four values:

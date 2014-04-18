@@ -50,6 +50,11 @@
       <HintPath>_References\DotNetNuke.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Satrabel.OpenUrlRewriter, Version=0.1.0.29721, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_References\Satrabel.OpenUrlRewriter.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -106,11 +111,6 @@
     <None Include="_Installation\DNNBlog_OpenUrlRewriter.dnn" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\OpenUrlRewriter\OpenUrlRewriter.csproj">
-      <Project>{863ECE01-EC68-4FB7-8CC4-787BDDF60100}</Project>
-      <Name>OpenUrlRewriter</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\DotNetNuke.Modules.Blog.vbproj">
       <Project>{4E2BCA3B-927C-4AF2-9999-B1C074FD0539}</Project>
       <Name>DotNetNuke.Modules.Blog</Name>

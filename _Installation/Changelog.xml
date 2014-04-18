@@ -41,4 +41,8 @@
   <change type="Fix">Resolved issues with downloading old posts and post categories in WLW</change>
   <change type="Fix">Fixed width issues on a number of admin screen text boxes</change>
  </release>
+ <release version="06.00.05">
+  <change type="Fix">Small fix to RSS author field</change>
+  <change type="Fix">Fix to make publishing as blog owner work as it should</change>
+ </release>
 </changelog>
