@@ -194,8 +194,8 @@ Module editors can edit settings of the module. Those with “Create Blog” per
 ###<a id="parentblog"></a>Parent Blog Module
 Given that this is the first module you’ve stuck on the page, you’ll leave this as it is. But once you add another instance of the Blog module to the page (or another page), you can point that instance to this module by selecting it from the dropdown. Then, that “parent” blog module will be used to draw the data from. Typically you use this to show the data in another fashion somewhere, like an author list, a blog list, or a tag cloud for instance.
 
-###<a id="blogtoshow"></a>Blog/Category/Author To Show
-You can opt to have the module show just a single blog, category or author. Select that here. This way you could have a single themed page somewhere on your site which just shows posts relevant to that page.
+###<a id="blogtoshow"></a>Blog/Categories/Author To Show
+You can opt to have the module show just a single blog, categories or author. Select that here. This way you could have a single themed page somewhere on your site which just shows posts relevant to that page.
 
 ###<a id="template"></a>Template
 Selection of the template to use. The blog module comes with a number of templates “out of the box” that you can use. You can have your own templates stored in the portal home directory as well. More about templates later on.
