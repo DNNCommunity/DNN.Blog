@@ -51,22 +51,31 @@ Namespace Controls
         Protected WithEvents ddBlogId As Global.System.Web.UI.WebControls.DropDownList
 
         '''<summary>
-        '''lblTermId control.
+        '''pnlCategories control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblTermId As Global.System.Web.UI.UserControl
+        Protected WithEvents pnlCategories As Global.System.Web.UI.WebControls.Panel
 
         '''<summary>
-        '''ddTermId control.
+        '''lblCategories control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents ddTermId As Global.System.Web.UI.WebControls.DropDownList
+        Protected WithEvents lblCategories As Global.System.Web.UI.UserControl
+
+        '''<summary>
+        '''ctlCategories control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents ctlCategories As Global.DotNetNuke.Modules.Blog.Controls.CategorySelect
 
         '''<summary>
         '''lblAuthorId control.
