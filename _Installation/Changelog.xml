@@ -44,5 +44,9 @@
  <release version="06.00.05">
   <change type="Fix">Small fix to RSS author field</change>
   <change type="Fix">Fix to make publishing as blog owner work as it should</change>
+  <change type="Enhancement">Added JS Safe protection to resx token replace logic</change>
+  <change type="Fix">Correction to display logic to make sure new posts show up immediately</change>
+  <change type="Enhancement">Modification of page title now configurable per module instance</change>
+  <change type="Enhancement">You can now select multiple categories to show for a specific module instance</change>
  </release>
 </changelog>
