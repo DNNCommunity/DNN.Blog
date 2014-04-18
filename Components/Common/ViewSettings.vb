@@ -40,6 +40,7 @@ Namespace Common
   Public Property ModifyPageDetails As Boolean = False
   Public Property BlogId As Integer = -1
   Public Property TermId As Integer = -1
+  Public Property Categories As String = ""
   Public Property AuthorId As Integer = -1
   Public Property TemplateSettings As New Dictionary(Of String, String)
   Private Property TemplateManager As Templating.TemplateManager
@@ -61,6 +62,7 @@ Namespace Common
    _allSettings.ReadValue("ModifyPageDetails", ModifyPageDetails)
    _allSettings.ReadValue("BlogId", BlogId)
    _allSettings.ReadValue("TermId", TermId)
+   _allSettings.ReadValue("Categories", Categories)
    _allSettings.ReadValue("AuthorId", AuthorId)
    If BlogModuleId > -1 Then ' security check
     Dim parentModule As DotNetNuke.Entities.Modules.ModuleInfo = (New DotNetNuke.Entities.Modules.ModuleController).GetModule(BlogModuleId)
@@ -102,6 +104,7 @@ Namespace Common
    objModules.UpdateTabModuleSetting(tabModuleId, "ModifyPageDetails", ModifyPageDetails.ToString)
    objModules.UpdateTabModuleSetting(tabModuleId, "BlogId", BlogId.ToString)
    objModules.UpdateTabModuleSetting(tabModuleId, "TermId", TermId.ToString)
+   objModules.UpdateTabModuleSetting(tabModuleId, "Categories", Categories.ToString)
    objModules.UpdateTabModuleSetting(tabModuleId, "AuthorId", AuthorId.ToString)
 
    Dim CacheKey As String = "TabModuleSettings" & tabModuleId.ToString

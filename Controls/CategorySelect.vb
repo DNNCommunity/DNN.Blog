@@ -31,6 +31,7 @@ Namespace Controls
 
 #Region " Private Properties "
   Private Property MainControlId As String = ""
+  Private Property catList As String = ""
   Private Property StorageControlId As String = ""
   Protected WithEvents Storage As HiddenField
 #End Region
@@ -70,7 +71,6 @@ Namespace Controls
    MainControlId = Me.ClientID & "_CategorySelect"
    If Me.Page.IsPostBack Then
     ' read return values
-    Dim catList As String = ""
     Me.Page.Request.Params.ReadValue(Storage.ClientID, catList)
     catList = catList.Trim(","c)
     SelectedCategories = New List(Of TermInfo)
@@ -112,6 +112,13 @@ Namespace Controls
    Me.Page.ClientScript.RegisterClientScriptBlock(GetType(String), ClientID, pagescript, True)
 
   End Sub
+#End Region
+
+#Region " Public Functions"
+  Public Overrides Function ToString() As String
+    Return catList
+  End Function
+
 #End Region
 
  End Class
