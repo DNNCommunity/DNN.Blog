@@ -1,6 +1,7 @@
 <%@ Control Language="vb" AutoEventWireup="false" CodeBehind="ViewSettings.ascx.vb" Inherits="DotNetNuke.Modules.Blog.Controls.ViewSettings" %>
 <%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
+<%@ Register TagPrefix="blog" Namespace="DotNetNuke.Modules.Blog.Controls" Assembly="DotNetNuke.Modules.Blog" %>
 
 <fieldset>
 	<div class="dnnFormItem">
@@ -10,11 +11,13 @@
 	<div class="dnnFormItem">
         <dnn:label id="lblBlogId" runat="server" controlname="ddBlogId" suffix=":" />
         <asp:DropDownList runat="server" ID="ddBlogId" DataTextField="LocalizedTitle" DataValueField="BlogId" />
-	</div>			
-	<div class="dnnFormItem">
-        <dnn:label id="lblTermId" runat="server" controlname="ddTermId" suffix=":" />
-        <asp:DropDownList runat="server" ID="ddTermId" DataTextField="LocalizedName" DataValueField="TermId" />
-	</div>			
+	</div>
+    <div class="dnnFormItem">
+        <asp:Panel ID="pnlCategories" runat="server" class="dnnFormItem">
+		    <dnn:Label ID="lblCategories" ResourceKey="lblCategories" runat="server" controlname="dtCategories" suffix=":" />
+		    <blog:CategorySelect ID="ctlCategories" runat="server" />
+	    </asp:Panel>
+    </div>
 	<div class="dnnFormItem">
         <dnn:label id="lblAuthorId" runat="server" controlname="ddAuthorId" suffix=":" />
         <asp:DropDownList runat="server" ID="ddAuthorId" DataTextField="DisplayName" DataValueField="UserId" />

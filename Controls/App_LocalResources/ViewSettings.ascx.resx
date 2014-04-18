@@ -159,7 +159,12 @@
   <data name="lblTermId.Text" xml:space="preserve">
     <value>Category To Show</value>
   </data>
-
+  <data name="lblCategories.Help" xml:space="preserve">
+    <value>If you select a category only posts in that category will be shown</value>
+  </data>
+  <data name="lblCategories.Text" xml:space="preserve">
+    <value>Category To Show</value>
+  </data>
   <data name="lblModifyPageDetails.Help" xml:space="preserve">
     <value>If checked the module will attempt to adjust teh page title based on the blog's context, such as blog title, post title, etc.</value>
   </data>

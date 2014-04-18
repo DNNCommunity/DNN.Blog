@@ -100,6 +100,23 @@ Namespace Entities.Posts
 
   End Function
 
+  Public Shared Function GetPostsByCategory(moduleId As Int32, blogID As Int32, displayLocale As String, categories As String, published As Integer, limitToLocale As String, endDate As Date, authorUserId As Int32, pageIndex As Int32, pageSize As Int32, orderBy As String, ByRef totalRecords As Integer, userId As Integer, userIsAdmin As Boolean) As Dictionary(Of Integer, PostInfo)
+
+   If pageIndex < 0 Then
+    pageIndex = 0
+    pageSize = Integer.MaxValue
+   End If
+
+   Dim res As New Dictionary(Of Integer, PostInfo)
+   Using ir As IDataReader = DataProvider.Instance().GetPostsByCategory(moduleId, blogID, displayLocale, userId, userIsAdmin, categories, published, limitToLocale, endDate, authorUserId, pageIndex, pageSize, orderBy)
+    res = DotNetNuke.Common.Utilities.CBO.FillDictionary(Of Integer, PostInfo)("ContentItemID", ir, False)
+    ir.NextResult()
+    totalRecords = DotNetNuke.Common.Globals.GetTotalRecords(ir)
+   End Using
+   Return GetPostsWithBlog(res, blogID, moduleId, userId, displayLocale)
+
+  End Function
+
   Public Shared Function GetPostsByBlog(moduleId As Int32, blogID As Int32, displayLocale As String, userId As Int32, pageIndex As Int32, pageSize As Int32, orderBy As String, ByRef totalRecords As Integer) As Dictionary(Of Integer, PostInfo)
 
    If pageIndex < 0 Then
@@ -143,6 +160,23 @@ Namespace Entities.Posts
 
    Dim res As New Dictionary(Of Integer, PostInfo)
    Using ir As IDataReader = DataProvider.Instance().SearchPostsByTerm(moduleId, blogID, displayLocale, userId, userIsAdmin, termId, searchText, searchTitle, searchContents, published, limitToLocale, endDate, authorUserId, pageIndex, pageSize, orderBy)
+    res = DotNetNuke.Common.Utilities.CBO.FillDictionary(Of Integer, PostInfo)("ContentItemID", ir, False)
+    ir.NextResult()
+    totalRecords = DotNetNuke.Common.Globals.GetTotalRecords(ir)
+   End Using
+   Return GetPostsWithBlog(res, blogID, moduleId, userId, displayLocale)
+
+  End Function
+
+  Public Shared Function SearchPostsByCategory(moduleId As Int32, blogID As Int32, displayLocale As String, categories As String, searchText As String, searchTitle As Boolean, searchContents As Boolean, published As Integer, limitToLocale As String, endDate As Date, authorUserId As Int32, pageIndex As Int32, pageSize As Int32, orderBy As String, ByRef totalRecords As Integer, userId As Integer, userIsAdmin As Boolean) As Dictionary(Of Integer, PostInfo)
+
+   If pageIndex < 0 Then
+    pageIndex = 0
+    pageSize = Integer.MaxValue
+   End If
+
+   Dim res As New Dictionary(Of Integer, PostInfo)
+   Using ir As IDataReader = DataProvider.Instance().SearchPostsByCategory(moduleId, blogID, displayLocale, userId, userIsAdmin, categories, searchText, searchTitle, searchContents, published, limitToLocale, endDate, authorUserId, pageIndex, pageSize, orderBy)
     res = DotNetNuke.Common.Utilities.CBO.FillDictionary(Of Integer, PostInfo)("ContentItemID", ir, False)
     ir.NextResult()
     totalRecords = DotNetNuke.Common.Globals.GetTotalRecords(ir)
