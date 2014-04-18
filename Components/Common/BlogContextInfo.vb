@@ -45,7 +45,7 @@ Namespace Common
     BlogModuleId = blogModule.ViewSettings.BlogModuleId
    End If
    BlogId = blogModule.ViewSettings.BlogId
-   TermId = blogModule.ViewSettings.TermId
+   Categories = blogModule.ViewSettings.Categories
    AuthorId = blogModule.ViewSettings.AuthorId
 
    Locale = Threading.Thread.CurrentThread.CurrentCulture.Name
@@ -55,6 +55,7 @@ Namespace Common
    context.Request.Params.ReadValue("Blog", BlogId)
    context.Request.Params.ReadValue("Post", ContentItemId)
    context.Request.Params.ReadValue("Term", TermId)
+   context.Request.Params.ReadValue("Categories", Categories)
    context.Request.Params.ReadValue("Author", AuthorId)
    context.Request.Params.ReadValue("end", EndDate)
    context.Request.Params.ReadValue("search", SearchString)
@@ -133,6 +134,7 @@ Namespace Common
   Public Property BlogId As Integer = -1
   Public Property ContentItemId As Integer = -1
   Public Property TermId As Integer = -1
+  Public Property Categories As String = ""
   Public Property AuthorId As Integer = -1
   Public Property EndDate As Date = DateTime.Now.ToUniversalTime
   Public Property Blog As Entities.Blogs.BlogInfo = Nothing
@@ -175,6 +177,8 @@ Namespace Common
      Return (Me.ContentItemId.ToString(OutputFormat, formatProvider))
     Case "termid", "term"
      Return (Me.TermId.ToString(OutputFormat, formatProvider))
+    Case "categories"
+     Return Me.Categories
     Case "authorid", "author"
      Return (Me.AuthorId.ToString(OutputFormat, formatProvider))
     Case "enddate"
@@ -183,8 +187,8 @@ Namespace Common
      Return CBool(BlogId > -1).ToString()
     Case "postselected"
      Return CBool(ContentItemId > -1).ToString()
-    Case "termselected"
-     Return CBool(TermId > -1).ToString()
+    'Case "termselected"
+    ' Return CBool(TermId > -1).ToString()
     Case "authorselected"
      Return CBool(AuthorId > -1).ToString()
     Case "ismultilingualsite"

@@ -59,11 +59,16 @@ Namespace Controls
 
 #Region " Page Events "
   Private Sub Page_Init(sender As Object, e As System.EventArgs) Handles Me.Init
-   If ViewSettings.BlogModuleId > -1 Then
-    BlogModuleId = ViewSettings.BlogModuleId
-   Else
-    BlogModuleId = ModuleId
-   End If
+   Try
+    ctlCategories.ModuleConfiguration = Me.ModuleConfiguration
+    ctlCategories.VocabularyId = Settings.VocabularyId
+    If ViewSettings.BlogModuleId > -1 Then
+     BlogModuleId = ViewSettings.BlogModuleId
+    Else
+     BlogModuleId = ModuleId
+    End If
+   Catch ex As Exception
+   End Try
   End Sub
 
   Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -83,10 +88,6 @@ Namespace Controls
                                                                                                                                                  End Function).OrderBy(Function(b) b.Title)
    ddBlogId.DataBind()
    ddBlogId.Items.Insert(0, New ListItem(LocalizeString("All"), "-1"))
-
-   ddTermId.DataSource = TermsController.GetTermsByVocabulary(BlogModuleId, Settings.VocabularyId, Threading.Thread.CurrentThread.CurrentCulture.Name).Values.OrderBy(Function(t) t.LocalizedName)
-   ddTermId.DataBind()
-   ddTermId.Items.Insert(0, New ListItem(LocalizeString("All"), "-1"))
 
    ddAuthorId.DataSource = PostsController.GetAuthors(BlogModuleId, -1).OrderBy(Function(t) t.DisplayName)
    ddAuthorId.DataBind()
@@ -135,10 +136,23 @@ Namespace Controls
      ddBlogId.Items.FindByValue(ViewSettings.BlogId.ToString).Selected = True
     Catch ex As Exception
     End Try
-    Try
-     ddTermId.Items.FindByValue(ViewSettings.TermId.ToString).Selected = True
-    Catch ex As Exception
-    End Try
+
+    ' New categories control
+    Dim cId As Integer
+    Dim SelectedCategories As New List(Of TermInfo)
+    Dim catList As String = ViewSettings.Categories
+    If Not String.IsNullOrEmpty(catList) Then
+     For Each c As String In catList.Split(","c)
+      If IsNumeric(c) Then
+       cId = Integer.Parse(c)
+       Dim cat As New TermInfo
+       cat.TermId = cId
+       SelectedCategories.Add(cat)
+      End If
+     Next
+    End If
+    ctlCategories.SelectedCategories = SelectedCategories
+
     Try
      ddAuthorId.Items.FindByValue(ViewSettings.AuthorId.ToString).Selected = True
     Catch ex As Exception
@@ -162,7 +176,7 @@ Namespace Controls
    ViewSettings.ShowAllLocales = chkShowAllLocales.Checked
    ViewSettings.ModifyPageDetails = chkModifyPageDetails.Checked
    ViewSettings.BlogId = CInt(ddBlogId.SelectedValue)
-   ViewSettings.TermId = CInt(ddTermId.SelectedValue)
+   ViewSettings.Categories = ctlCategories.ToString
    ViewSettings.AuthorId = CInt(ddAuthorId.SelectedValue)
    ViewSettings.Template = ddTemplate.SelectedValue
    ViewSettings.UpdateSettings()

@@ -39,7 +39,7 @@ Namespace Common
   Public Property ShowAllLocales As Boolean = True
   Public Property ModifyPageDetails As Boolean = False
   Public Property BlogId As Integer = -1
-  Public Property TermId As Integer = -1
+  Public Property Categories As String = ""
   Public Property AuthorId As Integer = -1
   Public Property TemplateSettings As New Dictionary(Of String, String)
   Private Property TemplateManager As Templating.TemplateManager
@@ -60,7 +60,7 @@ Namespace Common
    _allSettings.ReadValue("ShowAllLocales", ShowAllLocales)
    _allSettings.ReadValue("ModifyPageDetails", ModifyPageDetails)
    _allSettings.ReadValue("BlogId", BlogId)
-   _allSettings.ReadValue("TermId", TermId)
+   _allSettings.ReadValue("Categories", Categories)
    _allSettings.ReadValue("AuthorId", AuthorId)
    If BlogModuleId > -1 Then ' security check
     Dim parentModule As DotNetNuke.Entities.Modules.ModuleInfo = (New DotNetNuke.Entities.Modules.ModuleController).GetModule(BlogModuleId)
@@ -101,7 +101,7 @@ Namespace Common
    objModules.UpdateTabModuleSetting(tabModuleId, "ShowAllLocales", ShowAllLocales.ToString)
    objModules.UpdateTabModuleSetting(tabModuleId, "ModifyPageDetails", ModifyPageDetails.ToString)
    objModules.UpdateTabModuleSetting(tabModuleId, "BlogId", BlogId.ToString)
-   objModules.UpdateTabModuleSetting(tabModuleId, "TermId", TermId.ToString)
+   objModules.UpdateTabModuleSetting(tabModuleId, "Categories", Categories.ToString)
    objModules.UpdateTabModuleSetting(tabModuleId, "AuthorId", AuthorId.ToString)
 
    Dim CacheKey As String = "TabModuleSettings" & tabModuleId.ToString
@@ -172,8 +172,8 @@ Namespace Common
       Return PropertyAccess.FormatString(CStr(TemplateSettings(strPropertyName)), strFormat)
      End If
      Select Case strPropertyName.ToLower
-      Case "termid"
-       Return (Me.TermId.ToString(OutputFormat, formatProvider))
+      Case "termid", "categories" ' termid is for legacy purposes
+       Return Me.Categories
       Case "authorid"
        Return (Me.AuthorId.ToString(OutputFormat, formatProvider))
       Case "blogid"
@@ -195,7 +195,6 @@ Namespace Common
    writer.WriteElementString("ShowAllLocales", ShowAllLocales.ToString)
    writer.WriteElementString("ModifyPageDetails", ModifyPageDetails.ToString)
    writer.WriteElementString("BlogId", BlogId.ToString)
-   writer.WriteElementString("TermId", TermId.ToString)
    writer.WriteElementString("AuthorId", AuthorId.ToString)
    writer.WriteEndElement() ' viewsettings
   End Sub
@@ -207,7 +206,6 @@ Namespace Common
    xml.ReadValue("ShowAllLocales", ShowAllLocales)
    xml.ReadValue("ModifyPageDetails", ModifyPageDetails)
    xml.ReadValue("BlogId", BlogId)
-   xml.ReadValue("TermId", TermId)
    xml.ReadValue("AuthorId", AuthorId)
   End Sub
 #End Region

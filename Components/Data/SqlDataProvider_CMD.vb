@@ -103,6 +103,10 @@ Namespace Data
    Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "GetPostsByTerm", moduleId, blogID, displayLocale, userId, userIsAdmin, termID, published, GetNull(limitToLocale), GetNull(endDate), authorUserId, pageIndex, pageSize, orderBy), IDataReader)
   End Function
 
+  Public Overrides Function GetPostsByCategory(moduleId As Int32, blogID As Int32, displayLocale As String, userId As Int32, userIsAdmin As Boolean, categories As String, published As Int32, limitToLocale As String, endDate As Date, authorUserId As Int32, pageIndex As Int32, pageSize As Int32, orderBy As String) As IDataReader
+   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "GetPostsByCategory", moduleId, blogID, displayLocale, userId, userIsAdmin, categories, published, GetNull(limitToLocale), GetNull(endDate), authorUserId, pageIndex, pageSize, orderBy), IDataReader)
+  End Function
+
   Public Overrides Function GetTerm(termId As Int32, moduleId As Int32, locale As String) As IDataReader
    Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "GetTerm", termId, moduleId, locale), IDataReader)
   End Function
@@ -138,6 +142,11 @@ Namespace Data
   Public Overrides Function SearchPostsByTerm(moduleId As Int32, blogID As Int32, displayLocale As String, userId As Int32, userIsAdmin As Boolean, termID As Int32, searchText As String, searchTitle As Boolean, searchContents As Boolean, published As Int32, limitToLocale As String, endDate As Date, authorUserId As Int32, pageIndex As Int32, pageSize As Int32, orderBy As String) As IDataReader
    Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "SearchPostsByTerm", moduleId, blogID, displayLocale, userId, userIsAdmin, termID, searchText, searchTitle, searchContents, published, GetNull(limitToLocale), GetNull(endDate), authorUserId, pageIndex, pageSize, orderBy), IDataReader)
   End Function
+
+  Public Overrides Function SearchPostsByCategory(moduleId As Int32, blogID As Int32, displayLocale As String, userId As Int32, userIsAdmin As Boolean, categories As String, searchText As String, searchTitle As Boolean, searchContents As Boolean, published As Int32, limitToLocale As String, endDate As Date, authorUserId As Int32, pageIndex As Int32, pageSize As Int32, orderBy As String) As IDataReader
+   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "SearchPostsByTerm", moduleId, blogID, displayLocale, userId, userIsAdmin, categories, searchText, searchTitle, searchContents, published, GetNull(limitToLocale), GetNull(endDate), authorUserId, pageIndex, pageSize, orderBy), IDataReader)
+  End Function
+
 
   Public Overrides Sub SetBlogLocalization(blogID As Int32, locale As String, title As String, description As String)
    SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "SetBlogLocalization", blogID, locale, title, description)
