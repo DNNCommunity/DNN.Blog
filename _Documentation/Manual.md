@@ -122,8 +122,8 @@ Allow bloggers to use Windows Live Writer (see [separate chapter about this tool
 ###<a id="wlwmaxposts"></a>WLW Max Recent Posts
 When bloggers connect using Windows Live Writer, the program retrieves a list of last posts which allow the blogger to edit those. Here you specify how many posts will be retrieved at most.
 
-###<a id="modpagedetails"></a>Modify Page Details
-When selected the module attempts to change the page title and inject the post title whenever it can. There is no guarantee as other pieces (the DNN framework or other modules) may attempt to do the same.
+###<a id="modpagedetails"></a>Force Page Details on ALL modules
+When selected the module attempts to change the page title and inject the post title whenever it can for all of the installed blog modules. There is no guarantee as other pieces (the DNN framework or other modules) may attempt to do the same.
 
 ###<a id="rsssettings"></a>RSS
 
@@ -203,6 +203,8 @@ Selection of the template to use. The blog module comes with a number of templat
 ###<a id="showalllanguages"></a>Show All Languages
 Posts are labeled with the language they’re written in. When showing a list of posts, you can opt to either show all posts or only those posts labeled with the language currently selected in DNN.
 
+###<a id="showalllanguages"></a>Modify Page Details
+When selected the module attempts to change the page title and inject the post title whenever it can. There is no guarantee as other pieces (the DNN framework or other modules) may attempt to do the same.
 
 
 ##<a id="managescreen"></a>Manage Screen
