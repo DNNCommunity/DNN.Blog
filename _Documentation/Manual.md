@@ -122,8 +122,8 @@ Allow bloggers to use Windows Live Writer (see [separate chapter about this tool
 ###<a id="wlwmaxposts"></a>WLW Max Recent Posts
 When bloggers connect using Windows Live Writer, the program retrieves a list of last posts which allow the blogger to edit those. Here you specify how many posts will be retrieved at most.
 
-###<a id="modpagedetails"></a>Modify Page Details
-When selected the module attempts to change the page title and inject the post title whenever it can. There is no guarantee as other pieces (the DNN framework or other modules) may attempt to do the same.
+###<a id="modpagedetails"></a>Force Page Details on ALL modules
+When selected the module attempts to change the page title and inject the post title whenever it can for all of the installed blog modules. There is no guarantee as other pieces (the DNN framework or other modules) may attempt to do the same.
 
 ###<a id="rsssettings"></a>RSS
 
@@ -194,8 +194,8 @@ Module editors can edit settings of the module. Those with “Create Blog” per
 ###<a id="parentblog"></a>Parent Blog Module
 Given that this is the first module you’ve stuck on the page, you’ll leave this as it is. But once you add another instance of the Blog module to the page (or another page), you can point that instance to this module by selecting it from the dropdown. Then, that “parent” blog module will be used to draw the data from. Typically you use this to show the data in another fashion somewhere, like an author list, a blog list, or a tag cloud for instance.
 
-###<a id="blogtoshow"></a>Blog/Category/Author To Show
-You can opt to have the module show just a single blog, category or author. Select that here. This way you could have a single themed page somewhere on your site which just shows posts relevant to that page.
+###<a id="blogtoshow"></a>Blog/Categories/Author To Show
+You can opt to have the module show just a single blog, categories or author. Select that here. This way you could have a single themed page somewhere on your site which just shows posts relevant to that page.
 
 ###<a id="template"></a>Template
 Selection of the template to use. The blog module comes with a number of templates “out of the box” that you can use. You can have your own templates stored in the portal home directory as well. More about templates later on.
@@ -203,6 +203,8 @@ Selection of the template to use. The blog module comes with a number of templat
 ###<a id="showalllanguages"></a>Show All Languages
 Posts are labeled with the language they’re written in. When showing a list of posts, you can opt to either show all posts or only those posts labeled with the language currently selected in DNN.
 
+###<a id="showalllanguages"></a>Modify Page Details
+When selected the module attempts to change the page title and inject the post title whenever it can. There is no guarantee as other pieces (the DNN framework or other modules) may attempt to do the same.
 
 
 ##<a id="managescreen"></a>Manage Screen

@@ -1,29 +1,21 @@
-﻿IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Categories_tbl') AND type IN (N'FN', N'IF', N'TF'))
- DROP FUNCTION {databaseOwner}{objectQualifier}Blog_Categories_tbl
+﻿/******* Migrate TermId to Categories setting *******/
+UPDATE {databaseOwner}{objectQualifier}TabModuleSettings
+SET SettingValue=''
+FROM {databaseOwner}{objectQualifier}TabModuleSettings tms
+ INNER JOIN {databaseOwner}{objectQualifier}TabModules tm on tm.TabModuleID=tms.TabModuleID
+ INNER JOIN {databaseOwner}{objectQualifier}Modules m ON m.ModuleID=tm.ModuleID
+ INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions md ON md.ModuleDefID=m.ModuleDefID AND md.DefinitionName='DNNBlog.Blog'
+WHERE tms.SettingName='TermId'
+ AND tms.SettingValue='-1'
 GO
 
-CREATE FUNCTION {databaseOwner}{objectQualifier}Blog_Categories_tbl (@list nvarchar(MAX))
-   RETURNS @tbl TABLE (number int NOT NULL) AS
-BEGIN
-   DECLARE @pos        int,
-           @nextpos    int,
-           @valuelen   int
-
-   SELECT @pos = 0, @nextpos = 1
-
-   WHILE @nextpos > 0
-   BEGIN
-      SELECT @nextpos = charindex(',', @list, @pos + 1)
-      SELECT @valuelen = CASE WHEN @nextpos > 0
-                              THEN @nextpos
-                              ELSE len(@list) + 1
-                         END - @pos - 1
-      INSERT @tbl (number)
-         VALUES (convert(int, substring(@list, @pos + 1, @valuelen)))
-      SELECT @pos = @nextpos
-   END
-   RETURN
-END
+UPDATE {databaseOwner}{objectQualifier}TabModuleSettings
+SET SettingName='Categories'
+FROM {databaseOwner}{objectQualifier}TabModuleSettings tms
+ INNER JOIN {databaseOwner}{objectQualifier}TabModules tm on tm.TabModuleID=tms.TabModuleID
+ INNER JOIN {databaseOwner}{objectQualifier}Modules m ON m.ModuleID=tm.ModuleID
+ INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions md ON md.ModuleDefID=m.ModuleDefID AND md.DefinitionName='DNNBlog.Blog'
+WHERE tms.SettingName='TermId'
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetPostsByCategory') AND type in (N'P', N'PC'))
@@ -128,7 +120,7 @@ FROM
  {databaseOwner}{objectQualifier}Blog_PostList(@DisplayLocale) p
  INNER JOIN {databaseOwner}{objectQualifier}ContentItems_Tags t ON t.ContentItemID=p.ContentItemId
  INNER JOIN @Blogs b ON b.BlogID=p.BlogID
- INNER JOIN Blog_Categories_tbl(@Categories) bc ON t.TermID = bc.number
+ INNER JOIN {databaseOwner}{objectQualifier}Blog_Split(@Categories,',') bc ON t.TermID = bc.s
 WHERE
  (p.BlogID = @BlogID OR @BlogID=-1)
  AND (p.PublishedOnDate < @EndDate OR @EndDate IS NULL)
@@ -144,7 +136,7 @@ FROM
  {databaseOwner}{objectQualifier}Blog_PostList(@DisplayLocale) p
  INNER JOIN {databaseOwner}{objectQualifier}ContentItems_Tags t ON t.ContentItemID=p.ContentItemId 
  INNER JOIN @Blogs b ON b.BlogID=p.BlogID
- INNER JOIN Blog_Categories_tbl(@Categories) bc ON t.TermID = bc.number
+ INNER JOIN {databaseOwner}{objectQualifier}Blog_Split(@Categories,',') bc ON t.TermID = bc.s
 WHERE
  (p.BlogID = @BlogID OR @BlogID=-1)
  AND (p.PublishedOnDate < @EndDate OR @EndDate IS NULL)
@@ -260,7 +252,7 @@ FROM
  {databaseOwner}{objectQualifier}Blog_PostList(@DisplayLocale) p
  INNER JOIN {databaseOwner}{objectQualifier}ContentItems_Tags t ON t.ContentItemID=p.ContentItemId
  INNER JOIN @Blogs b ON b.BlogID=p.BlogID
- INNER JOIN Blog_Categories_tbl(@Categories) bc ON t.TermID = bc.number
+ INNER JOIN {databaseOwner}{objectQualifier}Blog_Split(@Categories,',') bc ON t.TermID = bc.s
 WHERE
  ((p.Title LIKE '%'+@SearchText+'%' AND @SearchTitle=1) OR (p.Content LIKE '%'+@SearchText+'%' AND @SearchContents=1))
  AND (p.BlogID = @BlogID OR @BlogID=-1)
@@ -277,7 +269,7 @@ FROM
  {databaseOwner}{objectQualifier}Blog_PostList(@DisplayLocale) p
  INNER JOIN {databaseOwner}{objectQualifier}ContentItems_Tags t ON t.ContentItemID=p.ContentItemId
  INNER JOIN @Blogs b ON b.BlogID=p.BlogID
- INNER JOIN Blog_Categories_tbl(@Categories) bc ON t.TermID = bc.number
+ INNER JOIN {databaseOwner}{objectQualifier}Blog_Split(@Categories,',') bc ON t.TermID = bc.s
 WHERE
  ((p.Title LIKE '%'+@SearchText+'%' AND @SearchTitle=1) OR (p.Content LIKE '%'+@SearchText+'%' AND @SearchContents=1))
  AND (p.BlogID = @BlogID OR @BlogID=-1)

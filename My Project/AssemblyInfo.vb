@@ -31,7 +31,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("DotNetNuke Blog Module")> 
 <Assembly: AssemblyCompany("DotNetNuke Corp.")> 
 <Assembly: AssemblyProduct("http://www.dotnetnuke.com")> 
-<Assembly: AssemblyCopyright("Copyright 2002-2012 by DotNetNuke.")> 
+<Assembly: AssemblyCopyright("Copyright 2002-2014 by DotNetNuke.")> 
 <Assembly: AssemblyTrademark("DotNetNuke")> 
 
 ' Version information for an assembly consists of the following four values:
@@ -44,8 +44,8 @@ Imports System.Runtime.InteropServices
 ' You can specify all the values or you can default the Build and Revision Numbers 
 ' by using the '*' as shown below:
 
-<Assembly: AssemblyVersion("06.00.04")> 
+<Assembly: AssemblyVersion("06.00.05")> 
 
 <Assembly: Guid("49cae2ac-30c7-45fe-8663-948e1543d8d3")> 
-<Assembly: AssemblyInformationalVersion("06.00.04")> 
-<Assembly: AssemblyFileVersion("06.00.04")> 
+<Assembly: AssemblyInformationalVersion("06.00.05")> 
+<Assembly: AssemblyFileVersion("06.00.05")> 

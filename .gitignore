@@ -163,3 +163,4 @@ _Packages/
 Documentation/
 _OpenUrlRewriter/_References/
 _Documentation/_Resources/
+*.fr-FR.resx
