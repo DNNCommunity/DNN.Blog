@@ -35,10 +35,10 @@ Namespace Templating
     TemplateRelPath = "~" & TemplatePath.Substring(DotNetNuke.Common.ApplicationPath.Length)
     TemplateMapPath = HttpContext.Current.Server.MapPath(TemplatePath)
    Else
-    TemplatePath = portalsettings.HomeDirectory & "/Blog/Templates/" & Mid(template, 4) & "/"
+    TemplatePath = portalsettings.HomeDirectory.TrimEnd("/"c) & "/Blog/Templates/" & Mid(template, 4) & "/"
     Dim pi As PortalInfo = (New PortalController).GetPortal(portalsettings.PortalId)
-    TemplateRelPath = "~/" & pi.HomeDirectory & "/" & Mid(template, 4) & "/"
-    TemplateMapPath = portalsettings.HomeDirectoryMapPath & "\Blog\Templates\" & Mid(template, 4) & "\"
+    TemplateRelPath = "~/" & pi.HomeDirectory.TrimEnd("/"c) & "/Blog/Templates/" & Mid(template, 4) & "/"
+    TemplateMapPath = portalsettings.HomeDirectoryMapPath.TrimEnd("\"c) & "\Blog\Templates\" & Mid(template, 4) & "\"
    End If
   End Sub
 
