@@ -1,4 +1,4 @@
-﻿@import url("css/font-awesome.css"); /* Compile */
+﻿@import url("css/font-awesome.min.css"); /* Compile */
 .icon16, a.icon16, a.icon16:link, a.icon16:visited
 {
  font-size: 16px !important;
