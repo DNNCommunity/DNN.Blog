@@ -13,7 +13,7 @@
  selectableDateRange: [{
   from: new Date(2000, 1, 1), to: new Date([date:now|yyyy], [date:now|MM], [date:now|dd])
  }],
- selectedDate: new Date([query:enddate|yyyy], [query:enddate|MM]-1, [query:enddate|dd]),
+ selectedDate: new Date([date:now|yyyy], [date:now|MM]-1, [date:now|dd]),
  specialDates: [
   [subtemplate|CalendarItem.html|posts]
   {date: new Date('[datetime:now|yyyy/MM/dd]'), data: {}, cssClass: 'selected'}
