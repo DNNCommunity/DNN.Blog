@@ -31,7 +31,7 @@ Namespace Rss
 
 #Region " Constants "
   Private Const nsBlogPre As String = "blog"
-  Private Const nsBlogFull As String = "http://www.dotnetnuke.com/blog/"
+  Private Const nsBlogFull As String = "http://www.dnnsoftware.com/blog"
   Private Const nsSlashPre As String = "slash"
   Private Const nsSlashFull As String = "http://purl.org/rss/1.0/modules/slash/"
   Private Const nsAtomPre As String = "atom"
@@ -88,22 +88,27 @@ Namespace Rss
    RecordsToSend = settings.RssDefaultNrItems
    ImageWidth = settings.RssImageWidth
    ImageHeight = settings.RssImageHeight
-   ImageHandlerUrl = ResolveUrl(glbImageHandlerPath)
+   'ImageHandlerUrl = ResolveUrl(glbImageHandlerPath)
+   Dim port As String = String.Empty
+   If HttpContext.Current.Request.Url.Port <> 80 Then
+    port = ":" & HttpContext.Current.Request.Url.Port.ToString()
+   End If
+   ImageHandlerUrl = String.Format("{0}://{1}{2}{3}", HttpContext.Current.Request.Url.Scheme, HttpContext.Current.Request.Url.Host, port, VirtualPathUtility.ToAbsolute(glbImageHandlerPath))
 
    ' Read Request Values
    reqParams.ReadValue("blog", BlogId)
    reqParams.ReadValue("blogid", BlogId)
    reqParams.ReadValue("term", TermId)
    reqParams.ReadValue("termid", TermId)
-   If settings.RssMaxNrItems > 0 Then
+   If Settings.RssMaxNrItems > 0 Then
     reqParams.ReadValue("recs", RecordsToSend)
-    If RecordsToSend > settings.RssMaxNrItems Then RecordsToSend = settings.RssMaxNrItems
+    If RecordsToSend > Settings.RssMaxNrItems Then RecordsToSend = Settings.RssMaxNrItems
    End If
-   If settings.RssImageSizeAllowOverride Then
+   If Settings.RssImageSizeAllowOverride Then
     reqParams.ReadValue("w", ImageWidth)
     reqParams.ReadValue("h", ImageHeight)
    End If
-   If settings.RssAllowContentInFeed Then
+   If Settings.RssAllowContentInFeed Then
     reqParams.ReadValue("body", IncludeContents)
    End If
    reqParams.ReadValue("search", Search)
@@ -121,8 +126,8 @@ Namespace Rss
     If m IsNot Nothing Then
      Title = m.ModuleTitle
     End If
-    FeedEmail = settings.RssEmail
-    Copyright = settings.RssDefaultCopyright
+    FeedEmail = Settings.RssEmail
+    Copyright = Settings.RssDefaultCopyright
    Else
     Title = Blog.Title
     Description = Blog.Description
@@ -139,14 +144,14 @@ Namespace Rss
    Link = ApplicationURL()
    If Blog IsNot Nothing Then Link &= String.Format("&blog={0}", BlogId)
    If Term IsNot Nothing Then Link &= String.Format("&term={0}", TermId)
-   If RecordsToSend <> settings.RssDefaultNrItems Then Link &= String.Format("&recs={0}", RecordsToSend)
-   If ImageWidth <> settings.RssImageWidth Then Link &= String.Format("&w={0}", ImageWidth)
-   If ImageHeight <> settings.RssImageHeight Then Link &= String.Format("&h={0}", ImageHeight)
+   If RecordsToSend <> Settings.RssDefaultNrItems Then Link &= String.Format("&recs={0}", RecordsToSend)
+   If ImageWidth <> Settings.RssImageWidth Then Link &= String.Format("&w={0}", ImageWidth)
+   If ImageHeight <> Settings.RssImageHeight Then Link &= String.Format("&h={0}", ImageHeight)
    If IncludeContents Then Link &= "&body=true"
    If Language <> "" Then Link &= String.Format("&language={0}", Language)
    If IsSearchFeed Then Link &= String.Format("&search={0}&t={1}&c={2}", HttpUtility.UrlEncode(Search), SearchTitle, SearchContents)
    CacheFile = Link.Substring(Link.IndexOf("?"c) + 1).Replace("&", "+").Replace("=", "-")
-   CacheFile = String.Format("{0}\Blog\RssCache\{1}.resources", PortalSettings.HomeDirectoryMapPath, CacheFile)
+   CacheFile = String.Format("{0}\Blog\RssCache\{1}.resources", PortalSettings.HomeDirectoryMapPath.TrimEnd("\"c), CacheFile)
    Link = FriendlyUrl(PortalSettings.ActiveTab, Link, GetSafePageName(Title))
 
    ' Check Cache
@@ -251,7 +256,7 @@ Namespace Rss
    End If
    ' extended elements
    output.WriteStartElement(nsAtomPre, "link", nsAtomFull)
-   output.WriteAttributeString("href", HttpContext.Current.Request.Url.PathAndQuery)
+   output.WriteAttributeString("href", HttpContext.Current.Request.Url.AbsoluteUri)
    output.WriteAttributeString("rel", "self")
    output.WriteAttributeString("type", "application/rss+xml")
    output.WriteEndElement() ' atom:link
@@ -289,7 +294,13 @@ Namespace Rss
    For Each t As TermInfo In TermsController.GetTermsByPost(item.ContentItemId, Settings.ModuleId, Locale)
     writer.WriteElementString("category", t.LocalizedName)
    Next
-   writer.WriteElementString("guid", String.Format("post={0}", item.ContentItemId))
+
+   ' guid needs to have the isPermaLink=false attribute for some rss readers
+   writer.WriteStartElement("guid")
+   writer.WriteAttributeString("isPermaLink", "true")
+   writer.WriteRaw(String.Format("{0}", item.PermaLink))
+   writer.WriteEndElement()
+
    writer.WriteElementString("pubDate", item.PublishedOnDate.ToString("r"))
    ' extensions
    If item.Blog.IncludeImagesInFeed And item.Image <> "" Then
