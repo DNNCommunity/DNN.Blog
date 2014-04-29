@@ -1,3 +1,4 @@
+function pageLoad(sender, args) {
 (function ($, Sys) {
  $(document).ready(function () {
   $('#[StorageControlId]').val('[CatIdList]');
@@ -16,3 +17,4 @@
   })
  });
 } (jQuery, window.Sys));
+}
