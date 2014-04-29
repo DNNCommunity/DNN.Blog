@@ -7,11 +7,11 @@
  <asp:LinkButton runat="server" ID="cmdEditPost" resourcekey="cmdEditPost" Visible="false" CssClass="dnnSecondaryAction" />
  <asp:LinkButton runat="server" ID="cmdBlog" resourcekey="cmdBlog" Visible="false" CssClass="dnnPrimaryAction" />&nbsp;
  <div style="float:right">
-  <a href="#" id="doclink" runat="server" visible="false"><i class="fa fa-book fa-fw icon16"></i>&nbsp;</a>
-  <a href="<%=DotNetNuke.Common.Globals.NavigateUrl()%>" id="homelink" title="<%=LocalizeString("Home") %>"><i class="fa fa-home fa-fw icon16"></i>&nbsp;</a>
-  <a href="#" id="wlwlink" runat="server"><i class="fa fa-pencil fa-fw icon16"></i>&nbsp;</a>
-  <a href="<%=RssLink%>" id="rsslink<%=ModuleId %>" title="<%=LocalizeString("RSS") %>" target="_blank"><i class="fa fa-rss fa-fw icon16"></i>&nbsp;</a>
-  <a href="#" id="searchlink<%=ModuleId %>" title="<%=LocalizeString("Search") %>"><i class="fa fa-search fa-fw icon16"></i>&nbsp;</a>
+  <a href="#" id="doclink" runat="server" class="blogicon-book icon16" visible="false">&nbsp;</a>
+  <a href="<%=DotNetNuke.Common.Globals.NavigateUrl()%>" id="homelink" class="blogicon-home icon16" title="<%=LocalizeString("Home") %>">&nbsp;</a>
+  <a href="#" id="wlwlink" runat="server" class="blogicon-pencil icon16">&nbsp;</a>
+  <a href="<%=RssLink%>" id="rsslink<%=ModuleId %>" title="<%=LocalizeString("RSS") %>" class="blogicon-rss icon16">&nbsp;</a>
+  <a href="#" id="searchlink<%=ModuleId %>" title="<%=LocalizeString("Search") %>" class="blogicon-search icon16">&nbsp;</a>
  </div>
 </div>
 <div class="dnnDialog" id="pnlCopyModule" runat="server">

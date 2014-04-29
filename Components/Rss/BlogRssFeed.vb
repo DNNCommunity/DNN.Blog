@@ -31,7 +31,7 @@ Namespace Rss
 
 #Region " Constants "
   Private Const nsBlogPre As String = "blog"
-  Private Const nsBlogFull As String = "http://www.dnnsoftware.com/blog"
+  Private Const nsBlogFull As String = "http://www.dotnetnuke.com/blog/"
   Private Const nsSlashPre As String = "slash"
   Private Const nsSlashFull As String = "http://purl.org/rss/1.0/modules/slash/"
   Private Const nsAtomPre As String = "atom"
@@ -88,7 +88,6 @@ Namespace Rss
    RecordsToSend = settings.RssDefaultNrItems
    ImageWidth = settings.RssImageWidth
    ImageHeight = settings.RssImageHeight
-   'ImageHandlerUrl = ResolveUrl(glbImageHandlerPath)
    Dim port As String = String.Empty
    If HttpContext.Current.Request.Url.Port <> 80 Then
     port = ":" & HttpContext.Current.Request.Url.Port.ToString()

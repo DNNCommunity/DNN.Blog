@@ -177,7 +177,7 @@ Namespace Data
   End Function
 
   Public Overrides Sub UpdatePost(allowComments As Boolean, blogID As Int32, content As String, contentItemId As Int32, copyright As String, displayCopyright As Boolean, image As String, locale As String, published As Boolean, publishedOnDate As Date, summary As String, termIds As String, title As String, viewCount As Int32, updatedByUser As Int32)
-   SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "UpdatePost", allowComments, blogID, content, contentItemId, copyright, displayCopyright, image, locale, published, publishedOnDate, summary, termIds, title, viewCount, updatedByUser)
+   SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "UpdatePost", allowComments, blogID, content, contentItemId, copyright, displayCopyright, image, GetNull(locale), published, publishedOnDate, summary, termIds, title, viewCount, updatedByUser)
   End Sub
 
   Public Overrides Sub DeletePost(contentItemId As Int32)

@@ -21,9 +21,9 @@
    </HeaderTemplate>
    <ItemTemplate>
     <tr class="dnnGridItem">
-     <td><a href="<%# EditUrl("Blog", Eval("BlogId"), "BlogEdit") %>" title="Edit"><i class="fa fa-pencil-square-o icon16"></i></a></td>
-     <td><a href="<%# EditUrl("Blog", Eval("BlogId"), "BlogImport") %>" title="Import"><i class="fa fa-download icon16"></i></a></td>
-     <td><a href="#" title="Export" data-blogid="<%# Eval("BlogId") %>"><i class="fa fa-upload icon16 exportlink"></i></a></td>
+     <td><a href="<%# EditUrl("Blog", Eval("BlogId"), "BlogEdit") %>" class="blogicon-edit icon16" title="Edit"></a></td>
+     <td><a href="<%# EditUrl("Blog", Eval("BlogId"), "BlogImport") %>" class="blogicon-download-alt icon16" title="Import"></a></td>
+     <td><a href="#" class="blogicon-upload-alt icon16 exportlink" title="Export" data-blogid="<%# Eval("BlogId") %>"></a></td>
      <td><%# Eval("Title") %></td>
      <td><%# Eval("DisplayName") %></td>
     </tr>
@@ -47,18 +47,21 @@
       <ItemStyle Width="90px"></ItemStyle>
       <ItemTemplate>
        <a href="<%# EditUrl("Post", Eval("ContentItemId"), "PostEdit") %>"
+          class="blogicon-edit icon16" 
           title="Edit"
-          style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Blog.CanEdit OR BlogContext.Security.CanEditThisPost(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo)), "inline", "none") %>"><i class="fa fa-pencil-square-o icon16"></i></a>
+          style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Blog.CanEdit OR BlogContext.Security.CanEditThisPost(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo)), "inline", "none") %>"></a>
        <a href="#" 
           onclick="if (confirm('<%= LocalizeJSString("DeletePost") %>')) {blogService.deletePost(<%# Eval("BlogID") %>, <%# Eval("ContentItemID") %>, function() {$('#cmdDeletePost<%# Eval("ContentItemID") %>').parent().parent().hide()})};return false;"
           id="cmdDeletePost<%# Eval("ContentItemID") %>"
+          class="blogicon-remove icon16" 
           title="Delete"
-          style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Blog.CanEdit OR BlogContext.Security.CanEditThisPost(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo)), "inline", "none") %>"><i class="fa fa-times icon16"></i></a>
+          style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Blog.CanEdit OR BlogContext.Security.CanEditThisPost(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo)), "inline", "none") %>"></a>
        <a href="#" 
-          onclick="if (confirm('<%= LocalizeJSString("ApprovePost") %>')) {blogService.approvePost(<%# Eval("BlogID") %>, <%# Eval("ContentItemID") %>, function() {$('#cmdApprovePost<%# Eval("ContentItemID") %>').hide();$('#approveTick<%# Eval("ContentItemID") %>').removeClass('fa fa-times icon16').addClass('fa fa-check icon16') })};return false;" 
+          onclick="if (confirm('<%= LocalizeJSString("ApprovePost") %>')) {blogService.approvePost(<%# Eval("BlogID") %>, <%# Eval("ContentItemID") %>, function() {$('#cmdApprovePost<%# Eval("ContentItemID") %>').hide();$('#approveTick<%# Eval("ContentItemID") %>').text('&#10003;')})};return false;" 
           id="cmdApprovePost<%# Eval("ContentItemID") %>"
+          class="blogicon-ok icon16" 
           title="Approve"
-          style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Blog.CanApprove AND NOT CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Published, "inline", "none") %>"><i class="fa fa-check icon16"></i></a>
+          style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Blog.CanApprove AND NOT CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Published, "inline", "none") %>"></a>
       </ItemTemplate>
      </dnn:DnnGridTemplateColumn>
      <dnn:DnnGridBoundColumn datafield="PublishedOnDate" headertext="Date" AllowSorting="True" SortExpression="PublishedOnDate" DataFormatString="{0:g}" />
@@ -66,7 +69,7 @@
      <dnn:DnnGridTemplateColumn HeaderText="Published">
       <ItemStyle Width="30px" HorizontalAlign="Center"></ItemStyle>
       <ItemTemplate>
-       <i class="fa fa-<%# IIf(Eval("Published"), "check", "times")%> icon16" id="approveTick<%# Eval("ContentItemID") %>"></i>
+       <span class="blogicon-<%# IIf(Eval("Published"), "ok", "remove")%> icon16" id="approveTick<%# Eval("ContentItemID") %>"></span>
       </ItemTemplate>
      </dnn:DnnGridTemplateColumn>
      <dnn:DnnGridTemplateColumn HeaderText="Blog">

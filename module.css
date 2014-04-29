@@ -1,4 +1,4 @@
-﻿@import url("css/font-awesome.min.css"); /* Compile */
+﻿@import url("css/font-awesome.css"); /* Compile */
 .icon16, a.icon16, a.icon16:link, a.icon16:visited
 {
  font-size: 16px !important;
@@ -23,10 +23,6 @@ p.updatecancelbar
 div.blog_rte 
 {
  float:left;
-}
-div.blog_rte div 
-{
- 
 }
 div.blog_rte_full
 {

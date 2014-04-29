@@ -9,15 +9,17 @@
    <span class="day">[Post:PublishedOnDate|dd]</span>
    <span class="year">[Post:PublishedOnDate|yyyy]</span>
 [if|1][Post:published][=]False[/if]
-  <span class="unpublished"><i class="fa fa-warning" title="[resx:Unpublished]"></i></span>
+  <span class="unpublished">
+   <div class="blogicon-warning-sign" title="[resx:Unpublished]"></div>
+  </span>
 [endif|1]
   </span>
   <div class="stats">
-   <i class="fa fa-eye"></i>
+   <div class="blogicon-eye-open"></div>
    <div class="stat">[post:viewcount]</div>
   </div>
   <div class="stats">
-   <i class="fa fa-comment-o"></i>
+   <div class="blogicon-comments"></div>
    <div class="stat">[post:nrcomments]</div>
   </div>
   <div style="clear:both"></div>
