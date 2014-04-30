@@ -58,7 +58,6 @@ Namespace Common
    context.Request.Params.ReadValue("Categories", Categories)
    context.Request.Params.ReadValue("Author", AuthorId)
    context.Request.Params.ReadValue("end", EndDate)
-   context.Request.Params.ReadValue("CalStartDate", CalStartDate)
    context.Request.Params.ReadValue("search", SearchString)
    context.Request.Params.ReadValue("t", SearchTitle)
    context.Request.Params.ReadValue("c", SearchContents)
@@ -80,12 +79,12 @@ Namespace Common
    Security = New ContextSecurity(BlogModuleId, blogModule.TabId, Blog, blogModule.UserInfo)
    If EndDate < Now.AddDays(-1) Then
     EndDate = EndDate.Date.AddDays(1).AddMinutes(-1)
-    CalStartDate = EndDate
+    EndDateOrNow = EndDate
    ElseIf Security.CanAddPost Then
     EndDate = Nothing
    Else
     EndDate = DateTime.Now.ToUniversalTime ' security measure to stop people prying into future posts
-    CalStartDate = EndDate
+    EndDateOrNow = EndDate
    End If
 
    ' security
@@ -140,7 +139,7 @@ Namespace Common
   Public Property Categories As String = ""
   Public Property AuthorId As Integer = -1
   Public Property EndDate As Date = DateTime.Now.ToUniversalTime
-  Public Property CalStartDate As Date = DateTime.Now
+  Public Property EndDateOrNow As Date = DateTime.Now
   Public Property Blog As Entities.Blogs.BlogInfo = Nothing
   Public Property Post As Entities.Posts.PostInfo = Nothing
   Public Property Term As Entities.Terms.TermInfo = Nothing
@@ -187,6 +186,8 @@ Namespace Common
      Return (Me.AuthorId.ToString(OutputFormat, formatProvider))
     Case "enddate"
      Return (Me.EndDate.ToString(OutputFormat, formatProvider))
+    Case "enddateornow"
+     Return (Me.EndDateOrNow.ToString(OutputFormat, formatProvider))
     Case "blogselected"
      Return CBool(BlogId > -1).ToString()
     Case "postselected"
