@@ -1,6 +1,4 @@
 function pageLoad(sender, args) {
-(function ($, Sys) {
- $(document).ready(function () {
   $('#[StorageControlId]').val('[CatIdList]');
   $('#[ID]').dynatree({
    onSelect: function (flag, node) {
@@ -15,6 +13,4 @@ function pageLoad(sender, args) {
    checkbox: true,
    children: [Children]
   })
- });
-} (jQuery, window.Sys));
 }
