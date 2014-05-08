@@ -49,4 +49,13 @@
   <change type="Enhancement">Modification of page title now configurable per module instance</change>
   <change type="Enhancement">You can now select multiple categories to show for a specific module instance</change>
  </release>
+ <release version="06.00.06">
+  <change type="Fix" bugcode="CP-23925">Fixed calendar displaying 01-01-0001 on blog calendar when logged in as admin</change>
+  <change type="Fix" bugcode="CP-23971">Removed 100% display width for HTML editor in edit screen</change>
+  <change type="Fix">Fixed categories issue where category control disappears in ViewSettings after a postback</change>
+  <change type="Fix" bugcode="Pull-8">Fixed localization in local templates</change>
+  <change type="Fix" bugcode="GH-12">Fixed several issues with RSS feed to make it more compatible with RSS readers</change>
+  <change type="Fix" bugcode="CP-24007">Fix to module copy code which prevented it from working before</change>
+  <change type="Fix">Fix to edit post so that locale is not written to the database as an empty string but as null as it should be</change>
+ </release>
 </changelog>
