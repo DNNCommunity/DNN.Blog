@@ -158,7 +158,7 @@
     <Content Include="Controls\ManagementPanel.ascx" />
     <Content Include="Admin.ascx" />
     <Content Include="Controls\TemplateSettings.ascx" />
-    <Content Include="css\font-awesome.min.css" />
+    <Content Include="css\font-awesome.css" />
     <Content Include="css\jquery.handsontable.css" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="js\jquery.handsontable.js" />
