@@ -113,9 +113,9 @@ Namespace Integration
    objNotification.Context = notificationKey.ToString
 
    Dim objOwner As UserInfo = UserController.GetUserById(portalId, recipientId)
-   Dim colUsers As List(Of UserInfo) = BlogPermissionsController.GetUsersByBlogPermission(portalId, objBlog.BlogID, BlogPermissionTypes.APPROVECOMMENT).Values.ToList
-   If Not colUsers.Contains(objOwner) Then colUsers.Add(objOwner)
-   AddNotifications(portalId, colUsers, objNotification)
+   Dim colUsers As Dictionary(Of String, UserInfo) = BlogPermissionsController.GetUsersByBlogPermission(portalId, objBlog.BlogID, BlogPermissionTypes.APPROVECOMMENT)
+   If Not colUsers.ContainsKey(objOwner.Username) Then colUsers.Add(objOwner.Username, objOwner)
+   AddNotifications(portalId, colUsers.Values.ToList, objNotification)
 
   End Sub
 
@@ -140,9 +140,9 @@ Namespace Integration
    objNotification.Context = notificationKey.ToString
 
    Dim objOwner As UserInfo = UserController.GetUserById(portalId, recipientId)
-   Dim colUsers As List(Of UserInfo) = BlogPermissionsController.GetUsersByBlogPermission(portalId, objBlog.BlogID, BlogPermissionTypes.APPROVECOMMENT).Values.ToList
-   If Not colUsers.Contains(objOwner) Then colUsers.Add(objOwner)
-   AddNotifications(portalId, colUsers, objNotification)
+   Dim colUsers As Dictionary(Of String, UserInfo) = BlogPermissionsController.GetUsersByBlogPermission(portalId, objBlog.BlogID, BlogPermissionTypes.APPROVECOMMENT)
+   If Not colUsers.ContainsKey(objOwner.Username) Then colUsers.Add(objOwner.Username, objOwner)
+   AddNotifications(portalId, colUsers.Values.ToList, objNotification)
 
   End Sub
   ''' <summary>
