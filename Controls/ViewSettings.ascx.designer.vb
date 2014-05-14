@@ -148,5 +148,23 @@ Namespace Controls
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents chkModifyPageDetails As Global.System.Web.UI.WebControls.CheckBox
+
+        '''<summary>
+        '''lblShowManagementPanel control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblShowManagementPanel As Global.System.Web.UI.UserControl
+
+        '''<summary>
+        '''chkShowManagementPanel control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents chkShowManagementPanel As Global.System.Web.UI.WebControls.CheckBox
     End Class
 End Namespace

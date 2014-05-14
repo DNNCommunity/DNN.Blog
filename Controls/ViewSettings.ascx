@@ -34,4 +34,8 @@
         <dnn:label id="lblModifyPageDetails" runat="server" controlname="chkModifyPageDetails" suffix=":" />
         <asp:CheckBox ID="chkModifyPageDetails" runat="server" />
     </div>
+    <div class="dnnFormItem">
+        <dnn:label id="lblShowManagementPanel" runat="server" controlname="chkShowManagementPanel" suffix=":" />
+        <asp:CheckBox ID="chkShowManagementPanel" runat="server" />
+    </div>
 </fieldset>

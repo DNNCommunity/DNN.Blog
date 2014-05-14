@@ -38,6 +38,7 @@ Namespace Common
   Public Property BlogModuleId As Integer = -1
   Public Property ShowAllLocales As Boolean = True
   Public Property ModifyPageDetails As Boolean = False
+  Public Property ShowManagementPanel As Boolean = False
   Public Property BlogId As Integer = -1
   Public Property Categories As String = ""
   Public Property AuthorId As Integer = -1
@@ -59,6 +60,7 @@ Namespace Common
    _allSettings.ReadValue("BlogModuleId", BlogModuleId)
    _allSettings.ReadValue("ShowAllLocales", ShowAllLocales)
    _allSettings.ReadValue("ModifyPageDetails", ModifyPageDetails)
+   _allSettings.ReadValue("ShowManagementPanel", ShowManagementPanel)
    _allSettings.ReadValue("BlogId", BlogId)
    _allSettings.ReadValue("Categories", Categories)
    _allSettings.ReadValue("AuthorId", AuthorId)
@@ -100,6 +102,7 @@ Namespace Common
    objModules.UpdateTabModuleSetting(tabModuleId, "BlogModuleId", BlogModuleId.ToString)
    objModules.UpdateTabModuleSetting(tabModuleId, "ShowAllLocales", ShowAllLocales.ToString)
    objModules.UpdateTabModuleSetting(tabModuleId, "ModifyPageDetails", ModifyPageDetails.ToString)
+   objModules.UpdateTabModuleSetting(tabModuleId, "ShowManagementPanel", ShowManagementPanel.ToString)
    objModules.UpdateTabModuleSetting(tabModuleId, "BlogId", BlogId.ToString)
    objModules.UpdateTabModuleSetting(tabModuleId, "Categories", Categories.ToString)
    objModules.UpdateTabModuleSetting(tabModuleId, "AuthorId", AuthorId.ToString)
@@ -194,6 +197,7 @@ Namespace Common
    writer.WriteElementString("BlogModuleId", BlogModuleId.ToString)
    writer.WriteElementString("ShowAllLocales", ShowAllLocales.ToString)
    writer.WriteElementString("ModifyPageDetails", ModifyPageDetails.ToString)
+   writer.WriteElementString("ShowManagementPanel", ShowManagementPanel.ToString)
    writer.WriteElementString("BlogId", BlogId.ToString)
    writer.WriteElementString("AuthorId", AuthorId.ToString)
    writer.WriteEndElement() ' viewsettings
@@ -205,6 +209,7 @@ Namespace Common
    xml.ReadValue("BlogModuleId", BlogModuleId)
    xml.ReadValue("ShowAllLocales", ShowAllLocales)
    xml.ReadValue("ModifyPageDetails", ModifyPageDetails)
+   xml.ReadValue("ShowManagementPanel", ShowManagementPanel)
    xml.ReadValue("BlogId", BlogId)
    xml.ReadValue("AuthorId", AuthorId)
   End Sub
