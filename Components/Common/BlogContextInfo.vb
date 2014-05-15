@@ -192,8 +192,8 @@ Namespace Common
      Return CBool(BlogId > -1).ToString()
     Case "postselected"
      Return CBool(ContentItemId > -1).ToString()
-    'Case "termselected"
-    ' Return CBool(TermId > -1).ToString()
+    Case "termselected"
+     Return CBool(TermId > -1).ToString()
     Case "authorselected"
      Return CBool(AuthorId > -1).ToString()
     Case "ismultilingualsite"
