@@ -584,6 +584,7 @@
     <None Include="_Installation\DNN_Blog.dnn">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="_Installation\SQL2005\06.00.07.SqlDataProvider" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
