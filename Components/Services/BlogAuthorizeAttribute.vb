@@ -91,6 +91,7 @@ Namespace Services
     Dim notify As Notification = NotificationsController.Instance.GetNotification(NotificationId)
     Dim nKey As New Integration.NotificationKey(notify.Context)
     BlogId = nKey.BlogId
+    moduleId = nKey.ModuleId
    End If
    Dim blog As BlogInfo = BlogsController.GetBlog(BlogId, UserInfo.UserID, Thread.CurrentThread.CurrentCulture.Name)
    If blog Is Nothing Then Return False
