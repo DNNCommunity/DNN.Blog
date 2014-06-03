@@ -165,4 +165,10 @@
   <data name="lblModifyPageDetails.Text" xml:space="preserve">
     <value>Modify Page Details</value>
   </data>
+  <data name="lblShowManagementPanel.Help" xml:space="preserve">
+    <value>If checked the management panel will be displayed for this module</value>
+  </data>
+  <data name="lblShowManagementPanel.Text" xml:space="preserve">
+    <value>Show Management Panel</value>
+  </data>
 </root>

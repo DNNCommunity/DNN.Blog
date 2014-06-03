@@ -457,7 +457,7 @@ Public Class Blog
   vtContents.DataBind()
 
   ctlComments.Visible = CBool(ViewSettings.BlogModuleId = -1) AndAlso BlogContext.Security.CanViewComments
-  ctlManagement.Visible = CBool(ViewSettings.BlogModuleId = -1)
+  ctlManagement.Visible = If(CBool(ViewSettings.BlogModuleId = -1), True, ViewSettings.ShowManagementPanel)
 
  End Sub
 #End Region
