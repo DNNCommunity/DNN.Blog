@@ -58,4 +58,10 @@
   <change type="Fix" bugcode="CP-24007">Fix to module copy code which prevented it from working before</change>
   <change type="Fix">Fix to edit post so that locale is not written to the database as an empty string but as null as it should be</change>
  </release>
+ <release version="06.00.07">
+  <change type="Enhancement">Option to show management panel on child modules</change>
+  <change type="Fix" bugcode="CP-24018">Changed SPROC and code to ensure the right people are notified of pending comments.</change>
+  <change type="Fix" bugcode="CP-24019">Fix to have notification actions authentication assume the right module id so these will work from the messaging center</change>
+  <change type="Fix">Fix to issue in categories in a post that will not save when no categories and no tags selected</change>
+ </release>
 </changelog>
