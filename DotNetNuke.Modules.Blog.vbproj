@@ -584,6 +584,28 @@
     <None Include="_Installation\DNN_Blog.dnn">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="_Installation\SQL2005\01.00.00.SqlDataProvider" />
+    <Content Include="_Installation\SQL2005\01.00.02.SqlDataProvider" />
+    <Content Include="_Installation\SQL2005\03.01.04.SqlDataProvider" />
+    <Content Include="_Installation\SQL2005\03.01.07.SqlDataProvider" />
+    <Content Include="_Installation\SQL2005\03.01.12.SqlDataProvider" />
+    <Content Include="_Installation\SQL2005\03.01.15.SqlDataProvider" />
+    <Content Include="_Installation\SQL2005\03.01.20.SqlDataProvider" />
+    <Content Include="_Installation\SQL2005\03.01.21.SqlDataProvider" />
+    <Content Include="_Installation\SQL2005\03.03.00.SqlDataProvider" />
+    <Content Include="_Installation\SQL2005\03.04.01.SqlDataProvider" />
+    <Content Include="_Installation\SQL2005\03.05.00.SqlDataProvider" />
+    <Content Include="_Installation\SQL2005\03.05.01.SqlDataProvider" />
+    <Content Include="_Installation\SQL2005\04.00.00.SqlDataProvider" />
+    <Content Include="_Installation\SQL2005\04.01.00.SqlDataProvider" />
+    <Content Include="_Installation\SQL2005\05.00.00.SqlDataProvider" />
+    <Content Include="_Installation\SQL2005\06.00.00.SqlDataProvider" />
+    <Content Include="_Installation\SQL2005\06.00.01.SqlDataProvider" />
+    <Content Include="_Installation\SQL2005\06.00.05.SqlDataProvider" />
+    <Content Include="_Installation\SQL2005\06.00.07.SqlDataProvider" />
+    <Content Include="_Installation\SQL2005\06.00.08.SqlDataProvider" />
+    <Content Include="_Installation\SQL2005\Install.06.00.00.SqlDataProvider" />
+    <Content Include="_Installation\SQL2005\Uninstall.SqlDataProvider" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
