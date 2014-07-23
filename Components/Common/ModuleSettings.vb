@@ -58,6 +58,7 @@ Namespace Common
   Public Property RssDefaultCopyright As String = ""
 
   Public Property PortalTemplatesPath As String = ""
+  Public Property IncrementViewCount As Integer = 60 'seconds
   Private Property PortalModulePath As String = ""
   Private Property PortalModuleMapPath As String = ""
   Private _portalTemplatesMapPath As String = ""
@@ -98,6 +99,7 @@ Namespace Common
    _allSettings.ReadValue("RssImageSizeAllowOverride", RssImageSizeAllowOverride)
    _allSettings.ReadValue("RssAllowContentInFeed", RssAllowContentInFeed)
    _allSettings.ReadValue("RssDefaultCopyright", RssDefaultCopyright)
+   _allSettings.ReadValue("IncrementViewCount", IncrementViewCount)
 
    _PortalModulePath = DotNetNuke.Entities.Portals.PortalSettings.Current.HomeDirectory
    If Not _PortalModulePath.EndsWith("/") Then
@@ -154,6 +156,7 @@ Namespace Common
    objModules.UpdateModuleSetting(_moduleId, "RssImageSizeAllowOverride", RssImageSizeAllowOverride.ToString)
    objModules.UpdateModuleSetting(_moduleId, "RssAllowContentInFeed", RssAllowContentInFeed.ToString)
    objModules.UpdateModuleSetting(_moduleId, "RssDefaultCopyright", RssDefaultCopyright)
+   objModules.UpdateModuleSetting(_moduleId, "IncrementViewCount", IncrementViewCount.ToString)
    If _importedModuleId > -1 Then objModules.UpdateModuleSetting(_moduleId, "ImportedModuleID", _importedModuleId.ToString)
 
    Dim CacheKey As String = "ModuleSettings" & _moduleId.ToString
@@ -226,6 +229,7 @@ Namespace Common
    writer.WriteElementString("RssImageSizeAllowOverride", RssImageSizeAllowOverride.ToString)
    writer.WriteElementString("RssAllowContentInFeed", RssAllowContentInFeed.ToString)
    writer.WriteElementString("RssDefaultCopyright", RssDefaultCopyright)
+   writer.WriteElementString("IncrementViewCount", IncrementViewCount.ToString)
    writer.WriteEndElement() ' settings
   End Sub
 
@@ -252,6 +256,7 @@ Namespace Common
    xml.ReadValue("RssImageSizeAllowOverride", RssImageSizeAllowOverride)
    xml.ReadValue("RssAllowContentInFeed", RssAllowContentInFeed)
    xml.ReadValue("RssDefaultCopyright", RssDefaultCopyright)
+   xml.ReadValue("IncrementViewCount", IncrementViewCount)
   End Sub
 #End Region
 

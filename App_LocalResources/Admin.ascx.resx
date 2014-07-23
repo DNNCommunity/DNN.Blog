@@ -312,4 +312,10 @@
   <data name="lblAutoGenerateMissingSummary.Text" xml:space="preserve">
     <value>Auto Generate Missing Summary</value>
   </data>
+  <data name="lblIncrementViewCount.Help" xml:space="preserve">
+    <value>Increment View Count on a post after X number of seconds</value>
+  </data>
+  <data name="lblIncrementViewCount.Text" xml:space="preserve">
+    <value>Increment View Count After (seconds)</value>
+  </data>
 </root>

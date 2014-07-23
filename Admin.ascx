@@ -50,6 +50,10 @@
 		<dnn:label id="lblModifyPageDetails" runat="server" controlname="chkModifyPageDetails" suffix=":" />
 		<asp:CheckBox ID="chkModifyPageDetails" runat="server" />
 	</div>
+    <div class="dnnFormItem">
+		<dnn:label id="lblIncrementViewCount" runat="server" controlname="txtIncrementViewCount" suffix=":" />
+		<asp:TextBox runat="server" ID="txtIncrementViewCount" Width="50" />
+	</div>
 </fieldset>
 <h2 id="H3" class="dnnFormSectionHead"><a href="" class="dnnFormSectionExpanded"><%= LocalizeString("RSS")%></a></h2>
 <fieldset>
