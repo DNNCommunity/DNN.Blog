@@ -85,6 +85,14 @@ Public Class Blog
          Page.Title = BlogContext.Post.LocalizedTitle
          Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Post.LocalizedSummary, False)
          Page.KeyWords = String.Join(",", BlogContext.Post.Terms.ToStringArray)
+         Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:title"" content=""{0}"" />", BlogContext.Post.LocalizedTitle)))
+         Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:type"" content=""{0}"" />", "article")))
+         Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:url"" content=""{0}"" />", BlogContext.Post.PermaLink)))
+         Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:description"" content=""{0}"" />", DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Post.LocalizedSummary, False))))
+         If Not String.IsNullOrEmpty(BlogContext.Blog.Image) Then
+           Dim strPath As String = String.Format("{0}?TabId={1}&ModuleId={2}&Blog={3}&Post={4}&w=100&h=100&c=1&key={5}", glbImageHandlerPath, TabId.ToString, Settings.ModuleId.ToString, BlogContext.BlogId.ToString, BlogContext.ContentItemId.ToString, BlogContext.Post.Image)
+           Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:image"" content=""{0}"" />", strPath)))
+         End If         
        ElseIf BlogContext.Blog IsNot Nothing Then
          Page.Title = BlogContext.Blog.LocalizedTitle
          Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Blog.LocalizedDescription, False)
@@ -103,6 +111,14 @@ Public Class Blog
          Page.Title = BlogContext.Post.LocalizedTitle
          Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Post.LocalizedSummary, False)
          Page.KeyWords = String.Join(",", BlogContext.Post.Terms.ToStringArray)
+         Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:title"" content=""{0}"" />", BlogContext.Post.LocalizedTitle)))
+         Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:type"" content=""{0}"" />", "article")))
+         Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:url"" content=""{0}"" />", BlogContext.Post.PermaLink)))
+         Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:description"" content=""{0}"" />", DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Post.LocalizedSummary, False))))
+         If Not String.IsNullOrEmpty(BlogContext.Blog.Image) Then
+           Dim strPath As String = String.Format("{0}?TabId={1}&ModuleId={2}&Blog={3}&Post={4}&w=100&h=100&c=1&key={5}", glbImageHandlerPath, TabId.ToString, Settings.ModuleId.ToString, BlogContext.BlogId.ToString, BlogContext.ContentItemId.ToString, BlogContext.Post.Image)
+           Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:image"" content=""{0}"" />", strPath)))
+         End If          
        ElseIf BlogContext.Blog IsNot Nothing Then
          Page.Title = BlogContext.Blog.LocalizedTitle
          Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Blog.LocalizedDescription, False)
