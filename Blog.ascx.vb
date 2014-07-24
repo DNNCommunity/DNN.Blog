@@ -83,17 +83,17 @@ Public Class Blog
      If Settings.ModifyPageDetails Then
        If BlogContext.Post IsNot Nothing Then
          Page.Title = BlogContext.Post.LocalizedTitle
-         Page.Description = BlogContext.Post.LocalizedSummary
+         Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Post.LocalizedSummary, False)
          Page.KeyWords = String.Join(",", BlogContext.Post.Terms.ToStringArray)
        ElseIf BlogContext.Blog IsNot Nothing Then
          Page.Title = BlogContext.Blog.LocalizedTitle
-         Page.Description = BlogContext.Blog.LocalizedDescription
+         Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Blog.LocalizedDescription, False)
        ElseIf BlogContext.Author IsNot Nothing Then
          Page.Title = BlogContext.Author.DisplayName
-         Page.Description = BlogContext.Author.Profile.Biography
+         Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Author.Profile.Biography, False)
        ElseIf BlogContext.Term IsNot Nothing Then
          Page.Title = BlogContext.Term.LocalizedName
-         Page.Description = BlogContext.Term.LocalizedDescription
+         Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Term.LocalizedDescription, False)
        End If
      End If
    Else
@@ -101,17 +101,17 @@ Public Class Blog
      If ViewSettings.ModifyPageDetails Then
        If BlogContext.Post IsNot Nothing Then
          Page.Title = BlogContext.Post.LocalizedTitle
-         Page.Description = BlogContext.Post.LocalizedSummary
+         Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Post.LocalizedSummary, False)
          Page.KeyWords = String.Join(",", BlogContext.Post.Terms.ToStringArray)
        ElseIf BlogContext.Blog IsNot Nothing Then
          Page.Title = BlogContext.Blog.LocalizedTitle
-         Page.Description = BlogContext.Blog.LocalizedDescription
+         Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Blog.LocalizedDescription, False)
        ElseIf BlogContext.Author IsNot Nothing Then
          Page.Title = BlogContext.Author.DisplayName
-         Page.Description = BlogContext.Author.Profile.Biography
+         Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Author.Profile.Biography, False)
        ElseIf BlogContext.Term IsNot Nothing Then
          Page.Title = BlogContext.Term.LocalizedName
-         Page.Description = BlogContext.Term.LocalizedDescription
+         Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Term.LocalizedDescription, False)
        End If
      End If
    End If
