@@ -1,0 +1,94 @@
+﻿IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetUsersByBlogPermission') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetUsersByBlogPermission
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetUsersByBlogPermission
+ @PortalId INT,
+ @BlogId INT,
+ @PermissionId INT
+AS
+SELECT DISTINCT * FROM
+(SELECT
+ u.*
+FROM
+ {databaseOwner}{objectQualifier}vw_Users u
+ INNER JOIN {databaseOwner}{objectQualifier}UserRoles ur ON ur.UserID=u.UserID
+ INNER JOIN {databaseOwner}{objectQualifier}Blog_BlogPermissions bp ON bp.RoleId=ur.RoleID
+WHERE
+ (ISNULL(ur.EffectiveDate, DATEADD(day, - 1, GETDATE())) < GETDATE()) AND (ISNULL(ur.ExpiryDate, DATEADD(day, 1, GETDATE())) > GETDATE())
+ AND bp.PermissionId=@PermissionId
+ AND bp.BlogId=@BlogId
+UNION
+SELECT
+ u.*
+FROM
+ {databaseOwner}{objectQualifier}vw_Users u
+ INNER JOIN {databaseOwner}{objectQualifier}Blog_BlogPermissions bp ON bp.UserId=u.UserID 
+ WHERE
+  bp.RoleId=-4
+  AND bp.PermissionId=@PermissionId
+  AND bp.BlogId=@BlogId) x
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_UpdatePost') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdatePost
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdatePost
+ @AllowComments BIT, 
+ @BlogID INT, 
+ @Content NVARCHAR(MAX),
+ @ContentItemId INT, 
+ @Copyright NVARCHAR (255), 
+ @DisplayCopyright BIT, 
+ @Image NVARCHAR (255), 
+ @Locale VARCHAR (10), 
+ @Published BIT, 
+ @PublishedOnDate DATETIME, 
+ @Summary NVARCHAR (MAX), 
+ @TermIds NVARCHAR(1000),
+ @Title NVARCHAR (255),
+ @ViewCount INT,
+ @UpdatedByUser INT
+AS
+DECLARE @ContentTypeID INT
+SET @ContentTypeID = (SELECT TOP 1 ContentTypeID FROM {databaseOwner}{objectQualifier}ContentTypes WHERE ContentType='DNN_Blog_Post')
+DECLARE @ModuleId INT
+SET @ModuleId = (SELECT TOP 1 ModuleId FROM {databaseOwner}{objectQualifier}Blog_Blogs WHERE BlogID=@BlogID)
+EXEC {databaseOwner}{objectQualifier}UpdateContentItem @ContentItemId, @Content, @ContentTypeID, -1, @ModuleId, NULL, 0, @UpdatedByUser
+UPDATE {databaseOwner}{objectQualifier}Blog_Posts SET
+ [AllowComments] = @AllowComments,
+ [BlogID] = @BlogID,
+ [Copyright] = @Copyright,
+ [DisplayCopyright] = @DisplayCopyright,
+ [Image] = @Image,
+ [Locale] = @Locale,
+ [Published] = @Published,
+ [PublishedOnDate] = @PublishedOnDate,
+ [Summary] = @Summary,
+ [Title] = @Title,
+ [ViewCount]=@ViewCount
+WHERE
+ [ContentItemId] = @ContentItemId;
+
+DELETE FROM {databaseOwner}{objectQualifier}ContentItems_Tags WHERE ContentItemID=@ContentItemId;
+
+IF @TermIds<>''
+BEGIN
+ DECLARE @ids TABLE (s NVARCHAR(512))
+ INSERT INTO @ids (s) SELECT s FROM {databaseOwner}{objectQualifier}Blog_Split(@TermIds,';');
+ DELETE FROM {databaseOwner}{objectQualifier}ContentItems_Tags
+ WHERE ContentItemID=@ContentItemId;
+ INSERT INTO {databaseOwner}{objectQualifier}ContentItems_Tags ([ContentItemID], [TermID])
+ SELECT @ContentItemID, CAST(i.s AS INT)
+ FROM @ids i;
+END
+GO
