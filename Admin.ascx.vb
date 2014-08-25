@@ -100,6 +100,8 @@ Public Class Admin
   Settings.RssImageSizeAllowOverride = chkRssImageSizeAllowOverride.Checked
   Settings.RssMaxNrItems = Integer.Parse(txtRssMaxNrItems.Text)
   Settings.RssTtl = Integer.Parse(txtRssTtl.Text)
+  Settings.IncrementViewCount = Integer.Parse(txtIncrementViewCount.Text)
+
   Settings.UpdateSettings()
   If treeState.Value <> DotNetNuke.Modules.Blog.Entities.Terms.TermsController.GetCategoryTreeAsJson(Categories) Then
    Dim categoryTree As List(Of Common.DynatreeItem) = Newtonsoft.Json.JsonConvert.DeserializeObject(Of List(Of Common.DynatreeItem))(treeState.Value)
@@ -158,6 +160,7 @@ Public Class Admin
   chkRssImageSizeAllowOverride.Checked = Settings.RssImageSizeAllowOverride
   txtRssMaxNrItems.Text = Settings.RssMaxNrItems.ToString
   txtRssTtl.Text = Settings.RssTtl.ToString
+  txtIncrementViewCount.Text = Settings.IncrementViewCount.ToString
 
   txtWLWRecentPostsMax.Text = Settings.WLWRecentPostsMax.ToString
   ddVocabularyId.Items.Clear()
