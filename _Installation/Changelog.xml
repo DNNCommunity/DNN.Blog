@@ -64,4 +64,10 @@
   <change type="Fix" bugcode="CP-24019">Fix to have notification actions authentication assume the right module id so these will work from the messaging center</change>
   <change type="Fix">Fix to issue in categories in a post that will not save when no categories and no tags selected</change>
  </release>
+ <release version="06.00.08">
+  <change type="Fix" bugcode="24032">Added global setting to handle timeout to increment View Count on a post</change>
+  <change type="Fix">HTML Clean text before rendering to page metadata</change>
+  <change type="Fix">Fixed script error in UpdatePost SPROC</change>
+  <change type="Fix">Fix to code that prevented the output of user profile properties</change>
+ </release>
 </changelog>
