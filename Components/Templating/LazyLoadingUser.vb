@@ -92,13 +92,14 @@ Namespace Templating
     Case "profileurl"
      Return DotNetNuke.Common.Globals.UserProfileURL(UserId)
    End Select
+   Dim res As String = ""
    If _postAuthor IsNot Nothing Then
-    Return _postAuthor.GetProperty(strPropertyName, strFormat, formatProvider, AccessingUser, AccessLevel, PropertyNotFound)
+    res = _postAuthor.GetProperty(strPropertyName, strFormat, formatProvider, AccessingUser, AccessLevel, PropertyNotFound)
    Else
-    Return User.GetProperty(strPropertyName, strFormat, formatProvider, AccessingUser, AccessLevel, PropertyNotFound)
+    res = User.GetProperty(strPropertyName, strFormat, formatProvider, AccessingUser, AccessLevel, PropertyNotFound)
    End If
    If PropertyNotFound Then
-    Dim res As String = User.Profile.GetPropertyValue(strPropertyName)
+    res = User.Profile.GetPropertyValue(strPropertyName)
     If Not String.IsNullOrEmpty(res) Then Return res
    End If
    PropertyNotFound = True
