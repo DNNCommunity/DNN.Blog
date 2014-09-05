@@ -118,7 +118,7 @@ Namespace Controls
     End If
 
     ddBlogModuleId.Items.Clear()
-    ddBlogModuleId.DataSource = (New DotNetNuke.Entities.Modules.ModuleController).GetModulesByDefinition(PortalId, "Blog")
+    ddBlogModuleId.DataSource = (New DotNetNuke.Entities.Modules.ModuleController).GetModulesByDefinition(PortalId, "DNNBlog.Blog")
     ddBlogModuleId.DataBind()
     Try
      ddBlogModuleId.Items.Remove(ddBlogModuleId.Items.FindByValue(ModuleId.ToString))
