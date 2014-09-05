@@ -70,4 +70,7 @@
   <change type="Fix">Fixed script error in UpdatePost SPROC</change>
   <change type="Fix">Fix to code that prevented the output of user profile properties</change>
  </release>
+ <release version="06.00.09">
+  <change type="Fix">Fixed module dropdown selector on the module settings control</change>
+ </release>
 </changelog>
