@@ -73,4 +73,7 @@
  <release version="06.00.09">
   <change type="Fix">Fixed module dropdown selector on the module settings control</change>
  </release>
+ <release version="06.00.10">
+  <change type="Fix">Fixed issue with values for user fields (displayname, etc) not being rendered.</change>
+ </release>
 </changelog>
