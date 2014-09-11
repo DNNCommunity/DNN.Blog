@@ -100,7 +100,10 @@ Namespace Templating
    End If
    If PropertyNotFound Then
     res = User.Profile.GetPropertyValue(strPropertyName)
-    If Not String.IsNullOrEmpty(res) Then Return res
+   End If
+   If Not String.IsNullOrEmpty(res) Then
+    PropertyNotFound = False
+    Return res
    End If
    PropertyNotFound = True
    Return Null.NullString
