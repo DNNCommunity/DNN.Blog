@@ -284,7 +284,7 @@ Namespace Rss
    ' core data
    writer.WriteElementString("title", item.Title)
    writer.WriteElementString("link", item.PermaLink)
-   writer.WriteElementString("description", RemoveHtmlTags(HttpUtility.HtmlDecode(item.Summary)))
+   writer.WriteElementString("description", HttpUtility.HtmlDecode(item.Summary))
    ' optional elements
    If item.Blog.IncludeAuthorInFeed Then
     writer.WriteElementString("author", String.Format("{0} ({1})", item.Email, item.DisplayName))
