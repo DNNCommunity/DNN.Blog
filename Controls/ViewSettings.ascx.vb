@@ -30,7 +30,7 @@ Namespace Controls
   Inherits DotNetNuke.Entities.Modules.ModuleSettingsBase
 
 #Region " Properties "
-  Private Property BlogModuleId As Integer = ModuleId
+  Private Property BlogModuleId As Integer = -1
 
   Private _settings As Common.ModuleSettings
   Public Shadows Property Settings() As Common.ModuleSettings
@@ -60,6 +60,7 @@ Namespace Controls
 #Region " Page Events "
   Private Sub Page_Init(sender As Object, e As System.EventArgs) Handles Me.Init
    Try
+    BlogModuleId = ModuleId
     ctlCategories.ModuleConfiguration = Me.ModuleConfiguration
     ctlCategories.VocabularyId = Settings.VocabularyId
     If ViewSettings.BlogModuleId > -1 Then
