@@ -76,4 +76,10 @@
  <release version="06.00.10">
   <change type="Fix">Fixed issue with values for user fields (displayname, etc) not being rendered.</change>
  </release>
+ <release version="06.00.11">
+  <change type="Fix" bugcode="23990">Fix To Classic Blog Template</change>
+  <change type="Fix" bugcode="24021">HTML encode item description in XML feed rather than strip HTML</change>
+  <change type="Fix" bugcode="24097">Fix to TabCloud filtering to one blog post</change>
+  <change type="Fix">Fix issue with module view settings</change>
+ </release>
 </changelog>
