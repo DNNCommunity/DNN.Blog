@@ -49,6 +49,13 @@ Namespace Entities.Posts
    End Get
   End Property
 
+  Public Function PermaLink(strParentTabID As Integer) As String
+   Dim oTabController As DotNetNuke.Entities.Tabs.TabController = New DotNetNuke.Entities.Tabs.TabController
+   Dim oParentTab As DotNetNuke.Entities.Tabs.TabInfo = oTabController.GetTab(strParentTabID, DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, False)
+   _permaLink = String.Empty
+   Return PermaLink(oParentTab)
+  End Function
+
   Public Function PermaLink() As String
    Return PermaLink(DotNetNuke.Entities.Portals.PortalSettings.Current.ActiveTab)
   End Function
