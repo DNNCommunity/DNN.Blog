@@ -234,6 +234,9 @@ Public Class Blog
     Parameters.ReadValue("pagesize", _pageSize)
     EnsurePostList(_pageSize)
     For Each e As PostInfo In PostList
+     If BlogContext.ParentModule IsNot Nothing Then
+       e.ParentTabID = BlogContext.ParentModule.TabID
+     End If
      Replacers.Add(New BlogTokenReplace(Me, e))
     Next
 
@@ -318,6 +321,9 @@ Public Class Blog
      Next
     Else
      For Each t As TermInfo In TermsController.GetTermsByModule(BlogContext.BlogModuleId, BlogContext.Locale).Where(Function(x) x.VocabularyId = 1).ToList
+      If BlogContext.ParentModule IsNot Nothing Then
+       t.ParentTabID = BlogContext.ParentModule.TabID
+      End If
       Replacers.Add(New BlogTokenReplace(Me, Nothing, t))
      Next
     End If
@@ -326,6 +332,9 @@ Public Class Blog
    Case "allkeywords", "alltags"
 
     For Each t As TermInfo In TermsController.GetTermsByModule(BlogContext.BlogModuleId, BlogContext.Locale).Where(Function(x) x.VocabularyId = 1).ToList
+     If BlogContext.ParentModule IsNot Nothing Then
+       t.ParentTabID = BlogContext.ParentModule.TabID
+     End If
      Replacers.Add(New BlogTokenReplace(Me, Nothing, t))
     Next
     _usePaging = False
@@ -350,6 +359,9 @@ Public Class Blog
    Case "allcategories"
 
     For Each t As TermInfo In TermsController.GetTermsByVocabulary(BlogContext.BlogModuleId, Settings.VocabularyId, BlogContext.Locale).Values
+     If BlogContext.ParentModule IsNot Nothing Then
+       t.ParentTabID = BlogContext.ParentModule.TabID
+     End If
      Replacers.Add(New BlogTokenReplace(Me, Nothing, t))
     Next
     _usePaging = False

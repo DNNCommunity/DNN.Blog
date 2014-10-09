@@ -77,18 +77,50 @@ ul.rlbList {list-style:none;}
 
 /* Button Group Styles */
 		
-	/* Remove corners and add dividers to buttons in button group */
-	.buttonGroup .dnnTertiaryAction{
-		margin:0; -webkit-border-radius:0; -moz-border-radius:0; border-radius:0;
-		border-left:1px solid #fcfcfc; /*light*/
-		border-right:1px solid #c7c7c7; /*dark*/
-	}		
-	.buttonGroup .dnnTertiaryAction.active{border-right:1px solid #666;}
-	.buttonGroup .dnnTertiaryAction:active{border-left:1px solid #444;}
-	.buttonGroup .dnnTertiaryAction.disabled:hover{border-left:1px solid #fcfcfc; /*light*/}		
+/* Remove corners and add dividers to buttons in button group */
+.buttonGroup .dnnTertiaryAction{
+	margin:0; -webkit-border-radius:0; -moz-border-radius:0; border-radius:0;
+	border-left:1px solid #fcfcfc; /*light*/
+	border-right:1px solid #c7c7c7; /*dark*/
+}		
+.buttonGroup .dnnTertiaryAction.active{border-right:1px solid #666;}
+.buttonGroup .dnnTertiaryAction:active{border-left:1px solid #444;}
+.buttonGroup .dnnTertiaryAction.disabled:hover{border-left:1px solid #fcfcfc; /*light*/}		
 
 .bloggerMenu{padding-bottom: 6px;}
-	.bloggerMenu ul, .bloggerMenu li{display:block;list-style-type:none;float:right;padding-left: 2px;margin:0;}
-	
-		.selectDrop {position:relative;z-index:1; width:auto;}
-		 .selectDrop .dnnTertiaryAction span{padding-right:5px;}
+.bloggerMenu ul, .bloggerMenu li{display:block;list-style-type:none;float:right;padding-left: 2px;margin:0;}
+.selectDrop {position:relative;z-index:1; width:auto;}
+.selectDrop .dnnTertiaryAction span{padding-right:5px;}
+
+.selectbanner
+{
+ background-color: #364050;
+ background-image: url("images/bg1.png");
+ padding: 15px 10px;
+ border-radius: 0.4em;
+ box-shadow: 0 0 0.25em 0em rgba(0,0,0,0.25);
+ margin-bottom: 20px;
+ color: #fff;
+}
+.selectbanner span
+{
+ color: #fff
+}
+.selectbanner:hover
+{
+ background-color: #C94663;
+ -webkit-transition: background-color 1000ms linear;
+ -moz-transition: background-color 1000ms linear;
+ -o-transition: background-color 1000ms linear;
+ -ms-transition: background-color 1000ms linear;
+ transition: background-color 1000ms linear;
+}
+.selectbanner span.removeselection
+{
+ float:right;
+ margin-top:-8px;
+}
+.selectbanner span.removeselection a
+{
+ color: #aaa;
+}

@@ -62,6 +62,7 @@ Namespace Common
   Private Property PortalModulePath As String = ""
   Private Property PortalModuleMapPath As String = ""
   Private _portalTemplatesMapPath As String = ""
+  Public Property UseFriendlyURLs As Boolean = True
   Public ReadOnly Property PortalTemplatesMapPath As String
    Get
     Return _portalTemplatesMapPath

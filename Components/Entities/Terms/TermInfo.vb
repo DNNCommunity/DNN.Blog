@@ -50,6 +50,7 @@ Namespace Entities.Terms
 #End Region
 
 #Region " ML Properties "
+  Public Property ParentTabID As Integer = -1
   Public Property AltLocale As String = ""
   Public Property AltName As String = ""
   Public Property AltDescription As String = ""
@@ -129,6 +130,10 @@ Namespace Entities.Terms
   Public Function GetProperty(strPropertyName As String, strFormat As String, formatProvider As System.Globalization.CultureInfo, AccessingUser As DotNetNuke.Entities.Users.UserInfo, AccessLevel As DotNetNuke.Services.Tokens.Scope, ByRef PropertyNotFound As Boolean) As String Implements DotNetNuke.Services.Tokens.IPropertyAccess.GetProperty
    Dim OutputFormat As String = String.Empty
    Dim portalSettings As DotNetNuke.Entities.Portals.PortalSettings = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings()
+
+   Dim ParentModule As New DotNetNuke.Entities.Modules.ModuleInfo
+   'PropertySource(strObjectName.ToLower).GetProperty(strPropertyName, strFormat, formatProvider, AccessingUser, CurrentAccessLevel, PropertyNotFound)
+
    If strFormat = String.Empty Then
     OutputFormat = "D"
    Else
@@ -177,6 +182,8 @@ Namespace Entities.Terms
      Return PropertyAccess.FormatString(Me.LocalizedDescription, strFormat)
     Case "link", "permalink"
      Return PermaLink(DotNetNuke.Entities.Portals.PortalSettings.Current)
+    Case "parenturl"
+     Return PermaLink(ParentTabID)
     Case Else
      PropertyNotFound = True
    End Select
@@ -222,6 +229,12 @@ Namespace Entities.Terms
 #Region " Public Methods "
   Public Function PermaLink(portalSettings As DotNetNuke.Entities.Portals.PortalSettings) As String
    Return PermaLink(portalSettings.ActiveTab)
+  End Function
+  Public Function PermaLink(strParentTabID As Integer) As String
+   Dim oTabController As DotNetNuke.Entities.Tabs.TabController = New DotNetNuke.Entities.Tabs.TabController
+   Dim oParentTab As DotNetNuke.Entities.Tabs.TabInfo = oTabController.GetTab(strParentTabID, DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, False)
+   _permaLink = String.Empty
+   Return PermaLink(oParentTab)
   End Function
 
   Private _permaLink As String = ""

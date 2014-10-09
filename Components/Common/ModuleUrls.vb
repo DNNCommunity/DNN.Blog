@@ -26,6 +26,7 @@ Namespace Common
 
 #Region " Properties "
   Public Property TabId As Integer = -1
+  Public Property ParentTabId As Integer = -1
   Public Property BlogId As Integer = -1
   Public Property ContentItemId As Integer = -1
   Public Property TermId As Integer = -1
@@ -36,6 +37,15 @@ Namespace Common
 #Region " Constructors "
   Public Sub New(tabId As Integer, blogId As Integer, contentItemId As Integer, termId As Integer, authorId As Integer)
    Me.TabId = tabId
+   Me.BlogId = blogId
+   Me.ContentItemId = contentItemId
+   Me.TermId = termId
+   Me.AuthorId = authorId
+  End Sub
+
+  Public Sub New(tabId As Integer, parenttabId As Integer, blogId As Integer, contentItemId As Integer, termId As Integer, authorId As Integer)
+   Me.TabId = tabId
+   Me.ParentTabId = parenttabId
    Me.BlogId = blogId
    Me.ContentItemId = contentItemId
    Me.TermId = termId
@@ -69,7 +79,6 @@ Namespace Common
      If TermId > -1 Then params.Add("Term=" & TermId.ToString)
     Case "author"
      If AuthorId > -1 Then params.Add("Author=" & AuthorId.ToString)
-
     Case "blogpost"
      If BlogId > -1 Then params.Add("Blog=" & BlogId.ToString)
      If ContentItemId > -1 Then params.Add("Post=" & ContentItemId.ToString)
@@ -88,7 +97,6 @@ Namespace Common
     Case "termauthor"
      If TermId > -1 Then params.Add("Term=" & TermId.ToString)
      If AuthorId > -1 Then params.Add("Author=" & AuthorId.ToString)
-
     Case "blogpostterm"
      If BlogId > -1 Then params.Add("Blog=" & BlogId.ToString)
      If ContentItemId > -1 Then params.Add("Post=" & ContentItemId.ToString)
@@ -105,12 +113,13 @@ Namespace Common
      If ContentItemId > -1 Then params.Add("Post=" & ContentItemId.ToString)
      If TermId > -1 Then params.Add("Term=" & TermId.ToString)
      If AuthorId > -1 Then params.Add("Author=" & AuthorId.ToString)
-
     Case "blogposttermauthor", "all"
      If BlogId > -1 Then params.Add("Blog=" & BlogId.ToString)
      If ContentItemId > -1 Then params.Add("Post=" & ContentItemId.ToString)
      If TermId > -1 Then params.Add("Term=" & TermId.ToString)
      If AuthorId > -1 Then params.Add("Author=" & AuthorId.ToString)
+    Case "parenturl"
+     TabId = ParentTabId
    End Select
    Dim BaseUrl As String = DotNetNuke.Common.NavigateURL(TabId, "", params.ToArray)
    Dim BaseUrlPlusEnding As String

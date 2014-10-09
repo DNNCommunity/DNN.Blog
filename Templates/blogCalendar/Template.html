@@ -7,7 +7,7 @@
    ];
    $('#blogCal[module:moduleid]').datepicker({
    onSelect: function(dateText, inst) {
-    var url = '[urls:blogtermauthor|true]end=';
+    var url = '[urls:ParentURL|true]end=';
     url += dateText;
     window.location.href = encodeURI(url);
    },
