@@ -219,12 +219,18 @@ Public Class Blog
      Dim i As Integer = 1
      For Each b As BlogInfo In blogList
       If i >= startRec And i <= endRec Then
+       If BlogContext.ParentModule IsNot Nothing Then
+        b.ParentTabID = BlogContext.ParentModule.TabID
+       End If
        Replacers.Add(New BlogTokenReplace(Me, b))
       End If
       i += 1
      Next
     Else
      For Each b As BlogInfo In blogList
+      If BlogContext.ParentModule IsNot Nothing Then
+        b.ParentTabID = BlogContext.ParentModule.TabID
+      End If
       Replacers.Add(New BlogTokenReplace(Me, b))
      Next
     End If
@@ -403,6 +409,9 @@ Public Class Blog
    Case "calendar", "blogcalendar"
 
     For Each bci As BlogCalendarInfo In BlogsController.GetBlogCalendar(BlogContext.BlogModuleId, BlogContext.BlogId, BlogContext.ShowLocale)
+     If BlogContext.ParentModule IsNot Nothing Then
+       bci.ParentTabID = BlogContext.ParentModule.TabID
+     End If
      Replacers.Add(New BlogTokenReplace(Me, bci))
     Next
 
@@ -431,6 +440,9 @@ Public Class Blog
       Next
      Case Else ' last name
       For Each u As PostAuthor In PostsController.GetAuthors(BlogContext.BlogModuleId, blogToShow)
+       If BlogContext.ParentModule IsNot Nothing Then
+         u.ParentTabID = BlogContext.ParentModule.TabID
+       End If
        Replacers.Add(New BlogTokenReplace(Me, New LazyLoadingUser(u)))
       Next
     End Select
