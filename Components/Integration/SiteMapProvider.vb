@@ -47,10 +47,12 @@ Namespace Integration
     End If
     Dim totalRecs As Integer = 0
     For Each p As PostInfo In PostsController.GetPostsByBlog(blog.ModuleID, blog.BlogID, Threading.Thread.CurrentThread.CurrentCulture.Name, -1, -1, 0, Nothing, totalRecs).Values
-     For Each t As DotNetNuke.Entities.Tabs.TabInfo In moduleTabs(blog.ModuleID)
-      Dim smu As New SitemapUrl With {.ChangeFrequency = SitemapChangeFrequency.Daily, .LastModified = p.LastModifiedOnDate, .Priority = 0.5, .Url = p.PermaLink(t)}
-      SitemapUrls.Add(smu)
-     Next
+     If p.Published Then
+      For Each t As DotNetNuke.Entities.Tabs.TabInfo In moduleTabs(blog.ModuleID)
+       Dim smu As New SitemapUrl With {.ChangeFrequency = SitemapChangeFrequency.Daily, .LastModified = p.LastModifiedOnDate, .Priority = 0.5, .Url = p.PermaLink(t)}
+       SitemapUrls.Add(smu)
+      Next
+     End If
     Next
    Next
    Return SitemapUrls
