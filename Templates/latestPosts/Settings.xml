@@ -5,9 +5,4 @@
   <valueType>integer</valueType>
   <defaultValue>10</defaultValue>
  </templateSetting>
- <templateSetting>
-  <key>url</key>
-  <valueType>string</valueType>
-  <defaultValue></defaultValue>
- </templateSetting>
 </templateSettings>
