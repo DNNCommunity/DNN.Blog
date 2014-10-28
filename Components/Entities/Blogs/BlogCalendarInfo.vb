@@ -28,6 +28,10 @@ Namespace Entities.Blogs
   Implements IHydratable
   Implements IPropertyAccess
 
+#Region " ML Properties "
+  Public Property ParentTabID As Integer = -1
+#End Region
+
 #Region " Public Properties "
   <DataMember()>
   Public Property PostYear As Int32 = -1
@@ -129,6 +133,8 @@ Namespace Entities.Blogs
      Return (Me.LastDay.ToString(OutputFormat, formatProvider))
     Case "firstdaynextmonth"
      Return (Me.FirstDayNextMonth.ToString(OutputFormat, formatProvider))
+    Case "parenturl"
+     Return PermaLink(ParentTabID)
     Case Else
      PropertyNotFound = True
    End Select
@@ -141,6 +147,26 @@ Namespace Entities.Blogs
    End Get
   End Property
 #End Region
+
+  Public Function PermaLink(strParentTabID As Integer) As String
+   Dim oTabController As DotNetNuke.Entities.Tabs.TabController = New DotNetNuke.Entities.Tabs.TabController
+   Dim oParentTab As DotNetNuke.Entities.Tabs.TabInfo = oTabController.GetTab(strParentTabID, DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, False)
+   _permaLink = String.Empty
+   Return PermaLink(oParentTab)
+  End Function
+
+  Public Function PermaLink(portalSettings As DotNetNuke.Entities.Portals.PortalSettings) As String
+   Return PermaLink(portalSettings.ActiveTab)
+  End Function
+
+  Private _permaLink As String = ""
+  Public Function PermaLink(tab As DotNetNuke.Entities.Tabs.TabInfo) As String
+   If String.IsNullOrEmpty(_permaLink) Then
+    _permaLink = DotNetNuke.Common.Globals.ApplicationURL(tab.TabID) & "&end=" & FirstDayNextMonth.ToString
+    _permaLink = DotNetNuke.Common.Globals.FriendlyUrl(tab, _permaLink)
+   End If
+   Return _permaLink
+  End Function
 
  End Class
 End Namespace

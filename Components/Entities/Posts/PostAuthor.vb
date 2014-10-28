@@ -18,6 +18,8 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
+Imports DotNetNuke.Common.Globals
+
 Imports System.Runtime.Serialization
 Imports DotNetNuke.Entities.Users
 Imports DotNetNuke.Common.Utilities
@@ -33,6 +35,7 @@ Namespace Entities.Posts
 
 #Region " Public Properties "
   <DataMember()>
+  Public Property ParentTabID As Integer = -1
   Public Property NrPosts As Int32 = 0
   <DataMember()>
   Public Property NrViews As Int32 = 0
@@ -104,6 +107,8 @@ Namespace Entities.Posts
      Return (Me.LastPublishDate.ToString(OutputFormat, formatProvider))
     Case "firstpublishdate"
      Return (Me.FirstPublishDate.ToString(OutputFormat, formatProvider))
+    Case "parenturl"
+     Return PermaLink(ParentTabID)
     Case Else
      Return MyBase.GetProperty(strPropertyName, strFormat, formatProvider, AccessingUser, AccessLevel, PropertyNotFound)
    End Select
@@ -116,5 +121,26 @@ Namespace Entities.Posts
   End Property
 #End Region
 
+#Region " Public Methods "
+  Public Function PermaLink(portalSettings As DotNetNuke.Entities.Portals.PortalSettings) As String
+   Return PermaLink(portalSettings.ActiveTab)
+  End Function
+  Public Function PermaLink(strParentTabID As Integer) As String
+   Dim oTabController As DotNetNuke.Entities.Tabs.TabController = New DotNetNuke.Entities.Tabs.TabController
+   Dim oParentTab As DotNetNuke.Entities.Tabs.TabInfo = oTabController.GetTab(strParentTabID, DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, False)
+   _permaLink = String.Empty
+   Return PermaLink(oParentTab)
+  End Function
+
+  Private _permaLink As String = ""
+  Public Function PermaLink(tab As DotNetNuke.Entities.Tabs.TabInfo) As String
+   If String.IsNullOrEmpty(_permaLink) Then
+    _permaLink = ApplicationURL(tab.TabID) & "&author=" & UserID.ToString
+    _permaLink = FriendlyUrl(tab, _permaLink, "")
+   End If
+   Return _permaLink
+  End Function
+
+#End Region
  End Class
 End Namespace

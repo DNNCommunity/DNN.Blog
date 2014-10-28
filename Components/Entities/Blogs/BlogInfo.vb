@@ -57,6 +57,13 @@ Namespace Entities.Blogs
   <DataMember()>
   Public Property IsOwner As Boolean = False
 
+  Public Function PermaLink(strParentTabID As Integer) As String
+   Dim oTabController As DotNetNuke.Entities.Tabs.TabController = New DotNetNuke.Entities.Tabs.TabController
+   Dim oParentTab As DotNetNuke.Entities.Tabs.TabInfo = oTabController.GetTab(strParentTabID, DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, False)
+   _permaLink = String.Empty
+   Return PermaLink(oParentTab)
+  End Function
+
   Public Function PermaLink(portalSettings As DotNetNuke.Entities.Portals.PortalSettings) As String
    Return PermaLink(portalSettings.ActiveTab)
   End Function
