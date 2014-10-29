@@ -43,6 +43,7 @@ Namespace Common
    ' Initialize values from View Settings
    If blogModule.ViewSettings.BlogModuleId <> -1 Then
     BlogModuleId = blogModule.ViewSettings.BlogModuleId
+    parentModule = (New DotNetNuke.Entities.Modules.ModuleController).GetModule(BlogModuleId)
    End If
    BlogId = blogModule.ViewSettings.BlogId
    Categories = blogModule.ViewSettings.Categories
@@ -103,7 +104,11 @@ Namespace Common
    End If
 
    ' set urls for use in module
-   ModuleUrls = New ModuleUrls(blogModule.TabId, BlogId, ContentItemId, TermId, AuthorId)
+   If ParentModule Is Nothing Then
+     ModuleUrls = New ModuleUrls(blogModule.TabId, BlogId, ContentItemId, TermId, AuthorId)
+   Else
+     ModuleUrls = New ModuleUrls(blogModule.TabId, ParentModule.TabID, BlogId, ContentItemId, TermId, AuthorId)
+   End If
    IsMultiLingualSite = CBool(DotNetNuke.Services.Localization.LocaleController.Instance.GetLocales(blogModule.PortalId).Count > 1)
    If Not blogModule.ViewSettings.ShowAllLocales Then
     ShowLocale = Locale
@@ -133,6 +138,7 @@ Namespace Common
 
 #Region " Public Properties "
   Public Property BlogModuleId As Integer = -1
+  Public Property ParentModule As DotNetNuke.Entities.Modules.ModuleInfo = Nothing
   Public Property BlogId As Integer = -1
   Public Property ContentItemId As Integer = -1
   Public Property TermId As Integer = -1
