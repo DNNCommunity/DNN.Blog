@@ -93,7 +93,7 @@ Public Class Blog
          If Not String.IsNullOrEmpty(BlogContext.Blog.Image) Then
            Dim strPath As String = String.Format("{0}?TabId={1}&ModuleId={2}&Blog={3}&Post={4}&w=100&h=100&c=1&key={5}", glbImageHandlerPath, TabId.ToString, Settings.ModuleId.ToString, BlogContext.BlogId.ToString, BlogContext.ContentItemId.ToString, BlogContext.Post.Image)
            Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:image"" content=""{0}"" />", strPath)))
-         End If         
+         End If
        ElseIf BlogContext.Blog IsNot Nothing Then
          Page.Title = BlogContext.Blog.LocalizedTitle
          Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Blog.LocalizedDescription, False)
@@ -119,7 +119,7 @@ Public Class Blog
          If Not String.IsNullOrEmpty(BlogContext.Blog.Image) Then
            Dim strPath As String = String.Format("{0}?TabId={1}&ModuleId={2}&Blog={3}&Post={4}&w=100&h=100&c=1&key={5}", glbImageHandlerPath, TabId.ToString, Settings.ModuleId.ToString, BlogContext.BlogId.ToString, BlogContext.ContentItemId.ToString, BlogContext.Post.Image)
            Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:image"" content=""{0}"" />", strPath)))
-         End If          
+         End If
        ElseIf BlogContext.Blog IsNot Nothing Then
          Page.Title = BlogContext.Blog.LocalizedTitle
          Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Blog.LocalizedDescription, False)
@@ -219,12 +219,18 @@ Public Class Blog
      Dim i As Integer = 1
      For Each b As BlogInfo In blogList
       If i >= startRec And i <= endRec Then
+       If BlogContext.ParentModule IsNot Nothing Then
+        b.ParentTabID = BlogContext.ParentModule.TabID
+       End If
        Replacers.Add(New BlogTokenReplace(Me, b))
       End If
       i += 1
      Next
     Else
      For Each b As BlogInfo In blogList
+      If BlogContext.ParentModule IsNot Nothing Then
+        b.ParentTabID = BlogContext.ParentModule.TabID
+      End If
       Replacers.Add(New BlogTokenReplace(Me, b))
      Next
     End If
@@ -403,6 +409,9 @@ Public Class Blog
    Case "calendar", "blogcalendar"
 
     For Each bci As BlogCalendarInfo In BlogsController.GetBlogCalendar(BlogContext.BlogModuleId, BlogContext.BlogId, BlogContext.ShowLocale)
+     If BlogContext.ParentModule IsNot Nothing Then
+       bci.ParentTabID = BlogContext.ParentModule.TabID
+     End If
      Replacers.Add(New BlogTokenReplace(Me, bci))
     Next
 
@@ -431,6 +440,9 @@ Public Class Blog
       Next
      Case Else ' last name
       For Each u As PostAuthor In PostsController.GetAuthors(BlogContext.BlogModuleId, blogToShow)
+       If BlogContext.ParentModule IsNot Nothing Then
+         u.ParentTabID = BlogContext.ParentModule.TabID
+       End If
        Replacers.Add(New BlogTokenReplace(Me, New LazyLoadingUser(u)))
       Next
     End Select
