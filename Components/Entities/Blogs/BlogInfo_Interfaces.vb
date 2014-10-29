@@ -42,6 +42,10 @@ Namespace Entities.Blogs
   Implements IPropertyAccess
   Implements IXmlSerializable
 
+#Region " ML Properties "
+  Public Property ParentTabID As Integer = -1
+#End Region
+
 #Region " IHydratable Implementation "
   ''' -----------------------------------------------------------------------------
   ''' <summary>
@@ -231,6 +235,8 @@ Namespace Entities.Blogs
      Return PropertyAccess.FormatString(Me.LocalizedDescription, strFormat)
     Case "link", "permalink"
      Return PermaLink(DotNetNuke.Entities.Portals.PortalSettings.Current)
+    Case "parenturl"
+     Return PermaLink(ParentTabID)
     Case Else
      PropertyNotFound = True
    End Select

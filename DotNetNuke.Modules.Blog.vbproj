@@ -181,6 +181,7 @@
     <Content Include="Templates\categoryList\Category.html" />
     <Content Include="Templates\categoryList\template.css" />
     <Content Include="Templates\categoryList\Template.html" />
+    <Content Include="Templates\classicBlog\AuthorBanner.html" />
     <Content Include="Templates\classicBlog\BlogBanner.html" />
     <Content Include="Templates\classicBlog\Cat.html" />
     <Content Include="Templates\classicBlog\Comment.html" />
