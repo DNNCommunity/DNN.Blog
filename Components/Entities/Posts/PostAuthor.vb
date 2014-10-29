@@ -136,7 +136,11 @@ Namespace Entities.Posts
   Public Function PermaLink(tab As DotNetNuke.Entities.Tabs.TabInfo) As String
    If String.IsNullOrEmpty(_permaLink) Then
     _permaLink = ApplicationURL(tab.TabID) & "&author=" & UserID.ToString
-    _permaLink = FriendlyUrl(tab, _permaLink, "")
+    If DotNetNuke.Entities.Host.Host.UseFriendlyUrls Then
+     _permaLink = FriendlyUrl(tab, _permaLink, "")
+    Else
+     _permaLink = ResolveUrl(_permaLink)
+    End If
    End If
    Return _permaLink
   End Function

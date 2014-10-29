@@ -151,7 +151,11 @@ Namespace Rss
    If IsSearchFeed Then Link &= String.Format("&search={0}&t={1}&c={2}", HttpUtility.UrlEncode(Search), SearchTitle, SearchContents)
    CacheFile = Link.Substring(Link.IndexOf("?"c) + 1).Replace("&", "+").Replace("=", "-")
    CacheFile = String.Format("{0}\Blog\RssCache\{1}.resources", PortalSettings.HomeDirectoryMapPath.TrimEnd("\"c), CacheFile)
-   Link = FriendlyUrl(PortalSettings.ActiveTab, Link, GetSafePageName(Title))
+   If DotNetNuke.Entities.Host.Host.UseFriendlyUrls Then
+    Link = FriendlyUrl(PortalSettings.ActiveTab, Link, GetSafePageName(Title))
+   Else
+    Link = ResolveUrl(Link)
+   End If
 
    ' Check Cache
    If IO.File.Exists(CacheFile) Then
