@@ -170,7 +170,7 @@ Public Class PostEdit
      txtDescription.DefaultText = PostBody.Summary
      txtDescription.LocalizedTexts = PostBody.SummaryLocalizations
      txtDescription.InitialBind()
-     teBlogPost.DefaultText = PostBody.Body
+     teBlogPost.DefaultText = HttpUtility.HtmlEncode(PostBody.Body)
      teBlogPost.LocalizedTexts = PostBody.BodyLocalizations
      teBlogPost.InitialBind()
 
