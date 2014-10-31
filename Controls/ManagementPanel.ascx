@@ -10,7 +10,7 @@
   <a href="#" id="doclink" runat="server" visible="false"><i class="fa fa-book fa-fw icon16"></i>&nbsp;</a>
   <a href="<%=DotNetNuke.Common.Globals.NavigateUrl()%>" id="homelink" title="<%=LocalizeString("Home") %>"><i class="fa fa-home fa-fw icon16"></i>&nbsp;</a>
   <a href="#" id="wlwlink" runat="server"><i class="fa fa-pencil fa-fw icon16"></i>&nbsp;</a>
-  <a href="<%=RssLink%>" id="rsslink<%=ModuleId %>" title="<%=LocalizeString("RSS") %>"><i class="fa fa-rss fa-fw icon16"></i>&nbsp;</a>
+  <a href="<%=RssLink%>" id="rsslink<%=ModuleId %>" title="<%=LocalizeString("RSS") %>" target="_blank"><i class="fa fa-rss fa-fw icon16"></i>&nbsp;</a>
   <a href="#" id="searchlink<%=ModuleId %>" title="<%=LocalizeString("Search") %>"><i class="fa fa-search fa-fw icon16"></i>&nbsp;</a>
  </div>
 </div>

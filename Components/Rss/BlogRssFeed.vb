@@ -77,6 +77,7 @@ Namespace Rss
   Public Property Language As String = ""
   Public Property Locale As String = Threading.Thread.CurrentThread.CurrentCulture.Name
   Public Property Copyright As String = ""
+  Public Property URL As String = ""
 #End Region
 
 #Region " Constructors "
@@ -151,10 +152,11 @@ Namespace Rss
    If IsSearchFeed Then Link &= String.Format("&search={0}&t={1}&c={2}", HttpUtility.UrlEncode(Search), SearchTitle, SearchContents)
    CacheFile = Link.Substring(Link.IndexOf("?"c) + 1).Replace("&", "+").Replace("=", "-")
    CacheFile = String.Format("{0}\Blog\RssCache\{1}.resources", PortalSettings.HomeDirectoryMapPath.TrimEnd("\"c), CacheFile)
+   URL = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority
    If DotNetNuke.Entities.Host.Host.UseFriendlyUrls Then
     Link = FriendlyUrl(PortalSettings.ActiveTab, Link, GetSafePageName(Title))
    Else
-    Link = ResolveUrl(Link)
+    Link = URL + ResolveUrl(Link)
    End If
 
    ' Check Cache
@@ -287,7 +289,13 @@ Namespace Rss
 
    ' core data
    writer.WriteElementString("title", item.Title)
-   writer.WriteElementString("link", item.PermaLink)
+
+   If DotNetNuke.Entities.Host.Host.UseFriendlyUrls Then
+    writer.WriteElementString("link", item.PermaLink)
+   Else
+    writer.WriteElementString("link", URL + item.PermaLink)
+   End If
+
    writer.WriteElementString("description", HttpUtility.HtmlDecode(item.Summary))
    ' optional elements
    If item.Blog.IncludeAuthorInFeed Then
@@ -301,7 +309,13 @@ Namespace Rss
    ' guid needs to have the isPermaLink=false attribute for some rss readers
    writer.WriteStartElement("guid")
    writer.WriteAttributeString("isPermaLink", "true")
-   writer.WriteRaw(String.Format("{0}", item.PermaLink))
+
+   If DotNetNuke.Entities.Host.Host.UseFriendlyUrls Then
+    writer.WriteRaw(String.Format("{0}", item.PermaLink))
+   Else
+    writer.WriteRaw(String.Format("{0}", URL + HttpUtility.HtmlEncode(item.PermaLink)))
+   End If
+
    writer.WriteEndElement()
 
    writer.WriteElementString("pubDate", item.PublishedOnDate.ToString("r"))
