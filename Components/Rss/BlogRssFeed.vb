@@ -1,7 +1,7 @@
 '
-' Bring2mind - http://www.bring2mind.net
-' Copyright (c) 2013
-' by Bring2mind
+' DNN Connect - http://dnn-connect.org
+' Copyright (c) 2014
+' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 ' documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -31,7 +31,7 @@ Namespace Rss
 
 #Region " Constants "
   Private Const nsBlogPre As String = "blog"
-  Private Const nsBlogFull As String = "http://www.dotnetnuke.com/blog/"
+  Private Const nsBlogFull As String = "http://dnn-connect.org/blog/"
   Private Const nsSlashPre As String = "slash"
   Private Const nsSlashFull As String = "http://purl.org/rss/1.0/modules/slash/"
   Private Const nsAtomPre As String = "atom"

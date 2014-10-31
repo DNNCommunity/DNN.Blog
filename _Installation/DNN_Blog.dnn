@@ -7,8 +7,8 @@
    <iconFile>~/DesktopModules/Blog/Images/dnnBlog_32.png</iconFile>
    <owner>
     <name>Peter Donker</name>
-    <organization>Bring2mind</organization>
-    <url>http://dnnblog.org</url>
+    <organization>DNN Connect</organization>
+    <url>http://dnn-connect.org</url>
     <email/>
    </owner>
    <license src="License.txt"/>
