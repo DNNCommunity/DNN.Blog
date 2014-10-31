@@ -7,11 +7,11 @@
  <asp:LinkButton runat="server" ID="cmdEditPost" resourcekey="cmdEditPost" Visible="false" CssClass="dnnSecondaryAction" />
  <asp:LinkButton runat="server" ID="cmdBlog" resourcekey="cmdBlog" Visible="false" CssClass="dnnPrimaryAction" />&nbsp;
  <div style="float:right">
-  <a href="#" id="doclink" runat="server" class="blogicon-book icon16" visible="false">&nbsp;</a>
-  <a href="<%=DotNetNuke.Common.Globals.NavigateUrl()%>" id="homelink" class="blogicon-home icon16" title="<%=LocalizeString("Home") %>">&nbsp;</a>
-  <a href="#" id="wlwlink" runat="server" class="blogicon-pencil icon16">&nbsp;</a>
-  <a href="<%=RssLink%>" id="rsslink<%=ModuleId %>" title="<%=LocalizeString("RSS") %>" class="blogicon-rss icon16">&nbsp;</a>
-  <a href="#" id="searchlink<%=ModuleId %>" title="<%=LocalizeString("Search") %>" class="blogicon-search icon16">&nbsp;</a>
+  <a href="#" id="doclink" runat="server" visible="false"><i class="fa fa-book fa-fw icon16"></i>&nbsp;</a>
+  <a href="<%=DotNetNuke.Common.Globals.NavigateUrl()%>" id="homelink" title="<%=LocalizeString("Home") %>"><i class="fa fa-home fa-fw icon16"></i>&nbsp;</a>
+  <a href="#" id="wlwlink" runat="server"><i class="fa fa-pencil fa-fw icon16"></i>&nbsp;</a>
+  <a href="<%=RssLink%>" id="rsslink<%=ModuleId %>" title="<%=LocalizeString("RSS") %>" target="_blank"><i class="fa fa-rss fa-fw icon16"></i>&nbsp;</a>
+  <a href="#" id="searchlink<%=ModuleId %>" title="<%=LocalizeString("Search") %>"><i class="fa fa-search fa-fw icon16"></i>&nbsp;</a>
  </div>
 </div>
 <div class="dnnDialog" id="pnlCopyModule" runat="server">
@@ -39,152 +39,152 @@
  </div>
 </div>
 <script>
-(function ($, Sys) {
- $(document).ready(function () {
+    (function ($, Sys) {
+        $(document).ready(function () {
 <% If BlogContext.Security.CanAddPost %>
-  var $dialogWLW = $('<div class="dnnDialog"></div>')
-		.html('<input type="text" id="txtWLWLink<%=ModuleId %>" style="width:95%"></input><br/><span><%=LocalizeJSString("WLW.Help") %></span>')
+     var $dialogWLW = $('<div class="dnnDialog"></div>')
+           .html('<input type="text" id="txtWLWLink<%=ModuleId %>" style="width:95%"></input><br/><span><%=LocalizeJSString("WLW.Help") %></span>')
 		.dialog({
-		 autoOpen: false,
-		 resizable: false,
-		 dialogClass: 'dnnFormPopup dnnClear',
-		 title: '<%=LocalizeJSString("WLW") %>',
+		    autoOpen: false,
+		    resizable: false,
+		    dialogClass: 'dnnFormPopup dnnClear',
+		    title: '<%=LocalizeJSString("WLW") %>',
 		 height: 160,
 		 width: 500
 		});
-		$('#<%=wlwlink.ClientId %>').click(function () {
-   $dialogWLW.dialog('open');
-   $('#txtWLWLink<%=ModuleId %>').val('http://<%= Request.Url.Host & DotNetNuke.Common.Globals.ApplicationPath & String.Format("/DesktopModules/Blog/BlogPost.ashx?portalid={0}&tabid={1}&moduleid={2}", PortalId, TabId, ModuleId) %>').select();
+     $('#<%=wlwlink.ClientId %>').click(function () {
+         $dialogWLW.dialog('open');
+         $('#txtWLWLink<%=ModuleId %>').val('http://<%= Request.Url.Host & DotNetNuke.Common.Globals.ApplicationPath & String.Format("/DesktopModules/Blog/BlogPost.ashx?portalid={0}&tabid={1}&moduleid={2}", PortalId, TabId, ModuleId) %>').select();
    return false;
-  });
-<% End If %>
+		});
+     <% End If %>
 <% If BlogContext.Security.IsEditor %>
- $('#<%=pnlCopyModule.ClientId %>')
-		.dialog({
-		 autoOpen: false,
-		 resizable: false,
-		 dialogClass: 'dnnFormPopup dnnClear',
-		 title: '<%=LocalizeJSString("cmdCopyModule") %>',
+     $('#<%=pnlCopyModule.ClientId %>')
+            .dialog({
+                autoOpen: false,
+                resizable: false,
+                dialogClass: 'dnnFormPopup dnnClear',
+                title: '<%=LocalizeJSString("cmdCopyModule") %>',
 		 width: 800
 		});
-		$('#<%=cmdCopyModule.ClientId %>').click(function () {
-   $('#<%=pnlCopyModule.ClientId %>').dialog('open');
-   return false;
-  });
- $('#cmdAdd<%=ModuleId %>').click(function () {
-  blogService.addModule($('#<%=ddPane.ClientId %>').val(), $('#<%=ddPosition.ClientId %>').val(), $('#<%=txtTitle.ClientId %>').val(), $('#<%=ddTemplate.ClientId %>').val(),
-  function() {
-   location.reload()
-  });
-  $('#<%=pnlCopyModule.ClientId %>').dialog('close');
-  return false;
+     $('#<%=cmdCopyModule.ClientId %>').click(function () {
+         $('#<%=pnlCopyModule.ClientId %>').dialog('open');
+		    return false;
+		});
+     $('#cmdAdd<%=ModuleId %>').click(function () {
+         blogService.addModule($('#<%=ddPane.ClientId %>').val(), $('#<%=ddPosition.ClientId %>').val(), $('#<%=txtTitle.ClientId %>').val(), $('#<%=ddTemplate.ClientId %>').val(),
+     function () {
+         location.reload()
+     });
+     $('#<%=pnlCopyModule.ClientId %>').dialog('close');
+     return false;
  });
 <% End If %>
-  var $dialogSearch = $('<div class="dnnDialog"></div>')
-		.html('<input type="text" id="txtSearch" style="width:95%"></input><br/><%=LocalizeJSString("SearchIn") %>&nbsp;<input type="checkbox" id="scopeAll<%=ModuleId %>" value="1" checked="1" /><%=LocalizeJSString("SearchAll") %><input type="checkbox" id="scopeTitle<%=ModuleId %>" value="1" checked="1" /><%=LocalizeJSString("Title") %><input type="checkbox" id="scopeContents<%=ModuleId %>" value="1" /><%=LocalizeJSString("Contents") %><% If BlogContext.Security.CanAddPost %><input type="checkbox" id="chkUnpublished<%=ModuleId %>" value="1" /><%=LocalizeJSString("Unpublished") %><% End If %>')
+     var $dialogSearch = $('<div class="dnnDialog"></div>')
+           .html('<input type="text" id="txtSearch" style="width:95%"></input><br/><%=LocalizeJSString("SearchIn") %>&nbsp;<input type="checkbox" id="scopeAll<%=ModuleId %>" value="1" checked="1" /><%=LocalizeJSString("SearchAll") %><input type="checkbox" id="scopeTitle<%=ModuleId %>" value="1" checked="1" /><%=LocalizeJSString("Title") %><input type="checkbox" id="scopeContents<%=ModuleId %>" value="1" /><%=LocalizeJSString("Contents") %><% If BlogContext.Security.CanAddPost %><input type="checkbox" id="chkUnpublished<%=ModuleId %>" value="1" /><%=LocalizeJSString("Unpublished") %><% End If %>')
 		.dialog({
-		 autoOpen: false,
-		 resizable: false,
-		 dialogClass: 'dnnFormPopup dnnClear',
-		 title: '<%=LocalizeJSString("Search") %>',
+		    autoOpen: false,
+		    resizable: false,
+		    dialogClass: 'dnnFormPopup dnnClear',
+		    title: '<%=LocalizeJSString("Search") %>',
 		 height: 210,
 		 width: 500,
 		 open: function (e) {
-		  $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeJSString("Search") %>")').addClass('dnnPrimaryAction');
-		  $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeJSString("Cancel") %>")').addClass('dnnSecondaryAction');
+		     $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeJSString("Search") %>")').addClass('dnnPrimaryAction');
+		     $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeJSString("Cancel") %>")').addClass('dnnSecondaryAction');
 		 },
-		 buttons: [
-    {
-     text: '<%=LocalizeJSString("Cancel") %>',
-     click: function () {
-      $(this).dialog("close");
-     }
+		    buttons: [
+       {
+           text: '<%=LocalizeJSString("Cancel") %>',
+        click: function () {
+            $(this).dialog("close");
+        }
     },
     {
-     text: '<%=LocalizeJSString("Search") %>',
-     click: function () {
-      $(this).dialog("close");
-      var url
-      if ($('#scopeAll<%=ModuleId %>').is(':checked')) {
-       url = '<%=BlogContext.ModuleUrls.GetUrl(False, False, False, False, True) %>';
+        text: '<%=LocalizeJSString("Search") %>',
+        click: function () {
+            $(this).dialog("close");
+            var url
+            if ($('#scopeAll<%=ModuleId %>').is(':checked')) {
+          url = '<%=BlogContext.ModuleUrls.GetUrl(False, False, False, False, True) %>';
       } else {
-       url = '<%=BlogContext.ModuleUrls.GetUrl(True, False, True, True, True) %>';
+          url = '<%=BlogContext.ModuleUrls.GetUrl(True, False, True, True, True) %>';
       }
-      url += 'search=' + $('#txtSearch').val();
-      if ($('#scopeTitle<%=ModuleId %>').is(':checked')) {
-       url += '&t=1'
+         url += 'search=' + $('#txtSearch').val();
+         if ($('#scopeTitle<%=ModuleId %>').is(':checked')) {
+          url += '&t=1'
       }
       if ($('#scopeContents<%=ModuleId %>').is(':checked')) {
-       url += '&c=1'
-      }
-      if ($('#chkUnpublished<%=ModuleId %>').is(':checked')) {
-       url += '&u=1'
-      }
-      window.location.href = encodeURI(url);
+             url += '&c=1'
+         }
+         if ($('#chkUnpublished<%=ModuleId %>').is(':checked')) {
+             url += '&u=1'
+         }
+         window.location.href = encodeURI(url);
      }
     }
-    ]
+		 ]
 		});
-  $('#searchlink<%=ModuleId %>').click(function () {
-   $dialogSearch.dialog('open');
-   return false;
-  });
+     $('#searchlink<%=ModuleId %>').click(function () {
+         $dialogSearch.dialog('open');
+         return false;
+     });
 <% If BlogContext.Security.CanAddPost %>
-  var $blogChoose = $('<div class="dnnDialog"></div>')
-		.html('<%=BlogSelectListHtml %>')
+     var $blogChoose = $('<div class="dnnDialog"></div>')
+           .html('<%=BlogSelectListHtml %>')
 		.dialog({
-		 autoOpen: false,
-		 resizable: false,
-		 dialogClass: 'dnnFormPopup dnnClear',
-		 title: '<%=LocalizeJSString("BlogChoose") %>',
+		    autoOpen: false,
+		    resizable: false,
+		    dialogClass: 'dnnFormPopup dnnClear',
+		    title: '<%=LocalizeJSString("BlogChoose") %>',
 		 width: 500,
 		 open: function (e) {
-		  $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeJSString("cmdBlog") %>")').addClass('dnnPrimaryAction');
-		  $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeJSString("Cancel") %>")').addClass('dnnSecondaryAction');
-    $('#ddBlog').width("100%");
+		     $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeJSString("cmdBlog") %>")').addClass('dnnPrimaryAction');
+		     $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeJSString("Cancel") %>")').addClass('dnnSecondaryAction');
+		     $('#ddBlog').width("100%");
 		 },
-		 buttons: [
-    {
-     text: '<%=LocalizeJSString("Cancel") %>',
-     click: function () {
-      $(this).dialog("close");
-     }
+		    buttons: [
+       {
+           text: '<%=LocalizeJSString("Cancel") %>',
+        click: function () {
+            $(this).dialog("close");
+        }
     },
     {
-     text: '<%=LocalizeJSString("cmdBlog") %>',
-     click: function () {
-      $(this).dialog("close");
-      var url = '<%=EditUrl("PostEdit") %>';
+        text: '<%=LocalizeJSString("cmdBlog") %>',
+        click: function () {
+            $(this).dialog("close");
+            var url = '<%=EditUrl("PostEdit") %>';
       if (url.indexOf("?") == -1) {
-       url += '?'
+          url += '?'
       } else {
-       url += '&'
+          url += '&'
       };
       url += 'Blog=' + $('#ddBlog').val();
       window.location.href = encodeURI(url);
      }
     }
-    ]
+		 ]
 		});
   <% If NrBlogs > 1 %>
-  $('#<%=cmdBlog.ClientId %>').click(function () {
-   $blogChoose.dialog('open');
-   return false;
-  });
+     $('#<%=cmdBlog.ClientId %>').click(function () {
+         $blogChoose.dialog('open');
+         return false;
+     });
   <% ElseIf NrBlogs = 1 %>
-  $('#<%=cmdBlog.ClientId %>').click(function () {
-   var url = '<%=EditUrl("PostEdit") %>';
-   if (url.indexOf("?") == -1) {
-    url += '?'
-   } else {
-    url += '&'
-   };
-   url += 'Blog=' + $('#ddBlog').val();
-   window.location.href = encodeURI(url);
-   return false;
+     $('#<%=cmdBlog.ClientId %>').click(function () {
+         var url = '<%=EditUrl("PostEdit") %>';
+      if (url.indexOf("?") == -1) {
+          url += '?'
+      } else {
+          url += '&'
+      };
+      url += 'Blog=' + $('#ddBlog').val();
+      window.location.href = encodeURI(url);
+      return false;
   });
-  <% End If %>
+     <% End If %>
 <% End If %>
  });
-} (jQuery, window.Sys));
+}(jQuery, window.Sys));
 </script>
