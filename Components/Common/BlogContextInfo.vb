@@ -54,9 +54,13 @@ Namespace Common
    RequestParams = context.Request.Params
 
    context.Request.Params.ReadValue("Blog", BlogId)
+   context.Request.Params.ReadValue("id", ContentItemId)
    context.Request.Params.ReadValue("Post", ContentItemId)
    context.Request.Params.ReadValue("Term", TermId)
    context.Request.Params.ReadValue("Categories", Categories)
+   context.Request.Params.ReadValue("User", AuthorId)
+   context.Request.Params.ReadValue("uid", AuthorId)
+   context.Request.Params.ReadValue("UserId", AuthorId)
    context.Request.Params.ReadValue("Author", AuthorId)
    context.Request.Params.ReadValue("end", EndDate)
    context.Request.Params.ReadValue("search", SearchString)
