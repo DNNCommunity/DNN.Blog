@@ -82,4 +82,18 @@
   <change type="Fix" bugcode="24097">Fix to TabCloud filtering to one blog post</change>
   <change type="Fix">Fix issue with module view settings</change>
  </release>
+ <release version="06.01.00">
+  <change type="Change">Moved IP from Bring2mind to DNN Connect</change>
+  <change type="Change">RSS Feed namespace now DNN Connect instead of DotNetNuke (breaking change for RSS feeds!)</change>
+  <change type="Enhancement">Incorporated latest version of FontAwesome</change>
+  <change type="Enhancement">No need for "URL to target page" property in Template Settings anymore</change>
+  <change type="Enhancement">All links from all the templates are constructed and displayed with the same standards</change>
+  <change type="Enhancement">Templates View Link Enhancement Request</change>
+  <change type="Enhancement">Enhanced support for SEO</change>
+  <change type="Enhancement">Also accepts user id (userid, user, uid) in the querystring to filter by author</change>
+  <change type="Fix">Posts' URL not longer malformed</change>
+  <change type="Fix">Friendly URLs in Blog</change>
+  <change type="Fix">Unpublished Posts no longer show up in Google Site Map</change>
+  <change type="Fix">Unpublished blog posts no longer appear in RSS feed</change>
+ </release>
 </changelog>
