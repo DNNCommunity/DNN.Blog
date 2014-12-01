@@ -355,8 +355,12 @@ Public Class Blog
      For Each t As TermInfo In BlogContext.Post.PostCategories
       Replacers.Add(New BlogTokenReplace(Me, BlogContext.Post, t))
      Next
-    Else
+    ElseIf ViewSettings.Categories = "" Then
      For Each t As TermInfo In TermsController.GetTermsByModule(BlogContext.BlogModuleId, BlogContext.Locale).Where(Function(x) x.VocabularyId <> 1).ToList
+      Replacers.Add(New BlogTokenReplace(Me, Nothing, t))
+     Next
+    Else
+     For Each t As TermInfo In TermsController.GetTermsByModule(BlogContext.BlogModuleId, BlogContext.Locale).Where(Function(x) ViewSettings.CategoryList.Contains(x.VocabularyId)).ToList
       Replacers.Add(New BlogTokenReplace(Me, Nothing, t))
      Next
     End If

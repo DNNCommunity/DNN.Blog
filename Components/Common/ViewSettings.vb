@@ -19,6 +19,7 @@
 '
 
 Imports System.Xml
+Imports Microsoft.VisualBasic.CompilerServices
 Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Services.Tokens
 Imports DotNetNuke.Modules.Blog.Common.Globals
@@ -45,6 +46,23 @@ Namespace Common
   Public Property TemplateSettings As New Dictionary(Of String, String)
   Private Property TemplateManager As Templating.TemplateManager
   Friend Property CanCache As Boolean = True
+#End Region
+
+#Region " ReadOnly Properties "
+  Private _categoryList As List(Of Integer)
+  Public ReadOnly Property CategoryList As List(Of Integer)
+   Get
+    If _categoryList Is Nothing Then
+     _categoryList = New List(Of Integer)
+     For Each c As String In Categories.Split(","c)
+      If IsNumeric(c) Then
+       _categoryList.Add(Integer.Parse(c))
+      End If
+     Next
+    End If
+    Return _categoryList
+   End Get
+  End Property
 #End Region
 
 #Region " Constructors "
@@ -106,6 +124,7 @@ Namespace Common
    objModules.UpdateTabModuleSetting(tabModuleId, "BlogId", BlogId.ToString)
    objModules.UpdateTabModuleSetting(tabModuleId, "Categories", Categories.ToString)
    objModules.UpdateTabModuleSetting(tabModuleId, "AuthorId", AuthorId.ToString)
+   _categoryList = Nothing
 
    Dim CacheKey As String = "TabModuleSettings" & tabModuleId.ToString
    DotNetNuke.Common.Utilities.DataCache.SetCache(CacheKey, Me)
@@ -212,6 +231,7 @@ Namespace Common
    xml.ReadValue("ShowManagementPanel", ShowManagementPanel)
    xml.ReadValue("BlogId", BlogId)
    xml.ReadValue("AuthorId", AuthorId)
+   _categoryList = Nothing
   End Sub
 #End Region
 
