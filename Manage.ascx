@@ -125,7 +125,7 @@
     ]
 		});
  $('.exportlink').click(function () {
-  selectedBlog = $(this).attr('data-blogid');
+  selectedBlog = $(this).parent().attr('data-blogid');
   $dialogexport.dialog('open');
   return false;
  });
