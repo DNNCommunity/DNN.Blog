@@ -18,11 +18,6 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports DotNetNuke.Modules.Blog.Entities.Blogs
-Imports System.Linq
-Imports DotNetNuke.Modules.Blog.Entities.Posts
-Imports DotNetNuke.Web.UI.WebControls
-Imports DotNetNuke.Web.Client.ClientResourceManagement
 Imports DotNetNuke.Modules.Blog.Common.Globals
 
 Public Class Admin
@@ -64,12 +59,14 @@ Public Class Admin
 
  Private Sub cmdCreateVocabulary_Click(sender As Object, e As System.EventArgs) Handles cmdCreateVocabulary.Click
   Settings.VocabularyId = Integration.Integration.CreateNewVocabulary(PortalId).VocabularyId
-  Me.DataBind()
+  Settings.UpdateSettings()
+  DataBind()
  End Sub
 
  Private Sub ddVocabularyId_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles ddVocabularyId.SelectedIndexChanged
   Settings.VocabularyId = ddVocabularyId.SelectedValue.ToInt
-  Me.DataBind()
+  Settings.UpdateSettings()
+  DataBind()
  End Sub
 
  Private Sub cmdCancel_Click(sender As Object, e As System.EventArgs) Handles cmdCancel.Click
