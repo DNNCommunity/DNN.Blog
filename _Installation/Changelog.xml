@@ -96,4 +96,10 @@
   <change type="Fix">Unpublished Posts no longer show up in Google Site Map</change>
   <change type="Fix">Unpublished blog posts no longer appear in RSS feed</change>
  </release>
+ <release version="06.01.01">
+  <change type="Fix">Categories list will now only show those categories selected in view settings or all if none were selected.</change>
+  <change type="Fix">Updating a post through WLW no longer clears out post image</change>
+  <change type="Fix">Save vocabulary before refreshing admin page</change>
+  <change type="Fix">Fix to BlogML export logic. It was missing the blog id before.</change>
+ </release>
 </changelog>
