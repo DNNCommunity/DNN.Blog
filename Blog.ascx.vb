@@ -370,7 +370,17 @@ Public Class Blog
 
     For Each t As TermInfo In TermsController.GetTermsByVocabulary(BlogContext.BlogModuleId, Settings.VocabularyId, BlogContext.Locale).Values
      If BlogContext.ParentModule IsNot Nothing Then
-       t.ParentTabID = BlogContext.ParentModule.TabID
+      t.ParentTabID = BlogContext.ParentModule.TabID
+     End If
+     Replacers.Add(New BlogTokenReplace(Me, Nothing, t))
+    Next
+    _usePaging = False
+
+   Case "selectcategories"
+
+    For Each t As TermInfo In TermsController.GetTermsByModule(BlogContext.BlogModuleId, BlogContext.Locale).Where(Function(x) ViewSettings.CategoryList.Contains(x.VocabularyId)).ToList
+     If BlogContext.ParentModule IsNot Nothing Then
+      t.ParentTabID = BlogContext.ParentModule.TabID
      End If
      Replacers.Add(New BlogTokenReplace(Me, Nothing, t))
     Next
