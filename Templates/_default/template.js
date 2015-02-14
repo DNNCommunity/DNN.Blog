@@ -13,7 +13,7 @@
     twitter: true
    },
    urlCurl: '',
-   template: '<a href="#"><i class="fa fa-facebook socialicons facebook"></i></a><a href="#"><i class="fa fa-twitter socialicons facebook"></i></a><a href="#"><i class="fa fa-google-plus socialicons googleplus"></i></a>',
+   template: '<a href="#"><i class="fa fa-facebook socialicons facebook"></i></a><a href="#"><i class="fa fa-twitter socialicons twitter"></i></a><a href="#"><i class="fa fa-google-plus socialicons googleplus"></i></a>',
    enableHover: false,
    enableTracking: true,
    render: function (api, options) {
