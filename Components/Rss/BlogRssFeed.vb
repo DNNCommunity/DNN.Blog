@@ -149,6 +149,7 @@ Namespace Rss
    If ImageHeight <> Settings.RssImageHeight Then Link &= String.Format("&h={0}", ImageHeight)
    If IncludeContents Then Link &= "&body=true"
    If Language <> "" Then Link &= String.Format("&language={0}", Language)
+   If Locale <> "" Then Link &= String.Format("&locale={0}", Locale)
    If IsSearchFeed Then Link &= String.Format("&search={0}&t={1}&c={2}", HttpUtility.UrlEncode(Search), SearchTitle, SearchContents)
    CacheFile = Link.Substring(Link.IndexOf("?"c) + 1).Replace("&", "+").Replace("=", "-")
    CacheFile = String.Format("{0}\Blog\RssCache\{1}.resources", PortalSettings.HomeDirectoryMapPath.TrimEnd("\"c), CacheFile)
@@ -288,7 +289,7 @@ Namespace Rss
    writer.WriteStartElement("item")
 
    ' core data
-   writer.WriteElementString("title", item.Title)
+   writer.WriteElementString("title", item.LocalizedTitle)
 
    If DotNetNuke.Entities.Host.Host.UseFriendlyUrls Then
     writer.WriteElementString("link", item.PermaLink)
@@ -296,7 +297,7 @@ Namespace Rss
     writer.WriteElementString("link", URL + item.PermaLink)
    End If
 
-   writer.WriteElementString("description", HttpUtility.HtmlDecode(item.Summary))
+   writer.WriteElementString("description", HttpUtility.HtmlDecode(item.LocalizedSummary))
    ' optional elements
    If item.Blog.IncludeAuthorInFeed Then
     writer.WriteElementString("author", String.Format("{0} ({1})", item.Email, item.DisplayName))
