@@ -99,7 +99,7 @@ Namespace Templating
     res = User.GetProperty(strPropertyName, strFormat, formatProvider, AccessingUser, AccessLevel, PropertyNotFound)
    End If
    If PropertyNotFound Then
-    res = User.Profile.GetPropertyValue(strPropertyName)
+    res = HttpUtility.HtmlDecode(User.Profile.GetPropertyValue(strPropertyName))
    End If
    If Not String.IsNullOrEmpty(res) Then
     PropertyNotFound = False
