@@ -188,6 +188,12 @@
     <Content Include="Templates\classicBlog\CommentApprove.html" />
     <Content Include="Templates\classicBlog\CommentApproveBar.html" />
     <Content Include="Templates\classicBlog\CommentsTemplate.html" />
+    <Content Include="Templates\classicBlog\images\blog_edit_link.png" />
+    <Content Include="Templates\classicBlog\images\blog_permalink.png" />
+    <Content Include="Templates\classicBlog\images\blog_print.png" />
+    <Content Include="Templates\classicBlog\images\blog_trackback.png" />
+    <Content Include="Templates\classicBlog\images\comment.gif" />
+    <Content Include="Templates\classicBlog\images\Tag_16X16_Standard.png" />
     <Content Include="Templates\classicBlog\List.html" />
     <Content Include="Templates\classicBlog\Page.html" />
     <Content Include="Templates\classicBlog\Post.html" />
@@ -527,7 +533,6 @@
     <Folder Include="Templates\categoryList\jsblocks\" />
     <Folder Include="Templates\categoryList\js\" />
     <Folder Include="Templates\classicBlog\css\" />
-    <Folder Include="Templates\classicBlog\images\" />
     <Folder Include="Templates\classicBlog\jsblocks\" />
     <Folder Include="Templates\classicBlog\js\" />
     <Folder Include="Templates\commentList\css\" />
