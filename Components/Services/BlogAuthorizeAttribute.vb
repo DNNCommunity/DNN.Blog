@@ -23,8 +23,6 @@ Imports System.Threading
 
 Imports DotNetNuke.Web.Api
 Imports DotNetNuke.Common
-Imports DotNetNuke.Security
-Imports DotNetNuke.Entities.Modules
 Imports DotNetNuke.Entities.Users
 
 Imports DotNetNuke.Modules.Blog.Security

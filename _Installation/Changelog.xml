@@ -102,4 +102,12 @@
   <change type="Fix">Save vocabulary before refreshing admin page</change>
   <change type="Fix">Fix to BlogML export logic. It was missing the blog id before.</change>
  </release>
+ <release version="06.01.02">
+  <change type="Enhancement">Rss feeds now localized through locale querystring parameter</change>
+  <change type="Enhancement">Added Powershell to Syntax highlighter in default template</change>
+  <change type="Fix">Profile properties now html decoded before being emitted</change>
+  <change type="Enhancement">Added images to classic template</change>
+  <change type="Fix">Fixed Twitter icon in default template</change>
+  <change type="Fix">Template collection to show only categories selected for viewing (selectcategories)</change>
+ </release>
 </changelog>
