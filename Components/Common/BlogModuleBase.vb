@@ -22,10 +22,11 @@ Imports DotNetNuke.Web.Client.ClientResourceManagement
 Imports DotNetNuke.Entities.Modules
 Imports DotNetNuke.Framework
 Imports DotNetNuke.Modules.Blog.Common.Globals
-Imports DotNetNuke.Modules.Blog.Security
-Imports DotNetNuke.Services.Tokens
-Imports System.Linq
 Imports DotNetNuke.Modules.Blog.Entities.Terms
+Imports DotNetNuke.Modules.Blog.Templating
+Imports DotNetNuke.Services.Localization
+Imports DotNetNuke.UI.Utilities
+Imports DotNetNuke.Web.Client
 
 Namespace Common
 
@@ -90,9 +91,9 @@ Namespace Common
    End Set
   End Property
 
-  Public Shadows ReadOnly Property Page As DotNetNuke.Framework.CDefault
+  Public Shadows ReadOnly Property Page As CDefault
    Get
-    Return CType(MyBase.Page, DotNetNuke.Framework.CDefault)
+    Return CType(MyBase.Page, CDefault)
    End Get
   End Property
 
@@ -108,7 +109,7 @@ Namespace Common
 #End Region
 
 #Region " Event Handlers "
-  Private Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+  Private Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
 
    If Context.Items("BlogModuleBaseInitialized") Is Nothing Then
 
@@ -120,7 +121,7 @@ Namespace Common
     script.AppendLine(String.Format("var appPath='{0}'", DotNetNuke.Common.ApplicationPath))
     script.AppendLine("//]]>")
     script.AppendLine("</script>")
-    UI.Utilities.ClientAPI.RegisterClientScriptBlock(Page, "blogAppPath", script.ToString)
+    ClientAPI.RegisterClientScriptBlock(Page, "blogAppPath", script.ToString)
     AddBlogService()
 
     Context.Items("BlogModuleBaseInitialized") = True
@@ -134,14 +135,14 @@ Namespace Common
 
    If Context.Items("BlogServiceAdded") Is Nothing Then
 
-    DotNetNuke.Framework.jQuery.RequestDnnPluginsRegistration()
-    DotNetNuke.Framework.ServicesFramework.Instance.RequestAjaxScriptSupport()
-    DotNetNuke.Framework.ServicesFramework.Instance.RequestAjaxAntiForgerySupport()
+    jQuery.RequestDnnPluginsRegistration()
+    ServicesFramework.Instance.RequestAjaxScriptSupport()
+    ServicesFramework.Instance.RequestAjaxAntiForgerySupport()
     AddJavascriptFile("dotnetnuke.blog.js", 70)
 
     ' Load initialization snippet
-    Dim scriptBlock As String = Common.Globals.ReadFile(DotNetNuke.Common.ApplicationMapPath & "\DesktopModules\Blog\js\dotnetnuke.blog.pagescript.js")
-    Dim tr As New Templating.BlogTokenReplace(BlogContext.BlogModuleId)
+    Dim scriptBlock As String = ReadFile(DotNetNuke.Common.ApplicationMapPath & "\DesktopModules\Blog\js\dotnetnuke.blog.pagescript.js")
+    Dim tr As New BlogTokenReplace(BlogContext.BlogModuleId)
     tr.AddResources("~/DesktopModules/Blog/App_LocalResources/SharedResources.resx")
     scriptBlock = tr.ReplaceTokens(scriptBlock)
     scriptBlock = "<script type=""text/javascript"">" & vbCrLf & "//<![CDATA[" & vbCrLf & scriptBlock & vbCrLf & "//]]>" & vbCrLf & "</script>"
@@ -153,19 +154,19 @@ Namespace Common
   End Sub
 
   Public Sub AddJavascriptFile(jsFilename As String, priority As Integer)
-   ClientResourceManager.RegisterScript(Page, ResolveUrl("~/DesktopModules/Blog/js/" & jsFilename), priority)
+   ClientResourceManager.RegisterScript(Page, ResolveUrl("~/DesktopModules/Blog/js/" & jsFilename) + "?_=" + Settings.Version, priority)
   End Sub
 
   Public Sub AddCssFile(cssFilename As String)
-   ClientResourceManager.RegisterStyleSheet(Page, ResolveUrl("~/DesktopModules/Blog/css/" & cssFilename), Web.Client.FileOrder.Css.ModuleCss)
+   ClientResourceManager.RegisterStyleSheet(Page, ResolveUrl("~/DesktopModules/Blog/css/" & cssFilename) + "?_=" + Settings.Version, FileOrder.Css.ModuleCss)
   End Sub
 
   Public Function LocalizeJSString(resourceKey As String) As String
-   Return UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString(resourceKey))
+   Return ClientAPI.GetSafeJSString(LocalizeString(resourceKey))
   End Function
 
   Public Function LocalizeJSString(resourceKey As String, resourceFile As String) As String
-   Return UI.Utilities.ClientAPI.GetSafeJSString(DotNetNuke.Services.Localization.Localization.GetString(resourceKey, resourceFile))
+   Return ClientAPI.GetSafeJSString(Localization.GetString(resourceKey, resourceFile))
   End Function
 #End Region
 

@@ -35,6 +35,7 @@ Namespace Common
 #End Region
 
 #Region " Properties "
+  Public Property Version As String = "0.0.0"
   Public Property AllowWLW As Boolean = False
   Public Property AllowMultipleCategories As Boolean = True
   Public Property VocabularyId As Integer = -1
@@ -79,6 +80,7 @@ Namespace Common
   Public Sub New(moduleId As Integer)
 
    _moduleId = moduleId
+   Version = Me.GetType().Assembly.GetName().Version.ToString()
    _allSettings = (New DotNetNuke.Entities.Modules.ModuleController).GetModuleSettings(moduleId)
    _allSettings.ReadValue("AllowWLW", AllowWLW)
    _allSettings.ReadValue("AllowMultipleCategories", AllowMultipleCategories)
