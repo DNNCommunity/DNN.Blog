@@ -1,6 +1,6 @@
 '
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -44,10 +44,10 @@ Namespace Controls
   Public Property Vocabulary() As Dictionary(Of String, TermInfo)
    Get
     If _Vocabulary Is Nothing Then
-     _Vocabulary = TermsController.GetTermsByVocabulary(ModuleConfiguration.ModuleID, VocabularyId, Threading.Thread.CurrentThread.CurrentCulture.Name)
-     If _Vocabulary Is Nothing Then
-      _Vocabulary = New Dictionary(Of String, TermInfo)
-     End If
+    _Vocabulary = TermsController.GetTermsByVocabulary(ModuleConfiguration.ModuleID, VocabularyId, Threading.Thread.CurrentThread.CurrentCulture.Name)
+    If _Vocabulary Is Nothing Then
+     _Vocabulary = New Dictionary(Of String, TermInfo)
+    End If
     End If
     Return _Vocabulary
    End Get
