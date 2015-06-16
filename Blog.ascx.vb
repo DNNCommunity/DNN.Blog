@@ -379,7 +379,7 @@ End Sub
 
    Case "selectcategories"
 
-    For Each t As TermInfo In TermsController.GetTermsByModule(BlogContext.BlogModuleId, BlogContext.Locale).Where(Function(x) ViewSettings.CategoryList.Contains(x.VocabularyId)).ToList
+    For Each t As TermInfo In TermsController.GetTermsByModule(BlogContext.BlogModuleId, BlogContext.Locale).Where(Function(x) ViewSettings.CategoryList.Contains(x.TermId)).ToList
      If BlogContext.ParentModule IsNot Nothing Then
       t.ParentTabID = BlogContext.ParentModule.TabID
      End If

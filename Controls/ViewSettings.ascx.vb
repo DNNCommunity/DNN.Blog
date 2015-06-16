@@ -31,20 +31,6 @@ Namespace Controls
 
 #Region " Properties "
   Private Property BlogModuleId As Integer = -1
-
-  Private _settings As Common.ModuleSettings
-  Public Shadows Property Settings() As Common.ModuleSettings
-   Get
-    If _settings Is Nothing Then
-     _settings = Common.ModuleSettings.GetModuleSettings(BlogModuleId)
-    End If
-    Return _settings
-   End Get
-   Set(ByVal value As Common.ModuleSettings)
-    _settings = value
-   End Set
-  End Property
-
   Private _viewSettings As Common.ViewSettings
   Public Property ViewSettings() As Common.ViewSettings
    Get
@@ -60,14 +46,15 @@ Namespace Controls
 #Region " Page Events "
   Private Sub Page_Init(sender As Object, e As System.EventArgs) Handles Me.Init
    Try
-    BlogModuleId = ModuleId
     ctlCategories.ModuleConfiguration = Me.ModuleConfiguration
-    ctlCategories.VocabularyId = Settings.VocabularyId
+    If Not IsPostBack Then
      If ViewSettings.BlogModuleId > -1 Then
       BlogModuleId = ViewSettings.BlogModuleId
      Else
       BlogModuleId = ModuleId
      End If
+     ctlCategories.VocabularyId = Common.ModuleSettings.GetModuleSettings(BlogModuleId).VocabularyId
+    End If
    Catch ex As Exception
    End Try
   End Sub
@@ -77,6 +64,7 @@ Namespace Controls
 
   Private Sub ddBlogModuleId_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles ddBlogModuleId.SelectedIndexChanged
    BlogModuleId = CInt(ddBlogModuleId.SelectedValue)
+   ctlCategories.VocabularyId = Common.ModuleSettings.GetModuleSettings(BlogModuleId).VocabularyId
    LoadDropdowns()
   End Sub
 #End Region
@@ -108,7 +96,7 @@ Namespace Controls
       ddTemplate.Items.Add(New ListItem(d.Name & " [System]", "[G]" & d.Name))
      End If
     Next
-    For Each d As IO.DirectoryInfo In (New IO.DirectoryInfo(Settings.PortalTemplatesMapPath)).GetDirectories
+    For Each d As IO.DirectoryInfo In (New IO.DirectoryInfo(Common.ModuleSettings.GetModuleSettings(BlogModuleId).PortalTemplatesMapPath)).GetDirectories
      ddTemplate.Items.Add(New ListItem(d.Name & " [Local]", "[P]" & d.Name))
     Next
     Dim skinTemplatePath As String = Server.MapPath(DotNetNuke.UI.Skins.Skin.GetSkin(CType(Me.Page, Framework.PageBase)).SkinPath) & "Templates\Blog\"
