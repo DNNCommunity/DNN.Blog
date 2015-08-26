@@ -141,7 +141,7 @@
 		 open: function (e) {
 		  $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeJSString("cmdBlog") %>")').addClass('dnnPrimaryAction');
 		  $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeJSString("Cancel") %>")').addClass('dnnSecondaryAction');
-    $('#ddBlog').width("100%");
+    $('#<%:ClientID%>ddBlog').width("100%");
 		 },
 		 buttons: [
     {
@@ -160,7 +160,7 @@
       } else {
        url += '&'
       };
-      url += 'Blog=' + $('#ddBlog').val();
+      url += 'Blog=' + $('#<%:ClientID%>ddBlog').val();
       window.location.href = encodeURI(url);
      }
     }
@@ -179,7 +179,7 @@
    } else {
     url += '&'
    };
-   url += 'Blog=' + $('#ddBlog').val();
+   url += 'Blog=' + $('#<%:ClientID%>ddBlog').val();
    window.location.href = encodeURI(url);
    return false;
   });
