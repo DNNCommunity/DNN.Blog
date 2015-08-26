@@ -83,7 +83,7 @@ Namespace Controls
    End If
    If Not String.IsNullOrEmpty(BlogContext.ShowLocale) Then RssLink &= String.Format("&language={0}", BlogContext.ShowLocale)
    If BlogContext.Security.CanAddPost Then
-    BlogSelectListHtml = "<select id=""ddBlog"">"
+    BlogSelectListHtml = "<select id=""" & ClientID & "ddBlog"">"
     Dim blogList As IEnumerable(Of BlogInfo) = Nothing
     If BlogContext.Security.IsEditor Then
      blogList = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, BlogContext.Locale).Values
