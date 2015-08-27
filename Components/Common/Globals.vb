@@ -54,10 +54,6 @@ Namespace Common
    Return TimeZoneInfo.ConvertTimeFromUtc(utcTime, TimeZone)
   End Function
 
-  Public Shared Function UtcToLocalTime(utcTime As Date) As Date
-   Return Date.SpecifyKind(utcTime, DateTimeKind.Utc).ToLocalTime
-  End Function
-
   Public Shared Function ParseDate(DateString As String, Culture As String) As DateTime
    Dim dtf As System.Globalization.DateTimeFormatInfo = New System.Globalization.CultureInfo(Culture, False).DateTimeFormat
    Try

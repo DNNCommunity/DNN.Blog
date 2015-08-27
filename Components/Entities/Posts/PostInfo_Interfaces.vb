@@ -125,7 +125,11 @@ Namespace Entities.Posts
     Case "publishedyesno"
      Return PropertyAccess.Boolean2LocalizedYesNo(Me.Published, formatProvider)
     Case "publishedondate"
-     Return UtcToLocalTime(PublishedOnDate).ToString(OutputFormat, formatProvider)
+     Dim userTimeZone As TimeZoneInfo = portalSettings.TimeZone
+     If AccessingUser.Profile.PreferredTimeZone IsNot Nothing Then
+       userTimeZone = AccessingUser.Profile.PreferredTimeZone 
+     End If
+     Return UtcToLocalTime(PublishedOnDate, userTimeZone).ToString(OutputFormat, formatProvider)
     Case "allowcomments"
      Return Me.AllowComments.ToString
     Case "allowcommentsyesno"
