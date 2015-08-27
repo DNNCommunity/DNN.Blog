@@ -118,8 +118,10 @@ Namespace Entities.Posts
      Return Me.Summary.OutputHtml(strFormat)
     Case "image"
      Return PropertyAccess.FormatString(Me.Image, strFormat)
-    Case "published"
+    Case "isvisible"
      Return Me.Published.ToString
+    Case "published"
+     Return (Me.Published AndAlso Me.PublishedOnDate < DateTime.UtcNow).ToString()
     Case "publishedyesno"
      Return PropertyAccess.Boolean2LocalizedYesNo(Me.Published, formatProvider)
     Case "publishedondate"

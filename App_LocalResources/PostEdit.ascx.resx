@@ -167,7 +167,7 @@
     <value>Select to publish. Deselect to unpublish (i.e. to make invisible to others).</value>
   </data>
   <data name="lblPublished.Text" xml:space="preserve">
-    <value>Published</value>
+    <value>Is Visible</value>
   </data>
   <data name="cmdImageRemove.Text" xml:space="preserve">
     <value>Remove Image</value>
