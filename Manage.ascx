@@ -8,7 +8,7 @@
   <li><a href="#Posts"><%= LocalizeString("Posts")%></a></li>
  </ul>
  <div id="Blogs" class="dnnClear">
-  <asp:DataList runat="server" ID="dlBlogs">
+  <asp:Repeater runat="server" ID="dlBlogs" >
    <HeaderTemplate>
     <table class="dnnGrid">
      <tr class="dnnGridHeader">
@@ -31,7 +31,7 @@
    <FooterTemplate>
     </table>
    </FooterTemplate>
-  </asp:DataList>
+  </asp:Repeater>
   <p>
    <asp:LinkButton runat="server" ID="cmdAdd" resourcekey="cmdAdd" CssClass="dnnSecondaryAction" />
   </p>

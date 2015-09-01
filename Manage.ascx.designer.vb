@@ -20,7 +20,7 @@ Partial Public Class Manage
  '''Auto-generated field.
  '''To modify move field declaration from designer file to code-behind file.
  '''</remarks>
- Protected WithEvents dlBlogs As Global.System.Web.UI.WebControls.DataList
+ Protected WithEvents dlBlogs As Global.System.Web.UI.WebControls.Repeater
 
  '''<summary>
  '''cmdAdd control.
