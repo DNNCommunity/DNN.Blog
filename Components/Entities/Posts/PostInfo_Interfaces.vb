@@ -127,7 +127,7 @@ Namespace Entities.Posts
     Case "publishedondate"
      Dim userTimeZone As TimeZoneInfo = portalSettings.TimeZone
      If AccessingUser.Profile.PreferredTimeZone IsNot Nothing Then
-       userTimeZone = AccessingUser.Profile.PreferredTimeZone 
+      userTimeZone = AccessingUser.Profile.PreferredTimeZone
      End If
      Return UtcToLocalTime(PublishedOnDate, userTimeZone).ToString(OutputFormat, formatProvider)
     Case "allowcomments"
