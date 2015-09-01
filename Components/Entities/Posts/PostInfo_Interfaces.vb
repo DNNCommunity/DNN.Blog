@@ -21,6 +21,7 @@
 Imports System
 Imports System.Data
 Imports System.IO
+Imports System.Linq
 Imports System.Runtime.Serialization
 Imports System.Runtime.Serialization.Json
 Imports System.Text
@@ -101,7 +102,7 @@ Namespace Entities.Posts
 #End Region
 
 #Region " IPropertyAccess Implementation "
-  Public Function GetProperty(strPropertyName As String, strFormat As String, formatProvider As System.Globalization.CultureInfo, AccessingUser As DotNetNuke.Entities.Users.UserInfo, AccessLevel As DotNetNuke.Services.Tokens.Scope, ByRef PropertyNotFound As Boolean) As String Implements DotNetNuke.Services.Tokens.IPropertyAccess.GetProperty
+  Public Function GetProperty(strPropertyName As String, strFormat As String, formatProvider As Globalization.CultureInfo, AccessingUser As DotNetNuke.Entities.Users.UserInfo, AccessLevel As DotNetNuke.Services.Tokens.Scope, ByRef PropertyNotFound As Boolean) As String Implements DotNetNuke.Services.Tokens.IPropertyAccess.GetProperty
    Dim OutputFormat As String = String.Empty
    Dim portalSettings As DotNetNuke.Entities.Portals.PortalSettings = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings()
    If strFormat = String.Empty Then
@@ -299,21 +300,17 @@ Namespace Entities.Posts
    writer.WriteStartElement("Files")
    ' pack files
    Dim postDir As String = GetPostDirectoryMapPath(BlogID, ContentItemId)
-   Dim newSummary As String = Summary
-   Dim newSummaryLocalized As LocalizedText = SummaryLocalizations
-   Dim newContent As String = Content
-   Dim newContentLocalized As LocalizedText = ContentLocalizations
-   If IO.Directory.Exists(postDir) Then
-    For Each f As String In IO.Directory.GetFiles(postDir)
-     Dim fileName As String = IO.Path.GetFileName(f)
+   
+   If Directory.Exists(postDir) Then
+    For Each fileName As String In From f In Directory.GetFiles(postDir) Select Path.GetFileName(f)
      writer.WriteElementString("File", fileName)
     Next
    End If
    writer.WriteEndElement() ' Files
-   For Each t As Entities.Terms.TermInfo In Me.PostTags
+   For Each t As Terms.TermInfo In PostTags
     writer.WriteElementString("Tag", t.Name)
    Next
-   For Each t As Entities.Terms.TermInfo In Me.PostCategories
+   For Each t As Terms.TermInfo In PostCategories
     writer.WriteElementString("Category", t.Name)
    Next
    writer.WriteEndElement() ' Post
