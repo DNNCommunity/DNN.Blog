@@ -19,6 +19,7 @@
 '
 
 Imports System.Linq
+Imports DotNetNuke.Entities.Modules
 
 Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
@@ -107,7 +108,20 @@ Namespace Controls
     End If
 
     ddBlogModuleId.Items.Clear()
-    ddBlogModuleId.DataSource = (New DotNetNuke.Entities.Modules.ModuleController).GetModulesByDefinition(PortalId, "DNNBlog.Blog")
+
+    Dim listOfValidBlogModules As List(Of ModuleInfo) = New List(Of ModuleInfo)
+    Dim tabController As DotNetNuke.Entities.Tabs.TabController = New DotNetNuke.Entities.Tabs.TabController()
+
+    For Each blogModule As ModuleInfo In (New DotNetNuke.Entities.Modules.ModuleController).GetModulesByDefinition(PortalId, "DNNBlog.Blog")
+     Dim blogPage As DotNetNuke.Entities.Tabs.TabInfo = tabController.GetTab(blogModule.TabID, PortalId, False)
+
+     Dim targetViewSetting As Common.ViewSettings = Common.ViewSettings.GetViewSettings(blogModule.TabModuleID)
+     If targetViewSetting IsNot Nothing AndAlso CBool(targetViewSetting.BlogModuleId = -1) Then
+      listOfValidBlogModules.Add(blogModule)
+     End If
+    Next
+
+    ddBlogModuleId.DataSource = listOfValidBlogModules
     ddBlogModuleId.DataBind()
     Try
      ddBlogModuleId.Items.Remove(ddBlogModuleId.Items.FindByValue(ModuleId.ToString))
