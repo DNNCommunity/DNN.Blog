@@ -114,6 +114,7 @@ Namespace Controls
 
     For Each blogModule As ModuleInfo In (New DotNetNuke.Entities.Modules.ModuleController).GetModulesByDefinition(PortalId, "DNNBlog.Blog")
      Dim blogPage As DotNetNuke.Entities.Tabs.TabInfo = tabController.GetTab(blogModule.TabID, PortalId, False)
+     blogModule.ModuleTitle = String.Concat(blogPage.TabName, " - ", blogModule.ModuleTitle)
 
      Dim targetViewSetting As Common.ViewSettings = Common.ViewSettings.GetViewSettings(blogModule.TabModuleID)
      If targetViewSetting IsNot Nothing AndAlso CBool(targetViewSetting.BlogModuleId = -1) Then
