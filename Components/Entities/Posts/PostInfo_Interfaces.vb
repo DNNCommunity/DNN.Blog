@@ -130,6 +130,8 @@ Namespace Entities.Posts
       userTimeZone = AccessingUser.Profile.PreferredTimeZone
      End If
      Return UtcToLocalTime(PublishedOnDate, userTimeZone).ToString(OutputFormat, formatProvider)
+    Case "publishedondateutc"
+     Return Me.PublishedOnDate.ToString(OutputFormat, formatProvider)
     Case "allowcomments"
      Return Me.AllowComments.ToString
     Case "allowcommentsyesno"
