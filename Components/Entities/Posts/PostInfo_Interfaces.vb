@@ -21,6 +21,7 @@
 Imports System
 Imports System.Data
 Imports System.IO
+Imports System.Linq
 Imports System.Runtime.Serialization
 Imports System.Runtime.Serialization.Json
 Imports System.Text
@@ -101,7 +102,7 @@ Namespace Entities.Posts
 #End Region
 
 #Region " IPropertyAccess Implementation "
-  Public Function GetProperty(strPropertyName As String, strFormat As String, formatProvider As System.Globalization.CultureInfo, AccessingUser As DotNetNuke.Entities.Users.UserInfo, AccessLevel As DotNetNuke.Services.Tokens.Scope, ByRef PropertyNotFound As Boolean) As String Implements DotNetNuke.Services.Tokens.IPropertyAccess.GetProperty
+  Public Function GetProperty(strPropertyName As String, strFormat As String, formatProvider As Globalization.CultureInfo, AccessingUser As DotNetNuke.Entities.Users.UserInfo, AccessLevel As DotNetNuke.Services.Tokens.Scope, ByRef PropertyNotFound As Boolean) As String Implements DotNetNuke.Services.Tokens.IPropertyAccess.GetProperty
    Dim OutputFormat As String = String.Empty
    Dim portalSettings As DotNetNuke.Entities.Portals.PortalSettings = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings()
    If strFormat = String.Empty Then
@@ -111,75 +112,77 @@ Namespace Entities.Posts
    End If
    Select Case strPropertyName.ToLower
     Case "blogid"
-     Return (Me.BlogID.ToString(OutputFormat, formatProvider))
+     Return BlogID.ToString(OutputFormat, formatProvider)
     Case "title"
-     Return PropertyAccess.FormatString(Me.Title, strFormat)
+     Return PropertyAccess.FormatString(Title, strFormat)
     Case "summary"
-     Return Me.Summary.OutputHtml(strFormat)
+     Return Summary.OutputHtml(strFormat)
     Case "image"
-     Return PropertyAccess.FormatString(Me.Image, strFormat)
+     Return PropertyAccess.FormatString(Image, strFormat)
     Case "isvisible"
-     Return Me.Published.ToString
+     Return Published.ToString
     Case "published"
-     Return (Me.Published AndAlso Me.PublishedOnDate < DateTime.UtcNow).ToString()
+     Return (Published AndAlso PublishedOnDate < DateTime.UtcNow).ToString()
     Case "publishedyesno"
-     Return PropertyAccess.Boolean2LocalizedYesNo(Me.Published, formatProvider)
+     Return PropertyAccess.Boolean2LocalizedYesNo(Published, formatProvider)
     Case "publishedondate"
      Dim userTimeZone As TimeZoneInfo = portalSettings.TimeZone
      If AccessingUser.Profile.PreferredTimeZone IsNot Nothing Then
-       userTimeZone = AccessingUser.Profile.PreferredTimeZone 
+      userTimeZone = AccessingUser.Profile.PreferredTimeZone
      End If
      Return UtcToLocalTime(PublishedOnDate, userTimeZone).ToString(OutputFormat, formatProvider)
+    Case "publishedondateutc"
+     Return PublishedOnDate.ToString(OutputFormat, formatProvider)
     Case "allowcomments"
-     Return Me.AllowComments.ToString
+     Return AllowComments.ToString
     Case "allowcommentsyesno"
-     Return PropertyAccess.Boolean2LocalizedYesNo(Me.AllowComments, formatProvider)
+     Return PropertyAccess.Boolean2LocalizedYesNo(AllowComments, formatProvider)
     Case "displaycopyright"
-     Return Me.DisplayCopyright.ToString
+     Return DisplayCopyright.ToString
     Case "displaycopyrightyesno"
-     Return PropertyAccess.Boolean2LocalizedYesNo(Me.DisplayCopyright, formatProvider)
+     Return PropertyAccess.Boolean2LocalizedYesNo(DisplayCopyright, formatProvider)
     Case "copyright"
-     Return PropertyAccess.FormatString(Me.Copyright, strFormat)
+     Return PropertyAccess.FormatString(Copyright, strFormat)
     Case "locale"
-     Return PropertyAccess.FormatString(Me.Locale, strFormat)
+     Return PropertyAccess.FormatString(Locale, strFormat)
     Case "nrcomments"
-     Return (Me.NrComments.ToString(OutputFormat, formatProvider))
+     Return NrComments.ToString(OutputFormat, formatProvider)
     Case "viewcount"
-     Return (Me.ViewCount.ToString(OutputFormat, formatProvider))
+     Return ViewCount.ToString(OutputFormat, formatProvider)
     Case "username"
-     Return PropertyAccess.FormatString(Me.Username, strFormat)
+     Return PropertyAccess.FormatString(Username, strFormat)
     Case "email"
-     Return PropertyAccess.FormatString(Me.Email, strFormat)
+     Return PropertyAccess.FormatString(Email, strFormat)
     Case "displayname"
-     Return PropertyAccess.FormatString(Me.DisplayName, strFormat)
+     Return PropertyAccess.FormatString(DisplayName, strFormat)
     Case "altlocale"
-     Return PropertyAccess.FormatString(Me.AltLocale, strFormat)
+     Return PropertyAccess.FormatString(AltLocale, strFormat)
     Case "alttitle"
-     Return PropertyAccess.FormatString(Me.AltTitle, strFormat)
+     Return PropertyAccess.FormatString(AltTitle, strFormat)
     Case "altsummary"
-     Return PropertyAccess.FormatString(Me.AltSummary, strFormat)
+     Return PropertyAccess.FormatString(AltSummary, strFormat)
     Case "altcontent"
-     Return PropertyAccess.FormatString(Me.AltContent, strFormat)
+     Return PropertyAccess.FormatString(AltContent, strFormat)
     Case "localizedtitle"
-     Return PropertyAccess.FormatString(Me.LocalizedTitle, strFormat)
+     Return PropertyAccess.FormatString(LocalizedTitle, strFormat)
     Case "localizedsummary"
-     Return Me.LocalizedSummary.OutputHtml(strFormat)
+     Return LocalizedSummary.OutputHtml(strFormat)
     Case "localizedcontent"
-     Return Me.LocalizedContent.OutputHtml(strFormat)
+     Return LocalizedContent.OutputHtml(strFormat)
     Case "contentitemid"
-     Return (Me.ContentItemId.ToString(OutputFormat, formatProvider))
+     Return ContentItemId.ToString(OutputFormat, formatProvider)
     Case "createdbyuserid"
-     Return (Me.CreatedByUserID.ToString(OutputFormat, formatProvider))
+     Return CreatedByUserID.ToString(OutputFormat, formatProvider)
     Case "createdondate"
-     Return (Me.CreatedOnDate.ToString(OutputFormat, formatProvider))
+     Return CreatedOnDate.ToString(OutputFormat, formatProvider)
     Case "lastmodifiedbyuserid"
-     Return (Me.LastModifiedByUserID.ToString(OutputFormat, formatProvider))
+     Return LastModifiedByUserID.ToString(OutputFormat, formatProvider)
     Case "lastmodifiedondate"
-     Return (Me.LastModifiedOnDate.ToString(OutputFormat, formatProvider))
+     Return LastModifiedOnDate.ToString(OutputFormat, formatProvider)
     Case "content", "contents"
-     Return Me.Content.OutputHtml(strFormat)
+     Return Content.OutputHtml(strFormat)
     Case "hasimage"
-     Return CBool(Me.Image <> "").ToString(formatProvider)
+     Return CBool(Image <> "").ToString(formatProvider)
     Case "link", "permalink"
      Return PermaLink(DotNetNuke.Entities.Portals.PortalSettings.Current)
     Case "parenturl"
@@ -297,21 +300,17 @@ Namespace Entities.Posts
    writer.WriteStartElement("Files")
    ' pack files
    Dim postDir As String = GetPostDirectoryMapPath(BlogID, ContentItemId)
-   Dim newSummary As String = Summary
-   Dim newSummaryLocalized As LocalizedText = SummaryLocalizations
-   Dim newContent As String = Content
-   Dim newContentLocalized As LocalizedText = ContentLocalizations
-   If IO.Directory.Exists(postDir) Then
-    For Each f As String In IO.Directory.GetFiles(postDir)
-     Dim fileName As String = IO.Path.GetFileName(f)
+   
+   If Directory.Exists(postDir) Then
+    For Each fileName As String In From f In Directory.GetFiles(postDir) Select Path.GetFileName(f)
      writer.WriteElementString("File", fileName)
     Next
    End If
    writer.WriteEndElement() ' Files
-   For Each t As Entities.Terms.TermInfo In Me.PostTags
+   For Each t As Terms.TermInfo In PostTags
     writer.WriteElementString("Tag", t.Name)
    Next
-   For Each t As Entities.Terms.TermInfo In Me.PostCategories
+   For Each t As Terms.TermInfo In PostCategories
     writer.WriteElementString("Category", t.Name)
    Next
    writer.WriteEndElement() ' Post
