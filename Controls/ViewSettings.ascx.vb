@@ -168,6 +168,7 @@ Namespace Controls
    chkShowAllLocales.Checked = ViewSettings.ShowAllLocales
    chkModifyPageDetails.Checked = ViewSettings.ModifyPageDetails
    chkShowManagementPanel.Checked = ViewSettings.ShowManagementPanel
+   chkShowManagementPanelViewMode.Checked = ViewSettings.ShowManagementPanelViewMode
 
    Try
     ddTemplate.Items.FindByValue(ViewSettings.Template).Selected = True
@@ -182,6 +183,7 @@ Namespace Controls
    ViewSettings.ShowAllLocales = chkShowAllLocales.Checked
    ViewSettings.ModifyPageDetails = chkModifyPageDetails.Checked
    ViewSettings.ShowManagementPanel = chkShowManagementPanel.Checked
+   ViewSettings.ShowManagementPanelViewMode = chkShowManagementPanelViewMode.Checked
    ViewSettings.BlogId = CInt(ddBlogId.SelectedValue)
    ViewSettings.Categories = ctlCategories.ToString
    ViewSettings.AuthorId = CInt(ddAuthorId.SelectedValue)

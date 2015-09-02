@@ -171,4 +171,10 @@
   <data name="lblShowManagementPanel.Text" xml:space="preserve">
     <value>Show Management Panel</value>
   </data>
+  <data name="chkShowManagementPanel.Text" xml:space="preserve">
+    <value>In View Mode</value>
+  </data>
+  <data name="chkShowManagementPanelViewMode.Text" xml:space="preserve">
+    <value>In Shared Modules</value>
+  </data>
 </root>

@@ -36,6 +36,7 @@
     </div>
     <div class="dnnFormItem">
         <dnn:label id="lblShowManagementPanel" runat="server" controlname="chkShowManagementPanel" suffix=":" />
-        <asp:CheckBox ID="chkShowManagementPanel" runat="server" />
+        <asp:CheckBox ID="chkShowManagementPanel" runat="server" ResourceKey="chkShowManagementPanel" />
+        <asp:CheckBox ID="chkShowManagementPanelViewMode" runat="server" ResourceKey="chkShowManagementPanelViewMode" />
     </div>
 </fieldset>
