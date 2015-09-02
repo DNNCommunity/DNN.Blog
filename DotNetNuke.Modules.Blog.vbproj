@@ -214,6 +214,8 @@
     <Content Include="Templates\latestPosts\Settings.xml" />
     <Content Include="Templates\latestPosts\template.css" />
     <Content Include="Templates\latestPosts\Template.html" />
+    <Content Include="Templates\searchBox\template.css" />
+    <Content Include="Templates\searchBox\Template.html" />
     <Content Include="Templates\tagList\Tag.html" />
     <Content Include="Templates\tagList\template.css" />
     <Content Include="Templates\tagList\Template.html" />
@@ -259,6 +261,7 @@
     <Content Include="Templates\classicBlog\App_LocalResources\SharedResources.ascx.resx" />
     <Content Include="Templates\commentList\App_LocalResources\SharedResources.ascx.resx" />
     <Content Include="Templates\latestPosts\App_LocalResources\SharedResources.ascx.resx" />
+    <Content Include="Templates\searchBox\App_LocalResources\SharedResources.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BlogImage.ashx.vb">
