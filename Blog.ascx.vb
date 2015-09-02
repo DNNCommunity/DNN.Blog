@@ -22,6 +22,7 @@ Imports System.Linq
 Imports DotNetNuke.Entities.Modules
 Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.Entities.Modules.Actions
+Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.Templating
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
@@ -513,7 +514,11 @@ End Sub
   vtContents.DataBind()
 
   ctlComments.Visible = CBool(ViewSettings.BlogModuleId = -1) AndAlso BlogContext.Security.CanViewComments
-  ctlManagement.Visible = If(CBool(ViewSettings.BlogModuleId = -1), True, ViewSettings.ShowManagementPanel)
+  ctlManagement.Visible = CBool(ViewSettings.BlogModuleId = -1) OrElse ViewSettings.ShowManagementPanel
+
+  If PortalSettings.UserMode = PortalSettings.Mode.View AndAlso ViewSettings.ShowManagementPanelViewMode = False Then
+   ctlManagement.Visible = False
+  End If
 
  End Sub
 #End Region
