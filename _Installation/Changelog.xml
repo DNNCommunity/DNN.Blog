@@ -110,4 +110,7 @@
   <change type="Fix">Fixed Twitter icon in default template</change>
   <change type="Fix">Template collection to show only categories selected for viewing (selectcategories)</change>
  </release>
+ <release version="06.01.03">
+  <change type="Enhancement">New template for search box</change>
+ </release>
 </changelog>
