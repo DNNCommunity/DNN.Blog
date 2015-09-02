@@ -117,13 +117,14 @@ Namespace Controls
      blogModule.ModuleTitle = String.Concat(blogPage.TabName, " - ", blogModule.ModuleTitle)
 
      Dim targetViewSetting As Common.ViewSettings = Common.ViewSettings.GetViewSettings(blogModule.TabModuleID)
-     If targetViewSetting IsNot Nothing AndAlso CBool(targetViewSetting.BlogModuleId = -1) Then
+     If CBool(targetViewSetting.BlogModuleId = -1) Then
       listOfValidBlogModules.Add(blogModule)
      End If
     Next
 
     ddBlogModuleId.DataSource = listOfValidBlogModules
     ddBlogModuleId.DataBind()
+
     Try
      ddBlogModuleId.Items.Remove(ddBlogModuleId.Items.FindByValue(ModuleId.ToString))
     Catch ex As Exception
