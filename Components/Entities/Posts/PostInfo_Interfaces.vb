@@ -187,6 +187,8 @@ Namespace Entities.Posts
      Return PermaLink(DotNetNuke.Entities.Portals.PortalSettings.Current)
     Case "parenturl"
      Return PermaLink(ParentTabID)
+    Case "currentmode"
+     Return DotNetNuke.Entities.Portals.PortalSettings.Current.UserMode.ToString()
     Case Else
      PropertyNotFound = True
    End Select
