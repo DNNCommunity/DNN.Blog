@@ -80,44 +80,23 @@ Public Class Blog
 
    AddWLWManifestLink()
 
-   If Settings.ModifyPageDetails Then
-     ' force modify on all modules
-     If Settings.ModifyPageDetails Then
-       If BlogContext.Post IsNot Nothing Then
-         Page.Title = BlogContext.Post.LocalizedTitle
-         Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Post.LocalizedSummary, False)
-         Page.KeyWords = String.Join(",", BlogContext.Post.Terms.ToStringArray)
-         'AddOpenGraphMetaTags()
-       ElseIf BlogContext.Blog IsNot Nothing Then
-         Page.Title = BlogContext.Blog.LocalizedTitle
-         Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Blog.LocalizedDescription, False)
-       ElseIf BlogContext.Author IsNot Nothing Then
-         Page.Title = BlogContext.Author.DisplayName
-         Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Author.Profile.Biography, False)
-       ElseIf BlogContext.Term IsNot Nothing Then
-         Page.Title = BlogContext.Term.LocalizedName
-         Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Term.LocalizedDescription, False)
-       End If
-     End If
-   Else
-     ' modify on selected modules only
-     If ViewSettings.ModifyPageDetails Then
-       If BlogContext.Post IsNot Nothing Then
-         Page.Title = BlogContext.Post.LocalizedTitle
-         Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Post.LocalizedSummary, False)
-         Page.KeyWords = String.Join(",", BlogContext.Post.Terms.ToStringArray)
-         'AddOpenGraphMetaTags()
-       ElseIf BlogContext.Blog IsNot Nothing Then
-         Page.Title = BlogContext.Blog.LocalizedTitle
-         Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Blog.LocalizedDescription, False)
-       ElseIf BlogContext.Author IsNot Nothing Then
-         Page.Title = BlogContext.Author.DisplayName
-         Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Author.Profile.Biography, False)
-       ElseIf BlogContext.Term IsNot Nothing Then
-         Page.Title = BlogContext.Term.LocalizedName
-         Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Term.LocalizedDescription, False)
-       End If
-     End If
+   If Settings.ModifyPageDetails OrElse ViewSettings.ModifyPageDetails Then
+    ' force modify on all modules orlse modify on selected modules only?
+    If BlogContext.Post IsNot Nothing Then
+     Page.Title = BlogContext.Post.LocalizedTitle
+     Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Post.LocalizedSummary, False)
+     Page.KeyWords = String.Join(",", BlogContext.Post.Terms.ToStringArray)
+     'AddOpenGraphMetaTags()
+    ElseIf BlogContext.Blog IsNot Nothing Then
+     Page.Title = BlogContext.Blog.LocalizedTitle
+     Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Blog.LocalizedDescription, False)
+    ElseIf BlogContext.Author IsNot Nothing Then
+     Page.Title = BlogContext.Author.DisplayName
+     Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Author.Profile.Biography, False)
+    ElseIf BlogContext.Term IsNot Nothing Then
+     Page.Title = BlogContext.Term.LocalizedName
+     Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Term.LocalizedDescription, False)
+    End If
    End If
 
    If BlogContext.Post IsNot Nothing AndAlso BlogContext.Blog IsNot Nothing Then
