@@ -175,5 +175,32 @@ Namespace Controls
   '''To modify move field declaration from designer file to code-behind file.
   '''</remarks>
   Protected WithEvents chkShowManagementPanelViewMode As Global.System.Web.UI.WebControls.CheckBox
+
+  '''<summary>
+  '''lblHideUnpublishedBlogs control.
+  '''</summary>
+  '''<remarks>
+  '''Auto-generated field.
+  '''To modify move field declaration from designer file to code-behind file.
+  '''</remarks>
+  Protected WithEvents lblHideUnpublishedBlogs As Global.System.Web.UI.UserControl
+
+  '''<summary>
+  '''chkHideUnpublishedBlogsViewMode control.
+  '''</summary>
+  '''<remarks>
+  '''Auto-generated field.
+  '''To modify move field declaration from designer file to code-behind file.
+  '''</remarks>
+  Protected WithEvents chkHideUnpublishedBlogsViewMode As Global.System.Web.UI.WebControls.CheckBox
+
+  '''<summary>
+  '''chkHideUnpublishedBlogsEditMode control.
+  '''</summary>
+  '''<remarks>
+  '''Auto-generated field.
+  '''To modify move field declaration from designer file to code-behind file.
+  '''</remarks>
+  Protected WithEvents chkHideUnpublishedBlogsEditMode As Global.System.Web.UI.WebControls.CheckBox
  End Class
 End Namespace

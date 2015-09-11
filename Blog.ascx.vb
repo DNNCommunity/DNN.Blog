@@ -453,8 +453,8 @@ End Sub
 
   If PostList Is Nothing Then
    If pageSize < 1 Then pageSize = 10 ' we will not list "all Posts"
+   Dim publishValue As Integer = 1
    If Not String.IsNullOrEmpty(BlogContext.SearchString) Then
-    Dim publishValue As Integer = 1
     If BlogContext.SearchUnpublished Then publishValue = -1
     If String.IsNullOrEmpty(BlogContext.Categories) Then
      If BlogContext.Term Is Nothing Then
@@ -466,13 +466,19 @@ End Sub
      PostList = PostsController.SearchPostsByCategory(Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, BlogContext.Categories, BlogContext.SearchString, BlogContext.SearchTitle, BlogContext.SearchContents, publishValue, BlogContext.ShowLocale, BlogContext.EndDate, -1, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
     End If
    ElseIf String.IsNullOrEmpty(BlogContext.Categories) Then
+    publishValue = -1
+    If ViewSettings.HideUnpublishedBlogsViewMode AndAlso PortalSettings.UserMode = PortalSettings.Mode.View Then publishValue = 1
+    If ViewSettings.HideUnpublishedBlogsEditMode AndAlso PortalSettings.UserMode = PortalSettings.Mode.Edit Then publishValue = 1
     If BlogContext.Term Is Nothing Then
-     PostList = PostsController.GetPosts(Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, -1, BlogContext.ShowLocale, BlogContext.EndDate, BlogContext.AuthorId, False, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
+     PostList = PostsController.GetPosts(Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, publishValue, BlogContext.ShowLocale, BlogContext.EndDate, BlogContext.AuthorId, False, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
     Else
-     PostList = PostsController.GetPostsByTerm(Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, BlogContext.TermId, -1, BlogContext.ShowLocale, BlogContext.EndDate, BlogContext.AuthorId, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
+     PostList = PostsController.GetPostsByTerm(Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, BlogContext.TermId, publishValue, BlogContext.ShowLocale, BlogContext.EndDate, BlogContext.AuthorId, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
     End If
    Else
-    PostList = PostsController.GetPostsByCategory(Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, BlogContext.Categories, -1, BlogContext.ShowLocale, BlogContext.EndDate, BlogContext.AuthorId, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
+    publishValue = -1
+    If ViewSettings.HideUnpublishedBlogsViewMode AndAlso PortalSettings.UserMode = PortalSettings.Mode.View Then publishValue = 1
+    If ViewSettings.HideUnpublishedBlogsEditMode AndAlso PortalSettings.UserMode = PortalSettings.Mode.Edit Then publishValue = 1
+    PostList = PostsController.GetPostsByCategory(Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, BlogContext.Categories, publishValue, BlogContext.ShowLocale, BlogContext.EndDate, BlogContext.AuthorId, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
    End If
    _usePaging = True
   End If
