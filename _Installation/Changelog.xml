@@ -112,5 +112,16 @@
  </release>
  <release version="06.01.03">
   <change type="Enhancement">New template for search box</change>
+  <change type="Enhancement">New Setting to control if management panel is visible in view mode PR#45</change>
+  <change type="Fix">Update the PublishedOnDate token to use the user's timezone instead of system time PR#38</change>
+  <change type="Enhancement">New Token PublishedOnDateUtc PR#43</change>
+  <change type="Fix">Update the Published token to also check PublishedOnDate as well as IsVisible PR#39</change>
+  <change type="Enhancement">New Token IsVisible PR#39</change>
+  <change type="Enhancement">Add the Page Name to the Parent Blog module list to help identify which blog instance is which PR#42</change>
+  <change type="Fix">Filter out invalid parent blog module options PR#42</change>
+  <change type="Fix">Html Cleanup in Manage Blogs control PR#44</change>
+  <change type="Fix">Add a unique ID to the blog chooser control (support for multiple blogs on a single page) PR#41</change>
+  <change type="Enhancement">New Token CurrentMode PR#50</change>
+  <change type="Enhancement">New Setting to hide unpublished posts when the user is in view and/or edit mode PR#50</change>
  </release>
 </changelog>
