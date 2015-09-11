@@ -172,10 +172,10 @@
     <value>Show Management Panel</value>
   </data>
   <data name="chkShowManagementPanel.Text" xml:space="preserve">
-    <value>In View Mode</value>
+    <value>In Shared Modules</value>
   </data>
   <data name="chkShowManagementPanelViewMode.Text" xml:space="preserve">
-    <value>In Shared Modules</value>
+    <value>In View Mode</value>
   </data>
   <data name="chkHideUnpublishedBlogsEditMode.Text" xml:space="preserve">
     <value>In Edit Mode</value>

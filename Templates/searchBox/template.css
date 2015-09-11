@@ -1,0 +1,24 @@
+﻿div.blogSearch {
+ padding: 10px;
+}
+
+div.blogSearch_textDiv {
+ overflow: hidden;
+}
+
+div.blogSearch_btnDiv {
+ float: right;
+}
+
+div.blogSearch_optDiv {
+ clear: both;
+}
+
+div.blogSearch_textDiv input[type="text"] {
+ width: 80%;
+}
+
+div.blogSearch_optDiv input[type="checkbox"] {
+ margin: 0 6px 0 10px;
+}
+
