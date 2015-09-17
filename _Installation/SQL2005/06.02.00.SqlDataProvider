@@ -1,0 +1,24 @@
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetChangedPosts') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetChangedPosts
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetChangedPosts
+ @ModuleId INT,
+ @LastChange DATETIME
+AS
+SELECT
+  p.*, 
+  pl.Locale AS AltLocale, pl.Title AS AltTitle, pl.Summary AS AltSummary, lci.Content AS AltContent
+FROM {databaseOwner}{objectQualifier}vw_Blog_Posts AS p
+  LEFT OUTER JOIN {databaseOwner}{objectQualifier}Blog_PostLocalization AS pl ON p.ContentItemID = pl.ContentItemId
+  LEFT OUTER JOIN {databaseOwner}{objectQualifier}ContentItems lci ON pl.LocalizedContentItemId=lci.ContentItemID
+WHERE p.ModuleID = @ModuleId
+ AND p.LastModifiedOnDate >= @LastChange
+ AND (p.PublishedOnDate < GETDATE())
+ AND p.Published = 1
+GO
+
