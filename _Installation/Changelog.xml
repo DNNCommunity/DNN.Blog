@@ -110,7 +110,9 @@
   <change type="Fix">Fixed Twitter icon in default template</change>
   <change type="Fix">Template collection to show only categories selected for viewing (selectcategories)</change>
  </release>
- <release version="06.01.03">
+ <release version="06.02.00">
+  <change type="Change">Dependency moved up to DNN 7.1.2</change>
   <change type="Enhancement">New template for search box</change>
+  <change type="Enhancement">Implemented new search logic introduced in DNN 7.1</change>
  </release>
 </changelog>
