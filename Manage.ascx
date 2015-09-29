@@ -4,10 +4,10 @@
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <div class="dnnForm" id="tabs">
  <ul class="dnnAdminTabNav">
-  <li><a href="#Blogs"><%= LocalizeString("Blogs")%></a></li>
-  <li><a href="#Posts"><%= LocalizeString("Posts")%></a></li>
+  <li id="blogsLink" runat="server"><a href="#<%= Blogs.ClientId %>"><%= LocalizeString("Blogs")%></a></li>
+  <li id="postsLink" runat="server"><a href="#<%= Posts.ClientId %>"><%= LocalizeString("Posts")%></a></li>
  </ul>
- <div id="Blogs" class="dnnClear">
+ <asp:Panel id="Blogs" runat="server" CssClass="dnnClear">
   <asp:Repeater runat="server" ID="dlBlogs" >
    <HeaderTemplate>
     <table class="dnnGrid">
@@ -35,8 +35,8 @@
   <p>
    <asp:LinkButton runat="server" ID="cmdAdd" resourcekey="cmdAdd" CssClass="dnnSecondaryAction" />
   </p>
- </div>
- <div id="Posts" class="dnnClear">
+ </asp:Panel>
+ <asp:Panel id="Posts" runat="server" CssClass="dnnClear">
   <div class="coreMessaging" id="blogPostsError"></div>
   <dnn:DNNGrid id="grdPosts" autogeneratecolumns="false" cssclass="dnnGrid dnnSecurityRolesGrid"
    runat="server" allowpaging="True" allowcustompaging="True" enableviewstate="True" AllowSorting="true"
@@ -77,7 +77,7 @@
     </Columns>
    </MasterTableView>
   </dnn:DNNGrid>
- </div>
+ </asp:Panel>
 </div>
 <p class="updatecancelbar">
  <asp:LinkButton runat="server" ID="cmdReturn" resourcekey="cmdReturn" CssClass="dnnPrimaryAction" />

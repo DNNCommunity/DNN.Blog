@@ -36,6 +36,11 @@ Public Class Manage
    Throw New Exception("You do not have access to this resource. Please check your login status.")
   End If
   cmdAdd.Visible = BlogContext.Security.IsBlogger
+  blogsLink.Visible = BlogContext.Security.IsBlogger
+  Blogs.Visible = BlogContext.Security.IsBlogger
+
+  postsLink.Visible = BlogContext.Security.CanAddPost Or BlogContext.Security.CanEditPost
+  Posts.Visible = BlogContext.Security.CanAddPost Or BlogContext.Security.CanEditPost
 
   If Not Me.IsPostBack Then
    Me.DataBind()
@@ -63,6 +68,7 @@ Public Class Manage
                                                                                                                      End Function)
   End If
   dlBlogs.DataBind()
+
   If dlBlogs.Items.Count = 0 Then dlBlogs.Visible = False
 
  End Sub
