@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dotnetnuke type="Package" version="5.0">
  <packages>
-  <package name="DotNetNuke.Blog" type="Module" version="05.00.00">
+  <package name="DotNetNuke.Blog" type="Module" version="06.02.00">
    <friendlyName>Blog</friendlyName>
    <description>The DotNetNuke Blog module is an easy to use content publishing module that is tightly integrated with the core DotNetNuke framework. It can be used in single or multi-author environments and also permits content authoring using off-site tools such as Windows Live Writer.</description>
    <iconFile>~/DesktopModules/Blog/Images/dnnBlog_32.png</iconFile>
