@@ -35,7 +35,7 @@ Namespace Controls
 
    LocalResourceFile = "~/DesktopModules/Blog/Controls/App_LocalResources/ManagementPanel.ascx.resx"
    If Not Me.IsPostBack Then
-    cmdManageBlogs.Visible = BlogContext.Security.IsBlogger Or BlogContext.Security.CanApprovePost
+    cmdManageBlogs.Visible = BlogContext.Security.IsBlogger Or BlogContext.Security.CanApprovePost Or BlogContext.Security.CanEditPost
     cmdAdmin.Visible = BlogContext.Security.IsEditor
     cmdBlog.Visible = BlogContext.Security.CanAddPost
     wlwlink.Visible = BlogContext.Security.CanAddPost And Settings.AllowWLW
