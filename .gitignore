@@ -166,3 +166,4 @@ _Documentation/_Resources/
 *.fr-FR.resx
 /resources.zip.manifest
 /Uninstall.SqlDataProvider
+install/*
