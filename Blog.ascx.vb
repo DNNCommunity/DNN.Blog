@@ -53,6 +53,9 @@ Public Class Blog
 
  Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
+  ViewSettings.TemplateSettings.ReadValue("pagesize", _pageSize)
+  Me.Request.Params.ReadValue("Page", _reqPage)
+
   If Context.Items("BlogPageInitialized") Is Nothing Then
 
    ' wlw style detection post redirect?
@@ -97,6 +100,11 @@ Public Class Blog
      Page.Title = BlogContext.Term.LocalizedName
      Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Term.LocalizedDescription, False)
     End If
+
+    If _reqPage > 1 Then
+     Page.Title = String.Format(Localization.GetString("PageTitle.Format", LocalResourceFile), Page.Title, _reqPage)
+    End If
+
    End If
 
    If BlogContext.Post IsNot Nothing AndAlso BlogContext.Blog IsNot Nothing Then
@@ -112,8 +120,6 @@ Public Class Blog
    Context.Items("BlogPageInitialized") = True
   End If
 
-  ViewSettings.TemplateSettings.ReadValue("pagesize", _pageSize)
-  Me.Request.Params.ReadValue("Page", _reqPage)
   DataBind()
 
  End Sub
