@@ -136,7 +136,7 @@ End Sub
 #Region " Public Methods "
  Private Sub AddWLWManifestLink()
   If Context.Items("WLWManifestLinkAdded") Is Nothing Then
-   Dim link As New HtmlGenericControl("link")
+   Dim link As New HtmlLink()
    link.Attributes.Add("rel", "wlwmanifest")
    link.Attributes.Add("type", "application/wlwmanifest+xml")
    If ViewSettings.BlogModuleId = -1 Then

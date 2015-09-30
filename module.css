@@ -53,3 +53,6 @@ td.blog_rte_defaulttext input, td.blog_rte_localization input
 .commentContent{padding:8px;}
 .commentMod{padding:8px;}
 .blogSeparate{padding-bottom:2px;}
+
+/* 508 Compliance */
+.sr-only {display: none; } /* Remove this if using Bootstrap etc. */
