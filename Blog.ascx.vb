@@ -80,44 +80,23 @@ Public Class Blog
 
    AddWLWManifestLink()
 
-   If Settings.ModifyPageDetails Then
-     ' force modify on all modules
-     If Settings.ModifyPageDetails Then
-       If BlogContext.Post IsNot Nothing Then
-         Page.Title = BlogContext.Post.LocalizedTitle
-         Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Post.LocalizedSummary, False)
-         Page.KeyWords = String.Join(",", BlogContext.Post.Terms.ToStringArray)
-         'AddOpenGraphMetaTags()
-       ElseIf BlogContext.Blog IsNot Nothing Then
-         Page.Title = BlogContext.Blog.LocalizedTitle
-         Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Blog.LocalizedDescription, False)
-       ElseIf BlogContext.Author IsNot Nothing Then
-         Page.Title = BlogContext.Author.DisplayName
-         Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Author.Profile.Biography, False)
-       ElseIf BlogContext.Term IsNot Nothing Then
-         Page.Title = BlogContext.Term.LocalizedName
-         Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Term.LocalizedDescription, False)
-       End If
-     End If
-   Else
-     ' modify on selected modules only
-     If ViewSettings.ModifyPageDetails Then
-       If BlogContext.Post IsNot Nothing Then
-         Page.Title = BlogContext.Post.LocalizedTitle
-         Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Post.LocalizedSummary, False)
-         Page.KeyWords = String.Join(",", BlogContext.Post.Terms.ToStringArray)
-         'AddOpenGraphMetaTags()
-       ElseIf BlogContext.Blog IsNot Nothing Then
-         Page.Title = BlogContext.Blog.LocalizedTitle
-         Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Blog.LocalizedDescription, False)
-       ElseIf BlogContext.Author IsNot Nothing Then
-         Page.Title = BlogContext.Author.DisplayName
-         Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Author.Profile.Biography, False)
-       ElseIf BlogContext.Term IsNot Nothing Then
-         Page.Title = BlogContext.Term.LocalizedName
-         Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Term.LocalizedDescription, False)
-       End If
-     End If
+   If Settings.ModifyPageDetails OrElse ViewSettings.ModifyPageDetails Then
+    ' force modify on all modules orlse modify on selected modules only?
+    If BlogContext.Post IsNot Nothing Then
+     Page.Title = BlogContext.Post.LocalizedTitle
+     Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Post.LocalizedSummary, False)
+     Page.KeyWords = String.Join(",", BlogContext.Post.Terms.ToStringArray)
+     'AddOpenGraphMetaTags()
+    ElseIf BlogContext.Blog IsNot Nothing Then
+     Page.Title = BlogContext.Blog.LocalizedTitle
+     Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Blog.LocalizedDescription, False)
+    ElseIf BlogContext.Author IsNot Nothing Then
+     Page.Title = BlogContext.Author.DisplayName
+     Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Author.Profile.Biography, False)
+    ElseIf BlogContext.Term IsNot Nothing Then
+     Page.Title = BlogContext.Term.LocalizedName
+     Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Term.LocalizedDescription, False)
+    End If
    End If
 
    If BlogContext.Post IsNot Nothing AndAlso BlogContext.Blog IsNot Nothing Then
@@ -474,30 +453,35 @@ End Sub
 
   If PostList Is Nothing Then
    If pageSize < 1 Then pageSize = 10 ' we will not list "all Posts"
+   Dim publishValue As Integer = 1
    If Not String.IsNullOrEmpty(BlogContext.SearchString) Then
-    Dim publishValue As Integer = 1
     If BlogContext.SearchUnpublished Then publishValue = -1
-     If String.IsNullOrEmpty(BlogContext.Categories) Then
-      If BlogContext.Term Is Nothing Then
-       PostList = PostsController.SearchPosts(Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, BlogContext.SearchString, BlogContext.SearchTitle, BlogContext.SearchContents, publishValue, BlogContext.ShowLocale, BlogContext.EndDate, -1, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
-      Else
-       PostList = PostsController.SearchPostsByTerm(Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, BlogContext.TermId, BlogContext.SearchString, BlogContext.SearchTitle, BlogContext.SearchContents, publishValue, BlogContext.ShowLocale, BlogContext.EndDate, -1, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
-      End If
-     Else
-      PostList = PostsController.SearchPostsByCategory(Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, BlogContext.Categories, BlogContext.SearchString, BlogContext.SearchTitle, BlogContext.SearchContents, publishValue, BlogContext.ShowLocale, BlogContext.EndDate, -1, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
-     End If
-    ElseIf String.IsNullOrEmpty(BlogContext.Categories) Then
+    If String.IsNullOrEmpty(BlogContext.Categories) Then
      If BlogContext.Term Is Nothing Then
-      PostList = PostsController.GetPosts(Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, -1, BlogContext.ShowLocale, BlogContext.EndDate, BlogContext.AuthorId, False, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
+      PostList = PostsController.SearchPosts(Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, BlogContext.SearchString, BlogContext.SearchTitle, BlogContext.SearchContents, publishValue, BlogContext.ShowLocale, BlogContext.EndDate, -1, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
      Else
-      PostList = PostsController.GetPostsByTerm(Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, BlogContext.TermId, -1, BlogContext.ShowLocale, BlogContext.EndDate, BlogContext.AuthorId, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
+      PostList = PostsController.SearchPostsByTerm(Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, BlogContext.TermId, BlogContext.SearchString, BlogContext.SearchTitle, BlogContext.SearchContents, publishValue, BlogContext.ShowLocale, BlogContext.EndDate, -1, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
      End If
     Else
-    PostList = PostsController.GetPostsByCategory(Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, BlogContext.Categories, -1, BlogContext.ShowLocale, BlogContext.EndDate, BlogContext.AuthorId, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
+     PostList = PostsController.SearchPostsByCategory(Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, BlogContext.Categories, BlogContext.SearchString, BlogContext.SearchTitle, BlogContext.SearchContents, publishValue, BlogContext.ShowLocale, BlogContext.EndDate, -1, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
+    End If
+   ElseIf String.IsNullOrEmpty(BlogContext.Categories) Then
+    publishValue = -1
+    If ViewSettings.HideUnpublishedBlogsViewMode AndAlso PortalSettings.UserMode = PortalSettings.Mode.View Then publishValue = 1
+    If ViewSettings.HideUnpublishedBlogsEditMode AndAlso PortalSettings.UserMode = PortalSettings.Mode.Edit Then publishValue = 1
+    If BlogContext.Term Is Nothing Then
+     PostList = PostsController.GetPosts(Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, publishValue, BlogContext.ShowLocale, BlogContext.EndDate, BlogContext.AuthorId, False, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
+    Else
+     PostList = PostsController.GetPostsByTerm(Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, BlogContext.TermId, publishValue, BlogContext.ShowLocale, BlogContext.EndDate, BlogContext.AuthorId, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
+    End If
+   Else
+    publishValue = -1
+    If ViewSettings.HideUnpublishedBlogsViewMode AndAlso PortalSettings.UserMode = PortalSettings.Mode.View Then publishValue = 1
+    If ViewSettings.HideUnpublishedBlogsEditMode AndAlso PortalSettings.UserMode = PortalSettings.Mode.Edit Then publishValue = 1
+    PostList = PostsController.GetPostsByCategory(Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, BlogContext.Categories, publishValue, BlogContext.ShowLocale, BlogContext.EndDate, BlogContext.AuthorId, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
    End If
    _usePaging = True
   End If
-
  End Sub
 #End Region
 

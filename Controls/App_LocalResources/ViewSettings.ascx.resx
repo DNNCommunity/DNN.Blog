@@ -177,4 +177,16 @@
   <data name="chkShowManagementPanelViewMode.Text" xml:space="preserve">
     <value>In View Mode</value>
   </data>
+  <data name="chkHideUnpublishedBlogsEditMode.Text" xml:space="preserve">
+    <value>In Edit Mode</value>
+  </data>
+  <data name="chkHideUnpublishedBlogsViewMode.Text" xml:space="preserve">
+    <value>In View Mode</value>
+  </data>
+  <data name="lblHideUnpublishedBlogs.Help" xml:space="preserve">
+    <value>If checked, any unpublished blogs will be hidden when the user is in view and/or edit mode.</value>
+  </data>
+  <data name="lblHideUnpublishedBlogs.Text" xml:space="preserve">
+    <value>Hide Unpublished Posts</value>
+  </data>
 </root>

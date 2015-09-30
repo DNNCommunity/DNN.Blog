@@ -39,4 +39,9 @@
         <asp:CheckBox ID="chkShowManagementPanel" runat="server" ResourceKey="chkShowManagementPanel" />
         <asp:CheckBox ID="chkShowManagementPanelViewMode" runat="server" ResourceKey="chkShowManagementPanelViewMode" />
     </div>
+    <div class="dnnFormItem">
+        <dnn:label id="lblHideUnpublishedBlogs" runat="server" controlname="chkHideUnpublishedBlogsViewMode" suffix=":" />
+        <asp:CheckBox ID="chkHideUnpublishedBlogsViewMode" runat="server" ResourceKey="chkHideUnpublishedBlogsViewMode" />
+        <asp:CheckBox ID="chkHideUnpublishedBlogsEditMode" runat="server" ResourceKey="chkHideUnpublishedBlogsEditMode" />
+    </div>
 </fieldset>
