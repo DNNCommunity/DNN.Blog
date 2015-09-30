@@ -110,7 +110,8 @@
   <change type="Fix">Fixed Twitter icon in default template</change>
   <change type="Fix">Template collection to show only categories selected for viewing (selectcategories)</change>
  </release>
- <release version="06.01.03">
+ <release version="06.02.00">
+  <change type="Change">Dependency moved up to DNN 7.1.2</change>
   <change type="Enhancement">New template for search box</change>
   <change type="Enhancement">New Setting to control if management panel is visible in view mode PR#45</change>
   <change type="Fix">Update the PublishedOnDate token to use the user's timezone instead of system time PR#38</change>
@@ -123,5 +124,6 @@
   <change type="Fix">Add a unique ID to the blog chooser control (support for multiple blogs on a single page) PR#41</change>
   <change type="Enhancement">New Token CurrentMode PR#50</change>
   <change type="Enhancement">New Setting to hide unpublished posts when the user is in view and/or edit mode PR#50</change>
+  <change type="Enhancement">Implemented new search logic introduced in DNN 7.1</change>
  </release>
 </changelog>

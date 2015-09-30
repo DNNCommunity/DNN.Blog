@@ -18,35 +18,67 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
+Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Entities.Modules
-Imports DotNetNuke.Services.Search
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
 Imports DotNetNuke.Modules.Blog.Entities.Posts
+Imports DotNetNuke.Services.Search.Entities
 
 Namespace Integration
  Partial Public Class BlogModuleController
-  Implements ISearchable
+  Inherits ModuleSearchBase
 
-#Region " ISearchable Methods "
-  Public Function GetSearchItems(ByVal ModInfo As DotNetNuke.Entities.Modules.ModuleInfo) As SearchItemInfoCollection Implements ISearchable.GetSearchItems
+#Region " Search Implementation "
+  Public Overrides Function GetModifiedSearchDocuments(moduleInfo As ModuleInfo, beginDate As Date) As IList(Of SearchDocument)
 
-   Dim settings As New ViewSettings(ModInfo.TabModuleID, True)
-   If settings.BlogModuleId <> -1 And settings.BlogModuleId <> ModInfo.ModuleID Then Return New SearchItemInfoCollection ' bail out if it's a slave module
+   Dim res As New List(Of SearchDocument)
+   Dim settings As New ViewSettings(moduleInfo.TabModuleID, True)
+   If settings.BlogModuleId <> -1 And settings.BlogModuleId <> moduleInfo.ModuleID Then Return res ' bail out if it's a slave module
 
-   Dim SearchItemCollection As New SearchItemInfoCollection
-   For Each b As BlogInfo In BlogsController.GetBlogsByModule(ModInfo.ModuleID, "").Values
-    SearchItemCollection.Add(New SearchItemInfo With {.Author = b.OwnerUserId, .Content = b.Title & " - " & b.Description, .Description = b.Description, .ModuleId = ModInfo.ModuleID, .PubDate = b.FirstPublishDate, .Title = b.Title, .GUID = "Blog=" & b.BlogID.ToString, .SearchKey = b.BlogID.ToString})
-    Dim page As Integer = 0
-    Dim totalRecords As Integer = 1
-    Do While page * 10 < totalRecords
-     For Each p As PostInfo In PostsController.GetPostsByBlog(ModInfo.ModuleID, b.BlogID, "", -1, page, 20, "PUBLISHEDONDATE DESC", totalRecords).Values
-      SearchItemCollection.Add(New SearchItemInfo With {.Author = p.CreatedByUserID, .Content = p.Title & vbCrLf & p.Summary & vbCrLf & p.Content, .Description = p.Summary, .ModuleId = ModInfo.ModuleID, .PubDate = p.PublishedOnDate, .Title = p.Title, .GUID = "Post=" & p.ContentItemId.ToString, .SearchKey = p.ContentItemId.ToString})
-     Next
-     page += 1
-    Loop
+   ' Blogs
+   For Each b As BlogInfo In BlogsController.GetBlogsByModule(moduleInfo.ModuleID, "").Values
+    If b.LastModifiedOnDate.ToUniversalTime() >= beginDate Then
+     res.Add(New SearchDocument With {
+                 .AuthorUserId = b.OwnerUserId,
+                 .Body = b.Title & " - " & b.Description,
+                 .Description = b.Description,
+                 .ModifiedTimeUtc = b.LastModifiedOnDate.ToUniversalTime(),
+                 .PortalId = moduleInfo.PortalID,
+                 .QueryString = "Blog=" & b.BlogID.ToString(),
+                 .Title = b.Title,
+                 .UniqueKey = "Blog" & b.BlogID.ToString()})
+    End If
    Next
 
-   Return SearchItemCollection
+   ' Posts
+   Dim addedPrimaryPosts As New List(Of Integer)
+   For Each p As PostInfo In PostsController.GetChangedPosts(moduleInfo.ModuleID, beginDate)
+    If Not addedPrimaryPosts.Contains(p.ContentItemId) Then
+     res.Add(New SearchDocument With {
+       .AuthorUserId = p.CreatedByUserID,
+       .Body = p.Summary & " " & HtmlUtils.Clean(p.Content, False),
+       .Description = p.Summary,
+       .ModifiedTimeUtc = p.LastModifiedOnDate.ToUniversalTime(),
+       .PortalId = moduleInfo.PortalID,
+       .QueryString = "Post=" & p.ContentItemId.ToString(),
+       .Title = p.Title,
+       .UniqueKey = "BlogPost" & p.ContentItemId.ToString()})
+     addedPrimaryPosts.Add(p.ContentItemId)
+    End If
+    If p.AltLocale <> "" Then
+     res.Add(New SearchDocument With {
+       .AuthorUserId = p.CreatedByUserID,
+       .Body = p.AltSummary & " " & HtmlUtils.Clean(p.AltContent, False),
+       .CultureCode = p.AltLocale,
+       .Description = p.AltSummary,
+       .ModifiedTimeUtc = p.LastModifiedOnDate.ToUniversalTime(),
+       .PortalId = moduleInfo.PortalID,
+       .QueryString = "Post=" & p.ContentItemId.ToString(),
+       .Title = p.AltTitle,
+       .UniqueKey = "BlogPost" & p.ContentItemId.ToString()})
+    End If
+   Next
+   Return res
 
   End Function
 #End Region

@@ -84,6 +84,10 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwn
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetBlogsByPortal
 GO
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetChangedPosts') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetChangedPosts
+GO
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetComment') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetComment
 GO

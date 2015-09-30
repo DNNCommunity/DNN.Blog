@@ -18,12 +18,9 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System.Linq
 Imports DotNetNuke.Modules.Blog.Data
-Imports DotNetNuke.Entities.Content
 Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Modules.Blog.Integration
-Imports DotNetNuke.Modules.Blog.Entities
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
 
 Namespace Entities.Posts
@@ -63,7 +60,6 @@ Namespace Entities.Posts
 
   Public Shared Sub DeletePost(contentItemId As Integer, blogId As Integer, portalId As Integer, vocabularyId As Integer)
    DataProvider.Instance().DeletePost(contentItemId)
-   'CompletePostDelete(contentItemId, blogId, PostId, portalId, vocabularyId)
   End Sub
 
   Public Shared Function GetPosts(moduleId As Int32, blogID As Int32, displayLocale As String, published As Integer, limitToLocale As String, endDate As Date, authorUserId As Int32, onlyActionable As Boolean, pageIndex As Int32, pageSize As Int32, orderBy As String, ByRef totalRecords As Integer, userId As Integer, userIsAdmin As Boolean) As Dictionary(Of Integer, PostInfo)
@@ -195,6 +191,10 @@ Namespace Entities.Posts
 
   Public Shared Function GetPostByLegacyUrl(url As String, portalId As Int32, locale As String) As PostInfo
    Return CType(CBO.FillObject(DataProvider.Instance().GetPostByLegacyUrl(url, portalId, locale), GetType(PostInfo)), PostInfo)
+  End Function
+
+  Public Shared Function GetChangedPosts(moduleId As Integer, lastChange As DateTime) As List(Of PostInfo)
+   Return DotNetNuke.Common.Utilities.CBO.FillCollection(Of PostInfo)(DotNetNuke.Data.DataProvider.Instance().ExecuteReader("Blog_GetChangedPosts", moduleId, lastChange))
   End Function
 
 #Region " Private Methods "

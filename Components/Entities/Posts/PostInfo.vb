@@ -19,16 +19,8 @@
 '
 
 Imports System
-Imports System.Data
 Imports System.Linq
-Imports System.Xml
-Imports System.Xml.Schema
-Imports System.Xml.Serialization
-Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Common.Globals
-Imports DotNetNuke.Entities.Modules
-Imports DotNetNuke.Services.Tokens
-Imports DotNetNuke.Entities.Users
 Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
 Imports DotNetNuke.Modules.Blog.Entities.Terms
