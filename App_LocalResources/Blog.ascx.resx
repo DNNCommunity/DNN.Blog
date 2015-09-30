@@ -126,6 +126,10 @@
   <data name="Older.Text" xml:space="preserve">
     <value>Older Posts</value>
   </data>
+  <data name="PageTitle.Format" xml:space="preserve">
+    <value>{0} - Page {1}</value>
+    <comment>{0} = current page title, {1} = current page #</comment>
+  </data>
   <data name="TemplateSettings.Text" xml:space="preserve">
     <value>Template Settings</value>
   </data>
