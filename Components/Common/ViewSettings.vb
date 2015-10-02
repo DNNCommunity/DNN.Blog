@@ -91,7 +91,7 @@ Namespace Common
    If BlogModuleId > -1 And tabModuleId > -1 Then ' security check
     Dim parentModule As DotNetNuke.Entities.Modules.ModuleInfo = (New DotNetNuke.Entities.Modules.ModuleController).GetModule(BlogModuleId)
     Dim thisTabModule As DotNetNuke.Entities.Modules.ModuleInfo = (New DotNetNuke.Entities.Modules.ModuleController).GetTabModule(tabModuleId)
-    If parentModule.PortalID <> thisTabModule.PortalID Then
+    If parentModule Is Nothing OrElse parentModule.PortalID <> thisTabModule.PortalID Then
      BlogModuleId = -1
      CanCache = False
     End If
