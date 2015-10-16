@@ -1,187 +1,87 @@
 function BlogService($, settings, mid) {
- var moduleId = mid;
- var baseServicepath = $.dnnSF(moduleId).getServiceRoot('Blog') + 'Posts/';
- var commentsServicepath = $.dnnSF(moduleId).getServiceRoot('Blog') + 'Comments/';
- var modulesServicepath = $.dnnSF(moduleId).getServiceRoot('Blog') + 'Modules/';
- var blogServicepath = $.dnnSF(moduleId).getServiceRoot('Blog') + 'Blogs/';
- var termServicepath = $.dnnSF(moduleId).getServiceRoot('Blog') + 'Terms/';
+	var moduleId = mid;
+	var baseServicepath = $.dnnSF(moduleId).getServiceRoot('Blog');
 
- this.approvePost = function (blogId, PostId, success) {
-  $.ajax({
-   type: "POST",
-   url: baseServicepath + "Approve",
-   beforeSend: $.dnnSF(moduleId).setModuleHeaders,
-   data: { blogId: blogId, PostId: PostId }
-  }).done(function (data) {
-   if (success != undefined) {
-    success();
-   }
-  }).fail(function (xhr, status) {
-   displayMessage(settings.errorBoxId, settings.serverErrorWithDescription + eval("(" + xhr.responseText + ")").ExceptionMessage, "dnnFormWarning");
-  });
- };
+	this.ajaxCall = function (type, controller, action, id, data, success, fail) {
+		// showLoading();
+		$.ajax({
+			type: type,
+			url: baseServicepath + controller + '/' + action + (id != null ? '/' + id : ''),
+			beforeSend: $.dnnSF(moduleId).setModuleHeaders,
+			data: data
+		}).done(function (retdata) {
+			// hideLoading();
+			if (success != undefined) {
+				success(retdata);
+			}
+		}).fail(function (xhr, status) {
+			// hideLoading();
+			displayMessage(settings.errorBoxId, settings.serverErrorWithDescription + eval("(" + xhr.responseText + ")").ExceptionMessage, "dnnFormWarning");
+			if (fail != undefined) {
+				fail(xhr.responseText);
+			}
+		});
+	}
 
- this.deletePost = function (blogId, PostId, success) {
-  $.ajax({
-   type: "POST",
-   url: baseServicepath + "Delete",
-   beforeSend: $.dnnSF(moduleId).setModuleHeaders,
-   data: { blogId: blogId, PostId: PostId }
-  }).done(function (data) {
-   if (success != undefined) {
-    success();
-   }
-  }).fail(function (xhr, status) {
-   displayMessage(settings.errorBoxId, settings.serverErrorWithDescription + eval("(" + xhr.responseText + ")").ExceptionMessage, "dnnFormWarning");
-  });
- };
+	this.approvePost = function (blogId, postId, success) {
+		this.ajaxCall('POST', 'Posts', 'Approve', null, { blogId: blogId, PostId: postId }, success);
+	};
 
- this.viewPost = function (blogId, PostId, success) {
-  $.ajax({
-   type: "POST",
-   url: baseServicepath + "View",
-   beforeSend: $.dnnSF(moduleId).setModuleHeaders,
-   data: { blogId: blogId, PostId: PostId }
-  }).done(function (data) {
-   if (success != undefined) {
-    success();
-   }
-  }).fail(function (xhr, status) {
-   displayMessage(settings.errorBoxId, settings.serverErrorWithDescription + eval("(" + xhr.responseText + ")").ExceptionMessage, "dnnFormWarning");
-  });
- };
+	this.deletePost = function (blogId, postId, success) {
+		this.ajaxCall('POST', 'Posts', 'Delete', null, { blogId: blogId, PostId: postId }, success);
+	};
 
- this.approveComment = function (blogId, commentId, success) {
-  $.ajax({
-   type: "POST",
-   url: commentsServicepath + "Approve",
-   beforeSend: $.dnnSF(moduleId).setModuleHeaders,
-   data: { blogId: blogId, commentId: commentId, karma: 0 }
-  }).done(function (data) {
-   if (success != undefined) {
-    success();
-   }
-  }).fail(function (xhr, status) {
-   displayMessage(settings.errorBoxId, settings.serverErrorWithDescription + eval("(" + xhr.responseText + ")").ExceptionMessage, "dnnFormWarning");
-  });
- };
+	this.viewPost = function (blogId, postId, success) {
+		this.ajaxCall('POST', 'Posts', 'View', null, { blogId: blogId, PostId: postId }, success);
+	};
 
- this.deleteComment = function (blogId, commentId, success) {
-  $.ajax({
-   type: "POST",
-   url: commentsServicepath + "Delete",
-   beforeSend: $.dnnSF(moduleId).setModuleHeaders,
-   data: { blogId: blogId, commentId: commentId, karma: 0 }
-  }).done(function (data) {
-   if (success != undefined) {
-    success();
-   }
-  }).fail(function (xhr, status) {
-   displayMessage(settings.errorBoxId, settings.serverErrorWithDescription + eval("(" + xhr.responseText + ")").ExceptionMessage, "dnnFormWarning");
-  });
- };
+	this.approveComment = function (blogId, commentId, success) {
+		this.ajaxCall('POST', 'Comments', 'Approve', null, { blogId: blogId, commentId: commentId, karma: 0 }, success);
+	};
 
- this.karmaComment = function (blogId, commentId, karma, success) {
-  $.ajax({
-   type: "POST",
-   url: commentsServicepath + "Karma",
-   beforeSend: $.dnnSF(moduleId).setModuleHeaders,
-   data: { blogId: blogId, commentId: commentId, karma: karma }
-  }).done(function (data) {
-   if (data.Result == 'exists') {
-   // user already did this
-   };
-   if (success != undefined) {
-    success();
-   }
-  }).fail(function (xhr, status) {
-   displayMessage(settings.errorBoxId, settings.serverErrorWithDescription + eval("(" + xhr.responseText + ")").ExceptionMessage, "dnnFormWarning");
-  });
- };
+	this.deleteComment = function (blogId, commentId, success) {
+		this.ajaxCall('POST', 'Comments', 'Delete', null, { blogId: blogId, commentId: commentId, karma: 0 }, success);
+	};
 
- this.addComment = function (blogId, postId, parentId, comment, author, website, email, success) {
-  $.ajax({
-   type: "POST",
-   url: commentsServicepath + "Add",
-   beforeSend: $.dnnSF(moduleId).setModuleHeaders,
-   data: { blogId: blogId, postId: postId, parentId: parentId, comment: comment, author: author, website: website, email: email }
-  }).done(function (data) {
-   if (success != undefined) {
-    success(data);
-   }
-  }).fail(function (xhr, status) {
-   displayMessage(settings.errorBoxId, settings.serverErrorWithDescription + eval("(" + xhr.responseText + ")").ExceptionMessage, "dnnFormWarning");
-  });
- };
+	this.karmaComment = function (blogId, commentId, karma, success) {
+		this.ajaxCall('POST', 'Comments', 'Karma', null, { blogId: blogId, commentId: commentId, karma: 0 }, function(data) {
+			if (data.Result === 'exists') {
+				// user already did this
+			};
+			if (success != undefined) {
+				success();
+			}
+		});
+	};
 
- this.getCommentsHtml = function (blogId, postId, success) {
-  $.ajax({
-   type: "GET",
-   url: commentsServicepath + "List",
-   beforeSend: $.dnnSF(moduleId).setModuleHeaders,
-   data: { blogId: blogId, postId: postId }
-  }).done(function (data) {
-   if (success != undefined) {
-    success(data);
-   }
-  }).fail(function (xhr, status) {
-   displayMessage(settings.errorBoxId, settings.serverErrorWithDescription + eval("(" + xhr.responseText + ")").ExceptionMessage, "dnnFormWarning");
-  });
- };
+	this.addComment = function (blogId, postId, parentId, comment, author, website, email, success) {
+		this.ajaxCall('POST', 'Comments', 'Add', null, { blogId: blogId, postId: postId, parentId: parentId, comment: comment, author: author, website: website, email: email }, success);
+	};
 
- this.addModule = function (paneName, position, title, template, success) {
-  $.ajax({
-   type: "POST",
-   url: modulesServicepath + "Add",
-   beforeSend: $.dnnSF(moduleId).setModuleHeaders,
-   data: { paneName: paneName, position: position, title: title, template: template }
-  }).done(function (data) {
-   if (success != undefined) {
-    success();
-   }
-  }).fail(function (xhr, status) {
-   displayMessage(settings.errorBoxId, settings.serverErrorWithDescription + eval("(" + xhr.responseText + ")").ExceptionMessage, "dnnFormWarning");
-  });
- };
+	this.getCommentsHtml = function (blogId, postId, success) {
+		this.ajaxCall('GET', 'Comments', 'List', null, { blogId: blogId, postId: postId }, success);
+	};
 
- this.exportBlog = function (blogId, success) {
-  $.ajax({
-   type: "POST",
-   url: blogServicepath + "Export",
-   beforeSend: $.dnnSF(moduleId).setModuleHeaders,
-   data: { blogId: blogId }
-  }).done(function (data) {
-   if (success != undefined) {
-    success(data.Result);
-   }
-  }).fail(function (xhr, status) {
-   displayMessage(settings.errorBoxId, settings.serverErrorWithDescription + eval("(" + xhr.responseText + ")").ExceptionMessage, "dnnFormWarning");
-  });
- };
+	this.addModule = function (paneName, position, title, template, success) {
+		this.ajaxCall('POST', 'Modules', 'Add', null, { paneName: paneName, position: position, title: title, template: template }, success);
+	};
 
- this.getVocabularyML = function (vocabularyId, success) {
-  $.ajax({
-   type: "GET",
-   url: termServicepath + "VocabularyML",
-   beforeSend: $.dnnSF(moduleId).setModuleHeaders,
-   data: { vocabularyId: vocabularyId }
-  }).done(function (data) {
-   if (success != undefined) {
-    success(data);
-   }
-  }).fail(function (xhr, status) {
-   displayMessage(settings.errorBoxId, settings.serverErrorWithDescription + eval("(" + xhr.responseText + ")").ExceptionMessage, "dnnFormWarning");
-  });
- }
+	this.exportBlog = function (blogId, success) {
+		this.ajaxCall('POST', 'Blogs', 'Export', null, { blogId: blogId }, success);
+	};
+
+	this.getVocabularyML = function (vocabularyId, success) {
+		this.ajaxCall('GET', 'Terms', 'VocabularyML', null, { vocabularyId: vocabularyId }, success);
+	}
 
 }
 
 function displayMessage(msgBoxId, message, cssclass) {
- var messageNode = $("<div/>")
-                .addClass('dnnFormMessage ' + cssclass)
-                .text(message);
- $(msgBoxId).prepend(messageNode);
- messageNode.fadeOut(3000, 'easeInExpo', function () {
-  messageNode.remove();
- });
+	var messageNode = $("<div/>")
+				   .addClass('dnnFormMessage ' + cssclass)
+				   .text(message);
+	$(msgBoxId).prepend(messageNode);
+	messageNode.fadeOut(3000, 'easeInExpo', function () {
+		messageNode.remove();
+	});
 };
