@@ -125,7 +125,7 @@ Namespace Common
   End Sub
 
   Public Shared Function GetModuleSettings(moduleId As Integer) As ModuleSettings
-   Dim CacheKey As String = "ModuleSettings" & moduleId.ToString
+   Dim CacheKey As String = "Blog_ModuleSettings" & moduleId.ToString
    Dim settings As ModuleSettings = CType(DotNetNuke.Common.Utilities.DataCache.GetCache(CacheKey), ModuleSettings)
    If settings Is Nothing Then
     settings = New ModuleSettings(moduleId)
@@ -162,7 +162,7 @@ Namespace Common
    objModules.UpdateModuleSetting(_moduleId, "IncrementViewCount", IncrementViewCount.ToString)
    If _importedModuleId > -1 Then objModules.UpdateModuleSetting(_moduleId, "ImportedModuleID", _importedModuleId.ToString)
 
-   Dim CacheKey As String = "ModuleSettings" & _moduleId.ToString
+   Dim CacheKey As String = "Blog_ModuleSettings" & _moduleId.ToString
    DotNetNuke.Common.Utilities.DataCache.SetCache(CacheKey, Me)
   End Sub
 #End Region
