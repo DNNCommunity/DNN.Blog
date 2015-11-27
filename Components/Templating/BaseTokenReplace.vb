@@ -67,9 +67,9 @@ Namespace Templating
   Private ReadOnly Property TokenReplaceCacheKey() As String
    Get
     If UseObjectLessExpression Then
-     Return "TokenReplaceRegEx_Objectless"
+     Return "Blog_TokenReplaceRegEx_Objectless"
     Else
-     Return "TokenReplaceRegEx_Default"
+     Return "Blog_TokenReplaceRegEx_Default"
     End If
    End Get
   End Property
