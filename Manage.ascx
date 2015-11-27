@@ -1,4 +1,5 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="Manage.ascx.vb" Inherits="DotNetNuke.Modules.Blog.Manage" %>
+<%@ Import Namespace="DotNetNuke.Entities.Users" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
@@ -61,7 +62,11 @@
           style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Blog.CanApprove AND NOT CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Published, "inline", "none") %>"><i class="fa fa-check icon16"></i></a>
       </ItemTemplate>
      </dnn:DnnGridTemplateColumn>
-     <dnn:DnnGridBoundColumn datafield="PublishedOnDate" headertext="Date" AllowSorting="True" SortExpression="PublishedOnDate" DataFormatString="{0:g}" />
+     <dnn:DnnGridTemplateColumn headertext="Date">
+      <ItemTemplate>
+       <%# DotNetNuke.Modules.Blog.Common.Globals.UtcToLocalTime(Eval("PublishedOnDate"), UserController.GetCurrentUserInfo().Profile.PreferredTimeZone)%>
+      </ItemTemplate>
+     </dnn:DnnGridTemplateColumn>
      <dnn:DnnGridBoundColumn datafield="Title" headertext="Title" AllowSorting="True" SortExpression="Title" />
      <dnn:DnnGridTemplateColumn HeaderText="Published">
       <ItemStyle Width="30px" HorizontalAlign="Center"></ItemStyle>
