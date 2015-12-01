@@ -88,9 +88,7 @@ Namespace Controls
     If BlogContext.Security.IsEditor Then
      blogList = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, BlogContext.Locale).Values
     Else
-     blogList = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, BlogContext.Locale).Values.Where(Function(b)
-                                                                                                              Return b.OwnerUserId = UserId Or b.CanAdd Or (b.CanEdit And BlogContext.ContentItemId > -1)
-                                                                                                             End Function)
+     blogList = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, BlogContext.Locale).Values.Where(Function(b) b.OwnerUserId = UserId Or b.CanAdd Or (b.CanEdit And BlogContext.ContentItemId > -1))
     End If
     NrBlogs = blogList.Count
     If NrBlogs = 0 Then
@@ -125,9 +123,7 @@ Namespace Controls
      Dim b1 As BlogInfo = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, BlogContext.Locale).Values.First
      Response.Redirect(EditUrl("Blog", b1.BlogID.ToString, "PostEdit"), False)
     Else
-     Dim b1 As BlogInfo = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, BlogContext.Locale).Values.FirstOrDefault(Function(b)
-                                                                                                                                 Return b.OwnerUserId = UserId Or b.CanAdd Or (b.CanEdit And BlogContext.ContentItemId > -1)
-                                                                                                                                End Function)
+     Dim b1 As BlogInfo = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, BlogContext.Locale).Values.FirstOrDefault(Function(b) b.OwnerUserId = UserId Or b.CanAdd Or (b.CanEdit And BlogContext.ContentItemId > -1))
      Response.Redirect(EditUrl("Blog", b1.BlogID.ToString, "PostEdit"), False)
     End If
    End If

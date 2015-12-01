@@ -126,17 +126,17 @@ Public Class Blog
 #End Region
 
 #Region " Open Graph Meta Tags "
-Private Sub AddOpenGraphMetaTags()
+ Private Sub AddOpenGraphMetaTags()
   Dim URL As String = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Host
   Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:title"" content=""{0}"" />", BlogContext.Post.LocalizedTitle)))
   Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:type"" content=""{0}"" />", "article")))
   Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:url"" content=""{0}"" />", BlogContext.Post.PermaLink)))
   Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:description"" content=""{0}"" />", DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Post.LocalizedSummary, False))))
   If Not String.IsNullOrEmpty(BlogContext.Post.Image) Then
-    Dim strPath As String = String.Format("{0}?TabId={1}&ModuleId={2}&Blog={3}&Post={4}&w=745&h=275&c=1&key={5}", glbImageHandlerPath, TabId.ToString, Settings.ModuleId.ToString, BlogContext.BlogId.ToString, BlogContext.ContentItemId.ToString, BlogContext.Post.Image)
-    Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:image"" content=""{0}"" />", URL + ResolveUrl(strPath))))
+   Dim strPath As String = String.Format("{0}?TabId={1}&ModuleId={2}&Blog={3}&Post={4}&w=745&h=275&c=1&key={5}", glbImageHandlerPath, TabId.ToString, Settings.ModuleId.ToString, BlogContext.BlogId.ToString, BlogContext.ContentItemId.ToString, BlogContext.Post.Image)
+   Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:image"" content=""{0}"" />", URL + ResolveUrl(strPath))))
   End If
-End Sub
+ End Sub
 #End Region
 
 #Region " Public Methods "
@@ -195,9 +195,7 @@ End Sub
 
    Case "blogs"
 
-    Dim blogList As IEnumerable(Of BlogInfo) = BlogsController.GetBlogsByModule(BlogContext.BlogModuleId, UserId, BlogContext.Locale).Values.Where(Function(b)
-                                                                                                                                                    Return b.Published = True
-                                                                                                                                                   End Function).OrderBy(Function(b) b.Title)
+    Dim blogList As IEnumerable(Of BlogInfo) = BlogsController.GetBlogsByModule(BlogContext.BlogModuleId, UserId, BlogContext.Locale).Values.Where(Function(b) b.Published = True).OrderBy(Function(b) b.Title)
     Parameters.ReadValue("pagesize", _pageSize)
     If _pageSize > 0 Then
      _usePaging = True
@@ -216,7 +214,7 @@ End Sub
     Else
      For Each b As BlogInfo In blogList
       If BlogContext.ParentModule IsNot Nothing Then
-        b.ParentTabID = BlogContext.ParentModule.TabID
+       b.ParentTabID = BlogContext.ParentModule.TabID
       End If
       Replacers.Add(New BlogTokenReplace(Me, b))
      Next
@@ -228,7 +226,7 @@ End Sub
     EnsurePostList(_pageSize)
     For Each e As PostInfo In PostList
      If BlogContext.ParentModule IsNot Nothing Then
-       e.ParentTabID = BlogContext.ParentModule.TabID
+      e.ParentTabID = BlogContext.ParentModule.TabID
      End If
      Replacers.Add(New BlogTokenReplace(Me, e))
     Next
@@ -326,7 +324,7 @@ End Sub
 
     For Each t As TermInfo In TermsController.GetTermsByModule(BlogContext.BlogModuleId, BlogContext.Locale).Where(Function(x) x.VocabularyId = 1).ToList
      If BlogContext.ParentModule IsNot Nothing Then
-       t.ParentTabID = BlogContext.ParentModule.TabID
+      t.ParentTabID = BlogContext.ParentModule.TabID
      End If
      Replacers.Add(New BlogTokenReplace(Me, Nothing, t))
     Next
@@ -411,7 +409,7 @@ End Sub
 
     For Each bci As BlogCalendarInfo In BlogsController.GetBlogCalendar(BlogContext.BlogModuleId, BlogContext.BlogId, BlogContext.ShowLocale)
      If BlogContext.ParentModule IsNot Nothing Then
-       bci.ParentTabID = BlogContext.ParentModule.TabID
+      bci.ParentTabID = BlogContext.ParentModule.TabID
      End If
      Replacers.Add(New BlogTokenReplace(Me, bci))
     Next
@@ -442,7 +440,7 @@ End Sub
      Case Else ' last name
       For Each u As PostAuthor In PostsController.GetAuthors(BlogContext.BlogModuleId, blogToShow)
        If BlogContext.ParentModule IsNot Nothing Then
-         u.ParentTabID = BlogContext.ParentModule.TabID
+        u.ParentTabID = BlogContext.ParentModule.TabID
        End If
        Replacers.Add(New BlogTokenReplace(Me, New LazyLoadingUser(u)))
       Next
