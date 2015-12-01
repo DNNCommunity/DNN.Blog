@@ -154,11 +154,19 @@ Namespace Common
   End Sub
 
   Public Sub AddJavascriptFile(jsFilename As String, priority As Integer)
-   ClientResourceManager.RegisterScript(Page, ResolveUrl("~/DesktopModules/Blog/js/" & jsFilename) + "?_=" + Settings.Version, priority)
+   If DotNetNuke.Entities.Host.Host.CrmEnableCompositeFiles Then
+    ClientResourceManager.RegisterScript(Page, ResolveUrl("~/DesktopModules/Blog/js/" & jsFilename), priority)
+   Else
+    ClientResourceManager.RegisterScript(Page, ResolveUrl("~/DesktopModules/Blog/js/" & jsFilename) + "?_=" + Settings.Version, priority)
+   End If
   End Sub
 
   Public Sub AddCssFile(cssFilename As String)
-   ClientResourceManager.RegisterStyleSheet(Page, ResolveUrl("~/DesktopModules/Blog/css/" & cssFilename) + "?_=" + Settings.Version, FileOrder.Css.ModuleCss)
+   If DotNetNuke.Entities.Host.Host.CrmEnableCompositeFiles Then
+    ClientResourceManager.RegisterStyleSheet(Page, ResolveUrl("~/DesktopModules/Blog/css/" & cssFilename), FileOrder.Css.ModuleCss)
+   Else
+    ClientResourceManager.RegisterStyleSheet(Page, ResolveUrl("~/DesktopModules/Blog/css/" & cssFilename) + "?_=" + Settings.Version, FileOrder.Css.ModuleCss)
+   End If
   End Sub
 
   Public Function LocalizeJSString(resourceKey As String) As String
