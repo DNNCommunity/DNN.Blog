@@ -60,7 +60,7 @@
  </div>
 	<div class="dnnFormItem">
 		<dnn:label id="lblFacebookProfileIdProperty" runat="server" controlname="ddFacebookProfileIdProperty" suffix=":" />
-		<asp:DropDownList ID="ddFacebookProfileIdProperty" runat="server" DataValueField="PropertyDefinitionID" DataTextField="PropertyName" AutoPostBack="true" />
+		<asp:DropDownList ID="ddFacebookProfileIdProperty" runat="server" DataValueField="PropertyDefinitionID" DataTextField="PropertyName" />
 	</div>
 </fieldset>
 <h2 id="H3" class="dnnFormSectionHead"><a href="" class="dnnFormSectionExpanded"><%= LocalizeString("RSS")%></a></h2>

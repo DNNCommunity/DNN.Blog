@@ -128,8 +128,8 @@ Public Class Blog
 #Region " Open Graph Meta Tags "
  Private Sub AddOpenGraphMetaTags()
   Dim URL As String = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Host
-  Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:title"" content=""{0}"" />", DotNetNuke.Common.Utilities.XmlUtils.XMLEncode(BlogContext.Post.LocalizedTitle))))
-  Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:site_name"" content=""{0}"" />", DotNetNuke.Common.Utilities.XmlUtils.XMLEncode(PortalSettings.PortalName))))
+  Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:title"" content=""{0}"" />", CleanStringForXmlAttribute(BlogContext.Post.LocalizedTitle))))
+  Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:site_name"" content=""{0}"" />", CleanStringForXmlAttribute(PortalSettings.PortalName))))
   Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:type"" content=""{0}"" />", "article")))
   If Not String.IsNullOrEmpty(BlogContext.Post.Locale) Then
    Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:locale"" content=""{0}"" />", BlogContext.Post.Locale.Replace("-", "_"))))
@@ -140,7 +140,7 @@ Public Class Blog
   End If
   Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:updated_time"" content=""{0}"" />", BlogContext.Post.LastModifiedOnDate.ToString("u"))))
   Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:url"" content=""{0}"" />", BlogContext.Post.PermaLink)))
-  Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:description"" content=""{0}"" />", DotNetNuke.Common.Utilities.XmlUtils.XMLEncode(DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Post.LocalizedSummary, False)))))
+  Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:description"" content=""{0}"" />", CleanStringForXmlAttribute(DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Post.LocalizedSummary, False)))))
   If Not String.IsNullOrEmpty(BlogContext.Post.Image) Then
    Dim strPath As String = String.Format("{0}?TabId={1}&ModuleId={2}&Blog={3}&Post={4}&w=1200&h=630&c=1&key={5}", glbImageHandlerPath, TabId.ToString, Settings.ModuleId.ToString, BlogContext.BlogId.ToString, BlogContext.ContentItemId.ToString, BlogContext.Post.Image)
    Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:image"" content=""{0}"" />", URL + ResolveUrl(strPath))))
@@ -149,7 +149,7 @@ Public Class Blog
    Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""fb:app_id"" content=""{0}"" />", Settings.FacebookAppId)))
   End If
   If Settings.FacebookProfileIdProperty <> -1 Then
-   Dim pp As DotNetNuke.Entities.Profile.ProfilePropertyDefinition = BlogContext.Post.CreatedByUser(PortalSettings.PortalId).Profile.ProfileProperties.GetById(Settings.FacebookProfileIdProperty)
+   Dim pp As DotNetNuke.Entities.Profile.ProfilePropertyDefinition = BlogContext.Author.Profile.ProfileProperties.GetById(Settings.FacebookProfileIdProperty)
    If pp IsNot Nothing AndAlso Not String.IsNullOrEmpty(pp.PropertyValue) Then
     Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""fb:profile_id"" content=""{0}"" />", pp.PropertyValue)))
    End If
