@@ -318,4 +318,16 @@
   <data name="lblIncrementViewCount.Text" xml:space="preserve">
     <value>Increment View Count After (seconds)</value>
   </data>
+  <data name="lblFacebookAppId.Help" xml:space="preserve">
+    <value>This ID is used to link stories to your app ID on Facebook. It is not required.</value>
+  </data>
+  <data name="lblFacebookAppId.Text" xml:space="preserve">
+    <value>Facebook App ID</value>
+  </data>
+  <data name="lblFacebookProfileIdProperty.Help" xml:space="preserve">
+    <value>Select the profile property users can use to specify their own Facebook profile ID so posts are linked to their Facebook profile</value>
+  </data>
+  <data name="lblFacebookProfileIdProperty.Text" xml:space="preserve">
+    <value>Facebook Profile Property</value>
+  </data>
 </root>

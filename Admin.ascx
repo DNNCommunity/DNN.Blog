@@ -54,6 +54,14 @@
 		<dnn:label id="lblIncrementViewCount" runat="server" controlname="txtIncrementViewCount" suffix=":" />
 		<asp:TextBox runat="server" ID="txtIncrementViewCount" Width="50" />
 	</div>
+ <div class="dnnFormItem">
+  <dnn:label id="lblFacebookAppId" runat="server" controlname="txtFacebookAppId" suffix=":" />
+  <asp:TextBox runat="server" ID="txtFacebookAppId" />
+ </div>
+	<div class="dnnFormItem">
+		<dnn:label id="lblFacebookProfileIdProperty" runat="server" controlname="ddFacebookProfileIdProperty" suffix=":" />
+		<asp:DropDownList ID="ddFacebookProfileIdProperty" runat="server" DataValueField="PropertyDefinitionID" DataTextField="PropertyName" AutoPostBack="true" />
+	</div>
 </fieldset>
 <h2 id="H3" class="dnnFormSectionHead"><a href="" class="dnnFormSectionExpanded"><%= LocalizeString("RSS")%></a></h2>
 <fieldset>
