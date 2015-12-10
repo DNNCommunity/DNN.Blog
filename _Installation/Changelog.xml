@@ -128,4 +128,7 @@
   <change type="Enhancement">Improved 508 compliance PR#49 and PR#52</change>
   <change type="Fix">Fixed issue that prevented the module from working with client resource management on</change>
  </release>
+ <release version="06.02.01">
+  <change type="Enhancement">Improvements to OpenGraph metadata for Facebook linkage</change>
+ </release>
 </changelog>
