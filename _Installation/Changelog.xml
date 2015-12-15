@@ -131,4 +131,7 @@
  <release version="06.02.01">
   <change type="Enhancement">Improvements to OpenGraph metadata for Facebook linkage</change>
  </release>
+ <release version="06.02.02">
+  <change type="Fix">Fix for OpenGraph metadata</change>
+ </release>
 </changelog>
