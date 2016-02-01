@@ -1,6 +1,4 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="Admin.ascx.vb" Inherits="DotNetNuke.Modules.Blog.Admin" %>
-<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
-<%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <div class="dnnForm" id="tabs">
  <ul class="dnnAdminTabNav">

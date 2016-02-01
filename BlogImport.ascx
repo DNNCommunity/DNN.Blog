@@ -1,8 +1,5 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="BlogImport.ascx.vb" Inherits="DotNetNuke.Modules.Blog.BlogImport" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
-<%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls" %>
-<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Security.Permissions.Controls" Assembly="DotNetNuke" %>
-<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
 
 <div class="dnnForm dnnBlogImport dnnClear" id="dnnBlogImport">
  <asp:Wizard ID="wizBlogImport" runat="server"  DisplaySideBar="false" ActiveStepIndex="0"

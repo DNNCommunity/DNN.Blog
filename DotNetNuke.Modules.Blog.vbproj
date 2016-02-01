@@ -62,19 +62,23 @@
       <HintPath>_References\CookComputing.XmlRpcV2.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DotNetNuke, Version=7.1.2.356, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke, Version=8.0.0.809, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>_References\DotNetNuke.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DotNetNuke.Web, Version=7.1.2.356, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke.Web, Version=8.0.0.809, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>_References\DotNetNuke.Web.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DotNetNuke.Web.Client, Version=6.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke.Web.Client, Version=8.0.0.809, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>_References\DotNetNuke.Web.Client.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotNetNuke.Web.Deprecated">
+      <HintPath>_References\DotNetNuke.Web.Deprecated.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DotNetNuke.WebControls, Version=2.4.0.598, Culture=neutral, processorArchitecture=MSIL">
@@ -92,7 +96,7 @@
       <HintPath>_References\Microsoft.ApplicationBlocks.Data.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.6.14930, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=7.0.1.18622, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>_References\Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
@@ -113,7 +117,7 @@
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Http, Version=4.0.20710.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Web.Http, Version=5.2.30128.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>_References\System.Web.Http.dll</HintPath>
       <Private>False</Private>
@@ -126,7 +130,7 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="Telerik.Web.UI, Version=2013.2.717.40, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+    <Reference Include="Telerik.Web.UI, Version=, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>_References\Telerik.Web.UI.dll</HintPath>
       <Private>False</Private>

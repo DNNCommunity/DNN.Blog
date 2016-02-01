@@ -1,5 +1,4 @@
 <%@ Control Language="vb" AutoEventWireup="false" CodeBehind="ViewSettings.ascx.vb" Inherits="DotNetNuke.Modules.Blog.Controls.ViewSettings" %>
-<%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="blog" Namespace="DotNetNuke.Modules.Blog.Controls" Assembly="DotNetNuke.Modules.Blog" %>
 

@@ -134,4 +134,7 @@
  <release version="06.02.02">
   <change type="Fix">Fix for OpenGraph metadata</change>
  </release>
+ <release version="06.03.00">
+  <change type="Enhancement">Release for DNN 8</change>
+ </release>
 </changelog>
