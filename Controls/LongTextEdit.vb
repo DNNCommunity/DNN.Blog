@@ -18,9 +18,6 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System.Web.UI.WebControls
-Imports DotNetNuke
-Imports DotNetNuke.Modules.Blog.Common
 
 Namespace Controls
 
@@ -36,32 +33,32 @@ Namespace Controls
 #Region " Protected Methods "
   Protected Overrides Sub CreateChildControls()
 
-   Me.Controls.Clear()
+   Controls.Clear()
    pnlMain = New System.Web.UI.WebControls.Table
-   pnlMain.ID = Me.ID & "_mainTable"
+   pnlMain.ID = ID & "_mainTable"
    pnlMain.CssClass = CssPrefix & "default"
-   Me.Controls.Add(pnlMain)
+   Controls.Add(pnlMain)
    Dim tr As New TableRow
    pnlMain.Rows.Add(tr)
    Dim td As New TableCell
    td.CssClass = CssPrefix & "defaulttext"
    tr.Cells.Add(td)
 
-   If Me.ShowRichTextBox Then
-    Dim t As DotNetNuke.UI.UserControls.TextEditor = CType(Me.Page.LoadControl("~/controls/texteditor.ascx"), UI.UserControls.TextEditor)
+   If ShowRichTextBox Then
+    Dim t As DotNetNuke.UI.UserControls.TextEditor = CType(Page.LoadControl("~/controls/texteditor.ascx"), UI.UserControls.TextEditor)
     With t
-     .ID = Me.ID & "_txtMain"
-     If Me.TextBoxWidth <> Unit.Pixel(0) Then .Width = Me.TextBoxWidth
-     If Me.TextBoxHeight <> Unit.Pixel(0) Then .Height = Me.TextBoxHeight
+     .ID = ID & "_txtMain"
+     If TextBoxWidth <> Unit.Pixel(0) Then .Width = TextBoxWidth
+     If TextBoxHeight <> Unit.Pixel(0) Then .Height = TextBoxHeight
      .EnableViewState = True
     End With
     td.Controls.Add(t)
    Else
     Dim txtMain As New TextBox
     With txtMain
-     .ID = Me.ID & "_txtMain"
-     If Me.TextBoxWidth <> Unit.Pixel(0) Then .Width = Me.TextBoxWidth
-     If Me.TextBoxHeight <> Unit.Pixel(0) Then .Height = Me.TextBoxHeight
+     .ID = ID & "_txtMain"
+     If TextBoxWidth <> Unit.Pixel(0) Then .Width = TextBoxWidth
+     If TextBoxHeight <> Unit.Pixel(0) Then .Height = TextBoxHeight
      .TextMode = TextBoxMode.MultiLine
     End With
     td.Controls.Add(txtMain)
@@ -84,16 +81,16 @@ Namespace Controls
      td.Controls.Add(New LiteralControl(SupportedLocales(DefaultLanguage).Text))
     End If
     Dim ib As New ImageButton
-    ib.ID = Me.ID & "_cmdMinmax"
+    ib.ID = ID & "_cmdMinmax"
     td.Controls.Add(New LiteralControl("&nbsp;"))
     td.Controls.Add(ib)
 
     ' Make the dropdown box
     pnlBox = New System.Web.UI.WebControls.Panel
     pnlBox.CssClass = CssPrefix & "minmaxbox"
-    Me.Controls.Add(pnlBox)
+    Controls.Add(pnlBox)
     pnlContent = New System.Web.UI.WebControls.Table
-    pnlContent.ID = Me.ID & "_contentTable"
+    pnlContent.ID = ID & "_contentTable"
     pnlContent.CssClass = CssPrefix & "localizations"
     pnlBox.Controls.Add(pnlContent)
     DotNetNuke.UI.Utilities.DNNClientAPI.EnableMinMax(ib, pnlContent, -1, Not StartMaximized, DotNetNuke.Common.ResolveUrl("~/images/min.gif"), DotNetNuke.Common.ResolveUrl("~/images/max.gif"), DotNetNuke.UI.Utilities.DNNClientAPI.MinMaxPersistanceType.None)
@@ -106,21 +103,21 @@ Namespace Controls
       td = New TableCell
       td.CssClass = CssPrefix & "localization"
       tr.Cells.Add(td)
-      If Me.ShowRichTextBox Then
-       Dim t As DotNetNuke.UI.UserControls.TextEditor = CType(Me.Page.LoadControl("~/controls/texteditor.ascx"), UI.UserControls.TextEditor)
+      If ShowRichTextBox Then
+       Dim t As DotNetNuke.UI.UserControls.TextEditor = CType(Page.LoadControl("~/controls/texteditor.ascx"), UI.UserControls.TextEditor)
        With t
-        .ID = Me.ID & "_txt" & localeCode
-        If Me.TextBoxWidth <> Unit.Pixel(0) Then .Width = Me.TextBoxWidth
-        If Me.TextBoxHeight <> Unit.Pixel(0) Then .Height = Me.TextBoxHeight
+        .ID = ID & "_txt" & localeCode
+        If TextBoxWidth <> Unit.Pixel(0) Then .Width = TextBoxWidth
+        If TextBoxHeight <> Unit.Pixel(0) Then .Height = TextBoxHeight
         .EnableViewState = True
        End With
        td.Controls.Add(t)
       Else
        Dim tb As New TextBox
        With tb
-        .ID = Me.ID & "_txt" & localeCode
-        If Me.TextBoxWidth <> Unit.Pixel(0) Then .Width = Me.TextBoxWidth
-        If Me.TextBoxHeight <> Unit.Pixel(0) Then .Height = Me.TextBoxHeight
+        .ID = ID & "_txt" & localeCode
+        If TextBoxWidth <> Unit.Pixel(0) Then .Width = TextBoxWidth
+        If TextBoxHeight <> Unit.Pixel(0) Then .Height = TextBoxHeight
         .TextMode = TextBoxMode.MultiLine
        End With
        td.Controls.Add(tb)
@@ -148,14 +145,14 @@ Namespace Controls
 
    If JustUpdated Then Exit Sub
    Try
-    If Me.ShowRichTextBox Then
-     Dim txtMain As DotNetNuke.UI.UserControls.TextEditor = CType(pnlMain.FindControlByID(Me.ID & "_txtMain"), DotNetNuke.UI.UserControls.TextEditor)
+    If ShowRichTextBox Then
+     Dim txtMain As DotNetNuke.UI.UserControls.TextEditor = CType(pnlMain.FindControlByID(ID & "_txtMain"), DotNetNuke.UI.UserControls.TextEditor)
      Dim returnText As String = CStr(txtMain.Text)
      If returnText <> "<p>&#160;</p>" Then
       DefaultText = returnText
      End If
     Else
-     Dim txtMain As TextBox = CType(pnlMain.FindControlByID(Me.ID & "_txtMain"), TextBox)
+     Dim txtMain As TextBox = CType(pnlMain.FindControlByID(ID & "_txtMain"), TextBox)
      DefaultText = txtMain.Text
     End If
    Catch ex As Exception
@@ -164,15 +161,15 @@ Namespace Controls
     For Each localeCode As String In SupportedLocales
      If Not localeCode = DefaultLanguage Then
       Try
-       If Me.ShowRichTextBox Then
-        Dim txtBox As DotNetNuke.UI.UserControls.TextEditor = CType(pnlContent.FindControlByID(Me.ID & "_txt" & localeCode), DotNetNuke.UI.UserControls.TextEditor)
+       If ShowRichTextBox Then
+        Dim txtBox As DotNetNuke.UI.UserControls.TextEditor = CType(pnlContent.FindControlByID(ID & "_txt" & localeCode), DotNetNuke.UI.UserControls.TextEditor)
         If LocalizedTexts.ContainsKey(localeCode) Then
          LocalizedTexts(localeCode) = CStr(txtBox.Text)
         Else
          LocalizedTexts.Add(localeCode, CStr(txtBox.Text))
         End If
        Else
-        Dim txtBox As TextBox = CType(pnlContent.FindControlByID(Me.ID & "_txt" & localeCode), TextBox)
+        Dim txtBox As TextBox = CType(pnlContent.FindControlByID(ID & "_txt" & localeCode), TextBox)
         If LocalizedTexts.ContainsKey(localeCode) Then
          LocalizedTexts(localeCode) = txtBox.Text.Trim
         Else
@@ -190,11 +187,11 @@ Namespace Controls
 
   Public Overrides Sub Rebind()
    Try
-    If Me.ShowRichTextBox Then
-     Dim txtMain As DotNetNuke.UI.UserControls.TextEditor = CType(pnlMain.FindControlByID(Me.ID & "_txtMain"), DotNetNuke.UI.UserControls.TextEditor)
+    If ShowRichTextBox Then
+     Dim txtMain As DotNetNuke.UI.UserControls.TextEditor = CType(pnlMain.FindControlByID(ID & "_txtMain"), DotNetNuke.UI.UserControls.TextEditor)
      txtMain.Text = DefaultText
     Else
-     Dim txtMain As TextBox = CType(pnlMain.FindControlByID(Me.ID & "_txtMain"), TextBox)
+     Dim txtMain As TextBox = CType(pnlMain.FindControlByID(ID & "_txtMain"), TextBox)
      txtMain.Text = DefaultText
     End If
    Catch ex As Exception
@@ -202,10 +199,10 @@ Namespace Controls
    If ShowTranslations Then
     For Each localeCode As String In SupportedLocales
      If Not localeCode = DefaultLanguage Then
-      If Me.ShowRichTextBox Then
-       CType(pnlContent.FindControlByID(Me.ID & "_txt" & localeCode), DotNetNuke.UI.UserControls.TextEditor).Text = LocalizedTexts(localeCode)
+      If ShowRichTextBox Then
+       CType(pnlContent.FindControlByID(ID & "_txt" & localeCode), DotNetNuke.UI.UserControls.TextEditor).Text = LocalizedTexts(localeCode)
       Else
-       CType(pnlContent.FindControlByID(Me.ID & "_txt" & localeCode), TextBox).Text = LocalizedTexts(localeCode)
+       CType(pnlContent.FindControlByID(ID & "_txt" & localeCode), TextBox).Text = LocalizedTexts(localeCode)
       End If
      End If
     Next

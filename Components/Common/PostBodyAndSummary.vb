@@ -31,29 +31,29 @@ Namespace Common
 
 #Region " Constructors "
   Public Sub New(contentEditor As Controls.LongTextEdit, summaryEditor As Controls.LongTextEdit, summaryModel As SummaryType, includeLocalizations As Boolean, autoGenerateSummaryIfEmpty As Boolean, autoGenerateLength As Integer)
-   Me.Body = contentEditor.DefaultText
-   Me.Summary = Trim(summaryEditor.DefaultText)
+   Body = contentEditor.DefaultText
+   Summary = Trim(summaryEditor.DefaultText)
    If Summary = "&lt;p&gt;&amp;#160;&lt;/p&gt;" Then Summary = "" ' an empty editor in DNN returns this
    If includeLocalizations Then
-    Me.BodyLocalizations = contentEditor.LocalizedTexts
-    Me.SummaryLocalizations = summaryEditor.LocalizedTexts
+    BodyLocalizations = contentEditor.LocalizedTexts
+    SummaryLocalizations = summaryEditor.LocalizedTexts
    End If
    Select Case summaryModel
     Case SummaryType.HtmlIndependent
     Case SummaryType.HtmlPrecedesPost
      Body = Summary & Body
-     For Each l As String In Me.SummaryLocalizations.Locales
-      Me.BodyLocalizations(l) = Me.SummaryLocalizations(l) & Me.BodyLocalizations(l)
+     For Each l As String In SummaryLocalizations.Locales
+      BodyLocalizations(l) = SummaryLocalizations(l) & BodyLocalizations(l)
      Next
     Case SummaryType.PlainTextIndependent
-     Me.Summary = RemoveHtmlTags(Me.Summary)
-     For Each l As String In Me.SummaryLocalizations.Locales
-      Me.SummaryLocalizations(l) = RemoveHtmlTags(Me.SummaryLocalizations(l))
+     Summary = RemoveHtmlTags(Summary)
+     For Each l As String In SummaryLocalizations.Locales
+      SummaryLocalizations(l) = RemoveHtmlTags(SummaryLocalizations(l))
      Next
    End Select
    If autoGenerateSummaryIfEmpty And autoGenerateLength > 0 Then
     If Summary = "" Then Summary = GetSummary(Body, autoGenerateLength, summaryModel, True)
-    For Each l As String In Me.SummaryLocalizations.Locales
+    For Each l As String In SummaryLocalizations.Locales
      If SummaryLocalizations(l) = "" Then SummaryLocalizations(l) = GetSummary(BodyLocalizations(l), autoGenerateLength, summaryModel, True)
     Next
    End If
@@ -89,7 +89,7 @@ Namespace Common
    End If
    If autoGenerateSummaryIfEmpty And autoGenerateLength > 0 Then
     If Summary = "" Then Summary = GetSummary(Body, autoGenerateLength, summaryModel, False)
-    For Each l As String In Me.SummaryLocalizations.Locales
+    For Each l As String In SummaryLocalizations.Locales
      If SummaryLocalizations(l) = "" Then SummaryLocalizations(l) = GetSummary(BodyLocalizations(l), autoGenerateLength, summaryModel, False)
     Next
    End If
@@ -120,9 +120,9 @@ Namespace Common
      Summary = HttpUtility.HtmlEncode(Summary)
     End If
     If includeLocalizations Then
-     For Each l As String In Me.SummaryLocalizations.Locales
-      Me.BodyLocalizations(l) = HttpUtility.HtmlEncode(Me.BodyLocalizations(l))
-      Me.SummaryLocalizations(l) = HttpUtility.HtmlEncode(Me.SummaryLocalizations(l))
+     For Each l As String In SummaryLocalizations.Locales
+      BodyLocalizations(l) = HttpUtility.HtmlEncode(BodyLocalizations(l))
+      SummaryLocalizations(l) = HttpUtility.HtmlEncode(SummaryLocalizations(l))
      Next
     End If
    End If

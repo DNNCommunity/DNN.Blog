@@ -100,13 +100,13 @@ Namespace Entities.Posts
    End If
    Select Case strPropertyName.ToLower
     Case "nrposts"
-     Return (Me.NrPosts.ToString(OutputFormat, formatProvider))
+     Return (NrPosts.ToString(OutputFormat, formatProvider))
     Case "nrviews"
-     Return (Me.NrViews.ToString(OutputFormat, formatProvider))
+     Return (NrViews.ToString(OutputFormat, formatProvider))
     Case "lastpublishdate"
-     Return (Me.LastPublishDate.ToString(OutputFormat, formatProvider))
+     Return (LastPublishDate.ToString(OutputFormat, formatProvider))
     Case "firstpublishdate"
-     Return (Me.FirstPublishDate.ToString(OutputFormat, formatProvider))
+     Return (FirstPublishDate.ToString(OutputFormat, formatProvider))
     Case "parenturl"
      Return PermaLink(ParentTabID)
     Case Else

@@ -18,10 +18,6 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System
-Imports System.Data
-Imports Microsoft.ApplicationBlocks.Data
-Imports DotNetNuke.Common.Utilities
 
 Namespace Data
 

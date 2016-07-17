@@ -18,8 +18,6 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System.Web.UI.WebControls
-Imports DotNetNuke
 Imports DotNetNuke.Modules.Blog.Common.Globals
 
 Namespace Controls
@@ -36,11 +34,11 @@ Namespace Controls
 #Region " Protected Methods "
   Protected Overrides Sub CreateChildControls()
 
-   Me.Controls.Clear()
+   Controls.Clear()
    pnlMain = New System.Web.UI.WebControls.Table
-   pnlMain.ID = Me.ID & "_mainTable"
+   pnlMain.ID = ID & "_mainTable"
    pnlMain.CssClass = CssPrefix & "default"
-   Me.Controls.Add(pnlMain)
+   Controls.Add(pnlMain)
    Dim tr As New TableRow
    pnlMain.Rows.Add(tr)
    Dim td As New TableCell
@@ -48,8 +46,8 @@ Namespace Controls
    tr.Cells.Add(td)
 
    txtMain = New TextBox
-   If Me.TextBoxWidth <> Unit.Pixel(0) Then txtMain.Width = TextBoxWidth
-   txtMain.ID = Me.ID & "_txtMain"
+   If TextBoxWidth <> Unit.Pixel(0) Then txtMain.Width = TextBoxWidth
+   txtMain.ID = ID & "_txtMain"
    td.Controls.Add(txtMain)
 
    If SupportedLocales.Count > 1 And ShowTranslations Then
@@ -68,16 +66,16 @@ Namespace Controls
      td.Controls.Add(New LiteralControl(SupportedLocales(DefaultLanguage).Text))
     End If
     Dim ib As New ImageButton
-    ib.ID = Me.ID & "_cmdMinmax"
+    ib.ID = ID & "_cmdMinmax"
     td.Controls.Add(New LiteralControl("&nbsp;"))
     td.Controls.Add(ib)
 
     ' Make the dropdown box
     pnlBox = New System.Web.UI.WebControls.Panel
     pnlBox.CssClass = CssPrefix & "minmaxbox"
-    Me.Controls.Add(pnlBox)
+    Controls.Add(pnlBox)
     pnlContent = New System.Web.UI.WebControls.Table
-    pnlContent.ID = Me.ID & "_contentTable"
+    pnlContent.ID = ID & "_contentTable"
     pnlContent.CssClass = CssPrefix & "localizations"
     pnlBox.Controls.Add(pnlContent)
     DotNetNuke.UI.Utilities.DNNClientAPI.EnableMinMax(ib, pnlContent, -1, Not StartMaximized, DotNetNuke.Common.ResolveUrl("~/images/min.gif"), DotNetNuke.Common.ResolveUrl("~/images/max.gif"), DotNetNuke.UI.Utilities.DNNClientAPI.MinMaxPersistanceType.None)
@@ -92,8 +90,8 @@ Namespace Controls
       tr.Cells.Add(td)
 
       Dim tb As New TextBox
-      tb.ID = Me.ID & "_txt" & localeCode
-      If Me.TextBoxWidth <> Unit.Pixel(0) Then tb.Width = Me.TextBoxWidth
+      tb.ID = ID & "_txt" & localeCode
+      If TextBoxWidth <> Unit.Pixel(0) Then tb.Width = TextBoxWidth
       td.Controls.Add(tb)
       td = New TableCell
       td.CssClass = CssPrefix & "flag"
@@ -178,7 +176,7 @@ Namespace Controls
     For Each localeCode As String In SupportedLocales
      If Not localeCode = DefaultLanguage Then
       Try
-       Dim txtBox As TextBox = CType(pnlContent.FindControlByID(Me.ID & "_txt" & localeCode), TextBox)
+       Dim txtBox As TextBox = CType(pnlContent.FindControlByID(ID & "_txt" & localeCode), TextBox)
        If LocalizedTexts.ContainsKey(localeCode) Then
         LocalizedTexts(localeCode) = txtBox.Text.Trim
        Else
@@ -202,7 +200,7 @@ Namespace Controls
     For Each localeCode As String In SupportedLocales
      If Not localeCode = DefaultLanguage Then
       Try
-       CType(pnlContent.FindControlByID(Me.ID & "_txt" & localeCode), TextBox).Text = LocalizedTexts(localeCode)
+       CType(pnlContent.FindControlByID(ID & "_txt" & localeCode), TextBox).Text = LocalizedTexts(localeCode)
       Catch ex As Exception
       End Try
      End If

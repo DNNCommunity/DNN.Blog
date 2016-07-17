@@ -18,7 +18,6 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System
 Imports System.Xml
 Imports System.Xml.Schema
 Imports System.Xml.Serialization
@@ -127,7 +126,7 @@ Namespace Security.Permissions
     .RoleId = RoleId
     .UserId = UserId
    End With
-   Me.Add(pi)
+   Add(pi)
   End Sub
 
 #Region " IXmlSerializable Implementation "
@@ -172,7 +171,7 @@ Namespace Security.Permissions
      reader.ReadStartElement("Permission")
      Dim epi As New BlogPermissionInfo
      epi.ReadXml(reader)
-     Me.Add(epi)
+     Add(epi)
     Loop While reader.ReadToNextSibling("Permission")
    Catch ex As Exception
     ' log exception as DNN import routine does not do that
@@ -189,7 +188,7 @@ Namespace Security.Permissions
     Dim epi As New BlogPermissionInfo
     epi.ReadXml(xPermission)
     If epi.RoleName <> "" Then ' we don't import user permissions
-     Me.Add(epi)
+     Add(epi)
     End If
    Next
 

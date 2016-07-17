@@ -18,8 +18,6 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports DotNetNuke.Services.Localization.Localization
-Imports DotNetNuke.Services.Tokens
 Imports DotNetNuke.Web.Client.ClientResourceManagement
 
 Namespace Templating
@@ -86,47 +84,47 @@ Namespace Templating
 #End Region
 
 #Region " Event Handlers "
-  Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.PreRender
+  Private Sub Page_PreRender(ByVal sender As Object, ByVal e As EventArgs) Handles Me.PreRender
 
    'hook in css files
    If IO.File.Exists(TemplateMapPath & "template.css") Then
-    ClientResourceManager.RegisterStyleSheet(Me.Page, TemplatePath & "template.css")
+    ClientResourceManager.RegisterStyleSheet(Page, TemplatePath & "template.css")
    End If
    If IO.Directory.Exists(TemplateMapPath & "css") Then
     For Each f As IO.FileInfo In (New IO.DirectoryInfo(TemplateMapPath & "css")).GetFiles("*.css")
-     ClientResourceManager.RegisterStyleSheet(Me.Page, TemplatePath & "css/" & f.Name)
+     ClientResourceManager.RegisterStyleSheet(Page, TemplatePath & "css/" & f.Name)
     Next
    End If
    If IO.Directory.Exists(ViewMapPath & "css") Then
     For Each f As IO.FileInfo In (New IO.DirectoryInfo(ViewMapPath & "css")).GetFiles("*.css")
-     ClientResourceManager.RegisterStyleSheet(Me.Page, ViewPath & "css/" & f.Name)
+     ClientResourceManager.RegisterStyleSheet(Page, ViewPath & "css/" & f.Name)
     Next
    End If
    'hook in js files
    If IO.File.Exists(TemplateMapPath & "template.js") Then
-    ClientResourceManager.RegisterScript(Me.Page, TemplatePath & "template.js")
+    ClientResourceManager.RegisterScript(Page, TemplatePath & "template.js")
    End If
    If IO.Directory.Exists(TemplateMapPath & "js") Then
     For Each f As IO.FileInfo In (New IO.DirectoryInfo(TemplateMapPath & "js")).GetFiles("*.js")
-     ClientResourceManager.RegisterScript(Me.Page, TemplatePath & "js/" & f.Name)
+     ClientResourceManager.RegisterScript(Page, TemplatePath & "js/" & f.Name)
     Next
    End If
    If IO.Directory.Exists(ViewMapPath & "js") Then
     For Each f As IO.FileInfo In (New IO.DirectoryInfo(ViewMapPath & "js")).GetFiles("*.js")
-     ClientResourceManager.RegisterScript(Me.Page, ViewPath & "js/" & f.Name)
+     ClientResourceManager.RegisterScript(Page, ViewPath & "js/" & f.Name)
     Next
    End If
    ' localized js files?
    Dim locale As String = Threading.Thread.CurrentThread.CurrentCulture.Name.ToLower
    If IO.Directory.Exists(ViewMapPath & "js\" & locale) Then
     For Each f As IO.FileInfo In (New IO.DirectoryInfo(ViewMapPath & "js\" & locale)).GetFiles("*.js")
-     ClientResourceManager.RegisterScript(Me.Page, ViewPath & "js/" & locale & "/" & f.Name)
+     ClientResourceManager.RegisterScript(Page, ViewPath & "js/" & locale & "/" & f.Name)
     Next
    Else ' check generic culture
     locale = Threading.Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.ToLower
     If IO.Directory.Exists(ViewMapPath & "js\" & locale) Then
      For Each f As IO.FileInfo In (New IO.DirectoryInfo(ViewMapPath & "js\" & locale)).GetFiles("*.js")
-      ClientResourceManager.RegisterScript(Me.Page, ViewPath & "js/" & locale & "/" & f.Name)
+      ClientResourceManager.RegisterScript(Page, ViewPath & "js/" & locale & "/" & f.Name)
      Next
     End If
    End If

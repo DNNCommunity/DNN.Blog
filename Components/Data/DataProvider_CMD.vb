@@ -18,8 +18,6 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System
-Imports DotNetNuke
 
 Namespace Data
 

@@ -20,22 +20,12 @@
 
 Option Strict On
 Option Explicit On
-
-Imports DotNetNuke.Modules.Blog.Common
-Imports System.Globalization
-Imports System.Runtime.Serialization
-Imports System.Runtime.Serialization.Json
 Imports System.Net
 Imports System.Net.Http
 Imports System.Web.Http
 Imports DotNetNuke.Web.Api
-Imports DotNetNuke.Modules.Blog.Entities.Blogs
-Imports DotNetNuke.Modules.Blog.Entities.Posts
-Imports DotNetNuke.Modules.Blog.Security
-Imports DotNetNuke.Modules.Blog.Integration
 Imports DotNetNuke.Entities.Modules
 Imports System.Xml
-Imports System.Net.Http.Formatting
 
 Namespace Services
 
@@ -158,7 +148,7 @@ Namespace Services
 
   Public Sub New(enc As Encoding)
    MyBase.New()
-   Me._Encoding = enc
+   _Encoding = enc
   End Sub
 
   Public Overrides ReadOnly Property Encoding As System.Text.Encoding

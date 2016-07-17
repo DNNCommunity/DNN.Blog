@@ -25,7 +25,7 @@ Namespace Controls
  Public Class TemplateSettings
   Inherits BlogModuleBase
 
-  Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+  Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 
    Dim tmgr As New TemplateManager(PortalSettings, ViewSettings.Template)
    divMessage.Visible = False
@@ -38,7 +38,7 @@ Namespace Controls
     Dim td As New TableCell
     td.CssClass = "SubHead"
     td.Width = Unit.Pixel(165)
-    Dim dnnl As DotNetNuke.UI.UserControls.LabelControl = CType(Me.LoadControl(ResolveUrl("~/controls/LabelControl.ascx")), DotNetNuke.UI.UserControls.LabelControl)
+    Dim dnnl As DotNetNuke.UI.UserControls.LabelControl = CType(LoadControl(ResolveUrl("~/controls/LabelControl.ascx")), DotNetNuke.UI.UserControls.LabelControl)
     dnnl.Suffix = ":"
     dnnl.Text = GetString(ts.Key & ".Text", tmgr.SharedResourcesFile)
     dnnl.HelpText = GetString(ts.Key & ".Help", tmgr.SharedResourcesFile)
@@ -80,7 +80,7 @@ Namespace Controls
     tblSettings.Rows.Add(tr)
    Next
 
-   If Not Me.IsPostBack Then
+   If Not IsPostBack Then
     DataBind()
    End If
 
@@ -126,11 +126,11 @@ Namespace Controls
 
   End Sub
 
-  Private Sub cmdCancel_Click(sender As Object, e As System.EventArgs) Handles cmdCancel.Click
+  Private Sub cmdCancel_Click(sender As Object, e As EventArgs) Handles cmdCancel.Click
    Response.Redirect(DotNetNuke.Common.NavigateURL, False)
   End Sub
 
-  Private Sub cmdUpdate_Click(sender As Object, e As System.EventArgs) Handles cmdUpdate.Click
+  Private Sub cmdUpdate_Click(sender As Object, e As EventArgs) Handles cmdUpdate.Click
 
    Dim tmgr As New TemplateManager(PortalSettings, ViewSettings.Template)
    Dim rowIndex As Integer = 0

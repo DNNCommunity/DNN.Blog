@@ -18,7 +18,6 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System.ComponentModel
 Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.Entities.Terms
 Imports DotNetNuke.Entities.Content.Taxonomy
@@ -41,21 +40,21 @@ Namespace Controls
 #End Region
 
 #Region " Event Handlers "
-  Private Sub TagEdit_Init(sender As Object, e As System.EventArgs) Handles Me.Init
+  Private Sub TagEdit_Init(sender As Object, e As EventArgs) Handles Me.Init
    DotNetNuke.Framework.jQuery.RegisterJQueryUI(Page)
    ClientResourceManager.RegisterScript(Page, ResolveUrl("~/DesktopModules/Blog/js/tag-it.min.js"))
-   If Me.CssClass = "" Then Me.CssClass = "tagit-control"
+   If CssClass = "" Then CssClass = "tagit-control"
    ClientResourceManager.RegisterStyleSheet(Page, ResolveUrl("~/DesktopModules/Blog/css/tagit.css"), Web.Client.FileOrder.Css.ModuleCss)
   End Sub
 
-  Private Sub TagEdit_Load(sender As Object, e As System.EventArgs) Handles Me.Load
-   ListClientID = Me.ClientID & "_TagEdit"
-   If Me.Page.IsPostBack Then
+  Private Sub TagEdit_Load(sender As Object, e As EventArgs) Handles Me.Load
+   ListClientID = ClientID & "_TagEdit"
+   If Page.IsPostBack Then
     ' read return values
     Terms = New List(Of TermInfo)
     Dim vocab As Dictionary(Of String, TermInfo) = TermsController.GetTermsByVocabulary(ModuleConfiguration.ModuleID, VocabularyId, Threading.Thread.CurrentThread.CurrentCulture.Name)
     Dim tagList As String = ""
-    Me.Page.Request.Params.ReadValue(ClientID, tagList)
+    Page.Request.Params.ReadValue(ClientID, tagList)
     If Not String.IsNullOrEmpty(tagList) Then
      For Each t As String In tagList.Split(","c)
       If vocab.ContainsKey(t) Then
@@ -78,10 +77,10 @@ Namespace Controls
    Else
     pagescript = pagescript.Replace("[TagLimit]", TagLimit.ToString)
    End If
-   If TypeOf (Me.Parent) Is DotNetNuke.Entities.Modules.PortalModuleBase Then
-    pagescript = pagescript.Replace("[PlaceholderText]", DotNetNuke.Services.Localization.Localization.GetString(Me.ID & ".PlaceholderText", CType(Me.Parent, DotNetNuke.Entities.Modules.PortalModuleBase).LocalResourceFile))
+   If TypeOf (Parent) Is DotNetNuke.Entities.Modules.PortalModuleBase Then
+    pagescript = pagescript.Replace("[PlaceholderText]", DotNetNuke.Services.Localization.Localization.GetString(ID & ".PlaceholderText", CType(Parent, DotNetNuke.Entities.Modules.PortalModuleBase).LocalResourceFile))
    End If
-   Me.Page.ClientScript.RegisterClientScriptBlock(GetType(String), ClientID, pagescript, True)
+   Page.ClientScript.RegisterClientScriptBlock(GetType(String), ClientID, pagescript, True)
   End Sub
 
   Protected Overrides Sub RenderContents(writer As HtmlTextWriter)

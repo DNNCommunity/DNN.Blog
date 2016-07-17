@@ -1,7 +1,3 @@
-Imports System.Collections.Generic
-Imports System.Text
-
-
 Namespace BlogML
 
  ''' <summary>

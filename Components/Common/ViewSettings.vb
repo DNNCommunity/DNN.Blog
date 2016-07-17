@@ -19,10 +19,7 @@
 '
 
 Imports System.Xml
-Imports Microsoft.VisualBasic.CompilerServices
-Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Services.Tokens
-Imports DotNetNuke.Modules.Blog.Common.Globals
 
 Namespace Common
  <Serializable()>
@@ -204,13 +201,13 @@ Namespace Common
      End If
      Select Case strPropertyName.ToLower
       Case "termid", "categories" ' termid is for legacy purposes
-       Return Me.Categories
+       Return Categories
       Case "authorid"
-       Return (Me.AuthorId.ToString(OutputFormat, formatProvider))
+       Return (AuthorId.ToString(OutputFormat, formatProvider))
       Case "blogid"
-       Return (Me.BlogId.ToString(OutputFormat, formatProvider))
+       Return (BlogId.ToString(OutputFormat, formatProvider))
       Case "blogmoduleid"
-       Return (Me.BlogModuleId.ToString(OutputFormat, formatProvider))
+       Return (BlogModuleId.ToString(OutputFormat, formatProvider))
       Case Else
        Return ""
      End Select

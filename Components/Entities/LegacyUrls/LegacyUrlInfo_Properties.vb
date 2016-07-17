@@ -18,11 +18,10 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System
 Imports System.Runtime.Serialization
 
 Namespace Entities.LegacyUrls
-  Partial Public Class LegacyUrlInfo
+ Partial Public Class LegacyUrlInfo
 
 #Region " Private Members "
 #End Region
@@ -39,7 +38,7 @@ Namespace Entities.LegacyUrls
 #End Region
 
 #Region " Public Properties "
-<DataMember()>
+  <DataMember()>
   Public Property ContentItemId As Int32 = -1
   <DataMember()>
   Public Property EntryId As Int32 = -1

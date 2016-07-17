@@ -18,20 +18,13 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System.Globalization
-Imports System.Runtime.Serialization
-Imports System.Runtime.Serialization.Json
 Imports System.Net
 Imports System.Net.Http
 Imports System.Web.Http
 Imports DotNetNuke.Web.Api
-Imports DotNetNuke.Modules.Blog
 Imports DotNetNuke.Modules.Blog.Common.Globals
-Imports DotNetNuke.Modules.Blog.Entities.Blogs
 Imports DotNetNuke.Modules.Blog.Entities.Posts
 Imports DotNetNuke.Modules.Blog.Entities.Comments
-Imports DotNetNuke.Modules.Blog.Security
-Imports DotNetNuke.Modules.Blog.Integration
 Imports DotNetNuke.Modules.Blog.BlogML.Xml
 Imports DotNetNuke.Modules.Blog.Entities.Terms
 Imports System.Xml

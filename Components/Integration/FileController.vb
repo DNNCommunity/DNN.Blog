@@ -20,7 +20,6 @@
 Imports System.IO
 Imports DotNetNuke.Common
 Imports DotNetNuke.Entities.Portals
-Imports DotNetNuke.Modules.Blog.Entities
 Imports DotNetNuke.Modules.Blog.Entities.Posts
 
 Namespace Integration

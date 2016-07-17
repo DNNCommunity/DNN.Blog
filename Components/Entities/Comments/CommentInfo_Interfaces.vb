@@ -18,12 +18,9 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System
-Imports System.Data
 Imports System.IO
 Imports System.Runtime.Serialization
 Imports System.Runtime.Serialization.Json
-Imports System.Text
 Imports System.Xml
 Imports System.Xml.Schema
 Imports System.Xml.Serialization
@@ -104,61 +101,61 @@ Namespace Entities.Comments
    End If
    Select Case strPropertyName.ToLower
     Case "commentid"
-     Return (Me.CommentID.ToString(OutputFormat, formatProvider))
+     Return (CommentID.ToString(OutputFormat, formatProvider))
     Case "contentitemid"
-     Return (Me.ContentItemId.ToString(OutputFormat, formatProvider))
+     Return (ContentItemId.ToString(OutputFormat, formatProvider))
     Case "parentid"
-     Return (Me.ParentId.ToString(OutputFormat, formatProvider))
+     Return (ParentId.ToString(OutputFormat, formatProvider))
     Case "comment"
-     Return Me.Comment.OutputHtml(strFormat)
+     Return Comment.OutputHtml(strFormat)
     Case "approved"
-     Return Me.Approved.ToString
+     Return Approved.ToString
     Case "approvedyesno"
-     Return PropertyAccess.Boolean2LocalizedYesNo(Me.Approved, formatProvider)
+     Return PropertyAccess.Boolean2LocalizedYesNo(Approved, formatProvider)
     Case "author"
-     Return PropertyAccess.FormatString(Me.Author, strFormat)
+     Return PropertyAccess.FormatString(Author, strFormat)
     Case "website"
-     Return PropertyAccess.FormatString(Me.Website, strFormat)
+     Return PropertyAccess.FormatString(Website, strFormat)
     Case "email"
-     Return PropertyAccess.FormatString(Me.Email, strFormat)
+     Return PropertyAccess.FormatString(Email, strFormat)
     Case "createdbyuserid"
-     Return (Me.CreatedByUserID.ToString(OutputFormat, formatProvider))
+     Return (CreatedByUserID.ToString(OutputFormat, formatProvider))
     Case "createdondate"
-     Return (Me.CreatedOnDate.ToString(OutputFormat, formatProvider))
+     Return (CreatedOnDate.ToString(OutputFormat, formatProvider))
     Case "createdondateutc"
-     Return (Me.CreatedOnDate.ToUniversalTime.ToString(OutputFormat, formatProvider))
+     Return (CreatedOnDate.ToUniversalTime.ToString(OutputFormat, formatProvider))
     Case "lastmodifiedbyuserid"
-     Return (Me.LastModifiedByUserID.ToString(OutputFormat, formatProvider))
+     Return (LastModifiedByUserID.ToString(OutputFormat, formatProvider))
     Case "lastmodifiedondate"
-     Return (Me.LastModifiedOnDate.ToString(OutputFormat, formatProvider))
+     Return (LastModifiedOnDate.ToString(OutputFormat, formatProvider))
     Case "lastmodifiedondateutc"
-     Return (Me.LastModifiedOnDate.ToUniversalTime.ToString(OutputFormat, formatProvider))
+     Return (LastModifiedOnDate.ToUniversalTime.ToString(OutputFormat, formatProvider))
     Case "username"
-     Return PropertyAccess.FormatString(Me.Username, strFormat)
+     Return PropertyAccess.FormatString(Username, strFormat)
     Case "displayname"
-     Return PropertyAccess.FormatString(Me.DisplayName, strFormat)
+     Return PropertyAccess.FormatString(DisplayName, strFormat)
     Case "likes"
-     Return (Me.Likes.ToString(OutputFormat, formatProvider))
+     Return (Likes.ToString(OutputFormat, formatProvider))
     Case "dislikes"
-     Return (Me.Dislikes.ToString(OutputFormat, formatProvider))
+     Return (Dislikes.ToString(OutputFormat, formatProvider))
     Case "reports"
-     Return (Me.Reports.ToString(OutputFormat, formatProvider))
+     Return (Reports.ToString(OutputFormat, formatProvider))
     Case "liked"
-     Return Me.Liked.ToBool.ToString
+     Return Liked.ToBool.ToString
     Case "likedyesno"
-     Return PropertyAccess.Boolean2LocalizedYesNo(Me.Liked.ToBool, formatProvider)
+     Return PropertyAccess.Boolean2LocalizedYesNo(Liked.ToBool, formatProvider)
     Case "disliked"
-     Return Me.Disliked.ToBool.ToString
+     Return Disliked.ToBool.ToString
     Case "dislikedyesno"
-     Return PropertyAccess.Boolean2LocalizedYesNo(Me.Disliked.ToBool, formatProvider)
+     Return PropertyAccess.Boolean2LocalizedYesNo(Disliked.ToBool, formatProvider)
     Case "reported"
-     Return Me.Reported.ToBool.ToString
+     Return Reported.ToBool.ToString
     Case "reportedyesno"
-     Return PropertyAccess.Boolean2LocalizedYesNo(Me.Reported.ToBool, formatProvider)
+     Return PropertyAccess.Boolean2LocalizedYesNo(Reported.ToBool, formatProvider)
     Case "karmaed"
-     Return (Me.Reported + Me.Liked + Me.Disliked).ToBool.ToString
+     Return (Reported + Liked + Disliked).ToBool.ToString
     Case "karmaedyesno"
-     Return PropertyAccess.Boolean2LocalizedYesNo((Me.Reported + Me.Liked + Me.Disliked).ToBool, formatProvider)
+     Return PropertyAccess.Boolean2LocalizedYesNo((Reported + Liked + Disliked).ToBool, formatProvider)
     Case "posturl"
      Dim _Link As String = DotNetNuke.Common.ApplicationURL(DotNetNuke.Entities.Portals.PortalSettings.Current.ActiveTab.TabID) & "&Post=" & ContentItemId.ToString
      Return DotNetNuke.Common.FriendlyUrl(DotNetNuke.Entities.Portals.PortalSettings.Current.ActiveTab, _Link)

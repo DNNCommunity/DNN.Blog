@@ -18,11 +18,7 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System.Collections.Generic
-Imports System.Linq
-Imports System.Text
 Imports System.Net
-Imports System.Security
 Imports System.IO
 
 Namespace Common
@@ -32,7 +28,7 @@ Namespace Common
   Private ReadOnly url As Uri
   Public ReadOnly Property Uri() As Uri
    Get
-    Return Me.url
+    Return url
    End Get
   End Property
 #End Region
@@ -42,13 +38,13 @@ Namespace Common
    If filePath Is Nothing Then
     Throw New ArgumentNullException("filePath")
    End If
-   Me.url = filePath
+   url = filePath
   End Sub
 #End Region
 
 #Region " Public Methods "
   Public Function GetWebResponse() As WebResponse
-   Dim response As WebResponse = Me.GetWebRequest().GetResponse()
+   Dim response As WebResponse = GetWebRequest().GetResponse()
    Dim contentLength As Long = response.ContentLength
    If contentLength = -1 Then
     Dim headerContentLength As String = response.Headers("Content-Length")
@@ -67,7 +63,7 @@ Namespace Common
 
   Public Function GetFileAsString() As String
    Try
-    Using response As WebResponse = Me.GetWebResponse()
+    Using response As WebResponse = GetWebResponse()
      If response Is Nothing Then
       Return String.Empty
      End If
@@ -76,7 +72,7 @@ Namespace Common
      End Using
     End Using
    Catch ex As Exception
-    DotNetNuke.Services.Exceptions.LogException(New Exception(String.Format("Track/Pingback Verification Request To '{0}' Failed", Me.Uri.PathAndQuery), ex))
+    DotNetNuke.Services.Exceptions.LogException(New Exception(String.Format("Track/Pingback Verification Request To '{0}' Failed", Uri.PathAndQuery), ex))
     Return ""
    End Try
   End Function
@@ -85,16 +81,16 @@ Namespace Common
 #Region " Private Methods "
   Private Function GetWebRequest() As WebRequest
 
-   If Me._webRequest Is Nothing Then
-    Dim request As HttpWebRequest = DirectCast(WebRequest.Create(Me.Uri), HttpWebRequest)
+   If _webRequest Is Nothing Then
+    Dim request As HttpWebRequest = DirectCast(WebRequest.Create(Uri), HttpWebRequest)
     request.Headers("Accept-Encoding") = "gzip"
     request.Headers("Accept-Language") = "en-us"
     request.Credentials = CredentialCache.DefaultNetworkCredentials
     request.AutomaticDecompression = DecompressionMethods.GZip
     request.Timeout = 1000 * 30 ' 30 secs timeout
-    Me._webRequest = request
+    _webRequest = request
    End If
-   Return Me._webRequest
+   Return _webRequest
 
   End Function
 #End Region

@@ -19,7 +19,6 @@
 '
 
 Imports DotNetNuke.Entities.Modules
-Imports DotNetNuke.Services
 
 Namespace Integration
  Partial Public Class BlogModuleController

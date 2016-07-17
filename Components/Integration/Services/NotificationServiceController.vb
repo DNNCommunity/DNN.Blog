@@ -19,11 +19,6 @@
 '
 Option Strict On
 Option Explicit On
-
-Imports DotNetNuke.Modules.Blog.Common
-Imports System.Globalization
-Imports System.Runtime.Serialization
-Imports System.Runtime.Serialization.Json
 Imports System.Net
 Imports System.Net.Http
 Imports System.Web.Http
@@ -32,8 +27,6 @@ Imports DotNetNuke.Services.Social.Notifications
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
 Imports DotNetNuke.Modules.Blog.Entities.Posts
 Imports DotNetNuke.Modules.Blog.Entities.Comments
-Imports DotNetNuke.Modules.Blog.Security
-Imports DotNetNuke.Modules.Blog.Integration
 Imports DotNetNuke.Modules.Blog.Services
 
 Namespace Integration.Services

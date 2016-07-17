@@ -21,16 +21,13 @@
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
 Imports System.Linq
 Imports DotNetNuke.Modules.Blog.Entities.Posts
-Imports DotNetNuke.Web.UI.WebControls
-Imports DotNetNuke.Web.Client.ClientResourceManagement
-Imports DotNetNuke.Modules.Blog.Common.Globals
 
 Public Class Manage
  Inherits BlogModuleBase
 
  Private _totalPosts As Integer = -1
 
- Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+ Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 
   If Not BlogContext.security.CanDoSomethingWithPosts Then
    Throw New Exception("You do not have access to this resource. Please check your login status.")
@@ -42,17 +39,17 @@ Public Class Manage
   postsLink.Visible = BlogContext.Security.CanAddPost Or BlogContext.Security.CanEditPost
   Posts.Visible = BlogContext.Security.CanAddPost Or BlogContext.Security.CanEditPost
 
-  If Not Me.IsPostBack Then
-   Me.DataBind()
+  If Not IsPostBack Then
+   DataBind()
   End If
 
  End Sub
 
- Private Sub cmdAdd_Click(sender As Object, e As System.EventArgs) Handles cmdAdd.Click
+ Private Sub cmdAdd_Click(sender As Object, e As EventArgs) Handles cmdAdd.Click
   Response.Redirect(EditUrl("BlogEdit"), False)
  End Sub
 
- Private Sub cmdReturn_Click(sender As Object, e As System.EventArgs) Handles cmdReturn.Click
+ Private Sub cmdReturn_Click(sender As Object, e As EventArgs) Handles cmdReturn.Click
   Response.Redirect(DotNetNuke.Common.NavigateURL(TabId), False)
  End Sub
 

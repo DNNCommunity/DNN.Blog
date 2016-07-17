@@ -28,7 +28,7 @@ Imports DotNetNuke.Modules.Blog.Entities.Posts
 
 Namespace Controls
  Public Class ViewSettings
-  Inherits DotNetNuke.Entities.Modules.ModuleSettingsBase
+  Inherits ModuleSettingsBase
 
 #Region " Properties "
   Private Property BlogModuleId As Integer = -1
@@ -45,9 +45,9 @@ Namespace Controls
 #End Region
 
 #Region " Page Events "
-  Private Sub Page_Init(sender As Object, e As System.EventArgs) Handles Me.Init
+  Private Sub Page_Init(sender As Object, e As EventArgs) Handles Me.Init
    Try
-    ctlCategories.ModuleConfiguration = Me.ModuleConfiguration
+    ctlCategories.ModuleConfiguration = ModuleConfiguration
     If Not IsPostBack Then
      If ViewSettings.BlogModuleId > -1 Then
       BlogModuleId = ViewSettings.BlogModuleId
@@ -60,10 +60,10 @@ Namespace Controls
    End Try
   End Sub
 
-  Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+  Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
   End Sub
 
-  Private Sub ddBlogModuleId_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles ddBlogModuleId.SelectedIndexChanged
+  Private Sub ddBlogModuleId_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddBlogModuleId.SelectedIndexChanged
    BlogModuleId = CInt(ddBlogModuleId.SelectedValue)
    ctlCategories.VocabularyId = Common.ModuleSettings.GetModuleSettings(BlogModuleId).VocabularyId
    LoadDropdowns()
@@ -88,7 +88,7 @@ Namespace Controls
 #Region " Base Method Implementations "
   Public Overrides Sub LoadSettings()
 
-   If Not Me.IsPostBack Then
+   If Not IsPostBack Then
 
     ddTemplate.Items.Clear()
     ddTemplate.Items.Add(New ListItem("Default [System]", "[G]_default"))
@@ -100,7 +100,7 @@ Namespace Controls
     For Each d As IO.DirectoryInfo In (New IO.DirectoryInfo(Common.ModuleSettings.GetModuleSettings(BlogModuleId).PortalTemplatesMapPath)).GetDirectories
      ddTemplate.Items.Add(New ListItem(d.Name & " [Local]", "[P]" & d.Name))
     Next
-    Dim skinTemplatePath As String = Server.MapPath(DotNetNuke.UI.Skins.Skin.GetSkin(CType(Me.Page, Framework.PageBase)).SkinPath) & "Templates\Blog\"
+    Dim skinTemplatePath As String = Server.MapPath(DotNetNuke.UI.Skins.Skin.GetSkin(CType(Page, Framework.PageBase)).SkinPath) & "Templates\Blog\"
     If IO.Directory.Exists(skinTemplatePath) Then
      For Each d As IO.DirectoryInfo In (New IO.DirectoryInfo(skinTemplatePath)).GetDirectories
       ddTemplate.Items.Add(New ListItem(d.Name & " [Skin]", "[S]" & d.Name))
@@ -112,7 +112,7 @@ Namespace Controls
     Dim listOfValidBlogModules As List(Of ModuleInfo) = New List(Of ModuleInfo)
     Dim tabController As DotNetNuke.Entities.Tabs.TabController = New DotNetNuke.Entities.Tabs.TabController()
 
-    For Each blogModule As ModuleInfo In (New DotNetNuke.Entities.Modules.ModuleController).GetModulesByDefinition(PortalId, "DNNBlog.Blog")
+    For Each blogModule As ModuleInfo In (New ModuleController).GetModulesByDefinition(PortalId, "DNNBlog.Blog")
      Dim blogPage As DotNetNuke.Entities.Tabs.TabInfo = tabController.GetTab(blogModule.TabID, PortalId, False)
      blogModule.ModuleTitle = String.Concat(blogPage.TabName, " - ", blogModule.ModuleTitle)
 

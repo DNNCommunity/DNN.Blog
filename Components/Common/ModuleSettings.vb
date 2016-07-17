@@ -83,7 +83,7 @@ Namespace Common
   Public Sub New(moduleId As Integer)
 
    _moduleId = moduleId
-   Version = Me.GetType().Assembly.GetName().Version.ToString()
+   Version = [GetType]().Assembly.GetName().Version.ToString()
    _allSettings = (New DotNetNuke.Entities.Modules.ModuleController).GetModuleSettings(moduleId)
    _allSettings.ReadValue("AllowWLW", AllowWLW)
    _allSettings.ReadValue("AllowMultipleCategories", AllowMultipleCategories)
@@ -185,16 +185,16 @@ Namespace Common
    End If
    Select Case strPropertyName.ToLower
     Case "email"
-     Return PropertyAccess.FormatString(Me.RssEmail, strFormat)
+     Return PropertyAccess.FormatString(RssEmail, strFormat)
     Case "allowmultiplecategories"
-     Return Me.AllowMultipleCategories.ToString(formatProvider)
+     Return AllowMultipleCategories.ToString(formatProvider)
     Case "allowattachments"
-     Return Me.AllowAttachments.ToString(formatProvider)
+     Return AllowAttachments.ToString(formatProvider)
     Case "summarymodel"
      Return CInt(SummaryModel).ToString
 
     Case "portaltemplatespath"
-     Return PropertyAccess.FormatString(Me.PortalTemplatesPath, strFormat)
+     Return PropertyAccess.FormatString(PortalTemplatesPath, strFormat)
     Case "portalmodulepath"
      Return PropertyAccess.FormatString(_PortalModulePath, strFormat)
     Case "apppath"

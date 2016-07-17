@@ -18,7 +18,6 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System
 Imports System.Linq
 Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Modules.Blog.Common.Globals

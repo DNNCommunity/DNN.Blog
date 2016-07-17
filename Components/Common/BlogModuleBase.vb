@@ -27,6 +27,7 @@ Imports DotNetNuke.Modules.Blog.Templating
 Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.UI.Utilities
 Imports DotNetNuke.Web.Client
+Imports DotNetNuke.Framework.JavaScriptLibraries
 
 Namespace Common
 
@@ -113,8 +114,8 @@ Namespace Common
 
    If Context.Items("BlogModuleBaseInitialized") Is Nothing Then
 
-    jQuery.RequestRegistration()
-    jQuery.RequestUIRegistration()
+    JavaScript.RequestRegistration(CommonJs.jQuery)
+    JavaScript.RequestRegistration(CommonJs.jQueryUI)
     Dim script As New StringBuilder
     script.AppendLine("<script type=""text/javascript"">")
     script.AppendLine("//<![CDATA[")
@@ -135,7 +136,7 @@ Namespace Common
 
    If Context.Items("BlogServiceAdded") Is Nothing Then
 
-    jQuery.RequestDnnPluginsRegistration()
+    JavaScript.RequestRegistration(CommonJs.DnnPlugins)
     ServicesFramework.Instance.RequestAjaxScriptSupport()
     ServicesFramework.Instance.RequestAjaxAntiForgerySupport()
     AddJavascriptFile("dotnetnuke.blog.js", 70)
@@ -146,7 +147,7 @@ Namespace Common
     tr.AddResources("~/DesktopModules/Blog/App_LocalResources/SharedResources.resx")
     scriptBlock = tr.ReplaceTokens(scriptBlock)
     scriptBlock = "<script type=""text/javascript"">" & vbCrLf & "//<![CDATA[" & vbCrLf & scriptBlock & vbCrLf & "//]]>" & vbCrLf & "</script>"
-    Page.ClientScript.RegisterClientScriptBlock(Me.GetType, "BlogServiceScript", scriptBlock)
+    Page.ClientScript.RegisterClientScriptBlock([GetType], "BlogServiceScript", scriptBlock)
 
     Context.Items("BlogServiceAdded") = True
    End If
@@ -154,19 +155,19 @@ Namespace Common
   End Sub
 
   Public Sub AddJavascriptFile(jsFilename As String, priority As Integer)
-   If DotNetNuke.Entities.Host.Host.CrmEnableCompositeFiles Then
-    ClientResourceManager.RegisterScript(Page, ResolveUrl("~/DesktopModules/Blog/js/" & jsFilename), priority)
-   Else
-    ClientResourceManager.RegisterScript(Page, ResolveUrl("~/DesktopModules/Blog/js/" & jsFilename) + "?_=" + Settings.Version, priority)
-   End If
+   Page.AddJavascriptFile(Settings.Version, jsFilename, priority)
+  End Sub
+
+  Public Sub AddJavascriptFile(jsFilename As String, name As String, version As String, priority As Integer)
+   Page.AddJavascriptFile(Settings.Version, jsFilename, name, version, priority)
   End Sub
 
   Public Sub AddCssFile(cssFilename As String)
-   If DotNetNuke.Entities.Host.Host.CrmEnableCompositeFiles Then
-    ClientResourceManager.RegisterStyleSheet(Page, ResolveUrl("~/DesktopModules/Blog/css/" & cssFilename), FileOrder.Css.ModuleCss)
-   Else
-    ClientResourceManager.RegisterStyleSheet(Page, ResolveUrl("~/DesktopModules/Blog/css/" & cssFilename) + "?_=" + Settings.Version, FileOrder.Css.ModuleCss)
-   End If
+   Page.AddCssFile(Settings.Version, cssFilename)
+  End Sub
+
+  Public Sub AddCssFile(cssFilename As String, name As String, version As String)
+   Page.AddCssFile(Settings.Version, cssFilename, name, version)
   End Sub
 
   Public Function LocalizeJSString(resourceKey As String) As String

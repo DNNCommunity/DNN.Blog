@@ -18,9 +18,6 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System
-Imports System.Data
-Imports System.Data.SqlClient
 Imports Microsoft.ApplicationBlocks.Data
 Imports DotNetNuke.Framework.Providers
 
@@ -130,12 +127,12 @@ Namespace Data
 
 #Region " Blog Methods "
 
-	Public Overrides Function AddBlog(autoApprovePingBack As Boolean, moduleID As Int32, autoApproveTrackBack As Boolean, copyright As String, description As String, enablePingBackReceive As Boolean, enablePingBackSend As Boolean, enableTrackBackReceive As Boolean, enableTrackBackSend As Boolean, fullLocalization As Boolean, image As String, includeAuthorInFeed As Boolean, includeImagesInFeed As Boolean, locale As String, mustApproveGhostPosts As Boolean, ownerUserId As Int32, publishAsOwner As Boolean, published As Boolean, syndicated As Boolean, syndicationEmail As String, title As String, createdByUser As Int32) As Integer
-		Return CType(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "AddBlog", autoApprovePingBack, moduleID, autoApproveTrackBack, GetNull(copyright), GetNull(description), enablePingBackReceive, enablePingBackSend, enableTrackBackReceive, enableTrackBackSend, fullLocalization, GetNull(image), includeAuthorInFeed, includeImagesInFeed, locale, mustApproveGhostPosts, ownerUserId, publishAsOwner, published, syndicated, GetNull(syndicationEmail), title, createdByUser), Integer)
-	End Function
-	
-	Public Overrides Sub UpdateBlog(autoApprovePingBack As Boolean, moduleID As Int32, autoApproveTrackBack As Boolean, blogID As Int32, copyright As String, description As String, enablePingBackReceive As Boolean, enablePingBackSend As Boolean, enableTrackBackReceive As Boolean, enableTrackBackSend As Boolean, fullLocalization As Boolean, image As String, includeAuthorInFeed As Boolean, includeImagesInFeed As Boolean, locale As String, mustApproveGhostPosts As Boolean, ownerUserId As Int32, publishAsOwner As Boolean, published As Boolean, syndicated As Boolean, syndicationEmail As String, title As String, updatedByUser As Int32)
-		SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "UpdateBlog", autoApprovePingBack, moduleID, autoApproveTrackBack, blogID, GetNull(copyright), GetNull(description), enablePingBackReceive, enablePingBackSend, enableTrackBackReceive, enableTrackBackSend, fullLocalization, GetNull(image), includeAuthorInFeed, includeImagesInFeed, locale, mustApproveGhostPosts, ownerUserId, publishAsOwner, published, syndicated, GetNull(syndicationEmail), title, updatedByUser)
+  Public Overrides Function AddBlog(autoApprovePingBack As Boolean, moduleID As Int32, autoApproveTrackBack As Boolean, copyright As String, description As String, enablePingBackReceive As Boolean, enablePingBackSend As Boolean, enableTrackBackReceive As Boolean, enableTrackBackSend As Boolean, fullLocalization As Boolean, image As String, includeAuthorInFeed As Boolean, includeImagesInFeed As Boolean, locale As String, mustApproveGhostPosts As Boolean, ownerUserId As Int32, publishAsOwner As Boolean, published As Boolean, syndicated As Boolean, syndicationEmail As String, title As String, createdByUser As Int32) As Integer
+   Return CType(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "AddBlog", autoApprovePingBack, moduleID, autoApproveTrackBack, GetNull(copyright), GetNull(description), enablePingBackReceive, enablePingBackSend, enableTrackBackReceive, enableTrackBackSend, fullLocalization, GetNull(image), includeAuthorInFeed, includeImagesInFeed, locale, mustApproveGhostPosts, ownerUserId, publishAsOwner, published, syndicated, GetNull(syndicationEmail), title, createdByUser), Integer)
+  End Function
+
+  Public Overrides Sub UpdateBlog(autoApprovePingBack As Boolean, moduleID As Int32, autoApproveTrackBack As Boolean, blogID As Int32, copyright As String, description As String, enablePingBackReceive As Boolean, enablePingBackSend As Boolean, enableTrackBackReceive As Boolean, enableTrackBackSend As Boolean, fullLocalization As Boolean, image As String, includeAuthorInFeed As Boolean, includeImagesInFeed As Boolean, locale As String, mustApproveGhostPosts As Boolean, ownerUserId As Int32, publishAsOwner As Boolean, published As Boolean, syndicated As Boolean, syndicationEmail As String, title As String, updatedByUser As Int32)
+   SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "UpdateBlog", autoApprovePingBack, moduleID, autoApproveTrackBack, blogID, GetNull(copyright), GetNull(description), enablePingBackReceive, enablePingBackSend, enableTrackBackReceive, enableTrackBackSend, fullLocalization, GetNull(image), includeAuthorInFeed, includeImagesInFeed, locale, mustApproveGhostPosts, ownerUserId, publishAsOwner, published, syndicated, GetNull(syndicationEmail), title, updatedByUser)
   End Sub
 
   Public Overrides Sub DeleteBlog(blogID As Int32)
@@ -161,9 +158,9 @@ Namespace Data
 #End Region
 
 #Region " LegacyUrl Methods "
-	Public Overrides Sub AddLegacyUrl(contentItemId As Int32, entryId As Int32, url As String)
-		SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "AddLegacyUrl", contentItemId, GetNull(entryId), url)
-	End Sub
+  Public Overrides Sub AddLegacyUrl(contentItemId As Int32, entryId As Int32, url As String)
+   SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "AddLegacyUrl", contentItemId, GetNull(entryId), url)
+  End Sub
 #End Region
 
 #Region " Post Methods "

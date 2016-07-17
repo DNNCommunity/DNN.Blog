@@ -18,13 +18,9 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports DotNetNuke.Web.Client.ClientResourceManagement
-Imports DotNetNuke.Entities.Modules
-Imports DotNetNuke.Framework
 Imports DotNetNuke.Modules.Blog.Security
 Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Services.Tokens
-Imports DotNetNuke.Modules.Blog.Entities.Terms
 
 Namespace Common
 
@@ -108,9 +104,9 @@ Namespace Common
 
    ' set urls for use in module
    If ParentModule Is Nothing Then
-     ModuleUrls = New ModuleUrls(blogModule.TabId, BlogId, ContentItemId, TermId, AuthorId)
+    ModuleUrls = New ModuleUrls(blogModule.TabId, BlogId, ContentItemId, TermId, AuthorId)
    Else
-     ModuleUrls = New ModuleUrls(blogModule.TabId, ParentModule.TabID, BlogId, ContentItemId, TermId, AuthorId)
+    ModuleUrls = New ModuleUrls(blogModule.TabId, ParentModule.TabID, BlogId, ContentItemId, TermId, AuthorId)
    End If
    IsMultiLingualSite = CBool(DotNetNuke.Services.Localization.LocaleController.Instance.GetLocales(blogModule.PortalId).Count > 1)
    If Not blogModule.ViewSettings.ShowAllLocales Then
@@ -182,21 +178,21 @@ Namespace Common
    End If
    Select Case strPropertyName.ToLower
     Case "blogmoduleid"
-     Return (Me.BlogModuleId.ToString(OutputFormat, formatProvider))
+     Return (BlogModuleId.ToString(OutputFormat, formatProvider))
     Case "blogid"
-     Return (Me.BlogId.ToString(OutputFormat, formatProvider))
+     Return (BlogId.ToString(OutputFormat, formatProvider))
     Case "Postid", "contentitemid", "postid", "post"
-     Return (Me.ContentItemId.ToString(OutputFormat, formatProvider))
+     Return (ContentItemId.ToString(OutputFormat, formatProvider))
     Case "termid", "term"
-     Return (Me.TermId.ToString(OutputFormat, formatProvider))
+     Return (TermId.ToString(OutputFormat, formatProvider))
     Case "categories"
-     Return Me.Categories
+     Return Categories
     Case "authorid", "author"
-     Return (Me.AuthorId.ToString(OutputFormat, formatProvider))
+     Return (AuthorId.ToString(OutputFormat, formatProvider))
     Case "enddate"
-     Return (Me.EndDate.ToString(OutputFormat, formatProvider))
+     Return (EndDate.ToString(OutputFormat, formatProvider))
     Case "enddateornow"
-     Return (Me.EndDateOrNow.ToString(OutputFormat, formatProvider))
+     Return (EndDateOrNow.ToString(OutputFormat, formatProvider))
     Case "blogselected"
      Return CBool(BlogId > -1).ToString()
     Case "postselected"

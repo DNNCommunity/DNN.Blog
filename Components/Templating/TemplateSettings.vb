@@ -37,7 +37,7 @@ Namespace Templating
    If IO.File.Exists(_settingsFile) Then
     Using rdr As New IO.StreamReader(_settingsFile)
      Dim a As TemplateSettings = CType(x.Deserialize(rdr), TemplateSettings)
-     Me.Settings = a.Settings
+     Settings = a.Settings
     End Using
    End If
   End Sub

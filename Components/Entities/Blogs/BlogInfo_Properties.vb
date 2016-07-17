@@ -18,7 +18,6 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System
 Imports System.Runtime.Serialization
 
 Namespace Entities.Blogs

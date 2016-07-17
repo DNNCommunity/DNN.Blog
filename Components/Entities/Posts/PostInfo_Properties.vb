@@ -18,11 +18,10 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System
 Imports System.Runtime.Serialization
 
 Namespace Entities.Posts
-  Partial Public Class PostInfo
+ Partial Public Class PostInfo
   Inherits DotNetNuke.Entities.Content.ContentItem
 
 #Region " Private Members "

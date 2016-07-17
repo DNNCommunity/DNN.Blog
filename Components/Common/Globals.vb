@@ -19,8 +19,6 @@
 '
 
 Imports System.Linq
-Imports DotNetNuke.Entities.Modules
-Imports DotNetNuke.Services.Localization.Localization
 Imports DotNetNuke.Entities.Content.Taxonomy
 
 Namespace Common

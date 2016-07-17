@@ -23,16 +23,8 @@ Imports DotNetNuke.Entities.Modules
 Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Entities.Tabs
 Imports DotNetNuke.Entities.Users
-Imports DotNetNuke.Entities.Profile
 Imports DotNetNuke.Entities.Host
-Imports DotNetNuke.Services.Localization
-Imports System.Globalization
 Imports System.Linq
-Imports System.Web
-Imports System.Text
-Imports System.Text.RegularExpressions
-Imports System.Reflection
-Imports System.Collections.Generic
 Imports DotNetNuke.Services.Tokens
 
 
@@ -215,7 +207,7 @@ Namespace Templating
   '''     10/19/2007    sleupold  ModuleID added
   ''' </history>
   Public Sub New(ByVal AccessLevel As Scope, ByVal Language As String, ByVal PortalSettings As PortalSettings, ByVal User As UserInfo, ByVal ModuleID As Integer)
-   Me.CurrentAccessLevel = AccessLevel
+   CurrentAccessLevel = AccessLevel
    If AccessLevel <> Scope.NoSettings Then
     If PortalSettings Is Nothing Then
      If HttpContext.Current IsNot Nothing Then Me.PortalSettings = PortalController.GetCurrentPortalSettings
@@ -228,13 +220,13 @@ Namespace Templating
      Else
       Me.User = New UserInfo
      End If
-     Me.AccessingUser = Me.User
+     AccessingUser = Me.User
     Else
      Me.User = User
      If HttpContext.Current IsNot Nothing Then
-      Me.AccessingUser = CType(HttpContext.Current.Items("UserInfo"), UserInfo)
+      AccessingUser = CType(HttpContext.Current.Items("UserInfo"), UserInfo)
      Else
-      Me.AccessingUser = New UserInfo
+      AccessingUser = New UserInfo
      End If
     End If
     If String.IsNullOrEmpty(Language) Then

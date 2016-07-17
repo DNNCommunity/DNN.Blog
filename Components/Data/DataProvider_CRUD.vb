@@ -18,8 +18,6 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System
-Imports DotNetNuke
 
 Namespace Data
 
@@ -59,8 +57,8 @@ Namespace Data
 #End Region
 
 #Region " Blog Methods "
-	Public MustOverride Function AddBlog(autoApprovePingBack As Boolean, moduleID As Int32, autoApproveTrackBack As Boolean, copyright As String, description As String, enablePingBackReceive As Boolean, enablePingBackSend As Boolean, enableTrackBackReceive As Boolean, enableTrackBackSend As Boolean, fullLocalization As Boolean, image As String, includeAuthorInFeed As Boolean, includeImagesInFeed As Boolean, locale As String, mustApproveGhostPosts As Boolean, ownerUserId As Int32, publishAsOwner As Boolean, published As Boolean, syndicated As Boolean, syndicationEmail As String, title As String, createdByUser As Int32) As Integer	
-	Public MustOverride Sub UpdateBlog(autoApprovePingBack As Boolean, moduleID As Int32, autoApproveTrackBack As Boolean, blogID As Int32, copyright As String, description As String, enablePingBackReceive As Boolean, enablePingBackSend As Boolean, enableTrackBackReceive As Boolean, enableTrackBackSend As Boolean, fullLocalization As Boolean, image As String, includeAuthorInFeed As Boolean, includeImagesInFeed As Boolean, locale As String, mustApproveGhostPosts As Boolean, ownerUserId As Int32, publishAsOwner As Boolean, published As Boolean, syndicated As Boolean, syndicationEmail As String, title As String, updatedByUser As Int32)	
+  Public MustOverride Function AddBlog(autoApprovePingBack As Boolean, moduleID As Int32, autoApproveTrackBack As Boolean, copyright As String, description As String, enablePingBackReceive As Boolean, enablePingBackSend As Boolean, enableTrackBackReceive As Boolean, enableTrackBackSend As Boolean, fullLocalization As Boolean, image As String, includeAuthorInFeed As Boolean, includeImagesInFeed As Boolean, locale As String, mustApproveGhostPosts As Boolean, ownerUserId As Int32, publishAsOwner As Boolean, published As Boolean, syndicated As Boolean, syndicationEmail As String, title As String, createdByUser As Int32) As Integer
+  Public MustOverride Sub UpdateBlog(autoApprovePingBack As Boolean, moduleID As Int32, autoApproveTrackBack As Boolean, blogID As Int32, copyright As String, description As String, enablePingBackReceive As Boolean, enablePingBackSend As Boolean, enableTrackBackReceive As Boolean, enableTrackBackSend As Boolean, fullLocalization As Boolean, image As String, includeAuthorInFeed As Boolean, includeImagesInFeed As Boolean, locale As String, mustApproveGhostPosts As Boolean, ownerUserId As Int32, publishAsOwner As Boolean, published As Boolean, syndicated As Boolean, syndicationEmail As String, title As String, updatedByUser As Int32)
   Public MustOverride Sub DeleteBlog(blogID As Int32)
 #End Region
 
@@ -71,7 +69,7 @@ Namespace Data
 #End Region
 
 #Region " LegacyUrl Methods "
-	Public MustOverride Sub AddLegacyUrl(contentItemId As Int32, entryId As Int32, url As String)
+  Public MustOverride Sub AddLegacyUrl(contentItemId As Int32, entryId As Int32, url As String)
 #End Region
 
 #Region " Post Methods "

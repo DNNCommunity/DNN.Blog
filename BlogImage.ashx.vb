@@ -18,11 +18,7 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System.Web
-Imports System.Web.Services
 Imports DotNetNuke.Modules.Blog.Common.Globals
-Imports DotNetNuke.Modules.Blog.Entities.Blogs
-Imports DotNetNuke.Modules.Blog.Entities.Posts
 Imports DotNetNuke.Entities.Portals
 
 Public Class BlogImage

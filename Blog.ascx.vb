@@ -43,18 +43,18 @@ Public Class Blog
 #End Region
 
 #Region " Event Handlers "
- Private Sub Page_Init1(sender As Object, e As System.EventArgs) Handles Me.Init
+ Private Sub Page_Init1(sender As Object, e As EventArgs) Handles Me.Init
   Integration.BlogModuleController.CheckupOnImportedFiles(ModuleId)
-  ctlComments.ModuleConfiguration = Me.ModuleConfiguration
-  ctlComments.BlogContext = Me.BlogContext
-  ctlManagement.ModuleConfiguration = Me.ModuleConfiguration
-  ctlManagement.BlogContext = Me.BlogContext
+  ctlComments.ModuleConfiguration = ModuleConfiguration
+  ctlComments.BlogContext = BlogContext
+  ctlManagement.ModuleConfiguration = ModuleConfiguration
+  ctlManagement.BlogContext = BlogContext
  End Sub
 
- Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+ Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 
   ViewSettings.TemplateSettings.ReadValue("pagesize", _pageSize)
-  Me.Request.Params.ReadValue("Page", _reqPage)
+  Request.Params.ReadValue("Page", _reqPage)
 
   If Context.Items("BlogPageInitialized") Is Nothing Then
 
@@ -75,10 +75,10 @@ Public Class Blog
     End If
    End If
 
-   If Not Me.IsPostBack And BlogContext.ContentItemId > -1 Then
+   If Not IsPostBack And BlogContext.ContentItemId > -1 Then
     Dim viewCountTimeout As Integer = Settings.IncrementViewCount * 1000 'in milliseconds
     Dim scriptBlock As String = "(function ($, Sys) {$(document).ready(function () {setTimeout(function(){blogService.viewPost(" & BlogContext.BlogId.ToString & ", " & BlogContext.ContentItemId.ToString & ")}," & viewCountTimeout.ToString & ")});} (jQuery, window.Sys));"
-    Page.ClientScript.RegisterClientScriptBlock(Me.GetType, "PostViewScript", scriptBlock, True)
+    Page.ClientScript.RegisterClientScriptBlock([GetType], "PostViewScript", scriptBlock, True)
    End If
 
    AddWLWManifestLink()
@@ -177,7 +177,7 @@ Public Class Blog
    Else
     link.Attributes.Add("href", ResolveUrl(ManifestFilePath(TabId, ViewSettings.BlogModuleId)))
    End If
-   Me.Page.Header.Controls.Add(link)
+   Page.Header.Controls.Add(link)
    Context.Items("WLWManifestLinkAdded") = True
   End If
  End Sub
@@ -189,7 +189,7 @@ Public Class Blog
    Dim link As New HtmlGenericControl("link")
    link.Attributes.Add("rel", "pingback")
    link.Attributes.Add("href", pingbackUrl)
-   Me.Page.Header.Controls.Add(link)
+   Page.Header.Controls.Add(link)
    Context.Items("PingBackLinkAdded") = True
   End If
  End Sub

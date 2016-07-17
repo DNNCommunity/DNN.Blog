@@ -18,10 +18,7 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System.Web.UI.WebControls
-Imports DotNetNuke
 Imports DotNetNuke.Services.Localization
-Imports DotNetNuke.Services.Localization.Localization
 Imports DotNetNuke.Entities.Portals
 
 Namespace Controls
@@ -38,26 +35,26 @@ Namespace Controls
 #End Region
 
 #Region " Protected Methods "
-  Protected Overrides Sub OnPreRender(ByVal e As System.EventArgs)
+  Protected Overrides Sub OnPreRender(ByVal e As EventArgs)
 
-   If Not _PreRendered AndAlso (RebindOnPostback Or (Not Me.Page.IsPostBack)) Then
-    Me.DataBind()
+   If Not _PreRendered AndAlso (RebindOnPostback Or (Not Page.IsPostBack)) Then
+    DataBind()
    End If
    _PreRendered = True
 
   End Sub
 
   Protected Overrides Sub Render(ByVal writer As System.Web.UI.HtmlTextWriter)
-   If Not _PreRendered AndAlso (RebindOnPostback Or (Not Me.Page.IsPostBack)) Then
-    Me.DataBind()
+   If Not _PreRendered AndAlso (RebindOnPostback Or (Not Page.IsPostBack)) Then
+    DataBind()
    End If
    _PreRendered = True
    MyBase.Render(writer)
   End Sub
 
   Public Overrides Sub DataBind()
-   Me.EnsureChildControls()
-   If Me.Page.IsPostBack And (Not ManualUpdate) Then
+   EnsureChildControls()
+   If Page.IsPostBack And (Not ManualUpdate) Then
     Update()
    End If
    Rebind()
@@ -83,7 +80,7 @@ Namespace Controls
 
   Protected Overrides Function SaveViewState() As Object
 
-   Me.EnsureChildControls()
+   EnsureChildControls()
    If Not ManualUpdate Then
     Update()
    End If
@@ -101,8 +98,8 @@ Namespace Controls
 #End Region
 
 #Region " Events "
-  Private Sub LocalizedTextEdit_Load(sender As Object, e As System.EventArgs) Handles Me.Load
-   Me.EnsureChildControls()
+  Private Sub LocalizedTextEdit_Load(sender As Object, e As EventArgs) Handles Me.Load
+   EnsureChildControls()
   End Sub
 #End Region
 

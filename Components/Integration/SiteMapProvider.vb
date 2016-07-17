@@ -18,7 +18,6 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System.Linq
 Imports DotNetNuke.Services.Sitemap
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
 Imports DotNetNuke.Security.Permissions

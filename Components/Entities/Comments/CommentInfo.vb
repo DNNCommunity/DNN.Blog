@@ -18,10 +18,6 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System
-Imports DotNetNuke.Services.Tokens
-Imports DotNetNuke.Common.Utilities
-Imports DotNetNuke.Entities.Users
 
 Namespace Entities.Comments
 

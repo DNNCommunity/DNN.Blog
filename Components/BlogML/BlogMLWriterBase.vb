@@ -1,5 +1,4 @@
 Imports System.Xml
-Imports System.Text.RegularExpressions
 Imports System.IO
 Imports DotNetNuke.Modules.Blog.BlogML.Xml
 

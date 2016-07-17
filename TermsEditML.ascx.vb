@@ -18,7 +18,6 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports DotNetNuke.Web.Client.ClientResourceManagement
 Imports DotNetNuke.Services.Localization
 Imports System.Globalization
 Imports DotNetNuke.Modules.Blog.Entities.Terms
@@ -30,10 +29,10 @@ Public Class TermsEditML
  Public Property ColumnHeaders As String = "[]"
  Public Property Columns As String = ""
 
- Private Sub Page_Init1(sender As Object, e As System.EventArgs) Handles Me.Init
-  AddJavascriptFile("jquery.handsontable.js", 60)
-  AddCssFile("jquery.handsontable.css")
-  Me.Request.Params.ReadValue("VocabularyId", VocabularyId)
+ Private Sub Page_Init1(sender As Object, e As EventArgs) Handles Me.Init
+  AddJavascriptFile("jquery.handsontable.js", "jquery.handsontable", "0.8.17", 60)
+  AddCssFile("jquery.handsontable.css", "jquery.handsontable", "0.8.17")
+  Request.Params.ReadValue("VocabularyId", VocabularyId)
   If VocabularyId <> Settings.VocabularyId AndAlso VocabularyId <> 1 Then ' prevent users from editing another vocabulary
    VocabularyId = 1
   End If
@@ -49,7 +48,7 @@ Public Class TermsEditML
   Columns &= "]"
  End Sub
 
- Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+ Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 
   If Not BlogContext.Security.IsEditor Then
    Throw New Exception("You do not have access to this resource. Please check your login status.")
@@ -57,11 +56,11 @@ Public Class TermsEditML
 
  End Sub
 
- Private Sub cmdCancel_Click(sender As Object, e As System.EventArgs) Handles cmdCancel.Click
+ Private Sub cmdCancel_Click(sender As Object, e As EventArgs) Handles cmdCancel.Click
   Response.Redirect(EditUrl("Admin"), False)
  End Sub
 
- Private Sub cmdUpdate_Click(sender As Object, e As System.EventArgs) Handles cmdUpdate.Click
+ Private Sub cmdUpdate_Click(sender As Object, e As EventArgs) Handles cmdUpdate.Click
   Dim vocab As List(Of TermsController.TermML) = Newtonsoft.Json.JsonConvert.DeserializeObject(Of List(Of TermsController.TermML))(Storage.Value)
   Dim currentVocabulary As Dictionary(Of Integer, TermInfo) = TermsController.GetTermsByVocabulary(ModuleId, VocabularyId)
 

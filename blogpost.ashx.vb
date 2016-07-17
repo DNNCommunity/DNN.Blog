@@ -18,23 +18,16 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System
-Imports System.Data
-Imports System.Text.RegularExpressions
 Imports DotNetNuke.Modules.Blog.Services.WLW.Blogger
-Imports DotNetNuke.Modules.Blog.Common
 Imports DotNetNuke.Data
 Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Entities.Tabs
 Imports DotNetNuke.Entities.Users
-Imports System.Collections
 Imports CookComputing.XmlRpc
 Imports DotNetNuke.Security.Membership
 Imports System.IO
-Imports System.Web
 Imports DotNetNuke.Entities.Content.Taxonomy
 Imports System.Linq
-Imports DotNetNuke.Entities.Portals.Internal
 Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.Services.WLW
 Imports DotNetNuke.Modules.Blog.Services.WLW.WordPress
@@ -575,7 +568,7 @@ Public Class BlogPost
    If Not Settings.AllowWLW Then
     Throw New XmlRpcFaultException(0, GetString("Access Denied", "Access to the blog through this API has been denied. Please contact the Portal Administrator."))
    Else
-    UserInfo = ValidateUser(username, password, Me.Context.Request.UserHostAddress)
+    UserInfo = ValidateUser(username, password, Context.Request.UserHostAddress)
    End If
    If requestedPostId <> "" Then
     PostId = CInt(requestedPostId)
@@ -585,8 +578,8 @@ Public Class BlogPost
     BlogId = CInt(requestedBlogId)
    End If
    ' Check for user access to the blog
-   If Me.BlogId > -1 Then
-    RequestedBlog = BlogsController.GetBlog(Me.BlogId, UserInfo.UserID, Locale)
+   If BlogId > -1 Then
+    RequestedBlog = BlogsController.GetBlog(BlogId, UserInfo.UserID, Locale)
     Security = New ContextSecurity(ModuleId, TabId, RequestedBlog, UserInfo)
    End If
    UserTimeZone = PortalSettings.TimeZone
@@ -672,7 +665,7 @@ Public Class BlogPost
   ' Handle attachments
   Dim contents As String = newPost.Content
   If Not String.IsNullOrEmpty(newPost.Summary) Then contents &= newPost.Summary
-  Dim d As New IO.DirectoryInfo(GetTempPostDirectoryMapPath(Me.BlogId))
+  Dim d As New IO.DirectoryInfo(GetTempPostDirectoryMapPath(BlogId))
   Dim targetDir As String = GetPostDirectoryMapPath(newPost)
   If Not IO.Directory.Exists(targetDir) Then
    IO.Directory.CreateDirectory(targetDir)
@@ -694,8 +687,8 @@ Public Class BlogPost
     End If
    Next
   End If
-  newPost.Content = newPost.Content.Replace(String.Format("Blog/Files/{0}/_temp_images/", Me.BlogId), String.Format("Blog/Files/{0}/{1}/", Me.BlogId, newPost.ContentItemId))
-  If Not String.IsNullOrEmpty(newPost.Summary) Then newPost.Summary = newPost.Summary.Replace(String.Format("Blog/Files/{0}/_temp_images/", Me.BlogId), String.Format("Blog/Files/{0}/{1}/", Me.BlogId, newPost.ContentItemId))
+  newPost.Content = newPost.Content.Replace(String.Format("Blog/Files/{0}/_temp_images/", BlogId), String.Format("Blog/Files/{0}/{1}/", BlogId, newPost.ContentItemId))
+  If Not String.IsNullOrEmpty(newPost.Summary) Then newPost.Summary = newPost.Summary.Replace(String.Format("Blog/Files/{0}/_temp_images/", BlogId), String.Format("Blog/Files/{0}/{1}/", BlogId, newPost.ContentItemId))
 
  End Sub
 #End Region

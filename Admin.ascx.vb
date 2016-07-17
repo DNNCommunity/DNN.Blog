@@ -25,55 +25,55 @@ Public Class Admin
 
  Private _totalPosts As Integer = -1
 
- Private Sub Page_Init1(sender As Object, e As System.EventArgs) Handles Me.Init
-  AddJavascriptFile("jquery.dynatree.min.js", 60)
-  AddCssFile("dynatree.css")
+ Private Sub Page_Init(sender As Object, e As EventArgs) Handles Me.Init
+  AddJavascriptFile("jquery.dynatree.min.js", "jquery.dynatree", "1.2.4", 60)
+  AddCssFile("dynatree.css", "dynatree", "1.2.4")
  End Sub
 
- Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+ Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 
   If Not BlogContext.Security.IsEditor Then
    Throw New Exception("You do not have access to this resource. Please check your login status.")
   End If
 
-  If Not Me.IsPostBack Then
-   Me.DataBind()
+  If Not IsPostBack Then
+   DataBind()
   End If
 
-  DotNetNuke.UI.Utilities.ClientAPI.AddButtonConfirm(cmdEditTagsML, LocalizeString("LeavePage.Confirm"))
-  DotNetNuke.UI.Utilities.ClientAPI.AddButtonConfirm(cmdEditCategoriesML, LocalizeString("LeavePage.Confirm"))
+  UI.Utilities.ClientAPI.AddButtonConfirm(cmdEditTagsML, LocalizeString("LeavePage.Confirm"))
+  UI.Utilities.ClientAPI.AddButtonConfirm(cmdEditCategoriesML, LocalizeString("LeavePage.Confirm"))
 
  End Sub
 
- Private Sub cmdEditTagsML_Click(sender As Object, e As System.EventArgs) Handles cmdEditTagsML.Click
+ Private Sub cmdEditTagsML_Click(sender As Object, e As EventArgs) Handles cmdEditTagsML.Click
   SaveChanges()
   Response.Redirect(EditUrl("TermsEditML"), False)
  End Sub
 
- Private Sub cmdEditCategoriesML_Click(sender As Object, e As System.EventArgs) Handles cmdEditCategoriesML.Click
+ Private Sub cmdEditCategoriesML_Click(sender As Object, e As EventArgs) Handles cmdEditCategoriesML.Click
   SaveChanges()
   If Settings.VocabularyId > -1 Then
    Response.Redirect(EditUrl("VocabularyId", Settings.VocabularyId.ToString, "TermsEditML"), False)
   End If
  End Sub
 
- Private Sub cmdCreateVocabulary_Click(sender As Object, e As System.EventArgs) Handles cmdCreateVocabulary.Click
+ Private Sub cmdCreateVocabulary_Click(sender As Object, e As EventArgs) Handles cmdCreateVocabulary.Click
   Settings.VocabularyId = Integration.Integration.CreateNewVocabulary(PortalId).VocabularyId
   Settings.UpdateSettings()
   DataBind()
  End Sub
 
- Private Sub ddVocabularyId_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles ddVocabularyId.SelectedIndexChanged
+ Private Sub ddVocabularyId_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddVocabularyId.SelectedIndexChanged
   Settings.VocabularyId = ddVocabularyId.SelectedValue.ToInt
   Settings.UpdateSettings()
   DataBind()
  End Sub
 
- Private Sub cmdCancel_Click(sender As Object, e As System.EventArgs) Handles cmdCancel.Click
+ Private Sub cmdCancel_Click(sender As Object, e As EventArgs) Handles cmdCancel.Click
   Response.Redirect(DotNetNuke.Common.NavigateURL(TabId), False)
  End Sub
 
- Private Sub cmdUpdateSettings_Click(sender As Object, e As System.EventArgs) Handles cmdUpdate.Click
+ Private Sub cmdUpdateSettings_Click(sender As Object, e As EventArgs) Handles cmdUpdate.Click
   SaveChanges()
   Response.Redirect(DotNetNuke.Common.NavigateURL(TabId), False)
  End Sub
@@ -102,11 +102,11 @@ Public Class Admin
   Settings.IncrementViewCount = Integer.Parse(txtIncrementViewCount.Text)
 
   Settings.UpdateSettings()
-  If treeState.Value <> DotNetNuke.Modules.Blog.Entities.Terms.TermsController.GetCategoryTreeAsJson(Categories) Then
-   Dim categoryTree As List(Of Common.DynatreeItem) = Newtonsoft.Json.JsonConvert.DeserializeObject(Of List(Of Common.DynatreeItem))(treeState.Value)
+  If treeState.Value <> Entities.Terms.TermsController.GetCategoryTreeAsJson(Categories) Then
+   Dim categoryTree As List(Of DynatreeItem) = Newtonsoft.Json.JsonConvert.DeserializeObject(Of List(Of DynatreeItem))(treeState.Value)
    Dim ReturnedIds As New List(Of Integer)
    Dim i As Integer = 1
-   For Each rootNode As Common.DynatreeItem In categoryTree
+   For Each rootNode As DynatreeItem In categoryTree
     AddOrUpdateCategory(-1, i, rootNode, ReturnedIds)
     i += 1
    Next
@@ -121,14 +121,14 @@ Public Class Admin
   End If
  End Sub
 
- Private Sub AddOrUpdateCategory(parentId As Integer, viewOrder As Integer, category As Common.DynatreeItem, ByRef returnedIds As List(Of Integer))
+ Private Sub AddOrUpdateCategory(parentId As Integer, viewOrder As Integer, category As DynatreeItem, ByRef returnedIds As List(Of Integer))
   If String.IsNullOrEmpty(category.title) Then Exit Sub
   Dim termId As Integer = -1
   If IsNumeric(category.key) Then termId = Integer.Parse(category.key)
   termId = Data.DataProvider.Instance.SetTerm(termId, Settings.VocabularyId, parentId, viewOrder, category.title, "", UserId)
   returnedIds.Add(termId)
   Dim i As Integer = 1
-  For Each subCategory As Common.DynatreeItem In category.children
+  For Each subCategory As DynatreeItem In category.children
    AddOrUpdateCategory(termId, i, subCategory, returnedIds)
    i += 1
   Next
@@ -170,7 +170,7 @@ Public Class Admin
 
   txtWLWRecentPostsMax.Text = Settings.WLWRecentPostsMax.ToString
   ddVocabularyId.Items.Clear()
-  ddVocabularyId.DataSource = Common.Globals.GetPortalVocabularies(PortalId)
+  ddVocabularyId.DataSource = GetPortalVocabularies(PortalId)
   ddVocabularyId.DataBind()
   ddVocabularyId.Items.Insert(0, New ListItem(LocalizeString("NoneSpecified"), "-1"))
   Try
@@ -178,7 +178,7 @@ Public Class Admin
   Catch ex As Exception
   End Try
 
-  treeState.Value = DotNetNuke.Modules.Blog.Entities.Terms.TermsController.GetCategoryTreeAsJson(Categories)
+  treeState.Value = Entities.Terms.TermsController.GetCategoryTreeAsJson(Categories)
 
   If Not DotNetNuke.Services.Localization.LocaleController.Instance.GetLocales(PortalId).Count > 1 Then
    cmdEditTagsML.Visible = False

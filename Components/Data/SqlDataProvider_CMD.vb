@@ -18,9 +18,6 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System
-Imports System.Data
-Imports System.Data.SqlClient
 Imports Microsoft.ApplicationBlocks.Data
 
 Namespace Data

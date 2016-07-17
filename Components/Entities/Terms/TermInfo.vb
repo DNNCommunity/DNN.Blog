@@ -38,10 +38,10 @@ Namespace Entities.Terms
   Public Sub New()
   End Sub
   Public Sub New(name As String)
-   Me.Description = ""
+   Description = ""
    Me.Name = name
-   Me.ParentTermId = 0
-   Me.TermId = -1
+   ParentTermId = 0
+   TermId = -1
   End Sub
 #End Region
 
@@ -141,45 +141,45 @@ Namespace Entities.Terms
    End If
    Select Case strPropertyName.ToLower
     Case "description"
-     Return PropertyAccess.FormatString(Me.Description, strFormat)
+     Return PropertyAccess.FormatString(Description, strFormat)
     Case "isheirarchical"
-     Return Me.IsHeirarchical.ToString
+     Return IsHeirarchical.ToString
     Case "isheirarchicalyesno"
-     Return PropertyAccess.Boolean2LocalizedYesNo(Me.IsHeirarchical, formatProvider)
+     Return PropertyAccess.Boolean2LocalizedYesNo(IsHeirarchical, formatProvider)
     Case "left"
-     Return (Me.Left.ToString(OutputFormat, formatProvider))
+     Return (Left.ToString(OutputFormat, formatProvider))
     Case "title", "name"
-     Return PropertyAccess.FormatString(Me.Name, strFormat)
+     Return PropertyAccess.FormatString(Name, strFormat)
     Case "parenttermid"
-     Return Me.ParentTermId.ToStringOrZero
+     Return ParentTermId.ToStringOrZero
     Case "right"
-     Return (Me.Right.ToString(OutputFormat, formatProvider))
+     Return (Right.ToString(OutputFormat, formatProvider))
     Case "termid"
-     Return (Me.TermId.ToString(OutputFormat, formatProvider))
+     Return (TermId.ToString(OutputFormat, formatProvider))
     Case "vocabularyid"
-     Return (Me.VocabularyId.ToString(OutputFormat, formatProvider))
+     Return (VocabularyId.ToString(OutputFormat, formatProvider))
     Case "weight"
-     Return (Me.Weight.ToString(OutputFormat, formatProvider))
+     Return (Weight.ToString(OutputFormat, formatProvider))
     Case "createdbyuserid"
-     Return (Me.CreatedByUserID.ToString(OutputFormat, formatProvider))
+     Return (CreatedByUserID.ToString(OutputFormat, formatProvider))
     Case "createdondate"
-     Return (Me.CreatedOnDate.ToString(OutputFormat, formatProvider))
+     Return (CreatedOnDate.ToString(OutputFormat, formatProvider))
     Case "lastmodifiedbyuserid"
-     Return (Me.LastModifiedByUserID.ToString(OutputFormat, formatProvider))
+     Return (LastModifiedByUserID.ToString(OutputFormat, formatProvider))
     Case "lastmodifiedondate"
-     Return (Me.LastModifiedOnDate.ToString(OutputFormat, formatProvider))
+     Return (LastModifiedOnDate.ToString(OutputFormat, formatProvider))
     Case "totalposts"
-     Return (Me.TotalPosts.ToString(OutputFormat, formatProvider))
+     Return (TotalPosts.ToString(OutputFormat, formatProvider))
     Case "altlocale"
-     Return PropertyAccess.FormatString(Me.AltLocale, strFormat)
+     Return PropertyAccess.FormatString(AltLocale, strFormat)
     Case "altname"
-     Return PropertyAccess.FormatString(Me.AltName, strFormat)
+     Return PropertyAccess.FormatString(AltName, strFormat)
     Case "altdescription"
-     Return PropertyAccess.FormatString(Me.AltDescription, strFormat)
+     Return PropertyAccess.FormatString(AltDescription, strFormat)
     Case "localizedname"
-     Return PropertyAccess.FormatString(Me.LocalizedName, strFormat)
+     Return PropertyAccess.FormatString(LocalizedName, strFormat)
     Case "localizeddescription"
-     Return PropertyAccess.FormatString(Me.LocalizedDescription, strFormat)
+     Return PropertyAccess.FormatString(LocalizedDescription, strFormat)
     Case "link", "permalink"
      Return PermaLink(DotNetNuke.Entities.Portals.PortalSettings.Current)
     Case "parenturl"
@@ -253,11 +253,11 @@ Namespace Entities.Terms
   Public Function FlatClone() As TermInfo
    Dim res As New TermInfo
    With res
-    .Name = Me.Name
-    .NameLocalizations = Me.NameLocalizations
-    .Name = Me.Description
-    .DescriptionLocalizations = Me.DescriptionLocalizations
-    .Weight = Me.Weight
+    .Name = Name
+    .NameLocalizations = NameLocalizations
+    .Name = Description
+    .DescriptionLocalizations = DescriptionLocalizations
+    .Weight = Weight
    End With
    Return res
   End Function

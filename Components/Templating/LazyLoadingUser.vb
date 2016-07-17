@@ -68,14 +68,14 @@ Namespace Templating
 
   Public Sub New(user As UserInfo)
    Me.User = user
-   Me.PortalId = user.PortalID
-   Me.UserId = user.UserID
+   PortalId = user.PortalID
+   UserId = user.UserID
   End Sub
 
   Public Sub New(user As PostAuthor)
    Me.User = user
-   Me.PortalId = user.PortalID
-   Me.UserId = user.UserID
+   PortalId = user.PortalID
+   UserId = user.UserID
    _postAuthor = user
   End Sub
 #End Region

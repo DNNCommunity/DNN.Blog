@@ -18,12 +18,9 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System.ComponentModel
 Imports System.Linq
 Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.Entities.Terms
-Imports DotNetNuke.Entities.Content.Taxonomy
-Imports DotNetNuke.Web.Client.ClientResourceManagement
 
 Namespace Controls
  Public Class CategorySelect
@@ -44,10 +41,10 @@ Namespace Controls
   Public Property Vocabulary() As Dictionary(Of String, TermInfo)
    Get
     If _Vocabulary Is Nothing Then
-    _Vocabulary = TermsController.GetTermsByVocabulary(ModuleConfiguration.ModuleID, VocabularyId, Threading.Thread.CurrentThread.CurrentCulture.Name)
-    If _Vocabulary Is Nothing Then
-     _Vocabulary = New Dictionary(Of String, TermInfo)
-    End If
+     _Vocabulary = TermsController.GetTermsByVocabulary(ModuleConfiguration.ModuleID, VocabularyId, Threading.Thread.CurrentThread.CurrentCulture.Name)
+     If _Vocabulary Is Nothing Then
+      _Vocabulary = New Dictionary(Of String, TermInfo)
+     End If
     End If
     Return _Vocabulary
    End Get
@@ -58,20 +55,20 @@ Namespace Controls
 #End Region
 
 #Region " Event Handlers "
-  Private Sub CategorySelect_Init(sender As Object, e As System.EventArgs) Handles Me.Init
-   ClientResourceManager.RegisterScript(Page, ResolveUrl("~/DesktopModules/Blog/js/jquery.dynatree.min.js"))
-   If Me.CssClass = "" Then Me.CssClass = "category-control"
-   ClientResourceManager.RegisterStyleSheet(Page, ResolveUrl("~/DesktopModules/Blog/css/dynatree.css"), Web.Client.FileOrder.Css.ModuleCss)
-   StorageControlId = Me.ClientID & "_Storage"
+  Private Sub CategorySelect_Init(sender As Object, e As EventArgs) Handles Me.Init
+   Page.AddJavascriptFile(ModuleSettings.GetModuleSettings(ModuleConfiguration.ModuleID).Version, "jquery.dynatree.min.js", "jquery.dynatree", "1.2.4", 60)
+   Page.AddCssFile(ModuleSettings.GetModuleSettings(ModuleConfiguration.ModuleID).Version, "dynatree.css", "dynatree", "1.2.4")
+   If CssClass = "" Then CssClass = "category-control"
+   StorageControlId = ClientID & "_Storage"
    Storage = New HiddenField With {.ID = StorageControlId}
   End Sub
 
-  Private Sub CategorySelect_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+  Private Sub CategorySelect_Load(sender As Object, e As EventArgs) Handles Me.Load
 
-   MainControlId = Me.ClientID & "_CategorySelect"
-   If Me.Page.IsPostBack Then
+   MainControlId = ClientID & "_CategorySelect"
+   If Page.IsPostBack Then
     ' read return values
-    Me.Page.Request.Params.ReadValue(Storage.ClientID, catList)
+    Page.Request.Params.ReadValue(Storage.ClientID, catList)
     catList = catList.Trim(","c)
     SelectedCategories = New List(Of TermInfo)
     If Not String.IsNullOrEmpty(catList) Then
@@ -79,7 +76,7 @@ Namespace Controls
       If IsNumeric(c) Then
        Dim cId As Integer = Integer.Parse(c)
        Dim cat As TermInfo = Vocabulary.Values.FirstOrDefault(Function(t)
-                                                               Return CBool(t.TermId = cId)
+                                                               Return t.TermId = cId
                                                               End Function)
        If cat IsNot Nothing Then SelectedCategories.Add(cat)
       End If
@@ -96,7 +93,7 @@ Namespace Controls
 
   End Sub
 
-  Private Sub CategorySelect_PreRender(sender As Object, e As System.EventArgs) Handles Me.PreRender
+  Private Sub CategorySelect_PreRender(sender As Object, e As EventArgs) Handles Me.PreRender
 
    ' get the node tree
    Dim selectedIds As New List(Of Integer)
@@ -109,14 +106,14 @@ Namespace Controls
    pagescript = pagescript.Replace("[Children]", TermsController.GetCategoryTreeAsJson(Vocabulary, selectedIds))
    pagescript = pagescript.Replace("[CatIdList]", String.Join(",", selectedIds))
    pagescript = pagescript.Replace("[StorageControlId]", StorageControlId)
-   Me.Page.ClientScript.RegisterClientScriptBlock(GetType(String), ClientID, pagescript, True)
+   Page.ClientScript.RegisterClientScriptBlock(GetType(String), ClientID, pagescript, True)
 
   End Sub
 #End Region
 
 #Region " Public Functions"
   Public Overrides Function ToString() As String
-    Return catList
+   Return catList
   End Function
 
 #End Region

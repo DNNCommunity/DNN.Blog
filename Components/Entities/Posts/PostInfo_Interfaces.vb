@@ -18,13 +18,10 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System
-Imports System.Data
 Imports System.IO
 Imports System.Linq
 Imports System.Runtime.Serialization
 Imports System.Runtime.Serialization.Json
-Imports System.Text
 Imports System.Xml
 Imports System.Xml.Schema
 Imports System.Xml.Serialization
@@ -302,7 +299,7 @@ Namespace Entities.Posts
    writer.WriteStartElement("Files")
    ' pack files
    Dim postDir As String = GetPostDirectoryMapPath(BlogID, ContentItemId)
-   
+
    If Directory.Exists(postDir) Then
     For Each fileName As String In From f In Directory.GetFiles(postDir) Select Path.GetFileName(f)
      writer.WriteElementString("File", fileName)

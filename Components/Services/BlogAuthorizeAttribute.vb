@@ -18,7 +18,6 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System.Web
 Imports System.Threading
 
 Imports DotNetNuke.Web.Api

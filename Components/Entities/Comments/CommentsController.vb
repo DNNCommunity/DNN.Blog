@@ -18,25 +18,16 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System
-Imports System.Data
-Imports System.Xml
-Imports System.Xml.Schema
-Imports System.Xml.Serialization
 
-Imports DotNetNuke
-Imports DotNetNuke.Common
 Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Entities.Modules
 Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Services.Localization.Localization
-Imports DotNetNuke.Services.Tokens
 
 Imports DotNetNuke.Modules.Blog.Data
 Imports DotNetNuke.Modules.Blog.Integration
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
 Imports DotNetNuke.Modules.Blog.Entities.Posts
-Imports DotNetNuke.Modules.Blog.Security.Permissions
 Imports DotNetNuke.Modules.Blog.Common.Globals
 
 Namespace Entities.Comments

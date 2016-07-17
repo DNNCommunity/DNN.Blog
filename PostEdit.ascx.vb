@@ -18,16 +18,10 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System
-Imports System.IO
-Imports DotNetNuke.Modules.Blog.Common
-Imports DotNetNuke.Web.Client.ClientResourceManagement
 Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Services.Localization.Localization
 Imports DotNetNuke.Services.Exceptions
-Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Common.Globals
-Imports DotNetNuke.Framework
 Imports System.Linq
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
 Imports DotNetNuke.Modules.Blog.Entities.Posts
@@ -44,7 +38,7 @@ Public Class PostEdit
 
  Public ReadOnly Property FilePath As String
   Get
-   Return Me.PortalSettings.HomeDirectory & Me.ModuleConfiguration.DesktopModule.FriendlyName & "/"
+   Return PortalSettings.HomeDirectory & ModuleConfiguration.DesktopModule.FriendlyName & "/"
   End Get
  End Property
 
@@ -57,12 +51,12 @@ Public Class PostEdit
 #End Region
 
 #Region " Event Handlers "
- Protected Overloads Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+ Protected Overloads Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
 
   Try
 
-   ctlTags.ModuleConfiguration = Me.ModuleConfiguration
-   ctlCategories.ModuleConfiguration = Me.ModuleConfiguration
+   ctlTags.ModuleConfiguration = ModuleConfiguration
+   ctlCategories.ModuleConfiguration = ModuleConfiguration
    ctlCategories.VocabularyId = Settings.VocabularyId
 
    If BlogContext.Blog Is Nothing Then
@@ -107,7 +101,7 @@ Public Class PostEdit
 
  End Sub
 
- Protected Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+ Protected Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
   Try
 
@@ -128,7 +122,7 @@ Public Class PostEdit
     If BlogContext.IsMultiLingualSite And Not BlogContext.Blog.FullLocalization Then
      ddLocale.DataSource = DotNetNuke.Services.Localization.LocaleController.Instance.GetLocales(PortalId).Values.OrderBy(Function(t) t.NativeName)
      ddLocale.DataValueField = "Code"
-     ddLocale.DataBind
+     ddLocale.DataBind()
      ddLocale.Items.Insert(0, New ListItem(LocalizeString("DefaultLocale"), ""))
      rowLocale.Visible = True
      If BlogContext.Locale <> BlogContext.Blog.Locale Then
@@ -166,13 +160,13 @@ Public Class PostEdit
      ' Content
      txtTitle.DefaultText = HttpUtility.HtmlDecode(BlogContext.Post.Title)
      txtTitle.LocalizedTexts = BlogContext.Post.TitleLocalizations
-     txtTitle.InitialBind
+     txtTitle.InitialBind()
      txtDescription.DefaultText = PostBody.Summary
      txtDescription.LocalizedTexts = PostBody.SummaryLocalizations
-     txtDescription.InitialBind
+     txtDescription.InitialBind()
      teBlogPost.DefaultText = HttpUtility.HtmlEncode(PostBody.Body)
      teBlogPost.LocalizedTexts = PostBody.BodyLocalizations
-     teBlogPost.InitialBind
+     teBlogPost.InitialBind()
 
      ' Publishing
      chkPublished.Checked = BlogContext.Post.Published
@@ -222,7 +216,7 @@ Public Class PostEdit
 
  End Sub
 
- Private Sub cmdSave_Click(sender As Object, e As System.EventArgs) Handles cmdSave.Click
+ Private Sub cmdSave_Click(sender As Object, e As EventArgs) Handles cmdSave.Click
 
   Try
 
@@ -263,10 +257,10 @@ Public Class PostEdit
 
     ' Categories, Tags
     Dim terms As New List(Of TermInfo)
-    ctlTags.CreateMissingTerms
+    ctlTags.CreateMissingTerms()
     terms.AddRange(ctlTags.Terms)
     terms.AddRange(ctlCategories.SelectedCategories)
-    BlogContext.Post.Terms.Clear
+    BlogContext.Post.Terms.Clear()
     BlogContext.Post.Terms.AddRange(terms)
 
     If BlogContext.IsMultiLingualSite And Not BlogContext.Blog.FullLocalization Then
@@ -350,7 +344,7 @@ Public Class PostEdit
 
  Protected Sub cmdDelete_Click(sender As Object, e As EventArgs) Handles cmdDelete.Click
   Try
-   DeleteAllFiles
+   DeleteAllFiles()
    PostsController.DeletePost(BlogContext.Post.ContentItemId, BlogContext.Post.BlogID, ModuleContext.PortalId, Settings.VocabularyId)
    Response.Redirect(NavigateURL(TabId, "", "Blog=" & BlogContext.BlogId.ToString), False)
   Catch exc As Exception    'Module failed to load
@@ -362,14 +356,14 @@ Public Class PostEdit
   args.IsValid = teBlogPost.DefaultText.Length > 0
  End Sub
 
- Protected Sub chkDisplayCopyright_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles chkDisplayCopyright.CheckedChanged
+ Protected Sub chkDisplayCopyright_CheckedChanged(sender As Object, e As EventArgs) Handles chkDisplayCopyright.CheckedChanged
   pnlCopyright.Visible = chkDisplayCopyright.Checked
   If pnlCopyright.Visible Then
-   txtCopyright.Text = CreateCopyRight
+   txtCopyright.Text = CreateCopyRight()
   End If
  End Sub
 
- Private Sub cmdImageRemove_Click(sender As Object, e As System.EventArgs) Handles cmdImageRemove.Click
+ Private Sub cmdImageRemove_Click(sender As Object, e As EventArgs) Handles cmdImageRemove.Click
 
   If BlogContext.Post IsNot Nothing Then
    If BlogContext.Post.Image <> "" Then
@@ -407,7 +401,7 @@ Public Class PostEdit
 #Region " Upload Feature Methods "
  Private Sub DeleteAllFiles
   Try
-   System.IO.Directory.Delete(FileController.getPostDir(Me.FilePath, BlogContext.Post), True)
+   System.IO.Directory.Delete(FileController.getPostDir(FilePath, BlogContext.Post), True)
   Catch
 
   End Try

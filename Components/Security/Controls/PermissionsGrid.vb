@@ -18,11 +18,6 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System
-Imports System.Web.UI
-Imports System.Web.UI.WebControls
-Imports System.Collections
-Imports System.Data
 Imports System.Linq
 Imports DotNetNuke.Security.Roles
 Imports DotNetNuke.UI.WebControls
@@ -301,7 +296,7 @@ Namespace Security.Controls
   ''' -----------------------------------------------------------------------------
   Private Sub BindData()
 
-   Me.EnsureChildControls()
+   EnsureChildControls()
 
    BindRolesGrid()
    BindUsersGrid()
@@ -709,7 +704,7 @@ Namespace Security.Controls
     pnlPermissions.Controls.Add(cmdUser)
    End If
 
-   Me.Controls.Add(pnlPermissions)
+   Controls.Add(pnlPermissions)
 
   End Sub
 
@@ -801,7 +796,7 @@ Namespace Security.Controls
 
   End Function
 
-  Protected Overrides Sub OnLoad(e As System.EventArgs)
+  Protected Overrides Sub OnLoad(e As EventArgs)
 
   End Sub
 
@@ -813,7 +808,7 @@ Namespace Security.Controls
   '''     [cnurse]    01/09/2006  Documented
   ''' </history>
   ''' -----------------------------------------------------------------------------
-  Protected Overrides Sub OnPreRender(e As System.EventArgs)
+  Protected Overrides Sub OnPreRender(e As EventArgs)
    BindData()
   End Sub
 
@@ -872,7 +867,7 @@ Namespace Security.Controls
   ''' -----------------------------------------------------------------------------
   Protected Sub UpdatePermissions()
 
-   Me.EnsureChildControls()
+   EnsureChildControls()
 
    UpdateRolePermissions()
    UpdateUserPermissions()
@@ -943,7 +938,7 @@ Namespace Security.Controls
   '''     [cnurse]    01/06/2006  Documented
   ''' </history>
   ''' -----------------------------------------------------------------------------
-  Private Sub RoleGroupsSelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboRoleGroups.SelectedIndexChanged
+  Private Sub RoleGroupsSelectedIndexChanged(sender As Object, e As EventArgs) Handles cboRoleGroups.SelectedIndexChanged
 
    UpdatePermissions()
 
@@ -956,7 +951,7 @@ Namespace Security.Controls
   ''' <history>
   ''' </history>
   ''' -----------------------------------------------------------------------------
-  Private Sub AddUser(sender As Object, e As System.EventArgs) Handles cmdUser.Click
+  Private Sub AddUser(sender As Object, e As EventArgs) Handles cmdUser.Click
 
    UpdatePermissions()
 

@@ -18,11 +18,8 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System
 Imports DotNetNuke.Modules.Blog.Data
 Imports DotNetNuke.Common.Utilities
-Imports DotNetNuke.Modules.Blog.Entities
-Imports System.Linq
 
 Namespace Entities.Blogs
 

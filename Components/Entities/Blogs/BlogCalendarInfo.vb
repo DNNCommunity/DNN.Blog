@@ -120,19 +120,19 @@ Namespace Entities.Blogs
    End If
    Select Case strPropertyName.ToLower
     Case "postyear"
-     Return (Me.PostYear.ToString(OutputFormat, formatProvider))
+     Return (PostYear.ToString(OutputFormat, formatProvider))
     Case "postmonth"
-     Return (Me.PostMonth.ToString(OutputFormat, formatProvider))
+     Return (PostMonth.ToString(OutputFormat, formatProvider))
     Case "postcount"
-     Return (Me.PostCount.ToString(OutputFormat, formatProvider))
+     Return (PostCount.ToString(OutputFormat, formatProvider))
     Case "viewcount"
-     Return (Me.ViewCount.ToString(OutputFormat, formatProvider))
+     Return (ViewCount.ToString(OutputFormat, formatProvider))
     Case "firstday"
-     Return (Me.FirstDay.ToString(OutputFormat, formatProvider))
+     Return (FirstDay.ToString(OutputFormat, formatProvider))
     Case "lastday"
-     Return (Me.LastDay.ToString(OutputFormat, formatProvider))
+     Return (LastDay.ToString(OutputFormat, formatProvider))
     Case "firstdaynextmonth"
-     Return (Me.FirstDayNextMonth.ToString(OutputFormat, formatProvider))
+     Return (FirstDayNextMonth.ToString(OutputFormat, formatProvider))
     Case "parenturl"
      Return PermaLink(ParentTabID)
     Case Else

@@ -17,18 +17,7 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports DotNetNuke
-Imports DotNetNuke.Entities.Modules
-Imports DotNetNuke.Entities.Portals
-Imports DotNetNuke.Entities.Tabs
-Imports DotNetNuke.Entities.Users
-Imports DotNetNuke.Entities.Profile
-Imports DotNetNuke.Services.Localization
 Imports System.Globalization
-Imports System.Web
-Imports System.Text
-Imports System.Text.RegularExpressions
-Imports System.Reflection
 Imports DotNetNuke.UI.Utilities
 
 

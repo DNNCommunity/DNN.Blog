@@ -18,18 +18,7 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System
-Imports System.Data
-Imports System.Xml
-Imports System.Xml.Schema
-Imports System.Xml.Serialization
 
-Imports DotNetNuke
-Imports DotNetNuke.Common
-Imports DotNetNuke.Common.Utilities
-Imports DotNetNuke.Entities.Modules
-Imports DotNetNuke.Entities.Portals
-Imports DotNetNuke.Services.Tokens
 
 Imports DotNetNuke.Modules.Blog.Data
 
@@ -39,7 +28,7 @@ Namespace Entities.Blogs
 
   Public Shared Function AddBlog(ByRef objBlog As BlogInfo, createdByUser As Integer) As Integer
 
-  objBlog.BlogID = CType(DataProvider.Instance().AddBlog(objBlog.AutoApprovePingBack, objBlog.ModuleID, objBlog.AutoApproveTrackBack, objBlog.Copyright, objBlog.Description, objBlog.EnablePingBackReceive, objBlog.EnablePingBackSend, objBlog.EnableTrackBackReceive, objBlog.EnableTrackBackSend, objBlog.FullLocalization, objBlog.Image, objBlog.IncludeAuthorInFeed, objBlog.IncludeImagesInFeed, objBlog.Locale, objBlog.MustApproveGhostPosts, objBlog.OwnerUserId, objBlog.PublishAsOwner, objBlog.Published, objBlog.Syndicated, objBlog.SyndicationEmail, objBlog.Title, createdByUser), Integer)
+   objBlog.BlogID = CType(DataProvider.Instance().AddBlog(objBlog.AutoApprovePingBack, objBlog.ModuleID, objBlog.AutoApproveTrackBack, objBlog.Copyright, objBlog.Description, objBlog.EnablePingBackReceive, objBlog.EnablePingBackSend, objBlog.EnableTrackBackReceive, objBlog.EnableTrackBackSend, objBlog.FullLocalization, objBlog.Image, objBlog.IncludeAuthorInFeed, objBlog.IncludeImagesInFeed, objBlog.Locale, objBlog.MustApproveGhostPosts, objBlog.OwnerUserId, objBlog.PublishAsOwner, objBlog.Published, objBlog.Syndicated, objBlog.SyndicationEmail, objBlog.Title, createdByUser), Integer)
 
    ' localization
    For Each l As String In objBlog.TitleLocalizations.Locales
@@ -52,7 +41,7 @@ Namespace Entities.Blogs
 
   Public Shared Sub UpdateBlog(objBlog As BlogInfo, updatedByUser As Integer)
 
-  DataProvider.Instance().UpdateBlog(objBlog.AutoApprovePingBack, objBlog.ModuleID, objBlog.AutoApproveTrackBack, objBlog.BlogID, objBlog.Copyright, objBlog.Description, objBlog.EnablePingBackReceive, objBlog.EnablePingBackSend, objBlog.EnableTrackBackReceive, objBlog.EnableTrackBackSend, objBlog.FullLocalization, objBlog.Image, objBlog.IncludeAuthorInFeed, objBlog.IncludeImagesInFeed, objBlog.Locale, objBlog.MustApproveGhostPosts, objBlog.OwnerUserId, objBlog.PublishAsOwner, objBlog.Published, objBlog.Syndicated, objBlog.SyndicationEmail, objBlog.Title, updatedByUser)
+   DataProvider.Instance().UpdateBlog(objBlog.AutoApprovePingBack, objBlog.ModuleID, objBlog.AutoApproveTrackBack, objBlog.BlogID, objBlog.Copyright, objBlog.Description, objBlog.EnablePingBackReceive, objBlog.EnablePingBackSend, objBlog.EnableTrackBackReceive, objBlog.EnableTrackBackSend, objBlog.FullLocalization, objBlog.Image, objBlog.IncludeAuthorInFeed, objBlog.IncludeImagesInFeed, objBlog.Locale, objBlog.MustApproveGhostPosts, objBlog.OwnerUserId, objBlog.PublishAsOwner, objBlog.Published, objBlog.Syndicated, objBlog.SyndicationEmail, objBlog.Title, updatedByUser)
 
    ' localization
    For Each l As String In objBlog.TitleLocalizations.Locales

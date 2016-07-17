@@ -20,21 +20,11 @@
 
 Option Strict On
 Option Explicit On
-
-Imports DotNetNuke.Modules.Blog.Common
-Imports System.Globalization
-Imports System.Runtime.Serialization
-Imports System.Runtime.Serialization.Json
 Imports System.Net
 Imports System.Net.Http
 Imports System.Web.Http
 Imports DotNetNuke.Web.Api
 Imports DotNetNuke.Modules.Blog.Common.Globals
-Imports DotNetNuke.Modules.Blog.Entities.Blogs
-Imports DotNetNuke.Modules.Blog.Entities.Posts
-Imports DotNetNuke.Modules.Blog.Security
-Imports DotNetNuke.Modules.Blog.Integration
-Imports DotNetNuke.Entities.Modules
 Imports DotNetNuke.Modules.Blog.Rss
 
 Namespace Services
@@ -51,7 +41,7 @@ Namespace Services
   <ActionName("Get")>
   Public Function GetRss() As HttpResponseMessage
    Dim res As New HttpResponseMessage(HttpStatusCode.OK)
-   Dim queryString As NameValueCollection = HttpUtility.ParseQueryString(Me.Request.RequestUri.Query)
+   Dim queryString As NameValueCollection = HttpUtility.ParseQueryString(Request.RequestUri.Query)
    Dim feed As New BlogRssFeed(ActiveModule.ModuleID, queryString)
    res.Content = New StringContent(ReadFile(feed.CacheFile), System.Text.Encoding.UTF8, "application/xml")
    Return res

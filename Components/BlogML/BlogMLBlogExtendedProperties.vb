@@ -1,5 +1,3 @@
-Imports System.Text
-
 Namespace BlogML
  Public Class BlogMLBlogExtendedProperties
   Public Shared ReadOnly CommentModeration As String = "CommentModeration"

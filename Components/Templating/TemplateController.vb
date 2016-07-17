@@ -22,10 +22,7 @@ Imports System.IO
 
 Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Common.Globals
-Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Services.Cache
-Imports DotNetNuke.Services.Localization
-Imports DotNetNuke.Services.Localization.Localization
 
 Namespace Templating
  Public Class Templating

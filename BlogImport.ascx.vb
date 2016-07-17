@@ -30,7 +30,7 @@ Public Class BlogImport
 
  Private Property CanImportCategories As Boolean = False
 
- Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+ Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 
   If Not BlogContext.Security.IsBlogger Then
    Throw New Exception("You do not have access to this resource. Please check your login status.")
@@ -38,7 +38,7 @@ Public Class BlogImport
 
   If Settings.VocabularyId > -1 AndAlso (BlogContext.Security.IsEditor) Then CanImportCategories = True
 
-  If Not Me.IsPostBack Then
+  If Not IsPostBack Then
    lblTargetName.Text = BlogContext.Blog.Title
    chkImportCategories.Enabled = CanImportCategories
   End If
@@ -56,11 +56,11 @@ Public Class BlogImport
   Return text
  End Function
 
- Private Sub wizBlogImport_ActiveStepChanged(sender As Object, e As System.EventArgs) Handles wizBlogImport.ActiveStepChanged
+ Private Sub wizBlogImport_ActiveStepChanged(sender As Object, e As EventArgs) Handles wizBlogImport.ActiveStepChanged
 
  End Sub
 
- Private Sub wizBlogImport_CancelButtonClick(sender As Object, e As System.EventArgs) Handles wizBlogImport.CancelButtonClick
+ Private Sub wizBlogImport_CancelButtonClick(sender As Object, e As EventArgs) Handles wizBlogImport.CancelButtonClick
   Response.Redirect(EditUrl("Manage"), False)
  End Sub
 
