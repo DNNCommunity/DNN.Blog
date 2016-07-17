@@ -59,7 +59,11 @@ Namespace Entities.Posts
   Private _permaLink As String = ""
   Public Function PermaLink(tab As DotNetNuke.Entities.Tabs.TabInfo) As String
    If String.IsNullOrEmpty(_permaLink) Then
-    _permaLink = ApplicationURL(tab.TabID) & "&Post=" & ContentItemId.ToString
+    _permaLink = ApplicationURL(tab.TabID)
+    If Not String.IsNullOrEmpty(Locale) Then
+     _permaLink &= "&language=" & Locale
+    End If
+    _permaLink &= "&Post=" & ContentItemId.ToString
     If DotNetNuke.Entities.Host.Host.UseFriendlyUrls Then
      _permaLink = FriendlyUrl(tab, _permaLink, GetSafePageName(LocalizedTitle))
     Else
