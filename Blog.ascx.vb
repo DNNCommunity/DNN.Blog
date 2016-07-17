@@ -331,10 +331,16 @@ Public Class Blog
 
     If callingObject IsNot Nothing AndAlso TypeOf callingObject Is PostInfo Then
      For Each t As TermInfo In CType(callingObject, PostInfo).PostTags
+      If BlogContext.ParentModule IsNot Nothing Then
+       t.ParentTabID = BlogContext.ParentModule.TabID
+      End If
       Replacers.Add(New BlogTokenReplace(Me, BlogContext.Post, t))
      Next
     ElseIf BlogContext.Post IsNot Nothing Then
      For Each t As TermInfo In BlogContext.Post.PostTags
+      If BlogContext.ParentModule IsNot Nothing Then
+       t.ParentTabID = BlogContext.ParentModule.TabID
+      End If
       Replacers.Add(New BlogTokenReplace(Me, BlogContext.Post, t))
      Next
     Else
