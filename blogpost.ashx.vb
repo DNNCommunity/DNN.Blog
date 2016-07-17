@@ -601,18 +601,14 @@ Public Class BlogPost
 
  Private Sub GetPortalSettings()
   Try
-   Dim Request As HttpRequest = Me.Context.Request
    Dim oTabController As TabController = New TabController
    Dim oTabInfo As TabInfo = oTabController.GetTab(TabId, PortalId, False)
    PortalId = oTabInfo.PortalID
-   Dim pai As PortalAliasInfo = TestablePortalAliasController.Instance().GetPortalAliasesByPortalId(PortalId).FirstOrDefault(Function(p) p.IsPrimary)
-   Dim portalController As New PortalController
-   Dim pi As PortalInfo = portalController.GetPortal(PortalId)
-   PortalSettings = New PortalSettings(TabId, pai)
+   PortalSettings = New PortalSettings(PortalId)
   Catch ex As XmlRpcFaultException
    Throw
   Catch generatedExceptionName As Exception
-   Throw New XmlRpcFaultException(0, GetString("PortalLoadError", "Please check your URL to make sure you entered the correct URL for your blog.  The blog posting URL is available through the blog settings for your blog.")) ' & "Error:" & generatedExceptionName.ToString() & " PortalId: " & portalID.ToString()
+   Throw New XmlRpcFaultException(0, GetString("PortalLoadError", "Please check your URL to make sure you entered the correct URL for your blog.  The blog posting URL is available through the blog settings for your blog."))
   End Try
  End Sub
 
@@ -620,7 +616,7 @@ Public Class BlogPost
   'Get the PortalAlias based on the Request object
   Dim pc As New PortalController
   Try
-   Dim pAlias As PortalAliasInfo = PortalAliasController.GetPortalAliasInfo(portalAlias)
+   Dim pAlias As PortalAliasInfo = PortalAliasController.Instance.GetPortalAlias(portalAlias)
    If pAlias IsNot Nothing Then
     PortalId = pAlias.PortalID
    End If
