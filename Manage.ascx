@@ -120,7 +120,7 @@
       $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeJSString("Export") %>")').attr("disabled", "disabled");
       blogService.exportBlog(selectedBlog, function (returnValue) {
        $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeJSString("Export") %>")').removeAttr("disabled");
-       $('#blogMLDownloadLink').attr('href', returnValue);
+       $('#blogMLDownloadLink').attr('href', returnValue.Result);
        $('#blogMLDownloadLink').show();
       });
      }
