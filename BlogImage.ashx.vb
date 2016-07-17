@@ -40,7 +40,7 @@ Public Class BlogImage
 
  Sub ProcessRequest(ByVal context As HttpContext) Implements IHttpHandler.ProcessRequest
 
-  PortalSettings = PortalController.GetCurrentPortalSettings
+  PortalSettings = PortalController.Instance.GetCurrentPortalSettings
   context.Request.Params.ReadValue("Blog", BlogId)
   context.Request.Params.ReadValue("Post", PostId)
   context.Request.Params.ReadValue("Key", Key)

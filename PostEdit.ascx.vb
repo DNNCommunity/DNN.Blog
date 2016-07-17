@@ -42,7 +42,7 @@ Public Class PostEdit
 
 #Region " Public Properties "
 
- Public ReadOnly Property FilePath() As String
+ Public ReadOnly Property FilePath As String
   Get
    Return Me.PortalSettings.HomeDirectory & Me.ModuleConfiguration.DesktopModule.FriendlyName & "/"
   End Get
@@ -128,7 +128,7 @@ Public Class PostEdit
     If BlogContext.IsMultiLingualSite And Not BlogContext.Blog.FullLocalization Then
      ddLocale.DataSource = DotNetNuke.Services.Localization.LocaleController.Instance.GetLocales(PortalId).Values.OrderBy(Function(t) t.NativeName)
      ddLocale.DataValueField = "Code"
-     ddLocale.DataBind()
+     ddLocale.DataBind
      ddLocale.Items.Insert(0, New ListItem(LocalizeString("DefaultLocale"), ""))
      rowLocale.Visible = True
      If BlogContext.Locale <> BlogContext.Blog.Locale Then
@@ -166,13 +166,13 @@ Public Class PostEdit
      ' Content
      txtTitle.DefaultText = HttpUtility.HtmlDecode(BlogContext.Post.Title)
      txtTitle.LocalizedTexts = BlogContext.Post.TitleLocalizations
-     txtTitle.InitialBind()
+     txtTitle.InitialBind
      txtDescription.DefaultText = PostBody.Summary
      txtDescription.LocalizedTexts = PostBody.SummaryLocalizations
-     txtDescription.InitialBind()
+     txtDescription.InitialBind
      teBlogPost.DefaultText = HttpUtility.HtmlEncode(PostBody.Body)
      teBlogPost.LocalizedTexts = PostBody.BodyLocalizations
-     teBlogPost.InitialBind()
+     teBlogPost.InitialBind
 
      ' Publishing
      chkPublished.Checked = BlogContext.Post.Published
@@ -263,10 +263,10 @@ Public Class PostEdit
 
     ' Categories, Tags
     Dim terms As New List(Of TermInfo)
-    ctlTags.CreateMissingTerms()
+    ctlTags.CreateMissingTerms
     terms.AddRange(ctlTags.Terms)
     terms.AddRange(ctlCategories.SelectedCategories)
-    BlogContext.Post.Terms.Clear()
+    BlogContext.Post.Terms.Clear
     BlogContext.Post.Terms.AddRange(terms)
 
     If BlogContext.IsMultiLingualSite And Not BlogContext.Blog.FullLocalization Then
@@ -350,7 +350,7 @@ Public Class PostEdit
 
  Protected Sub cmdDelete_Click(sender As Object, e As EventArgs) Handles cmdDelete.Click
   Try
-   DeleteAllFiles()
+   DeleteAllFiles
    PostsController.DeletePost(BlogContext.Post.ContentItemId, BlogContext.Post.BlogID, ModuleContext.PortalId, Settings.VocabularyId)
    Response.Redirect(NavigateURL(TabId, "", "Blog=" & BlogContext.BlogId.ToString), False)
   Catch exc As Exception    'Module failed to load
@@ -365,7 +365,7 @@ Public Class PostEdit
  Protected Sub chkDisplayCopyright_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles chkDisplayCopyright.CheckedChanged
   pnlCopyright.Visible = chkDisplayCopyright.Checked
   If pnlCopyright.Visible Then
-   txtCopyright.Text = CreateCopyRight()
+   txtCopyright.Text = CreateCopyRight
   End If
  End Sub
 
@@ -399,13 +399,13 @@ Public Class PostEdit
 #End Region
 
 #Region " Private Methods "
- Private Function CreateCopyRight() As String
+ Private Function CreateCopyRight As String
   Return GetString("msgCopyright", LocalResourceFile) & Date.UtcNow.Year & " " & BlogContext.Blog.DisplayName
  End Function
 #End Region
 
 #Region " Upload Feature Methods "
- Private Sub DeleteAllFiles()
+ Private Sub DeleteAllFiles
   Try
    System.IO.Directory.Delete(FileController.getPostDir(Me.FilePath, BlogContext.Post), True)
   Catch

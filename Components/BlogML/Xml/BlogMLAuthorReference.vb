@@ -1,18 +1,11 @@
 Imports System.Xml.Serialization
 
 Namespace BlogML.Xml
- <Serializable()> _
+ <Serializable>
  Public NotInheritable Class BlogMLAuthorReference
-  Private _ref As String
 
-  <XmlAttribute("ref")> _
-  Public Property Ref() As String
-   Get
-    Return Me._ref
-   End Get
-   Set(value As String)
-    Me._ref = value
-   End Set
-  End Property
+  <XmlAttribute("ref")>
+  Public Property Ref As String
+
  End Class
 End Namespace

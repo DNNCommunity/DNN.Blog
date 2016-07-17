@@ -115,26 +115,31 @@ Public Class BlogImport
     End Using
     If b IsNot Nothing Then
      If CanImportCategories AndAlso chkImportCategories.Checked Then
-      For Each c As BlogML.Xml.BlogMLCategory In b.Categories
+      For Each c As BlogMLCategory In b.Categories
        ' check for and add category
       Next
      ElseIf chkImportMissingCategoriesAsKeywords.Checked Then
-      For Each c As BlogML.Xml.BlogMLCategory In b.Categories
+      For Each c As BlogMLCategory In b.Categories
        ' check for and add tag
       Next
      End If
-     For Each post As BlogML.Xml.BlogMLPost In b.Posts
+     For Each post As BlogMLPost In b.Posts
       ' import post
       Dim newPost As New PostInfo
       With newPost
        .BlogID = BlogContext.BlogId
-       '.AllowComments = Blog.AllowComments
        .ViewCount = 0
        .Title = post.Title
        .Content = post.Content.Text
        .Summary = post.Excerpt.Text
        .Published = post.Approved
        .PublishedOnDate = post.DateCreated
+       ' DNN Blog specific fields
+       .Image = post.Image
+       .AllowComments = post.AllowComments
+       .DisplayCopyright = post.DisplayCopyright
+       .Copyright = post.Copyright
+       .Locale = post.Locale
       End With
       If newPost.Title <> "" And newPost.Content <> "" Then
        newPost.ContentItemId = PostsController.AddPost(newPost, UserId)

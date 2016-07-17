@@ -144,6 +144,11 @@ Namespace Entities.Blogs
    End If
    newPostML.ID = post.ContentItemId.ToString
    newPostML.PostUrl = post.PermaLink
+   newPostML.Image = post.Image
+   newPostML.AllowComments = post.AllowComments
+   newPostML.DisplayCopyright = post.DisplayCopyright
+   newPostML.Copyright = post.Copyright
+   newPostML.Locale = post.Locale
 
    ' pack files
    Dim postDir As String = GetPostDirectoryMapPath(post.BlogID, post.ContentItemId)
@@ -160,7 +165,7 @@ Namespace Entities.Blogs
      Using fs As New IO.FileStream(f, IO.FileMode.Open)
       Dim fileData(CInt(fs.Length - 1)) As Byte
       If fs.Length > 0 Then
-       fs.Read(fileData, 0, CInt(fs.Length - 1))
+       fs.Read(fileData, 0, CInt(fs.Length))
        att.Data = fileData
        att.Embedded = True
       Else
