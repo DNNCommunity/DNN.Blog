@@ -144,7 +144,7 @@ Namespace Data
   End Function
 
   Public Overrides Function SearchPostsByCategory(moduleId As Int32, blogID As Int32, displayLocale As String, userId As Int32, userIsAdmin As Boolean, categories As String, searchText As String, searchTitle As Boolean, searchContents As Boolean, published As Int32, limitToLocale As String, endDate As Date, authorUserId As Int32, pageIndex As Int32, pageSize As Int32, orderBy As String) As IDataReader
-   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "SearchPostsByTerm", moduleId, blogID, displayLocale, userId, userIsAdmin, categories, searchText, searchTitle, searchContents, published, GetNull(limitToLocale), GetNull(endDate), authorUserId, pageIndex, pageSize, orderBy), IDataReader)
+   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "SearchPostsByCategory", moduleId, blogID, displayLocale, userId, userIsAdmin, categories, searchText, searchTitle, searchContents, published, GetNull(limitToLocale), GetNull(endDate), authorUserId, pageIndex, pageSize, orderBy), IDataReader)
   End Function
 
 
