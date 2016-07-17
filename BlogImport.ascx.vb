@@ -23,6 +23,7 @@ Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.BlogML.Xml
 Imports DotNetNuke.Modules.Blog.Entities.Posts
+Imports ICSharpCode.SharpZipLib.Zip
 
 Public Class BlogImport
  Inherits BlogModuleBase
@@ -69,7 +70,24 @@ Public Class BlogImport
     Dim strReport As New StringBuilder
     Dim file As HttpPostedFile = cmdBrowse.PostedFile
     If file.FileName <> "" Then
-     file.SaveAs(BlogContext.BlogMapPath & "import.resources")
+     If file.FileName.ToLower.EndsWith(".zip") Then
+      Dim objZipInputStream As New ZipInputStream(file.InputStream)
+      Dim objZipEntry As ZipEntry = objZipInputStream.GetNextEntry
+      If objZipEntry.Name.ToLower.EndsWith(".xml") Then
+       Using objFileStream As IO.FileStream = IO.File.Create(BlogContext.BlogMapPath & "import.resources")
+        Dim intSize As Integer = 2048
+        Dim arrData(2048) As Byte
+        intSize = objZipInputStream.Read(arrData, 0, arrData.Length)
+        While intSize > 0
+         objFileStream.Write(arrData, 0, intSize)
+         intSize = objZipInputStream.Read(arrData, 0, arrData.Length)
+        End While
+       End Using
+      End If
+      objZipInputStream.Close()
+     Else
+      file.SaveAs(BlogContext.BlogMapPath & "import.resources")
+     End If
      strReport.AppendLine("Saved File")
      Dim blog As BlogMLBlog = Nothing
      Using strIn As New IO.StreamReader(BlogContext.BlogMapPath & "import.resources")

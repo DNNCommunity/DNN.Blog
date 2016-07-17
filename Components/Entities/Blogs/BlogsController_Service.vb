@@ -36,6 +36,7 @@ Imports DotNetNuke.Modules.Blog.BlogML.Xml
 Imports DotNetNuke.Modules.Blog.Entities.Terms
 Imports System.Xml
 Imports DotNetNuke.Modules.Blog.Services
+Imports ICSharpCode.SharpZipLib.Zip
 
 Namespace Entities.Blogs
  Partial Public Class BlogsController
@@ -69,13 +70,19 @@ Namespace Entities.Blogs
    newBlogML.DateCreated = Blog.CreatedOnDate
    AddCategories(newBlogML)
    AddPosts(newBlogML)
-   Dim blogMLFile As String = Date.Now.ToString("yyyy-MM-dd") & "-" & Guid.NewGuid.ToString("D") & ".xml"
-   Using stream As XmlWriter = XmlWriter.Create(GetBlogDirectoryMapPath(Blog.BlogID) & blogMLFile)
+   Dim blogMLFile As String = Date.Now.ToString("yyyy-MM-dd") & "-" & Guid.NewGuid.ToString("D")
+   Dim objZipOutputStream As New ZipOutputStream(IO.File.Create(GetBlogDirectoryMapPath(Blog.BlogID) & blogMLFile & ".zip"))
+   Dim objZipEntry As ZipEntry = New ZipEntry(blogMLFile & ".xml")
+   objZipOutputStream.PutNextEntry(objZipEntry)
+   objZipOutputStream.SetLevel(9)
+   Using stream As XmlWriter = XmlWriter.Create(objZipOutputStream)
     BlogMLSerializer.Serialize(stream, newBlogML)
     stream.Flush()
    End Using
+   objZipOutputStream.Finish()
+   objZipOutputStream.Close()
 
-   Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = GetBlogDirectoryPath(Blog.BlogID) & blogMLFile})
+   Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = GetBlogDirectoryPath(Blog.BlogID) & blogMLFile & ".zip"})
   End Function
 #End Region
 
