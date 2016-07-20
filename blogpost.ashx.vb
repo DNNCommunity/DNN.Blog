@@ -243,6 +243,7 @@ Public Class BlogPost
    PostsController.AddPost(newBlogPost, UserInfo.UserID)
 
    HandleAttachments(newBlogPost)
+   CheckForMainImage(newBlogPost)
    PostsController.UpdatePost(newBlogPost, UserInfo.UserID)
 
    ' Add keywords and categories
@@ -295,6 +296,7 @@ Public Class BlogPost
    End If
 
    HandleAttachments(newPost)
+   CheckForMainImage(newPost)
    PostsController.UpdatePost(newPost, UserInfo.UserID)
 
    If (Not RequestedPost.Published) And newPost.Published Then
@@ -400,13 +402,13 @@ Public Class BlogPost
 
   Try
 
-   Dim strExtension As String = IO.Path.GetExtension(mediaobject.name)
+   Dim strExtension As String = Path.GetExtension(mediaobject.name)
    If Not Settings.AllowAttachments Or String.IsNullOrEmpty(strExtension) OrElse Not DotNetNuke.Entities.Host.Host.AllowedExtensionWhitelist.IsAllowedExtension(strExtension) Then
     Throw New XmlRpcFaultException(0, GetString("SaveError", String.Format("File {0} refused. Uploading this type of file is not allowed.", mediaobject.name)))
    End If
    Dim newMediaObjectName As String = Guid.NewGuid.ToString("D") & strExtension
    Dim fullFilePathAndName As String = GetTempPostDirectoryMapPath(Me.BlogId) & newMediaObjectName
-   IO.Directory.CreateDirectory(IO.Path.GetDirectoryName(fullFilePathAndName))
+   Directory.CreateDirectory(Path.GetDirectoryName(fullFilePathAndName))
 
    Using output As New FileStream(fullFilePathAndName, FileMode.Create)
     Using bw As New BinaryWriter(output)
@@ -665,15 +667,15 @@ Public Class BlogPost
   ' Handle attachments
   Dim contents As String = newPost.Content
   If Not String.IsNullOrEmpty(newPost.Summary) Then contents &= newPost.Summary
-  Dim d As New IO.DirectoryInfo(GetTempPostDirectoryMapPath(BlogId))
+  Dim d As New DirectoryInfo(GetTempPostDirectoryMapPath(BlogId))
   Dim targetDir As String = GetPostDirectoryMapPath(newPost)
-  If Not IO.Directory.Exists(targetDir) Then
-   IO.Directory.CreateDirectory(targetDir)
+  If Not Directory.Exists(targetDir) Then
+   Directory.CreateDirectory(targetDir)
   Else
-   For Each f As String In IO.Directory.GetFiles(targetDir) ' remove deprecated files
-    If Not contents.Contains(IO.Path.GetFileName(f)) Then
+   For Each f As String In Directory.GetFiles(targetDir) ' remove deprecated files
+    If Not contents.Contains(Path.GetFileName(f)) Then
      Try
-      IO.File.Delete(f)
+      File.Delete(f)
      Catch ex As Exception
       ' we're not too bothered if this doesn't succeed
      End Try
@@ -681,7 +683,7 @@ Public Class BlogPost
    Next
   End If
   If d.Exists Then
-   For Each f As IO.FileInfo In d.GetFiles
+   For Each f As FileInfo In d.GetFiles
     If contents.Contains(f.Name) Then
      f.MoveTo(targetDir & f.Name)
     End If
@@ -690,6 +692,36 @@ Public Class BlogPost
   newPost.Content = newPost.Content.Replace(String.Format("Blog/Files/{0}/_temp_images/", BlogId), String.Format("Blog/Files/{0}/{1}/", BlogId, newPost.ContentItemId))
   If Not String.IsNullOrEmpty(newPost.Summary) Then newPost.Summary = newPost.Summary.Replace(String.Format("Blog/Files/{0}/_temp_images/", BlogId), String.Format("Blog/Files/{0}/{1}/", BlogId, newPost.ContentItemId))
 
+ End Sub
+
+ Private Sub CheckForMainImage(ByRef newPost As PostInfo)
+  Dim contents As String = newPost.Content
+  ' Find first image in contents
+  Dim m As Match = Regex.Match(contents, "&lt;img .*?&gt;")
+  If m.Success Then
+   Dim preceding As String = contents.Substring(0, m.Index)
+   preceding = Regex.Replace(preceding, "&lt;.*?&gt;", "") ' remove all HTML tags
+   preceding = Regex.Replace(preceding, "\s", "") ' remove all whitespace
+   preceding = Regex.Replace(preceding, "[\r\n]", "") ' remove newlines
+   If preceding = "" Then
+    ' Begin extraction process
+    Dim srcM As Match = Regex.Match(m.Value, "(?i)src=&quot;http:[\w\d/]+/(.*?)\.\w+&quot;(?-i)")
+    If srcM.Success Then ' successfully parsed filename
+     newPost.Image = srcM.Groups(1).Value
+     ' Now remove image from contents
+     preceding = contents.Substring(0, m.Index)
+     Dim remaining As String = contents.Substring(m.Index + m.Length)
+     For Each tagM As Match In Regex.Matches(preceding, "&lt;(\w+).*?&gt;", RegexOptions.RightToLeft)
+      Dim closingTag As String = "&lt;/" & tagM.Groups(1).Value & "&gt;"
+      If remaining.StartsWith(closingTag) Then
+       preceding = preceding.Substring(0, tagM.Index) & preceding.Substring(tagM.Index + tagM.Length)
+       remaining = remaining.Substring(closingTag.Length)
+      End If
+     Next
+     newPost.Content = preceding & remaining
+    End If
+   End If
+  End If
  End Sub
 #End Region
 
