@@ -1,7 +1,14 @@
 (function ($, Sys) {
  $(document).ready(function () {
   $('a[href$=".gif"], a[href$=".jpg"], a[href$=".png"], a[href$=".bmp"]').colorbox();
-  $("abbr.blog_commenttimeago").timeago();
+  $(".moment").each(function(i, el) {
+    var e = $(el);
+    e.html(moment(e.attr('data-time')).fromNow());
+  });
+  $(".momentabs").each(function(i, el) {
+    var e = $(el);
+    e.html(moment(e.attr('data-time')).format('LL'));
+  });
   $('#cmdComment').click(function () {
    $dialogComment.dialog('open');
    return false;

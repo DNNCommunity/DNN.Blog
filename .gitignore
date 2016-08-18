@@ -167,3 +167,6 @@ _Documentation/_Resources/
 /resources.zip.manifest
 /Uninstall.SqlDataProvider
 install/*
+node_modules
+bower_components
+packages
