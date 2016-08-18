@@ -718,7 +718,7 @@ Public Class BlogPost
        remaining = remaining.Substring(closingTag.Length)
       End If
      Next
-     newPost.Content = preceding & remaining
+     newPost.Content = Trim(preceding & remaining)
     End If
    End If
   End If
