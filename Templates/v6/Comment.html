@@ -1,0 +1,28 @@
+<div class="blog_comment" id="commentDiv[comment:CommentID]">
+ <div class="blog_comment_pic">
+  <img style="width:32px;height:32px;" alt="[comment:displayname]" src="[commenter:profilepic|32]" />
+ </div>
+ <div class="blog_comment_details">
+  <div class="blog_comment_content">
+   <a href="[commenter:profileurl]">[commenter:displayname]</a>&nbsp;
+   [comment:comment]
+  </div>
+  <div class="blog_comment_actions">
+   <abbr title="[comment:CreatedOnDateUTC|u]" class="blog_commenttimeago"></abbr>
+   [subtemplate|CommentKarmaBar.html|security:loggedin|True]
+   [subtemplate|CommentApproveBar.html|security:canapprovecomment|True]
+   [if|1][security:canaddcomment][=]True[/if]
+   <span> &middot; 
+    <a href="#" 
+     class="blog_comment_actionbtn"
+     onclick="commentParentId=[comment:commentId];$dialogComment.dialog('open');return false;" title="[resx:Reply]">[resx:Reply]</a>
+   </span>
+   [endif|1]
+   <span> &middot; </span>
+   <i class="fa fa-thumbs-o-up"></i><span id="commentLikes[comment:CommentID]"> [comment:likes]&nbsp;</span>
+   <i class="fa fa-thumbs-o-down"></i><span id="commentDislikes[comment:CommentID]"> [comment:dislikes]&nbsp;</span>
+   <i class="fa fa-warning"></i><span id="commentReports[comment:CommentID]"> [comment:reports]&nbsp;</span>
+  </div>
+  [subtemplate|Comment.html|Comments|]
+ </div>
+</div>

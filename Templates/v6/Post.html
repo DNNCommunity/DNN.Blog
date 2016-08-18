@@ -1,0 +1,34 @@
+<article class="is-post is-post-excerpt">
+ <header>
+  <h2><a href="[Post:link]">[Post:localizedtitle]</a></h2>
+  <span class="byline">[blog:localizedtitle] - [post:displayname]</span>
+ </header>
+ <div class="info">
+  <span class="date">
+   <span class="month">[Post:PublishedOnDate|MMM]</span>
+   <span class="day">[Post:PublishedOnDate|dd]</span>
+   <span class="year">[Post:PublishedOnDate|yyyy]</span>
+[if|1][Post:published][=]False[/if]
+  <span class="unpublished"><i class="fa fa-warning" title="[resx:Unpublished]"></i></span>
+[endif|1]
+  </span>
+  <div class="stats">
+   <i class="fa fa-eye"></i>
+   <div class="stat">[post:viewcount]</div>
+  </div>
+  <div class="stats">
+   <i class="fa fa-comment-o"></i>
+   <div class="stat">[post:nrcomments]</div>
+  </div>
+  <div style="clear:both"></div>
+  <ul class="tags">
+[subtemplate|Tag.html|categories]
+[subtemplate|Tag.html|keywords]
+  </ul>
+ </div>
+[subtemplate|Postbanner.html|Post:hasimage]
+ <div class="summary">
+[Post:localizedsummary]
+ </div>
+ <div><a href="[Post:link]">[resx:ReadMore]</a></div>
+</article>
