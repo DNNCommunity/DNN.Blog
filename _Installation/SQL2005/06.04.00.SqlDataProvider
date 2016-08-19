@@ -974,3 +974,15 @@ WHERE
  AND (@LimitToLocale IS NULL OR ISNULL(p.Locale, b.Locale)=@LimitToLocale)
 GO
 
+-- New default template - existing default templates will point to the old default
+UPDATE {databaseOwner}{objectQualifier}TabModuleSettings
+SET SettingValue='[G]v60'
+FROM {databaseOwner}{objectQualifier}TabModuleSettings ms
+ INNER JOIN {databaseOwner}{objectQualifier}TabModules tm ON ms.TabModuleID=tm.TabModuleID
+ INNER JOIN {databaseOwner}{objectQualifier}Modules m ON tm.ModuleID=m.ModuleID
+ INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions md ON md.ModuleDefID=m.ModuleDefID
+WHERE md.DefinitionName='DNNBlog.Blog'
+ AND SettingName='Template'
+ AND SettingValue='[G]_default'
+GO
+
