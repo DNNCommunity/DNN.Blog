@@ -56,8 +56,6 @@ Namespace Controls
 
 #Region " Event Handlers "
   Private Sub CategorySelect_Init(sender As Object, e As EventArgs) Handles Me.Init
-   Page.AddJavascriptFile(ModuleSettings.GetModuleSettings(ModuleConfiguration.ModuleID).Version, "jquery.dynatree.min.js", "jquery.dynatree", "1.2.4", 60)
-   Page.AddCssFile(ModuleSettings.GetModuleSettings(ModuleConfiguration.ModuleID).Version, "dynatree.css", "dynatree", "1.2.4")
    If CssClass = "" Then CssClass = "category-control"
    StorageControlId = ClientID & "_Storage"
    Storage = New HiddenField With {.ID = StorageControlId}
@@ -65,6 +63,9 @@ Namespace Controls
 
   Private Sub CategorySelect_Load(sender As Object, e As EventArgs) Handles Me.Load
 
+   Dim modVersion As String = ModuleSettings.GetModuleSettings(ModuleConfiguration.ModuleID).Version
+   Page.AddJavascriptFile(modVersion, "jquery.dynatree.min.js", "jquery.dynatree", "1.2.4", 60)
+   Page.AddCssFile(modVersion, "dynatree.css", "dynatree", "1.2.4")
    MainControlId = ClientID & "_CategorySelect"
    If Page.IsPostBack Then
     ' read return values
