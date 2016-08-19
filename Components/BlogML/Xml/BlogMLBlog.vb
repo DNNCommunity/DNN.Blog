@@ -19,19 +19,19 @@ Namespace BlogML.Xml
 
   <XmlArray("extended-properties")>
   <XmlArrayItem("property", GetType(Pair(Of String, String)))>
-  Public ReadOnly Property ExtendedProperties As New ExtendedPropertiesCollection
+  Public Property ExtendedProperties As New ExtendedPropertiesCollection
 
   <XmlArray("authors")>
   <XmlArrayItem("author", GetType(BlogMLAuthor))>
-  Public ReadOnly Property Authors As New AuthorCollection
+  Public Property Authors As New AuthorCollection
 
   <XmlArray("posts")>
   <XmlArrayItem("post", GetType(BlogMLPost))>
-  Public ReadOnly Property Posts As New PostCollection
+  Public Property Posts As New PostCollection
 
   <XmlArray("categories")>
   <XmlArrayItem("category", GetType(BlogMLCategory))>
-  Public ReadOnly Property Categories As New CategoryCollection
+  Public Property Categories As New CategoryCollection
 
   <Serializable>
   Public NotInheritable Class AuthorCollection

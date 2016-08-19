@@ -43,23 +43,23 @@ Namespace BlogML.Xml
 
   <XmlArray("authors")>
   <XmlArrayItem("author", GetType(BlogMLAuthorReference))>
-  Public ReadOnly Property Authors As New AuthorReferenceCollection
+  Public Property Authors As New AuthorReferenceCollection
 
   <XmlArray("categories")>
   <XmlArrayItem("category", GetType(BlogMLCategoryReference))>
-  Public ReadOnly Property Categories As New CategoryReferenceCollection
+  Public Property Categories As New CategoryReferenceCollection
 
   <XmlArray("comments")>
   <XmlArrayItem("comment", GetType(BlogMLComment))>
-  Public ReadOnly Property Comments As New CommentCollection
+  Public Property Comments As New CommentCollection
 
   <XmlArray("trackbacks")>
   <XmlArrayItem("trackback", GetType(BlogMLTrackback))>
-  Public ReadOnly Property Trackbacks As New TrackbackCollection
+  Public Property Trackbacks As New TrackbackCollection
 
   <XmlArray("attachments")>
   <XmlArrayItem("attachment", GetType(BlogMLAttachment))>
-  Public ReadOnly Property Attachments As New AttachmentCollection
+  Public Property Attachments As New AttachmentCollection
 
   <Serializable>
   Public NotInheritable Class AuthorReferenceCollection
