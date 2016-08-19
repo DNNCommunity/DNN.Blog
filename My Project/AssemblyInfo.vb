@@ -44,8 +44,8 @@ Imports System.Runtime.InteropServices
 ' You can specify all the values or you can default the Build and Revision Numbers 
 ' by using the '*' as shown below:
 
-<Assembly: AssemblyVersion("06.03.00")> 
+<Assembly: AssemblyVersion("06.04.00")> 
 
 <Assembly: Guid("49cae2ac-30c7-45fe-8663-948e1543d8d3")> 
-<Assembly: AssemblyInformationalVersion("06.03.00")> 
-<Assembly: AssemblyFileVersion("06.03.00")> 
+<Assembly: AssemblyInformationalVersion("06.04.00")> 
+<Assembly: AssemblyFileVersion("06.04.00")> 

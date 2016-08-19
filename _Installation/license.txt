@@ -2,7 +2,7 @@
     <h3>License</h3>
     <p class="Owner">
         DNN Connect  <a href="http://dnn-connect.org">http://dnn-connect.org</a></br>
-        Copyright (c) 2015</br>
+        Copyright (c) 2016</br>
         by DNN Connect</br>
     </p>
    <p>

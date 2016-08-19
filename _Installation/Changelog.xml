@@ -137,4 +137,11 @@
  <release version="06.03.00">
   <change type="Enhancement">Release for DNN 8</change>
  </release>
+ <release version="06.04.00">
+  <change type="Enhancement">New default template</change>
+  <change type="New Feature">If you post using WLW and you start with a picture it will be the post image</change>
+  <change type="Enhancement">BlogML im/export now using zipped xml</change>
+  <change type="Enhancement">BlogML enhancement to facilitate transfer of blog image</change>
+  <change type="Fix">Various fixes. Check the Github history for details.</change>
+ </release>
 </changelog>
