@@ -28,7 +28,7 @@ Namespace Entities.Terms
  Partial Public Class TermsController
 
   Public Shared Function GetTerm(termId As Integer, moduleId As Integer, locale As String) As TermInfo
-   Return CType(CBO.FillObject(Data.DataProvider.Instance().GetTerm(termId, moduleId, locale), GetType(TermInfo)), TermInfo)
+   Return CBO.FillObject(Of TermInfo)(Data.DataProvider.Instance().GetTerm(termId, moduleId, locale))
   End Function
 
   Public Shared Function GetTermsByPost(contentItemId As Int32, moduleId As Int32, locale As String) As List(Of TermInfo)

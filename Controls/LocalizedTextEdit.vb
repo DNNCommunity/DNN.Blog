@@ -164,7 +164,7 @@ Namespace Controls
    Get
     If _supportedLocales Is Nothing Then
      _supportedLocales = New LocaleCollection
-     Dim objPortalSettings As PortalSettings = PortalController.GetCurrentPortalSettings()
+     Dim objPortalSettings As PortalSettings = PortalController.Instance.GetCurrentPortalSettings()
      For Each kvp As KeyValuePair(Of String, Locale) In LocaleController.Instance.GetLocales(objPortalSettings.PortalId)
       _supportedLocales.Add(kvp.Key, kvp.Value)
      Next
@@ -179,7 +179,7 @@ Namespace Controls
   Public Property DefaultLanguage() As String
    Get
     If _DefaultLanguage Is Nothing Then
-     _DefaultLanguage = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings.DefaultLanguage
+     _DefaultLanguage = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings.DefaultLanguage
     End If
     Return _DefaultLanguage
    End Get

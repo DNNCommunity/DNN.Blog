@@ -144,7 +144,7 @@ Namespace Security.Controls
   ''' -----------------------------------------------------------------------------
   Public ReadOnly Property AdministratorRoleId() As Integer
    Get
-    Return PortalController.GetCurrentPortalSettings.AdministratorRoleId
+    Return PortalController.Instance.GetCurrentPortalSettings.AdministratorRoleId
    End Get
   End Property
 
@@ -158,7 +158,7 @@ Namespace Security.Controls
   ''' -----------------------------------------------------------------------------
   Public ReadOnly Property RegisteredUsersRoleId() As Integer
    Get
-    Return PortalController.GetCurrentPortalSettings.RegisteredRoleId
+    Return PortalController.Instance.GetCurrentPortalSettings.RegisteredRoleId
    End Get
   End Property
 
@@ -222,7 +222,7 @@ Namespace Security.Controls
   Public ReadOnly Property PortalId() As Integer
    Get
     ' Obtain PortalSettings from Current Context
-    Dim _portalSettings As PortalSettings = PortalController.GetCurrentPortalSettings
+    Dim _portalSettings As PortalSettings = PortalController.Instance.GetCurrentPortalSettings
     Dim intPortalID As Integer
 
     If _portalSettings.ActiveTab.ParentId = _portalSettings.SuperTabId Then 'if we are in host filemanager then we need to pass a null portal id
@@ -443,9 +443,9 @@ Namespace Security.Controls
    End If
 
    If RoleGroupId > -2 Then
-    _roles = GetRolesByGroup(PortalController.GetCurrentPortalSettings.PortalId, RoleGroupId)
+    _roles = GetRolesByGroup(PortalController.Instance.GetCurrentPortalSettings.PortalId, RoleGroupId)
    Else
-    _roles = GetRolesByPortal(PortalController.GetCurrentPortalSettings.PortalId)
+    _roles = GetRolesByPortal(PortalController.Instance.GetCurrentPortalSettings.PortalId)
    End If
    If Not IncludeAdministratorRole Then
     Dim newList As New List(Of DotNetNuke.Security.Roles.RoleInfo)
@@ -632,7 +632,7 @@ Namespace Security.Controls
    pnlPermissions.CssClass = "DataGrid_Container"
 
    'Optionally Add Role Group Filter
-   Dim _portalSettings As PortalSettings = PortalController.GetCurrentPortalSettings
+   Dim _portalSettings As PortalSettings = PortalController.Instance.GetCurrentPortalSettings
    Dim arrGroups As ArrayList = RoleController.GetRoleGroups(_portalSettings.PortalId)
    If arrGroups.Count > 0 Then
     lblGroups = New Label

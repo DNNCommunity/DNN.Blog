@@ -186,11 +186,11 @@ Namespace Entities.Posts
   End Function
 
   Public Shared Function GetPostByLegacyEntryId(entryId As Int32, portalId As Int32, locale As String) As PostInfo
-   Return CType(CBO.FillObject(DataProvider.Instance().GetPostByLegacyEntryId(entryId, portalId, locale), GetType(PostInfo)), PostInfo)
+   Return CBO.FillObject(Of PostInfo)(DataProvider.Instance().GetPostByLegacyEntryId(entryId, portalId, locale))
   End Function
 
   Public Shared Function GetPostByLegacyUrl(url As String, portalId As Int32, locale As String) As PostInfo
-   Return CType(CBO.FillObject(DataProvider.Instance().GetPostByLegacyUrl(url, portalId, locale), GetType(PostInfo)), PostInfo)
+   Return CBO.FillObject(Of PostInfo)(DataProvider.Instance().GetPostByLegacyUrl(url, portalId, locale))
   End Function
 
   Public Shared Function GetChangedPosts(moduleId As Integer, lastChange As DateTime) As List(Of PostInfo)

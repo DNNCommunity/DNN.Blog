@@ -28,9 +28,9 @@ Imports DotNetNuke.Framework
 Public Class BlogEdit
  Inherits BlogModuleBase
 
- Private Sub Page_Init1(sender As Object, e As EventArgs) Handles Me.Init
+ Private Sub Page_Init(sender As Object, e As EventArgs) Handles Me.Init
 
-  jQuery.RequestDnnPluginsRegistration()
+  JavaScriptLibraries.JavaScript.RequestRegistration(JavaScriptLibraries.CommonJs.DnnPlugins)
   If Not BlogContext.Security.IsEditor Then
    If Not BlogContext.Security.IsBlogger Then
     Response.Redirect(NavigateURL("Access Denied"), True)

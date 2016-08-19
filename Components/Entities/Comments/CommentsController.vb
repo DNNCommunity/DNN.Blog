@@ -36,7 +36,7 @@ Namespace Entities.Comments
 
   Public Shared Function GetComment(commentID As Int32, userId As Integer) As CommentInfo
 
-   Return CType(CBO.FillObject(DataProvider.Instance().GetComment(commentID, userId), GetType(CommentInfo)), CommentInfo)
+   Return CBO.FillObject(Of CommentInfo)(DataProvider.Instance().GetComment(commentID, userId))
 
   End Function
 

@@ -27,7 +27,7 @@ Namespace Entities.Posts
 
   Public Shared Function GetPost(contentItemId As Int32, moduleId As Int32, locale As String) As PostInfo
 
-   Return CType(CBO.FillObject(DataProvider.Instance().GetPost(contentItemId, moduleId, locale), GetType(PostInfo)), PostInfo)
+   Return CBO.FillObject(Of PostInfo)(DataProvider.Instance().GetPost(contentItemId, moduleId, locale))
 
   End Function
 

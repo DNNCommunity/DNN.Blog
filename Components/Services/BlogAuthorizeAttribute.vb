@@ -80,7 +80,7 @@ Namespace Services
    If Not HttpContextSource.Current.Request.IsAuthenticated Then
     UserInfo = New UserInfo
    Else
-    Dim portalSettings As DotNetNuke.Entities.Portals.PortalSettings = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings()
+    Dim portalSettings As DotNetNuke.Entities.Portals.PortalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings()
     UserInfo = UserController.GetCachedUser(portalSettings.PortalId, HttpContextSource.Current.User.Identity.Name)
     If UserInfo Is Nothing Then UserInfo = New UserInfo
    End If

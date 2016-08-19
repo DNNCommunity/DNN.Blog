@@ -129,7 +129,7 @@ Namespace Entities.Terms
 #Region " IPropertyAccess Implementation "
   Public Function GetProperty(strPropertyName As String, strFormat As String, formatProvider As System.Globalization.CultureInfo, AccessingUser As DotNetNuke.Entities.Users.UserInfo, AccessLevel As DotNetNuke.Services.Tokens.Scope, ByRef PropertyNotFound As Boolean) As String Implements DotNetNuke.Services.Tokens.IPropertyAccess.GetProperty
    Dim OutputFormat As String = String.Empty
-   Dim portalSettings As DotNetNuke.Entities.Portals.PortalSettings = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings()
+   Dim portalSettings As DotNetNuke.Entities.Portals.PortalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings
 
    Dim ParentModule As New DotNetNuke.Entities.Modules.ModuleInfo
    'PropertySource(strObjectName.ToLower).GetProperty(strPropertyName, strFormat, formatProvider, AccessingUser, CurrentAccessLevel, PropertyNotFound)

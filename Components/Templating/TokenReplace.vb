@@ -210,7 +210,7 @@ Namespace Templating
    CurrentAccessLevel = AccessLevel
    If AccessLevel <> Scope.NoSettings Then
     If PortalSettings Is Nothing Then
-     If HttpContext.Current IsNot Nothing Then Me.PortalSettings = PortalController.GetCurrentPortalSettings
+     If HttpContext.Current IsNot Nothing Then Me.PortalSettings = PortalController.Instance.GetCurrentPortalSettings
     Else
      Me.PortalSettings = PortalSettings
     End If

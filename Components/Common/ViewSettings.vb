@@ -73,7 +73,7 @@ Namespace Common
   Public Sub New(tabModuleId As Integer, justLoadSettings As Boolean)
 
    _tabModuleId = tabModuleId
-   _allSettings = (New DotNetNuke.Entities.Modules.ModuleController).GetTabModuleSettings(tabModuleId)
+   _allSettings = (New DotNetNuke.Entities.Modules.ModuleController).GetTabModule(tabModuleId).TabModuleSettings
    _allSettings.ReadValue("Template", Template)
    _allSettings.ReadValue("BlogModuleId", BlogModuleId)
    _allSettings.ReadValue("ShowAllLocales", ShowAllLocales)

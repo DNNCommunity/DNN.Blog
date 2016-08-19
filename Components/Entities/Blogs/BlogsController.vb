@@ -27,7 +27,7 @@ Namespace Entities.Blogs
 
   Public Shared Function GetBlog(blogID As Int32, userId As Integer, locale As String) As BlogInfo
 
-   Return CType(CBO.FillObject(DataProvider.Instance().GetBlog(blogID, userId, locale), GetType(BlogInfo)), BlogInfo)
+   Return CBO.FillObject(Of BlogInfo)(DataProvider.Instance().GetBlog(blogID, userId, locale))
 
   End Function
 

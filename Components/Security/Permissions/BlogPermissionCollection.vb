@@ -68,7 +68,7 @@ Namespace Security.Permissions
   End Function
 
   Public Function CurrentUserHasPermission(PermissionKey As String) As Boolean
-   Dim u As UserInfo = UserController.GetCurrentUserInfo
+   Dim u As UserInfo = UserController.Instance.GetCurrentUserInfo
    If u IsNot Nothing Then
     For Each epi As BlogPermissionInfo In Me
      If epi.PermissionKey Is Nothing Then

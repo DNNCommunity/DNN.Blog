@@ -41,7 +41,6 @@ Namespace Controls
 
 #Region " Event Handlers "
   Private Sub TagEdit_Init(sender As Object, e As EventArgs) Handles Me.Init
-   DotNetNuke.Framework.jQuery.RegisterJQueryUI(Page)
    ClientResourceManager.RegisterScript(Page, ResolveUrl("~/DesktopModules/Blog/js/tag-it.min.js"))
    If CssClass = "" Then CssClass = "tagit-control"
    ClientResourceManager.RegisterStyleSheet(Page, ResolveUrl("~/DesktopModules/Blog/css/tagit.css"), Web.Client.FileOrder.Css.ModuleCss)
