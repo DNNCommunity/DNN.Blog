@@ -135,7 +135,7 @@ Namespace Common
    If Not ValueTable.Item(ValueName) Is Nothing Then
     Try
      Variable = CType(ValueTable.Item(ValueName), String)
-     Variable = (New DotNetNuke.Security.PortalSecurity).InputFilter(Variable, DotNetNuke.Security.PortalSecurity.FilterFlag.NoMarkup Or DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting Or DotNetNuke.Security.PortalSecurity.FilterFlag.NoSQL)
+     Variable = (New DotNetNuke.Security.PortalSecurity).InputFilter(Variable, DotNetNuke.Security.PortalSecurity.FilterFlag.NoMarkup Or DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting)
     Catch ex As Exception
     End Try
    End If
