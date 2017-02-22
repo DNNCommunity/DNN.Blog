@@ -173,6 +173,8 @@ Namespace Controls
    chkHideUnpublishedBlogsViewMode.Checked = ViewSettings.HideUnpublishedBlogsViewMode
    chkHideUnpublishedBlogsEditMode.Checked = ViewSettings.HideUnpublishedBlogsEditMode
 
+   chkAllowComments.Checked = ViewSettings.AllowComments
+
    Try
     ddTemplate.Items.FindByValue(ViewSettings.Template).Selected = True
    Catch ex As Exception
@@ -189,6 +191,7 @@ Namespace Controls
    ViewSettings.ShowManagementPanelViewMode = chkShowManagementPanelViewMode.Checked
    ViewSettings.HideUnpublishedBlogsViewMode = chkHideUnpublishedBlogsViewMode.Checked
    ViewSettings.HideUnpublishedBlogsEditMode = chkHideUnpublishedBlogsEditMode.Checked
+   ViewSettings.AllowComments = chkAllowComments.Checked
    ViewSettings.BlogId = CInt(ddBlogId.SelectedValue)
    ViewSettings.Categories = ctlCategories.ToString
    ViewSettings.AuthorId = CInt(ddAuthorId.SelectedValue)

@@ -539,7 +539,7 @@ Public Class Blog
   End With
   vtContents.DataBind()
 
-  ctlComments.Visible = CBool(ViewSettings.BlogModuleId = -1) AndAlso BlogContext.Security.CanViewComments
+  ctlComments.Visible = ViewSettings.AllowComments AndAlso BlogContext.Security.CanViewComments
   ctlManagement.Visible = CBool(ViewSettings.BlogModuleId = -1) OrElse ViewSettings.ShowManagementPanel
 
   If PortalSettings.UserMode = PortalSettings.Mode.View AndAlso ViewSettings.ShowManagementPanelViewMode = False Then

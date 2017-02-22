@@ -43,4 +43,8 @@
         <asp:CheckBox ID="chkHideUnpublishedBlogsViewMode" runat="server" ResourceKey="chkHideUnpublishedBlogsViewMode" />
         <asp:CheckBox ID="chkHideUnpublishedBlogsEditMode" runat="server" ResourceKey="chkHideUnpublishedBlogsEditMode" />
     </div>
+	<div class="dnnFormItem">
+		<dnn:label id="lblAllowComments" runat="server" controlname="chkAllowComments" suffix=":" />
+		<asp:CheckBox ID="chkAllowComments" runat="server" />
+	</div>
 </fieldset>
