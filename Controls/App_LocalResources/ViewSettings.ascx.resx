@@ -189,4 +189,10 @@
   <data name="lblHideUnpublishedBlogs.Text" xml:space="preserve">
     <value>Hide Unpublished Posts</value>
   </data>
+  <data name="lblAllowComments.Help" xml:space="preserve">
+    <value>Allow users to post comments on this instance of the blog module</value>
+  </data>
+  <data name="lblAllowComments.Text" xml:space="preserve">
+    <value>Allow Comments</value>
+  </data>
 </root>
