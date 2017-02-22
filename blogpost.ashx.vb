@@ -705,9 +705,9 @@ Public Class BlogPost
    preceding = Regex.Replace(preceding, "[\r\n]", "") ' remove newlines
    If preceding = "" Then
     ' Begin extraction process
-    Dim srcM As Match = Regex.Match(m.Value, "(?i)src=&quot;http:[\w\d/]+/(.*?)\.\w+&quot;(?-i)")
+    Dim srcM As Match = Regex.Match(m.Value, "(?i)src=&quot;(.*?)\.\w+&quot;(?-i)")
     If srcM.Success Then ' successfully parsed filename
-     newPost.Image = srcM.Groups(1).Value
+     newPost.Image = Path.GetFileName(srcM.Groups(1).Value)
      ' Now remove image from contents
      preceding = contents.Substring(0, m.Index)
      Dim remaining As String = contents.Substring(m.Index + m.Length)
