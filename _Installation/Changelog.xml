@@ -144,4 +144,10 @@
   <change type="Enhancement">BlogML enhancement to facilitate transfer of blog image</change>
   <change type="Fix">Various fixes. Check the Github history for details.</change>
  </release>
+ <release version="06.04.01">
+  <change type="Enhancement">Ability to specify whether to allow comments per module instance</change>
+  <change type="Enhancement">Add Twitter tags to page</change>
+  <change type="Fix">Better filter for querystring values</change>
+  <change type="Fix">Fix for issue with MarkdownMonster</change>
+ </release>
 </changelog>
