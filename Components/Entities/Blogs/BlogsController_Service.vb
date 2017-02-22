@@ -172,6 +172,7 @@ Namespace Entities.Blogs
    For Each comment As CommentInfo In CommentsController.GetCommentsByContentItem(post.ContentItemId, False, UserInfo.UserID)
     Dim newComment As New BlogMLComment
     newComment.Approved = comment.Approved
+    newComment.Content = New BlogMLContent()
     newComment.Content.Text = comment.Comment
     newComment.DateCreated = comment.CreatedOnDate
     newComment.Title = ""
