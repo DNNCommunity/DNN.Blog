@@ -128,16 +128,21 @@ Public Class Blog
 #Region " Open Graph Meta Tags "
  Private Sub AddOpenGraphMetaTags()
   Dim URL As String = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Host
-  Page.Header.Controls.Add(New LiteralControl(String.Format("<meta id=""ogurl"" property=""og:url"" content=""{0}"" />", BlogContext.Post.PermaLink)))
-  Page.Header.Controls.Add(New LiteralControl(String.Format("<meta id=""ogtitle"" property=""og:title"" content=""{0}"" />", CleanStringForXmlAttribute(BlogContext.Post.LocalizedTitle))))
-  Dim description As String = CleanStringForXmlAttribute(DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Post.LocalizedSummary, False))
+    Page.Header.Controls.Add(New LiteralControl(String.Format("<meta id=""ogurl"" property=""og:url"" content=""{0}"" />", BlogContext.Post.PermaLink)))
+    Page.Header.Controls.Add(New LiteralControl(String.Format("<meta content=""{0}"" name=""twitter:url"">", BlogContext.Post.PermaLink)))
+    Page.Header.Controls.Add(New LiteralControl(String.Format("<meta id=""ogtitle"" property=""og:title"" content=""{0}"" />", CleanStringForXmlAttribute(BlogContext.Post.LocalizedTitle))))
+    Page.Header.Controls.Add(New LiteralControl(String.Format("<meta content=""{0}"" name=""twitter:title"">", CleanStringForXmlAttribute(BlogContext.Post.LocalizedTitle))))
+    Dim description As String = CleanStringForXmlAttribute(DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Post.LocalizedSummary, False))
   If (Not String.IsNullOrEmpty(description)) Then
-   Page.Header.Controls.Add(New LiteralControl(String.Format("<meta id=""ogdescription"" property=""og:description"" content=""{0}"" />", description)))
-  End If
+      Page.Header.Controls.Add(New LiteralControl(String.Format("<meta id=""ogdescription"" property=""og:description"" content=""{0}"" />", description)))
+      Page.Header.Controls.Add(New LiteralControl(String.Format("<meta content=""{0}"" name=""twitter:description"">", description)))
+    End If
   If Not String.IsNullOrEmpty(BlogContext.Post.Image) Then
    Dim strPath As String = String.Format("{0}?TabId={1}&ModuleId={2}&Blog={3}&Post={4}&w=1200&h=630&c=1&key={5}", glbImageHandlerPath, TabId.ToString, Settings.ModuleId.ToString, BlogContext.BlogId.ToString, BlogContext.ContentItemId.ToString, BlogContext.Post.Image)
-   Page.Header.Controls.Add(New LiteralControl(String.Format("<meta id=""ogimage"" property=""og:image"" content=""{0}"" />", URL + ResolveUrl(strPath))))
-  End If
+      Page.Header.Controls.Add(New LiteralControl(String.Format("<meta id=""ogimage"" property=""og:image"" content=""{0}"" />", URL + ResolveUrl(strPath))))
+      Page.Header.Controls.Add(New LiteralControl(String.Format("<meta content=""{0}"" name=""twitter:image"">", URL + ResolveUrl(strPath))))
+      Page.Header.Controls.Add(New LiteralControl(String.Format("<meta content=""summary_large_image"" name=""twitter:card"">")))
+    End If
   Page.Header.Controls.Add(New LiteralControl(String.Format("<meta id=""ogsitename"" property=""og:site_name"" content=""{0}"" />", CleanStringForXmlAttribute(PortalSettings.PortalName))))
   If Not String.IsNullOrEmpty(Settings.FacebookAppId) Then
    Page.Header.Controls.Add(New LiteralControl(String.Format("<meta id=""fbappid"" property=""fb:app_id"" content=""{0}"" />", Settings.FacebookAppId)))
