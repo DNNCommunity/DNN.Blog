@@ -5,18 +5,18 @@ Version 6.0, Peter Donker, August 2013
 ***
 
 ### <a id="toc"></a>Table Of Contents
-- [Installation](# installation)
-- [Quick Start](# quickstart)
-- [Overview](# overview)
-- [Main Screen](# mainscreen)
-- [Admin Screen](# adminscreen)
-- [Categories](# categories)
-- [Module Settings](# modulesettings)
-- [Commenting System](# commentingsystem)
-- [Working With Different Languages](# localization)
-- [Templating Mechanism](# templating)
-- [Annex A. Template Objects and Properties](# annexa)
-- [Annex B. Template Collections](# annexb)
+- [Installation](#installation)
+- [Quick Start](#quickstart)
+- [Overview](#overview)
+- [Main Screen](#mainscreen)
+- [Admin Screen](#adminscreen)
+- [Categories](#categories)
+- [Module Settings](#modulesettings)
+- [Commenting System](#commentingsystem)
+- [Working With Different Languages](#localization)
+- [Templating Mechanism](#templating)
+- [Annex A. Template Objects and Properties](#annexa)
+- [Annex B. Template Collections](#annexb)
 
 ## <a id="installation"></a>Installation
 First, let’s identify what you’ve downloaded. Normally you’ll have downloaded a zip file with a name along these lines: Blog\_06.00.00\_Install.zip. The name explains what it is you have. “Blog” is the name of the module, “06.00.00” is the version and “Install” is the package type.
@@ -110,7 +110,7 @@ For these reasons there are 3 models for the summary: a summary preceding the ma
 If selected a summary will be created if the author doesn't specify one. The way this is done is by examining the HTML to see if the module can find the first paragraph. If it can, only that paragraph is used. If if cannot determine the first paragraph, it will take the complete text. Subsequently the length of the text is compared to the specified length. If it's longer, the text will be cut to the specified length.
 
 ### <a id="categoryvocabulary"></a>Category Vocabulary
-DNN organizes [categories](# categories) and tags in so-called vocabularies. These are part of what is called the Taxonomy feature of DNN. You can select a vocabulary to use from the dropdown or you can create a new vocabulary on the categories tab on this page.
+DNN organizes [categories](#categories) and tags in so-called vocabularies. These are part of what is called the Taxonomy feature of DNN. You can select a vocabulary to use from the dropdown or you can create a new vocabulary on the categories tab on this page.
 
 ### <a id="allowmultiplecategories"></a>Allow Multiple Categories
 If selected then bloggers can select more than one category for their posts.
@@ -119,7 +119,7 @@ If selected then bloggers can select more than one category for their posts.
 Allowing attachments allows Windows Live Writer to add images and so forth to a blog post and upload them to the Blog module. If you disallow this no images can be embedded in a blog post sent using WLW.
 
 ### <a id="allowwlw"></a>Allow Windows Live Writer
-Allow bloggers to use Windows Live Writer (see [separate chapter about this tool](# wlw) for more details).
+Allow bloggers to use Windows Live Writer (see [separate chapter about this tool](#wlw) for more details).
 
 ### <a id="wlwmaxposts"></a>WLW Max Recent Posts
 When bloggers connect using Windows Live Writer, the program retrieves a list of last posts which allow the blogger to edit those. Here you specify how many posts will be retrieved at most.
@@ -224,7 +224,7 @@ The title is compulsory. The description is not.
 The language the blog's posts will be written in. Note this will not show if the site is monolingual.
 
 ### <a id="blogfullloc"></a>Full Localization
-If the site is multilingual, you can choose to have the blog in the "full localization" mode. Please see "[Working With Different Languages](# localization)" in this manual.
+If the site is multilingual, you can choose to have the blog in the "full localization" mode. Please see "[Working With Different Languages](#localization)" in this manual.
 
 ### <a id="blogimage"></a>Image
 A blog can have an associated image, like a logo, which can be used in templates. The blog list template, for instance, will show this image.
