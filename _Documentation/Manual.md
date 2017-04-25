@@ -478,7 +478,7 @@ E.g. in commentsTemplate.html of the default template you’ll see this:
 
     [if|1][security:canaddcomment][=]True[/if]
      <div style="padding-top:20px;">
-      <a href="# " class="dnnPrimaryAction" id="cmdComment">[resx:Comment]</a>
+      <a href="#" class="dnnPrimaryAction" id="cmdComment">[resx:Comment]</a>
      </div>
     [endif|1]
 
