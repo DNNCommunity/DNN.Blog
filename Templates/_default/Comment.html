@@ -4,6 +4,12 @@
       <img alt="[comment:displayname]" src="[commenter:profilepic|32]" />
     </div>
     <div class="profile">
+      <span id="anonDisplayName"></span>
+      <script>
+        if ([comment:createdbyuserid] == -1) {
+          document.getElementById("anonDisplayName").innerHTML='[comment:displayname]';
+        }
+      </script>
       <a href="[commenter:profileurl]">[commenter:displayname]</a>
     </div>
   </div>
