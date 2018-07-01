@@ -1,6 +1,6 @@
 '
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,22 +18,8 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System
-Imports System.Data
-Imports System.Linq
-Imports System.Xml
-Imports System.Xml.Schema
-Imports System.Xml.Serialization
-
-Imports DotNetNuke
-Imports DotNetNuke.Common
 Imports DotNetNuke.Common.Utilities
-Imports DotNetNuke.Entities.Modules
-Imports DotNetNuke.Entities.Portals
-Imports DotNetNuke.Services.Tokens
-
 Imports DotNetNuke.Modules.Blog.Data
-Imports DotNetNuke.Entities.Content.Taxonomy
 
 Namespace Entities.Posts
 
@@ -41,7 +27,7 @@ Namespace Entities.Posts
 
   Public Shared Function GetPost(contentItemId As Int32, moduleId As Int32, locale As String) As PostInfo
 
-   Return CType(CBO.FillObject(DataProvider.Instance().GetPost(contentItemId, moduleId, locale), GetType(PostInfo)), PostInfo)
+   Return CBO.FillObject(Of PostInfo)(DataProvider.Instance().GetPost(contentItemId, moduleId, locale))
 
   End Function
 

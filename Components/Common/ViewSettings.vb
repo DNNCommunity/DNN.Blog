@@ -1,6 +1,6 @@
 ﻿'
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -19,10 +19,7 @@
 '
 
 Imports System.Xml
-Imports Microsoft.VisualBasic.CompilerServices
-Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Services.Tokens
-Imports DotNetNuke.Modules.Blog.Common.Globals
 
 Namespace Common
  <Serializable()>
@@ -40,6 +37,10 @@ Namespace Common
   Public Property ShowAllLocales As Boolean = True
   Public Property ModifyPageDetails As Boolean = False
   Public Property ShowManagementPanel As Boolean = False
+  Public Property ShowManagementPanelViewMode As Boolean = True
+  Public Property HideUnpublishedBlogsViewMode As Boolean = False
+  Public Property HideUnpublishedBlogsEditMode As Boolean = False
+  Public Property AllowComments As Boolean = True
   Public Property BlogId As Integer = -1
   Public Property Categories As String = ""
   Public Property AuthorId As Integer = -1
@@ -73,19 +74,23 @@ Namespace Common
   Public Sub New(tabModuleId As Integer, justLoadSettings As Boolean)
 
    _tabModuleId = tabModuleId
-   _allSettings = (New DotNetNuke.Entities.Modules.ModuleController).GetTabModuleSettings(tabModuleId)
+   _allSettings = (New DotNetNuke.Entities.Modules.ModuleController).GetTabModule(tabModuleId).TabModuleSettings
    _allSettings.ReadValue("Template", Template)
    _allSettings.ReadValue("BlogModuleId", BlogModuleId)
    _allSettings.ReadValue("ShowAllLocales", ShowAllLocales)
    _allSettings.ReadValue("ModifyPageDetails", ModifyPageDetails)
    _allSettings.ReadValue("ShowManagementPanel", ShowManagementPanel)
+   _allSettings.ReadValue("ShowManagementPanelViewMode", ShowManagementPanelViewMode)
+   _allSettings.ReadValue("HideUnpublishedBlogsViewMode", HideUnpublishedBlogsViewMode)
+   _allSettings.ReadValue("HideUnpublishedBlogsEditMode", HideUnpublishedBlogsEditMode)
+   _allSettings.ReadValue("AllowComments", AllowComments)
    _allSettings.ReadValue("BlogId", BlogId)
    _allSettings.ReadValue("Categories", Categories)
    _allSettings.ReadValue("AuthorId", AuthorId)
    If BlogModuleId > -1 And tabModuleId > -1 Then ' security check
     Dim parentModule As DotNetNuke.Entities.Modules.ModuleInfo = (New DotNetNuke.Entities.Modules.ModuleController).GetModule(BlogModuleId)
     Dim thisTabModule As DotNetNuke.Entities.Modules.ModuleInfo = (New DotNetNuke.Entities.Modules.ModuleController).GetTabModule(tabModuleId)
-    If parentModule.PortalID <> thisTabModule.PortalID Then
+    If parentModule Is Nothing OrElse parentModule.PortalID <> thisTabModule.PortalID Then
      BlogModuleId = -1
      CanCache = False
     End If
@@ -98,7 +103,7 @@ Namespace Common
   End Sub
 
   Public Shared Function GetViewSettings(tabModuleId As Integer) As ViewSettings
-   Dim CacheKey As String = "TabModuleSettings" & tabModuleId.ToString
+   Dim CacheKey As String = "Blog_TabModuleSettings" & tabModuleId.ToString
    Dim settings As ViewSettings = CType(DotNetNuke.Common.Utilities.DataCache.GetCache(CacheKey), ViewSettings)
    If settings Is Nothing Then
     settings = New ViewSettings(tabModuleId)
@@ -121,12 +126,16 @@ Namespace Common
    objModules.UpdateTabModuleSetting(tabModuleId, "ShowAllLocales", ShowAllLocales.ToString)
    objModules.UpdateTabModuleSetting(tabModuleId, "ModifyPageDetails", ModifyPageDetails.ToString)
    objModules.UpdateTabModuleSetting(tabModuleId, "ShowManagementPanel", ShowManagementPanel.ToString)
+   objModules.UpdateTabModuleSetting(tabModuleId, "ShowManagementPanelViewMode", ShowManagementPanelViewMode.ToString)
+   objModules.UpdateTabModuleSetting(tabModuleId, "HideUnpublishedBlogsViewMode", HideUnpublishedBlogsViewMode.ToString)
+   objModules.UpdateTabModuleSetting(tabModuleId, "HideUnpublishedBlogsEditMode", HideUnpublishedBlogsEditMode.ToString)
+   objModules.UpdateTabModuleSetting(tabModuleId, "AllowComments", AllowComments.ToString)
    objModules.UpdateTabModuleSetting(tabModuleId, "BlogId", BlogId.ToString)
    objModules.UpdateTabModuleSetting(tabModuleId, "Categories", Categories.ToString)
    objModules.UpdateTabModuleSetting(tabModuleId, "AuthorId", AuthorId.ToString)
    _categoryList = Nothing
 
-   Dim CacheKey As String = "TabModuleSettings" & tabModuleId.ToString
+   Dim CacheKey As String = "Blog_TabModuleSettings" & tabModuleId.ToString
    DotNetNuke.Common.Utilities.DataCache.SetCache(CacheKey, Me)
 
   End Sub
@@ -136,7 +145,7 @@ Namespace Common
    For Each key As String In TemplateSettings.Keys
     objModules.UpdateTabModuleSetting(_tabModuleId, "t_" & key, TemplateSettings(key))
    Next
-   Dim CacheKey As String = "TabModuleSettings" & _tabModuleId.ToString
+   Dim CacheKey As String = "Blog_TabModuleSettings" & _tabModuleId.ToString
    DotNetNuke.Common.Utilities.DataCache.SetCache(CacheKey, Me)
   End Sub
 
@@ -195,13 +204,13 @@ Namespace Common
      End If
      Select Case strPropertyName.ToLower
       Case "termid", "categories" ' termid is for legacy purposes
-       Return Me.Categories
+       Return Categories
       Case "authorid"
-       Return (Me.AuthorId.ToString(OutputFormat, formatProvider))
+       Return (AuthorId.ToString(OutputFormat, formatProvider))
       Case "blogid"
-       Return (Me.BlogId.ToString(OutputFormat, formatProvider))
+       Return (BlogId.ToString(OutputFormat, formatProvider))
       Case "blogmoduleid"
-       Return (Me.BlogModuleId.ToString(OutputFormat, formatProvider))
+       Return (BlogModuleId.ToString(OutputFormat, formatProvider))
       Case Else
        Return ""
      End Select
@@ -217,6 +226,10 @@ Namespace Common
    writer.WriteElementString("ShowAllLocales", ShowAllLocales.ToString)
    writer.WriteElementString("ModifyPageDetails", ModifyPageDetails.ToString)
    writer.WriteElementString("ShowManagementPanel", ShowManagementPanel.ToString)
+   writer.WriteElementString("ShowManagementPanelViewMode", ShowManagementPanelViewMode.ToString)
+   writer.WriteElementString("HideUnpublishedBlogsViewMode", HideUnpublishedBlogsViewMode.ToString)
+   writer.WriteElementString("HideUnpublishedBlogsEditMode", HideUnpublishedBlogsEditMode.ToString)
+   writer.WriteElementString("AllowComments", AllowComments.ToString)
    writer.WriteElementString("BlogId", BlogId.ToString)
    writer.WriteElementString("AuthorId", AuthorId.ToString)
    writer.WriteEndElement() ' viewsettings
@@ -229,6 +242,10 @@ Namespace Common
    xml.ReadValue("ShowAllLocales", ShowAllLocales)
    xml.ReadValue("ModifyPageDetails", ModifyPageDetails)
    xml.ReadValue("ShowManagementPanel", ShowManagementPanel)
+   xml.ReadValue("ShowManagementPanelViewMode", ShowManagementPanelViewMode)
+   xml.ReadValue("HideUnpublishedBlogsViewMode", HideUnpublishedBlogsViewMode)
+   xml.ReadValue("HideUnpublishedBlogsEditMode", HideUnpublishedBlogsEditMode)
+   xml.ReadValue("AllowComments", AllowComments)
    xml.ReadValue("BlogId", BlogId)
    xml.ReadValue("AuthorId", AuthorId)
    _categoryList = Nothing

@@ -1,6 +1,6 @@
 '
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,24 +18,18 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System.Globalization
-Imports System.Runtime.Serialization
-Imports System.Runtime.Serialization.Json
 Imports System.Net
 Imports System.Net.Http
 Imports System.Web.Http
 Imports DotNetNuke.Web.Api
-Imports DotNetNuke.Modules.Blog
 Imports DotNetNuke.Modules.Blog.Common.Globals
-Imports DotNetNuke.Modules.Blog.Entities.Blogs
 Imports DotNetNuke.Modules.Blog.Entities.Posts
 Imports DotNetNuke.Modules.Blog.Entities.Comments
-Imports DotNetNuke.Modules.Blog.Security
-Imports DotNetNuke.Modules.Blog.Integration
 Imports DotNetNuke.Modules.Blog.BlogML.Xml
 Imports DotNetNuke.Modules.Blog.Entities.Terms
 Imports System.Xml
 Imports DotNetNuke.Modules.Blog.Services
+Imports ICSharpCode.SharpZipLib.Zip
 
 Namespace Entities.Blogs
  Partial Public Class BlogsController
@@ -69,13 +63,19 @@ Namespace Entities.Blogs
    newBlogML.DateCreated = Blog.CreatedOnDate
    AddCategories(newBlogML)
    AddPosts(newBlogML)
-   Dim blogMLFile As String = Date.Now.ToString("yyyy-MM-dd") & "-" & Guid.NewGuid.ToString("D") & ".xml"
-   Using stream As XmlWriter = XmlWriter.Create(GetBlogDirectoryMapPath(Blog.BlogID) & blogMLFile)
+   Dim blogMLFile As String = Date.Now.ToString("yyyy-MM-dd") & "-" & Guid.NewGuid.ToString("D")
+   Dim objZipOutputStream As New ZipOutputStream(IO.File.Create(GetBlogDirectoryMapPath(Blog.BlogID) & blogMLFile & ".zip"))
+   Dim objZipEntry As ZipEntry = New ZipEntry(blogMLFile & ".xml")
+   objZipOutputStream.PutNextEntry(objZipEntry)
+   objZipOutputStream.SetLevel(9)
+   Using stream As XmlWriter = XmlWriter.Create(objZipOutputStream)
     BlogMLSerializer.Serialize(stream, newBlogML)
     stream.Flush()
    End Using
+   objZipOutputStream.Finish()
+   objZipOutputStream.Close()
 
-   Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = GetBlogDirectoryPath(Blog.BlogID) & blogMLFile})
+   Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = GetBlogDirectoryPath(Blog.BlogID) & blogMLFile & ".zip"})
   End Function
 #End Region
 
@@ -137,6 +137,11 @@ Namespace Entities.Blogs
    End If
    newPostML.ID = post.ContentItemId.ToString
    newPostML.PostUrl = post.PermaLink
+   newPostML.Image = post.Image
+   newPostML.AllowComments = post.AllowComments
+   newPostML.DisplayCopyright = post.DisplayCopyright
+   newPostML.Copyright = post.Copyright
+   newPostML.Locale = post.Locale
 
    ' pack files
    Dim postDir As String = GetPostDirectoryMapPath(post.BlogID, post.ContentItemId)
@@ -153,7 +158,7 @@ Namespace Entities.Blogs
      Using fs As New IO.FileStream(f, IO.FileMode.Open)
       Dim fileData(CInt(fs.Length - 1)) As Byte
       If fs.Length > 0 Then
-       fs.Read(fileData, 0, CInt(fs.Length - 1))
+       fs.Read(fileData, 0, CInt(fs.Length))
        att.Data = fileData
        att.Embedded = True
       Else
@@ -167,6 +172,7 @@ Namespace Entities.Blogs
    For Each comment As CommentInfo In CommentsController.GetCommentsByContentItem(post.ContentItemId, False, UserInfo.UserID)
     Dim newComment As New BlogMLComment
     newComment.Approved = comment.Approved
+    newComment.Content = New BlogMLContent()
     newComment.Content.Text = comment.Comment
     newComment.DateCreated = comment.CreatedOnDate
     newComment.Title = ""

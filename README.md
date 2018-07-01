@@ -3,8 +3,6 @@ The DotNetNuke® Blog module is an easy to use content publishing module that is
 
 ##Links
 - [Manual](_Documentation/Manual.md) (note this is in generic Markdown syntax, so it doesn't display 100% correct on Github)
-- [Project Home](http://www.dnnblog.org)
-- [Forums](http://www.dotnetnuke.com/Community/Forums/tabid/795/forumid/92/scope/threads/Default.aspx)
 - [Facebook](http://www.facebook.com/DNNBlog)
 
 ##How can I help?

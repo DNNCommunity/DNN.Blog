@@ -50,6 +50,10 @@
       <HintPath>_References\DotNetNuke.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="DotNetNuke.Web">
+      <HintPath>_References\DotNetNuke.Web.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Satrabel.OpenUrlRewriter, Version=0.1.0.29721, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>_References\Satrabel.OpenUrlRewriter.dll</HintPath>
@@ -57,6 +61,11 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_References\System.Web.Http.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -112,7 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DotNetNuke.Modules.Blog.vbproj">
-      <Project>{4E2BCA3B-927C-4AF2-9999-B1C074FD0539}</Project>
+      <Project>{4e2bca3b-927c-4af2-9999-b1c074fd0539}</Project>
       <Name>DotNetNuke.Modules.Blog</Name>
       <Private>False</Private>
     </ProjectReference>

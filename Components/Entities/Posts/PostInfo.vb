@@ -1,6 +1,6 @@
 '
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,17 +18,8 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System
-Imports System.Data
 Imports System.Linq
-Imports System.Xml
-Imports System.Xml.Schema
-Imports System.Xml.Serialization
-Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Common.Globals
-Imports DotNetNuke.Entities.Modules
-Imports DotNetNuke.Services.Tokens
-Imports DotNetNuke.Entities.Users
 Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
 Imports DotNetNuke.Modules.Blog.Entities.Terms
@@ -67,7 +58,11 @@ Namespace Entities.Posts
   Private _permaLink As String = ""
   Public Function PermaLink(tab As DotNetNuke.Entities.Tabs.TabInfo) As String
    If String.IsNullOrEmpty(_permaLink) Then
-    _permaLink = ApplicationURL(tab.TabID) & "&Post=" & ContentItemId.ToString
+    _permaLink = ApplicationURL(tab.TabID)
+    If Not String.IsNullOrEmpty(Locale) Then
+     _permaLink &= "&language=" & Locale
+    End If
+    _permaLink &= "&Post=" & ContentItemId.ToString
     If DotNetNuke.Entities.Host.Host.UseFriendlyUrls Then
      _permaLink = FriendlyUrl(tab, _permaLink, GetSafePageName(LocalizedTitle))
     Else

@@ -1,6 +1,6 @@
 '
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -19,7 +19,6 @@
 '
 
 Imports DotNetNuke.Entities.Users
-Imports DotNetNuke.Security.Roles
 
 Namespace Security
 
@@ -46,7 +45,7 @@ Namespace Security
 
   Private Sub LoadUser(user As UserInfo)
    If user Is Nothing Then
-    user = DotNetNuke.Entities.Users.UserController.GetCurrentUserInfo
+    user = DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo
    End If
 
    AffiliateID = user.AffiliateID
@@ -75,7 +74,7 @@ Namespace Security
 
    If UserID = -1 Then
     Try
-     PortalID = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings.PortalId
+     PortalID = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings.PortalId
     Catch ex As Exception
      Exit Sub
     End Try
@@ -90,7 +89,7 @@ Namespace Security
 
 #Region " Public Shared Methods "
   Public Shared Function GetCurrentUser() As BlogUser
-   Dim dnnUser As UserInfo = DotNetNuke.Entities.Users.UserController.GetCurrentUserInfo
+   Dim dnnUser As UserInfo = DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo
    Dim cacheKey As String = String.Format("BlogUser{0}-{1}", dnnUser.PortalID, dnnUser.UserID)
    Dim du As BlogUser = Nothing
    Try

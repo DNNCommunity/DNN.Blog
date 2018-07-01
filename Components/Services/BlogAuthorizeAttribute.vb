@@ -1,6 +1,6 @@
 '
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,13 +18,10 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System.Web
 Imports System.Threading
 
 Imports DotNetNuke.Web.Api
 Imports DotNetNuke.Common
-Imports DotNetNuke.Security
-Imports DotNetNuke.Entities.Modules
 Imports DotNetNuke.Entities.Users
 
 Imports DotNetNuke.Modules.Blog.Security
@@ -83,7 +80,7 @@ Namespace Services
    If Not HttpContextSource.Current.Request.IsAuthenticated Then
     UserInfo = New UserInfo
    Else
-    Dim portalSettings As DotNetNuke.Entities.Portals.PortalSettings = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings()
+    Dim portalSettings As DotNetNuke.Entities.Portals.PortalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings()
     UserInfo = UserController.GetCachedUser(portalSettings.PortalId, HttpContextSource.Current.User.Identity.Name)
     If UserInfo Is Nothing Then UserInfo = New UserInfo
    End If

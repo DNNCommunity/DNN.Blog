@@ -1,6 +1,6 @@
 '
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -22,10 +22,7 @@ Imports System.IO
 
 Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Common.Globals
-Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Services.Cache
-Imports DotNetNuke.Services.Localization
-Imports DotNetNuke.Services.Localization.Localization
 
 Namespace Templating
  Public Class Templating

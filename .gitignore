@@ -164,3 +164,9 @@ Documentation/
 _OpenUrlRewriter/_References/
 _Documentation/_Resources/
 *.fr-FR.resx
+/resources.zip.manifest
+/Uninstall.SqlDataProvider
+install/*
+node_modules
+bower_components
+packages

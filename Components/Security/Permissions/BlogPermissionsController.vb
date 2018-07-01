@@ -1,6 +1,6 @@
 '
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,8 +18,6 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System
-Imports System.Data
 Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Entities.Users
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
@@ -36,7 +34,7 @@ Namespace Security.Permissions
    For i = 0 To m.Count - 1
     Dim mp As BlogPermissionInfo
     mp = m(i)
-    If mp.PermissionId = PermissionId AndAlso (DotNetNuke.Security.PortalSecurity.IsInRoles(mp.RoleName) Or (DotNetNuke.Entities.Users.UserController.GetCurrentUserInfo.Username = mp.Username And mp.UserId <> glbUserNothing)) AndAlso (mp.Expires > Now Or mp.Expires = Date.MinValue) Then
+    If mp.PermissionId = PermissionId AndAlso (DotNetNuke.Security.PortalSecurity.IsInRoles(mp.RoleName) Or (DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo.Username = mp.Username And mp.UserId <> glbUserNothing)) AndAlso (mp.Expires > Now Or mp.Expires = Date.MinValue) Then
      Return True
     End If
    Next
@@ -50,7 +48,7 @@ Namespace Security.Permissions
    For i = 0 To m.Count - 1
     Dim mp As BlogPermissionInfo
     mp = m(i)
-    If mp.PermissionKey = PermissionKey AndAlso (DotNetNuke.Security.PortalSecurity.IsInRoles(mp.RoleName) Or (DotNetNuke.Entities.Users.UserController.GetCurrentUserInfo.Username = mp.Username And mp.UserId <> glbUserNothing)) AndAlso (mp.Expires > Now Or mp.Expires = Date.MinValue) Then
+    If mp.PermissionKey = PermissionKey AndAlso (DotNetNuke.Security.PortalSecurity.IsInRoles(mp.RoleName) Or (DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo.Username = mp.Username And mp.UserId <> glbUserNothing)) AndAlso (mp.Expires > Now Or mp.Expires = Date.MinValue) Then
      Return True
     End If
    Next

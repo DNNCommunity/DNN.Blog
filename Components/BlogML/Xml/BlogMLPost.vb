@@ -1,150 +1,67 @@
 Imports System.Xml.Serialization
-Imports System.Collections
 
 Namespace BlogML.Xml
- <Serializable()> _
+ <Serializable>
  Public NotInheritable Class BlogMLPost
   Inherits BlogMLNode
-  Private m_postUrl As String
-  Private m_hasexcerpt As Boolean = False
-  Private m_content As New BlogMLContent()
-  Private m_excerpt As New BlogMLContent()
-  Private blogpostType As New BlogPostTypes()
-  Private m_authors As AuthorReferenceCollection
-  Private m_comments As CommentCollection
-  Private m_trackbacks As TrackbackCollection
-  Private m_categories As CategoryReferenceCollection
-  Private m_attachments As AttachmentCollection
-  Private postviews As UInt32 = 0
-  Private m_postname As String
 
-  <XmlAttribute("post-url")> _
-  Public Property PostUrl() As String
-   Get
-    Return Me.m_postUrl
-   End Get
-   Set(value As String)
-    Me.m_postUrl = value
-   End Set
-  End Property
+  <XmlAttribute("post-url")>
+  Public Property PostUrl As String
 
-  <XmlAttribute("hasexcerpt")> _
-  Public Property HasExcerpt() As Boolean
-   Get
-    Return Me.m_hasexcerpt
-   End Get
-   Set(value As Boolean)
-    Me.m_hasexcerpt = value
-   End Set
-  End Property
+  <XmlAttribute("hasexcerpt")>
+  Public Property HasExcerpt As Boolean = False
 
-  <XmlAttribute("type")> _
-  Public Property PostType() As BlogPostTypes
-   Get
-    Return Me.blogpostType
-   End Get
-   Set(value As BlogPostTypes)
-    Me.blogpostType = value
-   End Set
-  End Property
+  <XmlAttribute("type")>
+  Public Property PostType As New BlogPostTypes
 
-  <XmlAttribute("views")> _
-  Public Property Views() As UInt32
-   Get
-    Return Me.postviews
-   End Get
-   Set(value As UInt32)
-    Me.postviews = value
-   End Set
-  End Property
+  <XmlAttribute("views")>
+  Public Property Views As UInt32 = 0
 
-  <XmlElement("post-name")> _
-  Public Property PostName() As String
-   Get
-    Return Me.m_postname
-   End Get
-   Set(value As String)
-    Me.m_postname = value
-   End Set
-  End Property
+  <XmlAttribute("image", [Namespace]:="http://dnn-connect.org/blog/")>
+  Public Property Image As String
 
-  <XmlElement("content")> _
-  Public Property Content() As BlogMLContent
-   Get
-    Return Me.m_content
-   End Get
-   Set(value As BlogMLContent)
-    Me.m_content = value
-   End Set
-  End Property
+  <XmlAttribute("allow-comments", [Namespace]:="http://dnn-connect.org/blog/")>
+  Public Property AllowComments As Boolean = True
 
-  <XmlElement("excerpt")> _
-  Public Property Excerpt() As BlogMLContent
-   Get
-    Return Me.m_excerpt
-   End Get
-   Set(value As BlogMLContent)
-    Me.m_excerpt = value
-   End Set
-  End Property
+  <XmlAttribute("display-copyright", [Namespace]:="http://dnn-connect.org/blog/")>
+  Public Property DisplayCopyright As Boolean = False
 
-  <XmlArray("authors")> _
-  <XmlArrayItem("author", GetType(BlogMLAuthorReference))> _
-  Public ReadOnly Property Authors() As AuthorReferenceCollection
-   Get
-    If Me.m_authors Is Nothing Then
-     Me.m_authors = New AuthorReferenceCollection()
-    End If
-    Return Me.m_authors
-   End Get
-  End Property
+  <XmlAttribute("copyright", [Namespace]:="http://dnn-connect.org/blog/")>
+  Public Property Copyright As String
 
-  <XmlArray("categories")> _
-  <XmlArrayItem("category", GetType(BlogMLCategoryReference))> _
-  Public ReadOnly Property Categories() As CategoryReferenceCollection
-   Get
-    If Me.m_categories Is Nothing Then
-     Me.m_categories = New CategoryReferenceCollection()
-    End If
-    Return Me.m_categories
-   End Get
-  End Property
+  <XmlAttribute("locale", [Namespace]:="http://dnn-connect.org/blog/")>
+  Public Property Locale As String
 
-  <XmlArray("comments")> _
-  <XmlArrayItem("comment", GetType(BlogMLComment))> _
-  Public ReadOnly Property Comments() As CommentCollection
-   Get
-    If Me.m_comments Is Nothing Then
-     Me.m_comments = New CommentCollection()
-    End If
-    Return Me.m_comments
-   End Get
-  End Property
+  <XmlElement("post-name")>
+  Public Property PostName As String
 
+  <XmlElement("content")>
+  Public Property Content As New BlogMLContent
 
-  <XmlArray("trackbacks")> _
-  <XmlArrayItem("trackback", GetType(BlogMLTrackback))> _
-  Public ReadOnly Property Trackbacks() As TrackbackCollection
-   Get
-    If Me.m_trackbacks Is Nothing Then
-     Me.m_trackbacks = New TrackbackCollection()
-    End If
-    Return Me.m_trackbacks
-   End Get
-  End Property
+  <XmlElement("excerpt")>
+  Public Property Excerpt As New BlogMLContent
 
-  <XmlArray("attachments")> _
-  <XmlArrayItem("attachment", GetType(BlogMLAttachment))> _
-  Public ReadOnly Property Attachments() As AttachmentCollection
-   Get
-    If Me.m_attachments Is Nothing Then
-     Me.m_attachments = New AttachmentCollection()
-    End If
-    Return Me.m_attachments
-   End Get
-  End Property
+  <XmlArray("authors")>
+  <XmlArrayItem("author", GetType(BlogMLAuthorReference))>
+  Public Property Authors As New AuthorReferenceCollection
 
-  <Serializable()> _
+  <XmlArray("categories")>
+  <XmlArrayItem("category", GetType(BlogMLCategoryReference))>
+  Public Property Categories As New CategoryReferenceCollection
+
+  <XmlArray("comments")>
+  <XmlArrayItem("comment", GetType(BlogMLComment))>
+  Public Property Comments As New CommentCollection
+
+  <XmlArray("trackbacks")>
+  <XmlArrayItem("trackback", GetType(BlogMLTrackback))>
+  Public Property Trackbacks As New TrackbackCollection
+
+  <XmlArray("attachments")>
+  <XmlArrayItem("attachment", GetType(BlogMLAttachment))>
+  Public Property Attachments As New AttachmentCollection
+
+  <Serializable>
   Public NotInheritable Class AuthorReferenceCollection
    Inherits ArrayList
    Default Public Shadows ReadOnly Property Item(index As Integer) As BlogMLAuthorReference
@@ -158,14 +75,14 @@ Namespace BlogML.Xml
    End Sub
 
    Public Overloads Function Add(authorID As String) As BlogMLAuthorReference
-    Dim item As New BlogMLAuthorReference()
+    Dim item As New BlogMLAuthorReference
     item.Ref = authorID
     MyBase.Add(item)
     Return item
    End Function
   End Class
 
-  <Serializable()> _
+  <Serializable>
   Public NotInheritable Class CommentCollection
    Inherits ArrayList
    Default Public Shadows ReadOnly Property Item(index As Integer) As BlogMLComment
@@ -179,7 +96,7 @@ Namespace BlogML.Xml
    End Sub
   End Class
 
-  <Serializable()> _
+  <Serializable>
   Public NotInheritable Class TrackbackCollection
    Inherits ArrayList
    Default Public Shadows ReadOnly Property Item(index As Integer) As BlogMLTrackback
@@ -193,7 +110,7 @@ Namespace BlogML.Xml
    End Sub
   End Class
 
-  <Serializable()> _
+  <Serializable>
   Public NotInheritable Class CategoryReferenceCollection
    Inherits ArrayList
    Default Public Shadows ReadOnly Property Item(index As Integer) As BlogMLCategoryReference
@@ -207,14 +124,14 @@ Namespace BlogML.Xml
    End Sub
 
    Public Overloads Function Add(categoryID As String) As BlogMLCategoryReference
-    Dim item As New BlogMLCategoryReference()
+    Dim item As New BlogMLCategoryReference
     item.Ref = categoryID
     MyBase.Add(item)
     Return item
    End Function
   End Class
 
-  <Serializable()> _
+  <Serializable>
   Public NotInheritable Class AttachmentCollection
    Inherits ArrayList
    Default Public Shadows ReadOnly Property Item(index As Integer) As BlogMLAttachment

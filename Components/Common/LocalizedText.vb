@@ -1,6 +1,6 @@
 ﻿'
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -21,11 +21,6 @@
 Imports System.Xml
 Imports System.Xml.Schema
 Imports System.Xml.Serialization
-
-Imports DotNetNuke.Common.Utilities
-Imports DotNetNuke.Services.Localization
-Imports DotNetNuke.Services.Localization.Localization
-Imports System.Runtime.Serialization
 
 Namespace Common
  <Serializable()> _
@@ -188,7 +183,7 @@ Namespace Common
     Dim loc As String = readAttribute(reader, "Locale")
     If loc <> "" Then
      Dim txt As String = reader.ReadElementContentAsString
-     Me.Add(loc, txt)
+     Add(loc, txt)
     End If
     reader.ReadEndElement() ' Text
    Loop

@@ -1,6 +1,6 @@
 '
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -20,7 +20,6 @@
 
 Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Services.Tokens
-Imports DotNetNuke.Services.Localization.Localization
 
 Namespace Templating
  Public Class TemplateRepeaterItem
@@ -58,17 +57,17 @@ Namespace Templating
    Else
     OutputFormat = strFormat
    End If
-     Select strPropertyName.ToLower
+   Select strPropertyName.ToLower
     Case "isfirst", "first"
-     Return Common.Globals.FormatBoolean(Me.IsFirst, strFormat)
+     Return Common.Globals.FormatBoolean(IsFirst, strFormat)
     Case "islast", "last"
-     Return Common.Globals.FormatBoolean(Me.IsLast, strFormat)
+     Return Common.Globals.FormatBoolean(IsLast, strFormat)
     Case "iseven", "even"
-     Return Common.Globals.FormatBoolean(Me.IsEven, strFormat)
+     Return Common.Globals.FormatBoolean(IsEven, strFormat)
     Case "isodd", "odd"
-     Return Common.Globals.FormatBoolean(Me.IsOdd, strFormat)
+     Return Common.Globals.FormatBoolean(IsOdd, strFormat)
     Case "index"
-     Return (Me.Index.ToString(OutputFormat, formatProvider))
+     Return (Index.ToString(OutputFormat, formatProvider))
    End Select
    Return Null.NullString
   End Function

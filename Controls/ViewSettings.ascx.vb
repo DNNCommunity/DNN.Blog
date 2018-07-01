@@ -1,6 +1,6 @@
 '
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -19,6 +19,7 @@
 '
 
 Imports System.Linq
+Imports DotNetNuke.Entities.Modules
 
 Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
@@ -27,24 +28,10 @@ Imports DotNetNuke.Modules.Blog.Entities.Posts
 
 Namespace Controls
  Public Class ViewSettings
-  Inherits DotNetNuke.Entities.Modules.ModuleSettingsBase
+  Inherits ModuleSettingsBase
 
 #Region " Properties "
   Private Property BlogModuleId As Integer = -1
-
-  Private _settings As Common.ModuleSettings
-  Public Shadows Property Settings() As Common.ModuleSettings
-   Get
-    If _settings Is Nothing Then
-     _settings = Common.ModuleSettings.GetModuleSettings(BlogModuleId)
-    End If
-    Return _settings
-   End Get
-   Set(ByVal value As Common.ModuleSettings)
-    _settings = value
-   End Set
-  End Property
-
   Private _viewSettings As Common.ViewSettings
   Public Property ViewSettings() As Common.ViewSettings
    Get
@@ -58,25 +45,27 @@ Namespace Controls
 #End Region
 
 #Region " Page Events "
-  Private Sub Page_Init(sender As Object, e As System.EventArgs) Handles Me.Init
+  Private Sub Page_Init(sender As Object, e As EventArgs) Handles Me.Init
    Try
-    BlogModuleId = ModuleId
-    ctlCategories.ModuleConfiguration = Me.ModuleConfiguration
-    ctlCategories.VocabularyId = Settings.VocabularyId
-    If ViewSettings.BlogModuleId > -1 Then
-     BlogModuleId = ViewSettings.BlogModuleId
-    Else
-     BlogModuleId = ModuleId
+    ctlCategories.ModuleConfiguration = ModuleConfiguration
+    If Not IsPostBack Then
+     If ViewSettings.BlogModuleId > -1 Then
+      BlogModuleId = ViewSettings.BlogModuleId
+     Else
+      BlogModuleId = ModuleId
+     End If
+     ctlCategories.VocabularyId = Common.ModuleSettings.GetModuleSettings(BlogModuleId).VocabularyId
     End If
    Catch ex As Exception
    End Try
   End Sub
 
-  Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+  Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
   End Sub
 
-  Private Sub ddBlogModuleId_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles ddBlogModuleId.SelectedIndexChanged
+  Private Sub ddBlogModuleId_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddBlogModuleId.SelectedIndexChanged
    BlogModuleId = CInt(ddBlogModuleId.SelectedValue)
+   ctlCategories.VocabularyId = Common.ModuleSettings.GetModuleSettings(BlogModuleId).VocabularyId
    LoadDropdowns()
   End Sub
 #End Region
@@ -99,7 +88,7 @@ Namespace Controls
 #Region " Base Method Implementations "
   Public Overrides Sub LoadSettings()
 
-   If Not Me.IsPostBack Then
+   If Not IsPostBack Then
 
     ddTemplate.Items.Clear()
     ddTemplate.Items.Add(New ListItem("Default [System]", "[G]_default"))
@@ -108,10 +97,10 @@ Namespace Controls
       ddTemplate.Items.Add(New ListItem(d.Name & " [System]", "[G]" & d.Name))
      End If
     Next
-    For Each d As IO.DirectoryInfo In (New IO.DirectoryInfo(Settings.PortalTemplatesMapPath)).GetDirectories
+    For Each d As IO.DirectoryInfo In (New IO.DirectoryInfo(Common.ModuleSettings.GetModuleSettings(BlogModuleId).PortalTemplatesMapPath)).GetDirectories
      ddTemplate.Items.Add(New ListItem(d.Name & " [Local]", "[P]" & d.Name))
     Next
-    Dim skinTemplatePath As String = Server.MapPath(DotNetNuke.UI.Skins.Skin.GetSkin(CType(Me.Page, Framework.PageBase)).SkinPath) & "Templates\Blog\"
+    Dim skinTemplatePath As String = Server.MapPath(DotNetNuke.UI.Skins.Skin.GetSkin(CType(Page, Framework.PageBase)).SkinPath) & "Templates\Blog\"
     If IO.Directory.Exists(skinTemplatePath) Then
      For Each d As IO.DirectoryInfo In (New IO.DirectoryInfo(skinTemplatePath)).GetDirectories
       ddTemplate.Items.Add(New ListItem(d.Name & " [Skin]", "[S]" & d.Name))
@@ -119,8 +108,23 @@ Namespace Controls
     End If
 
     ddBlogModuleId.Items.Clear()
-    ddBlogModuleId.DataSource = (New DotNetNuke.Entities.Modules.ModuleController).GetModulesByDefinition(PortalId, "DNNBlog.Blog")
+
+    Dim listOfValidBlogModules As List(Of ModuleInfo) = New List(Of ModuleInfo)
+    Dim tabController As DotNetNuke.Entities.Tabs.TabController = New DotNetNuke.Entities.Tabs.TabController()
+
+    For Each blogModule As ModuleInfo In (New ModuleController).GetModulesByDefinition(PortalId, "DNNBlog.Blog")
+     Dim blogPage As DotNetNuke.Entities.Tabs.TabInfo = tabController.GetTab(blogModule.TabID, PortalId, False)
+     blogModule.ModuleTitle = String.Concat(blogPage.TabName, " - ", blogModule.ModuleTitle)
+
+     Dim targetViewSetting As Common.ViewSettings = Common.ViewSettings.GetViewSettings(blogModule.TabModuleID)
+     If CBool(targetViewSetting.BlogModuleId = -1) Then
+      listOfValidBlogModules.Add(blogModule)
+     End If
+    Next
+
+    ddBlogModuleId.DataSource = listOfValidBlogModules
     ddBlogModuleId.DataBind()
+
     Try
      ddBlogModuleId.Items.Remove(ddBlogModuleId.Items.FindByValue(ModuleId.ToString))
     Catch ex As Exception
@@ -164,6 +168,12 @@ Namespace Controls
    chkShowAllLocales.Checked = ViewSettings.ShowAllLocales
    chkModifyPageDetails.Checked = ViewSettings.ModifyPageDetails
    chkShowManagementPanel.Checked = ViewSettings.ShowManagementPanel
+   chkShowManagementPanelViewMode.Checked = ViewSettings.ShowManagementPanelViewMode
+
+   chkHideUnpublishedBlogsViewMode.Checked = ViewSettings.HideUnpublishedBlogsViewMode
+   chkHideUnpublishedBlogsEditMode.Checked = ViewSettings.HideUnpublishedBlogsEditMode
+
+   chkAllowComments.Checked = ViewSettings.AllowComments
 
    Try
     ddTemplate.Items.FindByValue(ViewSettings.Template).Selected = True
@@ -178,6 +188,10 @@ Namespace Controls
    ViewSettings.ShowAllLocales = chkShowAllLocales.Checked
    ViewSettings.ModifyPageDetails = chkModifyPageDetails.Checked
    ViewSettings.ShowManagementPanel = chkShowManagementPanel.Checked
+   ViewSettings.ShowManagementPanelViewMode = chkShowManagementPanelViewMode.Checked
+   ViewSettings.HideUnpublishedBlogsViewMode = chkHideUnpublishedBlogsViewMode.Checked
+   ViewSettings.HideUnpublishedBlogsEditMode = chkHideUnpublishedBlogsEditMode.Checked
+   ViewSettings.AllowComments = chkAllowComments.Checked
    ViewSettings.BlogId = CInt(ddBlogId.SelectedValue)
    ViewSettings.Categories = ctlCategories.ToString
    ViewSettings.AuthorId = CInt(ddAuthorId.SelectedValue)

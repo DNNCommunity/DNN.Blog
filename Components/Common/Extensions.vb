@@ -1,6 +1,6 @@
 ﻿'
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -22,12 +22,15 @@ Imports System.Linq
 Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.Entities.Terms
 Imports System.Xml
+Imports System.Runtime.CompilerServices
+Imports DotNetNuke.Web.Client.ClientResourceManagement
+Imports DotNetNuke.Web.Client
 
 Namespace Common
  Module Extensions
 
 #Region " Collection Read Extensions "
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Sub ReadValue(ByRef ValueTable As Hashtable, ValueName As String, ByRef Variable As Integer)
    If Not ValueTable.Item(ValueName) Is Nothing Then
     Try
@@ -37,7 +40,7 @@ Namespace Common
    End If
   End Sub
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Sub ReadValue(ByRef ValueTable As Hashtable, ValueName As String, ByRef Variable As Long)
    If Not ValueTable.Item(ValueName) Is Nothing Then
     Try
@@ -47,7 +50,7 @@ Namespace Common
    End If
   End Sub
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Sub ReadValue(ByRef ValueTable As Hashtable, ValueName As String, ByRef Variable As String)
    If Not ValueTable.Item(ValueName) Is Nothing Then
     Try
@@ -57,7 +60,7 @@ Namespace Common
    End If
   End Sub
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Sub ReadValue(ByRef ValueTable As Hashtable, ValueName As String, ByRef Variable As Boolean)
    If Not ValueTable.Item(ValueName) Is Nothing Then
     Try
@@ -67,7 +70,7 @@ Namespace Common
    End If
   End Sub
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Sub ReadValue(ByRef ValueTable As Hashtable, ValueName As String, ByRef Variable As Date)
    If Not ValueTable.Item(ValueName) Is Nothing Then
     Try
@@ -77,7 +80,7 @@ Namespace Common
    End If
   End Sub
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Sub ReadValue(ByRef ValueTable As Hashtable, ValueName As String, ByRef Variable As SummaryType)
    If Not ValueTable.Item(ValueName) Is Nothing Then
     Try
@@ -87,7 +90,7 @@ Namespace Common
    End If
   End Sub
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Sub ReadValue(ByRef ValueTable As Hashtable, ValueName As String, ByRef Variable As LocalizationType)
    If Not ValueTable.Item(ValueName) Is Nothing Then
     Try
@@ -97,7 +100,7 @@ Namespace Common
    End If
   End Sub
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Sub ReadValue(ByRef ValueTable As Hashtable, ValueName As String, ByRef Variable As TimeSpan)
    If Not ValueTable.Item(ValueName) Is Nothing Then
     Try
@@ -107,7 +110,7 @@ Namespace Common
    End If
   End Sub
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Sub ReadValue(ByRef ValueTable As NameValueCollection, ValueName As String, ByRef Variable As Integer)
    If Not ValueTable.Item(ValueName) Is Nothing Then
     Try
@@ -117,7 +120,7 @@ Namespace Common
    End If
   End Sub
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Sub ReadValue(ByRef ValueTable As NameValueCollection, ValueName As String, ByRef Variable As Long)
    If Not ValueTable.Item(ValueName) Is Nothing Then
     Try
@@ -127,17 +130,18 @@ Namespace Common
    End If
   End Sub
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Sub ReadValue(ByRef ValueTable As NameValueCollection, ValueName As String, ByRef Variable As String)
    If Not ValueTable.Item(ValueName) Is Nothing Then
     Try
      Variable = CType(ValueTable.Item(ValueName), String)
+     Variable = (New DotNetNuke.Security.PortalSecurity).InputFilter(Variable, DotNetNuke.Security.PortalSecurity.FilterFlag.NoMarkup Or DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting)
     Catch ex As Exception
     End Try
    End If
   End Sub
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Sub ReadValue(ByRef ValueTable As NameValueCollection, ValueName As String, ByRef Variable As Boolean)
    If Not ValueTable.Item(ValueName) Is Nothing Then
     Try
@@ -153,7 +157,7 @@ Namespace Common
    End If
   End Sub
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Sub ReadValue(ByRef ValueTable As NameValueCollection, ValueName As String, ByRef Variable As Date)
    If Not ValueTable.Item(ValueName) Is Nothing Then
     Try
@@ -163,7 +167,7 @@ Namespace Common
    End If
   End Sub
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Sub ReadValue(ByRef ValueTable As NameValueCollection, ValueName As String, ByRef Variable As TimeSpan)
    If Not ValueTable.Item(ValueName) Is Nothing Then
     Try
@@ -173,7 +177,7 @@ Namespace Common
    End If
   End Sub
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Sub ReadValue(ValueTable As Dictionary(Of String, String), ValueName As String, ByRef Variable As Integer)
    If ValueTable.ContainsKey(ValueName) Then
     Try
@@ -183,7 +187,7 @@ Namespace Common
    End If
   End Sub
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Sub ReadValue(ValueTable As Dictionary(Of String, String), ValueName As String, ByRef Variable As String)
    If ValueTable.ContainsKey(ValueName) Then
     Try
@@ -193,7 +197,7 @@ Namespace Common
    End If
   End Sub
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Sub ReadValue(ValueTable As Dictionary(Of String, String), ValueName As String, ByRef Variable As Boolean)
    If ValueTable.ContainsKey(ValueName) Then
     Try
@@ -203,7 +207,7 @@ Namespace Common
    End If
   End Sub
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Sub ReadValue(ValueTable As Dictionary(Of String, String), ValueName As String, ByRef Variable As Date)
    If ValueTable.ContainsKey(ValueName) Then
     Try
@@ -213,7 +217,7 @@ Namespace Common
    End If
   End Sub
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Sub ReadValue(ValueTable As Dictionary(Of String, String), ValueName As String, ByRef Variable As TimeSpan)
    If ValueTable.ContainsKey(ValueName) Then
     Try
@@ -223,7 +227,7 @@ Namespace Common
    End If
   End Sub
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Sub ReadValue(ByRef ValueTable As StateBag, ValueName As String, ByRef Variable As Integer)
    If Not ValueTable.Item(ValueName) Is Nothing Then
     Try
@@ -233,7 +237,7 @@ Namespace Common
    End If
   End Sub
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Sub ReadValue(ByRef ValueTable As StateBag, ValueName As String, ByRef Variable As Long)
    If Not ValueTable.Item(ValueName) Is Nothing Then
     Try
@@ -243,7 +247,7 @@ Namespace Common
    End If
   End Sub
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Sub ReadValue(ByRef ValueTable As StateBag, ValueName As String, ByRef Variable As String)
    If Not ValueTable.Item(ValueName) Is Nothing Then
     Try
@@ -253,7 +257,7 @@ Namespace Common
    End If
   End Sub
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Sub ReadValue(ByRef ValueTable As StateBag, ValueName As String, ByRef Variable As Boolean)
    If Not ValueTable.Item(ValueName) Is Nothing Then
     Try
@@ -263,7 +267,7 @@ Namespace Common
    End If
   End Sub
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Sub ReadValue(ByRef ValueTable As StateBag, ValueName As String, ByRef Variable As Date)
    If Not ValueTable.Item(ValueName) Is Nothing Then
     Try
@@ -273,7 +277,7 @@ Namespace Common
    End If
   End Sub
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Sub ReadValue(ByRef ValueTable As StateBag, ValueName As String, ByRef Variable As TimeSpan)
    If Not ValueTable.Item(ValueName) Is Nothing Then
     Try
@@ -283,7 +287,7 @@ Namespace Common
    End If
   End Sub
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Sub ReadValue(ByRef ValueTable As XmlNode, ValueName As String, ByRef Variable As Integer)
    If Not ValueTable.SelectSingleNode(ValueName) Is Nothing Then
     Try
@@ -293,7 +297,7 @@ Namespace Common
    End If
   End Sub
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Sub ReadValue(ByRef ValueTable As XmlNode, ValueName As String, ByRef Variable As Long)
    If Not ValueTable.SelectSingleNode(ValueName) Is Nothing Then
     Try
@@ -303,7 +307,7 @@ Namespace Common
    End If
   End Sub
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Sub ReadValue(ByRef ValueTable As XmlNode, ValueName As String, ByRef Variable As String)
    If Not ValueTable.SelectSingleNode(ValueName) Is Nothing Then
     Try
@@ -313,7 +317,7 @@ Namespace Common
    End If
   End Sub
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Sub ReadValue(ByRef ValueTable As XmlNode, ValueName As String, ByRef Variable As Boolean)
    If Not ValueTable.SelectSingleNode(ValueName) Is Nothing Then
     Try
@@ -323,7 +327,7 @@ Namespace Common
    End If
   End Sub
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Sub ReadValue(ByRef ValueTable As XmlNode, ValueName As String, ByRef Variable As Date)
    If Not ValueTable.SelectSingleNode(ValueName) Is Nothing Then
     Try
@@ -333,7 +337,7 @@ Namespace Common
    End If
   End Sub
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Sub ReadValue(ByRef ValueTable As XmlNode, ValueName As String, ByRef Variable As SummaryType)
    If Not ValueTable.SelectSingleNode(ValueName) Is Nothing Then
     Try
@@ -343,7 +347,7 @@ Namespace Common
    End If
   End Sub
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Sub ReadValue(ByRef ValueTable As XmlNode, ValueName As String, ByRef Variable As LocalizationType)
    If Not ValueTable.SelectSingleNode(ValueName) Is Nothing Then
     Try
@@ -353,7 +357,7 @@ Namespace Common
    End If
   End Sub
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Sub ReadValue(ByRef ValueTable As XmlNode, ValueName As String, ByRef Variable As TimeSpan)
    If Not ValueTable.SelectSingleNode(ValueName) Is Nothing Then
     Try
@@ -363,7 +367,7 @@ Namespace Common
    End If
   End Sub
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Sub ReadValue(ByRef ValueTable As XmlNode, ValueName As String, ByRef Variable As LocalizedText)
    If Not ValueTable.SelectSingleNode(ValueName) Is Nothing Then
     If Not ValueTable.SelectSingleNode(ValueName).SelectSingleNode("MLText") Is Nothing Then
@@ -377,7 +381,7 @@ Namespace Common
 #End Region
 
 #Region " Conversion Extensions "
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Function ToInt(var As Boolean) As Integer
    If var Then
     Return 1
@@ -386,7 +390,7 @@ Namespace Common
    End If
   End Function
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Function ToYesNo(var As Boolean) As String
    If var Then
     Return "Yes"
@@ -395,7 +399,7 @@ Namespace Common
    End If
   End Function
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Function ToInt(var As String) As Integer
    If IsNumeric(var) Then
     Return Integer.Parse(var)
@@ -404,24 +408,24 @@ Namespace Common
    End If
   End Function
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Function ToBool(var As Integer) As Boolean
    Return CBool(var > 0)
   End Function
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Function ToStringArray(terms As List(Of TermInfo)) As String()
    Return terms.Select(Function(x)
                         Return x.Name
                        End Function).ToArray
   End Function
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Function ToTermIDString(terms As List(Of TermInfo)) As String
    Return ToTermIDString(terms, ";")
   End Function
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Function ToTermIDString(terms As List(Of TermInfo), separator As String) As String
    Dim res As New List(Of String)
    For Each t As TermInfo In terms
@@ -430,7 +434,7 @@ Namespace Common
    Return String.Join(separator, res.ToArray)
   End Function
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Function ToStringOrZero(value As Integer?) As String
    If value Is Nothing Then
     Return "0"
@@ -441,8 +445,8 @@ Namespace Common
 #End Region
 
 #Region " Other "
-  <System.Runtime.CompilerServices.Extension()>
-  Public Function FindControlByID(Control As System.Web.UI.Control, id As String) As Control
+  <Extension>
+  Public Function FindControlByID(Control As Control, id As String) As Control
    Dim found As Control = Nothing
    If Control IsNot Nothing Then
     If Control.ID = id Then
@@ -454,8 +458,8 @@ Namespace Common
    Return found
   End Function
 
-  <System.Runtime.CompilerServices.Extension()>
-  Public Function FindControlByID(Controls As System.Web.UI.ControlCollection, id As String) As Control
+  <Extension>
+  Public Function FindControlByID(Controls As ControlCollection, id As String) As Control
    Dim found As Control = Nothing
    If Controls IsNot Nothing AndAlso Controls.Count > 0 Then
     For i As Integer = 0 To Controls.Count - 1
@@ -470,7 +474,7 @@ Namespace Common
    Return found
   End Function
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Function OutputHtml(encodedHtml As String, strFormat As String) As String
    Select Case strFormat.ToLower
     Case ""
@@ -486,7 +490,7 @@ Namespace Common
    End Select
   End Function
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Function SubstringWithoutException(input As String, startIndex As Integer, length As Integer) As String
    If String.IsNullOrEmpty(input) Then Return ""
    If startIndex > 0 Then
@@ -507,7 +511,7 @@ Namespace Common
    End If
   End Function
 
-  <System.Runtime.CompilerServices.Extension()>
+  <Extension>
   Public Sub WriteAttachmentToXml(attachment As BlogML.Xml.BlogMLAttachment, writer As System.Xml.XmlWriter)
    writer.WriteStartElement("File")
    writer.WriteElementString("Path", attachment.Path)
@@ -515,6 +519,42 @@ Namespace Common
    writer.WriteBase64(attachment.Data, 0, attachment.Data.Length - 1)
    writer.WriteEndElement() ' Data
    writer.WriteEndElement() ' File
+  End Sub
+
+  <Extension>
+  Public Sub AddJavascriptFile(page As Page, moduleVersion As String, jsFilename As String, priority As Integer)
+   If DotNetNuke.Entities.Host.Host.CrmEnableCompositeFiles Then
+    ClientResourceManager.RegisterScript(page, DotNetNuke.Common.ResolveUrl("~/DesktopModules/Blog/js/" & jsFilename), priority)
+   Else
+    ClientResourceManager.RegisterScript(page, DotNetNuke.Common.ResolveUrl("~/DesktopModules/Blog/js/" & jsFilename) + "?_=" + moduleVersion, priority)
+   End If
+  End Sub
+
+  <Extension>
+  Public Sub AddJavascriptFile(page As Page, moduleVersion As String, jsFilename As String, name As String, version As String, priority As Integer)
+   If DotNetNuke.Entities.Host.Host.CrmEnableCompositeFiles Then
+    ClientResourceManager.RegisterScript(page, DotNetNuke.Common.ResolveUrl("~/DesktopModules/Blog/js/" & jsFilename), priority, "DnnBodyProvider", name, version)
+   Else
+    ClientResourceManager.RegisterScript(page, DotNetNuke.Common.ResolveUrl("~/DesktopModules/Blog/js/" & jsFilename) + "?_=" + moduleVersion, priority, "DnnBodyProvider", name, version)
+   End If
+  End Sub
+
+  <Extension>
+  Public Sub AddCssFile(page As Page, moduleVersion As String, cssFilename As String)
+   If DotNetNuke.Entities.Host.Host.CrmEnableCompositeFiles Then
+    ClientResourceManager.RegisterStyleSheet(page, DotNetNuke.Common.ResolveUrl("~/DesktopModules/Blog/css/" & cssFilename), FileOrder.Css.ModuleCss)
+   Else
+    ClientResourceManager.RegisterStyleSheet(page, DotNetNuke.Common.ResolveUrl("~/DesktopModules/Blog/css/" & cssFilename) + "?_=" + moduleVersion, FileOrder.Css.ModuleCss)
+   End If
+  End Sub
+
+  <Extension>
+  Public Sub AddCssFile(page As Page, moduleVersion As String, cssFilename As String, name As String, version As String)
+   If DotNetNuke.Entities.Host.Host.CrmEnableCompositeFiles Then
+    ClientResourceManager.RegisterStyleSheet(page, DotNetNuke.Common.ResolveUrl("~/DesktopModules/Blog/css/" & cssFilename), FileOrder.Css.ModuleCss, "DnnPageHeaderProvider", name, version)
+   Else
+    ClientResourceManager.RegisterStyleSheet(page, DotNetNuke.Common.ResolveUrl("~/DesktopModules/Blog/css/" & cssFilename) + "?_=" + moduleVersion, FileOrder.Css.ModuleCss, "DnnPageHeaderProvider", name, version)
+   End If
   End Sub
 #End Region
 

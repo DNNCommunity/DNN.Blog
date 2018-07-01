@@ -19,7 +19,6 @@
 '
 
 Imports DotNetNuke.Services.Social.Notifications
-Imports DotNetNuke.Modules.Blog.Entities
 Imports DotNetNuke.Entities.Users
 Imports DotNetNuke.Entities.Modules
 Imports System.Linq

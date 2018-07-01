@@ -1,6 +1,6 @@
 '
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
@@ -18,19 +18,9 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System
-Imports System.Data
-Imports System.IO
-Imports System.Runtime.Serialization
-Imports System.Runtime.Serialization.Json
-Imports System.Text
-Imports System.Xml
-Imports System.Xml.Schema
-Imports System.Xml.Serialization
 
 Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Entities.Modules
-Imports DotNetNuke.Services.Tokens
 
 Namespace Entities.LegacyUrls
  Partial Public Class LegacyUrlInfo

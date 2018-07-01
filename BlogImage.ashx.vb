@@ -1,6 +1,6 @@
 ﻿'
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,11 +18,7 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System.Web
-Imports System.Web.Services
 Imports DotNetNuke.Modules.Blog.Common.Globals
-Imports DotNetNuke.Modules.Blog.Entities.Blogs
-Imports DotNetNuke.Modules.Blog.Entities.Posts
 Imports DotNetNuke.Entities.Portals
 
 Public Class BlogImage
@@ -40,7 +36,7 @@ Public Class BlogImage
 
  Sub ProcessRequest(ByVal context As HttpContext) Implements IHttpHandler.ProcessRequest
 
-  PortalSettings = PortalController.GetCurrentPortalSettings
+  PortalSettings = PortalController.Instance.GetCurrentPortalSettings
   context.Request.Params.ReadValue("Blog", BlogId)
   context.Request.Params.ReadValue("Post", PostId)
   context.Request.Params.ReadValue("Key", Key)

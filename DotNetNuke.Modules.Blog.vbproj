@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -11,7 +11,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>DotNetNuke.Modules.Blog</RootNamespace>
     <AssemblyName>DotNetNuke.Modules.Blog</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MyType>Custom</MyType>
     <OptionExplicit>On</OptionExplicit>
     <OptionCompare>Binary</OptionCompare>
@@ -27,6 +27,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,6 +39,7 @@
     <NoWarn>42353,42354,42355</NoWarn>
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -49,6 +51,7 @@
     <NoWarn>42353,42354,42355</NoWarn>
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accessibility">
@@ -59,19 +62,23 @@
       <HintPath>_References\CookComputing.XmlRpcV2.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DotNetNuke, Version=7.0.4.180, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke, Version=8.0.0.809, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>_References\DotNetNuke.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DotNetNuke.Web, Version=7.0.4.180, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke.Web, Version=8.0.0.809, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>_References\DotNetNuke.Web.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DotNetNuke.Web.Client, Version=6.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke.Web.Client, Version=8.0.0.809, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>_References\DotNetNuke.Web.Client.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotNetNuke.Web.Deprecated">
+      <HintPath>_References\DotNetNuke.Web.Deprecated.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DotNetNuke.WebControls, Version=2.4.0.598, Culture=neutral, processorArchitecture=MSIL">
@@ -89,16 +96,21 @@
       <HintPath>_References\Microsoft.ApplicationBlocks.Data.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.6.14930, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=7.0.1.18622, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>_References\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SharpZipLib, Version=0.81.0.1407, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_References\SharpZipLib.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Net.Http, Version=4.0.30319.33440 built by: FX45W81RTMREL built by: FX45W81RTMREL built by: FX45W81RTMREL built by: FX45W81RTMREL built by: FX45W81RTMREL built by: FX45W81RTMREL built by: FX45W81RTMREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX45RTMREL built by: FX45RTMREL built by: FX45RTMREL built by: FX45RTMREL built by: FX45RTMREL, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    <Reference Include="System.Net.Http, Version=4.6.1038.0 built by: NETFXREL2 built by: NETFXREL2 built by: NETFXREL2 built by: NETFXREL2 built by: NETFXREL2 built by: NETFXREL2 built by: NETFXREL2 built by: NETFXREL2 built by: NETFXREL2 built by: FX45W81RTMREL built by: FX45W81RTMREL built by: FX45W81RTMREL built by: FX45W81RTMREL built by: FX45W81RTMREL built by: FX45W81RTMREL built by: FX45W81RTMREL built by: FX45W81RTMREL built by: FX45W81RTMREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX45RTMREL built by: FX45RTMREL built by: FX45RTMREL built by: FX45RTMREL built by: FX45RTMREL, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>_References\System.Net.Http.dll</HintPath>
       <Private>False</Private>
@@ -110,20 +122,22 @@
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Http, Version=4.0.20710.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Web.Http, Version=5.2.30128.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>_References\System.Web.Http.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\bin\System.Web.Mvc.dll</HintPath>
+    <Reference Include="System.Web.Mvc, Version=5.1.20821.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_References\System.Web.Mvc.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="Telerik.Web.UI, Version=2012.3.1205.40, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+    <Reference Include="Telerik.Web.UI, Version=, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>_References\Telerik.Web.UI.dll</HintPath>
       <Private>False</Private>
@@ -188,6 +202,12 @@
     <Content Include="Templates\classicBlog\CommentApprove.html" />
     <Content Include="Templates\classicBlog\CommentApproveBar.html" />
     <Content Include="Templates\classicBlog\CommentsTemplate.html" />
+    <Content Include="Templates\classicBlog\images\blog_edit_link.png" />
+    <Content Include="Templates\classicBlog\images\blog_permalink.png" />
+    <Content Include="Templates\classicBlog\images\blog_print.png" />
+    <Content Include="Templates\classicBlog\images\blog_trackback.png" />
+    <Content Include="Templates\classicBlog\images\comment.gif" />
+    <Content Include="Templates\classicBlog\images\Tag_16X16_Standard.png" />
     <Content Include="Templates\classicBlog\List.html" />
     <Content Include="Templates\classicBlog\Page.html" />
     <Content Include="Templates\classicBlog\Post.html" />
@@ -208,6 +228,8 @@
     <Content Include="Templates\latestPosts\Settings.xml" />
     <Content Include="Templates\latestPosts\template.css" />
     <Content Include="Templates\latestPosts\Template.html" />
+    <Content Include="Templates\searchBox\template.css" />
+    <Content Include="Templates\searchBox\Template.html" />
     <Content Include="Templates\tagList\Tag.html" />
     <Content Include="Templates\tagList\template.css" />
     <Content Include="Templates\tagList\Template.html" />
@@ -253,6 +275,7 @@
     <Content Include="Templates\classicBlog\App_LocalResources\SharedResources.ascx.resx" />
     <Content Include="Templates\commentList\App_LocalResources\SharedResources.ascx.resx" />
     <Content Include="Templates\latestPosts\App_LocalResources\SharedResources.ascx.resx" />
+    <Content Include="Templates\searchBox\App_LocalResources\SharedResources.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BlogImage.ashx.vb">
@@ -527,7 +550,6 @@
     <Folder Include="Templates\categoryList\jsblocks\" />
     <Folder Include="Templates\categoryList\js\" />
     <Folder Include="Templates\classicBlog\css\" />
-    <Folder Include="Templates\classicBlog\images\" />
     <Folder Include="Templates\classicBlog\jsblocks\" />
     <Folder Include="Templates\classicBlog\js\" />
     <Folder Include="Templates\commentList\css\" />
@@ -596,8 +618,15 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
-  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <!-- <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" /> -->
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v14.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">

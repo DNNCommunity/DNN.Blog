@@ -1,6 +1,4 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="Admin.ascx.vb" Inherits="DotNetNuke.Modules.Blog.Admin" %>
-<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
-<%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <div class="dnnForm" id="tabs">
  <ul class="dnnAdminTabNav">
@@ -53,6 +51,14 @@
     <div class="dnnFormItem">
 		<dnn:label id="lblIncrementViewCount" runat="server" controlname="txtIncrementViewCount" suffix=":" />
 		<asp:TextBox runat="server" ID="txtIncrementViewCount" Width="50" />
+	</div>
+ <div class="dnnFormItem">
+  <dnn:label id="lblFacebookAppId" runat="server" controlname="txtFacebookAppId" suffix=":" />
+  <asp:TextBox runat="server" ID="txtFacebookAppId" />
+ </div>
+	<div class="dnnFormItem">
+		<dnn:label id="lblFacebookProfileIdProperty" runat="server" controlname="ddFacebookProfileIdProperty" suffix=":" />
+		<asp:DropDownList ID="ddFacebookProfileIdProperty" runat="server" DataValueField="PropertyDefinitionID" DataTextField="PropertyName" />
 	</div>
 </fieldset>
 <h2 id="H3" class="dnnFormSectionHead"><a href="" class="dnnFormSectionExpanded"><%= LocalizeString("RSS")%></a></h2>

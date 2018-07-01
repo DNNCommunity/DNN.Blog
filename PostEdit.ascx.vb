@@ -1,6 +1,6 @@
 ﻿'
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,16 +18,10 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System
-Imports System.IO
-Imports DotNetNuke.Modules.Blog.Common
-Imports DotNetNuke.Web.Client.ClientResourceManagement
 Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Services.Localization.Localization
 Imports DotNetNuke.Services.Exceptions
-Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Common.Globals
-Imports DotNetNuke.Framework
 Imports System.Linq
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
 Imports DotNetNuke.Modules.Blog.Entities.Posts
@@ -42,9 +36,9 @@ Public Class PostEdit
 
 #Region " Public Properties "
 
- Public ReadOnly Property FilePath() As String
+ Public ReadOnly Property FilePath As String
   Get
-   Return Me.PortalSettings.HomeDirectory & Me.ModuleConfiguration.DesktopModule.FriendlyName & "/"
+   Return PortalSettings.HomeDirectory & ModuleConfiguration.DesktopModule.FriendlyName & "/"
   End Get
  End Property
 
@@ -57,12 +51,12 @@ Public Class PostEdit
 #End Region
 
 #Region " Event Handlers "
- Protected Overloads Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+ Protected Overloads Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
 
   Try
 
-   ctlTags.ModuleConfiguration = Me.ModuleConfiguration
-   ctlCategories.ModuleConfiguration = Me.ModuleConfiguration
+   ctlTags.ModuleConfiguration = ModuleConfiguration
+   ctlCategories.ModuleConfiguration = ModuleConfiguration
    ctlCategories.VocabularyId = Settings.VocabularyId
 
    If BlogContext.Blog Is Nothing Then
@@ -107,7 +101,7 @@ Public Class PostEdit
 
  End Sub
 
- Protected Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+ Protected Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
   Try
 
@@ -222,7 +216,7 @@ Public Class PostEdit
 
  End Sub
 
- Private Sub cmdSave_Click(sender As Object, e As System.EventArgs) Handles cmdSave.Click
+ Private Sub cmdSave_Click(sender As Object, e As EventArgs) Handles cmdSave.Click
 
   Try
 
@@ -362,14 +356,14 @@ Public Class PostEdit
   args.IsValid = teBlogPost.DefaultText.Length > 0
  End Sub
 
- Protected Sub chkDisplayCopyright_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles chkDisplayCopyright.CheckedChanged
+ Protected Sub chkDisplayCopyright_CheckedChanged(sender As Object, e As EventArgs) Handles chkDisplayCopyright.CheckedChanged
   pnlCopyright.Visible = chkDisplayCopyright.Checked
   If pnlCopyright.Visible Then
    txtCopyright.Text = CreateCopyRight()
   End If
  End Sub
 
- Private Sub cmdImageRemove_Click(sender As Object, e As System.EventArgs) Handles cmdImageRemove.Click
+ Private Sub cmdImageRemove_Click(sender As Object, e As EventArgs) Handles cmdImageRemove.Click
 
   If BlogContext.Post IsNot Nothing Then
    If BlogContext.Post.Image <> "" Then
@@ -399,15 +393,15 @@ Public Class PostEdit
 #End Region
 
 #Region " Private Methods "
- Private Function CreateCopyRight() As String
+ Private Function CreateCopyRight As String
   Return GetString("msgCopyright", LocalResourceFile) & Date.UtcNow.Year & " " & BlogContext.Blog.DisplayName
  End Function
 #End Region
 
 #Region " Upload Feature Methods "
- Private Sub DeleteAllFiles()
+ Private Sub DeleteAllFiles
   Try
-   System.IO.Directory.Delete(FileController.getPostDir(Me.FilePath, BlogContext.Post), True)
+   System.IO.Directory.Delete(FileController.getPostDir(FilePath, BlogContext.Post), True)
   Catch
 
   End Try

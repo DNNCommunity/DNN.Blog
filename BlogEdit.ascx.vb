@@ -1,6 +1,6 @@
 ﻿'
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -20,7 +20,6 @@
 
 Imports System.Linq
 Imports DotNetNuke.Common
-Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
 Imports DotNetNuke.Modules.Blog.Common.Globals
@@ -29,9 +28,9 @@ Imports DotNetNuke.Framework
 Public Class BlogEdit
  Inherits BlogModuleBase
 
- Private Sub Page_Init1(sender As Object, e As System.EventArgs) Handles Me.Init
+ Private Sub Page_Init(sender As Object, e As EventArgs) Handles Me.Init
 
-  jQuery.RequestDnnPluginsRegistration()
+  JavaScriptLibraries.JavaScript.RequestRegistration(JavaScriptLibraries.CommonJs.DnnPlugins)
   If Not BlogContext.Security.IsEditor Then
    If Not BlogContext.Security.IsBlogger Then
     Response.Redirect(NavigateURL("Access Denied"), True)
@@ -45,7 +44,7 @@ Public Class BlogEdit
 
  End Sub
 
- Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+ Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 
   If Not BlogContext.Security.IsBlogger Then
    Throw New Exception("You do not have access to this resource. Please check your login status.")
@@ -123,14 +122,14 @@ Public Class BlogEdit
   End Try
  End Sub
 
- Private Sub cmdUpdate_Click(sender As Object, e As System.EventArgs) Handles cmdUpdate.Click
+ Private Sub cmdUpdate_Click(sender As Object, e As EventArgs) Handles cmdUpdate.Click
   Try
    If Page.IsValid = True Then
     If BlogContext.Blog Is Nothing Then
      BlogContext.Blog = New BlogInfo
      With BlogContext.Blog
       .ModuleID = Settings.ModuleId
-      .OwnerUserId = Me.UserId
+      .OwnerUserId = UserId
      End With
     End If
     With BlogContext.Blog
@@ -203,7 +202,7 @@ Public Class BlogEdit
   End Try
  End Sub
 
- Private Sub cmdImageRemove_Click(sender As Object, e As System.EventArgs) Handles cmdImageRemove.Click
+ Private Sub cmdImageRemove_Click(sender As Object, e As EventArgs) Handles cmdImageRemove.Click
 
   If BlogContext.Blog IsNot Nothing Then
    If BlogContext.Blog.Image <> "" Then

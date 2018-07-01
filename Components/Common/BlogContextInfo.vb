@@ -1,6 +1,6 @@
 '
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,13 +18,9 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports DotNetNuke.Web.Client.ClientResourceManagement
-Imports DotNetNuke.Entities.Modules
-Imports DotNetNuke.Framework
 Imports DotNetNuke.Modules.Blog.Security
 Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Services.Tokens
-Imports DotNetNuke.Modules.Blog.Entities.Terms
 
 Namespace Common
 
@@ -108,9 +104,9 @@ Namespace Common
 
    ' set urls for use in module
    If ParentModule Is Nothing Then
-     ModuleUrls = New ModuleUrls(blogModule.TabId, BlogId, ContentItemId, TermId, AuthorId)
+    ModuleUrls = New ModuleUrls(blogModule.TabId, BlogId, ContentItemId, TermId, AuthorId)
    Else
-     ModuleUrls = New ModuleUrls(blogModule.TabId, ParentModule.TabID, BlogId, ContentItemId, TermId, AuthorId)
+    ModuleUrls = New ModuleUrls(blogModule.TabId, ParentModule.TabID, BlogId, ContentItemId, TermId, AuthorId)
    End If
    IsMultiLingualSite = CBool(DotNetNuke.Services.Localization.LocaleController.Instance.GetLocales(blogModule.PortalId).Count > 1)
    If Not blogModule.ViewSettings.ShowAllLocales Then
@@ -172,9 +168,9 @@ Namespace Common
 #End Region
 
 #Region " IPropertyAccess Implementation "
-  Public Function GetProperty(strPropertyName As String, strFormat As String, formatProvider As System.Globalization.CultureInfo, AccessingUser As DotNetNuke.Entities.Users.UserInfo, AccessLevel As DotNetNuke.Services.Tokens.Scope, ByRef PropertyNotFound As Boolean) As String Implements DotNetNuke.Services.Tokens.IPropertyAccess.GetProperty
+  Public Function GetProperty(strPropertyName As String, strFormat As String, formatProvider As System.Globalization.CultureInfo, AccessingUser As DotNetNuke.Entities.Users.UserInfo, AccessLevel As DotNetNuke.Services.Tokens.Scope, ByRef PropertyNotFound As Boolean) As String Implements IPropertyAccess.GetProperty
    Dim OutputFormat As String = String.Empty
-   Dim portalSettings As DotNetNuke.Entities.Portals.PortalSettings = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings()
+   Dim portalSettings As DotNetNuke.Entities.Portals.PortalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings
    If strFormat = String.Empty Then
     OutputFormat = "D"
    Else
@@ -182,21 +178,21 @@ Namespace Common
    End If
    Select Case strPropertyName.ToLower
     Case "blogmoduleid"
-     Return (Me.BlogModuleId.ToString(OutputFormat, formatProvider))
+     Return (BlogModuleId.ToString(OutputFormat, formatProvider))
     Case "blogid"
-     Return (Me.BlogId.ToString(OutputFormat, formatProvider))
+     Return (BlogId.ToString(OutputFormat, formatProvider))
     Case "Postid", "contentitemid", "postid", "post"
-     Return (Me.ContentItemId.ToString(OutputFormat, formatProvider))
+     Return (ContentItemId.ToString(OutputFormat, formatProvider))
     Case "termid", "term"
-     Return (Me.TermId.ToString(OutputFormat, formatProvider))
+     Return (TermId.ToString(OutputFormat, formatProvider))
     Case "categories"
-     Return Me.Categories
+     Return Categories
     Case "authorid", "author"
-     Return (Me.AuthorId.ToString(OutputFormat, formatProvider))
+     Return (AuthorId.ToString(OutputFormat, formatProvider))
     Case "enddate"
-     Return (Me.EndDate.ToString(OutputFormat, formatProvider))
+     Return (EndDate.ToString(OutputFormat, formatProvider))
     Case "enddateornow"
-     Return (Me.EndDateOrNow.ToString(OutputFormat, formatProvider))
+     Return (EndDateOrNow.ToString(OutputFormat, formatProvider))
     Case "blogselected"
      Return CBool(BlogId > -1).ToString()
     Case "postselected"
@@ -242,7 +238,7 @@ Namespace Common
    Return DotNetNuke.Common.Utilities.Null.NullString
   End Function
 
-  Public ReadOnly Property Cacheability() As DotNetNuke.Services.Tokens.CacheLevel Implements DotNetNuke.Services.Tokens.IPropertyAccess.Cacheability
+  Public ReadOnly Property Cacheability() As DotNetNuke.Services.Tokens.CacheLevel Implements IPropertyAccess.Cacheability
    Get
     Return CacheLevel.fullyCacheable
    End Get

@@ -1,6 +1,6 @@
 ﻿'
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -22,6 +22,7 @@ Imports System.Linq
 Imports DotNetNuke.Entities.Modules
 Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.Entities.Modules.Actions
+Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.Templating
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
@@ -42,15 +43,18 @@ Public Class Blog
 #End Region
 
 #Region " Event Handlers "
- Private Sub Page_Init1(sender As Object, e As System.EventArgs) Handles Me.Init
+ Private Sub Page_Init1(sender As Object, e As EventArgs) Handles Me.Init
   Integration.BlogModuleController.CheckupOnImportedFiles(ModuleId)
-  ctlComments.ModuleConfiguration = Me.ModuleConfiguration
-  ctlComments.BlogContext = Me.BlogContext
-  ctlManagement.ModuleConfiguration = Me.ModuleConfiguration
-  ctlManagement.BlogContext = Me.BlogContext
+  ctlComments.ModuleConfiguration = ModuleConfiguration
+  ctlComments.BlogContext = BlogContext
+  ctlManagement.ModuleConfiguration = ModuleConfiguration
+  ctlManagement.BlogContext = BlogContext
  End Sub
 
- Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+ Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+
+  ViewSettings.TemplateSettings.ReadValue("pagesize", _pageSize)
+  Request.Params.ReadValue("Page", _reqPage)
 
   If Context.Items("BlogPageInitialized") Is Nothing Then
 
@@ -71,69 +75,40 @@ Public Class Blog
     End If
    End If
 
-   If Not Me.IsPostBack And BlogContext.ContentItemId > -1 Then
+   If Not IsPostBack And BlogContext.ContentItemId > -1 Then
     Dim viewCountTimeout As Integer = Settings.IncrementViewCount * 1000 'in milliseconds
     Dim scriptBlock As String = "(function ($, Sys) {$(document).ready(function () {setTimeout(function(){blogService.viewPost(" & BlogContext.BlogId.ToString & ", " & BlogContext.ContentItemId.ToString & ")}," & viewCountTimeout.ToString & ")});} (jQuery, window.Sys));"
-    Page.ClientScript.RegisterClientScriptBlock(Me.GetType, "PostViewScript", scriptBlock, True)
+    Page.ClientScript.RegisterClientScriptBlock([GetType], "PostViewScript", scriptBlock, True)
    End If
 
    AddWLWManifestLink()
 
-   If Settings.ModifyPageDetails Then
-     ' force modify on all modules
-     If Settings.ModifyPageDetails Then
-       If BlogContext.Post IsNot Nothing Then
-         Page.Title = BlogContext.Post.LocalizedTitle
-         Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Post.LocalizedSummary, False)
-         Page.KeyWords = String.Join(",", BlogContext.Post.Terms.ToStringArray)
-         Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:title"" content=""{0}"" />", BlogContext.Post.LocalizedTitle)))
-         Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:type"" content=""{0}"" />", "article")))
-         Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:url"" content=""{0}"" />", BlogContext.Post.PermaLink)))
-         Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:description"" content=""{0}"" />", DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Post.LocalizedSummary, False))))
-         If Not String.IsNullOrEmpty(BlogContext.Blog.Image) Then
-           Dim strPath As String = String.Format("{0}?TabId={1}&ModuleId={2}&Blog={3}&Post={4}&w=100&h=100&c=1&key={5}", glbImageHandlerPath, TabId.ToString, Settings.ModuleId.ToString, BlogContext.BlogId.ToString, BlogContext.ContentItemId.ToString, BlogContext.Post.Image)
-           Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:image"" content=""{0}"" />", strPath)))
-         End If
-       ElseIf BlogContext.Blog IsNot Nothing Then
-         Page.Title = BlogContext.Blog.LocalizedTitle
-         Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Blog.LocalizedDescription, False)
-       ElseIf BlogContext.Author IsNot Nothing Then
-         Page.Title = BlogContext.Author.DisplayName
-         Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Author.Profile.Biography, False)
-       ElseIf BlogContext.Term IsNot Nothing Then
-         Page.Title = BlogContext.Term.LocalizedName
-         Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Term.LocalizedDescription, False)
-       End If
-     End If
-   Else
-     ' modify on selected modules only
-     If ViewSettings.ModifyPageDetails Then
-       If BlogContext.Post IsNot Nothing Then
-         Page.Title = BlogContext.Post.LocalizedTitle
-         Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Post.LocalizedSummary, False)
-         Page.KeyWords = String.Join(",", BlogContext.Post.Terms.ToStringArray)
-         Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:title"" content=""{0}"" />", BlogContext.Post.LocalizedTitle)))
-         Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:type"" content=""{0}"" />", "article")))
-         Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:url"" content=""{0}"" />", BlogContext.Post.PermaLink)))
-         Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:description"" content=""{0}"" />", DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Post.LocalizedSummary, False))))
-         If Not String.IsNullOrEmpty(BlogContext.Blog.Image) Then
-           Dim strPath As String = String.Format("{0}?TabId={1}&ModuleId={2}&Blog={3}&Post={4}&w=100&h=100&c=1&key={5}", glbImageHandlerPath, TabId.ToString, Settings.ModuleId.ToString, BlogContext.BlogId.ToString, BlogContext.ContentItemId.ToString, BlogContext.Post.Image)
-           Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""og:image"" content=""{0}"" />", strPath)))
-         End If
-       ElseIf BlogContext.Blog IsNot Nothing Then
-         Page.Title = BlogContext.Blog.LocalizedTitle
-         Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Blog.LocalizedDescription, False)
-       ElseIf BlogContext.Author IsNot Nothing Then
-         Page.Title = BlogContext.Author.DisplayName
-         Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Author.Profile.Biography, False)
-       ElseIf BlogContext.Term IsNot Nothing Then
-         Page.Title = BlogContext.Term.LocalizedName
-         Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Term.LocalizedDescription, False)
-       End If
-     End If
+   If Settings.ModifyPageDetails OrElse ViewSettings.ModifyPageDetails Then
+    ' force modify on all modules orlse modify on selected modules only?
+    If BlogContext.Post IsNot Nothing Then
+     Page.Title = BlogContext.Post.LocalizedTitle
+     Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Post.LocalizedSummary, False)
+     Page.KeyWords = String.Join(",", BlogContext.Post.Terms.ToStringArray)
+     'AddOpenGraphMetaTags()
+    ElseIf BlogContext.Blog IsNot Nothing Then
+     Page.Title = BlogContext.Blog.LocalizedTitle
+     Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Blog.LocalizedDescription, False)
+    ElseIf BlogContext.Author IsNot Nothing Then
+     Page.Title = BlogContext.Author.DisplayName
+     Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Author.Profile.Biography, False)
+    ElseIf BlogContext.Term IsNot Nothing Then
+     Page.Title = BlogContext.Term.LocalizedName
+     Page.Description = DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Term.LocalizedDescription, False)
+    End If
+
+    If _reqPage > 1 Then
+     Page.Title = String.Format(Localization.GetString("PageTitle.Format", LocalResourceFile), Page.Title, _reqPage)
+    End If
+
    End If
 
    If BlogContext.Post IsNot Nothing AndAlso BlogContext.Blog IsNot Nothing Then
+    AddOpenGraphMetaTags()
     If BlogContext.Blog.EnablePingBackReceive Then
      AddPingBackLink()
     End If
@@ -145,17 +120,61 @@ Public Class Blog
    Context.Items("BlogPageInitialized") = True
   End If
 
-  ViewSettings.TemplateSettings.ReadValue("pagesize", _pageSize)
-  Me.Request.Params.ReadValue("Page", _reqPage)
   DataBind()
 
+ End Sub
+#End Region
+
+#Region " Open Graph Meta Tags "
+ Private Sub AddOpenGraphMetaTags()
+  Dim URL As String = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Host
+    Page.Header.Controls.Add(New LiteralControl(String.Format("<meta id=""ogurl"" property=""og:url"" content=""{0}"" />", BlogContext.Post.PermaLink)))
+    Page.Header.Controls.Add(New LiteralControl(String.Format("<meta content=""{0}"" name=""twitter:url"">", BlogContext.Post.PermaLink)))
+    Page.Header.Controls.Add(New LiteralControl(String.Format("<meta id=""ogtitle"" property=""og:title"" content=""{0}"" />", CleanStringForXmlAttribute(BlogContext.Post.LocalizedTitle))))
+    Page.Header.Controls.Add(New LiteralControl(String.Format("<meta content=""{0}"" name=""twitter:title"">", CleanStringForXmlAttribute(BlogContext.Post.LocalizedTitle))))
+    Dim description As String = CleanStringForXmlAttribute(DotNetNuke.Common.Utilities.HtmlUtils.Clean(BlogContext.Post.LocalizedSummary, False))
+  If (Not String.IsNullOrEmpty(description)) Then
+      Page.Header.Controls.Add(New LiteralControl(String.Format("<meta id=""ogdescription"" property=""og:description"" content=""{0}"" />", description)))
+      Page.Header.Controls.Add(New LiteralControl(String.Format("<meta content=""{0}"" name=""twitter:description"">", description)))
+    End If
+  If Not String.IsNullOrEmpty(BlogContext.Post.Image) Then
+   Dim strPath As String = String.Format("{0}?TabId={1}&ModuleId={2}&Blog={3}&Post={4}&w=1200&h=630&c=1&key={5}", glbImageHandlerPath, TabId.ToString, Settings.ModuleId.ToString, BlogContext.BlogId.ToString, BlogContext.ContentItemId.ToString, BlogContext.Post.Image)
+      Page.Header.Controls.Add(New LiteralControl(String.Format("<meta id=""ogimage"" property=""og:image"" content=""{0}"" />", URL + ResolveUrl(strPath))))
+      Page.Header.Controls.Add(New LiteralControl(String.Format("<meta content=""{0}"" name=""twitter:image"">", URL + ResolveUrl(strPath))))
+      Page.Header.Controls.Add(New LiteralControl(String.Format("<meta content=""summary_large_image"" name=""twitter:card"">")))
+    End If
+  Page.Header.Controls.Add(New LiteralControl(String.Format("<meta id=""ogsitename"" property=""og:site_name"" content=""{0}"" />", CleanStringForXmlAttribute(PortalSettings.PortalName))))
+  If Not String.IsNullOrEmpty(Settings.FacebookAppId) Then
+   Page.Header.Controls.Add(New LiteralControl(String.Format("<meta id=""fbappid"" property=""fb:app_id"" content=""{0}"" />", Settings.FacebookAppId)))
+  End If
+  Page.Header.Controls.Add(New LiteralControl(String.Format("<meta id=""ogtype"" property=""og:type"" content=""{0}"" />", "article")))
+  If Not String.IsNullOrEmpty(BlogContext.Post.Locale) Then
+   Page.Header.Controls.Add(New LiteralControl(String.Format("<meta id=""oglocale"" property=""og:locale"" content=""{0}"" />", BlogContext.Post.Locale.Replace("-", "_"))))
+  ElseIf Not String.IsNullOrEmpty(BlogContext.Blog.Locale) Then
+   Page.Header.Controls.Add(New LiteralControl(String.Format("<meta id=""oglocale"" property=""og:locale"" content=""{0}"" />", BlogContext.Blog.Locale.Replace("-", "_"))))
+  Else
+   Page.Header.Controls.Add(New LiteralControl(String.Format("<meta id=""oglocale"" property=""og:locale"" content=""{0}"" />", PortalSettings.DefaultLanguage.Replace("-", "_"))))
+  End If
+  Page.Header.Controls.Add(New LiteralControl(String.Format("<meta id=""ogupdatedtime"" property=""og:updated_time"" content=""{0}"" />", BlogContext.Post.LastModifiedOnDate.ToString("u"))))
+  If Settings.FacebookProfileIdProperty <> -1 Then
+   Dim author As DotNetNuke.Entities.Users.UserInfo = BlogContext.Author
+   If author Is Nothing Then
+    author = BlogContext.Post.CreatedByUser(PortalId)
+   End If
+   If author IsNot Nothing Then
+    Dim pp As DotNetNuke.Entities.Profile.ProfilePropertyDefinition = author.Profile.ProfileProperties.GetById(Settings.FacebookProfileIdProperty)
+    If pp IsNot Nothing AndAlso Not String.IsNullOrEmpty(pp.PropertyValue) Then
+     Page.Header.Controls.Add(New LiteralControl(String.Format("<meta property=""fb:profile_id"" content=""{0}"" />", pp.PropertyValue)))
+    End If
+   End If
+  End If
  End Sub
 #End Region
 
 #Region " Public Methods "
  Private Sub AddWLWManifestLink()
   If Context.Items("WLWManifestLinkAdded") Is Nothing Then
-   Dim link As New HtmlGenericControl("link")
+   Dim link As New HtmlLink()
    link.Attributes.Add("rel", "wlwmanifest")
    link.Attributes.Add("type", "application/wlwmanifest+xml")
    If ViewSettings.BlogModuleId = -1 Then
@@ -163,7 +182,7 @@ Public Class Blog
    Else
     link.Attributes.Add("href", ResolveUrl(ManifestFilePath(TabId, ViewSettings.BlogModuleId)))
    End If
-   Me.Page.Header.Controls.Add(link)
+   Page.Header.Controls.Add(link)
    Context.Items("WLWManifestLinkAdded") = True
   End If
  End Sub
@@ -175,7 +194,7 @@ Public Class Blog
    Dim link As New HtmlGenericControl("link")
    link.Attributes.Add("rel", "pingback")
    link.Attributes.Add("href", pingbackUrl)
-   Me.Page.Header.Controls.Add(link)
+   Page.Header.Controls.Add(link)
    Context.Items("PingBackLinkAdded") = True
   End If
  End Sub
@@ -208,9 +227,7 @@ Public Class Blog
 
    Case "blogs"
 
-    Dim blogList As IEnumerable(Of BlogInfo) = BlogsController.GetBlogsByModule(BlogContext.BlogModuleId, UserId, BlogContext.Locale).Values.Where(Function(b)
-                                                                                                                                                    Return b.Published = True
-                                                                                                                                                   End Function).OrderBy(Function(b) b.Title)
+    Dim blogList As IEnumerable(Of BlogInfo) = BlogsController.GetBlogsByModule(BlogContext.BlogModuleId, UserId, BlogContext.Locale).Values.Where(Function(b) b.Published = True).OrderBy(Function(b) b.Title)
     Parameters.ReadValue("pagesize", _pageSize)
     If _pageSize > 0 Then
      _usePaging = True
@@ -229,7 +246,7 @@ Public Class Blog
     Else
      For Each b As BlogInfo In blogList
       If BlogContext.ParentModule IsNot Nothing Then
-        b.ParentTabID = BlogContext.ParentModule.TabID
+       b.ParentTabID = BlogContext.ParentModule.TabID
       End If
       Replacers.Add(New BlogTokenReplace(Me, b))
      Next
@@ -241,7 +258,7 @@ Public Class Blog
     EnsurePostList(_pageSize)
     For Each e As PostInfo In PostList
      If BlogContext.ParentModule IsNot Nothing Then
-       e.ParentTabID = BlogContext.ParentModule.TabID
+      e.ParentTabID = BlogContext.ParentModule.TabID
      End If
      Replacers.Add(New BlogTokenReplace(Me, e))
     Next
@@ -319,10 +336,16 @@ Public Class Blog
 
     If callingObject IsNot Nothing AndAlso TypeOf callingObject Is PostInfo Then
      For Each t As TermInfo In CType(callingObject, PostInfo).PostTags
+      If BlogContext.ParentModule IsNot Nothing Then
+       t.ParentTabID = BlogContext.ParentModule.TabID
+      End If
       Replacers.Add(New BlogTokenReplace(Me, BlogContext.Post, t))
      Next
     ElseIf BlogContext.Post IsNot Nothing Then
      For Each t As TermInfo In BlogContext.Post.PostTags
+      If BlogContext.ParentModule IsNot Nothing Then
+       t.ParentTabID = BlogContext.ParentModule.TabID
+      End If
       Replacers.Add(New BlogTokenReplace(Me, BlogContext.Post, t))
      Next
     Else
@@ -339,7 +362,7 @@ Public Class Blog
 
     For Each t As TermInfo In TermsController.GetTermsByModule(BlogContext.BlogModuleId, BlogContext.Locale).Where(Function(x) x.VocabularyId = 1).ToList
      If BlogContext.ParentModule IsNot Nothing Then
-       t.ParentTabID = BlogContext.ParentModule.TabID
+      t.ParentTabID = BlogContext.ParentModule.TabID
      End If
      Replacers.Add(New BlogTokenReplace(Me, Nothing, t))
     Next
@@ -370,7 +393,17 @@ Public Class Blog
 
     For Each t As TermInfo In TermsController.GetTermsByVocabulary(BlogContext.BlogModuleId, Settings.VocabularyId, BlogContext.Locale).Values
      If BlogContext.ParentModule IsNot Nothing Then
-       t.ParentTabID = BlogContext.ParentModule.TabID
+      t.ParentTabID = BlogContext.ParentModule.TabID
+     End If
+     Replacers.Add(New BlogTokenReplace(Me, Nothing, t))
+    Next
+    _usePaging = False
+
+   Case "selectcategories"
+
+    For Each t As TermInfo In TermsController.GetTermsByModule(BlogContext.BlogModuleId, BlogContext.Locale).Where(Function(x) ViewSettings.CategoryList.Contains(x.TermId)).ToList
+     If BlogContext.ParentModule IsNot Nothing Then
+      t.ParentTabID = BlogContext.ParentModule.TabID
      End If
      Replacers.Add(New BlogTokenReplace(Me, Nothing, t))
     Next
@@ -414,7 +447,7 @@ Public Class Blog
 
     For Each bci As BlogCalendarInfo In BlogsController.GetBlogCalendar(BlogContext.BlogModuleId, BlogContext.BlogId, BlogContext.ShowLocale)
      If BlogContext.ParentModule IsNot Nothing Then
-       bci.ParentTabID = BlogContext.ParentModule.TabID
+      bci.ParentTabID = BlogContext.ParentModule.TabID
      End If
      Replacers.Add(New BlogTokenReplace(Me, bci))
     Next
@@ -445,7 +478,7 @@ Public Class Blog
      Case Else ' last name
       For Each u As PostAuthor In PostsController.GetAuthors(BlogContext.BlogModuleId, blogToShow)
        If BlogContext.ParentModule IsNot Nothing Then
-         u.ParentTabID = BlogContext.ParentModule.TabID
+        u.ParentTabID = BlogContext.ParentModule.TabID
        End If
        Replacers.Add(New BlogTokenReplace(Me, New LazyLoadingUser(u)))
       Next
@@ -462,30 +495,35 @@ Public Class Blog
 
   If PostList Is Nothing Then
    If pageSize < 1 Then pageSize = 10 ' we will not list "all Posts"
+   Dim publishValue As Integer = 1
    If Not String.IsNullOrEmpty(BlogContext.SearchString) Then
-    Dim publishValue As Integer = 1
     If BlogContext.SearchUnpublished Then publishValue = -1
-     If String.IsNullOrEmpty(BlogContext.Categories) Then
-      If BlogContext.Term Is Nothing Then
-       PostList = PostsController.SearchPosts(Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, BlogContext.SearchString, BlogContext.SearchTitle, BlogContext.SearchContents, publishValue, BlogContext.ShowLocale, BlogContext.EndDate, -1, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
-      Else
-       PostList = PostsController.SearchPostsByTerm(Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, BlogContext.TermId, BlogContext.SearchString, BlogContext.SearchTitle, BlogContext.SearchContents, publishValue, BlogContext.ShowLocale, BlogContext.EndDate, -1, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
-      End If
-     Else
-      PostList = PostsController.SearchPostsByCategory(Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, BlogContext.Categories, BlogContext.SearchString, BlogContext.SearchTitle, BlogContext.SearchContents, publishValue, BlogContext.ShowLocale, BlogContext.EndDate, -1, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
-     End If
-    ElseIf String.IsNullOrEmpty(BlogContext.Categories) Then
+    If String.IsNullOrEmpty(BlogContext.Categories) Then
      If BlogContext.Term Is Nothing Then
-      PostList = PostsController.GetPosts(Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, -1, BlogContext.ShowLocale, BlogContext.EndDate, BlogContext.AuthorId, False, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
+      PostList = PostsController.SearchPosts(Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, BlogContext.SearchString, BlogContext.SearchTitle, BlogContext.SearchContents, publishValue, BlogContext.ShowLocale, BlogContext.EndDate, -1, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
      Else
-      PostList = PostsController.GetPostsByTerm(Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, BlogContext.TermId, -1, BlogContext.ShowLocale, BlogContext.EndDate, BlogContext.AuthorId, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
+      PostList = PostsController.SearchPostsByTerm(Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, BlogContext.TermId, BlogContext.SearchString, BlogContext.SearchTitle, BlogContext.SearchContents, publishValue, BlogContext.ShowLocale, BlogContext.EndDate, -1, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
      End If
     Else
-    PostList = PostsController.GetPostsByCategory(Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, BlogContext.Categories, -1, BlogContext.ShowLocale, BlogContext.EndDate, BlogContext.AuthorId, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
+     PostList = PostsController.SearchPostsByCategory(Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, BlogContext.Categories, BlogContext.SearchString, BlogContext.SearchTitle, BlogContext.SearchContents, publishValue, BlogContext.ShowLocale, BlogContext.EndDate, -1, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
+    End If
+   ElseIf String.IsNullOrEmpty(BlogContext.Categories) Then
+    publishValue = -1
+    If ViewSettings.HideUnpublishedBlogsViewMode AndAlso PortalSettings.UserMode = PortalSettings.Mode.View Then publishValue = 1
+    If ViewSettings.HideUnpublishedBlogsEditMode AndAlso PortalSettings.UserMode = PortalSettings.Mode.Edit Then publishValue = 1
+    If BlogContext.Term Is Nothing Then
+     PostList = PostsController.GetPosts(Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, publishValue, BlogContext.ShowLocale, BlogContext.EndDate, BlogContext.AuthorId, False, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
+    Else
+     PostList = PostsController.GetPostsByTerm(Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, BlogContext.TermId, publishValue, BlogContext.ShowLocale, BlogContext.EndDate, BlogContext.AuthorId, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
+    End If
+   Else
+    publishValue = -1
+    If ViewSettings.HideUnpublishedBlogsViewMode AndAlso PortalSettings.UserMode = PortalSettings.Mode.View Then publishValue = 1
+    If ViewSettings.HideUnpublishedBlogsEditMode AndAlso PortalSettings.UserMode = PortalSettings.Mode.Edit Then publishValue = 1
+    PostList = PostsController.GetPostsByCategory(Settings.ModuleId, BlogContext.BlogId, BlogContext.Locale, BlogContext.Categories, publishValue, BlogContext.ShowLocale, BlogContext.EndDate, BlogContext.AuthorId, _reqPage - 1, pageSize, "PUBLISHEDONDATE DESC", _totalRecords, UserId, BlogContext.Security.UserIsAdmin).Values
    End If
    _usePaging = True
   End If
-
  End Sub
 #End Region
 
@@ -501,8 +539,12 @@ Public Class Blog
   End With
   vtContents.DataBind()
 
-  ctlComments.Visible = CBool(ViewSettings.BlogModuleId = -1) AndAlso BlogContext.Security.CanViewComments
-  ctlManagement.Visible = If(CBool(ViewSettings.BlogModuleId = -1), True, ViewSettings.ShowManagementPanel)
+  ctlComments.Visible = ViewSettings.AllowComments AndAlso BlogContext.Security.CanViewComments
+  ctlManagement.Visible = CBool(ViewSettings.BlogModuleId = -1) OrElse ViewSettings.ShowManagementPanel
+
+  If PortalSettings.UserMode = PortalSettings.Mode.View AndAlso ViewSettings.ShowManagementPanelViewMode = False Then
+   ctlManagement.Visible = False
+  End If
 
  End Sub
 #End Region

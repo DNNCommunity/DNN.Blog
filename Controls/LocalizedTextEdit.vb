@@ -1,6 +1,6 @@
 '
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,10 +18,7 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System.Web.UI.WebControls
-Imports DotNetNuke
 Imports DotNetNuke.Services.Localization
-Imports DotNetNuke.Services.Localization.Localization
 Imports DotNetNuke.Entities.Portals
 
 Namespace Controls
@@ -38,26 +35,26 @@ Namespace Controls
 #End Region
 
 #Region " Protected Methods "
-  Protected Overrides Sub OnPreRender(ByVal e As System.EventArgs)
+  Protected Overrides Sub OnPreRender(ByVal e As EventArgs)
 
-   If Not _PreRendered AndAlso (RebindOnPostback Or (Not Me.Page.IsPostBack)) Then
-    Me.DataBind()
+   If Not _PreRendered AndAlso (RebindOnPostback Or (Not Page.IsPostBack)) Then
+    DataBind()
    End If
    _PreRendered = True
 
   End Sub
 
   Protected Overrides Sub Render(ByVal writer As System.Web.UI.HtmlTextWriter)
-   If Not _PreRendered AndAlso (RebindOnPostback Or (Not Me.Page.IsPostBack)) Then
-    Me.DataBind()
+   If Not _PreRendered AndAlso (RebindOnPostback Or (Not Page.IsPostBack)) Then
+    DataBind()
    End If
    _PreRendered = True
    MyBase.Render(writer)
   End Sub
 
   Public Overrides Sub DataBind()
-   Me.EnsureChildControls()
-   If Me.Page.IsPostBack And (Not ManualUpdate) Then
+   EnsureChildControls()
+   If Page.IsPostBack And (Not ManualUpdate) Then
     Update()
    End If
    Rebind()
@@ -83,7 +80,7 @@ Namespace Controls
 
   Protected Overrides Function SaveViewState() As Object
 
-   Me.EnsureChildControls()
+   EnsureChildControls()
    If Not ManualUpdate Then
     Update()
    End If
@@ -101,8 +98,8 @@ Namespace Controls
 #End Region
 
 #Region " Events "
-  Private Sub LocalizedTextEdit_Load(sender As Object, e As System.EventArgs) Handles Me.Load
-   Me.EnsureChildControls()
+  Private Sub LocalizedTextEdit_Load(sender As Object, e As EventArgs) Handles Me.Load
+   EnsureChildControls()
   End Sub
 #End Region
 
@@ -167,7 +164,7 @@ Namespace Controls
    Get
     If _supportedLocales Is Nothing Then
      _supportedLocales = New LocaleCollection
-     Dim objPortalSettings As PortalSettings = PortalController.GetCurrentPortalSettings()
+     Dim objPortalSettings As PortalSettings = PortalController.Instance.GetCurrentPortalSettings()
      For Each kvp As KeyValuePair(Of String, Locale) In LocaleController.Instance.GetLocales(objPortalSettings.PortalId)
       _supportedLocales.Add(kvp.Key, kvp.Value)
      Next
@@ -182,7 +179,7 @@ Namespace Controls
   Public Property DefaultLanguage() As String
    Get
     If _DefaultLanguage Is Nothing Then
-     _DefaultLanguage = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings.DefaultLanguage
+     _DefaultLanguage = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings.DefaultLanguage
     End If
     Return _DefaultLanguage
    End Get

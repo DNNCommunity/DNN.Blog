@@ -1,6 +1,6 @@
 ﻿'
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -19,8 +19,6 @@
 '
 
 Imports System.Linq
-Imports DotNetNuke.Entities.Modules
-Imports DotNetNuke.Services.Localization.Localization
 Imports DotNetNuke.Entities.Content.Taxonomy
 
 Namespace Common
@@ -52,10 +50,6 @@ Namespace Common
 #Region " Dates "
   Public Shared Function UtcToLocalTime(utcTime As Date, TimeZone As TimeZoneInfo) As Date
    Return TimeZoneInfo.ConvertTimeFromUtc(utcTime, TimeZone)
-  End Function
-
-  Public Shared Function UtcToLocalTime(utcTime As Date) As Date
-   Return Date.SpecifyKind(utcTime, DateTimeKind.Utc).ToLocalTime
   End Function
 
   Public Shared Function ParseDate(DateString As String, Culture As String) As DateTime
@@ -254,35 +248,15 @@ Namespace Common
    input = input.Replace(vbCrLf, "<br />")
    Return input
   End Function
+
+  Public Shared Function CleanStringForXmlAttribute(input As String) As String
+   Return input.Replace("&", "and").Replace("""", "&quot;")
+  End Function
+
   Public Shared Function ReplaceLink(m As Match) As String
    Dim link As String = m.Value
    Return String.Format("<a href=""{0}"">{0}</a>", link)
   End Function
-
-  'Public Shared Sub WriteMultiLingualText(writer As System.Xml.XmlWriter, name As String, defaultText As String, localizedTexts As LocalizedText)
-  ' writer.WriteStartElement(name)
-  ' writer.WriteElementString("Default", defaultText)
-  ' For Each locale As String In localizedTexts.Locales
-  '  If Not String.IsNullOrEmpty(localizedTexts(locale)) Then
-  '   writer.WriteStartElement("Text")
-  '   writer.WriteAttributeString("Locale", locale)
-  '   writer.WriteValue(localizedTexts(locale))
-  '   writer.WriteEndElement() ' Text
-  '  End If
-  ' Next
-  ' writer.WriteEndElement() ' name
-  'End Sub
-
-  'Public Shared Sub ReadMultiLingualText(reader As System.Xml.XmlReader, name As String, ByRef defaultText As String, ByRef localizedTexts As LocalizedText)
-  ' reader.ReadStartElement(name) ' advance to name
-  ' defaultText = readElement(reader, "Default")
-  ' localizedTexts = New LocalizedText
-  ' Do While reader.ReadToNextSibling("Text")
-  '  Dim locale As String = readAttribute(reader, "Locale")
-  '  Dim text As String = reader.ReadElementContentAsString
-  '  localizedTexts.Add(locale, text)
-  ' Loop
-  'End Sub
 
   Public Shared Function readElement(reader As System.Xml.XmlReader, ElementName As String) As String
    If (Not reader.NodeType = System.Xml.XmlNodeType.Element) OrElse reader.Name <> ElementName Then

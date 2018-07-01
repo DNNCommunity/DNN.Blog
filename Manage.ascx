@@ -1,14 +1,13 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="Manage.ascx.vb" Inherits="DotNetNuke.Modules.Blog.Manage" %>
-<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
-<%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
-<%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
+<%@ Import Namespace="DotNetNuke.Entities.Users" %>
+<%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web.Deprecated" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <div class="dnnForm" id="tabs">
  <ul class="dnnAdminTabNav">
-  <li><a href="#Blogs"><%= LocalizeString("Blogs")%></a></li>
-  <li><a href="#Posts"><%= LocalizeString("Posts")%></a></li>
+  <li id="blogsLink" runat="server"><a href="#<%= Blogs.ClientId %>"><%= LocalizeString("Blogs")%></a></li>
+  <li id="postsLink" runat="server"><a href="#<%= Posts.ClientId %>"><%= LocalizeString("Posts")%></a></li>
  </ul>
- <div id="Blogs" class="dnnClear">
-  <asp:DataList runat="server" ID="dlBlogs">
+ <asp:Panel id="Blogs" runat="server" CssClass="dnnClear">
+  <asp:Repeater runat="server" ID="dlBlogs" >
    <HeaderTemplate>
     <table class="dnnGrid">
      <tr class="dnnGridHeader">
@@ -31,19 +30,19 @@
    <FooterTemplate>
     </table>
    </FooterTemplate>
-  </asp:DataList>
+  </asp:Repeater>
   <p>
    <asp:LinkButton runat="server" ID="cmdAdd" resourcekey="cmdAdd" CssClass="dnnSecondaryAction" />
   </p>
- </div>
- <div id="Posts" class="dnnClear">
+ </asp:Panel>
+ <asp:Panel id="Posts" runat="server" CssClass="dnnClear">
   <div class="coreMessaging" id="blogPostsError"></div>
-  <dnn:DNNGrid id="grdPosts" autogeneratecolumns="false" cssclass="dnnGrid dnnSecurityRolesGrid"
+  <dnnweb:DNNGrid id="grdPosts" autogeneratecolumns="false" cssclass="dnnGrid dnnSecurityRolesGrid"
    runat="server" allowpaging="True" allowcustompaging="True" enableviewstate="True" AllowSorting="true"
    onneeddatasource="GetPosts">
    <MasterTableView>
     <Columns>
-     <dnn:DnnGridTemplateColumn HeaderText="Actions">
+     <dnnweb:DnnGridTemplateColumn HeaderText="Actions">
       <ItemStyle Width="90px"></ItemStyle>
       <ItemTemplate>
        <a href="<%# EditUrl("Post", Eval("ContentItemId"), "PostEdit") %>"
@@ -60,24 +59,28 @@
           title="Approve"
           style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Blog.CanApprove AND NOT CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Published, "inline", "none") %>"><i class="fa fa-check icon16"></i></a>
       </ItemTemplate>
-     </dnn:DnnGridTemplateColumn>
-     <dnn:DnnGridBoundColumn datafield="PublishedOnDate" headertext="Date" AllowSorting="True" SortExpression="PublishedOnDate" DataFormatString="{0:g}" />
-     <dnn:DnnGridBoundColumn datafield="Title" headertext="Title" AllowSorting="True" SortExpression="Title" />
-     <dnn:DnnGridTemplateColumn HeaderText="Published">
+     </dnnweb:DnnGridTemplateColumn>
+     <dnnweb:DnnGridTemplateColumn headertext="Date">
+      <ItemTemplate>
+       <%# DotNetNuke.Modules.Blog.Common.Globals.UtcToLocalTime(Eval("PublishedOnDate"), UserController.GetCurrentUserInfo().Profile.PreferredTimeZone)%>
+      </ItemTemplate>
+     </dnnweb:DnnGridTemplateColumn>
+     <dnnweb:DnnGridBoundColumn datafield="Title" headertext="Title" AllowSorting="True" SortExpression="Title" />
+     <dnnweb:DnnGridTemplateColumn HeaderText="Published">
       <ItemStyle Width="30px" HorizontalAlign="Center"></ItemStyle>
       <ItemTemplate>
        <i class="fa fa-<%# IIf(Eval("Published"), "check", "times")%> icon16" id="approveTick<%# Eval("ContentItemID") %>"></i>
       </ItemTemplate>
-     </dnn:DnnGridTemplateColumn>
-     <dnn:DnnGridTemplateColumn HeaderText="Blog">
+     </dnnweb:DnnGridTemplateColumn>
+     <dnnweb:DnnGridTemplateColumn HeaderText="Blog">
       <ItemTemplate>
        <asp:Label ID="Label1" Runat="server" Text='<%# CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Blog.Title %>' />
       </ItemTemplate>
-     </dnn:DnnGridTemplateColumn>
+     </dnnweb:DnnGridTemplateColumn>
     </Columns>
    </MasterTableView>
-  </dnn:DNNGrid>
- </div>
+  </dnnweb:DNNGrid>
+ </asp:Panel>
 </div>
 <p class="updatecancelbar">
  <asp:LinkButton runat="server" ID="cmdReturn" resourcekey="cmdReturn" CssClass="dnnPrimaryAction" />
@@ -117,7 +120,7 @@
       $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeJSString("Export") %>")').attr("disabled", "disabled");
       blogService.exportBlog(selectedBlog, function (returnValue) {
        $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeJSString("Export") %>")').removeAttr("disabled");
-       $('#blogMLDownloadLink').attr('href', returnValue);
+       $('#blogMLDownloadLink').attr('href', returnValue.Result);
        $('#blogMLDownloadLink').show();
       });
      }

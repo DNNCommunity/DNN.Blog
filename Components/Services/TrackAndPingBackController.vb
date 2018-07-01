@@ -1,6 +1,6 @@
 ﻿'
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,8 +18,6 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System.Linq
-Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.Entities.Posts
 Imports System.Net
 
@@ -46,17 +44,17 @@ Namespace Services
 
 #Region " Constructors "
    Public Sub New(post As PostInfo, urlToNotifyTrackback As Uri, portalSettings As DotNetNuke.Entities.Portals.PortalSettings)
-    Me.Title = post.Title
-    Me.PostUrl = New Uri(post.PermaLink(portalSettings))
-    Me.Excerpt = post.Summary
-    Me.BlogName = post.Blog.Title
+    Title = post.Title
+    PostUrl = New Uri(post.PermaLink(portalSettings))
+    Excerpt = post.Summary
+    BlogName = post.Blog.Title
     Me.UrlToNotifyTrackback = urlToNotifyTrackback
    End Sub
 #End Region
 
 #Region " Public Methods "
    Public Overrides Function ToString() As String
-    Return String.Format(Globalization.CultureInfo.InvariantCulture, "title={0}&url={1}&excerpt={2}&blog_name={3}", Me.Title, Me.PostUrl, Me.Excerpt, Me.BlogName)
+    Return String.Format(Globalization.CultureInfo.InvariantCulture, "title={0}&url={1}&excerpt={2}&blog_name={3}", Title, PostUrl, Excerpt, BlogName)
    End Function
 #End Region
 
@@ -66,7 +64,7 @@ Namespace Services
 #Region " Constructors "
   Public Sub New(post As PostInfo)
    Me.Post = post
-   Me.PortalSettings = DotNetNuke.Entities.Portals.PortalSettings.Current
+   PortalSettings = DotNetNuke.Entities.Portals.PortalSettings.Current
   End Sub
 #End Region
 

@@ -1,6 +1,6 @@
 '
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,15 +18,8 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System
-Imports System.Text
-Imports System.Web.UI
-Imports System.Web.UI.WebControls
-Imports System.Collections
 Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Entities.Users
-
-Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.Modules.Blog.Security.Permissions
 Imports DotNetNuke.Modules.Blog.Security.Security
 
@@ -138,7 +131,7 @@ Namespace Security.Controls
   ''' -----------------------------------------------------------------------------
   Private Sub GetBlogPermissions()
 
-   _BlogPermissions = BlogPermissionsController.GetBlogPermissionsCollection(Me.BlogID)
+   _BlogPermissions = BlogPermissionsController.GetBlogPermissionsCollection(BlogID)
 
   End Sub
 
@@ -422,7 +415,7 @@ Namespace Security.Controls
   ''' -----------------------------------------------------------------------------
   Protected Overrides Function SaveViewState() As Object
 
-   Me.UpdatePermissions()
+   UpdatePermissions()
 
    Dim allStates(3) As Object
 

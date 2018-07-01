@@ -1,6 +1,6 @@
 '
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,7 +18,6 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports DotNetNuke.Security
 Imports DotNetNuke.Security.Permissions
 Imports DotNetNuke.Modules.Blog.Entities
 Imports DotNetNuke.Entities.Users
@@ -101,7 +100,7 @@ Namespace Security
    If CanEditPost Then Return True
    If post Is Nothing Then Return False
    If post.Blog.MustApproveGhostPosts AndAlso Not CanApprovePost Then
-   If post.CreatedByUserID = _userId And Not post.Published Then Return True
+    If post.CreatedByUserID = _userId And Not post.Published Then Return True
    Else
     If post.CreatedByUserID = _userId Then Return True
    End If
@@ -172,7 +171,7 @@ Namespace Security
 #Region " IPropertyAccess Implementation "
   Public Function GetProperty(strPropertyName As String, strFormat As String, formatProvider As System.Globalization.CultureInfo, AccessingUser As DotNetNuke.Entities.Users.UserInfo, AccessLevel As DotNetNuke.Services.Tokens.Scope, ByRef PropertyNotFound As Boolean) As String Implements DotNetNuke.Services.Tokens.IPropertyAccess.GetProperty
    Dim OutputFormat As String = String.Empty
-   Dim portalSettings As DotNetNuke.Entities.Portals.PortalSettings = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings()
+   Dim portalSettings As DotNetNuke.Entities.Portals.PortalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings
    If strFormat = String.Empty Then
     OutputFormat = "D"
    Else
@@ -180,57 +179,57 @@ Namespace Security
    End If
    Select Case strPropertyName.ToLower
     Case "isowner"
-     Return Me.IsOwner.ToString
+     Return IsOwner.ToString
     Case "isowneryesno"
-     Return PropertyAccess.Boolean2LocalizedYesNo(Me.IsOwner, formatProvider)
+     Return PropertyAccess.Boolean2LocalizedYesNo(IsOwner, formatProvider)
     Case "caneditpost"
-     Return Me.CanEditPost.ToString
+     Return CanEditPost.ToString
     Case "caneditpostyesno"
-     Return PropertyAccess.Boolean2LocalizedYesNo(Me.CanEditPost, formatProvider)
+     Return PropertyAccess.Boolean2LocalizedYesNo(CanEditPost, formatProvider)
     Case "canaddpost"
-     Return Me.CanAddPost.ToString
+     Return CanAddPost.ToString
     Case "canaddpostyesno"
-     Return PropertyAccess.Boolean2LocalizedYesNo(Me.CanAddPost, formatProvider)
+     Return PropertyAccess.Boolean2LocalizedYesNo(CanAddPost, formatProvider)
     Case "canaddcomment"
-     Return Me.CanAddComment.ToString
+     Return CanAddComment.ToString
     Case "canaddcommentyesno"
-     Return PropertyAccess.Boolean2LocalizedYesNo(Me.CanAddComment, formatProvider)
+     Return PropertyAccess.Boolean2LocalizedYesNo(CanAddComment, formatProvider)
     Case "canviewcomments"
-     Return Me.CanViewComments.ToString
+     Return CanViewComments.ToString
     Case "canviewcommentsyesno"
-     Return PropertyAccess.Boolean2LocalizedYesNo(Me.CanViewComments, formatProvider)
+     Return PropertyAccess.Boolean2LocalizedYesNo(CanViewComments, formatProvider)
     Case "canapprovepost"
-     Return Me.CanApprovePost.ToString
+     Return CanApprovePost.ToString
     Case "canapprovepostyesno"
-     Return PropertyAccess.Boolean2LocalizedYesNo(Me.CanApprovePost, formatProvider)
+     Return PropertyAccess.Boolean2LocalizedYesNo(CanApprovePost, formatProvider)
     Case "canapprovecomment"
-     Return Me.CanApproveComment.ToString
+     Return CanApproveComment.ToString
     Case "canapprovecommentyesno"
-     Return PropertyAccess.Boolean2LocalizedYesNo(Me.CanApproveComment, formatProvider)
+     Return PropertyAccess.Boolean2LocalizedYesNo(CanApproveComment, formatProvider)
     Case "canautoapprovecomment"
-     Return Me.CanAutoApproveComment.ToString
+     Return CanAutoApproveComment.ToString
     Case "canautoapprovecommentyesno"
-     Return PropertyAccess.Boolean2LocalizedYesNo(Me.CanAutoApproveComment, formatProvider)
+     Return PropertyAccess.Boolean2LocalizedYesNo(CanAutoApproveComment, formatProvider)
     Case "candosomethingwithposts"
-     Return Me.CanDoSomethingWithPosts.ToString
+     Return CanDoSomethingWithPosts.ToString
     Case "candosomethingwithpostsyesno"
-     Return PropertyAccess.Boolean2LocalizedYesNo(Me.CanDoSomethingWithPosts, formatProvider)
+     Return PropertyAccess.Boolean2LocalizedYesNo(CanDoSomethingWithPosts, formatProvider)
     Case "userisadmin"
-     Return Me.UserIsAdmin.ToString
+     Return UserIsAdmin.ToString
     Case "userisadminyesno"
-     Return PropertyAccess.Boolean2LocalizedYesNo(Me.UserIsAdmin, formatProvider)
+     Return PropertyAccess.Boolean2LocalizedYesNo(UserIsAdmin, formatProvider)
     Case "isblogger"
-     Return Me.IsBlogger.ToString
+     Return IsBlogger.ToString
     Case "isbloggeryesno"
-     Return PropertyAccess.Boolean2LocalizedYesNo(Me.IsBlogger, formatProvider)
+     Return PropertyAccess.Boolean2LocalizedYesNo(IsBlogger, formatProvider)
     Case "iseditor"
-     Return Me.IsEditor.ToString
+     Return IsEditor.ToString
     Case "iseditoryesno"
-     Return PropertyAccess.Boolean2LocalizedYesNo(Me.IsEditor, formatProvider)
+     Return PropertyAccess.Boolean2LocalizedYesNo(IsEditor, formatProvider)
     Case "loggedin"
-     Return Me.LoggedIn.ToString
+     Return LoggedIn.ToString
     Case "loggedinyesno"
-     Return PropertyAccess.Boolean2LocalizedYesNo(Me.LoggedIn, formatProvider)
+     Return PropertyAccess.Boolean2LocalizedYesNo(LoggedIn, formatProvider)
     Case Else
      PropertyNotFound = True
    End Select

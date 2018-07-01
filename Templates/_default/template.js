@@ -1,7 +1,14 @@
 (function ($, Sys) {
  $(document).ready(function () {
   $('a[href$=".gif"], a[href$=".jpg"], a[href$=".png"], a[href$=".bmp"]').colorbox();
-  $("abbr.blog_commenttimeago").timeago();
+  $(".moment").each(function(i, el) {
+    var e = $(el);
+    e.html(moment(e.attr('data-time')).fromNow());
+  });
+  $(".momentabs").each(function(i, el) {
+    var e = $(el);
+    e.html(moment(e.attr('data-time')).format('LL'));
+  });
   $('#cmdComment').click(function () {
    $dialogComment.dialog('open');
    return false;
@@ -13,7 +20,7 @@
     twitter: true
    },
    urlCurl: '',
-   template: '<a href="#"><i class="fa fa-facebook socialicons facebook"></i></a><a href="#"><i class="fa fa-twitter socialicons facebook"></i></a><a href="#"><i class="fa fa-google-plus socialicons googleplus"></i></a>',
+   template: '<a href="#"><i class="fa fa-facebook socialicons facebook"></i></a><a href="#"><i class="fa fa-twitter socialicons twitter"></i></a><a href="#"><i class="fa fa-google-plus socialicons googleplus"></i></a>',
    enableHover: false,
    enableTracking: true,
    render: function (api, options) {
@@ -46,6 +53,7 @@
   'perl pl                @shBrushPerl.js',
   'php                    @shBrushPhp.js',
   'text plain             @shBrushPlain.js',
+  'ps                     @shBrushPowerShell.js',
   'py python              @shBrushPython.js',
   'ruby rails ror rb      @shBrushRuby.js',
   'sass scss              @shBrushSass.js',

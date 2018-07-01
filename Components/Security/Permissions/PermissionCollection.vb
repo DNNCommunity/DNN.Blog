@@ -1,6 +1,6 @@
 '
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -30,13 +30,13 @@ Namespace Security.Permissions
   Private _keys As New SortedDictionary(Of Integer, String)
 
   Public Sub New()
-   Me.Add("ADD", New PermissionInfo With {.PermissionId = BlogPermissionTypes.ADD, .PermissionKey = "ADD"})
-   Me.Add("EDIT", New PermissionInfo With {.PermissionId = BlogPermissionTypes.EDIT, .PermissionKey = "EDIT"})
-   Me.Add("APPROVE", New PermissionInfo With {.PermissionId = BlogPermissionTypes.APPROVE, .PermissionKey = "APPROVE"})
-   Me.Add("VIEWCOMMENT", New PermissionInfo With {.PermissionId = BlogPermissionTypes.VIEWCOMMENT, .PermissionKey = "VIEWCOMMENT"})
-   Me.Add("ADDCOMMENT", New PermissionInfo With {.PermissionId = BlogPermissionTypes.ADDCOMMENT, .PermissionKey = "ADDCOMMENT"})
-   Me.Add("APPROVECOMMENT", New PermissionInfo With {.PermissionId = BlogPermissionTypes.APPROVECOMMENT, .PermissionKey = "APPROVECOMMENT"})
-   Me.Add("AUTOAPPROVECOMMENT", New PermissionInfo With {.PermissionId = BlogPermissionTypes.AUTOAPPROVECOMMENT, .PermissionKey = "AUTOAPPROVECOMMENT"})
+   Add("ADD", New PermissionInfo With {.PermissionId = BlogPermissionTypes.ADD, .PermissionKey = "ADD"})
+   Add("EDIT", New PermissionInfo With {.PermissionId = BlogPermissionTypes.EDIT, .PermissionKey = "EDIT"})
+   Add("APPROVE", New PermissionInfo With {.PermissionId = BlogPermissionTypes.APPROVE, .PermissionKey = "APPROVE"})
+   Add("VIEWCOMMENT", New PermissionInfo With {.PermissionId = BlogPermissionTypes.VIEWCOMMENT, .PermissionKey = "VIEWCOMMENT"})
+   Add("ADDCOMMENT", New PermissionInfo With {.PermissionId = BlogPermissionTypes.ADDCOMMENT, .PermissionKey = "ADDCOMMENT"})
+   Add("APPROVECOMMENT", New PermissionInfo With {.PermissionId = BlogPermissionTypes.APPROVECOMMENT, .PermissionKey = "APPROVECOMMENT"})
+   Add("AUTOAPPROVECOMMENT", New PermissionInfo With {.PermissionId = BlogPermissionTypes.AUTOAPPROVECOMMENT, .PermissionKey = "AUTOAPPROVECOMMENT"})
   End Sub
 
   Public Function GetById(id As Integer) As PermissionInfo

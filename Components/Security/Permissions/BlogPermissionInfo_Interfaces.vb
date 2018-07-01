@@ -1,6 +1,6 @@
 '
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,12 +18,9 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System
-Imports System.Data
 Imports System.IO
 Imports System.Runtime.Serialization
 Imports System.Runtime.Serialization.Json
-Imports System.Text
 Imports System.Xml
 Imports System.Xml.Schema
 Imports System.Xml.Serialization
@@ -86,7 +83,7 @@ Namespace Security.Permissions
 #Region " IPropertyAccess Implementation "
   Public Function GetProperty(strPropertyName As String, strFormat As String, formatProvider As System.Globalization.CultureInfo, AccessingUser As DotNetNuke.Entities.Users.UserInfo, AccessLevel As DotNetNuke.Services.Tokens.Scope, ByRef PropertyNotFound As Boolean) As String Implements DotNetNuke.Services.Tokens.IPropertyAccess.GetProperty
    Dim OutputFormat As String = String.Empty
-   Dim portalSettings As DotNetNuke.Entities.Portals.PortalSettings = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings()
+   Dim portalSettings As DotNetNuke.Entities.Portals.PortalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings
    If strFormat = String.Empty Then
     OutputFormat = "D"
    Else
@@ -94,23 +91,23 @@ Namespace Security.Permissions
    End If
    Select Case strPropertyName.ToLower
     Case "allowaccess"
-     Return PropertyAccess.Boolean2LocalizedYesNo(Me.AllowAccess, formatProvider)
+     Return PropertyAccess.Boolean2LocalizedYesNo(AllowAccess, formatProvider)
     Case "blogid"
-     Return (Me.BlogId.ToString(OutputFormat, formatProvider))
+     Return (BlogId.ToString(OutputFormat, formatProvider))
     Case "expires"
-     Return (Me.Expires.ToString(OutputFormat, formatProvider))
+     Return (Expires.ToString(OutputFormat, formatProvider))
     Case "permissionid"
-     Return (Me.PermissionId.ToString(OutputFormat, formatProvider))
+     Return (PermissionId.ToString(OutputFormat, formatProvider))
     Case "roleid"
-     Return (Me.RoleId.ToString(OutputFormat, formatProvider))
+     Return (RoleId.ToString(OutputFormat, formatProvider))
     Case "userid"
-     Return (Me.UserId.ToString(OutputFormat, formatProvider))
+     Return (UserId.ToString(OutputFormat, formatProvider))
     Case "username"
-     Return PropertyAccess.FormatString(Me.Username, strFormat)
+     Return PropertyAccess.FormatString(Username, strFormat)
     Case "displayname"
-     Return PropertyAccess.FormatString(Me.DisplayName, strFormat)
+     Return PropertyAccess.FormatString(DisplayName, strFormat)
     Case "rolename"
-     Return PropertyAccess.FormatString(Me.RoleName, strFormat)
+     Return PropertyAccess.FormatString(RoleName, strFormat)
     Case Else
      PropertyNotFound = True
    End Select

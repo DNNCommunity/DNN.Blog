@@ -1,6 +1,6 @@
 '
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -68,26 +68,26 @@ Namespace Templating
 
   Public Sub New(user As UserInfo)
    Me.User = user
-   Me.PortalId = user.PortalID
-   Me.UserId = user.UserID
+   PortalId = user.PortalID
+   UserId = user.UserID
   End Sub
 
   Public Sub New(user As PostAuthor)
    Me.User = user
-   Me.PortalId = user.PortalID
-   Me.UserId = user.UserID
+   PortalId = user.PortalID
+   UserId = user.UserID
    _postAuthor = user
   End Sub
 #End Region
 
 #Region " IPropertyAccess Implementation "
-  Public Function GetProperty(strPropertyName As String, strFormat As String, formatProvider As System.Globalization.CultureInfo, AccessingUser As DotNetNuke.Entities.Users.UserInfo, AccessLevel As DotNetNuke.Services.Tokens.Scope, ByRef PropertyNotFound As Boolean) As String Implements DotNetNuke.Services.Tokens.IPropertyAccess.GetProperty
-   Select strPropertyName.ToLower
+  Public Function GetProperty(strPropertyName As String, strFormat As String, formatProvider As Globalization.CultureInfo, AccessingUser As UserInfo, AccessLevel As Scope, ByRef PropertyNotFound As Boolean) As String Implements IPropertyAccess.GetProperty
+   Select Case strPropertyName.ToLower
     Case "profilepic"
      If IsNumeric(strFormat) Then
-      Return DotNetNuke.Common.ResolveUrl(String.Format("~/profilepic.ashx?userid={0}&w={1}&h={1}", UserId, strFormat))
+      Return DotNetNuke.Common.ResolveUrl(String.Format("~/DnnImageHandler.ashx?mode=profilepic&userId={0}&w={1}&h={1}", UserId, strFormat))
      Else
-      Return DotNetNuke.Common.ResolveUrl(String.Format("~/profilepic.ashx?userid={0}&w={1}&h={1}", UserId, 50))
+      Return DotNetNuke.Common.ResolveUrl(String.Format("~/DnnImageHandler.ashx?mode=profilepic&userId={0}&w={1}&h={1}", UserId, 50))
      End If
     Case "profileurl"
      Return DotNetNuke.Common.Globals.UserProfileURL(UserId)
@@ -99,7 +99,7 @@ Namespace Templating
     res = User.GetProperty(strPropertyName, strFormat, formatProvider, AccessingUser, AccessLevel, PropertyNotFound)
    End If
    If PropertyNotFound Then
-    res = User.Profile.GetPropertyValue(strPropertyName)
+    res = HttpUtility.HtmlDecode(User.Profile.GetPropertyValue(strPropertyName))
    End If
    If Not String.IsNullOrEmpty(res) Then
     PropertyNotFound = False
@@ -109,7 +109,7 @@ Namespace Templating
    Return Null.NullString
   End Function
 
-  Public ReadOnly Property Cacheability() As DotNetNuke.Services.Tokens.CacheLevel Implements DotNetNuke.Services.Tokens.IPropertyAccess.Cacheability
+  Public ReadOnly Property Cacheability() As CacheLevel Implements IPropertyAccess.Cacheability
    Get
     Return CacheLevel.fullyCacheable
    End Get

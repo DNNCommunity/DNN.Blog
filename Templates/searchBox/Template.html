@@ -1,0 +1,43 @@
+<div class="blogSearch">
+ <div class="blogSearch_btnDiv">
+  <a href="#" id="cmdSearch[module:moduleid]" class="dnnPrimaryAction">[resx:Search]</a>
+ </div>
+ <div class="blogSearch_textDiv">
+  <input type="text" id="search[module:moduleid]" placeholder="[resx:Search]" />
+ </div>
+ <div class="blogSearch_optDiv">
+  [resx:SearchIn]
+  <input type="checkbox" id="scopeAll[module:moduleid]" value="1" checked />[resx:All]
+  <input type="checkbox" id="scopeTitle[module:moduleid]" value="1" checked />[resx:Title]
+  <input type="checkbox" id="scopeContents[module:moduleid]" value="1" />[resx:Contents]
+ </div>
+</div>
+<script type="text/javascript">
+ (function ($) {
+  function search() {
+   var url = '[urls:blogtermauthor|true]';
+   if ($('scopeAll[module:moduleid]').is(':checked')) {
+    url = '[urls:none|true]';
+   }
+   url += 'search=' + $('#search[module:moduleid]').val();
+   if ($('#scopeTitle[module:moduleid]').is(':checked')) {
+    url += '&t=1'
+   }
+   if ($('#scopeContents[module:moduleid]').is(':checked')) {
+    url += '&c=1'
+   }
+   window.location.href = encodeURI(url);
+  }
+  $(document).ready(function () {
+   $('#cmdSearch[module:moduleid]').click(function () {
+    search();
+   });
+   $(document).on('keypress', '#search[module:moduleid]', function (e) {
+    if (e.which == "13") {
+     search();
+     e.preventDefault();
+    }
+   });
+  });
+ })(jQuery);
+</script>

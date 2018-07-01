@@ -1,0 +1,9 @@
+<div class="blog_comments">
+<div class="blog_comment_totals">[resx:Total]: [post:nrcomments] [resx:Comments]</div>
+[subtemplate|Comment.html|Comments|]
+</div>
+[if|1][security:canaddcomment][=]True[/if]
+<div class="blog_topPad">
+ <a href="#" class="dnnPrimaryAction" id="cmdComment">[resx:Comment]</a>
+</div>
+[endif|1]

@@ -121,7 +121,7 @@
     <value>Cancel</value>
   </data>
   <data name="cmdBlog.Text" xml:space="preserve">
-    <value>Blog!</value>
+    <value>New Post!</value>
   </data>
   <data name="cmdCopyModule.Text" xml:space="preserve">
     <value>Copy Module</value>

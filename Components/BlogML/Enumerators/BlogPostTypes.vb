@@ -1,5 +1,3 @@
-Imports System.Xml.Serialization
-
 Namespace BlogML
  Public Enum BlogPostTypes As Short
   <System.Xml.Serialization.XmlEnumAttribute("normal")> _

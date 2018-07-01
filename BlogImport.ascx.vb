@@ -1,6 +1,6 @@
 ﻿'
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -23,13 +23,14 @@ Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.BlogML.Xml
 Imports DotNetNuke.Modules.Blog.Entities.Posts
+Imports ICSharpCode.SharpZipLib.Zip
 
 Public Class BlogImport
  Inherits BlogModuleBase
 
  Private Property CanImportCategories As Boolean = False
 
- Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+ Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 
   If Not BlogContext.Security.IsBlogger Then
    Throw New Exception("You do not have access to this resource. Please check your login status.")
@@ -37,7 +38,7 @@ Public Class BlogImport
 
   If Settings.VocabularyId > -1 AndAlso (BlogContext.Security.IsEditor) Then CanImportCategories = True
 
-  If Not Me.IsPostBack Then
+  If Not IsPostBack Then
    lblTargetName.Text = BlogContext.Blog.Title
    chkImportCategories.Enabled = CanImportCategories
   End If
@@ -55,11 +56,11 @@ Public Class BlogImport
   Return text
  End Function
 
- Private Sub wizBlogImport_ActiveStepChanged(sender As Object, e As System.EventArgs) Handles wizBlogImport.ActiveStepChanged
+ Private Sub wizBlogImport_ActiveStepChanged(sender As Object, e As EventArgs) Handles wizBlogImport.ActiveStepChanged
 
  End Sub
 
- Private Sub wizBlogImport_CancelButtonClick(sender As Object, e As System.EventArgs) Handles wizBlogImport.CancelButtonClick
+ Private Sub wizBlogImport_CancelButtonClick(sender As Object, e As EventArgs) Handles wizBlogImport.CancelButtonClick
   Response.Redirect(EditUrl("Manage"), False)
  End Sub
 
@@ -69,7 +70,24 @@ Public Class BlogImport
     Dim strReport As New StringBuilder
     Dim file As HttpPostedFile = cmdBrowse.PostedFile
     If file.FileName <> "" Then
-     file.SaveAs(BlogContext.BlogMapPath & "import.resources")
+     If file.FileName.ToLower.EndsWith(".zip") Then
+      Dim objZipInputStream As New ZipInputStream(file.InputStream)
+      Dim objZipEntry As ZipEntry = objZipInputStream.GetNextEntry
+      If objZipEntry.Name.ToLower.EndsWith(".xml") Then
+       Using objFileStream As IO.FileStream = IO.File.Create(BlogContext.BlogMapPath & "import.resources")
+        Dim intSize As Integer = 2048
+        Dim arrData(2048) As Byte
+        intSize = objZipInputStream.Read(arrData, 0, arrData.Length)
+        While intSize > 0
+         objFileStream.Write(arrData, 0, intSize)
+         intSize = objZipInputStream.Read(arrData, 0, arrData.Length)
+        End While
+       End Using
+      End If
+      objZipInputStream.Close()
+     Else
+      file.SaveAs(BlogContext.BlogMapPath & "import.resources")
+     End If
      strReport.AppendLine("Saved File")
      Dim blog As BlogMLBlog = Nothing
      Using strIn As New IO.StreamReader(BlogContext.BlogMapPath & "import.resources")
@@ -97,26 +115,31 @@ Public Class BlogImport
     End Using
     If b IsNot Nothing Then
      If CanImportCategories AndAlso chkImportCategories.Checked Then
-      For Each c As BlogML.Xml.BlogMLCategory In b.Categories
+      For Each c As BlogMLCategory In b.Categories
        ' check for and add category
       Next
      ElseIf chkImportMissingCategoriesAsKeywords.Checked Then
-      For Each c As BlogML.Xml.BlogMLCategory In b.Categories
+      For Each c As BlogMLCategory In b.Categories
        ' check for and add tag
       Next
      End If
-     For Each post As BlogML.Xml.BlogMLPost In b.Posts
+     For Each post As BlogMLPost In b.Posts
       ' import post
       Dim newPost As New PostInfo
       With newPost
        .BlogID = BlogContext.BlogId
-       '.AllowComments = Blog.AllowComments
        .ViewCount = 0
        .Title = post.Title
        .Content = post.Content.Text
        .Summary = post.Excerpt.Text
        .Published = post.Approved
        .PublishedOnDate = post.DateCreated
+       ' DNN Blog specific fields
+       .Image = post.Image
+       .AllowComments = post.AllowComments
+       .DisplayCopyright = post.DisplayCopyright
+       .Copyright = post.Copyright
+       .Locale = post.Locale
       End With
       If newPost.Title <> "" And newPost.Content <> "" Then
        newPost.ContentItemId = PostsController.AddPost(newPost, UserId)

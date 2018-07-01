@@ -19,8 +19,6 @@
 '
 Option Strict On
 Option Explicit On
-
-Imports DotNetNuke.Modules.Blog.Entities
 Imports DotNetNuke.Services.Journal
 Imports System.Linq
 Imports DotNetNuke.Modules.Blog.Common.Globals

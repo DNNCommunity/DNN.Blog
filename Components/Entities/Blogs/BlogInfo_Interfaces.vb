@@ -1,6 +1,6 @@
 '
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,12 +18,7 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System
-Imports System.Data
-Imports System.IO
 Imports System.Runtime.Serialization
-Imports System.Runtime.Serialization.Json
-Imports System.Text
 Imports System.Xml
 Imports System.Xml.Schema
 Imports System.Xml.Serialization
@@ -122,7 +117,7 @@ Namespace Entities.Blogs
 #Region " IPropertyAccess Implementation "
   Public Function GetProperty(strPropertyName As String, strFormat As String, formatProvider As System.Globalization.CultureInfo, AccessingUser As DotNetNuke.Entities.Users.UserInfo, AccessLevel As DotNetNuke.Services.Tokens.Scope, ByRef PropertyNotFound As Boolean) As String Implements DotNetNuke.Services.Tokens.IPropertyAccess.GetProperty
    Dim OutputFormat As String = String.Empty
-   Dim portalSettings As DotNetNuke.Entities.Portals.PortalSettings = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings()
+   Dim portalSettings As DotNetNuke.Entities.Portals.PortalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings
    If strFormat = String.Empty Then
     OutputFormat = "D"
    Else
@@ -130,109 +125,109 @@ Namespace Entities.Blogs
    End If
    Select Case strPropertyName.ToLower
     Case "blogid"
-     Return (Me.BlogID.ToString(OutputFormat, formatProvider))
+     Return (BlogID.ToString(OutputFormat, formatProvider))
     Case "moduleid"
-     Return (Me.ModuleID.ToString(OutputFormat, formatProvider))
+     Return (ModuleID.ToString(OutputFormat, formatProvider))
     Case "title"
-     Return PropertyAccess.FormatString(Me.Title, strFormat)
+     Return PropertyAccess.FormatString(Title, strFormat)
     Case "description"
-     Return PropertyAccess.FormatString(Me.Description, strFormat)
+     Return PropertyAccess.FormatString(Description, strFormat)
     Case "image"
-     Return PropertyAccess.FormatString(Me.Image, strFormat)
+     Return PropertyAccess.FormatString(Image, strFormat)
     Case "hasimage"
-     Return CBool(Me.Image <> "").ToString(formatProvider)
+     Return CBool(Image <> "").ToString(formatProvider)
     Case "locale"
-     Return PropertyAccess.FormatString(Me.Locale, strFormat)
+     Return PropertyAccess.FormatString(Locale, strFormat)
     Case "fulllocalization"
-     Return Me.FullLocalization.ToString
+     Return FullLocalization.ToString
     Case "fulllocalizationyesno"
-     Return PropertyAccess.Boolean2LocalizedYesNo(Me.FullLocalization, formatProvider)
+     Return PropertyAccess.Boolean2LocalizedYesNo(FullLocalization, formatProvider)
     Case "published"
-     Return Me.Published.ToString
+     Return Published.ToString
     Case "publishedyesno"
-     Return PropertyAccess.Boolean2LocalizedYesNo(Me.Published, formatProvider)
+     Return PropertyAccess.Boolean2LocalizedYesNo(Published, formatProvider)
     Case "includeimagesinfeed"
-     Return Me.IncludeImagesInFeed.ToString
+     Return IncludeImagesInFeed.ToString
     Case "includeimagesinfeedyesno"
-     Return PropertyAccess.Boolean2LocalizedYesNo(Me.IncludeImagesInFeed, formatProvider)
+     Return PropertyAccess.Boolean2LocalizedYesNo(IncludeImagesInFeed, formatProvider)
     Case "includeauthorinfeed"
-     Return Me.IncludeAuthorInFeed.ToString
+     Return IncludeAuthorInFeed.ToString
     Case "includeauthorinfeedyesno"
-     Return PropertyAccess.Boolean2LocalizedYesNo(Me.IncludeAuthorInFeed, formatProvider)
+     Return PropertyAccess.Boolean2LocalizedYesNo(IncludeAuthorInFeed, formatProvider)
     Case "syndicated"
-     Return Me.Syndicated.ToString
+     Return Syndicated.ToString
     Case "syndicatedyesno"
-     Return PropertyAccess.Boolean2LocalizedYesNo(Me.Syndicated, formatProvider)
+     Return PropertyAccess.Boolean2LocalizedYesNo(Syndicated, formatProvider)
     Case "syndicationemail"
-     Return PropertyAccess.FormatString(Me.SyndicationEmail, strFormat)
+     Return PropertyAccess.FormatString(SyndicationEmail, strFormat)
     Case "copyright"
-     Return PropertyAccess.FormatString(Me.Copyright, strFormat)
+     Return PropertyAccess.FormatString(Copyright, strFormat)
     Case "mustapproveghostposts"
-     Return Me.MustApproveGhostPosts.ToString
+     Return MustApproveGhostPosts.ToString
     Case "mustapproveghostpostsyesno"
-     Return PropertyAccess.Boolean2LocalizedYesNo(Me.MustApproveGhostPosts, formatProvider)
+     Return PropertyAccess.Boolean2LocalizedYesNo(MustApproveGhostPosts, formatProvider)
     Case "publishasowner"
-     Return Me.PublishAsOwner.ToString
+     Return PublishAsOwner.ToString
     Case "publishasowneryesno"
-     Return PropertyAccess.Boolean2LocalizedYesNo(Me.PublishAsOwner, formatProvider)
+     Return PropertyAccess.Boolean2LocalizedYesNo(PublishAsOwner, formatProvider)
     Case "enablepingbacksend"
-     Return Me.EnablePingBackSend.ToString
+     Return EnablePingBackSend.ToString
     Case "enablepingbacksendyesno"
-     Return PropertyAccess.Boolean2LocalizedYesNo(Me.EnablePingBackSend, formatProvider)
+     Return PropertyAccess.Boolean2LocalizedYesNo(EnablePingBackSend, formatProvider)
     Case "enablepingbackreceive"
-     Return Me.EnablePingBackReceive.ToString
+     Return EnablePingBackReceive.ToString
     Case "enablepingbackreceiveyesno"
-     Return PropertyAccess.Boolean2LocalizedYesNo(Me.EnablePingBackReceive, formatProvider)
+     Return PropertyAccess.Boolean2LocalizedYesNo(EnablePingBackReceive, formatProvider)
     Case "autoapprovepingback"
-     Return Me.AutoApprovePingBack.ToString
+     Return AutoApprovePingBack.ToString
     Case "autoapprovepingbackyesno"
-     Return PropertyAccess.Boolean2LocalizedYesNo(Me.AutoApprovePingBack, formatProvider)
+     Return PropertyAccess.Boolean2LocalizedYesNo(AutoApprovePingBack, formatProvider)
     Case "enabletrackbacksend"
-     Return Me.EnableTrackBackSend.ToString
+     Return EnableTrackBackSend.ToString
     Case "enabletrackbacksendyesno"
-     Return PropertyAccess.Boolean2LocalizedYesNo(Me.EnableTrackBackSend, formatProvider)
+     Return PropertyAccess.Boolean2LocalizedYesNo(EnableTrackBackSend, formatProvider)
     Case "enabletrackbackreceive"
-     Return Me.EnableTrackBackReceive.ToString
+     Return EnableTrackBackReceive.ToString
     Case "enabletrackbackreceiveyesno"
-     Return PropertyAccess.Boolean2LocalizedYesNo(Me.EnableTrackBackReceive, formatProvider)
+     Return PropertyAccess.Boolean2LocalizedYesNo(EnableTrackBackReceive, formatProvider)
     Case "autoapprovetrackback"
-     Return Me.AutoApproveTrackBack.ToString
+     Return AutoApproveTrackBack.ToString
     Case "autoapprovetrackbackyesno"
-     Return PropertyAccess.Boolean2LocalizedYesNo(Me.AutoApproveTrackBack, formatProvider)
+     Return PropertyAccess.Boolean2LocalizedYesNo(AutoApproveTrackBack, formatProvider)
     Case "owneruserid"
-     Return (Me.OwnerUserId.ToString(OutputFormat, formatProvider))
+     Return (OwnerUserId.ToString(OutputFormat, formatProvider))
     Case "createdbyuserid"
-     Return (Me.CreatedByUserID.ToString(OutputFormat, formatProvider))
+     Return (CreatedByUserID.ToString(OutputFormat, formatProvider))
     Case "createdondate"
-     Return (Me.CreatedOnDate.ToString(OutputFormat, formatProvider))
+     Return (CreatedOnDate.ToString(OutputFormat, formatProvider))
     Case "lastmodifiedbyuserid"
-     Return (Me.LastModifiedByUserID.ToString(OutputFormat, formatProvider))
+     Return (LastModifiedByUserID.ToString(OutputFormat, formatProvider))
     Case "lastmodifiedondate"
-     Return (Me.LastModifiedOnDate.ToString(OutputFormat, formatProvider))
+     Return (LastModifiedOnDate.ToString(OutputFormat, formatProvider))
     Case "displayname"
-     Return PropertyAccess.FormatString(Me.DisplayName, strFormat)
+     Return PropertyAccess.FormatString(DisplayName, strFormat)
     Case "email"
-     Return PropertyAccess.FormatString(Me.Email, strFormat)
+     Return PropertyAccess.FormatString(Email, strFormat)
     Case "username"
-     Return PropertyAccess.FormatString(Me.Username, strFormat)
+     Return PropertyAccess.FormatString(Username, strFormat)
     Case "nrposts"
-     Return (Me.NrPosts.ToString(OutputFormat, formatProvider))
+     Return (NrPosts.ToString(OutputFormat, formatProvider))
     Case "lastpublishdate"
-     Return (Me.LastPublishDate.ToString(OutputFormat, formatProvider))
+     Return (LastPublishDate.ToString(OutputFormat, formatProvider))
     Case "nrviews"
-     Return (Me.NrViews.ToString(OutputFormat, formatProvider))
+     Return (NrViews.ToString(OutputFormat, formatProvider))
     Case "firstpublishdate"
-     Return (Me.FirstPublishDate.ToString(OutputFormat, formatProvider))
+     Return (FirstPublishDate.ToString(OutputFormat, formatProvider))
     Case "altlocale"
-     Return PropertyAccess.FormatString(Me.AltLocale, strFormat)
+     Return PropertyAccess.FormatString(AltLocale, strFormat)
     Case "alttitle"
-     Return PropertyAccess.FormatString(Me.AltTitle, strFormat)
+     Return PropertyAccess.FormatString(AltTitle, strFormat)
     Case "altdescription"
-     Return PropertyAccess.FormatString(Me.AltDescription, strFormat)
+     Return PropertyAccess.FormatString(AltDescription, strFormat)
     Case "localizedtitle"
-     Return PropertyAccess.FormatString(Me.LocalizedTitle, strFormat)
+     Return PropertyAccess.FormatString(LocalizedTitle, strFormat)
     Case "localizeddescription"
-     Return PropertyAccess.FormatString(Me.LocalizedDescription, strFormat)
+     Return PropertyAccess.FormatString(LocalizedDescription, strFormat)
     Case "link", "permalink"
      Return PermaLink(DotNetNuke.Entities.Portals.PortalSettings.Current)
     Case "parenturl"

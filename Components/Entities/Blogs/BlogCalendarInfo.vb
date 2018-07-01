@@ -1,6 +1,6 @@
 ﻿'
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -112,7 +112,7 @@ Namespace Entities.Blogs
 #Region " IPropertyAccess Implementation "
   Public Function GetProperty(strPropertyName As String, strFormat As String, formatProvider As System.Globalization.CultureInfo, AccessingUser As DotNetNuke.Entities.Users.UserInfo, AccessLevel As DotNetNuke.Services.Tokens.Scope, ByRef PropertyNotFound As Boolean) As String Implements DotNetNuke.Services.Tokens.IPropertyAccess.GetProperty
    Dim OutputFormat As String = String.Empty
-   Dim portalSettings As DotNetNuke.Entities.Portals.PortalSettings = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings()
+   Dim portalSettings As DotNetNuke.Entities.Portals.PortalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings
    If strFormat = String.Empty Then
     OutputFormat = "D"
    Else
@@ -120,19 +120,19 @@ Namespace Entities.Blogs
    End If
    Select Case strPropertyName.ToLower
     Case "postyear"
-     Return (Me.PostYear.ToString(OutputFormat, formatProvider))
+     Return (PostYear.ToString(OutputFormat, formatProvider))
     Case "postmonth"
-     Return (Me.PostMonth.ToString(OutputFormat, formatProvider))
+     Return (PostMonth.ToString(OutputFormat, formatProvider))
     Case "postcount"
-     Return (Me.PostCount.ToString(OutputFormat, formatProvider))
+     Return (PostCount.ToString(OutputFormat, formatProvider))
     Case "viewcount"
-     Return (Me.ViewCount.ToString(OutputFormat, formatProvider))
+     Return (ViewCount.ToString(OutputFormat, formatProvider))
     Case "firstday"
-     Return (Me.FirstDay.ToString(OutputFormat, formatProvider))
+     Return (FirstDay.ToString(OutputFormat, formatProvider))
     Case "lastday"
-     Return (Me.LastDay.ToString(OutputFormat, formatProvider))
+     Return (LastDay.ToString(OutputFormat, formatProvider))
     Case "firstdaynextmonth"
-     Return (Me.FirstDayNextMonth.ToString(OutputFormat, formatProvider))
+     Return (FirstDayNextMonth.ToString(OutputFormat, formatProvider))
     Case "parenturl"
      Return PermaLink(ParentTabID)
     Case Else

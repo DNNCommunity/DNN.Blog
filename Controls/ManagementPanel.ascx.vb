@@ -1,6 +1,6 @@
 '
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -31,11 +31,11 @@ Namespace Controls
   Public Property BlogSelectListHtml As String = ""
   Public Property NrBlogs As Integer = 0
 
-  Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+  Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 
    LocalResourceFile = "~/DesktopModules/Blog/Controls/App_LocalResources/ManagementPanel.ascx.resx"
-   If Not Me.IsPostBack Then
-    cmdManageBlogs.Visible = BlogContext.Security.IsBlogger Or BlogContext.Security.CanApprovePost
+   If Not IsPostBack Then
+    cmdManageBlogs.Visible = BlogContext.Security.IsBlogger Or BlogContext.Security.CanApprovePost Or BlogContext.Security.CanEditPost
     cmdAdmin.Visible = BlogContext.Security.IsEditor
     cmdBlog.Visible = BlogContext.Security.CanAddPost
     wlwlink.Visible = BlogContext.Security.CanAddPost And Settings.AllowWLW
@@ -57,7 +57,7 @@ Namespace Controls
      For Each d As IO.DirectoryInfo In (New IO.DirectoryInfo(Settings.PortalTemplatesMapPath)).GetDirectories
       ddTemplate.Items.Add(New ListItem(d.Name & " [Local]", "[P]" & d.Name))
      Next
-     Dim skinTemplatePath As String = Server.MapPath(DotNetNuke.UI.Skins.Skin.GetSkin(Me.Page).SkinPath) & "Templates\Blog\"
+     Dim skinTemplatePath As String = Server.MapPath(DotNetNuke.UI.Skins.Skin.GetSkin(Page).SkinPath) & "Templates\Blog\"
      If IO.Directory.Exists(skinTemplatePath) Then
       For Each d As IO.DirectoryInfo In (New IO.DirectoryInfo(skinTemplatePath)).GetDirectories
        ddTemplate.Items.Add(New ListItem(d.Name & " [Skin]", "[S]" & d.Name))
@@ -83,14 +83,12 @@ Namespace Controls
    End If
    If Not String.IsNullOrEmpty(BlogContext.ShowLocale) Then RssLink &= String.Format("&language={0}", BlogContext.ShowLocale)
    If BlogContext.Security.CanAddPost Then
-    BlogSelectListHtml = "<select id=""ddBlog"">"
+    BlogSelectListHtml = "<select id=""" & ClientID & "ddBlog"">"
     Dim blogList As IEnumerable(Of BlogInfo) = Nothing
     If BlogContext.Security.IsEditor Then
      blogList = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, BlogContext.Locale).Values
     Else
-     blogList = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, BlogContext.Locale).Values.Where(Function(b)
-                                                                                                              Return b.OwnerUserId = UserId Or b.CanAdd Or (b.CanEdit And BlogContext.ContentItemId > -1)
-                                                                                                             End Function)
+     blogList = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, BlogContext.Locale).Values.Where(Function(b) b.OwnerUserId = UserId Or b.CanAdd Or (b.CanEdit And BlogContext.ContentItemId > -1))
     End If
     NrBlogs = blogList.Count
     If NrBlogs = 0 Then
@@ -109,15 +107,15 @@ Namespace Controls
 
   End Sub
 
-  Private Sub cmdAdmin_Click(sender As Object, e As System.EventArgs) Handles cmdAdmin.Click
+  Private Sub cmdAdmin_Click(sender As Object, e As EventArgs) Handles cmdAdmin.Click
    Response.Redirect(EditUrl("Admin"), False)
   End Sub
 
-  Private Sub cmdManageBlogs_Click(sender As Object, e As System.EventArgs) Handles cmdManageBlogs.Click
+  Private Sub cmdManageBlogs_Click(sender As Object, e As EventArgs) Handles cmdManageBlogs.Click
    Response.Redirect(EditUrl("Manage"), False)
   End Sub
 
-  Private Sub cmdBlog_Click(sender As Object, e As System.EventArgs) Handles cmdBlog.Click
+  Private Sub cmdBlog_Click(sender As Object, e As EventArgs) Handles cmdBlog.Click
    If BlogContext.BlogId <> -1 Then
     Response.Redirect(EditUrl("Blog", BlogContext.BlogId.ToString, "PostEdit"), False)
    Else
@@ -125,15 +123,13 @@ Namespace Controls
      Dim b1 As BlogInfo = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, BlogContext.Locale).Values.First
      Response.Redirect(EditUrl("Blog", b1.BlogID.ToString, "PostEdit"), False)
     Else
-     Dim b1 As BlogInfo = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, BlogContext.Locale).Values.FirstOrDefault(Function(b)
-                                                                                                                                 Return b.OwnerUserId = UserId Or b.CanAdd Or (b.CanEdit And BlogContext.ContentItemId > -1)
-                                                                                                                                End Function)
+     Dim b1 As BlogInfo = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, BlogContext.Locale).Values.FirstOrDefault(Function(b) b.OwnerUserId = UserId Or b.CanAdd Or (b.CanEdit And BlogContext.ContentItemId > -1))
      Response.Redirect(EditUrl("Blog", b1.BlogID.ToString, "PostEdit"), False)
     End If
    End If
   End Sub
 
-  Private Sub cmdEditPost_Click(sender As Object, e As System.EventArgs) Handles cmdEditPost.Click
+  Private Sub cmdEditPost_Click(sender As Object, e As EventArgs) Handles cmdEditPost.Click
    Response.Redirect(EditUrl("Post", BlogContext.ContentItemId.ToString, "PostEdit"), False)
   End Sub
 

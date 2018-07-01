@@ -1,6 +1,6 @@
 '
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,7 +18,6 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System
 Imports System.Xml
 Imports System.Xml.Schema
 Imports System.Xml.Serialization
@@ -69,7 +68,7 @@ Namespace Security.Permissions
   End Function
 
   Public Function CurrentUserHasPermission(PermissionKey As String) As Boolean
-   Dim u As UserInfo = UserController.GetCurrentUserInfo
+   Dim u As UserInfo = UserController.Instance.GetCurrentUserInfo
    If u IsNot Nothing Then
     For Each epi As BlogPermissionInfo In Me
      If epi.PermissionKey Is Nothing Then
@@ -127,7 +126,7 @@ Namespace Security.Permissions
     .RoleId = RoleId
     .UserId = UserId
    End With
-   Me.Add(pi)
+   Add(pi)
   End Sub
 
 #Region " IXmlSerializable Implementation "
@@ -172,7 +171,7 @@ Namespace Security.Permissions
      reader.ReadStartElement("Permission")
      Dim epi As New BlogPermissionInfo
      epi.ReadXml(reader)
-     Me.Add(epi)
+     Add(epi)
     Loop While reader.ReadToNextSibling("Permission")
    Catch ex As Exception
     ' log exception as DNN import routine does not do that
@@ -189,7 +188,7 @@ Namespace Security.Permissions
     Dim epi As New BlogPermissionInfo
     epi.ReadXml(xPermission)
     If epi.RoleName <> "" Then ' we don't import user permissions
-     Me.Add(epi)
+     Add(epi)
     End If
    Next
 

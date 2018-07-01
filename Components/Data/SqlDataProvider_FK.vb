@@ -1,6 +1,6 @@
 '
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,9 +18,6 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System
-Imports System.Data
-Imports System.Data.SqlClient
 Imports Microsoft.ApplicationBlocks.Data
 
 Namespace Data
@@ -28,9 +25,9 @@ Namespace Data
  Partial Public Class SqlDataProvider
 
 #Region " BlogPermission Methods "
-	Public Overrides Function GetBlogPermissionsByBlog(blogID As Int32 , StartRowIndex As Integer, MaximumRows As Integer, OrderBy As String) As IDataReader
-		Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "GetBlogPermissionsByBlog", blogID, StartRowIndex, MaximumRows, OrderBy.ToUpper), IDataReader)
-	End Function
+  Public Overrides Function GetBlogPermissionsByBlog(blogID As Int32, StartRowIndex As Integer, MaximumRows As Integer, OrderBy As String) As IDataReader
+   Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & ModuleQualifier & "GetBlogPermissionsByBlog", blogID, StartRowIndex, MaximumRows, OrderBy.ToUpper), IDataReader)
+  End Function
 
 #End Region
 

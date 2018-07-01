@@ -7,11 +7,11 @@
  <asp:LinkButton runat="server" ID="cmdEditPost" resourcekey="cmdEditPost" Visible="false" CssClass="dnnSecondaryAction" />
  <asp:LinkButton runat="server" ID="cmdBlog" resourcekey="cmdBlog" Visible="false" CssClass="dnnPrimaryAction" />&nbsp;
  <div style="float:right">
-  <a href="#" id="doclink" runat="server" visible="false"><i class="fa fa-book fa-fw icon16"></i>&nbsp;</a>
-  <a href="<%=DotNetNuke.Common.Globals.NavigateUrl()%>" id="homelink" title="<%=LocalizeString("Home") %>"><i class="fa fa-home fa-fw icon16"></i>&nbsp;</a>
-  <a href="#" id="wlwlink" runat="server"><i class="fa fa-pencil fa-fw icon16"></i>&nbsp;</a>
-  <a href="<%=RssLink%>" id="rsslink<%=ModuleId %>" title="<%=LocalizeString("RSS") %>" target="_blank"><i class="fa fa-rss fa-fw icon16"></i>&nbsp;</a>
-  <a href="#" id="searchlink<%=ModuleId %>" title="<%=LocalizeString("Search") %>"><i class="fa fa-search fa-fw icon16"></i>&nbsp;</a>
+  <a href="#" id="doclink" runat="server" visible="false"><i class="fa fa-book fa-fw icon16"></i>&nbsp;<span class="sr-only">Documentation</span></a>
+  <a href="<%=DotNetNuke.Common.Globals.NavigateUrl()%>" id="homelink" title="<%=LocalizeString("Home") %>"><i class="fa fa-home fa-fw icon16"></i>&nbsp;<span class="sr-only"><%=LocalizeString("Home") %></span></a>
+  <a href="#" id="wlwlink" runat="server"><i class="fa fa-pencil fa-fw icon16"></i>&nbsp;<span class="sr-only"><%=LocalizeString("WLW") %></span></a>
+  <a href="<%=RssLink%>" id="rsslink<%=ModuleId %>" title="<%=LocalizeString("RSS") %>" target="_blank"><i class="fa fa-rss fa-fw icon16"></i>&nbsp;<span class="sr-only"><%=LocalizeString("RSS") %></span></a>
+  <a href="#" id="searchlink<%=ModuleId %>" title="<%=LocalizeString("Search") %>"><i class="fa fa-search fa-fw icon16"></i>&nbsp;<span class="sr-only"><%=LocalizeString("Search") %></span></a>
  </div>
 </div>
 <div class="dnnDialog" id="pnlCopyModule" runat="server">
@@ -141,7 +141,7 @@
 		 open: function (e) {
 		  $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeJSString("cmdBlog") %>")').addClass('dnnPrimaryAction');
 		  $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeJSString("Cancel") %>")').addClass('dnnSecondaryAction');
-    $('#ddBlog').width("100%");
+    $('#<%:ClientID%>ddBlog').width("100%");
 		 },
 		 buttons: [
     {
@@ -160,7 +160,7 @@
       } else {
        url += '&'
       };
-      url += 'Blog=' + $('#ddBlog').val();
+      url += 'Blog=' + $('#<%:ClientID%>ddBlog').val();
       window.location.href = encodeURI(url);
      }
     }
@@ -179,7 +179,7 @@
    } else {
     url += '&'
    };
-   url += 'Blog=' + $('#ddBlog').val();
+   url += 'Blog=' + $('#<%:ClientID%>ddBlog').val();
    window.location.href = encodeURI(url);
    return false;
   });

@@ -1,6 +1,6 @@
 ﻿'
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -35,7 +35,7 @@ Namespace Integration
 
 #Region " Post Import Logic "
   Public Shared Sub CheckupOnImportedFiles(moduleId As Integer)
-   Dim CacheKey As String = "CheckupOnImportedFiles" & moduleId.ToString
+   Dim CacheKey As String = "Blog_CheckupOnImportedFiles" & moduleId.ToString
    If DotNetNuke.Common.Utilities.DataCache.GetCache(CacheKey) Is Nothing Then
     Dim logFile As String = String.Format(LogFilePattern, DotNetNuke.Common.HostMapPath, moduleId)
     If IO.File.Exists(logFile) Then

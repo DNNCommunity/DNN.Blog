@@ -1,6 +1,6 @@
 '
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -32,10 +32,10 @@ Namespace Controls
 #End Region
 
 #Region " Event Handlers "
-  Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+  Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 
    LocalResourceFile = "~/DesktopModules/Blog/Controls/App_LocalResources/Comments.ascx.resx"
-   AddJavascriptFile("jquery.timeago.js", 59)
+   AddJavascriptFile("jquery.timeago.js", "jquery.timeago", "1.0.2", 59)
    ' localized js files?
    Dim locale As String = Threading.Thread.CurrentThread.CurrentCulture.Name.ToLower
    If IO.Directory.Exists(BlogModuleMapPath & "js\" & locale) Then

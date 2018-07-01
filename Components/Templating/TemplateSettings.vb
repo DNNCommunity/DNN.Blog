@@ -1,6 +1,6 @@
 '
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -37,7 +37,7 @@ Namespace Templating
    If IO.File.Exists(_settingsFile) Then
     Using rdr As New IO.StreamReader(_settingsFile)
      Dim a As TemplateSettings = CType(x.Deserialize(rdr), TemplateSettings)
-     Me.Settings = a.Settings
+     Settings = a.Settings
     End Using
    End If
   End Sub

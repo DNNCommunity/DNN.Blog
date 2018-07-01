@@ -1,6 +1,6 @@
 ﻿'
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -92,7 +92,7 @@ Namespace Entities.Posts
 #Region " IPropertyAccess Implementation "
   Public Shadows Function GetProperty(strPropertyName As String, strFormat As String, formatProvider As System.Globalization.CultureInfo, AccessingUser As DotNetNuke.Entities.Users.UserInfo, AccessLevel As DotNetNuke.Services.Tokens.Scope, ByRef PropertyNotFound As Boolean) As String Implements DotNetNuke.Services.Tokens.IPropertyAccess.GetProperty
    Dim OutputFormat As String = String.Empty
-   Dim portalSettings As DotNetNuke.Entities.Portals.PortalSettings = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings()
+   Dim portalSettings As DotNetNuke.Entities.Portals.PortalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings
    If strFormat = String.Empty Then
     OutputFormat = "D"
    Else
@@ -100,13 +100,13 @@ Namespace Entities.Posts
    End If
    Select Case strPropertyName.ToLower
     Case "nrposts"
-     Return (Me.NrPosts.ToString(OutputFormat, formatProvider))
+     Return (NrPosts.ToString(OutputFormat, formatProvider))
     Case "nrviews"
-     Return (Me.NrViews.ToString(OutputFormat, formatProvider))
+     Return (NrViews.ToString(OutputFormat, formatProvider))
     Case "lastpublishdate"
-     Return (Me.LastPublishDate.ToString(OutputFormat, formatProvider))
+     Return (LastPublishDate.ToString(OutputFormat, formatProvider))
     Case "firstpublishdate"
-     Return (Me.FirstPublishDate.ToString(OutputFormat, formatProvider))
+     Return (FirstPublishDate.ToString(OutputFormat, formatProvider))
     Case "parenturl"
      Return PermaLink(ParentTabID)
     Case Else

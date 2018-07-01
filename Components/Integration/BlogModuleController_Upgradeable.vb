@@ -1,6 +1,6 @@
 ﻿'
 ' DNN Connect - http://dnn-connect.org
-' Copyright (c) 2014
+' Copyright (c) 2015
 ' by DNN Connect
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -19,7 +19,6 @@
 '
 
 Imports DotNetNuke.Entities.Modules
-Imports DotNetNuke.Services
 
 Namespace Integration
  Partial Public Class BlogModuleController
