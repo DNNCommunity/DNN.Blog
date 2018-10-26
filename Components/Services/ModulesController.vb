@@ -49,7 +49,7 @@ Namespace Services
   <ActionName("Add")>
   Public Function AddModule(postData As AddModuleDTO) As HttpResponseMessage
 
-   Dim newSettings As New Common.ViewSettings(-1)
+   Dim newSettings As New Common.ViewSettings(ActiveModule.TabModuleID)
    newSettings.BlogModuleId = ActiveModule.ModuleID
    newSettings.Template = postData.template
 
