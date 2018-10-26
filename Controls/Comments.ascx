@@ -21,7 +21,7 @@ var $dialogComment;
 		 resizable: false,
 		 dialogClass: 'dnnFormPopup dnnClear',
 		 title: '<%=LocalizeJSString("CommentTitle") %>',
-		 width: 500,
+		 width: Math.min(500, $(window).width() * .95),
 		 open: function (e) {
 		  $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeJSString("Submit") %>")').addClass('dnnPrimaryAction');
 		  $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeJSString("Cancel") %>")').addClass('dnnSecondaryAction');
