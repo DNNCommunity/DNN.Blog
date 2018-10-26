@@ -1,9 +1,11 @@
 <article class="bbs-listarticle">
   <div class="supertitle">[subtemplate|Cat.html|categories]</div>
   <h2><a href="[Post:link]">[post:localizedtitle]</a></h2>
-  <figure>
-    [subtemplate|ListImage.html|post:hasimage]
-  </figure>
+  <a href="[Post:link]">
+    <figure>
+      [subtemplate|ListImage.html|post:hasimage]
+    </figure>
+  </a>
   <div class="content">
     <div class="summary">
       [post:localizedsummary]
