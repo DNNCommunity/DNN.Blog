@@ -9,3 +9,9 @@ The DotNetNuke® Blog module is an easy to use content publishing module that is
 We regularly get offers for help. The best way to help out right now is to try the module and, if something doesn't work, to *try to find out why this happened*. This helps us enormously. Then report the issue under "Issues".
 
 Particularly _unhelpful_ are bug reports that are vague (e.g. "The module doesn't work") or rants about how feature XYZ, that is very dear to you, is now no longer there or missing. Such issues may just end up getting closed without a response.
+
+If you would like to contribute to this project, please read the [CONTRIBUTING.md](https://github.com/DNNCommunity/DNN.Blog/blob/development/.github/CONTRIBUTING.md)
+
+## Maintainers
+This module is currently maintained by Peter Donker (@donker)
+Please coordinate with him for any new release and mark him as a reviewer on any pull request.
