@@ -58,13 +58,10 @@ Namespace Templating
    Dim Template As String = Nothing
    Dim TemplateFileExistsLookup As Dictionary(Of String, Boolean) = GetTemplateFileLookupDictionary()
    If (Not TemplateFileExistsLookup.ContainsKey(cacheKey)) OrElse TemplateFileExistsLookup(cacheKey) Then
-    Dim filePath As String = Nothing
+    Dim filePath As String
     If cacheKey.Contains(":\") AndAlso Path.IsPathRooted(cacheKey) Then
-     If IO.File.Exists(cacheKey) Then
-      filePath = cacheKey
-     End If
-    End If
-    If filePath Is Nothing Then
+     filePath = cacheKey
+    Else
      filePath = System.Web.Hosting.HostingEnvironment.MapPath(ApplicationPath + cacheKey)
     End If
     If IO.File.Exists(filePath) Then
