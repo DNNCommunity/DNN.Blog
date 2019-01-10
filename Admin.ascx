@@ -208,7 +208,12 @@
  $(document).ready(function () {
   $('#categoryTree').dynatree({
    checkbox: false,
-   children: $.parseJSON($('#<%= treeState.ClientID %>').val()),
+   children: function () { 
+    if ($('#<%= treeState.ClientID %>').val() != "") {
+      return $.parseJSON($('#<%= treeState.ClientID %>').val());
+    }
+    else return null;
+   },
    dnd: {
     onDragStart: function (node) {
      return true;
