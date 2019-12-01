@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+ <xs:element name="templateSettings">
+  <xs:annotation>
+   <xs:documentation>Settings for the Gallery module</xs:documentation>
+  </xs:annotation>
+  <xs:complexType>
+   <xs:sequence>
+    <xs:element name="templateSetting" minOccurs="0" maxOccurs="unbounded">
+     <xs:complexType>
+      <xs:all>
+       <xs:element name="key" type="xs:string"/>
+       <xs:element name="valueType">
+        <xs:simpleType>
+         <xs:restriction base="xs:string">
+          <xs:enumeration value="string"/>
+          <xs:enumeration value="dropdown"/>
+          <xs:enumeration value="integer"/>
+          <xs:enumeration value="truefalse"/>
+          <xs:enumeration value="10"/>
+          <xs:enumeration value="number"/>
+         </xs:restriction>
+        </xs:simpleType>
+       </xs:element>
+       <xs:element name="values" minOccurs="0">
+        <xs:complexType>
+         <xs:sequence>
+          <xs:element name="value" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+         </xs:sequence>
+        </xs:complexType>
+       </xs:element>
+       <xs:element name="defaultValue" type="xs:string"/>
+      </xs:all>
+     </xs:complexType>
+    </xs:element>
+   </xs:sequence>
+  </xs:complexType>
+ </xs:element>
+</xs:schema>

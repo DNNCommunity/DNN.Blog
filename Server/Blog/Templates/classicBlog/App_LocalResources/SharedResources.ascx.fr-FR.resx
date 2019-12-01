@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!---->
+  <note></note>
+  <data name="approve.Text">
+    <value>Approuver</value>
+  </data>
+  <data name="author.Text">
+    <value>Auteur</value>
+  </data>
+  <data name="by.Text">
+    <value>par</value>
+  </data>
+  <data name="comment.Text">
+    <value>Commentaire</value>
+  </data>
+  <data name="comments.Text">
+    <value>Commentaires</value>
+  </data>
+  <data name="commentssofar.Text" xml:space="preserve">
+    <value>commentaire actuellement...</value>
+  </data>
+  <data name="created.Text" xml:space="preserve">
+    <value>Créé :</value>
+  </data>
+  <data name="delete.Text">
+    <value>Supprimer</value>
+  </data>
+  <data name="fileunder.Text" xml:space="preserve">
+    <value>Fichier sous :</value>
+  </data>
+  <data name="on.Text">
+    <value>sur</value>
+  </data>
+  <data name="posts.Text">
+    <value>post(s).</value>
+  </data>
+  <data name="readmore.Text" xml:space="preserve">
+    <value>Lire la suite »</value>
+  </data>
+  <data name="term.Text">
+    <value>Terme</value>
+  </data>
+  <data name="Unpublished.Text">
+    <value>Dépublié</value>
+  </data>
+  <data name="pagesize.Help" xml:space="preserve">
+    <value>Nombre de posts affichés par page. -1 = sans pagination</value>
+  </data>
+  <data name="pagesize.Text" xml:space="preserve">
+    <value>Posts par page</value>
+  </data>
+  <!---->
+</root>

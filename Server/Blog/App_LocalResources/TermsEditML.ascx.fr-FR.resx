@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!---->
+  <note></note>
+  <data name="cmdCancel.Text">
+    <value>Annuler</value>
+  </data>
+  <data name="cmdUpdate.Text" xml:space="preserve">
+    <value>Mettre à jour</value>
+  </data>
+  <!---->
+</root>

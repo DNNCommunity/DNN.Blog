@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!---->
+  <note></note>
+  <data name="Link.Text">
+    <value>lien</value>
+  </data>
+  <data name="url.Help" xml:space="preserve">
+    <value>Copier l'URL (adresse) de la page cible ici, en la faisant terminer par  '?' ou '&amp;'. Le gabarit ajoutera automatiquement 'post=xxx' pour former un lien complet.</value>
+  </data>
+  <data name="url.Text" xml:space="preserve">
+    <value>Url vers la page cible</value>
+  </data>
+  <!---->
+</root>

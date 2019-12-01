@@ -1,0 +1,472 @@
+﻿if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_Upgrade_ListBlogs') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_Upgrade_ListBlogs
+GO
+
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_ListBlogs
+@PortalID int,
+@ParentBlogID int,
+@ShowNonPublic bit
+AS
+
+SELECT
+	B.[PortalID],
+	B.[BlogID],
+	B.[ParentBlogID],
+	B.[UserID],
+	U.[UserName],
+	U.[DisplayName] AS UserFullName,
+	B.[Title],
+	B.[Description],
+	B.[Public],
+	B.[AllowComments],
+	B.[AllowAnonymous],
+	B.[LastEntry],
+	B.[Created],
+	B.[Culture],
+	B.[ShowFullname],
+	B.[DateFormat],
+	IsNull(B.[TimeZone],0) AS TimeZone,
+	B.[Syndicated],
+	IsNull(B.[SyndicateIndependant], 0) As SyndicateIndependant,
+	B.[SyndicationURL],
+	B.[SyndicationEmail],
+	B.[EmailNotification],
+	(SELECT Count(BlogID) FROM {databaseOwner}{objectQualifier}NewBlog_Blogs WHERE ParentBlogID=B.[BlogID]) AS ChildBlogCount
+FROM
+	{databaseOwner}{objectQualifier}NewBlog_Blogs B
+	INNER JOIN 
+	{databaseOwner}{objectQualifier}Users U ON B.[UserID] = U.[UserID]
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_Upgrade_DeleteBlog') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_Upgrade_DeleteBlog
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_DeleteBlog
+	@BlogID int
+AS
+
+DELETE FROM {databaseOwner}{objectQualifier}NewBlog_Blogs
+WHERE
+	([BlogID] = @BlogID)
+
+
+
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_Upgrade_ListEntriesByBlog') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_Upgrade_ListEntriesByBlog
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_ListEntriesByBlog
+	@BlogID int,
+	@BlogDate datetime = null,
+	@ShowNonPublic bit = 0,
+	@ShowNonPublished bit=0
+
+AS
+
+If @BlogDate IS NULL SET @BlogDate = GetUTCDate()
+
+
+	SELECT
+		U.[UserID],
+		U.[Username],
+		U.[DisplayName] AS UserFullName,
+		E.[EntryID],
+		E.[BlogID], 
+		E.[Title],
+		E.[Description],
+		E.[Entry],
+		E.[AddedDate],
+		E.[Published],
+		E.[Copyright],
+		E.[PermaLink],
+		IsNull(E.[AllowComments],B.[AllowComments]) As AllowComments,
+		(Select Count(*) FROM {databaseOwner}{objectQualifier}NewBlog_Comments WHERE EntryID = E.EntryID) As CommentCount,
+
+		B.[PortalID] As BlogPortalID,
+		B.[ParentBlogID],
+		B.[Title] As BlogTitle,
+		B.[Description] As BlogDescription,
+		B.[Public] As BlogPublic,
+		B.[AllowComments] As BlogAllowComments,
+		B.[AllowAnonymous] As BlogAllowAnonymous,
+		B.[LastEntry] As BlogLastEntry,
+		B.[Created] As BlogCreated,
+		B.[Culture] As BlogCulture,
+		B.[ShowFullname] As BlogShowFullName,
+		B.[DateFormat] As BlogDateFormat,
+		B.[TimeZone] As BlogTimeZone,
+		B.[Syndicated] As BlogSyndicated,
+		B.[SyndicateIndependant] As BlogSyndicateIndependant
+
+
+	FROM   {databaseOwner}{objectQualifier}NewBlog_Blogs B INNER JOIN
+		{databaseOwner}{objectQualifier}NewBlog_Entries E ON B.[BlogID] = E.[BlogID] INNER JOIN
+		{databaseOwner}{objectQualifier}Users U ON B.[UserID] = U.[UserID]
+	WHERE (B.[BlogID] = @BlogID)
+	ORDER BY E.AddedDate DESC
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_Upgrade_DeleteEntry') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_Upgrade_DeleteEntry
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_DeleteEntry
+	@EntryID int
+AS
+
+DELETE FROM {databaseOwner}{objectQualifier}NewBlog_Entries
+WHERE
+	[EntryID] = @EntryID
+
+
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_Upgrade_ListComments') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_Upgrade_ListComments
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_ListComments
+@EntryID as Int
+AS
+
+SELECT
+	C.[CommentID],
+	C.[EntryID],
+	C.[UserID],
+	C.[Title],
+	C.[Comment],
+	C.[AddedDate],
+	U.[UserName],
+	U.[DisplayName] AS UserFullName
+
+FROM
+	{databaseOwner}{objectQualifier}NewBlog_Comments C
+	LEFT JOIN 
+	{databaseOwner}{objectQualifier}Users U ON C.[UserID] = U.[UserID]
+WHERE [EntryID] = @EntryID
+
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_Upgrade_DeleteComment') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_Upgrade_DeleteComment
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_DeleteComment
+	@CommentID int
+AS
+
+DELETE FROM {databaseOwner}{objectQualifier}NewBlog_Comments
+WHERE
+	[CommentID] = @CommentID
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_Upgrade_UpdateModuleDefId') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_Upgrade_UpdateModuleDefId
+GO
+
+create procedure {databaseOwner}{objectQualifier}Blog_Upgrade_UpdateModuleDefId
+
+@ModuleDefId			int,
+@ModuleId               int
+as
+
+update {databaseOwner}{objectQualifier}Modules
+set    ModuleDefId = @ModuleDefId
+where  ModuleId = @ModuleId
+
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_Upgrade_GetSettings') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_Upgrade_GetSettings
+GO
+
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_GetSettings
+ AS
+
+SELECT [PortalID],[Key], [Value] From {databaseOwner}{objectQualifier}NewBlog_Settings
+
+GO
+
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListAllEntriesByBlog') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_ListAllEntriesByBlog
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListAllEntriesByBlog
+	@BlogID int
+AS
+
+	SELECT
+		U.[UserID],
+		U.[Username],
+		U.[DisplayName] AS UserFullName,
+		E.[EntryID],
+		E.[BlogID], 
+		E.[Title],
+		E.[Description],
+		E.[Entry],
+		E.[AddedDate],
+		E.[Published],
+		E.[Copyright],
+		E.[PermaLink],
+		IsNull(E.[AllowComments],B.[AllowComments]) As AllowComments,
+		(Select Count(*) FROM {databaseOwner}{objectQualifier}Blog_Comments WHERE EntryID = E.EntryID) As CommentCount,
+
+		B.[PortalID] As BlogPortalID,
+		B.[ParentBlogID],
+		B.[Title] As BlogTitle,
+		B.[Description] As BlogDescription,
+		B.[Public] As BlogPublic,
+		B.[AllowComments] As BlogAllowComments,
+		B.[AllowAnonymous] As BlogAllowAnonymous,
+		B.[LastEntry] As BlogLastEntry,
+		B.[Created] As BlogCreated,
+		B.[Culture] As BlogCulture,
+		B.[ShowFullname] As BlogShowFullName,
+		B.[DateFormat] As BlogDateFormat,
+		B.[TimeZone] As BlogTimeZone,
+		B.[Syndicated] As BlogSyndicated,
+		B.[SyndicateIndependant] As BlogSyndicateIndependant
+
+
+	FROM   {databaseOwner}{objectQualifier}Blog_Blogs B INNER JOIN
+		{databaseOwner}{objectQualifier}Blog_Entries E ON B.[BlogID] = E.[BlogID] INNER JOIN
+		{databaseOwner}{objectQualifier}Users U ON B.[UserID] = U.[UserID]
+	WHERE (B.[BlogID] = @BlogID)
+	ORDER BY E.AddedDate DESC
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_ListAllEntriesByPortal') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_ListAllEntriesByPortal
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_ListAllEntriesByPortal
+@PortalID int,
+@ShowNonPublic bit = 0,
+@ShowNonPublished bit=0
+
+AS
+
+	SELECT
+		U.[UserID],
+		U.[Username],
+		U.[DisplayName] AS UserFullName,
+		E.[EntryID],
+		E.[BlogID], 
+		E.[Title],
+		E.[Description],
+		E.[Entry],
+		E.[AddedDate],
+		E.[Published],
+		E.[Copyright],
+		E.[PermaLink],
+		IsNull(E.[AllowComments],B.[AllowComments]) As AllowComments,
+		B.[ParentBlogID],
+		B.[AllowAnonymous],
+		B.[Syndicated] AS BlogSyndicated,
+		B.[Public] AS BlogPublic,
+		(Select Count(*) FROM {databaseOwner}{objectQualifier}Blog_Comments WHERE EntryID = E.EntryID) As CommentCount
+	FROM   {databaseOwner}{objectQualifier}Blog_Blogs B INNER JOIN
+		{databaseOwner}{objectQualifier}Blog_Entries E ON B.[BlogID] = E.[BlogID] INNER JOIN
+		{databaseOwner}{objectQualifier}Users U ON B.[UserID] = U.[UserID]
+	WHERE B.PortalID = @PortalID 
+	AND (E.[Published] = 1 OR E.[Published] <> @ShowNonPublished)
+	AND (B.[Public] = 1 OR B.[Public] <> @ShowNonPublic)
+	ORDER BY E.AddedDate DESC
+
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_Upgrade_ForumGroupsList') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_Upgrade_ForumGroupsList
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_Upgrade_ForumGroupsByGroup') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_Upgrade_ForumGroupsByGroup
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_Upgrade_ForumForumsList') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_Upgrade_ForumForumsList
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_Upgrade_ForumThreadsList') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_Upgrade_ForumThreadsList
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_Upgrade_ForumPostsList') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_Upgrade_ForumPostsList
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Blog_Upgrade_ForumThreadRatingList') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Blog_Upgrade_ForumThreadRatingList
+GO
+
+--
+--CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_ForumGroupsList
+--@PortalID int
+--AS
+--
+--
+--SELECT
+--	[GroupID],
+--	[Name],
+--	{databaseOwner}{objectQualifier}Forum_Groups.PortalID,
+--	{databaseOwner}{objectQualifier}Forum_Groups.ModuleID,
+--	[SortOrder],
+--	[CreatedDate],
+--	[CreatedByUser],
+--	[UpdatedByUser],
+--	[UpdatedDate],
+--	[GroupType],
+--	[Server],
+--	[Port],
+--	[LogonRequired],
+--	[UserName],
+--	[Password]
+--FROM  {databaseOwner}{objectQualifier}Forum_Groups
+--join {databaseOwner}{objectQualifier}Modules on {databaseOwner}{objectQualifier}Forum_Groups.ModuleID = {databaseOwner}{objectQualifier}Modules.ModuleID 
+--right outer join {databaseOwner}{objectQualifier}ModuleDefinitions on {databaseOwner}{objectQualifier}Modules.ModuleDefID = {databaseOwner}{objectQualifier}Moduledefinitions.ModuleDefID 
+--left outer join {databaseOwner}{objectQualifier}DesktopModules on {databaseOwner}{objectQualifier}Desktopmodules.DesktopModuleID = {databaseOwner}{objectQualifier}ModuleDefinitions.DesktopModuleID
+--WHERE {databaseOwner}{objectQualifier}Forum_Groups.PortalID = @PortalID AND {databaseOwner}{objectQualifier}DesktopModules.ModuleName = 'DNN_Blog'
+--
+--GO
+--
+--CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_ForumGroupsByGroup
+--@GroupID int
+--AS
+--
+--SELECT
+--	[GroupID],
+--	[Name],
+--	[PortalID],
+--	[ModuleID],
+--	[SortOrder],
+--	[CreatedDate],
+--	[CreatedByUser],
+--	[UpdatedByUser],
+--	[UpdatedDate],
+--	[GroupType],
+--	[Server],
+--	[Port],
+--	[LogonRequired],
+--	[UserName],
+--	[Password]
+--FROM {objectQualifier}Forum_Groups
+--WHERE GroupID = @GroupID
+--GO
+--
+--CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_ForumForumsList
+--@GroupID int
+--AS
+--
+--SELECT
+--	[ForumID],
+--	[GroupID],
+--	[IsActive],
+--	[ParentID],
+--	[Name],
+--	[Description],
+--	[CreatedDate],
+--	[CreatedByUser],
+--	[UpdatedByUser],
+--	[UpdatedDate],
+--	[IsModerated],
+--	[DaysToView],
+--	[SortOrder],
+--	[TotalPosts],
+--	[TotalThreads],
+--	[EnablePostStatistics],
+--	[EnableAutoDelete],
+--	[AutoDeleteThreshold],
+--	[MostRecentPostID],
+--	[MostRecentThreadID],
+--	[MostRecentPostAuthorID],
+--	[MostRecentPostDate],
+--	[PostsToModerate],
+--	[ForumType],
+--	[IsIntegrated],
+--	[IntegratedModuleID],
+--	[IntegratedObjects],
+--	[IsPrivate],
+--	[AuthorizedRoles],
+--	[AuthorizedEditRoles]
+--FROM {objectQualifier} Forum_Forums
+--WHERE GroupID = @GroupID
+--GO
+--
+--CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_ForumThreadsList
+--@ForumID int
+--AS
+--
+--SELECT
+--	[ThreadID],
+--	[ForumID],
+--	[Views],
+--	[LastPostedPostID],
+--	[Replies],
+--	[IsPinned],
+--	[PinnedDate],
+--	[Image],
+--	[ObjectTypeCode],
+--	[ObjectID]
+--FROM {objectQualifier}Forum_Threads
+--WHERE ForumID = @ForumID
+--GO
+--
+--CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_ForumPostsList
+--@ThreadID int
+--AS
+--
+--SELECT
+--	[PostID],
+--	[ParentPostID],
+--	[UserID],
+--	[RemoteAddr],
+--	[Notify],
+--	[Subject],
+--	[Body],
+--	[CreatedByUser],
+--	[CreatedDate],
+--	[ThreadID],
+--	[PostLevel],
+--	[TreeSortOrder],
+--	[FlatSortOrder],
+--	[UpdatedDate],
+--	[UpdatedByUser],
+--	[IsApproved],
+--	[IsLocked],
+--	[IsClosed],
+--	[MediaURL],
+--	[MediaNAV],
+--	[Attachments]
+--FROM {objectQualifier} Forum_Posts
+--WHERE ThreadID = @ThreadID
+--GO
+--
+--CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_Upgrade_ForumThreadRatingList
+--@ThreadID int
+--AS
+--
+--SELECT
+--	[UserID],
+--	[ThreadID],
+--	[Rate],
+--	[Comment]
+--FROM {objectQualifier} Forum_ThreadRating
+--WHERE ThreadID = @ThreadID
+--GO
+--

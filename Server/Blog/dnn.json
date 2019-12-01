@@ -1,0 +1,122 @@
+{
+  "projectType": "module",
+  "name": "DotNetNuke.Blog",
+  "friendlyName": "Blog",
+  "description": "The DotNetNuke Blog module is an easy to use content publishing module that is tightly integrated with the core DotNetNuke framework. It can be used in single or multi-author environments and also permits content authoring using off-site tools such as Windows Live Writer.",
+  "iconFile": "~/DesktopModules/Blog/Images/dnnBlog_32.png",
+  "packageName": "DotNetNuke.Blog",
+  "folder": "Blog",
+  "module": {
+    "azureCompatible": "true",
+    "moduleName": "Blog",
+    "foldername": "Blog",
+    "businessControllerClass": "DotNetNuke.Modules.Blog.Integration.BlogModuleController, DOTNETNUKE.MODULES.BLOG",
+    "supportedFeatures": ["Portable", "Searchable", "Upgradable"],
+    "moduleDefinitions": [
+      {
+        "friendlyName": "Blog",
+        "defaultCacheTime": -1,
+        "moduleControls": [
+          {
+            "controlSrc": "DesktopModules/Blog/Blog.ascx",
+            "supportsPartialRendering": "false",
+            "controlTitle": "Blog",
+            "controlType": "View",
+            "viewOrder": 0
+          },
+          {
+            "controlKey": "BlogEdit",
+            "controlSrc": "DesktopModules/Blog/BlogEdit.ascx",
+            "supportsPartialRendering": "false",
+            "controlTitle": "Edit Blog",
+            "controlType": "View",
+            "viewOrder": 1
+          },
+          {
+            "controlKey": "PostEdit",
+            "controlSrc": "DesktopModules/Blog/PostEdit.ascx",
+            "supportsPartialRendering": "false",
+            "controlTitle": "Edit Post",
+            "controlType": "View",
+            "viewOrder": 2
+          },
+          {
+            "controlKey": "Admin",
+            "controlSrc": "DesktopModules/Blog/Admin.ascx",
+            "supportsPartialRendering": "false",
+            "controlTitle": "Blog Module Administration",
+            "controlType": "Edit",
+            "viewOrder": 3
+          },
+          {
+            "controlKey": "Manage",
+            "controlSrc": "DesktopModules/Blog/Manage.ascx",
+            "supportsPartialRendering": "false",
+            "controlTitle": "Manage Content",
+            "controlType": "View",
+            "viewOrder": 4
+          },
+          {
+            "controlKey": "BlogImport",
+            "controlSrc": "DesktopModules/Blog/BlogImport.ascx",
+            "supportsPartialRendering": "false",
+            "controlTitle": "Blog Import",
+            "controlType": "View",
+            "viewOrder": 5
+          },
+          {
+            "controlKey": "TermsEditML",
+            "controlSrc": "DesktopModules/Blog/TermsEditML.ascx",
+            "supportsPartialRendering": "false",
+            "controlTitle": "Edit Terms",
+            "controlType": "View",
+            "viewOrder": 6
+          },
+          {
+            "controlKey": "Settings",
+            "controlSrc": "DesktopModules/Blog/Controls/ViewSettings.ascx",
+            "supportsPartialRendering": "false",
+            "controlTitle": "Blog Module Instance Settings",
+            "controlType": "Edit",
+            "viewOrder": 7
+          },
+          {
+            "controlKey": "TemplateSettings",
+            "controlSrc": "DesktopModules/Blog/Controls/TemplateSettings.ascx",
+            "supportsPartialRendering": "false",
+            "controlTitle": "Blog Module Instance Template Settings",
+            "controlType": "Edit",
+            "viewOrder": 8
+          }
+        ],
+        "permissions": [
+          { "code": "DNN_BLOG_MODULE", "key": "BLOGGER", "name": "Create Blog" }
+        ]
+      }
+    ],
+    "eventMessage": {
+      "processorType": "DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke",
+      "processorCommand": "UpgradeModule",
+      "attributes": {
+        "businessControllerClass": "DotNetNuke.Modules.Blog.Integration.BlogModuleController, DOTNETNUKE.MODULES.BLOG",
+        "desktopModuleID": "[DESKTOPMODULEID]",
+        "upgradeVersionsList": "05.00.00"
+      }
+    }
+  },
+  "config": {
+    "configFile": "web.config",
+    "install": "./Server/ConfigScripts/BlogInstallConfig.xml",
+    "uninstall": "./Server/ConfigScripts/BlogUnInstallConfig.xml"
+  },
+  "pathsAndFiles": {
+    "pathToAssemblies": "./bin",
+    "pathToScripts": "./Server/SqlScripts",
+    "assemblies": [
+      "DotNetNuke.Modules.Blog.dll",
+      "CookComputing.XmlRpcV2.dll"
+    ],
+    "excludeFilter": ["Blog/bin/", "Blog/obj/"],
+    "zipName": "Blog"
+  }
+}

@@ -1,0 +1,648 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4E2BCA3B-927C-4AF2-9999-B1C074FD0539}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>DotNetNuke.Modules.Blog</RootNamespace>
+    <AssemblyName>DotNetNuke.Modules.Blog</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <MyType>Custom</MyType>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionStrict>On</OptionStrict>
+    <OptionInfer>Off</OptionInfer>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <TargetFrameworkProfile />
+    <UseIISExpress>false</UseIISExpress>
+    <UpgradeBackupLocation />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>..\..\bin\</OutputPath>
+    <DocumentationFile>DotNetNuke.Modules.Blog.xml</DocumentationFile>
+    <NoWarn>42353,42354,42355</NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\bin\</OutputPath>
+    <DocumentationFile>DotNetNuke.Modules.Blog.xml</DocumentationFile>
+    <NoWarn>42353,42354,42355</NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Accessibility">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="CookComputing.XmlRpcV2, Version=2.5.0.0, Culture=neutral, PublicKeyToken=a7d6e17aa302004d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_References\CookComputing.XmlRpcV2.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DotNetNuke, Version=8.0.0.809, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_References\DotNetNuke.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotNetNuke.Web, Version=8.0.0.809, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_References\DotNetNuke.Web.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotNetNuke.Web.Client, Version=8.0.0.809, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_References\DotNetNuke.Web.Client.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotNetNuke.Web.Deprecated">
+      <HintPath>_References\DotNetNuke.Web.Deprecated.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotNetNuke.WebControls, Version=2.4.0.598, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_References\DotNetNuke.WebControls.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_References\DotNetNuke.WebUtility.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_References\Microsoft.ApplicationBlocks.Data.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.1.18622, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_References\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SharpZipLib, Version=0.81.0.1407, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_References\SharpZipLib.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http, Version=4.6.1038.0 built by: NETFXREL2 built by: NETFXREL2 built by: NETFXREL2 built by: NETFXREL2 built by: NETFXREL2 built by: NETFXREL2 built by: NETFXREL2 built by: NETFXREL2 built by: NETFXREL2 built by: FX45W81RTMREL built by: FX45W81RTMREL built by: FX45W81RTMREL built by: FX45W81RTMREL built by: FX45W81RTMREL built by: FX45W81RTMREL built by: FX45W81RTMREL built by: FX45W81RTMREL built by: FX45W81RTMREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX451RTMGREL built by: FX45RTMREL built by: FX45RTMREL built by: FX45RTMREL built by: FX45RTMREL built by: FX45RTMREL, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_References\System.Net.Http.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Http, Version=5.2.30128.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_References\System.Web.Http.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.1.20821.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_References\System.Web.Mvc.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Telerik.Web.UI, Version=, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_References\Telerik.Web.UI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="DotNetNuke.Modules.Blog.Common" />
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Collections.Specialized" />
+    <Import Include="System.Configuration" />
+    <Import Include="System.Text" />
+    <Import Include="System.Text.RegularExpressions" />
+    <Import Include="System.Web" />
+    <Import Include="System.Web.Caching" />
+    <Import Include="System.Web.SessionState" />
+    <Import Include="System.Web.Security" />
+    <Import Include="System.Web.Profile" />
+    <Import Include="System.Web.UI" />
+    <Import Include="System.Web.UI.WebControls" />
+    <Import Include="System.Web.UI.WebControls.WebParts" />
+    <Import Include="System.Web.UI.HtmlControls" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="BlogImport.ascx" />
+    <Content Include="BlogEdit.ascx" />
+    <Content Include="Controls\Comments.ascx" />
+    <Content Include="Controls\ManagementPanel.ascx" />
+    <Content Include="Admin.ascx" />
+    <Content Include="Controls\TemplateSettings.ascx" />
+    <Content Include="css\font-awesome.min.css" />
+    <Content Include="css\jquery.handsontable.css" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
+    <Content Include="js\jquery.handsontable.js" />
+    <Content Include="Templates\bigCalendar\CalendarItem.html" />
+    <Content Include="Templates\bigCalendar\template.css" />
+    <Content Include="Templates\bigCalendar\Template.html" />
+    <Content Include="Templates\blogCalendar\CalendarItem.html" />
+    <Content Include="Templates\blogCalendar\template.css" />
+    <Content Include="Templates\blogCalendar\Template.html" />
+    <Content Include="Templates\blogList\BlogImage.html" />
+    <Content Include="Templates\blogList\Blog.html" />
+    <Content Include="Templates\blogList\template.css" />
+    <Content Include="Templates\blogList\Template.html" />
+    <Content Include="Templates\blogCalendarList\CalendarItem.html" />
+    <Content Include="Templates\blogCalendarList\template.css" />
+    <Content Include="Templates\blogCalendarList\Template.html" />
+    <Content Include="Templates\authorList\Author.html" />
+    <Content Include="Templates\authorList\template.css" />
+    <Content Include="Templates\authorList\Template.html" />
+    <Content Include="Templates\categoryList\Category.html" />
+    <Content Include="Templates\categoryList\template.css" />
+    <Content Include="Templates\categoryList\Template.html" />
+    <Content Include="Templates\classicBlog\AuthorBanner.html" />
+    <Content Include="Templates\classicBlog\BlogBanner.html" />
+    <Content Include="Templates\classicBlog\Cat.html" />
+    <Content Include="Templates\classicBlog\Comment.html" />
+    <Content Include="Templates\classicBlog\CommentApprove.html" />
+    <Content Include="Templates\classicBlog\CommentApproveBar.html" />
+    <Content Include="Templates\classicBlog\CommentsTemplate.html" />
+    <Content Include="Templates\classicBlog\images\blog_edit_link.png" />
+    <Content Include="Templates\classicBlog\images\blog_permalink.png" />
+    <Content Include="Templates\classicBlog\images\blog_print.png" />
+    <Content Include="Templates\classicBlog\images\blog_trackback.png" />
+    <Content Include="Templates\classicBlog\images\comment.gif" />
+    <Content Include="Templates\classicBlog\images\Tag_16X16_Standard.png" />
+    <Content Include="Templates\classicBlog\List.html" />
+    <Content Include="Templates\classicBlog\Page.html" />
+    <Content Include="Templates\classicBlog\Post.html" />
+    <Content Include="Templates\classicBlog\PostDetails.html" />
+    <Content Include="Templates\classicBlog\PostTag.html" />
+    <Content Include="Templates\classicBlog\PostThumbnail.html" />
+    <Content Include="Templates\classicBlog\Settings.xml" />
+    <Content Include="Templates\classicBlog\Tag.html" />
+    <Content Include="Templates\classicBlog\template.css" />
+    <Content Include="Templates\classicBlog\Template.html" />
+    <Content Include="Templates\classicBlog\template.js" />
+    <Content Include="Templates\classicBlog\TermBanner.html" />
+    <Content Include="Templates\commentList\Comment.html" />
+    <Content Include="Templates\commentList\Settings.xml" />
+    <Content Include="Templates\commentList\template.css" />
+    <Content Include="Templates\commentList\Template.html" />
+    <Content Include="Templates\latestPosts\Post.html" />
+    <Content Include="Templates\latestPosts\Settings.xml" />
+    <Content Include="Templates\latestPosts\template.css" />
+    <Content Include="Templates\latestPosts\Template.html" />
+    <Content Include="Templates\searchBox\template.css" />
+    <Content Include="Templates\searchBox\Template.html" />
+    <Content Include="Templates\tagList\Tag.html" />
+    <Content Include="Templates\tagList\template.css" />
+    <Content Include="Templates\tagList\Template.html" />
+    <Content Include="Templates\timelineJS\Description.txt" />
+    <Content Include="Templates\timelineJS\Post.html" />
+    <Content Include="Templates\timelineJS\PostImage.html" />
+    <Content Include="Templates\timelineJS\Settings.xml" />
+    <Content Include="Templates\timelineJS\Template.html" />
+    <Content Include="Templates\_default\CommentsTemplate.html" />
+    <Content Include="Templates\_default\Comment.html" />
+    <Content Include="Templates\_default\CommentApproveBar.html" />
+    <Content Include="Templates\_default\CommentKarmaBar.html" />
+    <Content Include="Templates\_default\AuthorBanner.html" />
+    <Content Include="Templates\_default\BlogBanner.html" />
+    <Content Include="Templates\_default\css\colorbox.css" />
+    <Content Include="Templates\_default\css\shCore.css" />
+    <Content Include="Templates\_default\css\shCoreDefault.css" />
+    <Content Include="Templates\_default\SearchBanner.html" />
+    <Content Include="Templates\_default\Page.html" />
+    <Content Include="Templates\_default\PostTag.html" />
+    <Content Include="Templates\_default\Settings.xml" />
+    <Content Include="Templates\_default\template.js" />
+    <Content Include="TermsEditML.ascx" />
+    <Content Include="App_LocalResources\TermsEditML.ascx.resx" />
+    <Content Include="_Installation\license.txt" />
+    <Content Include="App_LocalResources\Admin.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\TemplateSettings.ascx.resx" />
+    <EmbeddedResource Include="Controls\TagEdit.JS.CodeBlock.txt" />
+    <EmbeddedResource Include="Controls\CategorySelect.JS.CodeBlock.txt" />
+    <Content Include="css\dynatree.css" />
+    <Content Include="css\tagit.css" />
+    <Content Include="js\dotnetnuke.blog.js" />
+    <Content Include="js\dotnetnuke.blog.pagescript.js" />
+    <Content Include="js\jquery.dynatree.min.js" />
+    <Content Include="js\jquery.timeago.js" />
+    <Content Include="js\tag-it.min.js" />
+    <Content Include="Manage.ascx" />
+    <Content Include="PostEdit.ascx" />
+    <Content Include="Templates\_default\App_LocalResources\SharedResources.ascx.resx" />
+    <Content Include="Templates\timelineJS\App_LocalResources\SharedResources.ascx.resx" />
+    <Content Include="Templates\classicBlog\App_LocalResources\SharedResources.ascx.resx" />
+    <Content Include="Templates\commentList\App_LocalResources\SharedResources.ascx.resx" />
+    <Content Include="Templates\latestPosts\App_LocalResources\SharedResources.ascx.resx" />
+    <Content Include="Templates\searchBox\App_LocalResources\SharedResources.ascx.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BlogImage.ashx.vb">
+      <DependentUpon>BlogImage.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="BlogImport.ascx.designer.vb">
+      <DependentUpon>BlogImport.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="BlogImport.ascx.vb">
+      <DependentUpon>BlogImport.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BlogPost.ashx.vb">
+      <DependentUpon>BlogPost.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Entities\LegacyUrls\LegacyUrlInfo_Interfaces.vb" />
+    <Compile Include="Components\Entities\LegacyUrls\LegacyUrlInfo_Properties.vb" />
+    <Compile Include="Components\Entities\LegacyUrls\LegacyUrlsController_CRUD.vb" />
+    <Compile Include="Components\Integration\BlogModuleController_Portable.vb" />
+    <Compile Include="Components\Integration\BlogModuleController_Upgradeable.vb" />
+    <Compile Include="Components\Common\DynatreeItem.vb" />
+    <Compile Include="Components\Common\LocalizedText.vb" />
+    <Compile Include="Components\Common\ModuleUrls.vb" />
+    <Compile Include="Components\Common\PostBodyAndSummary.vb" />
+    <Compile Include="Components\Common\WebPage.vb" />
+    <Compile Include="Components\Entities\Blogs\BlogCalendarInfo.vb" />
+    <Compile Include="Components\Entities\Blogs\BlogsController_Service.vb" />
+    <Compile Include="Components\Entities\Comments\CommentsController_Service.vb" />
+    <Compile Include="Components\Entities\Posts\PostAuthor.vb" />
+    <Compile Include="Components\Entities\Posts\PostsController_Service.vb" />
+    <Compile Include="Components\Entities\Terms\TermsController_Service.vb" />
+    <Compile Include="Components\Entities\Terms\TermsController.vb" />
+    <Compile Include="Components\Integration\BlogModuleController_Searchable.vb" />
+    <Compile Include="Components\Integration\Integration.vb" />
+    <Compile Include="Components\Integration\SiteMapProvider.vb" />
+    <Compile Include="Components\Rss\BlogRssFeed.vb" />
+    <Compile Include="Components\Security\Security.vb" />
+    <Compile Include="Components\Services\RSSController.vb" />
+    <Compile Include="Components\Services\ModulesController.vb" />
+    <Compile Include="Components\Services\TrackAndPingBackController.vb" />
+    <Compile Include="Components\Services\WLW\Blogger\IBlogger.vb" />
+    <Compile Include="Components\BlogML\BlogMLBlogExtendedProperties.vb" />
+    <Compile Include="Components\BlogML\BlogMLResource.vb" />
+    <Compile Include="Components\BlogML\BlogMLWriterBase.vb" />
+    <Compile Include="Components\BlogML\Enumerators\BlogPostTypes.vb" />
+    <Compile Include="Components\BlogML\Enumerators\CommentModerationTypes.vb" />
+    <Compile Include="Components\BlogML\Enumerators\ContentTypes.vb" />
+    <Compile Include="Components\BlogML\Enumerators\SendTrackbackTypes.vb" />
+    <Compile Include="Components\BlogML\Pair.vb" />
+    <Compile Include="Components\BlogML\Xml\BlogMLAttachment.vb" />
+    <Compile Include="Components\BlogML\Xml\BlogMLAuthor.vb" />
+    <Compile Include="Components\BlogML\Xml\BlogMLAuthorReference.vb" />
+    <Compile Include="Components\BlogML\Xml\BlogMLBlog.vb" />
+    <Compile Include="Components\BlogML\Xml\BlogMLCategory.vb" />
+    <Compile Include="Components\BlogML\Xml\BlogMLCategoryReference.vb" />
+    <Compile Include="Components\BlogML\Xml\BlogMLComment.vb" />
+    <Compile Include="Components\BlogML\Xml\BlogMLContent.vb" />
+    <Compile Include="Components\BlogML\Xml\BlogMLMeta.vb" />
+    <Compile Include="Components\BlogML\Xml\BlogMLNode.vb" />
+    <Compile Include="Components\BlogML\Xml\BlogMLPost.vb" />
+    <Compile Include="Components\BlogML\Xml\BlogMLSerializer.vb" />
+    <Compile Include="Components\BlogML\Xml\BlogMLTrackback.vb" />
+    <Compile Include="Components\Common\BlogModuleBase.vb">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Components\Services\WLW\BlogPostException.vb" />
+    <Compile Include="Components\Common\BlogContextInfo.vb" />
+    <Compile Include="Components\Common\Image.vb" />
+    <Compile Include="Components\Common\ViewSettings.vb" />
+    <Compile Include="Components\Common\Extensions.vb" />
+    <Compile Include="Components\Common\Globals.vb" />
+    <Compile Include="Components\Entities\Comments\CommentInfo_Interfaces.vb" />
+    <Compile Include="Components\Entities\Comments\CommentInfo_Properties.vb" />
+    <Compile Include="Components\Entities\Comments\CommentsController_CRUD.vb" />
+    <Compile Include="Components\Entities\Comments\CommentsController_FK.vb" />
+    <Compile Include="Components\Entities\Comments\CommentsController.vb" />
+    <Compile Include="Components\Integration\NotificationKey.vb" />
+    <Compile Include="Components\Security\ContextSecurity.vb" />
+    <Compile Include="Components\Common\ModuleSettings.vb" />
+    <Compile Include="Components\Data\DataProvider_CMD.vb" />
+    <Compile Include="Components\Data\DataProvider_CRUD.vb" />
+    <Compile Include="Components\Data\DataProvider_FK.vb" />
+    <Compile Include="Components\Data\SqlDataProvider_CMD.vb" />
+    <Compile Include="Components\Data\SqlDataProvider_CRUD.vb" />
+    <Compile Include="Components\Data\SqlDataProvider_FK.vb" />
+    <Compile Include="Components\Entities\Blogs\BlogsController.vb" />
+    <Compile Include="Components\Entities\Posts\PostsController.vb" />
+    <Compile Include="Components\Entities\Blogs\BlogInfo.vb" />
+    <Compile Include="Components\Entities\Blogs\BlogInfo_Interfaces.vb" />
+    <Compile Include="Components\Entities\Blogs\BlogInfo_Properties.vb" />
+    <Compile Include="Components\Entities\Blogs\BlogsController_CRUD.vb" />
+    <Compile Include="Components\Entities\Blogs\BlogsController_FK.vb" />
+    <Compile Include="Components\Entities\Comments\CommentInfo.vb" />
+    <Compile Include="Components\Entities\Posts\PostsController_CRUD.vb" />
+    <Compile Include="Components\Entities\Posts\PostInfo_Interfaces.vb" />
+    <Compile Include="Components\Entities\Posts\PostInfo_Properties.vb" />
+    <Compile Include="Components\Entities\Posts\PostInfo.vb" />
+    <Compile Include="Components\Entities\Terms\TermInfo.vb" />
+    <Compile Include="Components\Integration\JournalController.vb" />
+    <Compile Include="Components\Integration\NotificationController.vb" />
+    <Compile Include="Components\Security\BlogUser.vb" />
+    <Compile Include="Components\Security\Controls\BlogPermissionsGrid.vb" />
+    <Compile Include="Components\Security\Controls\PermissionsGrid.vb" />
+    <Compile Include="Components\Security\Permissions\BlogPermissionCollection.vb" />
+    <Compile Include="Components\Security\Permissions\BlogPermissionInfo_Interfaces.vb" />
+    <Compile Include="Components\Security\Permissions\BlogPermissionInfo_Properties.vb" />
+    <Compile Include="Components\Security\Permissions\BlogPermissionsController_CRUD.vb" />
+    <Compile Include="Components\Security\Permissions\BlogPermissionsController.vb" />
+    <Compile Include="Components\Security\Permissions\BlogPermissionInfo.vb" />
+    <Compile Include="Components\Security\Permissions\PermissionCollection.vb" />
+    <Compile Include="Components\Security\Permissions\PermissionInfo_Properties.vb" />
+    <Compile Include="Components\Security\Permissions\PermissionsController.vb" />
+    <Compile Include="Components\Services\WLW\MetaWeblog\IMetaWeblog.vb" />
+    <Compile Include="Components\Services\WLW\MoveableType\IMoveableType.vb" />
+    <Compile Include="Components\Rss\StringWriterWithEncoding.vb" />
+    <Compile Include="Components\Services\BlogAuthorizeAttribute.vb" />
+    <Compile Include="Components\Services\BlogRouteMapper.vb" />
+    <Compile Include="Components\Integration\Services\NotificationServiceController.vb" />
+    <Compile Include="Components\Templating\BaseCustomTokenReplace.vb" />
+    <Compile Include="Components\Templating\BaseTokenReplace.vb" />
+    <Compile Include="Components\Templating\BlogTokenReplace.vb" />
+    <Compile Include="Components\Templating\CustomParameters.vb" />
+    <Compile Include="Components\Templating\GenericTokenReplace.vb" />
+    <Compile Include="Components\Templating\LazyLoadingUser.vb" />
+    <Compile Include="Components\Templating\Resources.vb" />
+    <Compile Include="Components\Templating\Template.vb" />
+    <Compile Include="Components\Templating\TemplateController.vb" />
+    <Compile Include="Components\Templating\TemplateManager.vb" />
+    <Compile Include="Components\Templating\TemplateRepeaterItem.vb" />
+    <Compile Include="Components\Templating\TemplateSetting.vb" />
+    <Compile Include="Components\Templating\TemplateSettings.vb" />
+    <Compile Include="Components\Templating\TemplateSettingValue.vb" />
+    <Compile Include="Components\Templating\TokenReplace.vb" />
+    <Compile Include="Components\Templating\ViewTemplate.vb">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Components\Services\WLW\WordPress\IWordPress.vb" />
+    <Compile Include="Controls\CategorySelect.vb" />
+    <Compile Include="Controls\Comments.ascx.designer.vb">
+      <DependentUpon>Comments.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Comments.ascx.vb">
+      <DependentUpon>Comments.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Components\Integration\FileController.vb" />
+    <Compile Include="BlogEdit.ascx.designer.vb">
+      <DependentUpon>BlogEdit.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="BlogEdit.ascx.vb">
+      <DependentUpon>BlogEdit.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\LocalizedTextEdit.vb" />
+    <Compile Include="Controls\LongTextEdit.vb" />
+    <Compile Include="Controls\ManagementPanel.ascx.designer.vb">
+      <DependentUpon>ManagementPanel.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ManagementPanel.ascx.vb">
+      <DependentUpon>ManagementPanel.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ShortTextEdit.vb" />
+    <Compile Include="Controls\TagEdit.vb" />
+    <Compile Include="Admin.ascx.designer.vb">
+      <DependentUpon>Admin.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin.ascx.vb">
+      <DependentUpon>Admin.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\TemplateSettings.ascx.designer.vb">
+      <DependentUpon>TemplateSettings.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TemplateSettings.ascx.vb">
+      <DependentUpon>TemplateSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Manage.ascx.designer.vb">
+      <DependentUpon>Manage.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Manage.ascx.vb">
+      <DependentUpon>Manage.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PostEdit.ascx.designer.vb">
+      <DependentUpon>PostEdit.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PostEdit.ascx.vb">
+      <DependentUpon>PostEdit.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Blog.ascx.designer.vb">
+      <DependentUpon>Blog.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Blog.ascx.vb">
+      <DependentUpon>Blog.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="Components\Data\DataProvider.vb" />
+    <Compile Include="Components\Data\SqlDataProvider.vb" />
+    <Compile Include="Controls\ViewSettings.ascx.designer.vb">
+      <DependentUpon>ViewSettings.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ViewSettings.ascx.vb">
+      <DependentUpon>ViewSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TermsEditML.ascx.designer.vb">
+      <DependentUpon>TermsEditML.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="TermsEditML.ascx.vb">
+      <DependentUpon>TermsEditML.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\BlogEdit.ascx.resx" />
+    <Content Include="App_LocalResources\PostEdit.ascx.resx" />
+    <Content Include="App_LocalResources\SharedResources.resx">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="BlogPost.ashx" />
+    <Content Include="Blog.ascx" />
+    <Content Include="module.css" />
+    <Content Include="Controls\ViewSettings.ascx" />
+    <Content Include="Templates\tagCloud\Tag.html" />
+    <Content Include="Templates\tagCloud\template.css" />
+    <Content Include="Templates\tagCloud\Template.html" />
+    <Content Include="Templates\_default\TermBanner.html" />
+    <Content Include="Templates\_default\Tag.html" />
+    <Content Include="Templates\_default\PostBanner.html" />
+    <Content Include="Templates\_default\List.html" />
+    <Content Include="Templates\_default\PostDetails.html" />
+    <Content Include="Templates\_default\Post.html" />
+    <Content Include="Templates\_default\PostThumbnail.html" />
+    <Content Include="Templates\_default\template.css" />
+    <Content Include="Templates\_default\Template.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Templates\authorList\App_LocalResources\" />
+    <Folder Include="Templates\authorList\css\" />
+    <Folder Include="Templates\authorList\images\" />
+    <Folder Include="Templates\authorList\jsblocks\" />
+    <Folder Include="Templates\authorList\js\" />
+    <Folder Include="Templates\bigCalendar\App_LocalResources\" />
+    <Folder Include="Templates\bigCalendar\css\" />
+    <Folder Include="Templates\bigCalendar\images\" />
+    <Folder Include="Templates\bigCalendar\jsblocks\" />
+    <Folder Include="Templates\bigCalendar\js\" />
+    <Folder Include="Templates\blogCalendarList\App_LocalResources\" />
+    <Folder Include="Templates\blogCalendarList\css\" />
+    <Folder Include="Templates\blogCalendarList\images\" />
+    <Folder Include="Templates\blogCalendarList\jsblocks\" />
+    <Folder Include="Templates\blogCalendarList\js\" />
+    <Folder Include="Templates\blogCalendar\App_LocalResources\" />
+    <Folder Include="Templates\blogCalendar\css\" />
+    <Folder Include="Templates\blogCalendar\images\" />
+    <Folder Include="Templates\blogCalendar\jsblocks\" />
+    <Folder Include="Templates\blogCalendar\js\" />
+    <Folder Include="Templates\blogList\App_LocalResources\" />
+    <Folder Include="Templates\blogList\css\" />
+    <Folder Include="Templates\blogList\images\" />
+    <Folder Include="Templates\blogList\jsblocks\" />
+    <Folder Include="Templates\blogList\js\" />
+    <Folder Include="Templates\categoryList\App_LocalResources\" />
+    <Folder Include="Templates\categoryList\css\" />
+    <Folder Include="Templates\categoryList\images\" />
+    <Folder Include="Templates\categoryList\jsblocks\" />
+    <Folder Include="Templates\categoryList\js\" />
+    <Folder Include="Templates\classicBlog\css\" />
+    <Folder Include="Templates\classicBlog\jsblocks\" />
+    <Folder Include="Templates\classicBlog\js\" />
+    <Folder Include="Templates\commentList\css\" />
+    <Folder Include="Templates\commentList\images\" />
+    <Folder Include="Templates\commentList\jsblocks\" />
+    <Folder Include="Templates\commentList\js\" />
+    <Folder Include="Templates\latestPosts\css\" />
+    <Folder Include="Templates\latestPosts\images\" />
+    <Folder Include="Templates\latestPosts\jsblocks\" />
+    <Folder Include="Templates\latestPosts\js\" />
+    <Folder Include="Templates\tagCloud\App_LocalResources\" />
+    <Folder Include="Templates\tagCloud\css\" />
+    <Folder Include="Templates\tagCloud\images\" />
+    <Folder Include="Templates\tagCloud\jsblocks\" />
+    <Folder Include="Templates\tagCloud\js\" />
+    <Folder Include="Templates\tagList\App_LocalResources\" />
+    <Folder Include="Templates\tagList\css\" />
+    <Folder Include="Templates\tagList\images\" />
+    <Folder Include="Templates\tagList\jsblocks\" />
+    <Folder Include="Templates\tagList\js\" />
+    <Folder Include="Templates\timelineJS\css\" />
+    <Folder Include="Templates\timelineJS\images\" />
+    <Folder Include="Templates\timelineJS\jsblocks\" />
+    <Folder Include="Templates\timelineJS\js\" />
+    <Folder Include="Templates\_default\images\" />
+    <Folder Include="Templates\_default\jsblocks\" />
+    <Folder Include="Templates\_default\js\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\Blog.ascx.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\Manage.ascx.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="BlogImage.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Controls\App_LocalResources\ViewSettings.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\BlogImport.ascx.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Controls\App_LocalResources\Comments.ascx.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Controls\App_LocalResources\ManagementPanel.ascx.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\FontAwesome.otf" />
+    <None Include="Templates\Settings.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="_Installation\DNN_Blog.dnn">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <!-- <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" /> -->
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v14.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>2866</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://custom/blogdev/</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

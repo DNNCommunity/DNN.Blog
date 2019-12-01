@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!---->
+  <note></note>
+  <data name="Categories.Text">
+    <value>Catégories</value>
+  </data>
+  <data name="Category.Text">
+    <value>Catégorie</value>
+  </data>
+  <data name="dayago.Text">
+    <value>jour</value>
+  </data>
+  <data name="daysago.Text">
+    <value>jours</value>
+  </data>
+  <data name="hourago.Text">
+    <value>heure</value>
+  </data>
+  <data name="hoursago.Text">
+    <value>heures</value>
+  </data>
+  <data name="minuteago.Text">
+    <value>minute</value>
+  </data>
+  <data name="minutesago.Text">
+    <value>minutes</value>
+  </data>
+  <data name="monthago.Text">
+    <value>mois</value>
+  </data>
+  <data name="monthsago.Text">
+    <value>mois</value>
+  </data>
+  <data name="More.Text" xml:space="preserve">
+    <value>A suivre ...</value>
+  </data>
+  <data name="Tags.Text">
+    <value>Tags</value>
+  </data>
+  <data name="posts.text">
+    <value>posts</value>
+  </data>
+  <data name="GhostWriter.Permission" xml:space="preserve">
+    <value>Ghost Writer</value>
+  </data>
+  <data name="Blogger.Permission">
+    <value>Blogger</value>
+  </data>
+  <data name="secondsago.Text">
+    <value>secondes</value>
+  </data>
+  <data name="ApproveComment.Text">
+    <value>Approuver</value>
+  </data>
+  <data name="ApproveComment_Desc.Text" xml:space="preserve">
+    <value>Approuver le commentaire et le rendre disponible pour affichage immédiat.</value>
+  </data>
+  <data name="ApprovePost.Text">
+    <value>Approuver</value>
+  </data>
+  <data name="ApprovePost_Desc.Text" xml:space="preserve">
+    <value>Approuve le billet de blog, il sera consultable en ligne dès que la date de publication sera atteinte (si c’est dans le future, immédiatement si c’est dans le passé).</value>
+  </data>
+  <data name="ApprovePostNotifyBody.Text" xml:space="preserve">
+    <value>Nouveau post en attente d'approbation</value>
+  </data>
+  <data name="CommentAddedNotify.Text" xml:space="preserve">
+    <value>Un nouveau commentaire a été ajouté</value>
+  </data>
+  <data name="CommentPendingNotify.Subject" xml:space="preserve">
+    <value>Un nouveau commentaire est en attente d'approbation</value>
+  </data>
+  <data name="DeleteComment.Text">
+    <value>Supprimer</value>
+  </data>
+  <data name="DeleteComment_Desc.Text" xml:space="preserve">
+    <value>Supprimer le commentaire, il ne sera pas publié et ne sera pas disponible pour des modifications futures.</value>
+  </data>
+  <data name="DeletePost.Text">
+    <value>Supprimer</value>
+  </data>
+  <data name="DeletePost_Desc.Text" xml:space="preserve">
+    <value>Supprimer le message de blog, il ne sera pas publié et ne sera pas disponible pour des modifications futures.</value>
+  </data>
+  <data name="ADD.Permission" xml:space="preserve">
+    <value>Ajout de post</value>
+  </data>
+  <data name="APPROVE.Permission" xml:space="preserve">
+    <value>Approuver le message</value>
+  </data>
+  <data name="EDIT.Permission" xml:space="preserve">
+    <value>Modifier message</value>
+  </data>
+  <data name="ADDCOMMENT.Permission" xml:space="preserve">
+    <value>Ajouter un commentaire</value>
+  </data>
+  <data name="APPROVECOMMENT.Permission" xml:space="preserve">
+    <value>Approuver le commentaire</value>
+  </data>
+  <data name="ServerError.Text" xml:space="preserve">
+    <value>Une erreur s'est produite lors du traitement de la demande. Veuillez réessayer plus tard.</value>
+  </data>
+  <data name="ServerErrorWithDescription.Text" xml:space="preserve">
+    <value>Une erreur s'est produite lors du traitement de la demande :</value>
+  </data>
+  <data name="VIEWCOMMENT.Permission" xml:space="preserve">
+    <value>Voir les commentaires</value>
+  </data>
+  <data name="CommentReportedNotify.Body" xml:space="preserve">
+    <value>Selon {0}, {1} a posté un commentaire inapproprié :&lt;br/&gt;{2}&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;
+&lt;a target="_blank" href="{3}"&gt;{4}&lt;/a&gt;</value>
+  </data>
+  <data name="CommentReportedNotify.Text" xml:space="preserve">
+    <value>{0} a signalé un commentaire inapproprié</value>
+  </data>
+  <data name="CommentPendingNotify.Body" xml:space="preserve">
+    <value>Un commentaire requiert une approbation : &lt;a href="{0}/#commentDiv{1}" target="_blank"&gt;{2}&lt;/a&gt;:&lt;br/&gt;&lt;br/&gt;{3}</value>
+  </data>
+  <data name="PingbackComment.Text" xml:space="preserve">
+    <value>Pingback de {0}&lt;br/&gt;&lt;br/&gt;&lt;a href="{1}"&gt;{2}&lt;/a&gt;</value>
+  </data>
+  <data name="TrackbackComment.Text" xml:space="preserve">
+    <value>Trackback de {0}&lt;br/&gt;&lt;br/&gt;&lt;a href="{1}"&gt;{2}&lt;/a&gt;</value>
+  </data>
+  <data name="AUTOAPPROVECOMMENT.Permission" xml:space="preserve">
+    <value>Approbation automatique de commentaires</value>
+  </data>
+  <!---->
+</root>

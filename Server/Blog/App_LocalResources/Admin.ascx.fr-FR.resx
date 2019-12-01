@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!---->
+  <note></note>
+  <data name="cmdAdd.Text" xml:space="preserve">
+    <value>Ajout de blog</value>
+  </data>
+  <data name="Delete.Text">
+    <value>Supprimer</value>
+  </data>
+  <data name="ServerError.Text" xml:space="preserve">
+    <value>Une erreur s'est produite lors du traitement de la demande. Veuillez réessayer plus tard.</value>
+  </data>
+  <data name="ServerErrorWithDescription.Text" xml:space="preserve">
+    <value>Une erreur s'est produite lors du traitement de la demande :</value>
+  </data>
+  <data name="Published.Header">
+    <value>Publié</value>
+  </data>
+  <data name="DeletePost.Text" xml:space="preserve">
+    <value>Supprimer ce message ?</value>
+  </data>
+  <data name="lblAllowAllLocales.Help" xml:space="preserve">
+    <value>Si les utilisateurs peuvent choisir une langue qui n'est pas dans la liste des langues du site. Sinon ils sont limités aux langues du site.</value>
+  </data>
+  <data name="lblAllowAllLocales.Text" xml:space="preserve">
+    <value>Autoriser toutes les langues</value>
+  </data>
+  <data name="lblAllowAttachments.Help" xml:space="preserve">
+    <value>Si les bloggers autorisés peuvent joindre des pièces à leurs posts dans Windows Live Writer.Sinon, le chargement de pièces jointes est interdit.</value>
+  </data>
+  <data name="lblAllowAttachments.Text" xml:space="preserve">
+    <value>Autoriser les pièces jointes</value>
+  </data>
+  <data name="lblAllowMultipleCategories.Help" xml:space="preserve">
+    <value>Permet d'attribuer plusieurs catégories à un post.</value>
+  </data>
+  <data name="lblAllowMultipleCategories.Text">
+    <value>Multi-catégories</value>
+  </data>
+  <data name="lblAllowWLW.Help" xml:space="preserve">
+    <value>Si les utilisateurs autorisée peuvent utiliser Windows Live Writer pour poster.</value>
+  </data>
+  <data name="lblAllowWLW.Text" xml:space="preserve">
+    <value>Autoriser Windows Live Writer</value>
+  </data>
+  <data name="lblEmail.Help" xml:space="preserve">
+    <value>Cette adresse de mail sera utilisée dans le flux RSS comme celle du responsable de publication</value>
+  </data>
+  <data name="lblEmail.Text">
+    <value>Courriel</value>
+  </data>
+  <data name="lblVocabularyId.Help" xml:space="preserve">
+    <value>Choisir le vocabulaire à utiliser pour les catégories de ce module et de ses blogs</value>
+  </data>
+  <data name="lblVocabularyId.Text" xml:space="preserve">
+    <value>Dictonnaire des catégories</value>
+  </data>
+  <data name="lblWLWRecentPostsMax.Help" xml:space="preserve">
+    <value>Nombre de posts (récents) qui peuvent être téléchargés par Windows Live Writer pour rédiger.</value>
+  </data>
+  <data name="lblWLWRecentPostsMax.Text" xml:space="preserve">
+    <value>WLW Nbr de posts récents</value>
+  </data>
+  <data name="NoneSpecified.Text" xml:space="preserve">
+    <value>&lt; Rien de spécifié&gt;</value>
+  </data>
+  <data name="HtmlIndependent.Opt" xml:space="preserve">
+    <value>HTML indépendant du corps du post</value>
+  </data>
+  <data name="HtmlPrecedesPost.Opt" xml:space="preserve">
+    <value>Préfixe de post en HTML</value>
+  </data>
+  <data name="PlainTextIndependent.Opt" xml:space="preserve">
+    <value>Texte brut indépendant du corps du post</value>
+  </data>
+  <data name="lblSummaryModel.Help" xml:space="preserve">
+    <value>Choix du comportement et du format du résumé</value>
+  </data>
+  <data name="lblSummaryModel.Text" xml:space="preserve">
+    <value>Gabarit du résumé</value>
+  </data>
+  <data name="General.Text">
+    <value>général</value>
+  </data>
+  <data name="lblRssAllowContentInFeed.Help" xml:space="preserve">
+    <value>Si on autorise l'envoi du contenu du blog en spécifiant 'body=true' dans la querystring</value>
+  </data>
+  <data name="lblRssAllowContentInFeed.Text" xml:space="preserve">
+    <value>Autoriser le contenu de blog dans les flux</value>
+  </data>
+  <data name="lblRssDefaultCopyright.Help" xml:space="preserve">
+    <value>Si spécifié, devient le copyright par défaut des posts. Peut être remplacé par le propre copyright du blog.</value>
+  </data>
+  <data name="lblRssDefaultCopyright.Text" xml:space="preserve">
+    <value>Copyright par défaut</value>
+  </data>
+  <data name="lblRssDefaultNrItems.Help" xml:space="preserve">
+    <value>Nbr de posts dans le flux RSS sauf spécification contraire</value>
+  </data>
+  <data name="lblRssDefaultNrItems.Text" xml:space="preserve">
+    <value>Nbr de posts par défaut</value>
+  </data>
+  <data name="lblRssImageHeight.Help" xml:space="preserve">
+    <value>Le flux RSS peut contenir des images (pour le flux global et pour les posts individuels).Si c'est le cas, spécifier leur hauteur en pixels.</value>
+  </data>
+  <data name="lblRssImageHeight.Text" xml:space="preserve">
+    <value>Hauteur d'image</value>
+  </data>
+  <data name="lblRssImageSizeAllowOverride.Help" xml:space="preserve">
+    <value>Autorise une requête RSS à forcer une hauteur d'image avec les paramètres 'w' et 'h' de la querystring</value>
+  </data>
+  <data name="lblRssImageSizeAllowOverride.Text" xml:space="preserve">
+    <value>Autorise à forcer la hauteur d'image.</value>
+  </data>
+  <data name="lblRssImageWidth.Help" xml:space="preserve">
+    <value>Le flux RSS peut contenir des images (pour le flux global et pour les posts individuels).Si c'est le cas, spécifier leur largeur en pixels.</value>
+  </data>
+  <data name="lblRssImageWidth.Text" xml:space="preserve">
+    <value>Largeur d'image</value>
+  </data>
+  <data name="lblRssMaxNrItems.Help" xml:space="preserve">
+    <value>Nbre max de posts d'un flux RSS par le paramètre 'recs' de la querystring. Si négatif, le nombre de peut pas être spécifié.</value>
+  </data>
+  <data name="lblRssMaxNrItems.Text" xml:space="preserve">
+    <value>Nbr max d'éléments</value>
+  </data>
+  <data name="lblRssTtl.Help" xml:space="preserve">
+    <value>Durée en minute du cache d'un flux avant rafraichissement.</value>
+  </data>
+  <data name="lblRssTtl.Text" xml:space="preserve">
+    <value>TTL (cache)</value>
+  </data>
+  <data name="RSS.Text" xml:space="preserve">
+    <value>Configuration RSS</value>
+  </data>
+  <data name="Cancel.Text">
+    <value>Annuler</value>
+  </data>
+  <data name="Localization.Text">
+    <value>Traduction</value>
+  </data>
+  <data name="cmdEditTagsML.Text" xml:space="preserve">
+    <value>Traduction des tags</value>
+  </data>
+  <data name="Categories.Text">
+    <value>Catégories</value>
+  </data>
+  <data name="cmdCancel.Text">
+    <value>Annuler</value>
+  </data>
+  <data name="cmdUpdate.Text" xml:space="preserve">
+    <value>Mettre à jour</value>
+  </data>
+  <data name="Settings.Text" xml:space="preserve">
+    <value>Paramètres du module</value>
+  </data>
+  <data name="cmdEditCategoriesML.Text" xml:space="preserve">
+    <value>Traduction des catégories</value>
+  </data>
+  <data name="LeavePage.Confirm" xml:space="preserve">
+    <value>Voulez-vous quitter en sauvegardant les changements ?</value>
+  </data>
+  <data name="Add.Text">
+    <value>Ajouter</value>
+  </data>
+  <data name="DeleteSelected.Text">
+    <value>Supprimer</value>
+  </data>
+  <data name="lblModifyPageDetails.Help" xml:space="preserve">
+    <value>Permet de changer le titre de page en fonction du titre de blog ou de post.</value>
+  </data>
+  <data name="lblModifyPageDetails.Text" xml:space="preserve">
+    <value>Adapter les paramètres de la page</value>
+  </data>
+  <data name="AddCategories.Help" xml:space="preserve">
+    <value>Ajouter les catégories suivantes (une par ligne) :</value>
+  </data>
+  <data name="AddCategories.Title" xml:space="preserve">
+    <value>Ajout de catégorie</value>
+  </data>
+  <data name="cmdCreateVocabulary.Text">
+    <value>Créer</value>
+  </data>
+  <data name="NoVocabulary.Text" xml:space="preserve">
+    <value>Il n'y a pas de vocaulaire défini pour ce module.En choisir un onglet précédent, ou créer le premier.</value>
+  </data>
+  <data name="lblAutoGeneratedSummaryLength.Help" xml:space="preserve">
+    <value>Longueur du contenu à prendre comme résumé s'il est auto-généré</value>
+  </data>
+  <data name="lblAutoGeneratedSummaryLength.Text" xml:space="preserve">
+    <value>Longueur de résumé auto.</value>
+  </data>
+  <data name="lblAutoGenerateMissingSummary.Help" xml:space="preserve">
+    <value>Permet de générer un résumé si l'auteur ne l'a pas rédigé, en reprenant les premiers caractères du contenu.</value>
+  </data>
+  <data name="lblAutoGenerateMissingSummary.Text" xml:space="preserve">
+    <value>Auto-générer un résumé s'il n'y en a pas.</value>
+  </data>
+  <!---->
+</root>
