@@ -152,6 +152,9 @@ $RECYCLE.BIN/
 *DS_Store
 ._*
 
+# NuGet
+packages/
+
 # =========================
 # Specific
 # =========================
@@ -161,3 +164,4 @@ _*
 tools/
 **/bin/
 **/obj/
+!Server/References/*.dll
