@@ -14,6 +14,7 @@
     "supportedFeatures": ["Portable", "Searchable", "Upgradable"],
     "moduleDefinitions": [
       {
+        "definitionName": "DNNBlog.Blog",
         "friendlyName": "Blog",
         "defaultCacheTime": -1,
         "moduleControls": [
@@ -100,7 +101,7 @@
       "attributes": {
         "businessControllerClass": "DotNetNuke.Modules.Blog.Integration.BlogModuleController, DOTNETNUKE.MODULES.BLOG",
         "desktopModuleID": "[DESKTOPMODULEID]",
-        "upgradeVersionsList": "05.00.00"
+        "upgradeVersionsList": "05.00.00,06.04.01"
       }
     }
   },
@@ -112,6 +113,7 @@
   "pathsAndFiles": {
     "pathToAssemblies": "./bin",
     "pathToScripts": "./Server/SqlScripts",
+    "pathToCleanupFiles": "./Server/Cleanup",
     "assemblies": [
       "DotNetNuke.Modules.Blog.dll",
       "CookComputing.XmlRpcV2.dll"

@@ -33,7 +33,8 @@
         "**/*.txt",
         "fonts/*.*",
         "images/*.*",
-        "Templates/*.xsd"
+        "Templates/*.xsd",
+        "Templates/**/*.xml"
       ],
       "zipName": "Blog"
     }

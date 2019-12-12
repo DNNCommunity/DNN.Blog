@@ -86,6 +86,10 @@ Task("Package")
             var files = GetFiles(p.pathsAndFiles.pathToScripts + "/*.SqlDataProvider");
             AddFilesToZip(packagePath, p.pathsAndFiles.pathToScripts, solution.dnn.pathsAndFiles.packageScriptsFolder + "/" + p.packageName, files, true);
         }
+        if (!string.IsNullOrEmpty(p.pathsAndFiles.pathToCleanupFiles)) {
+            var files = GetFiles(p.pathsAndFiles.pathToCleanupFiles + "/*.txt");
+            AddFilesToZip(packagePath, p.pathsAndFiles.pathToCleanupFiles, solution.dnn.pathsAndFiles.packageCleanupFolder + "/" + p.packageName, files, true);
+        }
     }
     if (solution.dnn.pathsAndFiles.licenseFile != "") {
         var license = Utilities.GetTextOrMdFile(System.IO.Path.GetFileNameWithoutExtension(solution.dnn.pathsAndFiles.licenseFile));
