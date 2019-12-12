@@ -1,0 +1,5 @@
+[subtemplate|CommentApprove.html|comment:approved|False]
+<a href="#" 
+   title="[resx:DeleteComment]"
+   onclick="if (confirm('[resx:DeleteComment.Confirm|jssafe]')) {blogService.deleteComment([blog:blogid], [comment:CommentID], function() 
+    {$('#commentDiv[comment:CommentID]').hide()})};return false;">[resx:delete]</a>

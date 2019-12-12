@@ -1,2 +1,0 @@
-﻿DELETE FROM {databaseOwner}{objectQualifier}ModuleControls WHERE ControlSrc = 'DesktopModules/Blog/ViewBlog.ascx'
-GO

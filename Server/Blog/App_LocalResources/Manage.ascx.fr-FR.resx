@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!---->
+  <note></note>
+  <data name="Approve.Text">
+    <value>Approuver</value>
+  </data>
+  <data name="cmdAdd.Text" xml:space="preserve">
+    <value>Ajout de blog</value>
+  </data>
+  <data name="Delete.Text">
+    <value>Supprimer</value>
+  </data>
+  <data name="Edit.Text">
+    <value>Modifier</value>
+  </data>
+  <data name="ServerError.Text" xml:space="preserve">
+    <value>Une erreur s'est produite lors du traitement de la demande. Veuillez réessayer plus tard.</value>
+  </data>
+  <data name="ServerErrorWithDescription.Text" xml:space="preserve">
+    <value>Une erreur s'est produite lors du traitement de la demande :</value>
+  </data>
+  <data name="Blog.Header">
+    <value>Blog</value>
+  </data>
+  <data name="Date.Header" xml:space="preserve">
+    <value>Publié le</value>
+  </data>
+  <data name="Published.Header">
+    <value>Publié</value>
+  </data>
+  <data name="Title.Header">
+    <value>Titre</value>
+  </data>
+  <data name="Actions.Header">
+    <value>Actions</value>
+  </data>
+  <data name="ApprovePost.Text" xml:space="preserve">
+    <value>Approuver ce post ?</value>
+  </data>
+  <data name="DeletePost.Text" xml:space="preserve">
+    <value>Détruire ce post ?</value>
+  </data>
+  <data name="Export.Text">
+    <value>Exporter</value>
+  </data>
+  <data name="Download.Text" xml:space="preserve">
+    <value>Télécharger un fichier BlogML</value>
+  </data>
+  <data name="Export.Help" xml:space="preserve">
+    <value>En cliquant sur 'Export', le module va essayer d'enregistrer le contenu du blog dans un fichier au format XML BlogML, que vous pourrez ensuite récupérer en le téléchargeant.</value>
+  </data>
+  <data name="Blogs.Text">
+    <value>Blogs</value>
+  </data>
+  <data name="Cancel.Text">
+    <value>Annuler</value>
+  </data>
+  <data name="cmdReturn.Text">
+    <value>Retour</value>
+  </data>
+  <data name="Posts.Text">
+    <value>Posts</value>
+  </data>
+  <data name="Blog.Text">
+    <value>Blog</value>
+  </data>
+  <data name="Owner.Text">
+    <value>Propriétaire</value>
+  </data>
+  <!---->
+</root>

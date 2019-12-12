@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!---->
+  <note></note>
+  <data name="EditContent.Action" xml:space="preserve">
+    <value>Gérer les blogs</value>
+  </data>
+  <data name="Newer.Text" xml:space="preserve">
+    <value>Posts récents</value>
+  </data>
+  <data name="Older.Text" xml:space="preserve">
+    <value>Posts anciens</value>
+  </data>
+  <data name="TemplateSettings.Text" xml:space="preserve">
+    <value>Paramètres du modèle</value>
+  </data>
+  <!---->
+</root>

@@ -1,0 +1,27 @@
+<div id="blogCal[module:moduleid]" class="blogCalendar"></div>
+<script type="text/javascript">
+ (function ($, Sys) {
+  $(document).ready(function () {
+   var selDates =[
+    [subtemplate|CalendarItem.html|posts|pagesize=100]'0001-01-01'
+   ];
+   $('#blogCal[module:moduleid]').datepicker({
+   onSelect: function(dateText, inst) {
+    var url = '[urls:ParentURL|true]end=';
+    url += dateText;
+    window.location.href = encodeURI(url);
+   },
+   dateFormat: "yy-mm-dd",
+   beforeShowDay: function(date) {
+     var sDate = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();
+     if ($.inArray(sDate, selDates) >=0 ) {
+      return [true,'selectedDate'];
+     } else {
+      return [true,''];
+     }
+    }
+   });
+   $('#blogCal[module:moduleid]').datepicker('setDate', '[query:enddateornow|yyyy]-[query:enddateornow|MM]-[query:enddateornow|dd]');
+  });
+ } (jQuery, window.Sys));
+</script>

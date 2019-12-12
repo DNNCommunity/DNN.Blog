@@ -1,0 +1,51 @@
+{
+  "name": "dnn-blog",
+  "version": "6.4.2",
+  "description": "The DotNetNuke Blog module is an easy to use content publishing module that is tightly integrated with the core DotNetNuke framework. It can be used in single or multi-author environments and also permits content authoring using off-site tools such as Windows Live Writer.",
+  "dnn": {
+    "projectFolders": [
+      "Server/Blog"
+    ],
+    "owner": {
+      "name": "Peter Donker",
+      "organization": "DNN Connect",
+      "url": "http://dnn-connect.org",
+      "email": "info@dnn-connect.org"
+    },
+    "pathsAndFiles": {
+      "solutionFile": "./DotNetNuke.Modules.Blog.sln",
+      "pathToAssemblies": "./bin",
+      "excludeFilter": [
+        "**/bin/**/*",
+        "**/obj/**/*",
+        "**/node_modules/**/*"
+      ],
+      "licenseFile": "./License.txt",
+      "releaseNotesFile": "./ReleaseNotes.md",
+      "releaseFiles": [
+        "**/*.resx",
+        "**/*.as?x",
+        "**/*.js",
+        "**/*.css",
+        "**/*.html",
+        "**/*.png",
+        "**/*.gif",
+        "**/*.txt",
+        "fonts/*.*",
+        "images/*.*",
+        "Templates/*.xsd",
+        "Templates/**/*.xml"
+      ],
+      "zipName": "Blog"
+    }
+  },
+  "scripts": {
+    "watch-server": "node watch.js"
+  },
+  "devDependencies": {
+    "chokidar": "^3.2.1",
+    "deepmerge": "^4.0.0",
+    "fs-extra": "^8.1.0"
+  },
+  "dependencies": {}
+}

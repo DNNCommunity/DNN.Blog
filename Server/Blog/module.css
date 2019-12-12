@@ -1,0 +1,58 @@
+﻿@import url("css/font-awesome.min.css"); /* Compile */
+.icon16, a.icon16, a.icon16:link, a.icon16:visited
+{
+ font-size: 16px !important;
+ width:16px;
+ height:16px;
+ color: #999;
+}
+a.icon16:hover
+{
+ color: #000;
+}
+a.iconLink, a.iconLink:link, a.iconLink:hover, a.iconLink:visited, a.iconLink:active
+{
+ text-decoration: none;
+}
+p.updatecancelbar
+{
+ width:100%;
+ text-align:right;
+ padding-top:40px;
+}
+div.blog_rte 
+{
+ float:left;
+}
+div.blog_rte_full
+{
+ clear:both;
+ width: 100%;
+}
+table.blog_rte_default, div.blog_rte_minmaxbox, table.blog_rte_localizations
+{
+ width:100%;
+}
+td.blog_rte_defflag, td.blog_rte_flag
+{
+ width:50px;
+ vertical-align:top;
+}
+td.blog_rte_defaulttext input, td.blog_rte_localization input
+{
+ width:97%;
+}
+.RadPicker_Default .riTextBox {
+ height: 32px !important;
+}
+
+/* Comments */
+.blogComments{width:100%;border: 1px solid #e3e3e3;}
+.commentAuthor{padding:8px;}
+.ccAuthor{font-style:italic;padding-bottom:4px;}
+.commentContent{padding:8px;}
+.commentMod{padding:8px;}
+.blogSeparate{padding-bottom:2px;}
+
+/* 508 Compliance */
+.sr-only {display: none; } /* Remove this if using Bootstrap etc. */

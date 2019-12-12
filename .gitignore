@@ -152,22 +152,17 @@ $RECYCLE.BIN/
 *DS_Store
 ._*
 
+# NuGet
+packages/
+
 # =========================
 # Specific
 # =========================
 
-#B2M Ignores
-_BuildSupport/
-_Development/
-_Dotfuscated/
-_Packages/
-Documentation/
-_OpenUrlRewriter/_References/
-_Documentation/_Resources/
-*.fr-FR.resx
-/resources.zip.manifest
-/Uninstall.SqlDataProvider
-install/*
-node_modules
-bower_components
-packages
+local.json
+_*
+tools/
+**/bin/
+**/obj/
+!Server/References/*.dll
+Releases/

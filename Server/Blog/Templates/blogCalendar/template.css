@@ -1,0 +1,6 @@
+﻿.ui-datepicker-calendar td.selectedDate .ui-state-default {
+ background: url("../images/ui-bg_glass_75_e6e6e6_1x400.png") repeat-x scroll 50% 50% #64BB5D;
+}
+.ui-datepicker-calendar td.ui-datepicker-current-day .ui-state-default {
+ background: url("../images/ui-bg_glass_75_e6e6e6_1x400.png") repeat-x scroll 50% 50% #EEA303;
+}

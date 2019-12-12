@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!---->
+  <note></note>
+  <data name="Analysis.Help" xml:space="preserve">
+    <value>Résultats obtenus par l'outil d'importation</value>
+  </data>
+  <data name="Analysis.Text" xml:space="preserve">
+    <value>Première analyse du fichier</value>
+  </data>
+  <data name="Cancel.Text">
+    <value>Retour</value>
+  </data>
+  <data name="ControlTitle_blogimport.Text" xml:space="preserve">
+    <value>Nouvel Assistant d'Extension</value>
+  </data>
+  <data name="lblFileIn.Help" xml:space="preserve">
+    <value>Fichier BlogML à importer dans ce blog</value>
+  </data>
+  <data name="lblFileIn.Text" xml:space="preserve">
+    <value>Sélectionner un fichier BlogML</value>
+  </data>
+  <data name="lblTarget.Help" xml:space="preserve">
+    <value>Le blog dans lequel le contenu va être importé</value>
+  </data>
+  <data name="lblTarget.Text" xml:space="preserve">
+    <value>Blog cible</value>
+  </data>
+  <data name="Report.Help" xml:space="preserve">
+    <value>Rapport des actions effectuées.</value>
+  </data>
+  <data name="Report.Text">
+    <value>Rapport</value>
+  </data>
+  <data name="Upload.Help" xml:space="preserve">
+    <value>Le module Blog permet d'importer des contenus au format BlogML. Cette norme est supportée par la plupart des moteurs de blogs pour l'échange de contenus.</value>
+  </data>
+  <data name="Upload.Text" xml:space="preserve">
+    <value>Charger un fichier BlogML</value>
+  </data>
+  <data name="lblImportCategories.Help" xml:space="preserve">
+    <value>Permet d'ajouter les nouvelles catégories importées. Non disponible s'il n'y a pas de liste de catégories active ou si vous n'avez pas les permissions pour l'ajout de catégories.</value>
+  </data>
+  <data name="lblImportCategories.Text" xml:space="preserve">
+    <value>Importer les catégories manquantes</value>
+  </data>
+  <data name="lblImportComments.Help" xml:space="preserve">
+    <value>Permet d'essayer d'importer aussi les commentaires des posts se trouvant dans le fichier BlogML</value>
+  </data>
+  <data name="lblImportComments.Text" xml:space="preserve">
+    <value>Importer les commentaires</value>
+  </data>
+  <data name="lblImportMissingCategoriesAsKeywords.Help" xml:space="preserve">
+    <value>Se substitue à l'ajout de nouvelles catégories si vous n'avez pas les droits nécessaires, en remplaçant les catégories par des mots-clés.</value>
+  </data>
+  <data name="lblImportMissingCategoriesAsKeywords.Text" xml:space="preserve">
+    <value>Importer les nouvelles catégories en tant que mot-clés</value>
+  </data>
+  <!---->
+</root>

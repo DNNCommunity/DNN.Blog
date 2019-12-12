@@ -1,0 +1,5 @@
+<configuration>
+    <nodes>
+        <node path="/configuration/dotnetnuke/sitemap/providers/add[@name='blogSitemapProvider']" action="remove" />
+    </nodes>
+</configuration>

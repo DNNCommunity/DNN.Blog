@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!---->
+  <note></note>
+  <data name="Allposts.Text" xml:space="preserve">
+    <value>Tous les posts</value>
+  </data>
+  <data name="Back.Text">
+    <value>Précédent</value>
+  </data>
+  <data name="By.Text">
+    <value>par</value>
+  </data>
+  <data name="Comment.Text">
+    <value>Commentaire</value>
+  </data>
+  <data name="Comments.Text">
+    <value>Commentaire(s)</value>
+  </data>
+  <data name="Contents.Text">
+    <value>Contenus</value>
+  </data>
+  <data name="DeleteComment.Confirm" xml:space="preserve">
+    <value>Supprimer le commentaire ? Cette action est irréversible.</value>
+  </data>
+  <data name="DeleteComment.Text">
+    <value>supprimer</value>
+  </data>
+  <data name="DislikeComment.Text" xml:space="preserve">
+    <value>N'aime pas le commentaire</value>
+  </data>
+  <data name="In.Text">
+    <value>dans</value>
+  </data>
+  <data name="LikeComment.Text" xml:space="preserve">
+    <value>Aime le commentaire</value>
+  </data>
+  <data name="pagesize.Help" xml:space="preserve">
+    <value>Nombre de posts par page.-1 = pas de pagination</value>
+  </data>
+  <data name="pagesize.Text" xml:space="preserve">
+    <value>Taille de la page</value>
+  </data>
+  <data name="Posts.Text">
+    <value>post(s).</value>
+  </data>
+  <data name="Reply.Text">
+    <value>Réponse</value>
+  </data>
+  <data name="ReportComment.Confirm" xml:space="preserve">
+    <value>Voulez-vous signaler ce commentaire comme inapproprié ?</value>
+  </data>
+  <data name="ReportComment.Text" xml:space="preserve">
+    <value>Signalement de commentaire</value>
+  </data>
+  <data name="Search.Text" xml:space="preserve">
+    <value>Recherche de</value>
+  </data>
+  <data name="Title.Text">
+    <value>Titre</value>
+  </data>
+  <data name="Total.Text">
+    <value>Total</value>
+  </data>
+  <data name="ReadMore.Text" xml:space="preserve">
+    <value>Suite ...</value>
+  </data>
+  <data name="Approve.Text">
+    <value>approuver</value>
+  </data>
+  <data name="Delete.Text">
+    <value>supprimer</value>
+  </data>
+  <data name="Dislike.Text" xml:space="preserve">
+    <value>N'aime pas</value>
+  </data>
+  <data name="Like.Text">
+    <value>Aime</value>
+  </data>
+  <data name="Report.Text">
+    <value>rapport</value>
+  </data>
+  <data name="Unpublished.Text">
+    <value>Dépublié</value>
+  </data>
+  <!---->
+</root>

@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!---->
+  <note></note>
+  <data name="lblCopyright.Text">
+    <value>Copyright.</value>
+  </data>
+  <data name="lblSummary.Text">
+    <value>Résumé</value>
+  </data>
+  <data name="lblTitle.Text">
+    <value>Titre</value>
+  </data>
+  <data name="ModuleHelp.Text" xml:space="preserve">
+    <value>&lt;h1&gt;Blog - Edition&lt;/h1&gt;
+&lt;p&gt;Création, modification et suppression des posts du blog.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Date&lt;/b&gt;&lt;br /&gt;Date de publication (aujourd'hui, passée ou future). Si date future, le post ne sera affiché qu'à partir de cette date&lt;/p&gt;&lt;p&gt;&lt;b&gt;Blog parent&lt;/b&gt;&lt;br /&gt;Permet de forcer la place d'un post dans la hiérarchie du blog.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Titre&lt;/b&gt;&lt;br /&gt;Obligatoire, affiché dans la liste des posts et en haut de chacun.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Résumé&lt;/b&gt;&lt;br /&gt;Brève description du contenu&lt;/p&gt;&lt;p&gt;&lt;b&gt;Blog&lt;/b&gt;&lt;br /&gt;Contenu&lt;/p&gt;&lt;p&gt;&lt;b&gt;Publié&lt;/b&gt;&lt;br /&gt;A cocher pour rendre la publication effective.Ceci permet de préparer un brouillon sans qu'il apparaisse.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Autoriser les commentaires&lt;/b&gt;&lt;br /&gt;Supplante la configuration du blog pour autoriser les lecteurs à laisser des commentaires sur ce post particulier.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Copyright en bas de post&lt;/b&gt;&lt;br /&gt;si activé, affichage en bas des posts du copyright indiqué dans la configuration du blog.&lt;/p&gt;&lt;p&gt;&lt;b&gt;URL de Trackback&lt;/b&gt;&lt;br /&gt;Uniquement si le trackback automatique n'est pas activé dans les paramètres du blog. URL notifiée pour les Trackback.&lt;/p&gt;</value>
+  </data>
+  <data name="lblAllowComments.Help" xml:space="preserve">
+    <value>Autoriser les commentaires (outrepasse la configuration du blog)</value>
+  </data>
+  <data name="valPost.ErrorMessage" xml:space="preserve">
+    <value>Post requis</value>
+  </data>
+  <data name="lblDisplayCopyright.Help" xml:space="preserve">
+    <value>Affiche un copyright en bas des posts</value>
+  </data>
+  <data name="lblCategories.Text">
+    <value>Catégories</value>
+  </data>
+  <data name="lblTags.Text">
+    <value>Tags</value>
+  </data>
+  <data name="lblAllowComments.Text" xml:space="preserve">
+    <value>Autoriser les commentaires</value>
+  </data>
+  <data name="lblDisplayCopyright.Text" xml:space="preserve">
+    <value>Afficher le copyright</value>
+  </data>
+  <data name="AddTags.Text" xml:space="preserve">
+    <value>Saisir les mot-clés associés</value>
+  </data>
+  <data name="lblPublishDate.Text" xml:space="preserve">
+    <value>Date de publication</value>
+  </data>
+  <data name="ControlTitle_Postedit.Text" xml:space="preserve">
+    <value>Modifier message</value>
+  </data>
+  <data name="Publishing.Text" xml:space="preserve">
+    <value>Détails de publication</value>
+  </data>
+  <data name="lblPublished.Help" xml:space="preserve">
+    <value>Cocher pour publier ; décocher pour ne pas publier  (ne le supprime pas mais le rend invisible).</value>
+  </data>
+  <data name="lblPublished.Text">
+    <value>Publié</value>
+  </data>
+  <data name="cmdImageRemove.Text" xml:space="preserve">
+    <value>Supprimer l'image</value>
+  </data>
+  <data name="lblImage.Help" xml:space="preserve">
+    <value>Image ou photo associée au blog</value>
+  </data>
+  <data name="lblImage.Text">
+    <value>Image</value>
+  </data>
+  <data name="cmdSave.Text">
+    <value>Enregistrer</value>
+  </data>
+  <data name="lblSummaryPrecedingWarning.Text" xml:space="preserve">
+    <value>A noter que le résumé précède le corps de l'article ! Ils sont saisis séparément ici, mais regroupés ensuite pour constituer l'article complet.</value>
+  </data>
+  <data name="lblLocale.Help" xml:space="preserve">
+    <value>Langue de publication</value>
+  </data>
+  <data name="lblLocale.Text">
+    <value>Langue</value>
+  </data>
+  <data name="Content.Text">
+    <value>Contenus</value>
+  </data>
+  <data name="Metadata.Text" xml:space="preserve">
+    <value>Résumé et metadonnées</value>
+  </data>
+  <data name="PublishTimeZoneNote.Text" xml:space="preserve">
+    <value>La date de publication est basée sur votre fuseau horaire :</value>
+  </data>
+  <data name="ctlTags.PlaceholderText" xml:space="preserve">
+    <value>Mots-clés (tags) de ce post</value>
+  </data>
+  <data name="DefaultLocale.Text" xml:space="preserve">
+    <value>&lt; Langue par défaut du blog&gt;</value>
+  </data>
+  <data name="Title.Required" xml:space="preserve">
+    <value>Un post a besoin d'un titre !</value>
+  </data>
+  <data name="Title.Text" xml:space="preserve">
+    <value>Titre et résumé</value>
+  </data>
+  <data name="Now.Text">
+    <value>Maintenant</value>
+  </data>
+  <!---->
+</root>
