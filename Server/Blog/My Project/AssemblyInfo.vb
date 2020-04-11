@@ -31,7 +31,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("The DotNetNuke Blog module is an easy to use content publishing module that is tightly integrated with the core DotNetNuke framework. It can be used in single or multi-author environments and also permits content authoring using off-site tools such as Windows Live Writer.")>
 <Assembly: AssemblyCompany("DNN Connect")>
 <Assembly: AssemblyProduct("http://www.dotnetnuke.com")>
-<Assembly: AssemblyCopyright("Copyright 2019 by DNN Connect")>
+<Assembly: AssemblyCopyright("Copyright 2020 by DNN Connect")>
 <Assembly: AssemblyTrademark("DotNetNuke")>
 
 ' Version information for an assembly consists of the following four values:

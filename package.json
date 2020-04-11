@@ -18,7 +18,8 @@
       "excludeFilter": [
         "**/bin/**/*",
         "**/obj/**/*",
-        "**/node_modules/**/*"
+        "**/node_modules/**/*",
+        "**/*.??-??.resx"
       ],
       "licenseFile": "./License.txt",
       "releaseNotesFile": "./ReleaseNotes.md",

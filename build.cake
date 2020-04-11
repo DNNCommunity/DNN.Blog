@@ -108,15 +108,8 @@ Task("Package")
 });
 
 Task("Default")
-.IsDependentOn("Build")
+.IsDependentOn("Package")
 .Does(() => {
-});
-
-Task("Test")
-.IsDependentOn("Build")
-.Does(() => {
-    Information("Test");
-    Information(solution.dnn.projects.Count);
 });
 
 RunTarget(target);

@@ -247,7 +247,6 @@
     <Content Include="Templates\_default\template.js" />
     <Content Include="TermsEditML.ascx" />
     <Content Include="App_LocalResources\TermsEditML.ascx.resx" />
-    <Content Include="_Installation\license.txt" />
     <Content Include="App_LocalResources\Admin.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
@@ -587,9 +586,6 @@
     <Content Include="fonts\FontAwesome.otf" />
     <None Include="packages.config" />
     <None Include="Templates\Settings.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="_Installation\DNN_Blog.dnn">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
