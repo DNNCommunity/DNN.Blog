@@ -279,7 +279,6 @@
     </Compile>
     <Compile Include="BlogImport.ascx.vb">
       <DependentUpon>BlogImport.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="BlogPost.ashx.vb">
       <DependentUpon>BlogPost.ashx</DependentUpon>
@@ -331,9 +330,7 @@
     <Compile Include="Components\BlogML\Xml\BlogMLPost.vb" />
     <Compile Include="Components\BlogML\Xml\BlogMLSerializer.vb" />
     <Compile Include="Components\BlogML\Xml\BlogMLTrackback.vb" />
-    <Compile Include="Components\Common\BlogModuleBase.vb">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="Components\Common\BlogModuleBase.vb" />
     <Compile Include="Components\Services\WLW\BlogPostException.vb" />
     <Compile Include="Components\Common\BlogContextInfo.vb" />
     <Compile Include="Components\Common\Image.vb" />
@@ -402,9 +399,7 @@
     <Compile Include="Components\Templating\TemplateSettings.vb" />
     <Compile Include="Components\Templating\TemplateSettingValue.vb" />
     <Compile Include="Components\Templating\TokenReplace.vb" />
-    <Compile Include="Components\Templating\ViewTemplate.vb">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="Components\Templating\ViewTemplate.vb" />
     <Compile Include="Components\Services\WLW\WordPress\IWordPress.vb" />
     <Compile Include="Controls\CategorySelect.vb" />
     <Compile Include="Controls\Comments.ascx.designer.vb">
@@ -412,7 +407,6 @@
     </Compile>
     <Compile Include="Controls\Comments.ascx.vb">
       <DependentUpon>Comments.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Components\Integration\FileController.vb" />
     <Compile Include="BlogEdit.ascx.designer.vb">
@@ -420,7 +414,6 @@
     </Compile>
     <Compile Include="BlogEdit.ascx.vb">
       <DependentUpon>BlogEdit.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Controls\LocalizedTextEdit.vb" />
     <Compile Include="Controls\LongTextEdit.vb" />
@@ -429,7 +422,6 @@
     </Compile>
     <Compile Include="Controls\ManagementPanel.ascx.vb">
       <DependentUpon>ManagementPanel.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Controls\ShortTextEdit.vb" />
     <Compile Include="Controls\TagEdit.vb" />
@@ -445,28 +437,24 @@
     </Compile>
     <Compile Include="Controls\TemplateSettings.ascx.vb">
       <DependentUpon>TemplateSettings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Manage.ascx.designer.vb">
       <DependentUpon>Manage.ascx</DependentUpon>
     </Compile>
     <Compile Include="Manage.ascx.vb">
       <DependentUpon>Manage.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="PostEdit.ascx.designer.vb">
       <DependentUpon>PostEdit.ascx</DependentUpon>
     </Compile>
     <Compile Include="PostEdit.ascx.vb">
       <DependentUpon>PostEdit.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Blog.ascx.designer.vb">
       <DependentUpon>Blog.ascx</DependentUpon>
     </Compile>
     <Compile Include="Blog.ascx.vb">
       <DependentUpon>Blog.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="Components\Data\DataProvider.vb" />
@@ -476,14 +464,12 @@
     </Compile>
     <Compile Include="Controls\ViewSettings.ascx.vb">
       <DependentUpon>ViewSettings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="TermsEditML.ascx.designer.vb">
       <DependentUpon>TermsEditML.ascx</DependentUpon>
     </Compile>
     <Compile Include="TermsEditML.ascx.vb">
       <DependentUpon>TermsEditML.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
