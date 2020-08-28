@@ -133,5 +133,18 @@ Namespace Controls
    Response.Redirect(EditUrl("Post", BlogContext.ContentItemId.ToString, "PostEdit"), False)
   End Sub
 
+  Protected Function GetWlwUrl() As String
+      Dim wlwUrl, protocol As String
+      If Request.IsSecureConnection Then 
+          protocol = "https://"
+      Else 
+          protocol = "http://"
+      End If
+
+      wlwUrl = String.Format("{0}{1}{2}/DesktopModules/Blog/BlogPost.ashx?portalid={3}&tabid={4}&moduleid={5}", protocol, Request.Url.Host, DotNetNuke.Common.Globals.ApplicationPath, PortalId, TabId, ModuleId)
+
+      Return wlwUrl
+  End Function
+
  End Class
 End Namespace
