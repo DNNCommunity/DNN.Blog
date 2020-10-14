@@ -18,11 +18,13 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
+Imports System.Globalization
 Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Services.Localization.Localization
 Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Common.Globals
 Imports System.Linq
+Imports DotNetNuke.Framework.JavaScriptLibraries
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
 Imports DotNetNuke.Modules.Blog.Entities.Posts
 Imports DotNetNuke.Services.Localization
@@ -30,6 +32,11 @@ Imports Telerik.Web.UI
 Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.Integration
 Imports DotNetNuke.Modules.Blog.Entities.Terms
+Imports DotNetNuke.Security
+Imports DotNetNuke.UI.Utilities
+Imports DotNetNuke.Web.Client
+Imports DotNetNuke.Web.Client.ClientResourceManagement
+Imports DotNetNuke.Web.Client.Providers
 
 Public Class PostEdit
  Inherits BlogModuleBase
@@ -111,6 +118,9 @@ Public Class PostEdit
 
    If Not Page.IsPostBack Then
 
+       ClientResourceManager.RegisterScript(Me.Page, "~/DesktopModules/Blog/Js/flatpickr/flatpickr.min.js", FileOrder.Js.DefaultPriority + 1, DnnPageHeaderProvider.DefaultName)
+       ClientResourceManager.RegisterStylesheet(Me.Page, "~/DesktopModules/Blog/Js/flatpickr/flatpickr.min.css", FileOrder.Css.DefaultPriority + 1, DnnPageHeaderProvider.DefaultName)
+
     ' Categories
     If Settings.VocabularyId < 1 Then
      pnlCategories.Visible = False
@@ -179,10 +189,7 @@ Public Class PostEdit
      ' Date
      litTimezone.Text = BlogContext.UiTimeZone.DisplayName
      Dim publishDate As DateTime = UtcToLocalTime(BlogContext.Post.PublishedOnDate, BlogContext.UiTimeZone)
-     dpPostDate.Culture = Threading.Thread.CurrentThread.CurrentUICulture
-     dpPostDate.SelectedDate = publishDate
-     tpPostTime.Culture = Threading.Thread.CurrentThread.CurrentUICulture
-     tpPostTime.SelectedDate = publishDate
+     dpPostDate.Text = publishDate.ToString(CultureInfo.CurrentCulture.DateTimeFormat)
 
      ' Summary, Image, Categories, Tags
      Try
@@ -247,11 +254,7 @@ Public Class PostEdit
     If chkPublishNow.Checked Then
      BlogContext.Post.PublishedOnDate = Now.ToUniversalTime
     Else
-     BlogContext.Post.PublishedOnDate = CDate(dpPostDate.SelectedDate)
-     Dim hour As Integer = tpPostTime.SelectedDate.Value.Hour
-     Dim minute As Integer = tpPostTime.SelectedDate.Value.Minute
-     BlogContext.Post.PublishedOnDate = BlogContext.Post.PublishedOnDate.AddHours(hour)
-     BlogContext.Post.PublishedOnDate = BlogContext.Post.PublishedOnDate.AddMinutes(minute)
+     BlogContext.Post.PublishedOnDate = CDate(PortalSecurity.Instance.InputFilter(dpPostDate.Text.Trim(), PortalSecurity.FilterFlag.NoMarkup))
      BlogContext.Post.PublishedOnDate = TimeZoneInfo.ConvertTimeToUtc(BlogContext.Post.PublishedOnDate, BlogContext.UiTimeZone)
     End If
 

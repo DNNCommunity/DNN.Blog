@@ -162,6 +162,8 @@
     <Content Include="css\font-awesome.min.css" />
     <Content Include="css\jquery.handsontable.css" />
     <Content Include="fonts\fontawesome-webfont.svg" />
+    <Content Include="js\flatpickr\flatpickr.min.css" />
+    <Content Include="js\flatpickr\flatpickr.min.js" />
     <Content Include="js\jquery.handsontable.js" />
     <Content Include="Templates\bigCalendar\CalendarItem.html" />
     <Content Include="Templates\bigCalendar\template.css" />

@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="PostEdit.ascx.vb" Inherits="DotNetNuke.Modules.Blog.PostEdit" %>
-<%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web.Deprecated" Namespace="DotNetNuke.Web.UI.WebControls" %>
+<%@ Import Namespace="DotNetNuke.Services.Localization" %>
 <%@ Register TagPrefix="dnn" TagName="TextEditor" Src="~/controls/TextEditor.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="blog" Namespace="DotNetNuke.Modules.Blog.Controls" Assembly="DotNetNuke.Modules.Blog" %>
@@ -68,9 +68,8 @@
 		<div class="dnnFormItem">
 			<dnn:Label ID="lblPublishDate" runat="server" ControlName="dpPostDate" Suffix=":" />
 			<div class="dnnLeft">
-    <asp:CheckBox runat="server" ID="chkPublishNow" ResourceKey="Now" />
-				<dnnweb:DnnDatePicker ID="dpPostDate" runat="server" CssClass="dateFix" />
-				<dnnweb:DnnTimePicker ID="tpPostTime" runat="server" TimeView-Columns="4" ShowPopupOnFocus="true" CssClass="dateFix" />
+                <asp:CheckBox runat="server" ID="chkPublishNow" ResourceKey="Now" />
+                <asp:TextBox runat="server" ID="dpPostDate" CssClass="dateFix bDatePickerTextBox" />
 			</div>
 		</div>
 		<div class="dnnClear" style="padding:10px 0px;">
@@ -96,6 +95,11 @@
 
    $('#dnnBlogEditPost').dnnTabs({ selected: 0 });
 
+   $(".bDatePickerTextBox").flatpickr({
+	   enableTime: true,
+       dateFormat: "m-d-Y H:i K"
+   });
+
    $('.dnnPostDelete').dnnConfirm({
     text: '<%= LocalizeJSString("DeleteItem") %>',
     yesText: '<%= LocalizeJSString("Yes.Text", Localization.SharedResourceFile) %>',
@@ -114,10 +118,8 @@
   function setDateSelector() {
    if ($('#<%= chkPublishNow.ClientID %>').is(':checked')) {
     $('#<%= dpPostDate.ClientID %>_wrapper').hide();
-    $('#<%= tpPostTime.ClientID %>_wrapper').hide();
    } else {
     $('#<%= dpPostDate.ClientID %>_wrapper').show();
-    $('#<%= tpPostTime.ClientID %>_wrapper').show();
    }
   }
 
