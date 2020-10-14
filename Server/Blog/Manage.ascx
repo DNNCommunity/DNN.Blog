@@ -1,6 +1,5 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="Manage.ascx.vb" Inherits="DotNetNuke.Modules.Blog.Manage" %>
 <%@ Import Namespace="DotNetNuke.Entities.Users" %>
-<%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web.Deprecated" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <div class="dnnForm" id="tabs">
  <ul class="dnnAdminTabNav">
   <li id="blogsLink" runat="server"><a href="#<%= Blogs.ClientId %>"><%= LocalizeString("Blogs")%></a></li>
@@ -37,12 +36,10 @@
  </asp:Panel>
  <asp:Panel id="Posts" runat="server" CssClass="dnnClear">
   <div class="coreMessaging" id="blogPostsError"></div>
-  <dnnweb:DNNGrid id="grdPosts" autogeneratecolumns="false" cssclass="dnnGrid dnnSecurityRolesGrid"
-   runat="server" allowpaging="True" allowcustompaging="True" enableviewstate="True" AllowSorting="true"
-   onneeddatasource="GetPosts">
-   <MasterTableView>
+  <asp:GridView id="grdPosts" autogeneratecolumns="false" cssclass="dnnGrid dnnSecurityRolesGrid"
+   runat="server" allowpaging="True" allowcustompaging="True" enableviewstate="True" AllowSorting="true" OnSorting="GridView_Sorting">
     <Columns>
-     <dnnweb:DnnGridTemplateColumn HeaderText="Actions">
+     <asp:TemplateField HeaderText="Actions">
       <ItemStyle Width="90px"></ItemStyle>
       <ItemTemplate>
        <a href="<%# EditUrl("Post", Eval("ContentItemId"), "PostEdit") %>"
@@ -59,27 +56,26 @@
           title="Approve"
           style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Blog.CanApprove AND NOT CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Published, "inline", "none") %>"><i class="fa fa-check icon16"></i></a>
       </ItemTemplate>
-     </dnnweb:DnnGridTemplateColumn>
-     <dnnweb:DnnGridTemplateColumn headertext="Date">
+     </asp:TemplateField>
+     <asp:TemplateField headertext="Date">
       <ItemTemplate>
        <%# DotNetNuke.Modules.Blog.Common.Globals.UtcToLocalTime(Eval("PublishedOnDate"), UserController.GetCurrentUserInfo().Profile.PreferredTimeZone)%>
       </ItemTemplate>
-     </dnnweb:DnnGridTemplateColumn>
-     <dnnweb:DnnGridBoundColumn datafield="Title" headertext="Title" AllowSorting="True" SortExpression="Title" />
-     <dnnweb:DnnGridTemplateColumn HeaderText="Published">
+     </asp:TemplateField>
+     <asp:BoundField datafield="Title" headertext="Title" SortExpression="Title" />
+     <asp:TemplateField HeaderText="Published">
       <ItemStyle Width="30px" HorizontalAlign="Center"></ItemStyle>
       <ItemTemplate>
        <i class="fa fa-<%# IIf(Eval("Published"), "check", "times")%> icon16" id="approveTick<%# Eval("ContentItemID") %>"></i>
       </ItemTemplate>
-     </dnnweb:DnnGridTemplateColumn>
-     <dnnweb:DnnGridTemplateColumn HeaderText="Blog">
+     </asp:TemplateField>
+     <asp:TemplateField HeaderText="Blog">
       <ItemTemplate>
        <asp:Label ID="Label1" Runat="server" Text='<%# CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Blog.Title %>' />
       </ItemTemplate>
-     </dnnweb:DnnGridTemplateColumn>
+     </asp:TemplateField>
     </Columns>
-   </MasterTableView>
-  </dnnweb:DNNGrid>
+  </asp:GridView>
  </asp:Panel>
 </div>
 <p class="updatecancelbar">
