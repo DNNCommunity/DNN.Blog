@@ -56,3 +56,4 @@ td.blog_rte_defaulttext input, td.blog_rte_localization input
 
 /* 508 Compliance */
 .sr-only {display: none; } /* Remove this if using Bootstrap etc. */
+.bDatePickerTextBox { width: 65% !important; }

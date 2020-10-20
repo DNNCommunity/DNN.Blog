@@ -26,6 +26,8 @@ Public Class Manage
  Inherits BlogModuleBase
 
  Private _totalPosts As Integer = -1
+ Private Const ASCENDING As String = " ASC"
+ Private Const DESCENDING As String = " DESC"
 
  Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 
@@ -68,25 +70,52 @@ Public Class Manage
 
   If dlBlogs.Items.Count = 0 Then dlBlogs.Visible = False
 
+     GetPosts()
+
  End Sub
 
  Public Sub GetPosts()
-  Dim sortorder As String = "PUBLISHEDONDATE DESC"
-  If grdPosts.MasterTableView.SortExpressions.Count > 0 Then
-   If grdPosts.MasterTableView.SortExpressions(0).SortOrder = Telerik.Web.UI.GridSortOrder.Descending Then
-    sortorder = String.Format("{0} DESC", grdPosts.MasterTableView.SortExpressions(0).FieldName).ToUpper
-   Else
-    sortorder = String.Format("{0}", grdPosts.MasterTableView.SortExpressions(0).FieldName).ToUpper
-   End If
-  End If
-  grdPosts.DataSource = PostsController.GetPosts(Settings.ModuleId, -1, BlogContext.Locale, -1, "", Nothing, -1, True, grdPosts.CurrentPageIndex, grdPosts.PageSize, sortorder, _totalPosts, UserId, BlogContext.Security.UserIsAdmin).Values
+  grdPosts.DataSource = PostsController.GetPosts(Settings.ModuleId, -1, BlogContext.Locale, -1, "", Nothing, -1, True, grdPosts.PageIndex, grdPosts.PageSize, SortOrder, _totalPosts, UserId, BlogContext.Security.UserIsAdmin).Values
   grdPosts.VirtualItemCount = _totalPosts
-
+    grdPosts.DataBind()
  End Sub
 
- Public Sub RebindPosts()
-  GetPosts()
-  grdPosts.Rebind()
+ Public Property GridViewSortDirection As SortDirection
+     Get
+         If ViewState("sortDirection") Is Nothing Then ViewState("sortDirection") = SortDirection.Descending
+         Return CType(ViewState("sortDirection"), SortDirection)
+     End Get
+     Set(ByVal value As SortDirection)
+         ViewState("sortDirection") = value
+     End Set
+ End Property
+
+ Public Property GridViewSortExpression As String
+     Get
+         If ViewState("sortExpression") Is Nothing Then ViewState("sortExpression") = "PUBLISHEDONDATE"
+         Return ViewState("sortExpression").ToString()
+     End Get
+     Set(ByVal value As String)
+         ViewState("sortExpression") = value
+     End Set
+ End Property
+
+ Private ReadOnly Property SortOrder As String
+    Get 
+        Return String.Concat(GridViewSortExpression, " ", GridViewSortDirection)
+    End Get
+ End Property
+
+ Protected Sub GridView_Sorting(ByVal sender As Object, ByVal e As GridViewSortEventArgs)
+     Dim sortExpression As String = e.SortExpression
+
+     If GridViewSortDirection = SortDirection.Ascending Then
+         GridViewSortDirection = SortDirection.Descending
+     Else
+         GridViewSortDirection = SortDirection.Ascending
+     End If
+
+     GetPosts()
  End Sub
 
 End Class
