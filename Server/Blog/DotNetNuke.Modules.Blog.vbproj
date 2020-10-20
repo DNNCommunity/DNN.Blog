@@ -11,7 +11,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>DotNetNuke.Modules.Blog</RootNamespace>
     <AssemblyName>DotNetNuke.Modules.Blog</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <MyType>Custom</MyType>
     <OptionExplicit>On</OptionExplicit>
     <OptionCompare>Binary</OptionCompare>
@@ -87,7 +87,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -99,7 +98,6 @@
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
-    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
@@ -128,7 +126,6 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Import Include="DotNetNuke.Modules.Blog.Common" />
@@ -274,6 +271,7 @@
     </Compile>
     <Compile Include="BlogImport.ascx.vb">
       <DependentUpon>BlogImport.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="BlogPost.ashx.vb">
       <DependentUpon>BlogPost.ashx</DependentUpon>
@@ -325,7 +323,9 @@
     <Compile Include="Components\BlogML\Xml\BlogMLPost.vb" />
     <Compile Include="Components\BlogML\Xml\BlogMLSerializer.vb" />
     <Compile Include="Components\BlogML\Xml\BlogMLTrackback.vb" />
-    <Compile Include="Components\Common\BlogModuleBase.vb" />
+    <Compile Include="Components\Common\BlogModuleBase.vb">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Components\Services\WLW\BlogPostException.vb" />
     <Compile Include="Components\Common\BlogContextInfo.vb" />
     <Compile Include="Components\Common\Image.vb" />
@@ -394,7 +394,9 @@
     <Compile Include="Components\Templating\TemplateSettings.vb" />
     <Compile Include="Components\Templating\TemplateSettingValue.vb" />
     <Compile Include="Components\Templating\TokenReplace.vb" />
-    <Compile Include="Components\Templating\ViewTemplate.vb" />
+    <Compile Include="Components\Templating\ViewTemplate.vb">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Components\Services\WLW\WordPress\IWordPress.vb" />
     <Compile Include="Controls\CategorySelect.vb" />
     <Compile Include="Controls\Comments.ascx.designer.vb">
@@ -402,6 +404,7 @@
     </Compile>
     <Compile Include="Controls\Comments.ascx.vb">
       <DependentUpon>Comments.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Components\Integration\FileController.vb" />
     <Compile Include="BlogEdit.ascx.designer.vb">
@@ -409,6 +412,7 @@
     </Compile>
     <Compile Include="BlogEdit.ascx.vb">
       <DependentUpon>BlogEdit.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Controls\LocalizedTextEdit.vb" />
     <Compile Include="Controls\LongTextEdit.vb" />
@@ -417,6 +421,7 @@
     </Compile>
     <Compile Include="Controls\ManagementPanel.ascx.vb">
       <DependentUpon>ManagementPanel.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Controls\ShortTextEdit.vb" />
     <Compile Include="Controls\TagEdit.vb" />
@@ -432,24 +437,28 @@
     </Compile>
     <Compile Include="Controls\TemplateSettings.ascx.vb">
       <DependentUpon>TemplateSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Manage.ascx.designer.vb">
       <DependentUpon>Manage.ascx</DependentUpon>
     </Compile>
     <Compile Include="Manage.ascx.vb">
       <DependentUpon>Manage.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="PostEdit.ascx.designer.vb">
       <DependentUpon>PostEdit.ascx</DependentUpon>
     </Compile>
     <Compile Include="PostEdit.ascx.vb">
       <DependentUpon>PostEdit.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Blog.ascx.designer.vb">
       <DependentUpon>Blog.ascx</DependentUpon>
     </Compile>
     <Compile Include="Blog.ascx.vb">
       <DependentUpon>Blog.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="Components\Data\DataProvider.vb" />
@@ -459,12 +468,14 @@
     </Compile>
     <Compile Include="Controls\ViewSettings.ascx.vb">
       <DependentUpon>ViewSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="TermsEditML.ascx.designer.vb">
       <DependentUpon>TermsEditML.ascx</DependentUpon>
     </Compile>
     <Compile Include="TermsEditML.ascx.vb">
       <DependentUpon>TermsEditML.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
