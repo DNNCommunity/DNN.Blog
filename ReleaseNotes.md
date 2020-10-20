@@ -1,3 +1,6 @@
-## Release Notes
-Here are some notes
+## Release Notes v 6.5.0
+
+* Removal of Telerik dependencies
+* Removed SharpzipLib dependency in favor of .net framework compression
+* Set the DNN dependency to version 9.4.0
 
