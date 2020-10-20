@@ -2,5 +2,5 @@
 
 * Removal of Telerik dependencies
 * Removed SharpzipLib dependency in favor of .net framework compression
-* Set the DNN dependency to version 9.4.0
+* Set the DNN dependency to version 9.7.0
 
