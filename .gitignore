@@ -161,8 +161,10 @@ packages/
 
 local.json
 _*
+!Server/Blog/Templates/_default
 tools/
 **/bin/
 **/obj/
 !Server/References/*.dll
 Releases/
+

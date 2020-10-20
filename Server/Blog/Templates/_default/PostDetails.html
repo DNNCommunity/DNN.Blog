@@ -1,0 +1,39 @@
+<div class="blog-main-content">
+  <span class="removeselection"><a href="[query:referrer]" title="[resx:Back]"><i class="fa fa-arrow-up icon16"></i></a></span>
+  <article id="post-[post:contentitemid]" class="bbs-article">
+    <header>
+      <div class="supertitle">[subtemplate|Cat.html|categories]</div>
+      <h1>[Post:localizedtitle]</h1>
+    </header>
+    [subtemplate|Postbanner.html|Post:hasimage]
+    <div class="content">
+      <div class="metadata">
+        <div class="share-buttons">
+          <h5>[resx:Share]</h5>
+          <div id="sharrre" data-url="[post:link]" data-text="share"></div>
+        </div>
+        <div class="author">
+          <h5>[resx:WrittenBy]</h5>
+          <a href="[urls:module|true]author=[post:CreatedByUserID]">[post:DisplayName]</a>
+          [Author:Biography]
+        </div>
+        <div class="tags">
+          <h5>[resx:Tags]</h5>
+          [subtemplate|PostTag.html|categories]
+          [subtemplate|PostTag.html|keywords]
+        </div>
+        <div class="time">
+          <div data-time="[post:PublishedOnDate|yyyy-MM-dd HH:mm:ss]" class="momentabs">[post:PublishedOnDate|yyyy-MM-dd]</div>
+        </div>
+[if|1][Post:published][=]False[/if]
+<div>
+  <span class="unpublished bg-danger">[resx:Unpublished]</span>
+</div>
+[endif|1]
+      </div>
+      <div class="body">
+        [Post:localizedcontent]
+      </div>
+    </div>
+  </article>
+</div>
