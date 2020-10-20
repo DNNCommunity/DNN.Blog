@@ -61,20 +61,32 @@
     <Reference Include="CookComputing.XmlRpcV2, Version=2.5.0.0, Culture=neutral, PublicKeyToken=a7d6e17aa302004d, processorArchitecture=MSIL">
       <HintPath>..\..\packages\CookComputing.XmlRPCv2.2.5.0\lib\CookComputing.XmlRpcV2.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke, Version=9.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DotNetNuke.Core.9.4.0\lib\net45\DotNetNuke.dll</HintPath>
+    <Reference Include="DotNetNuke, Version=9.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DotNetNuke.Core.9.7.0\lib\net45\DotNetNuke.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Web, Version=9.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DotNetNuke.Web.9.4.0\lib\net45\DotNetNuke.Web.dll</HintPath>
+    <Reference Include="DotNetNuke.Abstractions, Version=9.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DotNetNuke.Abstractions.9.7.0\lib\netstandard2.0\DotNetNuke.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Web.Client, Version=9.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DotNetNuke.Web.Client.9.4.0\lib\net45\DotNetNuke.Web.Client.dll</HintPath>
+    <Reference Include="DotNetNuke.DependencyInjection, Version=9.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DotNetNuke.DependencyInjection.9.7.0\lib\netstandard2.0\DotNetNuke.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Web, Version=9.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DotNetNuke.Web.9.7.0\lib\net45\DotNetNuke.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Web.Client, Version=9.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DotNetNuke.Web.Client.9.7.0\lib\net45\DotNetNuke.Web.Client.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DotNetNuke.Web.9.4.0\lib\net45\DotNetNuke.WebUtility.dll</HintPath>
+      <HintPath>..\..\packages\DotNetNuke.Web.9.7.0\lib\net45\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DotNetNuke.Core.9.4.0\lib\net45\Microsoft.ApplicationBlocks.Data.dll</HintPath>
+      <HintPath>..\..\packages\DotNetNuke.Core.9.7.0\lib\net45\Microsoft.ApplicationBlocks.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Extensions.DependencyInjection.2.1.1\lib\net461\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.2.1.1\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>

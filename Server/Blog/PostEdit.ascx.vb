@@ -28,7 +28,6 @@ Imports DotNetNuke.Framework.JavaScriptLibraries
 Imports DotNetNuke.Modules.Blog.Entities.Blogs
 Imports DotNetNuke.Modules.Blog.Entities.Posts
 Imports DotNetNuke.Services.Localization
-Imports Telerik.Web.UI
 Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.Integration
 Imports DotNetNuke.Modules.Blog.Entities.Terms
