@@ -23,155 +23,148 @@ Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.Modules.Blog.Common.Globals
 Imports DotNetNuke.Modules.Blog.BlogML.Xml
 Imports DotNetNuke.Modules.Blog.Entities.Posts
-Imports ICSharpCode.SharpZipLib.Zip
+Imports System.IO.Compression
 
 Public Class BlogImport
- Inherits BlogModuleBase
+  Inherits BlogModuleBase
 
- Private Property CanImportCategories As Boolean = False
+  Private Property CanImportCategories As Boolean = False
 
- Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+  Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 
-  If Not BlogContext.Security.IsBlogger Then
-   Throw New Exception("You do not have access to this resource. Please check your login status.")
-  End If
-
-  If Settings.VocabularyId > -1 AndAlso (BlogContext.Security.IsEditor) Then CanImportCategories = True
-
-  If Not IsPostBack Then
-   lblTargetName.Text = BlogContext.Blog.Title
-   chkImportCategories.Enabled = CanImportCategories
-  End If
-
- End Sub
-
- Protected Function GetText(type As String) As String
-  Dim text As String = Null.NullString
-  Dim pageName As String = wizBlogImport.ActiveStep.Title
-  If type = "Title" Then
-   text = Localization.GetString(pageName + ".Title", LocalResourceFile)
-  ElseIf type = "Help" Then
-   text = Localization.GetString(pageName + ".Help", LocalResourceFile)
-  End If
-  Return text
- End Function
-
- Private Sub wizBlogImport_ActiveStepChanged(sender As Object, e As EventArgs) Handles wizBlogImport.ActiveStepChanged
-
- End Sub
-
- Private Sub wizBlogImport_CancelButtonClick(sender As Object, e As EventArgs) Handles wizBlogImport.CancelButtonClick
-  Response.Redirect(EditUrl("Manage"), False)
- End Sub
-
- Private Sub wizBlogImport_NextButtonClick(sender As Object, e As System.Web.UI.WebControls.WizardNavigationEventArgs) Handles wizBlogImport.NextButtonClick
-  Select Case e.CurrentStepIndex
-   Case 0 ' upload
-    Dim strReport As New StringBuilder
-    Dim file As HttpPostedFile = cmdBrowse.PostedFile
-    If file.FileName <> "" Then
-     If file.FileName.ToLower.EndsWith(".zip") Then
-      Dim objZipInputStream As New ZipInputStream(file.InputStream)
-      Dim objZipEntry As ZipEntry = objZipInputStream.GetNextEntry
-      If objZipEntry.Name.ToLower.EndsWith(".xml") Then
-       Using objFileStream As IO.FileStream = IO.File.Create(BlogContext.BlogMapPath & "import.resources")
-        Dim intSize As Integer = 2048
-        Dim arrData(2048) As Byte
-        intSize = objZipInputStream.Read(arrData, 0, arrData.Length)
-        While intSize > 0
-         objFileStream.Write(arrData, 0, intSize)
-         intSize = objZipInputStream.Read(arrData, 0, arrData.Length)
-        End While
-       End Using
-      End If
-      objZipInputStream.Close()
-     Else
-      file.SaveAs(BlogContext.BlogMapPath & "import.resources")
-     End If
-     strReport.AppendLine("Saved File")
-     Dim blog As BlogMLBlog = Nothing
-     Using strIn As New IO.StreamReader(BlogContext.BlogMapPath & "import.resources")
-      Using xmlIn As New System.Xml.XmlTextReader(strIn)
-       blog = BlogMLSerializer.Deserialize(xmlIn)
-      End Using
-     End Using
-     If blog IsNot Nothing Then
-      strReport.AppendLine("File is a valid BlogML file")
-      strReport.AppendFormat("Original Title: {0}" & vbCrLf, blog.Title)
-      strReport.AppendFormat("Total Posts: {0}" & vbCrLf, blog.Posts.Count)
-      strReport.AppendFormat("Total Categories: {0}" & vbCrLf, blog.Categories.Count)
-     End If
-     txtAnalysis.Text = strReport.ToString
-    Else ' no file uploaded
-
+    If Not BlogContext.Security.IsBlogger Then
+      Throw New Exception("You do not have access to this resource. Please check your login status.")
     End If
-   Case 1 ' analysis and selecting options
-    Dim strReport As New StringBuilder
-    Dim b As BlogMLBlog = Nothing
-    Using strIn As New IO.StreamReader(BlogContext.BlogMapPath & "import.resources")
-     Using xmlIn As New System.Xml.XmlTextReader(strIn)
-      b = BlogMLSerializer.Deserialize(xmlIn)
-     End Using
-    End Using
-    If b IsNot Nothing Then
-     If CanImportCategories AndAlso chkImportCategories.Checked Then
-      For Each c As BlogMLCategory In b.Categories
-       ' check for and add category
-      Next
-     ElseIf chkImportMissingCategoriesAsKeywords.Checked Then
-      For Each c As BlogMLCategory In b.Categories
-       ' check for and add tag
-      Next
-     End If
-     For Each post As BlogMLPost In b.Posts
-      ' import post
-      Dim newPost As New PostInfo
-      With newPost
-       .BlogID = BlogContext.BlogId
-       .ViewCount = 0
-       .Title = post.Title
-       .Content = post.Content.Text
-       .Summary = post.Excerpt.Text
-       .Published = post.Approved
-       .PublishedOnDate = post.DateCreated
-       ' DNN Blog specific fields
-       .Image = post.Image
-       .AllowComments = post.AllowComments
-       .DisplayCopyright = post.DisplayCopyright
-       .Copyright = post.Copyright
-       .Locale = post.Locale
-      End With
-      If newPost.Title <> "" And newPost.Content <> "" Then
-       newPost.ContentItemId = PostsController.AddPost(newPost, UserId)
-       strReport.AppendFormat("Added {0}" & vbCrLf, post.Title)
-       ' import resources
-       If post.Attachments.Count > 0 Then
-        Dim postDir As String = GetPostDirectoryMapPath(newPost)
-        Dim postPath As String = GetPostDirectoryPath(newPost)
-        IO.Directory.CreateDirectory(postDir)
-        For Each att As BlogMLAttachment In post.Attachments
-         If att.Embedded And att.Data IsNot Nothing Then
-          Dim filename As String = att.Path
-          If filename = "" Then filename = att.Url
-          filename = filename.Replace("/", "\")
-          If filename.IndexOf("\") > 0 Then filename = filename.Substring(filename.LastIndexOf("\") + 1)
-          IO.File.WriteAllBytes(postDir & filename, att.Data)
-          newPost.Content = newPost.Content.Replace(filename, postPath & filename)
-          If Not String.IsNullOrEmpty(newPost.Summary) Then newPost.Summary = newPost.Summary.Replace(filename, postPath & filename)
-         End If
-        Next
-       End If
-       PostsController.UpdatePost(newPost, UserId)
-      End If
-     Next
-     txtReport.Text = strReport.ToString
+
+    If Settings.VocabularyId > -1 AndAlso (BlogContext.Security.IsEditor) Then CanImportCategories = True
+
+    If Not IsPostBack Then
+      lblTargetName.Text = BlogContext.Blog.Title
+      chkImportCategories.Enabled = CanImportCategories
     End If
-   Case 2 ' report
-    Try
-     IO.File.Delete(BlogContext.BlogMapPath & "import.resources")
-    Catch ex As Exception
-    End Try
+
+  End Sub
+
+  Protected Function GetText(type As String) As String
+    Dim text As String = Null.NullString
+    Dim pageName As String = wizBlogImport.ActiveStep.Title
+    If type = "Title" Then
+      text = Localization.GetString(pageName + ".Title", LocalResourceFile)
+    ElseIf type = "Help" Then
+      text = Localization.GetString(pageName + ".Help", LocalResourceFile)
+    End If
+    Return text
+  End Function
+
+  Private Sub wizBlogImport_ActiveStepChanged(sender As Object, e As EventArgs) Handles wizBlogImport.ActiveStepChanged
+
+  End Sub
+
+  Private Sub wizBlogImport_CancelButtonClick(sender As Object, e As EventArgs) Handles wizBlogImport.CancelButtonClick
     Response.Redirect(EditUrl("Manage"), False)
-  End Select
- End Sub
+  End Sub
+
+  Private Sub wizBlogImport_NextButtonClick(sender As Object, e As System.Web.UI.WebControls.WizardNavigationEventArgs) Handles wizBlogImport.NextButtonClick
+    Select Case e.CurrentStepIndex
+      Case 0 ' upload
+        Dim strReport As New StringBuilder
+        Dim file As HttpPostedFile = cmdBrowse.PostedFile
+        If file.FileName <> "" Then
+          If file.FileName.ToLower.EndsWith(".zip") Then
+            Using objZipInputStream As New ZipArchive(file.InputStream, ZipArchiveMode.Read)
+              For Each objZipEntry As ZipArchiveEntry In objZipInputStream.Entries
+                If objZipEntry.Name.ToLower.EndsWith(".xml") Then
+                  objZipEntry.ExtractToFile(BlogContext.BlogMapPath & "import.resources")
+                End If
+              Next
+            End Using
+          Else
+            file.SaveAs(BlogContext.BlogMapPath & "import.resources")
+          End If
+          strReport.AppendLine("Saved File")
+          Dim blog As BlogMLBlog = Nothing
+          Using strIn As New IO.StreamReader(BlogContext.BlogMapPath & "import.resources")
+            Using xmlIn As New System.Xml.XmlTextReader(strIn)
+              blog = BlogMLSerializer.Deserialize(xmlIn)
+            End Using
+          End Using
+          If blog IsNot Nothing Then
+            strReport.AppendLine("File is a valid BlogML file")
+            strReport.AppendFormat("Original Title: {0}" & vbCrLf, blog.Title)
+            strReport.AppendFormat("Total Posts: {0}" & vbCrLf, blog.Posts.Count)
+            strReport.AppendFormat("Total Categories: {0}" & vbCrLf, blog.Categories.Count)
+          End If
+          txtAnalysis.Text = strReport.ToString
+        Else ' no file uploaded
+
+        End If
+      Case 1 ' analysis and selecting options
+        Dim strReport As New StringBuilder
+        Dim b As BlogMLBlog = Nothing
+        Using strIn As New IO.StreamReader(BlogContext.BlogMapPath & "import.resources")
+          Using xmlIn As New System.Xml.XmlTextReader(strIn)
+            b = BlogMLSerializer.Deserialize(xmlIn)
+          End Using
+        End Using
+        If b IsNot Nothing Then
+          If CanImportCategories AndAlso chkImportCategories.Checked Then
+            For Each c As BlogMLCategory In b.Categories
+              ' check for and add category
+            Next
+          ElseIf chkImportMissingCategoriesAsKeywords.Checked Then
+            For Each c As BlogMLCategory In b.Categories
+              ' check for and add tag
+            Next
+          End If
+          For Each post As BlogMLPost In b.Posts
+            ' import post
+            Dim newPost As New PostInfo
+            With newPost
+              .BlogID = BlogContext.BlogId
+              .ViewCount = 0
+              .Title = post.Title
+              .Content = post.Content.Text
+              .Summary = post.Excerpt.Text
+              .Published = post.Approved
+              .PublishedOnDate = post.DateCreated
+              ' DNN Blog specific fields
+              .Image = post.Image
+              .AllowComments = post.AllowComments
+              .DisplayCopyright = post.DisplayCopyright
+              .Copyright = post.Copyright
+              .Locale = post.Locale
+            End With
+            If newPost.Title <> "" And newPost.Content <> "" Then
+              newPost.ContentItemId = PostsController.AddPost(newPost, UserId)
+              strReport.AppendFormat("Added {0}" & vbCrLf, post.Title)
+              ' import resources
+              If post.Attachments.Count > 0 Then
+                Dim postDir As String = GetPostDirectoryMapPath(newPost)
+                Dim postPath As String = GetPostDirectoryPath(newPost)
+                IO.Directory.CreateDirectory(postDir)
+                For Each att As BlogMLAttachment In post.Attachments
+                  If att.Embedded And att.Data IsNot Nothing Then
+                    Dim filename As String = att.Path
+                    If filename = "" Then filename = att.Url
+                    filename = filename.Replace("/", "\")
+                    If filename.IndexOf("\") > 0 Then filename = filename.Substring(filename.LastIndexOf("\") + 1)
+                    IO.File.WriteAllBytes(postDir & filename, att.Data)
+                    newPost.Content = newPost.Content.Replace(filename, postPath & filename)
+                    If Not String.IsNullOrEmpty(newPost.Summary) Then newPost.Summary = newPost.Summary.Replace(filename, postPath & filename)
+                  End If
+                Next
+              End If
+              PostsController.UpdatePost(newPost, UserId)
+            End If
+          Next
+          txtReport.Text = strReport.ToString
+        End If
+      Case 2 ' report
+        Try
+          IO.File.Delete(BlogContext.BlogMapPath & "import.resources")
+        Catch ex As Exception
+        End Try
+        Response.Redirect(EditUrl("Manage"), False)
+    End Select
+  End Sub
 End Class

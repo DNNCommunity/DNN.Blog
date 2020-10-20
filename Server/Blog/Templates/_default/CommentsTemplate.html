@@ -1,0 +1,9 @@
+<div class="bbs-comments">
+    <div class="totals">[resx:Total]: [post:nrcomments] [resx:Comments]</div>
+    [subtemplate|Comment.html|Comments|]
+</div>
+[if|1][security:canaddcomment][=]True[/if]
+<div class="commands">
+    <a href="#" class="btn btn-primary" id="cmdComment">[resx:Comment]</a>
+</div>
+[endif|1]
