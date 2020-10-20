@@ -49,23 +49,23 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetNuke, Version=9.3.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DotNetNuke.Core.9.3.2\lib\net45\DotNetNuke.dll</HintPath>
+    <Reference Include="DotNetNuke, Version=9.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DotNetNuke.Core.9.4.0\lib\net45\DotNetNuke.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Web, Version=9.3.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DotNetNuke.Web.9.3.2\lib\net45\DotNetNuke.Web.dll</HintPath>
+    <Reference Include="DotNetNuke.Web, Version=9.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DotNetNuke.Web.9.4.0\lib\net45\DotNetNuke.Web.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Web.Client, Version=9.3.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DotNetNuke.Web.Client.9.3.2\lib\net45\DotNetNuke.Web.Client.dll</HintPath>
+    <Reference Include="DotNetNuke.Web.Client, Version=9.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DotNetNuke.Web.Client.9.4.0\lib\net45\DotNetNuke.Web.Client.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DotNetNuke.Web.9.3.2\lib\net45\DotNetNuke.WebUtility.dll</HintPath>
+      <HintPath>..\..\packages\DotNetNuke.Web.9.4.0\lib\net45\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DotNetNuke.Core.9.3.2\lib\net45\Microsoft.ApplicationBlocks.Data.dll</HintPath>
+      <HintPath>..\..\packages\DotNetNuke.Core.9.4.0\lib\net45\Microsoft.ApplicationBlocks.Data.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Satrabel.OpenUrlRewriter">
       <HintPath>..\References\Satrabel.OpenUrlRewriter.dll</HintPath>
