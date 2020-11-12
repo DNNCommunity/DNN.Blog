@@ -1,5 +1,5 @@
 ## Project Description
-The DotNetNuke® Blog module is an easy to use content publishing module that is tightly integrated with the core DotNetNuke® framework. The module also permits content authoring using off-site tools such as Windows Live Writer.
+The DNN (previously DotNetNuke) Blog module is an easy to use content publishing module that is tightly integrated with the core DotNetNuke® framework. The module also permits content authoring using off-site tools such as Windows Live Writer.
 
 ## Links
 - [Manual](_Documentation/Manual.md) (note this is in generic Markdown syntax, so it doesn't display 100% correct on Github)
