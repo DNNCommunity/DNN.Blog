@@ -166,8 +166,9 @@ Namespace Controls
    End If
 
    chkShowAllLocales.Checked = ViewSettings.ShowAllLocales
-   chkModifyPageDetails.Checked = ViewSettings.ModifyPageDetails
-   chkShowManagementPanel.Checked = ViewSettings.ShowManagementPanel
+            chkModifyPageDetails.Checked = ViewSettings.ModifyPageDetails
+            chkAddCanonicalTag.Checked = ViewSettings.AddCanonicalTag
+            chkShowManagementPanel.Checked = ViewSettings.ShowManagementPanel
    chkShowManagementPanelViewMode.Checked = ViewSettings.ShowManagementPanelViewMode
 
    chkHideUnpublishedBlogsViewMode.Checked = ViewSettings.HideUnpublishedBlogsViewMode
@@ -186,8 +187,9 @@ Namespace Controls
 
    ViewSettings.BlogModuleId = CInt(ddBlogModuleId.SelectedValue)
    ViewSettings.ShowAllLocales = chkShowAllLocales.Checked
-   ViewSettings.ModifyPageDetails = chkModifyPageDetails.Checked
-   ViewSettings.ShowManagementPanel = chkShowManagementPanel.Checked
+            ViewSettings.ModifyPageDetails = chkModifyPageDetails.Checked
+            ViewSettings.AddCanonicalTag = chkAddCanonicalTag.Checked
+            ViewSettings.ShowManagementPanel = chkShowManagementPanel.Checked
    ViewSettings.ShowManagementPanelViewMode = chkShowManagementPanelViewMode.Checked
    ViewSettings.HideUnpublishedBlogsViewMode = chkHideUnpublishedBlogsViewMode.Checked
    ViewSettings.HideUnpublishedBlogsEditMode = chkHideUnpublishedBlogsEditMode.Checked
