@@ -1,7 +1,7 @@
 #addin "Cake.FileHelpers"
 #addin "Cake.Npm"
-#addin nuget:?package=Dnn.CakeUtils
-#addin nuget:?package=Markdig
+#addin nuget:?package=Dnn.CakeUtils&version=1.1.11
+#addin nuget:?package=Markdig&version=0.22.0
 
 using Dnn.CakeUtils;
 using Dnn.CakeUtils.Compression;
