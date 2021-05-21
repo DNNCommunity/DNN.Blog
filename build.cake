@@ -16,7 +16,7 @@ var configuration = Argument("configuration", "Release");
 var solution = Solution.New(".\\package.json");
 var buildSettings = new MSBuildSettings()
 .SetConfiguration(configuration)
-.UseToolVersion(MSBuildToolVersion.VS2017)
+.UseToolVersion(MSBuildToolVersion.VS2019)
 .WithProperty("OutDir", new System.IO.DirectoryInfo(solution.dnn.pathsAndFiles.pathToAssemblies).FullName);
 
 ///////////////////////////////////////////////////////////////////////////////
