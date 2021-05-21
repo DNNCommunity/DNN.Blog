@@ -107,26 +107,55 @@ Public Class Blog
 
    End If
 
-   If BlogContext.Post IsNot Nothing AndAlso BlogContext.Blog IsNot Nothing Then
-    AddOpenGraphMetaTags()
-    If BlogContext.Blog.EnablePingBackReceive Then
-     AddPingBackLink()
-    End If
-    If BlogContext.Blog.EnableTrackBackReceive Then
-     AddTrackBackBlurb()
-    End If
-   End If
+            If BlogContext.Post IsNot Nothing AndAlso BlogContext.Blog IsNot Nothing Then
+                AddOpenGraphMetaTags()
+                If ViewSettings.AddCanonicalTag Then
+                    AddCanonicalTag(True)
+                End If
+                If BlogContext.Blog.EnablePingBackReceive Then
+                    AddPingBackLink()
+                End If
+                If BlogContext.Blog.EnableTrackBackReceive Then
+                    AddTrackBackBlurb()
+                End If
+            Else
+                AddCanonicalTag(False)
+            End If
 
-   Context.Items("BlogPageInitialized") = True
+                Context.Items("BlogPageInitialized") = True
   End If
 
   DataBind()
 
  End Sub
+
+    Private Sub AddCanonicalTag(HasBlogContext As Boolean)
+        If BlogContext.Post IsNot Nothing Then
+            Page.Header.Controls.Add(New LiteralControl(String.Format("<link rel=""canonical"" href=""{0}"" />", BlogContext.Post.PermaLink)))
+        ElseIf BlogContext.Blog IsNot Nothing Then
+            Page.Header.Controls.Add(New LiteralControl(String.Format("<link rel=""canonical"" href=""{0}"" />", PortalSettings.Current.ActiveTab.FullUrl)))
+        ElseIf BlogContext.Author IsNot Nothing Then
+            Page.Header.Controls.Add(New LiteralControl(String.Format("<link rel=""canonical"" href=""{0}"" />", BlogContext.ModuleUrls.GetUrl(False, False, False, True, False))))
+        ElseIf BlogContext.Term IsNot Nothing Then
+            Page.Header.Controls.Add(New LiteralControl(String.Format("<link rel=""canonical"" href=""{0}"" />", BlogContext.Term.PermaLink(PortalSettings))))
+        Else
+            Page.Header.Controls.Add(New LiteralControl(String.Format("<link rel=""canonical"" href=""{0}"" />", PortalSettings.Current.ActiveTab.FullUrl)))
+        End If
+        If HasBlogContext Then
+
+        ElseIf Not HasBlogContext And BlogContext.Term IsNot Nothing Then
+
+        ElseIf Not HasBlogContext And BlogContext.Author IsNot Nothing Then
+
+        Else
+
+        End If
+    End Sub
+
 #End Region
 
 #Region " Open Graph Meta Tags "
- Private Sub AddOpenGraphMetaTags()
+    Private Sub AddOpenGraphMetaTags()
   Dim URL As String = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Host
     Page.Header.Controls.Add(New LiteralControl(String.Format("<meta id=""ogurl"" property=""og:url"" content=""{0}"" />", BlogContext.Post.PermaLink)))
     Page.Header.Controls.Add(New LiteralControl(String.Format("<meta content=""{0}"" name=""twitter:url"">", BlogContext.Post.PermaLink)))

@@ -35,8 +35,9 @@ Namespace Common
   Public Property Template As String = "[G]_default"
   Public Property BlogModuleId As Integer = -1
   Public Property ShowAllLocales As Boolean = True
-  Public Property ModifyPageDetails As Boolean = False
-  Public Property ShowManagementPanel As Boolean = False
+        Public Property ModifyPageDetails As Boolean = False
+        Public Property AddCanonicalTag As Boolean = False
+        Public Property ShowManagementPanel As Boolean = False
   Public Property ShowManagementPanelViewMode As Boolean = True
   Public Property HideUnpublishedBlogsViewMode As Boolean = False
   Public Property HideUnpublishedBlogsEditMode As Boolean = False
@@ -78,8 +79,9 @@ Namespace Common
    _allSettings.ReadValue("Template", Template)
    _allSettings.ReadValue("BlogModuleId", BlogModuleId)
    _allSettings.ReadValue("ShowAllLocales", ShowAllLocales)
-   _allSettings.ReadValue("ModifyPageDetails", ModifyPageDetails)
-   _allSettings.ReadValue("ShowManagementPanel", ShowManagementPanel)
+            _allSettings.ReadValue("ModifyPageDetails", ModifyPageDetails)
+            _allSettings.ReadValue("AddCanonicalTag", AddCanonicalTag)
+            _allSettings.ReadValue("ShowManagementPanel", ShowManagementPanel)
    _allSettings.ReadValue("ShowManagementPanelViewMode", ShowManagementPanelViewMode)
    _allSettings.ReadValue("HideUnpublishedBlogsViewMode", HideUnpublishedBlogsViewMode)
    _allSettings.ReadValue("HideUnpublishedBlogsEditMode", HideUnpublishedBlogsEditMode)
@@ -124,8 +126,9 @@ Namespace Common
    objModules.UpdateTabModuleSetting(tabModuleId, "Template", Template)
    objModules.UpdateTabModuleSetting(tabModuleId, "BlogModuleId", BlogModuleId.ToString)
    objModules.UpdateTabModuleSetting(tabModuleId, "ShowAllLocales", ShowAllLocales.ToString)
-   objModules.UpdateTabModuleSetting(tabModuleId, "ModifyPageDetails", ModifyPageDetails.ToString)
-   objModules.UpdateTabModuleSetting(tabModuleId, "ShowManagementPanel", ShowManagementPanel.ToString)
+            objModules.UpdateTabModuleSetting(tabModuleId, "ModifyPageDetails", ModifyPageDetails.ToString)
+            objModules.UpdateTabModuleSetting(tabModuleId, "AddCanonicalTag", AddCanonicalTag.ToString)
+            objModules.UpdateTabModuleSetting(tabModuleId, "ShowManagementPanel", ShowManagementPanel.ToString)
    objModules.UpdateTabModuleSetting(tabModuleId, "ShowManagementPanelViewMode", ShowManagementPanelViewMode.ToString)
    objModules.UpdateTabModuleSetting(tabModuleId, "HideUnpublishedBlogsViewMode", HideUnpublishedBlogsViewMode.ToString)
    objModules.UpdateTabModuleSetting(tabModuleId, "HideUnpublishedBlogsEditMode", HideUnpublishedBlogsEditMode.ToString)
@@ -224,8 +227,9 @@ Namespace Common
    writer.WriteElementString("Template", Template)
    writer.WriteElementString("BlogModuleId", BlogModuleId.ToString)
    writer.WriteElementString("ShowAllLocales", ShowAllLocales.ToString)
-   writer.WriteElementString("ModifyPageDetails", ModifyPageDetails.ToString)
-   writer.WriteElementString("ShowManagementPanel", ShowManagementPanel.ToString)
+            writer.WriteElementString("ModifyPageDetails", ModifyPageDetails.ToString)
+            writer.WriteElementString("AddCanonicalTag", AddCanonicalTag.ToString)
+            writer.WriteElementString("ShowManagementPanel", ShowManagementPanel.ToString)
    writer.WriteElementString("ShowManagementPanelViewMode", ShowManagementPanelViewMode.ToString)
    writer.WriteElementString("HideUnpublishedBlogsViewMode", HideUnpublishedBlogsViewMode.ToString)
    writer.WriteElementString("HideUnpublishedBlogsEditMode", HideUnpublishedBlogsEditMode.ToString)
@@ -240,8 +244,9 @@ Namespace Common
    xml.ReadValue("Template", Template)
    xml.ReadValue("BlogModuleId", BlogModuleId)
    xml.ReadValue("ShowAllLocales", ShowAllLocales)
-   xml.ReadValue("ModifyPageDetails", ModifyPageDetails)
-   xml.ReadValue("ShowManagementPanel", ShowManagementPanel)
+            xml.ReadValue("ModifyPageDetails", ModifyPageDetails)
+            xml.ReadValue("AddCanonicalTag", AddCanonicalTag)
+            xml.ReadValue("ShowManagementPanel", ShowManagementPanel)
    xml.ReadValue("ShowManagementPanelViewMode", ShowManagementPanelViewMode)
    xml.ReadValue("HideUnpublishedBlogsViewMode", HideUnpublishedBlogsViewMode)
    xml.ReadValue("HideUnpublishedBlogsEditMode", HideUnpublishedBlogsEditMode)
