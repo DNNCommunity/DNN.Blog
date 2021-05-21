@@ -1,7 +1,7 @@
 #addin "Cake.FileHelpers"
 #addin "Cake.Npm"
-#addin nuget:?package=Dnn.CakeUtils
-#addin nuget:?package=Markdig
+#addin nuget:?package=Dnn.CakeUtils&version=1.1.11
+#addin nuget:?package=Markdig&version=0.22.0
 
 using Dnn.CakeUtils;
 using Dnn.CakeUtils.Compression;
@@ -16,7 +16,7 @@ var configuration = Argument("configuration", "Release");
 var solution = Solution.New(".\\package.json");
 var buildSettings = new MSBuildSettings()
 .SetConfiguration(configuration)
-.UseToolVersion(MSBuildToolVersion.VS2017)
+.UseToolVersion(MSBuildToolVersion.VS2019)
 .WithProperty("OutDir", new System.IO.DirectoryInfo(solution.dnn.pathsAndFiles.pathToAssemblies).FullName);
 
 ///////////////////////////////////////////////////////////////////////////////

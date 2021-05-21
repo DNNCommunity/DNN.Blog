@@ -195,4 +195,10 @@
   <data name="lblAllowComments.Text" xml:space="preserve">
     <value>Allow Comments</value>
   </data>
+  <data name="lblAddCanonicalTag.Help" xml:space="preserve">
+    <value>When checked, a canonical tag will be added to the page to help improve SEO for this website.  </value>
+  </data>
+  <data name="lblAddCanonicalTag.Text" xml:space="preserve">
+    <value>Add Canonical Tag</value>
+  </data>
 </root>
