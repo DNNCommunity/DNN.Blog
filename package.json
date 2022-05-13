@@ -1,6 +1,6 @@
 {
   "name": "dnn-blog",
-  "version": "6.5.2",
+  "version": "6.5.3",
   "description": "The DotNetNuke Blog module is an easy to use content publishing module that is tightly integrated with the core DotNetNuke framework. It can be used in single or multi-author environments and also permits content authoring using off-site tools such as Windows Live Writer.",
   "dnn": {
     "projectFolders": [
@@ -47,6 +47,5 @@
     "chokidar": "^3.2.1",
     "deepmerge": "^4.0.0",
     "fs-extra": "^8.1.0"
-  },
-  "dependencies": {}
+  }
 }
