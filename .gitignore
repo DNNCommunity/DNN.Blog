@@ -12,7 +12,6 @@
 [Dd]ebug/
 [Rr]elease/
 x64/
-build/
 [Bb]in/
 [Oo]bj/
 
@@ -167,4 +166,4 @@ tools/
 **/obj/
 !Server/References/*.dll
 Releases/
-
+node_modules/
