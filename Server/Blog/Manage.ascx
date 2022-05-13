@@ -37,7 +37,7 @@
  <asp:Panel id="Posts" runat="server" CssClass="dnnClear">
   <div class="coreMessaging" id="blogPostsError"></div>
   <asp:GridView id="grdPosts" autogeneratecolumns="false" cssclass="dnnGrid dnnSecurityRolesGrid"
-   runat="server" allowpaging="True" allowcustompaging="True" enableviewstate="True" AllowSorting="true" OnSorting="GridView_Sorting">
+   runat="server" allowpaging="True" allowcustompaging="True" enableviewstate="True" AllowSorting="true">
     <Columns>
      <asp:TemplateField HeaderText="Actions">
       <ItemStyle Width="90px"></ItemStyle>
@@ -57,7 +57,7 @@
           style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Blog.CanApprove AND NOT CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Published, "inline", "none") %>"><i class="fa fa-check icon16"></i></a>
       </ItemTemplate>
      </asp:TemplateField>
-     <asp:TemplateField headertext="Date">
+     <asp:TemplateField headertext="Date" SortExpression="PublishedOnDate">
       <ItemTemplate>
        <%# DotNetNuke.Modules.Blog.Common.Globals.UtcToLocalTime(Eval("PublishedOnDate"), UserController.GetCurrentUserInfo().Profile.PreferredTimeZone)%>
       </ItemTemplate>

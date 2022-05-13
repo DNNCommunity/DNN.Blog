@@ -23,99 +23,108 @@ Imports System.Linq
 Imports DotNetNuke.Modules.Blog.Entities.Posts
 
 Public Class Manage
- Inherits BlogModuleBase
+  Inherits BlogModuleBase
 
- Private _totalPosts As Integer = -1
- Private Const ASCENDING As String = " ASC"
- Private Const DESCENDING As String = " DESC"
+  Private _totalPosts As Integer = -1
+  Private Const ASCENDING As String = " ASC"
+  Private Const DESCENDING As String = " DESC"
 
- Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+  Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 
-  If Not BlogContext.security.CanDoSomethingWithPosts Then
-   Throw New Exception("You do not have access to this resource. Please check your login status.")
-  End If
-  cmdAdd.Visible = BlogContext.Security.IsBlogger
-  blogsLink.Visible = BlogContext.Security.IsBlogger
-  Blogs.Visible = BlogContext.Security.IsBlogger
+    If Not BlogContext.Security.CanDoSomethingWithPosts Then
+      Throw New Exception("You do not have access to this resource. Please check your login status.")
+    End If
+    cmdAdd.Visible = BlogContext.Security.IsBlogger
+    blogsLink.Visible = BlogContext.Security.IsBlogger
+    Blogs.Visible = BlogContext.Security.IsBlogger
 
-  postsLink.Visible = BlogContext.Security.CanAddPost Or BlogContext.Security.CanEditPost
-  Posts.Visible = BlogContext.Security.CanAddPost Or BlogContext.Security.CanEditPost
+    postsLink.Visible = BlogContext.Security.CanAddPost Or BlogContext.Security.CanEditPost
+    Posts.Visible = BlogContext.Security.CanAddPost Or BlogContext.Security.CanEditPost
 
-  If Not IsPostBack Then
-   DataBind()
-  End If
+    If Not IsPostBack Then
+      DataBind()
+    End If
 
- End Sub
+  End Sub
 
- Private Sub cmdAdd_Click(sender As Object, e As EventArgs) Handles cmdAdd.Click
-  Response.Redirect(EditUrl("BlogEdit"), False)
- End Sub
+  Private Sub cmdAdd_Click(sender As Object, e As EventArgs) Handles cmdAdd.Click
+    Response.Redirect(EditUrl("BlogEdit"), False)
+  End Sub
 
- Private Sub cmdReturn_Click(sender As Object, e As EventArgs) Handles cmdReturn.Click
-  Response.Redirect(DotNetNuke.Common.NavigateURL(TabId), False)
- End Sub
+  Private Sub cmdReturn_Click(sender As Object, e As EventArgs) Handles cmdReturn.Click
+    Response.Redirect(DotNetNuke.Common.NavigateURL(TabId), False)
+  End Sub
 
- Public Overrides Sub DataBind()
+  Public Overrides Sub DataBind()
 
-  MyBase.DataBind()
+    MyBase.DataBind()
 
-  If BlogContext.security.IsEditor Then
-   dlBlogs.DataSource = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, BlogContext.Locale).Values
-  Else
-   dlBlogs.DataSource = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, BlogContext.Locale).Values.Where(Function(b)
-                                                                                                                      Return b.OwnerUserId = UserId
-                                                                                                                     End Function)
-  End If
-  dlBlogs.DataBind()
+    If BlogContext.Security.IsEditor Then
+      dlBlogs.DataSource = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, BlogContext.Locale).Values
+    Else
+      dlBlogs.DataSource = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, BlogContext.Locale).Values.Where(Function(b)
+                                                                                                                          Return b.OwnerUserId = UserId
+                                                                                                                        End Function)
+    End If
+    dlBlogs.DataBind()
 
-  If dlBlogs.Items.Count = 0 Then dlBlogs.Visible = False
+    If dlBlogs.Items.Count = 0 Then dlBlogs.Visible = False
 
-     GetPosts()
+    GetPosts()
 
- End Sub
+  End Sub
 
- Public Sub GetPosts()
-  grdPosts.DataSource = PostsController.GetPosts(Settings.ModuleId, -1, BlogContext.Locale, -1, "", Nothing, -1, True, grdPosts.PageIndex, grdPosts.PageSize, SortOrder, _totalPosts, UserId, BlogContext.Security.UserIsAdmin).Values
-  grdPosts.VirtualItemCount = _totalPosts
+  Public Sub GetPosts()
+    grdPosts.DataSource = PostsController.GetPosts(Settings.ModuleId, -1, BlogContext.Locale, -1, "", Nothing, -1, True, grdPosts.PageIndex, grdPosts.PageSize, SortOrder, _totalPosts, UserId, BlogContext.Security.UserIsAdmin).Values
+    grdPosts.VirtualItemCount = _totalPosts
     grdPosts.DataBind()
- End Sub
+  End Sub
 
- Public Property GridViewSortDirection As SortDirection
-     Get
-         If ViewState("sortDirection") Is Nothing Then ViewState("sortDirection") = SortDirection.Descending
-         Return CType(ViewState("sortDirection"), SortDirection)
-     End Get
-     Set(ByVal value As SortDirection)
-         ViewState("sortDirection") = value
-     End Set
- End Property
-
- Public Property GridViewSortExpression As String
-     Get
-         If ViewState("sortExpression") Is Nothing Then ViewState("sortExpression") = "PUBLISHEDONDATE"
-         Return ViewState("sortExpression").ToString()
-     End Get
-     Set(ByVal value As String)
-         ViewState("sortExpression") = value
-     End Set
- End Property
-
- Private ReadOnly Property SortOrder As String
-    Get 
-        Return String.Concat(GridViewSortExpression, " ", GridViewSortDirection)
+  Public Property GridViewSortDirection As SortDirection
+    Get
+      If ViewState("sortDirection") Is Nothing Then ViewState("sortDirection") = SortDirection.Descending
+      Return CType(ViewState("sortDirection"), SortDirection)
     End Get
- End Property
+    Set(ByVal value As SortDirection)
+      ViewState("sortDirection") = value
+    End Set
+  End Property
 
- Protected Sub GridView_Sorting(ByVal sender As Object, ByVal e As GridViewSortEventArgs)
-     Dim sortExpression As String = e.SortExpression
+  Public Property GridViewSortExpression As String
+    Get
+      If ViewState("sortExpression") Is Nothing Then ViewState("sortExpression") = "PUBLISHEDONDATE"
+      Return ViewState("sortExpression").ToString()
+    End Get
+    Set(ByVal value As String)
+      ViewState("sortExpression") = value
+    End Set
+  End Property
 
-     If GridViewSortDirection = SortDirection.Ascending Then
-         GridViewSortDirection = SortDirection.Descending
-     Else
-         GridViewSortDirection = SortDirection.Ascending
-     End If
+  Private ReadOnly Property SortOrder As String
+    Get
+      If GridViewSortDirection = SortDirection.Ascending Then
+        Return String.Concat(GridViewSortExpression, " ASC")
+      Else
+        Return String.Concat(GridViewSortExpression, " DESC")
+      End If
+    End Get
+  End Property
 
-     GetPosts()
- End Sub
+  Protected Sub GridView_Sorting(sender As Object, e As GridViewSortEventArgs) Handles grdPosts.Sorting
+    Dim sortExpression As String = e.SortExpression
+
+    If GridViewSortDirection = SortDirection.Ascending Then
+      GridViewSortDirection = SortDirection.Descending
+    Else
+      GridViewSortDirection = SortDirection.Ascending
+    End If
+
+    GetPosts()
+  End Sub
+
+  Protected Sub GridView_Paging(sender As Object, e As GridViewPageEventArgs) Handles grdPosts.PageIndexChanging
+    grdPosts.PageIndex = e.NewPageIndex
+    GetPosts()
+  End Sub
 
 End Class
