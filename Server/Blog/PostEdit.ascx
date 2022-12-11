@@ -96,8 +96,9 @@
    $('#dnnBlogEditPost').dnnTabs({ selected: 0 });
 
    $(".bDatePickerTextBox").flatpickr({
-	   enableTime: true,
-       dateFormat: "m-d-Y H:i K"
+		 enableTime: true,
+		 locale: "<%= System.Threading.Thread.CurrentThread.CurrentCulture.Name.Substring(0, 2) %>",
+		 dateFormat: "<%= FlatPickrFormat %>"
    });
 
    $('.dnnPostDelete').dnnConfirm({

@@ -46,6 +46,7 @@
   "devDependencies": {
     "chokidar": "^3.2.1",
     "deepmerge": "^4.0.0",
+    "flatpickr": "^4.6.13",
     "fs-extra": "^8.1.0"
   }
 }
