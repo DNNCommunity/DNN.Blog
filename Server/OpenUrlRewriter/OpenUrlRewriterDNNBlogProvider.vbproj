@@ -147,7 +147,6 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="packages.config" />
-    <None Include="_Installation\DNNBlog_OpenUrlRewriter.dnn" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Blog\DotNetNuke.Modules.Blog.vbproj">
