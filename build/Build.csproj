@@ -9,6 +9,10 @@
     <PackageReference Include="Cake.Frosting" Version="2.0.0" />
     <PackageReference Include="Cake.Npm" Version="1.0.0" />
     <PackageReference Include="Dnn.CakeUtils" Version="2.0.0" />
+    <PackageReference Include="DotNetNuke.Abstractions" Version="9.11.0" />
+    <PackageReference Include="DotNetNuke.Core" Version="9.11.0" />
+    <PackageReference Include="DotNetNuke.Web" Version="9.11.0" />
+    <PackageReference Include="DotNetNuke.Web.Client" Version="9.11.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     </ItemGroup>
 </Project>
