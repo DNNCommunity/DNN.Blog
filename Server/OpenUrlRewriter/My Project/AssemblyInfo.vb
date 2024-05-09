@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("The DotNetNuke Blog module is an easy to use content publishing module that is tightly integrated with the core DotNetNuke framework. It can be used in single or multi-author environments and also permits content authoring using off-site tools such as Windows Live Writer.")>
 <Assembly: AssemblyCompany("DNN Connect")>
 <Assembly: AssemblyProduct("OpenUrlRewriterDNNBlogProvider")>
-<Assembly: AssemblyCopyright("Copyright 2022 by DNN Connect")>
+<Assembly: AssemblyCopyright("Copyright 2024 by DNN Connect")>
 <Assembly: AssemblyTrademark("")>
 
 <Assembly: ComVisible(False)>
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("6.5.4")>
-<Assembly: AssemblyFileVersion("6.5.4")>
+<Assembly: AssemblyVersion("6.5.5")>
+<Assembly: AssemblyFileVersion("6.5.5")>

@@ -31,7 +31,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("The DotNetNuke Blog module is an easy to use content publishing module that is tightly integrated with the core DotNetNuke framework. It can be used in single or multi-author environments and also permits content authoring using off-site tools such as Windows Live Writer.")>
 <Assembly: AssemblyCompany("DNN Connect")>
 <Assembly: AssemblyProduct("http://www.dotnetnuke.com")>
-<Assembly: AssemblyCopyright("Copyright 2022 by DNN Connect")>
+<Assembly: AssemblyCopyright("Copyright 2024 by DNN Connect")>
 <Assembly: AssemblyTrademark("DotNetNuke")>
 
 ' Version information for an assembly consists of the following four values:
@@ -44,8 +44,8 @@ Imports System.Runtime.InteropServices
 ' You can specify all the values or you can default the Build and Revision Numbers 
 ' by using the '*' as shown below:
 
-<Assembly: AssemblyVersion("6.5.4")>
+<Assembly: AssemblyVersion("6.5.5")>
 
 <Assembly: Guid("49cae2ac-30c7-45fe-8663-948e1543d8d3")>
 <Assembly: AssemblyInformationalVersion("06.04.01")>
-<Assembly: AssemblyFileVersion("6.5.4")>
+<Assembly: AssemblyFileVersion("6.5.5")>
