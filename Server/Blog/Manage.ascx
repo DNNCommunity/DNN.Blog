@@ -59,7 +59,7 @@
      </asp:TemplateField>
      <asp:TemplateField headertext="Date" SortExpression="PublishedOnDate">
       <ItemTemplate>
-       <%# DotNetNuke.Modules.Blog.Common.Globals.UtcToLocalTime(Eval("PublishedOnDate"), UserController.GetCurrentUserInfo().Profile.PreferredTimeZone)%>
+       <%# DotNetNuke.Modules.Blog.Common.Globals.UtcToLocalTime(Eval("PublishedOnDate"), UserController.Instance.GetCurrentUserInfo().Profile.PreferredTimeZone)%>
       </ItemTemplate>
      </asp:TemplateField>
      <asp:BoundField datafield="Title" headertext="Title" SortExpression="Title" />
