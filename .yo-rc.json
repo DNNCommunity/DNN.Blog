@@ -1,0 +1,26 @@
+{
+  "generator-dotnetnuke": {
+    "promptValues": {
+      "projType": "library",
+      "dnnVersion": "9.13.0",
+      "npm": true,
+      "projectname": "Blog",
+      "projectdescription": "The DotNetNuke Blog module is an easy to use content publishing module that is tightly integrated with the core DotNetNuke framework. It can be used in single or multi-author environments and also permits content authoring using off-site tools such as Windows Live Writer.",
+      "yourname": "Peter Donker",
+      "email": "peter@bring2mind.net",
+      "companyfull": "DotNetNuke Community",
+      "companyshort": "DotNetNuke",
+      "companyUrl": "www.dnncommunity.org",
+      "dnnHost": "http://dnndev.me",
+      "dnnRoot": "DL/",
+      "namespace": "DotNetNuke.Modules.Blog",
+      "Name": "Core",
+      "Namespace": "DotNetNuke.Blog.Core",
+      "Separate": false
+    },
+    "Company": "DotNetNuke",
+    "Project": "Blog",
+    "Namespace": "DotNetNuke.Blog",
+    "Solution": "DotNetNuke.Blog"
+  }
+}
