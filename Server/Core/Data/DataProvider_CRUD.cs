@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.Blog.Core.Data
     // dynamically create provider
     private static void CreateProvider()
     {
-      objProvider = (DataProvider)Framework.Reflection.CreateObject("data", "DotNetNuke.Modules.Blog.Data", "");
+      objProvider = (DataProvider)Framework.Reflection.CreateObject("data", "DotNetNuke.Modules.Blog.Core.Data", "");
     }
 
     // return the provider

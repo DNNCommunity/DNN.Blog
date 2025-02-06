@@ -20,7 +20,6 @@
 
 Imports System.Globalization
 Imports System.Linq
-Imports DotNetNuke.Common.Globals
 Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Modules.Blog.Core.Common
 Imports DotNetNuke.Modules.Blog.Core.Entities.Blogs
@@ -30,7 +29,6 @@ Imports DotNetNuke.Modules.Blog.Core.Integration
 Imports DotNetNuke.Security
 Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Services.Localization
-Imports DotNetNuke.Services.Localization.Localization
 Imports DotNetNuke.Web.Client
 Imports DotNetNuke.Web.Client.ClientResourceManagement
 Imports DotNetNuke.Web.Client.Providers
@@ -152,9 +150,9 @@ Public Class PostEdit
 
         ' Buttons
         If BlogContext.BlogId > -1 Then
-          hlCancel.NavigateUrl = NavigateURL(TabId, "", "Blog=" & BlogContext.BlogId.ToString)
+          hlCancel.NavigateUrl = DotNetNuke.Common.Globals.NavigateURL(TabId, "", "Blog=" & BlogContext.BlogId.ToString)
         ElseIf BlogContext.ContentItemId > -1 Then
-          hlCancel.NavigateUrl = NavigateURL(TabId, "", "Post=" & BlogContext.ContentItemId.ToString)
+          hlCancel.NavigateUrl = DotNetNuke.Common.Globals.NavigateURL(TabId, "", "Post=" & BlogContext.ContentItemId.ToString)
         Else
           hlCancel.NavigateUrl = ModuleContext.NavigateUrl(ModuleContext.TabId, "", False, "")
         End If
@@ -337,7 +335,7 @@ Public Class PostEdit
 
         End If
 
-        Response.Redirect(NavigateURL(TabId, "", "Post=" & BlogContext.ContentItemId.ToString), False)
+        Response.Redirect(DotNetNuke.Common.Globals.NavigateURL(TabId, "", "Post=" & BlogContext.ContentItemId.ToString), False)
 
       End If
     Catch exc As Exception
@@ -350,7 +348,7 @@ Public Class PostEdit
     Try
       DeleteAllFiles()
       PostsController.DeletePost(BlogContext.Post.ContentItemId, BlogContext.Post.BlogID, ModuleContext.PortalId, Settings.VocabularyId)
-      Response.Redirect(NavigateURL(TabId, "", "Blog=" & BlogContext.BlogId.ToString), False)
+      Response.Redirect(DotNetNuke.Common.Globals.NavigateURL(TabId, "", "Blog=" & BlogContext.BlogId.ToString), False)
     Catch exc As Exception    'Module failed to load
       ProcessModuleLoadException(Me, exc)
     End Try
@@ -396,7 +394,7 @@ Public Class PostEdit
   End Sub
 
   Private Function CreateCopyRight() As String
-    Return GetString("msgCopyright", LocalResourceFile) & Date.UtcNow.Year & " " & BlogContext.Blog.DisplayName
+    Return Localization.GetString("msgCopyright", LocalResourceFile) & Date.UtcNow.Year & " " & BlogContext.Blog.DisplayName
   End Function
 
   Private Sub DeleteAllFiles()

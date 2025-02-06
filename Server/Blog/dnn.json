@@ -10,7 +10,7 @@
     "azureCompatible": "true",
     "moduleName": "Blog",
     "foldername": "Blog",
-    "businessControllerClass": "DotNetNuke.Modules.Blog.Integration.BlogModuleController, DOTNETNUKE.MODULES.BLOG",
+    "businessControllerClass": "DotNetNuke.Modules.Blog.Core.Integration.BlogModuleController, DOTNETNUKE.MODULES.BLOG.CORE",
     "supportedFeatures": ["Portable", "Searchable", "Upgradable"],
     "moduleDefinitions": [
       {
@@ -99,7 +99,7 @@
       "processorType": "DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke",
       "processorCommand": "UpgradeModule",
       "attributes": {
-        "businessControllerClass": "DotNetNuke.Modules.Blog.Integration.BlogModuleController, DOTNETNUKE.MODULES.BLOG",
+        "businessControllerClass": "DotNetNuke.Modules.Blog.Core.Integration.BlogModuleController, DOTNETNUKE.MODULES.BLOG.CORE",
         "desktopModuleID": "[DESKTOPMODULEID]",
         "upgradeVersionsList": "05.00.00,06.04.01"
       }

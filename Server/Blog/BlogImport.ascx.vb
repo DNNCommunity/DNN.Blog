@@ -22,7 +22,6 @@ Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Services.Localization
 Imports DotNetNuke.Modules.Blog.Core.Common
 Imports DotNetNuke.Modules.Blog.Core.BlogML.Xml
-Imports DotNetNuke.Modules.Blog.Entities.Posts
 Imports System.IO.Compression
 Imports DotNetNuke.Modules.Blog.Core.Entities.Posts
 
