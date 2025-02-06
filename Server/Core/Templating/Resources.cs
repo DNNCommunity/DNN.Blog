@@ -23,7 +23,7 @@ using DotNetNuke.Common.Utilities;
 using static DotNetNuke.Services.Localization.Localization;
 using DotNetNuke.Services.Tokens;
 
-namespace DotNetNuke.Modules.Blog.Templating
+namespace DotNetNuke.Modules.Blog.Core.Templating
 {
   public class Resources : IPropertyAccess
   {
@@ -70,7 +70,7 @@ namespace DotNetNuke.Modules.Blog.Templating
       {
         res = GetString(strPropertyName, SecondaryResourceFile);
       }
-      if (res is not null)
+      if (res != null)
       {
         switch (OutputFormat.ToLower() ?? "")
         {

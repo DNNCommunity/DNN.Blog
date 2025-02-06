@@ -21,7 +21,7 @@
 
 using Microsoft.ApplicationBlocks.Data;
 
-namespace DotNetNuke.Modules.Blog.Data
+namespace DotNetNuke.Modules.Blog.Core.Data
 {
 
   public partial class SqlDataProvider

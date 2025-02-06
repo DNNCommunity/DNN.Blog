@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-// 
+﻿// 
 // DNN Connect - http://dnn-connect.org
 // Copyright (c) 2015
 // by DNN Connect
@@ -23,10 +20,12 @@ using System.Data;
 
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Modules.Blog.Entities.Blogs;
-using static DotNetNuke.Modules.Blog.Security.Security;
+using DotNetNuke.Modules.Blog.Core.Entities.Blogs;
+using System;
+using System.Collections.Generic;
+using System.Data;
 
-namespace DotNetNuke.Modules.Blog.Security.Permissions
+namespace DotNetNuke.Modules.Blog.Core.Security.Permissions
 {
   public partial class BlogPermissionsController
   {
@@ -43,7 +42,7 @@ namespace DotNetNuke.Modules.Blog.Security.Permissions
       {
         BlogPermissionInfo mp;
         mp = m[i];
-        if (mp.PermissionId == PermissionId && DotNetNuke.Security.PortalSecurity.IsInRoles(mp.RoleName) | (Framework.ServiceLocator<IUserController, UserController>.Instance.GetCurrentUserInfo().Username ?? "") == (mp.Username ?? "") & mp.UserId != glbUserNothing && mp.Expires > DateTime.Now | mp.Expires == DateTime.MinValue)
+        if (mp.PermissionId == PermissionId && DotNetNuke.Security.PortalSecurity.IsInRoles(mp.RoleName) | (Framework.ServiceLocator<IUserController, UserController>.Instance.GetCurrentUserInfo().Username ?? "") == (mp.Username ?? "") & mp.UserId != Security.glbUserNothing && mp.Expires > DateTime.Now | mp.Expires == DateTime.MinValue)
         {
           return true;
         }
@@ -62,7 +61,7 @@ namespace DotNetNuke.Modules.Blog.Security.Permissions
       {
         BlogPermissionInfo mp;
         mp = m[i];
-        if ((mp.PermissionKey ?? "") == (PermissionKey ?? "") && DotNetNuke.Security.PortalSecurity.IsInRoles(mp.RoleName) | (Framework.ServiceLocator<IUserController, UserController>.Instance.GetCurrentUserInfo().Username ?? "") == (mp.Username ?? "") & mp.UserId != glbUserNothing && mp.Expires > DateTime.Now | mp.Expires == DateTime.MinValue)
+        if ((mp.PermissionKey ?? "") == (PermissionKey ?? "") && DotNetNuke.Security.PortalSecurity.IsInRoles(mp.RoleName) | (Framework.ServiceLocator<IUserController, UserController>.Instance.GetCurrentUserInfo().Username ?? "") == (mp.Username ?? "") & mp.UserId != Security.glbUserNothing && mp.Expires > DateTime.Now | mp.Expires == DateTime.MinValue)
         {
           return true;
         }
@@ -81,7 +80,7 @@ namespace DotNetNuke.Modules.Blog.Security.Permissions
       {
         BlogPermissionInfo mp;
         mp = m[i];
-        if ((mp.PermissionKey ?? "") == (PermissionKey ?? "") && User.IsInRole(mp.RoleName) | (User.Username ?? "") == (mp.Username ?? "") & mp.UserId != glbUserNothing && mp.Expires > DateTime.Now | mp.Expires == DateTime.MinValue)
+        if ((mp.PermissionKey ?? "") == (PermissionKey ?? "") && User.IsInRole(mp.RoleName) | (User.Username ?? "") == (mp.Username ?? "") & mp.UserId != Security.glbUserNothing && mp.Expires > DateTime.Now | mp.Expires == DateTime.MinValue)
         {
           return true;
         }

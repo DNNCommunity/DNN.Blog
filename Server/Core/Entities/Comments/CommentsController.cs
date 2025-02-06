@@ -23,15 +23,14 @@
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
-using static DotNetNuke.Modules.Blog.Common.Globals;
-
-using DotNetNuke.Modules.Blog.Data;
-using DotNetNuke.Modules.Blog.Entities.Blogs;
-using DotNetNuke.Modules.Blog.Entities.Posts;
-using DotNetNuke.Modules.Blog.Integration;
+using DotNetNuke.Modules.Blog.Core.Common;
+using DotNetNuke.Modules.Blog.Core.Data;
+using DotNetNuke.Modules.Blog.Core.Entities.Blogs;
+using DotNetNuke.Modules.Blog.Core.Entities.Posts;
+using DotNetNuke.Modules.Blog.Core.Integration;
 using static DotNetNuke.Services.Localization.Localization;
 
-namespace DotNetNuke.Modules.Blog.Entities.Comments
+namespace DotNetNuke.Modules.Blog.Core.Entities.Comments
 {
 
   public partial class CommentsController
@@ -75,8 +74,8 @@ namespace DotNetNuke.Modules.Blog.Entities.Comments
       }
       else
       {
-        string title = GetString("CommentPendingNotify.Subject", SharedResourceFileName);
-        string summary = string.Format(GetString("CommentPendingNotify.Body", SharedResourceFileName), Post.PermaLink(PortalSettings.Current), comment.CommentID, Post.Title, comment.Comment);
+        string title = GetString("CommentPendingNotify.Subject", Globals.SharedResourceFileName);
+        string summary = string.Format(GetString("CommentPendingNotify.Body", Globals.SharedResourceFileName), Post.PermaLink(PortalSettings.Current), comment.CommentID, Post.Title, comment.Comment);
         NotificationController.CommentPendingApproval(comment, blog, Post, PortalSettings.Current.PortalId, summary, title);
       }
       return comment.CommentID;
@@ -94,8 +93,8 @@ namespace DotNetNuke.Modules.Blog.Entities.Comments
       }
       else
       {
-        string title = GetString("CommentPendingNotify.Subject", SharedResourceFileName);
-        string summary = string.Format(GetString("CommentPendingNotify.Body", SharedResourceFileName), Post.PermaLink(PortalSettings.Current), comment.CommentID, Post.Title, comment.Comment);
+        string title = GetString("CommentPendingNotify.Subject", Globals.SharedResourceFileName);
+        string summary = string.Format(GetString("CommentPendingNotify.Body", Globals.SharedResourceFileName), Post.PermaLink(PortalSettings.Current), comment.CommentID, Post.Title, comment.Comment);
         NotificationController.CommentPendingApproval(comment, blog, Post, PortalSettings.Current.PortalId, summary, title);
       }
 
@@ -127,9 +126,9 @@ namespace DotNetNuke.Modules.Blog.Entities.Comments
       {
         if (karma == 2) // reporting comment as inappropriate
         {
-          string title = string.Format(GetString("CommentReportedNotify", SharedResourceFileName), user.DisplayName);
+          string title = string.Format(GetString("CommentReportedNotify", Globals.SharedResourceFileName), user.DisplayName);
           var post = PostsController.GetPost(comment.ContentItemId, callingModule.ModuleID, "");
-          string summary = string.Format(GetString("CommentReportedNotify.Body", SharedResourceFileName), user.DisplayName, comment.DisplayName, comment.Comment, post.PermaLink(PortalSettings.Current), post.Title);
+          string summary = string.Format(GetString("CommentReportedNotify.Body", Globals.SharedResourceFileName), user.DisplayName, comment.DisplayName, comment.Comment, post.PermaLink(PortalSettings.Current), post.Title);
           NotificationController.ReportComment(comment, post.Blog, post, callingModule.PortalID, summary, title);
         }
         return ret;

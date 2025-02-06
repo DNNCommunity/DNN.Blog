@@ -21,9 +21,9 @@
 using System.IO;
 using System.Web;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Modules.Blog.Entities.Posts;
+using DotNetNuke.Modules.Blog.Core.Entities.Posts;
 
-namespace DotNetNuke.Modules.Blog.Integration
+namespace DotNetNuke.Modules.Blog.Core.Integration
 {
 
   public class FileController

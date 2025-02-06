@@ -22,7 +22,7 @@
 using System.Linq;
 using DotNetNuke.Entities.Content.Taxonomy;
 
-namespace DotNetNuke.Modules.Blog.Integration
+namespace DotNetNuke.Modules.Blog.Core.Integration
 {
   public class Integration
   {

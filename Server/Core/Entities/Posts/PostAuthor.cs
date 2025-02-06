@@ -26,9 +26,8 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Tokens;
-using Microsoft.VisualBasic.CompilerServices;
 
-namespace DotNetNuke.Modules.Blog.Entities.Posts
+namespace DotNetNuke.Modules.Blog.Core.Entities.Posts
 {
 
   public class PostAuthor : UserInfo, IHydratable, IPropertyAccess
@@ -69,8 +68,8 @@ namespace DotNetNuke.Modules.Blog.Entities.Posts
       Email = Convert.ToString(Null.SetNull(dr["Email"], Email));
       NrPosts = Convert.ToInt32(Null.SetNull(dr["NrPosts"], NrPosts));
       NrViews = Convert.ToInt32(Null.SetNull(dr["NrViews"], NrViews));
-      LastPublishDate = Conversions.ToDate(Null.SetNull(dr["LastPublishDate"], LastPublishDate));
-      FirstPublishDate = Conversions.ToDate(Null.SetNull(dr["FirstPublishDate"], FirstPublishDate));
+      LastPublishDate = Convert.ToDateTime(Null.SetNull(dr["LastPublishDate"], LastPublishDate));
+      FirstPublishDate = Convert.ToDateTime(Null.SetNull(dr["FirstPublishDate"], FirstPublishDate));
     }
     /// -----------------------------------------------------------------------------
   /// <summary>

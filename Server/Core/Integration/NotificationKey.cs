@@ -19,7 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 // 
 
-namespace DotNetNuke.Modules.Blog.Integration
+namespace DotNetNuke.Modules.Blog.Core.Integration
 {
   public class NotificationKey
   {

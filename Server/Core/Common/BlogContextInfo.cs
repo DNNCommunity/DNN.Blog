@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.Web;
-using static DotNetNuke.Modules.Blog.Common.Globals;
 // 
 // DNN Connect - http://dnn-connect.org
 // Copyright (c) 2015
@@ -22,23 +21,19 @@ using static DotNetNuke.Modules.Blog.Common.Globals;
 // DEALINGS IN THE SOFTWARE.
 // 
 
-using DotNetNuke.Modules.Blog.Security;
+using DotNetNuke.Modules.Blog.Core.Security;
 using DotNetNuke.Services.Tokens;
 
-namespace DotNetNuke.Modules.Blog.Common
+namespace DotNetNuke.Modules.Blog.Core.Common
 {
 
   public class BlogContextInfo : IPropertyAccess
   {
 
-    #region  Private Members 
     private NameValueCollection RequestParams { get; set; }
-    #endregion
 
-    #region  Public Methods 
     public BlogContextInfo(HttpContext context, BlogModuleBase blogModule)
     {
-
       BlogModuleId = blogModule.ModuleId;
 
       // Initialize values from View Settings
@@ -52,73 +47,46 @@ namespace DotNetNuke.Modules.Blog.Common
       AuthorId = blogModule.ViewSettings.AuthorId;
 
       Locale = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
-      if (context.Request.UrlReferrer is not null)
+      if (context.Request.UrlReferrer != null)
         Referrer = context.Request.UrlReferrer.PathAndQuery;
       RequestParams = context.Request.Params;
 
-      int argVariable = BlogId;
-      Extensions.ReadValue(ref context.Request.Params, "Blog", ref argVariable);
-      BlogId = argVariable;
-      int argVariable1 = ContentItemId;
-      Extensions.ReadValue(ref context.Request.Params, "Post", ref argVariable1);
-      ContentItemId = argVariable1;
-      int argVariable2 = TermId;
-      Extensions.ReadValue(ref context.Request.Params, "Term", ref argVariable2);
-      TermId = argVariable2;
-      string argVariable3 = Categories;
-      Extensions.ReadValue(ref context.Request.Params, "Categories", ref argVariable3);
-      Categories = argVariable3;
-      int argVariable4 = AuthorId;
-      Extensions.ReadValue(ref context.Request.Params, "User", ref argVariable4);
-      AuthorId = argVariable4;
-      int argVariable5 = AuthorId;
-      Extensions.ReadValue(ref context.Request.Params, "uid", ref argVariable5);
-      AuthorId = argVariable5;
-      int argVariable6 = AuthorId;
-      Extensions.ReadValue(ref context.Request.Params, "UserId", ref argVariable6);
-      AuthorId = argVariable6;
-      int argVariable7 = AuthorId;
-      Extensions.ReadValue(ref context.Request.Params, "Author", ref argVariable7);
-      AuthorId = argVariable7;
-      var argVariable8 = EndDate;
-      Extensions.ReadValue(ref context.Request.Params, "end", ref argVariable8);
-      EndDate = argVariable8;
-      string argVariable9 = SearchString;
-      Extensions.ReadValue(ref context.Request.Params, "search", ref argVariable9);
-      SearchString = argVariable9;
-      bool argVariable10 = SearchTitle;
-      Extensions.ReadValue(ref context.Request.Params, "t", ref argVariable10);
-      SearchTitle = argVariable10;
-      bool argVariable11 = SearchContents;
-      Extensions.ReadValue(ref context.Request.Params, "c", ref argVariable11);
-      SearchContents = argVariable11;
-      bool argVariable12 = SearchUnpublished;
-      Extensions.ReadValue(ref context.Request.Params, "u", ref argVariable12);
-      SearchUnpublished = argVariable12;
-      int argVariable13 = LegacyEntryId;
-      Extensions.ReadValue(ref context.Request.Params, "EntryId", ref argVariable13);
-      LegacyEntryId = argVariable13;
+      BlogId = context.Request.Params.ReadValue("Blog", BlogId);
+      ContentItemId = context.Request.Params.ReadValue("Post", ContentItemId);
+      TermId = context.Request.Params.ReadValue("Term", TermId);
+      Categories = context.Request.Params.ReadValue("Categories", Categories);
+      AuthorId = context.Request.Params.ReadValue("User", AuthorId);
+      AuthorId = context.Request.Params.ReadValue("uid", AuthorId);
+      AuthorId = context.Request.Params.ReadValue("UserId", AuthorId);
+      AuthorId = context.Request.Params.ReadValue("Author", AuthorId);
+      EndDate = context.Request.Params.ReadValue("end", EndDate);
+      SearchString = context.Request.Params.ReadValue("search", SearchString);
+      SearchTitle = context.Request.Params.ReadValue("t", SearchTitle);
+      SearchContents = context.Request.Params.ReadValue("c", SearchContents);
+      SearchUnpublished = context.Request.Params.ReadValue("u", SearchUnpublished);
+      LegacyEntryId = context.Request.Params.ReadValue("EntryId", LegacyEntryId);
+
       if (ContentItemId > -1)
         Post = Entities.Posts.PostsController.GetPost(ContentItemId, BlogModuleId, Locale);
-      if (BlogId > -1 & Post is not null && Post.BlogID != BlogId)
+      if (BlogId > -1 & Post != null && Post.BlogID != BlogId)
         Post = null; // double check in case someone is hacking to retrieve an Post from another blog
-      if (BlogId == -1 & Post is not null)
+      if (BlogId == -1 & Post != null)
         BlogId = Post.BlogID;
       if (BlogId > -1)
         Blog = Entities.Blogs.BlogsController.GetBlog(BlogId, blogModule.UserInfo.UserID, Locale);
       if (BlogId > -1)
-        BlogMapPath = GetBlogDirectoryMapPath(BlogId);
+        BlogMapPath = Globals.GetBlogDirectoryMapPath(BlogId);
       if (!string.IsNullOrEmpty(BlogMapPath) && !System.IO.Directory.Exists(BlogMapPath))
         System.IO.Directory.CreateDirectory(BlogMapPath);
       if (ContentItemId > -1)
-        PostMapPath = GetPostDirectoryMapPath(BlogId, ContentItemId);
+        PostMapPath = Globals.GetPostDirectoryMapPath(BlogId, ContentItemId);
       if (!string.IsNullOrEmpty(PostMapPath) && !System.IO.Directory.Exists(PostMapPath))
         System.IO.Directory.CreateDirectory(PostMapPath);
       if (TermId > -1)
         Term = Entities.Terms.TermsController.GetTerm(TermId, BlogModuleId, Locale);
       if (AuthorId > -1)
         Author = DotNetNuke.Entities.Users.UserController.GetUserById(blogModule.PortalId, AuthorId);
-      if (context.Request.UserAgent is not null)
+      if (context.Request.UserAgent != null)
       {
         WLWRequest = context.Request.UserAgent.IndexOf("Windows Live Writer") > -1;
       }
@@ -140,7 +108,7 @@ namespace DotNetNuke.Modules.Blog.Common
 
       // security
       bool isStylePostRequest = false;
-      if (Post is not null && !(Post.Published | Security.CanEditThisPost(Post)) && !Security.IsEditor)
+      if (Post != null && !(Post.Published | Security.CanEditThisPost(Post)) && !Security.IsEditor)
       {
         if (Post.Title.Contains("3bfe001a-32de-4114-a6b4-4005b770f6d7") & WLWRequest)
         {
@@ -152,7 +120,7 @@ namespace DotNetNuke.Modules.Blog.Common
           ContentItemId = -1;
         }
       }
-      if (Blog is not null && !Blog.Published && !Security.IsOwner && !Security.UserIsAdmin && !isStylePostRequest)
+      if (Blog != null && !Blog.Published && !Security.IsOwner && !Security.UserIsAdmin && !isStylePostRequest)
       {
         Blog = null;
         BlogId = -1;
@@ -178,7 +146,7 @@ namespace DotNetNuke.Modules.Blog.Common
       }
 
       UiTimeZone = blogModule.ModuleContext.PortalSettings.TimeZone;
-      if (blogModule.UserInfo.Profile.PreferredTimeZone is not null)
+      if (blogModule.UserInfo.Profile.PreferredTimeZone != null)
       {
         UiTimeZone = blogModule.UserInfo.Profile.PreferredTimeZone;
       }
@@ -199,9 +167,7 @@ namespace DotNetNuke.Modules.Blog.Common
       }
       return res;
     }
-    #endregion
 
-    #region  Public Properties 
     public int BlogModuleId { get; set; } = -1;
     public DotNetNuke.Entities.Modules.ModuleInfo ParentModule { get; set; } = null;
     public int BlogId { get; set; } = -1;
@@ -231,9 +197,7 @@ namespace DotNetNuke.Modules.Blog.Common
     public TimeZoneInfo UiTimeZone { get; set; }
     public ContextSecurity Security { get; set; }
     public int LegacyEntryId { get; set; } = -1;
-    #endregion
 
-    #region  IPropertyAccess Implementation 
     public string GetProperty(string strPropertyName, string strFormat, System.Globalization.CultureInfo formatProvider, DotNetNuke.Entities.Users.UserInfo AccessingUser, Scope AccessLevel, ref bool PropertyNotFound)
     {
       string OutputFormat = string.Empty;
@@ -365,7 +329,7 @@ namespace DotNetNuke.Modules.Blog.Common
 
         default:
           {
-            if (RequestParams[strPropertyName] is not null)
+            if (RequestParams[strPropertyName] != null)
             {
               return RequestParams[strPropertyName];
             }
@@ -387,8 +351,5 @@ namespace DotNetNuke.Modules.Blog.Common
         return CacheLevel.fullyCacheable;
       }
     }
-    #endregion
-
   }
-
 }

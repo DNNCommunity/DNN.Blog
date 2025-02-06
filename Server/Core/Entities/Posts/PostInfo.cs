@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Data;
+﻿using DotNetNuke.Modules.Blog.Core.Common;
+using DotNetNuke.Modules.Blog.Core.Entities.Blogs;
+using DotNetNuke.Modules.Blog.Core.Entities.Terms;
+using System.Collections.Generic;
 // 
 // DNN Connect - http://dnn-connect.org
 // Copyright (c) 2015
@@ -21,13 +23,9 @@ using System.Data;
 // 
 
 using System.Linq;
-using System.Web.UI.WebControls;
 using static DotNetNuke.Common.Globals;
-using static DotNetNuke.Modules.Blog.Common.Globals;
-using DotNetNuke.Modules.Blog.Entities.Blogs;
-using DotNetNuke.Modules.Blog.Entities.Terms;
 
-namespace DotNetNuke.Modules.Blog.Entities.Posts
+namespace DotNetNuke.Modules.Blog.Core.Entities.Posts
 {
 
   public partial class PostInfo
@@ -80,7 +78,7 @@ namespace DotNetNuke.Modules.Blog.Entities.Posts
         _permaLink += "&Post=" + ContentItemId.ToString();
         if (DotNetNuke.Entities.Host.Host.UseFriendlyUrls)
         {
-          _permaLink = FriendlyUrl(tab, _permaLink, GetSafePageName(LocalizedTitle));
+          _permaLink = FriendlyUrl(tab, _permaLink, Globals.GetSafePageName(LocalizedTitle));
         }
         else
         {

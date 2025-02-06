@@ -21,7 +21,7 @@
 
 using DotNetNuke.Entities.Users;
 
-namespace DotNetNuke.Modules.Blog.Security
+namespace DotNetNuke.Modules.Blog.Core.Security
 {
 
   /// <summary>

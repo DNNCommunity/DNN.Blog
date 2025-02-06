@@ -20,7 +20,7 @@
 // 
 
 
-namespace DotNetNuke.Modules.Blog.Entities.Comments
+namespace DotNetNuke.Modules.Blog.Core.Entities.Comments
 {
 
   public partial class CommentInfo

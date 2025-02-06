@@ -116,6 +116,7 @@
     "pathToCleanupFiles": "./Server/Cleanup",
     "assemblies": [
       "DotNetNuke.Modules.Blog.dll",
+      "DotNetNuke.Modules.Blog.Core.dll",
       "CookComputing.XmlRpcV2.dll"
     ],
     "excludeFilter": ["Blog/bin/", "Blog/obj/"],

@@ -18,22 +18,16 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 // 
+using DotNetNuke.Modules.Blog.Core.Data;
 
-
-using DotNetNuke.Modules.Blog.Data;
-
-namespace DotNetNuke.Modules.Blog.Entities.LegacyUrls
+namespace DotNetNuke.Modules.Blog.Core.Entities.LegacyUrls
 {
-
   public partial class LegacyUrlsController
   {
 
     public static void AddLegacyUrl(LegacyUrlInfo objLegacyUrl)
     {
-
       DataProvider.Instance().AddLegacyUrl(objLegacyUrl.ContentItemId, objLegacyUrl.EntryId, objLegacyUrl.Url);
-
     }
-
   }
 }

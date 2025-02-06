@@ -21,7 +21,7 @@
 
 using CookComputing.XmlRpc;
 
-namespace DotNetNuke.Modules.Blog.Services.WLW.MoveableType
+namespace DotNetNuke.Modules.Blog.Core.Services.WLW.MoveableType
 {
 
   /// <summary>

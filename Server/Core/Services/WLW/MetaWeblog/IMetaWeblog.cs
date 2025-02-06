@@ -21,7 +21,7 @@
 
 using CookComputing.XmlRpc;
 
-namespace DotNetNuke.Modules.Blog.Services.WLW.MetaWeblog
+namespace DotNetNuke.Modules.Blog.Core.Services.WLW.MetaWeblog
 {
 
   /// <summary>

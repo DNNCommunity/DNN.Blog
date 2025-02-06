@@ -21,9 +21,8 @@ using System.Data;
 // 
 
 using Microsoft.ApplicationBlocks.Data;
-using Microsoft.VisualBasic.CompilerServices;
 
-namespace DotNetNuke.Modules.Blog.Data
+namespace DotNetNuke.Modules.Blog.Core.Data
 {
 
   public partial class SqlDataProvider
@@ -31,7 +30,7 @@ namespace DotNetNuke.Modules.Blog.Data
 
     public override int AddCommentKarma(int commentId, int userId, int karma)
     {
-      return Conversions.ToInteger(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "AddCommentKarma", commentId, userId, karma));
+      return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "AddCommentKarma", commentId, userId, karma));
     }
 
     public override void AddPostView(int contentItemId)
@@ -192,7 +191,7 @@ namespace DotNetNuke.Modules.Blog.Data
 
     public override int SetTerm(int termID, int vocabularyID, int parentTermID, int viewOrder, string name, string description, int createdByUserID)
     {
-      return Conversions.ToInteger(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "SetTerm", termID, vocabularyID, parentTermID, viewOrder, name, description, createdByUserID));
+      return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "SetTerm", termID, vocabularyID, parentTermID, viewOrder, name, description, createdByUserID));
     }
 
     public override void SetTermLocalization(int termID, string locale, string name, string description)

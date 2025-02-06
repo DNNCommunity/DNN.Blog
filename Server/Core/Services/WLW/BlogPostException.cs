@@ -19,7 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 // 
 
-namespace DotNetNuke.Modules.Blog.Services.WLW
+namespace DotNetNuke.Modules.Blog.Core.Services.WLW
 {
   public class BlogPostException : Exception
   {

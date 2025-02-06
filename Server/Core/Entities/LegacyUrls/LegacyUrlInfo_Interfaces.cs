@@ -1,6 +1,4 @@
-﻿using System;
-using System.Data;
-// 
+﻿// 
 // DNN Connect - http://dnn-connect.org
 // Copyright (c) 2015
 // by DNN Connect
@@ -23,52 +21,52 @@ using System.Data;
 
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
+using System;
+using System.Data;
 
-namespace DotNetNuke.Modules.Blog.Entities.LegacyUrls
+namespace DotNetNuke.Modules.Blog.Core.Entities.LegacyUrls
 {
-  public partial class LegacyUrlInfo : IHydratable
-  {
-
-    #region  IHydratable Implementation 
-    /// -----------------------------------------------------------------------------
-  /// <summary>
-  /// Fill hydrates the object from a Datareader
-  /// </summary>
-  /// <remarks>The Fill method is used by the CBO method to hydrtae the object
-  /// rather than using the more expensive Refection methods.</remarks>
-  /// <history>
-  /// [pdonker] 05/23/2013 Created
-  /// </history>
-  /// -----------------------------------------------------------------------------
-    public void Fill(IDataReader dr)
+    public partial class LegacyUrlInfo : IHydratable
     {
+        #region  IHydratable Implementation 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Fill hydrates the object from a Datareader
+        /// </summary>
+        /// <remarks>The Fill method is used by the CBO method to hydrtae the object
+        /// rather than using the more expensive Refection methods.</remarks>
+        /// <history>
+        /// [pdonker] 05/23/2013 Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public void Fill(IDataReader dr)
+        {
 
-      ContentItemId = Convert.ToInt32(Null.SetNull(dr["ContentItemId"], ContentItemId));
-      EntryId = Convert.ToInt32(Null.SetNull(dr["EntryId"], EntryId));
-      Url = Convert.ToString(Null.SetNull(dr["Url"], Url));
+            ContentItemId = Convert.ToInt32(Null.SetNull(dr["ContentItemId"], ContentItemId));
+            EntryId = Convert.ToInt32(Null.SetNull(dr["EntryId"], EntryId));
+            Url = Convert.ToString(Null.SetNull(dr["Url"], Url));
 
+        }
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets and sets the Key ID
+        /// </summary>
+        /// <remarks>The KeyID property is part of the IHydratble interface. It is used
+        /// as the key property when creating a Dictionary</remarks>
+        /// <history>
+        /// [pdonker] 05/23/2013 Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public int KeyID
+        {
+            get
+            {
+                return default;
+            }
+            set
+            {
+            }
+        }
+        #endregion
     }
-    /// -----------------------------------------------------------------------------
-  /// <summary>
-  /// Gets and sets the Key ID
-  /// </summary>
-  /// <remarks>The KeyID property is part of the IHydratble interface. It is used
-  /// as the key property when creating a Dictionary</remarks>
-  /// <history>
-  /// [pdonker] 05/23/2013 Created
-  /// </history>
-  /// -----------------------------------------------------------------------------
-    public int KeyID
-    {
-      get
-      {
-        return default;
-      }
-      set
-      {
-      }
-    }
-    #endregion
-
-  }
 }

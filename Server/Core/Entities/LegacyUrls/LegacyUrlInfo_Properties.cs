@@ -21,15 +21,10 @@
 
 using System.Runtime.Serialization;
 
-namespace DotNetNuke.Modules.Blog.Entities.LegacyUrls
+namespace DotNetNuke.Modules.Blog.Core.Entities.LegacyUrls
 {
   public partial class LegacyUrlInfo
   {
-
-    #region  Private Members 
-    #endregion
-
-    #region  Constructors 
     public LegacyUrlInfo()
     {
     }
@@ -40,16 +35,12 @@ namespace DotNetNuke.Modules.Blog.Entities.LegacyUrls
       EntryId = entryId;
       Url = url;
     }
-    #endregion
 
-    #region  Public Properties 
     [DataMember()]
     public int ContentItemId { get; set; } = -1;
     [DataMember()]
     public int EntryId { get; set; } = -1;
     [DataMember()]
     public string Url { get; set; } = "";
-    #endregion
-
   }
 }

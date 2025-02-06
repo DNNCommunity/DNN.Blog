@@ -4,7 +4,7 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
-using DotNetNuke.Modules.Blog.Common;
+using DotNetNuke.Modules.Blog.Core.Common;
 // 
 // DNN Connect - http://dnn-connect.org
 // Copyright (c) 2015
@@ -25,9 +25,9 @@ using DotNetNuke.Modules.Blog.Common;
 // DEALINGS IN THE SOFTWARE.
 // 
 
-using DotNetNuke.Modules.Blog.Entities.Posts;
+using DotNetNuke.Modules.Blog.Core.Entities.Posts;
 
-namespace DotNetNuke.Modules.Blog.Services
+namespace DotNetNuke.Modules.Blog.Core.Services
 {
   public class TrackAndPingBackController
   {
@@ -96,7 +96,7 @@ namespace DotNetNuke.Modules.Blog.Services
           var remoteFile = new WebPage(url);
           string pageContent = remoteFile.GetFileAsString();
           var trackbackUrl = GetTrackBackUrlFromPage(pageContent);
-          if (trackbackUrl is not null)
+          if (trackbackUrl != null)
           {
             var message = new TrackbackMessage(Post, trackbackUrl, PortalSettings);
             trackbackSent = SendTrackback(message);

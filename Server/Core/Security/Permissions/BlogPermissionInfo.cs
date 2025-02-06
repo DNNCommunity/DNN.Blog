@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DotNetNuke.Common.Utilities;
+using DotNetNuke.Modules.Blog.Core.Common;
+using System;
 using System.Collections;
 // 
 // DNN Connect - http://dnn-connect.org
@@ -23,125 +25,104 @@ using System.Collections;
 using System.Runtime.Serialization;
 using System.Xml;
 
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Modules.Blog.Common;
-
-using static DotNetNuke.Modules.Blog.Security.Security;
-
-namespace DotNetNuke.Modules.Blog.Security.Permissions
+namespace DotNetNuke.Modules.Blog.Core.Security.Permissions
 {
-  public partial class BlogPermissionInfo
-  {
-
-    #region  Constructors 
-    public BlogPermissionInfo()
+    public partial class BlogPermissionInfo
     {
-      BlogId = Null.NullInteger;
-      RoleId = glbRoleNothing;
-      AllowAccess = false;
-      _RoleName = Null.NullString;
-      UserId = glbUserNothing;
-      Username = Null.NullString;
-      DisplayName = Null.NullString;
-    } // New
 
-    public BlogPermissionInfo(PermissionInfo pi)
-    {
-      BlogId = Null.NullInteger;
-      RoleId = glbRoleNothing;
-      AllowAccess = false;
-      _RoleName = Null.NullString;
-      UserId = glbUserNothing;
-      Username = Null.NullString;
-      DisplayName = Null.NullString;
-      PermissionId = pi.PermissionId;
-      PermissionKey = pi.PermissionKey;
-    } // New
-    #endregion
-
-
-    #region  Public Properties 
-    private string _RoleName;
-    [DataMember()]
-    public string RoleName
-    {
-      get
-      {
-        if (string.IsNullOrEmpty(_RoleName))
+        #region  Constructors 
+        public BlogPermissionInfo()
         {
-          if (RoleId == -1)
-          {
-            _RoleName = DotNetNuke.Common.Globals.glbRoleAllUsersName;
-          }
+            BlogId = Null.NullInteger;
+            RoleId = Security.glbRoleNothing;
+            AllowAccess = false;
+            _RoleName = Null.NullString;
+            UserId = Security.glbUserNothing;
+            Username = Null.NullString;
+            DisplayName = Null.NullString;
+        } // New
+
+        public BlogPermissionInfo(PermissionInfo pi)
+        {
+            BlogId = Null.NullInteger;
+            RoleId = Security.glbRoleNothing;
+            AllowAccess = false;
+            _RoleName = Null.NullString;
+            UserId = Security.glbUserNothing;
+            Username = Null.NullString;
+            DisplayName = Null.NullString;
+            PermissionId = pi.PermissionId;
+            PermissionKey = pi.PermissionKey;
+        } // New
+        #endregion
+
+
+        #region  Public Properties 
+        private string _RoleName;
+        [DataMember()]
+        public string RoleName
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_RoleName))
+                {
+                    if (RoleId == -1)
+                    {
+                        _RoleName = DotNetNuke.Common.Globals.glbRoleAllUsersName;
+                    }
+                }
+                return _RoleName;
+            }
+            set
+            {
+                _RoleName = value;
+            }
         }
-        return _RoleName;
-      }
-      set
-      {
-        _RoleName = value;
-      }
-    }
 
-    public string PermissionKey { get; set; }
-    #endregion
+        public string PermissionKey { get; set; }
+        #endregion
 
-    #region  Public Methods 
-    public override bool Equals(object obj)
-    {
-      if (obj is null | !ReferenceEquals(GetType(), obj.GetType()))
-      {
-        return false;
-      }
-      BlogPermissionInfo perm = (BlogPermissionInfo)obj;
-      return AllowAccess == perm.AllowAccess & Expires > DateTime.Now & BlogId == perm.BlogId & RoleId == perm.RoleId & UserId == perm.UserId & PermissionId == perm.PermissionId;
-    }
+        #region  Public Methods 
+        public override bool Equals(object obj)
+        {
+            if (obj is null | !ReferenceEquals(GetType(), obj.GetType()))
+            {
+                return false;
+            }
+            BlogPermissionInfo perm = (BlogPermissionInfo)obj;
+            return AllowAccess == perm.AllowAccess & Expires > DateTime.Now & BlogId == perm.BlogId & RoleId == perm.RoleId & UserId == perm.UserId & PermissionId == perm.PermissionId;
+        }
 
-    public BlogPermissionInfo Clone()
-    {
-      var res = new BlogPermissionInfo();
-      res.AllowAccess = AllowAccess;
-      res.DisplayName = DisplayName;
-      res.BlogId = BlogId;
-      res.Expires = Expires;
-      res.PermissionId = PermissionId;
-      res.PermissionKey = PermissionKey;
-      res.RoleId = RoleId;
-      res.RoleName = RoleName;
-      res.UserId = UserId;
-      res.Username = Username;
-      return res;
-    }
+        public BlogPermissionInfo Clone()
+        {
+            var res = new BlogPermissionInfo();
+            res.AllowAccess = AllowAccess;
+            res.DisplayName = DisplayName;
+            res.BlogId = BlogId;
+            res.Expires = Expires;
+            res.PermissionId = PermissionId;
+            res.PermissionKey = PermissionKey;
+            res.RoleId = RoleId;
+            res.RoleName = RoleName;
+            res.UserId = UserId;
+            res.Username = Username;
+            return res;
+        }
 
-    public void ReadXml(XmlNode xN)
-    {
-
-      var ht = new Hashtable();
-      foreach (XmlNode n in xN.ChildNodes)
-        ht.Add(n.Name, n.InnerText);
-      int argVariable = PermissionId;
-      Extensions.ReadValue(ref ht, "PermissionId", ref argVariable);
-      PermissionId = argVariable;
-      bool argVariable1 = AllowAccess;
-      Extensions.ReadValue(ref ht, "AllowAccess", ref argVariable1);
-      AllowAccess = argVariable1;
-      string argVariable2 = PermissionKey;
-      Extensions.ReadValue(ref ht, "PermissionKey", ref argVariable2);
-      PermissionKey = argVariable2;
-      int argVariable3 = RoleId;
-      Extensions.ReadValue(ref ht, "RoleID", ref argVariable3);
-      RoleId = argVariable3;
-      int argVariable4 = UserId;
-      Extensions.ReadValue(ref ht, "UserID", ref argVariable4);
-      UserId = argVariable4;
-      string argVariable5 = RoleName;
-      Extensions.ReadValue(ref ht, "RoleName", ref argVariable5);
-      RoleName = argVariable5;
-      string argVariable6 = Username;
-      Extensions.ReadValue(ref ht, "UserName", ref argVariable6);
-      Username = argVariable6;
+        public void ReadXml(XmlNode xN)
+        {
+            var ht = new Hashtable();
+            foreach (XmlNode n in xN.ChildNodes)
+                ht.Add(n.Name, n.InnerText);
+            PermissionId = ht.ReadValue("PermissionId", PermissionId);
+            AllowAccess = ht.ReadValue("AllowAccess", AllowAccess);
+            PermissionKey = ht.ReadValue("PermissionKey", PermissionKey);
+            RoleId= ht.ReadValue("RoleID", RoleId);
+            UserId = ht.ReadValue("UserID", UserId);
+            RoleName = ht.ReadValue("RoleName", RoleName);
+            Username = ht.ReadValue("UserName", Username);
+        }
+        #endregion
 
     }
-    #endregion
-
-  }
 }

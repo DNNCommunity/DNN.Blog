@@ -23,7 +23,7 @@ using static DotNetNuke.Services.Localization.Localization;
 
 using DotNetNuke.Services.Tokens;
 
-namespace DotNetNuke.Modules.Blog.Templating
+namespace DotNetNuke.Modules.Blog.Core.Templating
 {
   /// <summary>
  /// BaseCustomTokenReplace  allows to add multiple sources implementing <see cref="IPropertyAccess">IPropertyAccess</see>
@@ -176,7 +176,7 @@ namespace DotNetNuke.Modules.Blog.Templating
     public CacheLevel Cacheability(string strSourcetext)
     {
       var IsSafe = CacheLevel.fullyCacheable;
-      if (strSourcetext is not null && !string.IsNullOrEmpty(strSourcetext))
+      if (strSourcetext != null && !string.IsNullOrEmpty(strSourcetext))
       {
 
         // initialize PropertyAccess classes

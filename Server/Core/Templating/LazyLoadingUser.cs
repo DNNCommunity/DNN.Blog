@@ -1,5 +1,4 @@
-﻿using System.Web;
-// 
+﻿// 
 // DNN Connect - http://dnn-connect.org
 // Copyright (c) 2015
 // by DNN Connect
@@ -21,11 +20,11 @@
 
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Modules.Blog.Entities.Posts;
+using DotNetNuke.Modules.Blog.Core.Entities.Posts;
 using DotNetNuke.Services.Tokens;
-using Microsoft.VisualBasic;
+using System.Web;
 
-namespace DotNetNuke.Modules.Blog.Templating
+namespace DotNetNuke.Modules.Blog.Core.Templating
 {
   public class LazyLoadingUser : IPropertyAccess
   {
@@ -103,7 +102,7 @@ namespace DotNetNuke.Modules.Blog.Templating
       {
         case "profilepic":
           {
-            if (Information.IsNumeric(strFormat))
+            if (int.TryParse(strFormat, out int res1))
             {
               return DotNetNuke.Common.Globals.ResolveUrl(string.Format("~/DnnImageHandler.ashx?mode=profilepic&userId={0}&w={1}&h={1}", UserId, strFormat));
             }
@@ -118,7 +117,7 @@ namespace DotNetNuke.Modules.Blog.Templating
           }
       }
       string res = "";
-      if (_postAuthor is not null)
+      if (_postAuthor != null)
       {
         res = _postAuthor.GetProperty(strPropertyName, strFormat, formatProvider, AccessingUser, AccessLevel, ref PropertyNotFound);
       }

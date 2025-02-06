@@ -19,20 +19,18 @@
 '
 
 Imports System.Globalization
-Imports DotNetNuke.Entities.Portals
-Imports DotNetNuke.Services.Localization.Localization
-Imports DotNetNuke.Services.Exceptions
-Imports DotNetNuke.Common.Globals
 Imports System.Linq
-Imports DotNetNuke.Framework.JavaScriptLibraries
-Imports DotNetNuke.Modules.Blog.Entities.Blogs
-Imports DotNetNuke.Modules.Blog.Entities.Posts
-Imports DotNetNuke.Services.Localization
-Imports DotNetNuke.Modules.Blog.Common.Globals
-Imports DotNetNuke.Modules.Blog.Integration
-Imports DotNetNuke.Modules.Blog.Entities.Terms
+Imports DotNetNuke.Common.Globals
+Imports DotNetNuke.Entities.Portals
+Imports DotNetNuke.Modules.Blog.Core.Common
+Imports DotNetNuke.Modules.Blog.Core.Entities.Blogs
+Imports DotNetNuke.Modules.Blog.Core.Entities.Posts
+Imports DotNetNuke.Modules.Blog.Core.Entities.Terms
+Imports DotNetNuke.Modules.Blog.Core.Integration
 Imports DotNetNuke.Security
-Imports DotNetNuke.UI.Utilities
+Imports DotNetNuke.Services.Exceptions
+Imports DotNetNuke.Services.Localization
+Imports DotNetNuke.Services.Localization.Localization
 Imports DotNetNuke.Web.Client
 Imports DotNetNuke.Web.Client.ClientResourceManagement
 Imports DotNetNuke.Web.Client.Providers
@@ -135,8 +133,8 @@ Public Class PostEdit
           pnlCategories.Visible = False
         End If
         ' Clear the tags and categories cache
-        Entities.Terms.TermsController.GetTermsByVocabulary(ModuleId, Settings.VocabularyId, Threading.Thread.CurrentThread.CurrentCulture.Name, True)
-        Entities.Terms.TermsController.GetTermsByVocabulary(ModuleId, 1, Threading.Thread.CurrentThread.CurrentCulture.Name, True)
+        TermsController.GetTermsByVocabulary(ModuleId, Settings.VocabularyId, Threading.Thread.CurrentThread.CurrentCulture.Name, True)
+        TermsController.GetTermsByVocabulary(ModuleId, 1, Threading.Thread.CurrentThread.CurrentCulture.Name, True)
 
         If BlogContext.IsMultiLingualSite And Not BlogContext.Blog.FullLocalization Then
           ddLocale.DataSource = DotNetNuke.Services.Localization.LocaleController.Instance.GetLocales(PortalId).Values.OrderBy(Function(t) t.NativeName)
@@ -195,12 +193,12 @@ Public Class PostEdit
           End If
           ' Date
           litTimezone.Text = BlogContext.UiTimeZone.DisplayName
-          Dim publishDate As DateTime = UtcToLocalTime(BlogContext.Post.PublishedOnDate, BlogContext.UiTimeZone)
+          Dim publishDate As DateTime = Core.Common.Globals.UtcToLocalTime(BlogContext.Post.PublishedOnDate, BlogContext.UiTimeZone)
           dpPostDate.Text = publishDate.ToString(GeneralShortTimePattern)
 
           ' Summary, Image, Categories, Tags
           If Not String.IsNullOrEmpty(BlogContext.Post.Image) Then
-            imgPostImage.ImageUrl = ResolveUrl(glbImageHandlerPath) & String.Format("?TabId={0}&ModuleId={1}&Blog={2}&Post={3}&w=100&h=100&c=1&key={4}", TabId, Settings.ModuleId, BlogContext.BlogId, BlogContext.ContentItemId, BlogContext.Post.Image)
+            imgPostImage.ImageUrl = ResolveUrl(Core.Common.Globals.glbImageHandlerPath) & String.Format("?TabId={0}&ModuleId={1}&Blog={2}&Post={3}&w=100&h=100&c=1&key={4}", TabId, Settings.ModuleId, BlogContext.BlogId, BlogContext.ContentItemId, BlogContext.Post.Image)
             imgPostImage.Visible = True
             cmdImageRemove.Visible = True
           Else
@@ -276,11 +274,11 @@ Public Class PostEdit
         End If
 
         ' Image
-        Dim saveDir As String = GetPostDirectoryMapPath(BlogContext.Post)
+        Dim saveDir As String = Core.Common.Globals.GetPostDirectoryMapPath(BlogContext.Post)
         Dim savedFile As String = ""
         If fileImage.HasFile Then
           Dim extension As String = IO.Path.GetExtension(fileImage.FileName).ToLower
-          If glbPermittedFileExtensions.IndexOf(extension & ",") > -1 Then
+          If Core.Common.Globals.glbPermittedFileExtensions.IndexOf(extension & ",") > -1 Then
             If Not IO.Directory.Exists(saveDir) Then IO.Directory.CreateDirectory(saveDir)
             If BlogContext.Post.Image <> "" Then
               ' remove old images
@@ -315,10 +313,10 @@ Public Class PostEdit
         Dim publishingUserId As Integer = UserId
         If BlogContext.Blog.PublishAsOwner Then publishingUserId = BlogContext.Blog.OwnerUserId
         If BlogContext.ContentItemId = -1 Then
-          BlogContext.Post.ContentItemId = PostsController.AddPost(BlogContext.Post, publishingUserId)
+          BlogContext.Post = PostsController.AddPost(BlogContext.Post, publishingUserId)
           BlogContext.ContentItemId = BlogContext.Post.ContentItemId
           If savedFile <> "" Then ' move file if it was saved
-            saveDir = GetPostDirectoryMapPath(BlogContext.Post)
+            saveDir = Core.Common.Globals.GetPostDirectoryMapPath(BlogContext.Post)
             IO.Directory.CreateDirectory(saveDir)
             Dim dest As String = saveDir & BlogContext.Post.Image & IO.Path.GetExtension(fileImage.FileName).ToLower
             IO.File.Move(savedFile, dest)
@@ -333,7 +331,7 @@ Public Class PostEdit
 
         ElseIf BlogContext.Blog.MustApproveGhostPosts And UserId <> BlogContext.Blog.OwnerUserId Then
 
-          Dim title As String = Localization.GetString("ApprovePostNotifyBody", SharedResourceFileName)
+          Dim title As String = Localization.GetString("ApprovePostNotifyBody", Core.Common.Globals.SharedResourceFileName)
           Dim summary As String = "<a target='_blank' href='" + BlogContext.Post.PermaLink(PortalSettings) + "'>" + BlogContext.Post.Title + "</a>"
           NotificationController.PostPendingApproval(BlogContext.Blog, BlogContext.Post, ModuleContext.PortalId, summary, title)
 

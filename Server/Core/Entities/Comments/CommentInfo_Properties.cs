@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DotNetNuke.Common.Utilities;
+using System;
 // 
 // DNN Connect - http://dnn-connect.org
 // Copyright (c) 2015
@@ -21,62 +22,62 @@
 
 using System.Runtime.Serialization;
 
-namespace DotNetNuke.Modules.Blog.Entities.Comments
+namespace DotNetNuke.Modules.Blog.Core.Entities.Comments
 {
-  public partial class CommentInfo
-  {
-
-    #region  Private Members 
-    #endregion
-
-    #region  Constructors 
-    public CommentInfo()
+    public partial class CommentInfo
     {
+
+        #region  Private Members 
+        #endregion
+
+        #region  Constructors 
+        public CommentInfo()
+        {
+        }
+        #endregion
+
+        #region  Public Properties 
+        [DataMember()]
+        public int CommentID { get; set; } = Null.NullInteger;
+        [DataMember()]
+        public int ContentItemId { get; set; } = Null.NullInteger;
+        [DataMember()]
+        public int ParentId { get; set; } = Null.NullInteger;
+        [DataMember()]
+        public string Comment { get; set; } = "";
+        [DataMember()]
+        public bool Approved { get; set; } = false;
+        [DataMember()]
+        public string Author { get; set; } = "";
+        [DataMember()]
+        public string Website { get; set; } = "";
+        [DataMember()]
+        public string Email { get; set; } = "";
+        [DataMember()]
+        public int CreatedByUserID { get; set; } = -1;
+        [DataMember()]
+        public DateTime CreatedOnDate { get; set; } = DateTime.MinValue;
+        [DataMember()]
+        public int LastModifiedByUserID { get; set; } = -1;
+        [DataMember()]
+        public DateTime LastModifiedOnDate { get; set; } = DateTime.MinValue;
+        [DataMember()]
+        public string Username { get; set; } = "";
+        [DataMember()]
+        public string DisplayName { get; set; } = "";
+        [DataMember()]
+        public int Likes { get; set; } = 0;
+        [DataMember()]
+        public int Dislikes { get; set; } = 0;
+        [DataMember()]
+        public int Reports { get; set; } = 0;
+        [DataMember()]
+        public int Liked { get; set; } = 0;
+        [DataMember()]
+        public int Disliked { get; set; } = 0;
+        [DataMember()]
+        public int Reported { get; set; } = 0;
+        #endregion
+
     }
-    #endregion
-
-    #region  Public Properties 
-    [DataMember()]
-    public int CommentID { get; set; } = -1;
-    [DataMember()]
-    public int ContentItemId { get; set; } = -1;
-    [DataMember()]
-    public int ParentId { get; set; } = -1;
-    [DataMember()]
-    public string Comment { get; set; } = "";
-    [DataMember()]
-    public bool Approved { get; set; } = false;
-    [DataMember()]
-    public string Author { get; set; } = "";
-    [DataMember()]
-    public string Website { get; set; } = "";
-    [DataMember()]
-    public string Email { get; set; } = "";
-    [DataMember()]
-    public int CreatedByUserID { get; set; } = -1;
-    [DataMember()]
-    public DateTime CreatedOnDate { get; set; } = DateTime.MinValue;
-    [DataMember()]
-    public int LastModifiedByUserID { get; set; } = -1;
-    [DataMember()]
-    public DateTime LastModifiedOnDate { get; set; } = DateTime.MinValue;
-    [DataMember()]
-    public string Username { get; set; } = "";
-    [DataMember()]
-    public string DisplayName { get; set; } = "";
-    [DataMember()]
-    public int Likes { get; set; } = 0;
-    [DataMember()]
-    public int Dislikes { get; set; } = 0;
-    [DataMember()]
-    public int Reports { get; set; } = 0;
-    [DataMember()]
-    public int Liked { get; set; } = 0;
-    [DataMember()]
-    public int Disliked { get; set; } = 0;
-    [DataMember()]
-    public int Reported { get; set; } = 0;
-    #endregion
-
-  }
 }

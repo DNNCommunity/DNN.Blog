@@ -19,105 +19,105 @@
 '
 
 Imports System.Linq
-Imports DotNetNuke.Modules.Blog.Common.Globals
-Imports DotNetNuke.Modules.Blog.Entities.Terms
+Imports DotNetNuke.Modules.Blog.Core.Common
+Imports DotNetNuke.Modules.Blog.Core.Entities.Terms
 
 Namespace Controls
- Public Class CategorySelect
-  Inherits WebControl
+  Public Class CategorySelect
+    Inherits WebControl
 
 #Region " Private Properties "
-  Private Property MainControlId As String = ""
-  Private Property catList As String = ""
-  Private Property StorageControlId As String = ""
-  Protected WithEvents Storage As HiddenField
+    Private Property MainControlId As String = ""
+    Private Property catList As String = ""
+    Private Property StorageControlId As String = ""
+    Protected WithEvents Storage As HiddenField
 #End Region
 
 #Region " Public Properties "
-  Public Property SelectedCategories As New List(Of TermInfo)
-  Public Property ModuleConfiguration As DotNetNuke.Entities.Modules.ModuleInfo = Nothing
-  Public Property VocabularyId As Integer = -1
-  Private _Vocabulary As Dictionary(Of String, TermInfo)
-  Public Property Vocabulary() As Dictionary(Of String, TermInfo)
-   Get
-    If _Vocabulary Is Nothing Then
-     _Vocabulary = TermsController.GetTermsByVocabulary(ModuleConfiguration.ModuleID, VocabularyId, Threading.Thread.CurrentThread.CurrentCulture.Name)
-     If _Vocabulary Is Nothing Then
-      _Vocabulary = New Dictionary(Of String, TermInfo)
-     End If
-    End If
-    Return _Vocabulary
-   End Get
-   Set(ByVal value As Dictionary(Of String, TermInfo))
-    _Vocabulary = value
-   End Set
-  End Property
+    Public Property SelectedCategories As New List(Of TermInfo)
+    Public Property ModuleConfiguration As DotNetNuke.Entities.Modules.ModuleInfo = Nothing
+    Public Property VocabularyId As Integer = -1
+    Private _Vocabulary As Dictionary(Of String, TermInfo)
+    Public Property Vocabulary() As Dictionary(Of String, TermInfo)
+      Get
+        If _Vocabulary Is Nothing Then
+          _Vocabulary = TermsController.GetTermsByVocabulary(ModuleConfiguration.ModuleID, VocabularyId, Threading.Thread.CurrentThread.CurrentCulture.Name)
+          If _Vocabulary Is Nothing Then
+            _Vocabulary = New Dictionary(Of String, TermInfo)
+          End If
+        End If
+        Return _Vocabulary
+      End Get
+      Set(ByVal value As Dictionary(Of String, TermInfo))
+        _Vocabulary = value
+      End Set
+    End Property
 #End Region
 
 #Region " Event Handlers "
-  Private Sub CategorySelect_Init(sender As Object, e As EventArgs) Handles Me.Init
-   If CssClass = "" Then CssClass = "category-control"
-   StorageControlId = ClientID & "_Storage"
-   Storage = New HiddenField With {.ID = StorageControlId}
-  End Sub
+    Private Sub CategorySelect_Init(sender As Object, e As EventArgs) Handles Me.Init
+      If CssClass = "" Then CssClass = "category-control"
+      StorageControlId = ClientID & "_Storage"
+      Storage = New HiddenField With {.ID = StorageControlId}
+    End Sub
 
-  Private Sub CategorySelect_Load(sender As Object, e As EventArgs) Handles Me.Load
+    Private Sub CategorySelect_Load(sender As Object, e As EventArgs) Handles Me.Load
 
-   Dim modVersion As String = ModuleSettings.GetModuleSettings(ModuleConfiguration.ModuleID).Version
-   Page.AddJavascriptFile(modVersion, "jquery.dynatree.min.js", "jquery.dynatree", "1.2.4", 60)
-   Page.AddCssFile(modVersion, "dynatree.css", "dynatree", "1.2.4")
-   MainControlId = ClientID & "_CategorySelect"
-   If Page.IsPostBack Then
-    ' read return values
-    Page.Request.Params.ReadValue(Storage.ClientID, catList)
-    catList = catList.Trim(","c)
-    SelectedCategories = New List(Of TermInfo)
-    If Not String.IsNullOrEmpty(catList) Then
-     For Each c As String In catList.Split(","c)
-      If IsNumeric(c) Then
-       Dim cId As Integer = Integer.Parse(c)
-       Dim cat As TermInfo = Vocabulary.Values.FirstOrDefault(Function(t)
-                                                               Return t.TermId = cId
-                                                              End Function)
-       If cat IsNot Nothing Then SelectedCategories.Add(cat)
+      Dim modVersion As String = ModuleSettings.GetModuleSettings(ModuleConfiguration.ModuleID).Version
+      Page.AddJavascriptFile(modVersion, "jquery.dynatree.min.js", "jquery.dynatree", "1.2.4", 60)
+      Page.AddCssFile(modVersion, "dynatree.css", "dynatree", "1.2.4")
+      MainControlId = ClientID & "_CategorySelect"
+      If Page.IsPostBack Then
+        ' read return values
+        Page.Request.Params.ReadValue(Storage.ClientID, catList)
+        catList = catList.Trim(","c)
+        SelectedCategories = New List(Of TermInfo)
+        If Not String.IsNullOrEmpty(catList) Then
+          For Each c As String In catList.Split(","c)
+            If IsNumeric(c) Then
+              Dim cId As Integer = Integer.Parse(c)
+              Dim cat As TermInfo = Vocabulary.Values.FirstOrDefault(Function(t)
+                                                                       Return t.TermId = cId
+                                                                     End Function)
+              If cat IsNot Nothing Then SelectedCategories.Add(cat)
+            End If
+          Next
+        End If
       End If
-     Next
-    End If
-   End If
 
-  End Sub
+    End Sub
 
-  Protected Overrides Sub RenderContents(writer As HtmlTextWriter)
+    Protected Overrides Sub RenderContents(writer As HtmlTextWriter)
 
-   writer.Write(String.Format("<div id=""{0}"" class=""category-container""></div>", MainControlId))
-   Storage.RenderControl(writer)
+      writer.Write(String.Format("<div id=""{0}"" class=""category-container""></div>", MainControlId))
+      Storage.RenderControl(writer)
 
-  End Sub
+    End Sub
 
-  Private Sub CategorySelect_PreRender(sender As Object, e As EventArgs) Handles Me.PreRender
+    Private Sub CategorySelect_PreRender(sender As Object, e As EventArgs) Handles Me.PreRender
 
-   ' get the node tree
-   Dim selectedIds As New List(Of Integer)
-   For Each c As TermInfo In SelectedCategories
-    selectedIds.Add(c.TermId)
-   Next
+      ' get the node tree
+      Dim selectedIds As New List(Of Integer)
+      For Each c As TermInfo In SelectedCategories
+        selectedIds.Add(c.TermId)
+      Next
 
-   Dim pagescript As String = GetResource("DotNetNuke.Modules.Blog.CategorySelect.JS.CodeBlock.txt")
-   pagescript = pagescript.Replace("[ID]", MainControlId)
-   pagescript = pagescript.Replace("[Children]", TermsController.GetCategoryTreeAsJson(Vocabulary, selectedIds))
-   pagescript = pagescript.Replace("[CatIdList]", String.Join(",", selectedIds))
-   pagescript = pagescript.Replace("[StorageControlId]", StorageControlId)
-   Page.ClientScript.RegisterClientScriptBlock(GetType(String), ClientID, pagescript, True)
+      Dim pagescript As String = Common.Globals.GetResource("DotNetNuke.Modules.Blog.CategorySelect.JS.CodeBlock.txt")
+      pagescript = pagescript.Replace("[ID]", MainControlId)
+      pagescript = pagescript.Replace("[Children]", TermsController.GetCategoryTreeAsJson(Vocabulary, selectedIds))
+      pagescript = pagescript.Replace("[CatIdList]", String.Join(",", selectedIds))
+      pagescript = pagescript.Replace("[StorageControlId]", StorageControlId)
+      Page.ClientScript.RegisterClientScriptBlock(GetType(String), ClientID, pagescript, True)
 
-  End Sub
+    End Sub
 #End Region
 
 #Region " Public Functions"
-  Public Overrides Function ToString() As String
-   Return catList
-  End Function
+    Public Overrides Function ToString() As String
+      Return catList
+    End Function
 
 #End Region
 
- End Class
+  End Class
 End Namespace

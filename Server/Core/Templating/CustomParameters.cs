@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Specialized;
-// 
+﻿// 
 // DNN Connect - http://dnn-connect.org
 // Copyright (c) 2015
 // by DNN Connect
@@ -21,28 +19,26 @@ using System.Collections.Specialized;
 // 
 
 using DotNetNuke.Services.Tokens;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
+using System;
+using System.Collections.Specialized;
 
-namespace DotNetNuke.Modules.Blog.Templating
+namespace DotNetNuke.Modules.Blog.Core.Templating
 {
   public class CustomParameters : IPropertyAccess
   {
 
-    #region  Private Members 
-    private NameValueCollection @params { get; set; }
-    #endregion
+    private NameValueCollection parameters { get; set; }
 
-    #region  Constructors 
     public CustomParameters(params string[] customParameters)
     {
-      @params = new NameValueCollection();
+      parameters = new NameValueCollection();
       foreach (string sParameter in customParameters)
-        @params.Add(Strings.Left(sParameter.ToLower(), sParameter.IndexOf('=')), Strings.Mid(sParameter, sParameter.IndexOf('=') + 2));
+      {
+        var parts = sParameter.Split('=');
+        parameters.Add(parts[0].ToLower(), parts[1]);
+      }
     }
-    #endregion
 
-    #region  IPropertyAccess 
     public CacheLevel Cacheability
     {
       get
@@ -62,27 +58,25 @@ namespace DotNetNuke.Modules.Blog.Templating
       {
         OutputFormat = strFormat;
       }
-      if (@params[strPropertyName.ToLower()] is null)
+      if (parameters[strPropertyName.ToLower()] is null)
         return DotNetNuke.Common.Utilities.Null.NullString;
-      string value = @params[strPropertyName.ToLower()];
+      string value = parameters[strPropertyName.ToLower()];
       try
       {
-        if (Information.IsNumeric(value))
+        if (double.TryParse(value, out double res1))
         {
-          return Conversions.ToDouble(value).ToString(OutputFormat, formatProvider);
+          return res1.ToString(OutputFormat, formatProvider);
         }
-        if (Information.IsDate(value))
+        if (DateTime.TryParse(value, out DateTime res2))
         {
-          return Conversions.ToDate(value).ToString(OutputFormat, formatProvider);
+          return res2.ToString(OutputFormat, formatProvider);
         }
-        return Common.Globals.FormatBoolean(Conversions.ToBoolean(value), strFormat);
+        return Common.Globals.FormatBoolean(Convert.ToBoolean(value), strFormat);
       }
       catch (Exception ex)
       {
         return value;
       }
     }
-    #endregion
-
   }
 }

@@ -2,7 +2,7 @@
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace DotNetNuke.Modules.Blog.BlogML.Xml
+namespace DotNetNuke.Modules.Blog.Core.BlogML.Xml
 {
   public class BlogMLSerializer
   {

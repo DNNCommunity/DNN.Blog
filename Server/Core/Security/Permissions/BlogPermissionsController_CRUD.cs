@@ -21,9 +21,9 @@
 
 
 
-using DotNetNuke.Modules.Blog.Data;
+using DotNetNuke.Modules.Blog.Core.Data;
 
-namespace DotNetNuke.Modules.Blog.Security.Permissions
+namespace DotNetNuke.Modules.Blog.Core.Security.Permissions
 {
 
   public partial class BlogPermissionsController

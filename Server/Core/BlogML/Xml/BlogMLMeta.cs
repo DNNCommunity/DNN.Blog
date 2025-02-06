@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml.Serialization;
 
-namespace DotNetNuke.Modules.Blog.BlogML.Xml
+namespace DotNetNuke.Modules.Blog.Core.BlogML.Xml
 {
   [Serializable]
   [Obsolete("I don't think that we use this now that we are using Dictionary<K,V>")]

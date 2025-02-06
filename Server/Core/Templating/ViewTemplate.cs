@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DotNetNuke.Web.Client.ClientResourceManagement;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
@@ -22,10 +23,7 @@ using System.Web.UI;
 // DEALINGS IN THE SOFTWARE.
 // 
 
-using DotNetNuke.Web.Client.ClientResourceManagement;
-using Microsoft.VisualBasic;
-
-namespace DotNetNuke.Modules.Blog.Templating
+namespace DotNetNuke.Modules.Blog.Core.Templating
 {
   public class ViewTemplate : UserControl
   {
@@ -65,7 +63,7 @@ namespace DotNetNuke.Modules.Blog.Templating
     #region  Overrides 
     protected override void Render(HtmlTextWriter writer)
     {
-      if (Template is not null)
+      if (Template != null)
       {
         writer.Write(Template.ReplaceContents());
       }
@@ -165,7 +163,7 @@ namespace DotNetNuke.Modules.Blog.Templating
           string s = t.ReplaceContents();
           if (!s.StartsWith("<"))
           {
-            s = string.Format("<script type=\"text/javascript\">{0}//<![CDATA[{0}{1}//]]>{0}</script>", Constants.vbCrLf, s);
+            s = string.Format("<script type=\"text/javascript\">{0}//<![CDATA[{0}{1}//]]>{0}</script>", Environment.NewLine, s);
           }
           Page.ClientScript.RegisterClientScriptBlock(typeof(string), f.Name, s);
         }

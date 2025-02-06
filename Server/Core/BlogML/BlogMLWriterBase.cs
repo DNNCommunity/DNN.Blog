@@ -2,9 +2,9 @@
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Xml;
-using DotNetNuke.Modules.Blog.BlogML.Xml;
+using DotNetNuke.Modules.Blog.Core.BlogML.Xml;
 
-namespace DotNetNuke.Modules.Blog.BlogML
+namespace DotNetNuke.Modules.Blog.Core.BlogML
 {
 
   public abstract class BlogMLWriterBase
@@ -215,7 +215,7 @@ namespace DotNetNuke.Modules.Blog.BlogML
       WriteAttributeStringRequired("views", views.ToString());
       WriteContent("title", title);
       WriteContent("content", content);
-      if (postName is not null)
+      if (postName != null)
       {
         WriteContent("post-name", BlogMLContent.Create(postName, ContentTypes.Text));
       }
@@ -236,7 +236,7 @@ namespace DotNetNuke.Modules.Blog.BlogML
       WriteAttributeStringRequired("views", views.ToString());
       WriteContent("title", BlogMLContent.Create(title, titleContentType));
       WriteContent("content", BlogMLContent.Create(content, postContentType));
-      if (postName is not null)
+      if (postName != null)
       {
         WriteContent("post-name", BlogMLContent.Create(postName, ContentTypes.Text));
       }
@@ -355,7 +355,7 @@ namespace DotNetNuke.Modules.Blog.BlogML
           WriteAttributeStringRequired("size", size.ToString());
         }
 
-        if (mimeType is not null)
+        if (mimeType != null)
         {
           WriteAttributeStringRequired("mime-type", mimeType);
         }

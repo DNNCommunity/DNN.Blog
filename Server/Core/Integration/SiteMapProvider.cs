@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using DotNetNuke.Modules.Blog.Entities.Blogs;
-using DotNetNuke.Modules.Blog.Entities.Posts;
+using DotNetNuke.Modules.Blog.Core.Entities.Blogs;
+using DotNetNuke.Modules.Blog.Core.Entities.Posts;
 using DotNetNuke.Security.Permissions;
 // 
 // DNN Connect - http://dnn-connect.org
@@ -24,7 +24,7 @@ using DotNetNuke.Security.Permissions;
 
 using DotNetNuke.Services.Sitemap;
 
-namespace DotNetNuke.Modules.Blog.Integration
+namespace DotNetNuke.Modules.Blog.Core.Integration
 {
   public class BlogSiteMapProvider : SitemapProvider
   {

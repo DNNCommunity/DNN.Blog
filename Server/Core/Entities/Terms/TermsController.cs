@@ -1,6 +1,7 @@
-﻿using System;
+﻿using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Content.Taxonomy;
+using System;
 using System.Collections.Generic;
-using System.Data;
 // 
 // DNN Connect - http://dnn-connect.org
 // Copyright (c) 2015
@@ -23,14 +24,9 @@ using System.Data;
 
 using System.Linq;
 using System.Text;
-using System.Web.UI.WebControls;
 using System.Xml;
 
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Content.Taxonomy;
-using Microsoft.VisualBasic;
-
-namespace DotNetNuke.Modules.Blog.Entities.Terms
+namespace DotNetNuke.Modules.Blog.Core.Entities.Terms
 {
   public partial class TermsController
   {
@@ -93,7 +89,7 @@ namespace DotNetNuke.Modules.Blog.Entities.Terms
         TermInfo existantTerm = null;
         if (vocab.ContainsKey(name))
           existantTerm = vocab[name];
-        if (existantTerm is not null)
+        if (existantTerm != null)
         {
           res.Add(existantTerm);
         }
@@ -156,7 +152,7 @@ namespace DotNetNuke.Modules.Blog.Entities.Terms
       newTerm.TermId = DotNetNuke.Entities.Content.Common.Util.GetTermController().AddTerm(newTerm);
       foreach (string l in term.NameLocalizations.Locales)
         Data.DataProvider.Instance().SetTermLocalization(newTerm.TermId, l, term.NameLocalizations[l], term.DescriptionLocalizations[l]);
-      foreach (TermInfo t in vocabulary.Where(x => (bool)(term.TermId is var arg3 && x.ParentTermId is { } arg4 ? arg4 == arg3 : (bool?)null)))
+      foreach (TermInfo t in vocabulary.Where(x => x.ParentTermId.HasValue && x.ParentTermId.Value == term.TermId))
         AddTerm(vocabularyId, vocabulary, newTerm.TermId, t);
     }
     #endregion
@@ -169,9 +165,7 @@ namespace DotNetNuke.Modules.Blog.Entities.Terms
 
     public static string GetCategoryTreeAsJson(Dictionary<string, TermInfo> vocabulary, List<int> selectedIds)
     {
-      var childTreeBuilder = new StringBuilder();
-      GetCategoryTree(childTreeBuilder, vocabulary, -1, selectedIds);
-      string res = childTreeBuilder.ToString();
+      string res = GetCategoryTree(vocabulary, -1, selectedIds);
       if (res.Length > 0)
       {
         res = res.Substring(14); // cut off the first children declaration
@@ -179,8 +173,9 @@ namespace DotNetNuke.Modules.Blog.Entities.Terms
       return res;
     }
 
-    private static void GetCategoryTree(StringBuilder @out, Dictionary<string, TermInfo> vocabulary, int parentId, List<int> selectedIds)
+    private static string GetCategoryTree(Dictionary<string, TermInfo> vocabulary, int parentId, List<int> selectedIds)
     {
+      var res = new StringBuilder();
       IEnumerable<TermInfo> selection;
       if (parentId == -1)
       {
@@ -188,30 +183,31 @@ namespace DotNetNuke.Modules.Blog.Entities.Terms
       }
       else
       {
-        selection = vocabulary.Values.Where(t => t.ParentTermId is not null && (bool)(t.ParentTermId is { } arg6 ? arg6 == parentId : (bool?)null));
+        selection = vocabulary.Values.Where(t => t.ParentTermId.HasValue && t.ParentTermId.Value == parentId);
       }
 
       if (selection.Count() > 0)
       {
-        out.Append(", \"children\": [");
+        res.Append(", \"children\": [");
         bool first = true;
         foreach (TermInfo cat in selection)
         {
           if (!first)
-            out.Append(",");
-          out.Append("{");
-          out.Append(string.Format("\"title\": \"{0}\",", cat.LocalizedName));
-          out.Append(string.Format("\"key\": \"{0}\",", cat.TermId));
-          out.Append("\"icon\": false,");
-          out.Append("\"expand\": true,");
-          out.Append("\"isFolder\": true,");
-          out.Append(string.Format("\"select\": {0}", Interaction.IIf(selectedIds.Contains(cat.TermId), "true", "false")));
-          GetCategoryTree(out, vocabulary, cat.TermId, selectedIds);
-          out.Append("}");
+            res.Append(",");
+          res.Append("{");
+          res.Append(string.Format("\"title\": \"{0}\",", cat.LocalizedName));
+          res.Append(string.Format("\"key\": \"{0}\",", cat.TermId));
+          res.Append("\"icon\": false,");
+          res.Append("\"expand\": true,");
+          res.Append("\"isFolder\": true,");
+          res.Append(string.Format("\"select\": {0}", selectedIds.Contains(cat.TermId).ToString().ToLowerInvariant()));
+          res.Append(GetCategoryTree(vocabulary, cat.TermId, selectedIds));
+          res.Append("}");
           first = false;
         }
-        out.Append("]");
+        res.Append("]");
       }
+      return res.ToString();
     }
     #endregion
 

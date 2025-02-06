@@ -26,7 +26,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Cache;
 using Microsoft.VisualBasic;
 
-namespace DotNetNuke.Modules.Blog.Templating
+namespace DotNetNuke.Modules.Blog.Core.Templating
 {
   public class Templating
   {
@@ -42,11 +42,11 @@ namespace DotNetNuke.Modules.Blog.Templating
       {
         if (value)
         {
-          return Strings.Left(format, format.IndexOf(";"));
+          return format.Substring(0, format.IndexOf(";"));
         }
         else
         {
-          return Strings.Mid(format, format.IndexOf(";") + 2);
+          return format.Substring(format.IndexOf(";") + 1);
         }
       }
       return DotNetNuke.Services.Tokens.PropertyAccess.Boolean2LocalizedYesNo(value, formatProvider);

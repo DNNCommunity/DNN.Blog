@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace DotNetNuke.Modules.Blog.BlogML
+namespace DotNetNuke.Modules.Blog.Core.BlogML
 {
   public enum ContentTypes : short
   {

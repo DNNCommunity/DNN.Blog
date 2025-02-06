@@ -19,11 +19,10 @@
 // DEALINGS IN THE SOFTWARE.
 // 
 
+using DotNetNuke.Modules.Blog.Core.Common;
 using System.Runtime.Serialization;
-using static DotNetNuke.Common.Globals;
-using static DotNetNuke.Modules.Blog.Common.Globals;
 
-namespace DotNetNuke.Modules.Blog.Entities.Blogs
+namespace DotNetNuke.Modules.Blog.Core.Entities.Blogs
 {
 
   public partial class BlogInfo
@@ -73,14 +72,14 @@ namespace DotNetNuke.Modules.Blog.Entities.Blogs
     {
       if (string.IsNullOrEmpty(_permaLink))
       {
-        _permaLink = ApplicationURL(tab.TabID) + "&Blog=" + BlogID.ToString();
+        _permaLink = DotNetNuke.Common.Globals.ApplicationURL(tab.TabID) + "&Blog=" + BlogID.ToString();
         if (DotNetNuke.Entities.Host.Host.UseFriendlyUrls)
         {
-          _permaLink = FriendlyUrl(tab, _permaLink, GetSafePageName(LocalizedTitle));
+          _permaLink = DotNetNuke.Common.Globals.FriendlyUrl(tab, _permaLink, Globals.GetSafePageName(LocalizedTitle));
         }
         else
         {
-          _permaLink = ResolveUrl(_permaLink);
+          _permaLink = DotNetNuke.Common.Globals.ResolveUrl(_permaLink);
         }
       }
       return _permaLink;

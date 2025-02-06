@@ -19,7 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 // 
 
-namespace DotNetNuke.Modules.Blog.Security.Permissions
+namespace DotNetNuke.Modules.Blog.Core.Security.Permissions
 {
   public class PermissionsController
   {

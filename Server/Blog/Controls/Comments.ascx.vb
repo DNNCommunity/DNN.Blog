@@ -19,83 +19,83 @@
 '
 
 Imports System.Linq
-
-Imports DotNetNuke.Modules.Blog.Templating
-Imports DotNetNuke.Modules.Blog.Entities.Comments
+Imports DotNetNuke.Modules.Blog.Core.Common
+Imports DotNetNuke.Modules.Blog.Core.Entities.Comments
+Imports DotNetNuke.Modules.Blog.Core.Templating
 
 Namespace Controls
- Public Class Comments
-  Inherits BlogModuleBase
+  Public Class Comments
+    Inherits BlogModuleBase
 
 #Region " Properties "
-  Private Property AllComments As New List(Of CommentInfo)
+    Private Property AllComments As New List(Of CommentInfo)
 #End Region
 
 #Region " Event Handlers "
-  Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 
-   LocalResourceFile = "~/DesktopModules/Blog/Controls/App_LocalResources/Comments.ascx.resx"
-   AddJavascriptFile("jquery.timeago.js", "jquery.timeago", "1.0.2", 59)
-   ' localized js files?
-   Dim locale As String = Threading.Thread.CurrentThread.CurrentCulture.Name.ToLower
-   If IO.Directory.Exists(BlogModuleMapPath & "js\" & locale) Then
-    For Each f As IO.FileInfo In (New IO.DirectoryInfo(BlogModuleMapPath & "js\" & locale)).GetFiles("*.js")
-     AddJavascriptFile(locale & "/" & f.Name, 60)
-    Next
-   Else ' check generic culture
-    locale = Threading.Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.ToLower
-    If IO.Directory.Exists(BlogModuleMapPath & "js\" & locale) Then
-     For Each f As IO.FileInfo In (New IO.DirectoryInfo(BlogModuleMapPath & "js\" & locale)).GetFiles("*.js")
-      AddJavascriptFile(locale & "/" & f.Name, 60)
-     Next
-    End If
-   End If
-   If BlogContext.Post IsNot Nothing AndAlso BlogContext.Security.CanViewComments AndAlso BlogContext.Post.AllowComments Then
-    AllComments = CommentsController.GetCommentsByContentItem(BlogContext.Post.ContentItemId, BlogContext.Security.CanApproveComment, UserId)
-    DataBind()
-   End If
+      LocalResourceFile = "~/DesktopModules/Blog/Controls/App_LocalResources/Comments.ascx.resx"
+      AddJavascriptFile("jquery.timeago.js", "jquery.timeago", "1.0.2", 59)
+      ' localized js files?
+      Dim locale As String = Threading.Thread.CurrentThread.CurrentCulture.Name.ToLower
+      If IO.Directory.Exists(BlogModuleMapPath & "js\" & locale) Then
+        For Each f As IO.FileInfo In (New IO.DirectoryInfo(BlogModuleMapPath & "js\" & locale)).GetFiles("*.js")
+          AddJavascriptFile(locale & "/" & f.Name, 60)
+        Next
+      Else ' check generic culture
+        locale = Threading.Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.ToLower
+        If IO.Directory.Exists(BlogModuleMapPath & "js\" & locale) Then
+          For Each f As IO.FileInfo In (New IO.DirectoryInfo(BlogModuleMapPath & "js\" & locale)).GetFiles("*.js")
+            AddJavascriptFile(locale & "/" & f.Name, 60)
+          Next
+        End If
+      End If
+      If BlogContext.Post IsNot Nothing AndAlso BlogContext.Security.CanViewComments AndAlso BlogContext.Post.AllowComments Then
+        AllComments = CommentsController.GetCommentsByContentItem(BlogContext.Post.ContentItemId, BlogContext.Security.CanApproveComment, UserId)
+        DataBind()
+      End If
 
-  End Sub
+    End Sub
 #End Region
 
 #Region " Template Data Retrieval "
-  Private Sub vtContents_GetData(ByVal DataSource As String, ByVal Parameters As Dictionary(Of String, String), ByRef Replacers As System.Collections.Generic.List(Of GenericTokenReplace), ByRef Arguments As System.Collections.Generic.List(Of String()), callingObject As Object) Handles vtContents.GetData
+    Private Sub vtContents_GetData(ByVal DataSource As String, ByVal Parameters As Dictionary(Of String, String), ByRef Replacers As System.Collections.Generic.List(Of GenericTokenReplace), ByRef Arguments As System.Collections.Generic.List(Of String()), callingObject As Object) Handles vtContents.GetData
 
-   Select Case DataSource.ToLower
+      Select Case DataSource.ToLower
 
-    Case "comments"
+        Case "comments"
 
-     If callingObject IsNot Nothing AndAlso TypeOf callingObject Is CommentInfo Then
-      Dim parent As Integer = CType(callingObject, CommentInfo).CommentID
-      For Each c As CommentInfo In AllComments.Where(Function(cmt) cmt.ParentId = parent).OrderBy(Function(cmt) cmt.CreatedOnDate)
-       Replacers.Add(New BlogTokenReplace(Me, BlogContext.Post, c))
-      Next
-     Else
-      For Each c As CommentInfo In AllComments.Where(Function(cmt) cmt.ParentId = -1).OrderBy(Function(cmt) cmt.CreatedOnDate)
-       Replacers.Add(New BlogTokenReplace(Me, BlogContext.Post, c))
-      Next
-     End If
+          If callingObject IsNot Nothing AndAlso TypeOf callingObject Is CommentInfo Then
+            Dim parent As Integer = CType(callingObject, CommentInfo).CommentID
+            For Each c As CommentInfo In AllComments.Where(Function(cmt) cmt.ParentId = parent).OrderBy(Function(cmt) cmt.CreatedOnDate)
+              Replacers.Add(New BlogTokenReplace(Me.ModuleConfiguration, Me.BlogContext, Me.Settings, Me.ViewSettings, BlogContext.Post, c))
+            Next
+          Else
+            For Each c As CommentInfo In AllComments.Where(Function(cmt) cmt.ParentId = -1).OrderBy(Function(cmt) cmt.CreatedOnDate)
+              Replacers.Add(New BlogTokenReplace(Me.ModuleConfiguration, Me.BlogContext, Me.Settings, Me.ViewSettings, BlogContext.Post, c))
+            Next
+          End If
 
-   End Select
+      End Select
 
-  End Sub
+    End Sub
 #End Region
 
 #Region " Overrides "
-  Public Overrides Sub DataBind()
+    Public Overrides Sub DataBind()
 
-   Dim tmgr As New TemplateManager(PortalSettings, ViewSettings.Template)
-   With vtContents
-    .TemplatePath = tmgr.TemplatePath
-    .TemplateRelPath = tmgr.TemplateRelPath
-    .TemplateMapPath = tmgr.TemplateMapPath
-    .DefaultReplacer = New BlogTokenReplace(Me)
-    .StartTemplate = "CommentsTemplate.html"
-   End With
-   vtContents.DataBind()
+      Dim tmgr As New TemplateManager(PortalSettings, ViewSettings.Template)
+      With vtContents
+        .TemplatePath = tmgr.TemplatePath
+        .TemplateRelPath = tmgr.TemplateRelPath
+        .TemplateMapPath = tmgr.TemplateMapPath
+        .DefaultReplacer = New BlogTokenReplace(Me.ModuleConfiguration, Me.BlogContext, Me.Settings, Me.ViewSettings)
+        .StartTemplate = "CommentsTemplate.html"
+      End With
+      vtContents.DataBind()
 
-  End Sub
+    End Sub
 #End Region
 
- End Class
+  End Class
 End Namespace

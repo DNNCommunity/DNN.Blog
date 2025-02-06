@@ -1,6 +1,4 @@
-﻿using System;
-using System.Web;
-// 
+﻿// 
 // DNN Connect - http://dnn-connect.org
 // Copyright (c) 2015
 // by DNN Connect
@@ -21,10 +19,11 @@ using System.Web;
 // 
 
 using DotNetNuke.Entities.Portals;
-using static DotNetNuke.Modules.Blog.Common.Globals;
-using Microsoft.VisualBasic;
+using DotNetNuke.Modules.Blog.Core.Common;
+using System;
+using System.Web;
 
-namespace DotNetNuke.Modules.Blog.Templating
+namespace DotNetNuke.Modules.Blog.Core.Templating
 {
   [Serializable()]
   public class TemplateManager
@@ -34,22 +33,22 @@ namespace DotNetNuke.Modules.Blog.Templating
     {
       if (template.StartsWith("[G]"))
       {
-        TemplatePath = DotNetNuke.Common.Globals.ResolveUrl(glbTemplatesPath) + Strings.Mid(template, 4) + "/";
-        TemplateRelPath = glbTemplatesPath + Strings.Mid(template, 4) + "/";
-        TemplateMapPath = HttpContext.Current.Server.MapPath(DotNetNuke.Common.Globals.ResolveUrl(glbTemplatesPath)) + Strings.Mid(template, 4) + @"\";
+        TemplatePath = DotNetNuke.Common.Globals.ResolveUrl(Globals.glbTemplatesPath) + template.Substring(4) + "/";
+        TemplateRelPath = Globals.glbTemplatesPath + template.Substring(4) + "/";
+        TemplateMapPath = HttpContext.Current.Server.MapPath(DotNetNuke.Common.Globals.ResolveUrl(Globals.glbTemplatesPath)) + template.Substring(4) + @"\";
       }
       else if (template.StartsWith("[S]"))
       {
-        TemplatePath = portalsettings.ActiveTab.SkinPath + "Templates/Blog/" + Strings.Mid(template, 4) + "/";
+        TemplatePath = portalsettings.ActiveTab.SkinPath + "Templates/Blog/" + template.Substring(4) + "/";
         TemplateRelPath = "~" + TemplatePath.Substring(DotNetNuke.Common.Globals.ApplicationPath.Length);
         TemplateMapPath = HttpContext.Current.Server.MapPath(TemplatePath);
       }
       else
       {
-        TemplatePath = portalsettings.HomeDirectory.TrimEnd('/') + "/Blog/Templates/" + Strings.Mid(template, 4) + "/";
+        TemplatePath = portalsettings.HomeDirectory.TrimEnd('/') + "/Blog/Templates/" + template.Substring(4) + "/";
         var pi = new PortalController().GetPortal(portalsettings.PortalId);
-        TemplateRelPath = "~/" + pi.HomeDirectory.TrimEnd('/') + "/Blog/Templates/" + Strings.Mid(template, 4) + "/";
-        TemplateMapPath = portalsettings.HomeDirectoryMapPath.TrimEnd('\\') + @"\Blog\Templates\" + Strings.Mid(template, 4) + @"\";
+        TemplateRelPath = "~/" + pi.HomeDirectory.TrimEnd('/') + "/Blog/Templates/" + template.Substring(4) + "/";
+        TemplateMapPath = portalsettings.HomeDirectoryMapPath.TrimEnd('\\') + @"\Blog\Templates\" + template.Substring(4) + @"\";
       }
     }
 
@@ -93,7 +92,7 @@ namespace DotNetNuke.Modules.Blog.Templating
           _description = "";
           if (System.IO.File.Exists(TemplateMapPath + "description.txt"))
           {
-            _description = ReadFile(TemplateMapPath + "description.txt");
+            _description = Globals.ReadFile(TemplateMapPath + "description.txt");
           }
         }
         return _description;

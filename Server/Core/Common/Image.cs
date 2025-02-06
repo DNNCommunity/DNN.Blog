@@ -22,7 +22,7 @@ using System.Drawing;
 
 using System.Drawing.Imaging;
 
-namespace DotNetNuke.Modules.Blog.Common
+namespace DotNetNuke.Modules.Blog.Core.Common
 {
   public class Image
   {

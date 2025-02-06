@@ -3,7 +3,7 @@ using System.Text;
 using System.Web;
 using System.Xml.Serialization;
 
-namespace DotNetNuke.Modules.Blog.BlogML.Xml
+namespace DotNetNuke.Modules.Blog.Core.BlogML.Xml
 {
   [Serializable]
   public sealed class BlogMLContent

@@ -21,7 +21,7 @@
 
 using DotNetNuke.Entities.Modules;
 
-namespace DotNetNuke.Modules.Blog.Integration
+namespace DotNetNuke.Modules.Blog.Core.Integration
 {
   public partial class BlogModuleController : IUpgradeable
   {

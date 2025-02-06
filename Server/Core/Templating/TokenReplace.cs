@@ -31,7 +31,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Tokens;
 
-namespace DotNetNuke.Modules.Blog.Templating
+namespace DotNetNuke.Modules.Blog.Core.Templating
 {
 
   /// <summary>
@@ -103,7 +103,7 @@ namespace DotNetNuke.Modules.Blog.Templating
         if (ModuleId > int.MinValue && (_ModuleInfo is null || _ModuleInfo.ModuleID != ModuleId))
         {
           var mc = new ModuleController();
-          if (PortalSettings is not null && PortalSettings.ActiveTab is not null)
+          if (PortalSettings != null && PortalSettings.ActiveTab != null)
           {
             _ModuleInfo = mc.GetModule(ModuleId, PortalSettings.ActiveTab.TabID, false);
           }
@@ -235,7 +235,7 @@ namespace DotNetNuke.Modules.Blog.Templating
       {
         if (PortalSettings is null)
         {
-          if (HttpContext.Current is not null)
+          if (HttpContext.Current != null)
             this.PortalSettings = Framework.ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings();
         }
         else
@@ -244,7 +244,7 @@ namespace DotNetNuke.Modules.Blog.Templating
         }
         if (User is null)
         {
-          if (HttpContext.Current is not null)
+          if (HttpContext.Current != null)
           {
             this.User = (UserInfo)HttpContext.Current.Items["UserInfo"];
           }
@@ -257,7 +257,7 @@ namespace DotNetNuke.Modules.Blog.Templating
         else
         {
           this.User = User;
-          if (HttpContext.Current is not null)
+          if (HttpContext.Current != null)
           {
             AccessingUser = (UserInfo)HttpContext.Current.Items["UserInfo"];
           }
@@ -405,14 +405,14 @@ namespace DotNetNuke.Modules.Blog.Templating
       // initialization
       if (CurrentAccessLevel >= Scope.Configuration)
       {
-        if (PortalSettings is not null)
+        if (PortalSettings != null)
         {
           PropertySource["portal"] = PortalSettings;
           PropertySource["tab"] = PortalSettings.ActiveTab;
 
         }
         PropertySource["host"] = new HostPropertyAccess();
-        if (ModuleInfo is not null)
+        if (ModuleInfo != null)
         {
           PropertySource["module"] = ModuleInfo;
         }

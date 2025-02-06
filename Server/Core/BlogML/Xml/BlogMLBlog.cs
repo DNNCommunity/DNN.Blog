@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace DotNetNuke.Modules.Blog.BlogML.Xml
+namespace DotNetNuke.Modules.Blog.Core.BlogML.Xml
 {
   [Serializable]
   [XmlRoot(ElementName = "blog", Namespace = "http://www.blogml.com/2006/09/BlogML")]

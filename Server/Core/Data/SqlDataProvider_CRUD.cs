@@ -22,9 +22,8 @@ using DotNetNuke.Framework.Providers;
 // 
 
 using Microsoft.ApplicationBlocks.Data;
-using Microsoft.VisualBasic.CompilerServices;
 
-namespace DotNetNuke.Modules.Blog.Data
+namespace DotNetNuke.Modules.Blog.Core.Data
 {
 
   public partial class SqlDataProvider : DataProvider
@@ -150,7 +149,7 @@ namespace DotNetNuke.Modules.Blog.Data
 
     public override int AddBlog(bool autoApprovePingBack, int moduleID, bool autoApproveTrackBack, string copyright, string description, bool enablePingBackReceive, bool enablePingBackSend, bool enableTrackBackReceive, bool enableTrackBackSend, bool fullLocalization, string image, bool includeAuthorInFeed, bool includeImagesInFeed, string locale, bool mustApproveGhostPosts, int ownerUserId, bool publishAsOwner, bool published, bool syndicated, string syndicationEmail, string title, int createdByUser)
     {
-      return Conversions.ToInteger(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "AddBlog", autoApprovePingBack, moduleID, autoApproveTrackBack, GetNull(copyright), GetNull(description), enablePingBackReceive, enablePingBackSend, enableTrackBackReceive, enableTrackBackSend, fullLocalization, GetNull(image), includeAuthorInFeed, includeImagesInFeed, locale, mustApproveGhostPosts, ownerUserId, publishAsOwner, published, syndicated, GetNull(syndicationEmail), title, createdByUser));
+      return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "AddBlog", autoApprovePingBack, moduleID, autoApproveTrackBack, GetNull(copyright), GetNull(description), enablePingBackReceive, enablePingBackSend, enableTrackBackReceive, enableTrackBackSend, fullLocalization, GetNull(image), includeAuthorInFeed, includeImagesInFeed, locale, mustApproveGhostPosts, ownerUserId, publishAsOwner, published, syndicated, GetNull(syndicationEmail), title, createdByUser));
     }
 
     public override void UpdateBlog(bool autoApprovePingBack, int moduleID, bool autoApproveTrackBack, int blogID, string copyright, string description, bool enablePingBackReceive, bool enablePingBackSend, bool enableTrackBackReceive, bool enableTrackBackSend, bool fullLocalization, string image, bool includeAuthorInFeed, bool includeImagesInFeed, string locale, bool mustApproveGhostPosts, int ownerUserId, bool publishAsOwner, bool published, bool syndicated, string syndicationEmail, string title, int updatedByUser)
@@ -169,7 +168,7 @@ namespace DotNetNuke.Modules.Blog.Data
 
     public override int AddComment(bool approved, string author, string comment, int contentItemId, string email, int parentId, string website, int createdByUser)
     {
-      return Conversions.ToInteger(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "AddComment", approved, GetNull(author), comment, contentItemId, GetNull(email), GetNull(parentId), GetNull(website), createdByUser));
+      return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "AddComment", approved, GetNull(author), comment, contentItemId, GetNull(email), GetNull(parentId), GetNull(website), createdByUser));
     }
 
     public override void UpdateComment(bool approved, string author, string comment, int commentID, int contentItemId, string email, int parentId, string website, int updatedByUser)
@@ -200,7 +199,7 @@ namespace DotNetNuke.Modules.Blog.Data
 
     public override int AddPost(bool allowComments, int blogID, string content, string copyright, bool displayCopyright, string image, string locale, bool published, DateTime publishedOnDate, string summary, string termIds, string title, int viewCount, int createdByUser)
     {
-      return Conversions.ToInteger(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "AddPost", allowComments, blogID, content, copyright, displayCopyright, image, GetNull(locale), published, publishedOnDate, summary, termIds, title, viewCount, createdByUser));
+      return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "AddPost", allowComments, blogID, content, copyright, displayCopyright, image, GetNull(locale), published, publishedOnDate, summary, termIds, title, viewCount, createdByUser));
     }
 
     public override void UpdatePost(bool allowComments, int blogID, string content, int contentItemId, string copyright, bool displayCopyright, string image, string locale, bool published, DateTime publishedOnDate, string summary, string termIds, string title, int viewCount, int updatedByUser)

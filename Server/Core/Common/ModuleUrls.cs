@@ -21,7 +21,7 @@
 
 using DotNetNuke.Services.Tokens;
 
-namespace DotNetNuke.Modules.Blog.Common
+namespace DotNetNuke.Modules.Blog.Core.Common
 {
   public class ModuleUrls : IPropertyAccess
   {

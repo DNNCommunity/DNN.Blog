@@ -26,7 +26,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Tokens;
 using Microsoft.VisualBasic;
 
-namespace DotNetNuke.Modules.Blog.Entities.Blogs
+namespace DotNetNuke.Modules.Blog.Core.Entities.Blogs
 {
   public class BlogCalendarInfo : IHydratable, IPropertyAccess
   {
@@ -52,7 +52,7 @@ namespace DotNetNuke.Modules.Blog.Entities.Blogs
       {
         if (_FirstDay == DateTime.MinValue)
         {
-          _FirstDay = DateAndTime.DateSerial(PostYear, PostMonth, 1);
+          _FirstDay = new DateTime(PostYear, PostMonth, 1);
         }
         return _FirstDay;
       }
@@ -65,7 +65,7 @@ namespace DotNetNuke.Modules.Blog.Entities.Blogs
       {
         if (_FirstDayNextMonth == DateTime.MinValue)
         {
-          _FirstDayNextMonth = DateAndTime.DateSerial(PostYear, PostMonth, 1).AddMonths(1);
+          _FirstDayNextMonth = new DateTime(PostYear, PostMonth, 1).AddMonths(1);
         }
         return _FirstDayNextMonth;
       }
@@ -78,7 +78,7 @@ namespace DotNetNuke.Modules.Blog.Entities.Blogs
       {
         if (_LastDay == DateTime.MinValue)
         {
-          _LastDay = DateAndTime.DateSerial(PostYear, PostMonth, 1).AddMonths(1).AddDays(-1);
+          _LastDay = new DateTime(PostYear, PostMonth, 1).AddMonths(1).AddDays(-1);
         }
         return _LastDay;
       }

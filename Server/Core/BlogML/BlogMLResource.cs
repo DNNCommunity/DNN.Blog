@@ -3,7 +3,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Schema;
 
-namespace DotNetNuke.Modules.Blog.BlogML
+namespace DotNetNuke.Modules.Blog.Core.BlogML
 {
 
   public class BlogMLResource
@@ -50,7 +50,7 @@ namespace DotNetNuke.Modules.Blog.BlogML
       }
       finally
       {
-        if (reader is not null)
+        if (reader != null)
         {
           reader.Close();
 
@@ -75,7 +75,7 @@ namespace DotNetNuke.Modules.Blog.BlogML
         validator.ValidationType = ValidationType.Schema;
 
 
-        if (validationHandler is not null)
+        if (validationHandler != null)
         {
           validator.ValidationEventHandler += validationHandler;
         }
@@ -98,7 +98,7 @@ namespace DotNetNuke.Modules.Blog.BlogML
       }
       finally
       {
-        if (validationHandler is not null)
+        if (validationHandler != null)
         {
           validator.ValidationEventHandler -= validationHandler;
         }

@@ -21,11 +21,11 @@ using DotNetNuke.Common.Utilities;
 // DEALINGS IN THE SOFTWARE.
 // 
 
-using DotNetNuke.Modules.Blog.Data;
-using DotNetNuke.Modules.Blog.Entities.Blogs;
-using DotNetNuke.Modules.Blog.Integration;
+using DotNetNuke.Modules.Blog.Core.Data;
+using DotNetNuke.Modules.Blog.Core.Entities.Blogs;
+using DotNetNuke.Modules.Blog.Core.Integration;
 
-namespace DotNetNuke.Modules.Blog.Entities.Posts
+namespace DotNetNuke.Modules.Blog.Core.Entities.Posts
 {
 
   public partial class PostsController

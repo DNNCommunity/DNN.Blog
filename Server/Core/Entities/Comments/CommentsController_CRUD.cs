@@ -21,9 +21,9 @@
 
 
 
-using DotNetNuke.Modules.Blog.Data;
+using DotNetNuke.Modules.Blog.Core.Data;
 
-namespace DotNetNuke.Modules.Blog.Entities.Comments
+namespace DotNetNuke.Modules.Blog.Core.Entities.Comments
 {
 
   public partial class CommentsController

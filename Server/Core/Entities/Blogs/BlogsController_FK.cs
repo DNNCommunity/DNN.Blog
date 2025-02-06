@@ -22,7 +22,7 @@
 
 
 
-namespace DotNetNuke.Modules.Blog.Entities.Blogs
+namespace DotNetNuke.Modules.Blog.Core.Entities.Blogs
 {
 
   public partial class BlogsController

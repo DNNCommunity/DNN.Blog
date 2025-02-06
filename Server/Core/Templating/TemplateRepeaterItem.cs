@@ -22,7 +22,7 @@
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Tokens;
 
-namespace DotNetNuke.Modules.Blog.Templating
+namespace DotNetNuke.Modules.Blog.Core.Templating
 {
   public class TemplateRepeaterItem : IPropertyAccess
   {

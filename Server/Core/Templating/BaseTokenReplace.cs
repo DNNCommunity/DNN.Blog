@@ -23,7 +23,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using DotNetNuke.UI.Utilities;
 
-namespace DotNetNuke.Modules.Blog.Templating
+namespace DotNetNuke.Modules.Blog.Core.Templating
 {
 
   /// <summary>

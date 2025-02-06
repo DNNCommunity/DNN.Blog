@@ -1,4 +1,12 @@
-﻿using System;
+﻿using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Modules.Blog.Core.Common;
+using DotNetNuke.Modules.Blog.Core.Security.Permissions;
+using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.UI.WebControls;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -26,17 +34,8 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using static DotNetNuke.Modules.Blog.Common.Globals;
-using DotNetNuke.Modules.Blog.Security.Permissions;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.WebControls;
-using Microsoft.VisualBasic;
 
-namespace DotNetNuke.Modules.Blog.Security.Controls
+namespace DotNetNuke.Modules.Blog.Core.Security.Controls
 {
 
   public abstract class PermissionsGrid : Control, INamingContainer
@@ -213,13 +212,13 @@ namespace DotNetNuke.Modules.Blog.Security.Controls
     #endregion
 
     /// -----------------------------------------------------------------------------
-  /// <summary>
-  /// Gets the Id of the Administrator Role
-  /// </summary>
-  /// <history>
-  ///     [cnurse]    01/16/2006  Created
-  /// </history>
-  /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// Gets the Id of the Administrator Role
+    /// </summary>
+    /// <history>
+    ///     [cnurse]    01/16/2006  Created
+    /// </history>
+    /// -----------------------------------------------------------------------------
     public int AdministratorRoleId
     {
       get
@@ -229,13 +228,13 @@ namespace DotNetNuke.Modules.Blog.Security.Controls
     }
 
     /// -----------------------------------------------------------------------------
-  /// <summary>
-  /// Gets the Id of the Registered Users Role
-  /// </summary>
-  /// <history>
-  ///     [cnurse]    01/16/2006  Created
-  /// </history>
-  /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// Gets the Id of the Registered Users Role
+    /// </summary>
+    /// <history>
+    ///     [cnurse]    01/16/2006  Created
+    /// </history>
+    /// -----------------------------------------------------------------------------
     public int RegisteredUsersRoleId
     {
       get
@@ -245,13 +244,13 @@ namespace DotNetNuke.Modules.Blog.Security.Controls
     }
 
     /// -----------------------------------------------------------------------------
-  /// <summary>
-  /// Gets and Sets whether a Dynamic Column has been added
-  /// </summary>
-  /// <history>
-  ///     [cnurse]    01/09/2006  Documented
-  /// </history>
-  /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// Gets and Sets whether a Dynamic Column has been added
+    /// </summary>
+    /// <history>
+    ///     [cnurse]    01/09/2006  Documented
+    /// </history>
+    /// -----------------------------------------------------------------------------
     public bool DynamicColumnAdded
     {
       get
@@ -272,13 +271,13 @@ namespace DotNetNuke.Modules.Blog.Security.Controls
     }
 
     /// -----------------------------------------------------------------------------
-  /// <summary>
-  /// Gets the underlying Permissions Data Table
-  /// </summary>
-  /// <history>
-  ///     [cnurse]    01/09/2006  Created
-  /// </history>
-  /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// Gets the underlying Permissions Data Table
+    /// </summary>
+    /// <history>
+    ///     [cnurse]    01/09/2006  Created
+    /// </history>
+    /// -----------------------------------------------------------------------------
     public DataTable dtRolePermissions
     {
       get
@@ -288,13 +287,13 @@ namespace DotNetNuke.Modules.Blog.Security.Controls
     }
 
     /// -----------------------------------------------------------------------------
-  /// <summary>
-  /// Gets the underlying Permissions Data Table
-  /// </summary>
-  /// <history>
-  ///     [cnurse]    01/09/2006  Created
-  /// </history>
-  /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// Gets the underlying Permissions Data Table
+    /// </summary>
+    /// <history>
+    ///     [cnurse]    01/09/2006  Created
+    /// </history>
+    /// -----------------------------------------------------------------------------
     public DataTable dtUserPermissions
     {
       get
@@ -304,13 +303,13 @@ namespace DotNetNuke.Modules.Blog.Security.Controls
     }
 
     /// -----------------------------------------------------------------------------
-  /// <summary>
-  /// Gets the Id of the Portal
-  /// </summary>
-  /// <history>
-  ///     [cnurse]    01/16/2006  Created
-  /// </history>
-  /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// Gets the Id of the Portal
+    /// </summary>
+    /// <history>
+    ///     [cnurse]    01/16/2006  Created
+    /// </history>
+    /// -----------------------------------------------------------------------------
     public int PortalId
     {
       get
@@ -333,13 +332,13 @@ namespace DotNetNuke.Modules.Blog.Security.Controls
     }
 
     /// -----------------------------------------------------------------------------
-  /// <summary>
-  /// Gets and Sets the collection of Roles to display
-  /// </summary>
-  /// <history>
-  ///     [cnurse]    01/09/2006  Created
-  /// </history>
-  /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// Gets and Sets the collection of Roles to display
+    /// </summary>
+    /// <history>
+    ///     [cnurse]    01/09/2006  Created
+    /// </history>
+    /// -----------------------------------------------------------------------------
     public List<RoleInfo> Roles
     {
       get
@@ -353,13 +352,13 @@ namespace DotNetNuke.Modules.Blog.Security.Controls
     }
 
     /// -----------------------------------------------------------------------------
-  /// <summary>
-  /// Gets and Sets the ResourceFile to localize permissions
-  /// </summary>
-  /// <history>
-  ///     [vmasanas]    02/24/2006  Created
-  /// </history>
-  /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// Gets and Sets the ResourceFile to localize permissions
+    /// </summary>
+    /// <history>
+    ///     [vmasanas]    02/24/2006  Created
+    /// </history>
+    /// -----------------------------------------------------------------------------
     public string ResourceFile
     {
       get
@@ -376,13 +375,13 @@ namespace DotNetNuke.Modules.Blog.Security.Controls
     #region  Abstract Methods 
 
     /// -----------------------------------------------------------------------------
-  /// <summary>
-  /// Generate the Data Grid
-  /// </summary>
-  /// <history>
-  ///     [cnurse]    01/09/2006  Created
-  /// </history>
-  /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// Generate the Data Grid
+    /// </summary>
+    /// <history>
+    ///     [cnurse]    01/09/2006  Created
+    /// </history>
+    /// -----------------------------------------------------------------------------
     public abstract void GenerateDataGrid();
 
     #endregion
@@ -390,13 +389,13 @@ namespace DotNetNuke.Modules.Blog.Security.Controls
     #region  Private Methods 
 
     /// -----------------------------------------------------------------------------
-  /// <summary>
-  /// Bind the data to the controls
-  /// </summary>
-  /// <history>
-  ///     [cnurse]    01/09/2006  Created
-  /// </history>
-  /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// Bind the data to the controls
+    /// </summary>
+    /// <history>
+    ///     [cnurse]    01/09/2006  Created
+    /// </history>
+    /// -----------------------------------------------------------------------------
     private void BindData()
     {
 
@@ -408,13 +407,13 @@ namespace DotNetNuke.Modules.Blog.Security.Controls
     }
 
     /// -----------------------------------------------------------------------------
-  /// <summary>
-  /// Bind the Roles data to the Grid
-  /// </summary>
-  /// <history>
-  ///     [cnurse]    01/09/2006  Created
-  /// </history>
-  /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// Bind the Roles data to the Grid
+    /// </summary>
+    /// <history>
+    ///     [cnurse]    01/09/2006  Created
+    /// </history>
+    /// -----------------------------------------------------------------------------
     private void BindRolesGrid()
     {
 
@@ -470,13 +469,13 @@ namespace DotNetNuke.Modules.Blog.Security.Controls
     }
 
     /// -----------------------------------------------------------------------------
-  /// <summary>
-  /// Bind the Roles data to the Grid
-  /// </summary>
-  /// <history>
-  ///     [cnurse]    01/09/2006  Created
-  /// </history>
-  /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// Bind the Roles data to the Grid
+    /// </summary>
+    /// <history>
+    ///     [cnurse]    01/09/2006  Created
+    /// </history>
+    /// -----------------------------------------------------------------------------
     private void BindUsersGrid()
     {
 
@@ -504,7 +503,7 @@ namespace DotNetNuke.Modules.Blog.Security.Controls
         dtUserPermissions.Columns.Add(col);
       }
 
-      if (dgUserPermissions is not null)
+      if (dgUserPermissions != null)
       {
 
         _users = GetUsers();
@@ -546,29 +545,29 @@ namespace DotNetNuke.Modules.Blog.Security.Controls
     }
 
     /// -----------------------------------------------------------------------------
-  /// <summary>
-  /// Gets the roles from the Database and loads them into the Roles property
-  /// </summary>
-  /// <history>
-  ///     [cnurse]    01/09/2006  Created
-  /// </history>
-  /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// Gets the roles from the Database and loads them into the Roles property
+    /// </summary>
+    /// <history>
+    ///     [cnurse]    01/09/2006  Created
+    /// </history>
+    /// -----------------------------------------------------------------------------
     private void GetRoles()
     {
       var objRoleController = new RoleController();
       int RoleGroupId = -2;
-      if (cboRoleGroups is not null && cboRoleGroups.SelectedValue is not null)
+      if (cboRoleGroups != null && cboRoleGroups.SelectedValue != null)
       {
         RoleGroupId = int.Parse(cboRoleGroups.SelectedValue);
       }
 
       if (RoleGroupId > -2)
       {
-        _roles = GetRolesByGroup(Framework.ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings().PortalId, RoleGroupId);
+        _roles = Globals.GetRolesByGroup(PortalController.Instance.GetCurrentSettings().PortalId, RoleGroupId);
       }
       else
       {
-        _roles = GetRolesByPortal(Framework.ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings().PortalId);
+        _roles = Globals.GetRolesByPortal(PortalController.Instance.GetCurrentSettings().PortalId);
       }
       if (!IncludeAdministratorRole)
       {
@@ -595,13 +594,13 @@ namespace DotNetNuke.Modules.Blog.Security.Controls
     }
 
     /// -----------------------------------------------------------------------------
-  /// <summary>
-  /// Sets up the columns for the Grid
-  /// </summary>
-  /// <history>
-  ///     [cnurse]    01/09/2006  Created
-  /// </history>
-  /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// Sets up the columns for the Grid
+    /// </summary>
+    /// <history>
+    ///     [cnurse]    01/09/2006  Created
+    /// </history>
+    /// -----------------------------------------------------------------------------
     private void SetUpRolesGrid()
     {
 
@@ -630,12 +629,12 @@ namespace DotNetNuke.Modules.Blog.Security.Controls
         columnTemplate.EnabledField = objPermission.PermissionKey + "_Enabled";
         checkCol.ItemTemplate = columnTemplate;
         string locName = "";
-        locName = Localization.GetString(objPermission.PermissionKey + ".Permission", SharedResourceFileName);
+        locName = Localization.GetString(objPermission.PermissionKey + ".Permission", Globals.SharedResourceFileName);
         if (locName is null)
         {
           locName = objPermission.PermissionKey;
         }
-        checkCol.HeaderText = Interaction.IIf(!string.IsNullOrEmpty(locName), locName, objPermission.PermissionKey).ToString();
+        checkCol.HeaderText = !string.IsNullOrEmpty(locName) ? locName : objPermission.PermissionKey;
         checkCol.ItemStyle.HorizontalAlign = HorizontalAlign.Center;
         checkCol.HeaderStyle.Wrap = true;
         dgRolePermissions.Columns.Add(checkCol);
@@ -646,7 +645,7 @@ namespace DotNetNuke.Modules.Blog.Security.Controls
     private void SetUpUsersGrid()
     {
 
-      if (dgUserPermissions is not null)
+      if (dgUserPermissions != null)
       {
         dgUserPermissions.Columns.Clear();
 
@@ -672,12 +671,12 @@ namespace DotNetNuke.Modules.Blog.Security.Controls
           columnTemplate.EnabledField = objPermission.PermissionKey + "_Enabled";
           checkCol.ItemTemplate = columnTemplate;
           string locName = "";
-          locName = Localization.GetString(objPermission.PermissionKey + ".Permission", SharedResourceFileName);
+          locName = Localization.GetString(objPermission.PermissionKey + ".Permission", Globals.SharedResourceFileName);
           if (locName is null)
           {
             locName = objPermission.PermissionKey;
           }
-          checkCol.HeaderText = Interaction.IIf(!string.IsNullOrEmpty(locName), locName, objPermission.PermissionKey).ToString();
+          checkCol.HeaderText = !string.IsNullOrEmpty(locName) ? locName : objPermission.PermissionKey;
           checkCol.ItemStyle.HorizontalAlign = HorizontalAlign.Center;
           checkCol.HeaderStyle.Wrap = true;
           dgUserPermissions.Columns.Add(checkCol);
@@ -692,37 +691,37 @@ namespace DotNetNuke.Modules.Blog.Security.Controls
     #region  Protected Methods 
 
     /// -----------------------------------------------------------------------------
-  /// <summary>
-  /// Builds the key used to store the "permission" information in the ViewState
-  /// </summary>
-  /// <param name="checked">Is the checkbox checked</param>
-  /// <param name="permissionId">The Id of the permission</param>
-  /// <param name="objectPermissionId">The Id of the object permission</param>
-  /// <param name="roleId">The role id</param>
-  /// <param name="roleName">The role name</param>
-  /// <history>
-  /// </history>
-  /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// Builds the key used to store the "permission" information in the ViewState
+    /// </summary>
+    /// <param name="checked">Is the checkbox checked</param>
+    /// <param name="permissionId">The Id of the permission</param>
+    /// <param name="objectPermissionId">The Id of the object permission</param>
+    /// <param name="roleId">The role id</param>
+    /// <param name="roleName">The role name</param>
+    /// <history>
+    /// </history>
+    /// -----------------------------------------------------------------------------
     protected string BuildKey(bool @checked, int permissionId, int objectPermissionId, int roleId, string roleName)
     {
       return BuildKey(@checked, permissionId, objectPermissionId, roleId, roleName, Null.NullInteger, Null.NullString);
     }
 
     /// -----------------------------------------------------------------------------
-  /// <summary>
-  /// Builds the key used to store the "permission" information in the ViewState
-  /// </summary>
-  /// <param name="checked">Is the checkbox checked</param>
-  /// <param name="permissionId">The Id of the permission</param>
-  /// <param name="objectPermissionId">The Id of the object permission</param>
-  /// <param name="roleId">The role id</param>
-  /// <param name="roleName">The role name</param>
-  /// <param name="userID">The user id</param>
-  /// <param name="displayName">The user display name</param>
-  /// <history>
-  ///     [cnurse]    01/09/2006  Created
-  /// </history>
-  /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// Builds the key used to store the "permission" information in the ViewState
+    /// </summary>
+    /// <param name="checked">Is the checkbox checked</param>
+    /// <param name="permissionId">The Id of the permission</param>
+    /// <param name="objectPermissionId">The Id of the object permission</param>
+    /// <param name="roleId">The role id</param>
+    /// <param name="roleName">The role name</param>
+    /// <param name="userID">The user id</param>
+    /// <param name="displayName">The user display name</param>
+    /// <history>
+    ///     [cnurse]    01/09/2006  Created
+    /// </history>
+    /// -----------------------------------------------------------------------------
     protected string BuildKey(bool @checked, int permissionId, int objectPermissionId, int roleId, string roleName, int userID, string displayName)
     {
 
@@ -756,13 +755,13 @@ namespace DotNetNuke.Modules.Blog.Security.Controls
     }
 
     /// -----------------------------------------------------------------------------
-  /// <summary>
-  /// Creates the Child Controls
-  /// </summary>
-  /// <history>
-  ///     [cnurse]    02/23/2006  Created
-  /// </history>
-  /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// Creates the Child Controls
+    /// </summary>
+    /// <history>
+    ///     [cnurse]    02/23/2006  Created
+    /// </history>
+    /// -----------------------------------------------------------------------------
     protected override void CreateChildControls()
     {
 
@@ -812,7 +811,7 @@ namespace DotNetNuke.Modules.Blog.Security.Controls
 
       _users = GetUsers();
 
-      if (_users is not null)
+      if (_users != null)
       {
         dgUserPermissions = new DataGrid();
         dgUserPermissions.AutoGenerateColumns = false;
@@ -851,77 +850,77 @@ namespace DotNetNuke.Modules.Blog.Security.Controls
     }
 
     /// -----------------------------------------------------------------------------
-  /// <summary>
-  /// Gets the Enabled status of the permission
-  /// </summary>
-  /// <param name="objPerm">The permission being loaded</param>
-  /// <param name="role">The role</param>
-  /// <param name="column">The column of the Grid</param>
-  /// <history>
-  ///     [cnurse]    01/13/2006  Created
-  /// </history>
-  /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// Gets the Enabled status of the permission
+    /// </summary>
+    /// <param name="objPerm">The permission being loaded</param>
+    /// <param name="role">The role</param>
+    /// <param name="column">The column of the Grid</param>
+    /// <history>
+    ///     [cnurse]    01/13/2006  Created
+    /// </history>
+    /// -----------------------------------------------------------------------------
     protected virtual bool GetEnabled(PermissionInfo objPerm, RoleInfo role, int column)
     {
       return false;
     }
 
     /// -----------------------------------------------------------------------------
-  /// <summary>
-  /// Gets the Enabled status of the permission
-  /// </summary>
-  /// <param name="objPerm">The permission being loaded</param>
-  /// <param name="user">The user</param>
-  /// <param name="column">The column of the Grid</param>
-  /// <history>
-  ///     [cnurse]    01/13/2006  Created
-  /// </history>
-  /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// Gets the Enabled status of the permission
+    /// </summary>
+    /// <param name="objPerm">The permission being loaded</param>
+    /// <param name="user">The user</param>
+    /// <param name="column">The column of the Grid</param>
+    /// <history>
+    ///     [cnurse]    01/13/2006  Created
+    /// </history>
+    /// -----------------------------------------------------------------------------
     protected virtual bool GetEnabled(PermissionInfo objPerm, UserInfo user, int column)
     {
       return false;
     }
 
     /// -----------------------------------------------------------------------------
-  /// <summary>
-  /// Gets the Value of the permission
-  /// </summary>
-  /// <param name="objPerm">The permission being loaded</param>
-  /// <param name="role">The role</param>
-  /// <param name="column">The column of the Grid</param>
-  /// <history>
-  ///     [cnurse]    01/13/2006  Created
-  /// </history>
-  /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// Gets the Value of the permission
+    /// </summary>
+    /// <param name="objPerm">The permission being loaded</param>
+    /// <param name="role">The role</param>
+    /// <param name="column">The column of the Grid</param>
+    /// <history>
+    ///     [cnurse]    01/13/2006  Created
+    /// </history>
+    /// -----------------------------------------------------------------------------
     protected virtual bool GetPermission(PermissionInfo objPerm, RoleInfo role, int column)
     {
       return false;
     }
 
     /// -----------------------------------------------------------------------------
-  /// <summary>
-  /// Gets the Value of the permission
-  /// </summary>
-  /// <param name="objPerm">The permission being loaded</param>
-  /// <param name="user">The user</param>
-  /// <param name="column">The column of the Grid</param>
-  /// <history>
-  ///     [cnurse]    01/13/2006  Created
-  /// </history>
-  /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// Gets the Value of the permission
+    /// </summary>
+    /// <param name="objPerm">The permission being loaded</param>
+    /// <param name="user">The user</param>
+    /// <param name="column">The column of the Grid</param>
+    /// <history>
+    ///     [cnurse]    01/13/2006  Created
+    /// </history>
+    /// -----------------------------------------------------------------------------
     protected virtual bool GetPermission(PermissionInfo objPerm, UserInfo user, int column)
     {
       return false;
     }
 
     /// -----------------------------------------------------------------------------
-  /// <summary>
-  /// Gets the permissions from the Database
-  /// </summary>
-  /// <history>
-  ///     [cnurse]    01/12/2006  Created
-  /// </history>
-  /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// Gets the permissions from the Database
+    /// </summary>
+    /// <history>
+    ///     [cnurse]    01/12/2006  Created
+    /// </history>
+    /// -----------------------------------------------------------------------------
     protected virtual PermissionCollection GetPermissions()
     {
 
@@ -930,13 +929,13 @@ namespace DotNetNuke.Modules.Blog.Security.Controls
     }
 
     /// -----------------------------------------------------------------------------
-  /// <summary>
-  /// Gets the users from the Database
-  /// </summary>
-  /// <history>
-  ///     [cnurse]    01/12/2006  Created
-  /// </history>
-  /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// Gets the users from the Database
+    /// </summary>
+    /// <history>
+    ///     [cnurse]    01/12/2006  Created
+    /// </history>
+    /// -----------------------------------------------------------------------------
     protected virtual ArrayList GetUsers()
     {
 
@@ -950,74 +949,74 @@ namespace DotNetNuke.Modules.Blog.Security.Controls
     }
 
     /// -----------------------------------------------------------------------------
-  /// <summary>
-  /// Overrides the base OnPreRender method to Bind the Grid to the Permissions
-  /// </summary>
-  /// <history>
-  ///     [cnurse]    01/09/2006  Documented
-  /// </history>
-  /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// Overrides the base OnPreRender method to Bind the Grid to the Permissions
+    /// </summary>
+    /// <history>
+    ///     [cnurse]    01/09/2006  Documented
+    /// </history>
+    /// -----------------------------------------------------------------------------
     protected override void OnPreRender(EventArgs e)
     {
       BindData();
     }
 
     /// -----------------------------------------------------------------------------
-  /// <summary>
-  /// Updates a Permission
-  /// </summary>
-  /// <param name="permission">The permission being updated</param>
-  /// <param name="roleName">The name of the role</param>
-  /// <param name="allowAccess">The value of the permission</param>
-  /// <history>
-  ///     [cnurse]    01/12/2006  Created
-  /// </history>
-  /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// Updates a Permission
+    /// </summary>
+    /// <param name="permission">The permission being updated</param>
+    /// <param name="roleName">The name of the role</param>
+    /// <param name="allowAccess">The value of the permission</param>
+    /// <history>
+    ///     [cnurse]    01/12/2006  Created
+    /// </history>
+    /// -----------------------------------------------------------------------------
     protected virtual void UpdatePermission(PermissionInfo permission, int roleId, string roleName, bool allowAccess)
     {
 
     }
 
     /// -----------------------------------------------------------------------------
-  /// <summary>
-  /// Updates a Permission
-  /// </summary>
-  /// <param name="permission">The permission being updated</param>
-  /// <param name="displayName">The user's displayname</param>
-  /// <param name="userId">The user's id</param>
-  /// <param name="allowAccess">The value of the permission</param>
-  /// <history>
-  ///     [cnurse]    01/12/2006  Created
-  /// </history>
-  /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// Updates a Permission
+    /// </summary>
+    /// <param name="permission">The permission being updated</param>
+    /// <param name="displayName">The user's displayname</param>
+    /// <param name="userId">The user's id</param>
+    /// <param name="allowAccess">The value of the permission</param>
+    /// <history>
+    ///     [cnurse]    01/12/2006  Created
+    /// </history>
+    /// -----------------------------------------------------------------------------
     protected virtual void UpdatePermission(PermissionInfo permission, string displayName, int userId, bool allowAccess)
     {
 
     }
 
     /// -----------------------------------------------------------------------------
-  /// <summary>
-  /// Updates a Permission
-  /// </summary>
-  /// <param name="permissions">The permissions collection</param>
-  /// <param name="user">The user to add</param>
-  /// <history>
-  ///     [cnurse]    01/12/2006  Created
-  /// </history>
-  /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// Updates a Permission
+    /// </summary>
+    /// <param name="permissions">The permissions collection</param>
+    /// <param name="user">The user to add</param>
+    /// <history>
+    ///     [cnurse]    01/12/2006  Created
+    /// </history>
+    /// -----------------------------------------------------------------------------
     protected virtual void AddPermission(PermissionCollection permissions, UserInfo user)
     {
 
     }
 
     /// -----------------------------------------------------------------------------
-  /// <summary>
-  /// Updates the permissions
-  /// </summary>
-  /// <history>
-  ///     [cnurse]    01/09/2006  Created
-  /// </history>
-  /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// Updates the permissions
+    /// </summary>
+    /// <history>
+    ///     [cnurse]    01/09/2006  Created
+    /// </history>
+    /// -----------------------------------------------------------------------------
     protected void UpdatePermissions()
     {
 
@@ -1029,17 +1028,17 @@ namespace DotNetNuke.Modules.Blog.Security.Controls
     }
 
     /// -----------------------------------------------------------------------------
-  /// <summary>
-  /// Updates the permissions
-  /// </summary>
-  /// <history>
-  ///     [cnurse]    01/09/2006  Created
-  /// </history>
-  /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// Updates the permissions
+    /// </summary>
+    /// <history>
+    ///     [cnurse]    01/09/2006  Created
+    /// </history>
+    /// -----------------------------------------------------------------------------
     protected void UpdateRolePermissions()
     {
 
-      if (dgRolePermissions is not null)
+      if (dgRolePermissions != null)
       {
         foreach (DataGridItem dgi in dgRolePermissions.Items)
         {
@@ -1060,17 +1059,17 @@ namespace DotNetNuke.Modules.Blog.Security.Controls
     }
 
     /// -----------------------------------------------------------------------------
-  /// <summary>
-  /// Updates the permissions
-  /// </summary>
-  /// <history>
-  ///     [cnurse]    01/09/2006  Created
-  /// </history>
-  /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// Updates the permissions
+    /// </summary>
+    /// <history>
+    ///     [cnurse]    01/09/2006  Created
+    /// </history>
+    /// -----------------------------------------------------------------------------
     protected void UpdateUserPermissions()
     {
 
-      if (dgUserPermissions is not null)
+      if (dgUserPermissions != null)
       {
         foreach (DataGridItem dgi in dgUserPermissions.Items)
         {
@@ -1095,13 +1094,13 @@ namespace DotNetNuke.Modules.Blog.Security.Controls
     #region  Event Handlers 
 
     /// -----------------------------------------------------------------------------
-  /// <summary>
-  /// RoleGroupsSelectedIndexChanged runs when the Role Group is changed
-  /// </summary>
-  /// <history>
-  ///     [cnurse]    01/06/2006  Documented
-  /// </history>
-  /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// RoleGroupsSelectedIndexChanged runs when the Role Group is changed
+    /// </summary>
+    /// <history>
+    ///     [cnurse]    01/06/2006  Documented
+    /// </history>
+    /// -----------------------------------------------------------------------------
     private void RoleGroupsSelectedIndexChanged(object sender, EventArgs e)
     {
 
@@ -1110,12 +1109,12 @@ namespace DotNetNuke.Modules.Blog.Security.Controls
     }
 
     /// -----------------------------------------------------------------------------
-  /// <summary>
-  /// AddUser runs when the Add user linkbutton is clicked
-  /// </summary>
-  /// <history>
-  /// </history>
-  /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// AddUser runs when the Add user linkbutton is clicked
+    /// </summary>
+    /// <history>
+    /// </history>
+    /// -----------------------------------------------------------------------------
     private void AddUser(object sender, EventArgs e)
     {
 
@@ -1125,7 +1124,7 @@ namespace DotNetNuke.Modules.Blog.Security.Controls
       {
         // verify username
         var objUser = UserController.GetUserByName(PortalId, txtUser.Text);
-        if (objUser is not null)
+        if (objUser != null)
         {
           AddPermission(_permissions, objUser);
           BindData();

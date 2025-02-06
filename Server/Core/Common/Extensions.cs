@@ -1,8 +1,10 @@
-﻿using System;
+﻿using DotNetNuke.Modules.Blog.Core.Entities.Terms;
+using DotNetNuke.Web.Client;
+using DotNetNuke.Web.Client.ClientResourceManagement;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Data;
 using System.Globalization;
 // 
 // DNN Connect - http://dnn-connect.org
@@ -29,513 +31,673 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Xml;
-using static DotNetNuke.Modules.Blog.Common.Globals;
-using DotNetNuke.Modules.Blog.Entities.Terms;
-using DotNetNuke.Web.Client;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
 
-namespace DotNetNuke.Modules.Blog.Common
+namespace DotNetNuke.Modules.Blog.Core.Common
 {
-  static class Extensions
+  public static class Extensions
   {
-
-    #region  Collection Read Extensions 
-    public static void ReadValue(ref Hashtable ValueTable, string ValueName, ref int Variable)
+    public static int ReadValue(this Hashtable valueTable, string valueName, int defaultValue)
     {
-      if (ValueTable[ValueName] is not null)
+      if (valueTable[valueName] != null)
       {
         try
         {
-          Variable = Conversions.ToInteger(ValueTable[ValueName]);
+          return (int)valueTable[valueName];
         }
         catch (Exception ex)
         {
         }
       }
+      return defaultValue;
     }
 
-    public static void ReadValue(ref Hashtable ValueTable, string ValueName, ref long Variable)
+    public static long ReadValue(this Hashtable valueTable, string valueName, long defaultValue)
     {
-      if (ValueTable[ValueName] is not null)
+      if (valueTable[valueName] != null)
       {
         try
         {
-          Variable = Conversions.ToLong(ValueTable[ValueName]);
+          return (long)valueTable[valueName];
         }
         catch (Exception ex)
         {
         }
       }
+      return defaultValue;
     }
 
-    public static void ReadValue(ref Hashtable ValueTable, string ValueName, ref string Variable)
+    public static string ReadValue(this Hashtable valueTable, string valueName, string defaultValue)
     {
-      if (ValueTable[ValueName] is not null)
+      if (valueTable[valueName] != null)
       {
         try
         {
-          Variable = Conversions.ToString(ValueTable[ValueName]);
+          return (string)valueTable[valueName];
         }
         catch (Exception ex)
         {
         }
       }
+      return defaultValue;
     }
 
-    public static void ReadValue(ref Hashtable ValueTable, string ValueName, ref bool Variable)
+    public static bool ReadValue(this Hashtable valueTable, string valueName, bool defaultValue)
     {
-      if (ValueTable[ValueName] is not null)
+      if (valueTable[valueName] != null)
       {
         try
         {
-          Variable = Conversions.ToBoolean(ValueTable[ValueName]);
+          return (bool)valueTable[valueName];
         }
         catch (Exception ex)
         {
         }
       }
+      return defaultValue;
     }
 
-    public static void ReadValue(ref Hashtable ValueTable, string ValueName, ref DateTime Variable)
+    public static DateTime ReadValue(this Hashtable valueTable, string valueName, DateTime defaultValue)
     {
-      if (ValueTable[ValueName] is not null)
+      if (valueTable[valueName] != null)
       {
         try
         {
-          Variable = Conversions.ToDate(ValueTable[ValueName]);
+          return (DateTime)valueTable[valueName];
         }
         catch (Exception ex)
         {
         }
       }
+      return defaultValue;
     }
 
-    public static void ReadValue(ref Hashtable ValueTable, string ValueName, ref SummaryType Variable)
+    public static SummaryType ReadValue(this Hashtable valueTable, string valueName, SummaryType defaultValue)
     {
-      if (ValueTable[ValueName] is not null)
+      if (valueTable[valueName] != null)
       {
         try
         {
-          Variable = (SummaryType)Conversions.ToInteger(ValueTable[ValueName]);
+          return (SummaryType)(int)valueTable[valueName];
         }
         catch (Exception ex)
         {
         }
       }
+      return defaultValue;
     }
 
-    public static void ReadValue(ref Hashtable ValueTable, string ValueName, ref LocalizationType Variable)
+    public static LocalizationType ReadValue(this Hashtable valueTable, string valueName, LocalizationType defaultValue)
     {
-      if (ValueTable[ValueName] is not null)
+      if (valueTable[valueName] != null)
       {
         try
         {
-          Variable = (LocalizationType)Conversions.ToInteger(ValueTable[ValueName]);
+          return (LocalizationType)(int)valueTable[valueName];
         }
         catch (Exception ex)
         {
         }
       }
+      return defaultValue;
     }
 
-    public static void ReadValue(ref Hashtable ValueTable, string ValueName, ref TimeSpan Variable)
+    public static TimeSpan ReadValue(this Hashtable valueTable, string valueName, TimeSpan defaultValue)
     {
-      if (ValueTable[ValueName] is not null)
+      if (valueTable[valueName] != null)
       {
         try
         {
-          Variable = TimeSpan.Parse(Conversions.ToString(ValueTable[ValueName]));
+          return TimeSpan.Parse((string)valueTable[valueName]);
         }
         catch (Exception ex)
         {
         }
       }
+      return defaultValue;
     }
 
-    public static void ReadValue(ref NameValueCollection ValueTable, string ValueName, ref int Variable)
+    public static int ReadValue(this NameValueCollection valueTable, string valueName, int defaultValue)
     {
-      if (ValueTable[ValueName] is not null)
+      if (valueTable[valueName] != null)
       {
         try
         {
-          Variable = Conversions.ToInteger(ValueTable[ValueName]);
+          return int.Parse(valueTable[valueName]);
         }
         catch (Exception ex)
         {
         }
       }
+      return defaultValue;
     }
 
-    public static void ReadValue(ref NameValueCollection ValueTable, string ValueName, ref long Variable)
+    public static long ReadValue(this NameValueCollection valueTable, string valueName, long defaultValue)
     {
-      if (ValueTable[ValueName] is not null)
+      if (valueTable[valueName] != null)
       {
         try
         {
-          Variable = Conversions.ToLong(ValueTable[ValueName]);
+          return long.Parse(valueTable[valueName]);
         }
         catch (Exception ex)
         {
         }
       }
+      return defaultValue;
     }
 
-    public static void ReadValue(ref NameValueCollection ValueTable, string ValueName, ref string Variable)
+    public static string ReadValue(this NameValueCollection valueTable, string valueName, string defaultValue)
     {
-      if (ValueTable[ValueName] is not null)
+      if (valueTable[valueName] != null)
       {
         try
         {
-          Variable = ValueTable[ValueName];
-          Variable = new DotNetNuke.Security.PortalSecurity().InputFilter(Variable, DotNetNuke.Security.PortalSecurity.FilterFlag.NoMarkup | DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting);
+          return valueTable[valueName];
         }
         catch (Exception ex)
         {
         }
       }
+      return defaultValue;
     }
 
-    public static void ReadValue(ref NameValueCollection ValueTable, string ValueName, ref bool Variable)
+    public static bool ReadValue(this NameValueCollection valueTable, string valueName, bool defaultValue)
     {
-      if (ValueTable[ValueName] is not null)
+      if (valueTable[valueName] != null)
       {
         try
         {
-          Variable = Conversions.ToBoolean(ValueTable[ValueName]);
+          return bool.Parse(valueTable[valueName]);
         }
         catch (Exception ex)
         {
-          switch (ValueTable[ValueName].ToLower() ?? "")
+          switch (valueTable[valueName].ToLowerInvariant())
           {
             case "on":
             case "yes":
               {
-                Variable = true;
-                break;
+                return true;
               }
-
             default:
               {
-                Variable = false;
-                break;
+                return false;
               }
           }
         }
       }
+      return defaultValue;
     }
 
-    public static void ReadValue(ref NameValueCollection ValueTable, string ValueName, ref DateTime Variable)
+    public static DateTime ReadValue(this NameValueCollection valueTable, string valueName, DateTime defaultValue)
     {
-      if (ValueTable[ValueName] is not null)
+      if (valueTable[valueName] != null)
       {
         try
         {
-          Variable = Conversions.ToDate(ValueTable[ValueName]);
+          return DateTime.Parse(valueTable[valueName]);
         }
         catch (Exception ex)
         {
         }
       }
+      return defaultValue;
     }
 
-    public static void ReadValue(ref NameValueCollection ValueTable, string ValueName, ref TimeSpan Variable)
+    public static TimeSpan ReadValue(this NameValueCollection valueTable, string valueName, TimeSpan defaultValue)
     {
-      if (ValueTable[ValueName] is not null)
+      if (valueTable[valueName] != null)
       {
         try
         {
-          Variable = TimeSpan.Parse(ValueTable[ValueName]);
+          return TimeSpan.Parse(valueTable[valueName]);
         }
         catch (Exception ex)
         {
         }
       }
+      return defaultValue;
     }
 
-    public static void ReadValue(this Dictionary<string, string> ValueTable, string ValueName, ref int Variable)
+    public static int ReadValue(this Dictionary<string, string> valueTable, string valueName, int defaultValue)
     {
-      if (ValueTable.ContainsKey(ValueName))
+      if (valueTable.ContainsKey(valueName))
       {
         try
         {
-          Variable = Conversions.ToInteger(ValueTable[ValueName]);
+          return int.Parse(valueTable[valueName]);
         }
         catch (Exception ex)
         {
         }
       }
+      return defaultValue;
     }
 
-    public static void ReadValue(this Dictionary<string, string> ValueTable, string ValueName, ref string Variable)
+    public static string ReadValue(this Dictionary<string, string> valueTable, string valueName, string defaultValue)
     {
-      if (ValueTable.ContainsKey(ValueName))
+      if (valueTable.ContainsKey(valueName))
       {
         try
         {
-          Variable = ValueTable[ValueName];
+          return valueTable[valueName];
         }
         catch (Exception ex)
         {
         }
       }
+      return defaultValue;
     }
 
-    public static void ReadValue(this Dictionary<string, string> ValueTable, string ValueName, ref bool Variable)
+    public static bool ReadValue(this Dictionary<string, string> valueTable, string valueName, bool defaultValue)
     {
-      if (ValueTable.ContainsKey(ValueName))
+      if (valueTable.ContainsKey(valueName))
       {
         try
         {
-          Variable = Conversions.ToBoolean(ValueTable[ValueName]);
+          return bool.Parse(valueTable[valueName]);
         }
         catch (Exception ex)
         {
         }
       }
+      return defaultValue;
     }
 
-    public static void ReadValue(this Dictionary<string, string> ValueTable, string ValueName, ref DateTime Variable)
+    public static DateTime ReadValue(this Dictionary<string, string> valueTable, string valueName, DateTime defaultValue)
     {
-      if (ValueTable.ContainsKey(ValueName))
+      if (valueTable.ContainsKey(valueName))
       {
         try
         {
-          Variable = Conversions.ToDate(ValueTable[ValueName]);
+          return DateTime.Parse(valueTable[valueName]);
         }
         catch (Exception ex)
         {
         }
       }
+      return defaultValue;
     }
 
-    public static void ReadValue(this Dictionary<string, string> ValueTable, string ValueName, ref TimeSpan Variable)
+    public static TimeSpan ReadValue(this Dictionary<string, string> valueTable, string valueName, TimeSpan defaultValue)
     {
-      if (ValueTable.ContainsKey(ValueName))
+      if (valueTable.ContainsKey(valueName))
       {
         try
         {
-          Variable = TimeSpan.Parse(ValueTable[ValueName]);
+          return TimeSpan.Parse(valueTable[valueName]);
         }
         catch (Exception ex)
         {
         }
       }
+      return defaultValue;
     }
 
-    public static void ReadValue(ref StateBag ValueTable, string ValueName, ref int Variable)
+    public static int ReadValue(this StateBag valueTable, string valueName, int defaultValue)
     {
-      if (ValueTable[ValueName] is not null)
+      if (valueTable[valueName] != null)
       {
         try
         {
-          Variable = Conversions.ToInteger(ValueTable[ValueName]);
+          return (int)valueTable[valueName];
         }
         catch (Exception ex)
         {
         }
       }
+      return defaultValue;
     }
 
-    public static void ReadValue(ref StateBag ValueTable, string ValueName, ref long Variable)
+    public static long ReadValue(this StateBag valueTable, string valueName, long defaultValue)
     {
-      if (ValueTable[ValueName] is not null)
+      if (valueTable[valueName] != null)
       {
         try
         {
-          Variable = Conversions.ToLong(ValueTable[ValueName]);
+          return (long)valueTable[valueName];
         }
         catch (Exception ex)
         {
         }
       }
+      return defaultValue;
     }
 
-    public static void ReadValue(ref StateBag ValueTable, string ValueName, ref string Variable)
+    public static string ReadValue(this StateBag valueTable, string valueName, string defaultValue)
     {
-      if (ValueTable[ValueName] is not null)
+      if (valueTable[valueName] != null)
       {
         try
         {
-          Variable = Conversions.ToString(ValueTable[ValueName]);
+          return (string)valueTable[valueName];
         }
         catch (Exception ex)
         {
         }
       }
+      return defaultValue;
     }
 
-    public static void ReadValue(ref StateBag ValueTable, string ValueName, ref bool Variable)
+    public static bool ReadValue(this StateBag valueTable, string valueName, bool defaultValue)
     {
-      if (ValueTable[ValueName] is not null)
+      if (valueTable[valueName] != null)
       {
         try
         {
-          Variable = Conversions.ToBoolean(ValueTable[ValueName]);
+          return (bool)valueTable[valueName];
         }
         catch (Exception ex)
         {
         }
       }
+      return defaultValue;
     }
 
-    public static void ReadValue(ref StateBag ValueTable, string ValueName, ref DateTime Variable)
+    public static DateTime ReadValue(this StateBag valueTable, string valueName, DateTime defaultValue)
     {
-      if (ValueTable[ValueName] is not null)
+      if (valueTable[valueName] != null)
       {
         try
         {
-          Variable = Conversions.ToDate(ValueTable[ValueName]);
+          return (DateTime)valueTable[valueName];
         }
         catch (Exception ex)
         {
         }
       }
+      return defaultValue;
     }
 
-    public static void ReadValue(ref StateBag ValueTable, string ValueName, ref TimeSpan Variable)
+    public static TimeSpan ReadValue(this StateBag valueTable, string valueName, TimeSpan defaultValue)
     {
-      if (ValueTable[ValueName] is not null)
+      if (valueTable[valueName] != null)
       {
         try
         {
-          Variable = TimeSpan.Parse(Conversions.ToString(ValueTable[ValueName]));
+          return TimeSpan.Parse((string)valueTable[valueName]);
         }
         catch (Exception ex)
         {
         }
       }
+      return defaultValue;
     }
 
-    public static void ReadValue(ref XmlNode ValueTable, string ValueName, ref int Variable)
+    public static int ReadValue(this XmlNode valueTable, string valueName, int defaultValue)
     {
-      if (ValueTable.SelectSingleNode(ValueName) is not null)
+      if (valueTable.SelectSingleNode(valueName) != null)
       {
         try
         {
-          Variable = Conversions.ToInteger(ValueTable.SelectSingleNode(ValueName).InnerText);
+          return int.Parse(valueTable.SelectSingleNode(valueName).InnerText);
         }
         catch (Exception ex)
         {
         }
       }
+      return defaultValue;
     }
 
-    public static void ReadValue(ref XmlNode ValueTable, string ValueName, ref long Variable)
+    public static long ReadValue(this XmlNode valueTable, string valueName, long defaultValue)
     {
-      if (ValueTable.SelectSingleNode(ValueName) is not null)
+      if (valueTable.SelectSingleNode(valueName) != null)
       {
         try
         {
-          Variable = Conversions.ToLong(ValueTable.SelectSingleNode(ValueName).InnerText);
+          return long.Parse(valueTable.SelectSingleNode(valueName).InnerText);
         }
         catch (Exception ex)
         {
         }
       }
+      return defaultValue;
     }
 
-    public static void ReadValue(ref XmlNode ValueTable, string ValueName, ref string Variable)
+    public static string ReadValue(this XmlNode valueTable, string valueName, string defaultValue)
     {
-      if (ValueTable.SelectSingleNode(ValueName) is not null)
+      if (valueTable.SelectSingleNode(valueName) != null)
       {
         try
         {
-          Variable = ValueTable.SelectSingleNode(ValueName).InnerText;
+          return valueTable.SelectSingleNode(valueName).InnerText;
         }
         catch (Exception ex)
         {
         }
       }
+      return defaultValue;
     }
 
-    public static void ReadValue(ref XmlNode ValueTable, string ValueName, ref bool Variable)
+    public static bool ReadValue(this XmlNode valueTable, string valueName, bool defaultValue)
     {
-      if (ValueTable.SelectSingleNode(ValueName) is not null)
+      if (valueTable.SelectSingleNode(valueName) != null)
       {
         try
         {
-          Variable = Conversions.ToBoolean(ValueTable.SelectSingleNode(ValueName).InnerText);
+          return bool.Parse(valueTable.SelectSingleNode(valueName).InnerText);
         }
         catch (Exception ex)
         {
         }
       }
+      return defaultValue;
     }
 
-    public static void ReadValue(ref XmlNode ValueTable, string ValueName, ref DateTime Variable)
+    public static DateTime ReadValue(this XmlNode valueTable, string valueName, DateTime defaultValue)
     {
-      if (ValueTable.SelectSingleNode(ValueName) is not null)
+      if (valueTable.SelectSingleNode(valueName) != null)
       {
         try
         {
-          Variable = Conversions.ToDate(ValueTable.SelectSingleNode(ValueName).InnerText);
+          return DateTime.Parse(valueTable.SelectSingleNode(valueName).InnerText);
         }
         catch (Exception ex)
         {
         }
       }
+      return defaultValue;
     }
 
-    public static void ReadValue(ref XmlNode ValueTable, string ValueName, ref SummaryType Variable)
+    public static SummaryType ReadValue(this XmlNode valueTable, string valueName, SummaryType defaultValue)
     {
-      if (ValueTable.SelectSingleNode(ValueName) is not null)
+      if (valueTable.SelectSingleNode(valueName) != null)
       {
         try
         {
-          Variable = (SummaryType)Conversions.ToInteger(ValueTable.SelectSingleNode(ValueName).InnerText);
+          return (SummaryType)int.Parse(valueTable.SelectSingleNode(valueName).InnerText);
         }
         catch (Exception ex)
         {
         }
       }
+      return defaultValue;
     }
 
-    public static void ReadValue(ref XmlNode ValueTable, string ValueName, ref LocalizationType Variable)
+    public static LocalizationType ReadValue(this XmlNode valueTable, string valueName, LocalizationType defaultValue)
     {
-      if (ValueTable.SelectSingleNode(ValueName) is not null)
+      if (valueTable.SelectSingleNode(valueName) != null)
       {
         try
         {
-          Variable = (LocalizationType)Conversions.ToInteger(ValueTable.SelectSingleNode(ValueName).InnerText);
+          return (LocalizationType)int.Parse(valueTable.SelectSingleNode(valueName).InnerText);
         }
         catch (Exception ex)
         {
         }
       }
+      return defaultValue;
     }
 
-    public static void ReadValue(ref XmlNode ValueTable, string ValueName, ref TimeSpan Variable)
+    public static TimeSpan ReadValue(this XmlNode valueTable, string valueName, TimeSpan defaultValue)
     {
-      if (ValueTable.SelectSingleNode(ValueName) is not null)
+      if (valueTable.SelectSingleNode(valueName) != null)
       {
         try
         {
-          Variable = TimeSpan.Parse(ValueTable.SelectSingleNode(ValueName).InnerText);
+          return TimeSpan.Parse(valueTable.SelectSingleNode(valueName).InnerText);
         }
         catch (Exception ex)
         {
         }
       }
+      return defaultValue;
     }
 
-    public static void ReadValue(ref XmlNode ValueTable, string ValueName, ref LocalizedText Variable)
+    public static LocalizedText ReadValue(this XmlNode valueTable, string valueName, LocalizedText defaultValue)
     {
-      if (ValueTable.SelectSingleNode(ValueName) is not null)
+
+      if (valueTable.SelectSingleNode(valueName) != null)
       {
-        if (ValueTable.SelectSingleNode(ValueName).SelectSingleNode("MLText") is not null)
+        if (valueTable.SelectSingleNode(valueName).SelectSingleNode("MLText") != null)
         {
-          if (Variable is null)
-            Variable = new LocalizedText();
-          foreach (XmlNode t in ValueTable.SelectSingleNode(ValueName).SelectSingleNode("MLText").SelectNodes("Text"))
-            Variable.Add(t.Attributes["Locale"].InnerText, t.InnerText);
+          if (defaultValue is null)
+            return new LocalizedText();
+          foreach (XmlNode t in valueTable.SelectSingleNode(valueName).SelectSingleNode("MLText").SelectNodes("Text"))
+            defaultValue.Add(t.Attributes["Locale"].InnerText, t.InnerText);
         }
       }
+      return defaultValue;
     }
-    #endregion
 
-    #region  Conversion Extensions 
+    public static bool ReadValue(this XmlReader valueTable, string valueName, bool defaultValue)
+    {
+      var stringValue = valueTable.ReadElement(valueName);
+      if (!string.IsNullOrEmpty(stringValue))
+      {
+        try
+        {
+          return bool.Parse(stringValue);
+        }
+        catch (Exception ex)
+        {
+        }
+      }
+      return defaultValue;
+    }
+
+    public static int ReadValue(this XmlReader valueTable, string valueName, int defaultValue)
+    {
+      var stringValue = valueTable.ReadElement(valueName);
+      if (!string.IsNullOrEmpty(stringValue))
+      {
+        try
+        {
+          return int.Parse(stringValue);
+        }
+        catch (Exception ex)
+        {
+        }
+      }
+      return defaultValue;
+    }
+
+    public static DateTime ReadValue(this XmlReader valueTable, string valueName, DateTime defaultValue)
+    {
+      var stringValue = valueTable.ReadElement(valueName);
+      if (!string.IsNullOrEmpty(stringValue))
+      {
+        try
+        {
+          return DateTime.Parse(stringValue);
+        }
+        catch (Exception ex)
+        {
+        }
+      }
+      return defaultValue;
+    }
+
+    public static SummaryType ReadValue(this XmlReader valueTable, string valueName, SummaryType defaultValue)
+    {
+      var stringValue = valueTable.ReadElement(valueName);
+      if (!string.IsNullOrEmpty(stringValue))
+      {
+        try
+        {
+          return (SummaryType)int.Parse(stringValue);
+        }
+        catch (Exception ex)
+        {
+        }
+      }
+      return defaultValue;
+    }
+
+    public static LocalizationType ReadValue(this XmlReader valueTable, string valueName, LocalizationType defaultValue)
+    {
+      var stringValue = valueTable.ReadElement(valueName);
+      if (!string.IsNullOrEmpty(stringValue))
+      {
+        try
+        {
+          return (LocalizationType)int.Parse(stringValue);
+        }
+        catch (Exception ex)
+        {
+        }
+      }
+      return defaultValue;
+    }
+
+    public static TimeSpan ReadValue(this XmlReader valueTable, string valueName, TimeSpan defaultValue)
+    {
+      var stringValue = valueTable.ReadElement(valueName);
+      if (!string.IsNullOrEmpty(stringValue))
+      {
+        try
+        {
+          return TimeSpan.Parse(stringValue);
+        }
+        catch (Exception ex)
+        {
+        }
+      }
+      return defaultValue;
+    }
+
+    public static string ReadElement(this XmlReader reader, string ElementName)
+    {
+      if (!(reader.NodeType == XmlNodeType.Element) || (reader.Name ?? "") != (ElementName ?? ""))
+      {
+        reader.ReadToFollowing(ElementName);
+      }
+      if (reader.NodeType == XmlNodeType.Element)
+      {
+        return reader.ReadElementContentAsString();
+      }
+      else
+      {
+        return "";
+      }
+    }
+
+    public static string OutputHtml(this string encodedHtml, string strFormat)
+    {
+      switch (strFormat.ToLower() ?? "")
+      {
+        case var @case when @case == "":
+          {
+            return HttpUtility.HtmlDecode(encodedHtml);
+          }
+        case "js":
+          {
+            return HttpUtility.HtmlDecode(encodedHtml).Replace("\"", @"\""").Replace("'", @"\'").Replace(Environment.NewLine, @"\r\n");
+          }
+
+        default:
+          {
+            if (int.TryParse(strFormat, out int res))
+            {
+              return Globals.RemoveHtmlTags(HttpUtility.HtmlDecode(encodedHtml)).SubstringWithoutException(0, res);
+            }
+            else
+            {
+              return HttpUtility.HtmlDecode(encodedHtml);
+            }
+          }
+      }
+    }
+
     public static int ToInt(this bool @var)
     {
       if (@var)
@@ -562,9 +724,9 @@ namespace DotNetNuke.Modules.Blog.Common
 
     public static int ToInt(this string @var)
     {
-      if (Information.IsNumeric(@var))
+      if (int.TryParse(@var, out int res))
       {
-        return int.Parse(@var);
+        return res;
       }
       else
       {
@@ -606,74 +768,6 @@ namespace DotNetNuke.Modules.Blog.Common
         return value.ToString();
       }
     }
-    #endregion
-
-    #region  Other 
-    public static Control FindControlByID(this Control Control, string id)
-    {
-      Control found = null;
-      if (Control is not null)
-      {
-        if ((Control.ID ?? "") == (id ?? ""))
-        {
-          found = Control;
-        }
-        else
-        {
-          found = Control.Controls.FindControlByID(id);
-        }
-      }
-      return found;
-    }
-
-    public static Control FindControlByID(this ControlCollection Controls, string id)
-    {
-      Control found = null;
-      if (Controls is not null && Controls.Count > 0)
-      {
-        for (int i = 0, loopTo = Controls.Count - 1; i <= loopTo; i++)
-        {
-          if ((Controls[i].ID ?? "") == (id ?? ""))
-          {
-            found = Controls[i];
-          }
-          else
-          {
-            found = Controls[i].Controls.FindControlByID(id);
-          }
-          if (found is not null)
-            break;
-        }
-      }
-      return found;
-    }
-
-    public static string OutputHtml(this string encodedHtml, string strFormat)
-    {
-      switch (strFormat.ToLower() ?? "")
-      {
-        case var @case when @case == "":
-          {
-            return HttpUtility.HtmlDecode(encodedHtml);
-          }
-        case "js":
-          {
-            return HttpUtility.HtmlDecode(encodedHtml).Replace("\"", @"\""").Replace("'", @"\'").Replace(Constants.vbCrLf, @"\r\n");
-          }
-
-        default:
-          {
-            if (Information.IsNumeric(strFormat))
-            {
-              return RemoveHtmlTags(HttpUtility.HtmlDecode(encodedHtml)).SubstringWithoutException(0, int.Parse(strFormat));
-            }
-            else
-            {
-              return HttpUtility.HtmlDecode(encodedHtml);
-            }
-          }
-      }
-    }
 
     public static string SubstringWithoutException(this string input, int startIndex, int length)
     {
@@ -712,6 +806,29 @@ namespace DotNetNuke.Modules.Blog.Common
       writer.WriteBase64(attachment.Data, 0, attachment.Data.Length - 1);
       writer.WriteEndElement(); // Data
       writer.WriteEndElement(); // File
+    }
+
+    public static string RemoveDiacritics(this string text)
+    {
+      if (string.IsNullOrEmpty(text))
+      {
+        return text;
+      }
+
+      string normalizedString = text.Normalize(NormalizationForm.FormD);
+      var stringBuilder = new StringBuilder();
+
+      foreach (char c in normalizedString)
+      {
+        var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
+
+        if (unicodeCategory != UnicodeCategory.NonSpacingMark)
+        {
+          stringBuilder.Append(c);
+        }
+      }
+
+      return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
     }
 
     public static void AddJavascriptFile(this Page page, string moduleVersion, string jsFilename, int priority)
@@ -761,30 +878,6 @@ namespace DotNetNuke.Modules.Blog.Common
         ClientResourceManager.RegisterStyleSheet(page, DotNetNuke.Common.Globals.ResolveUrl("~/DesktopModules/Blog/css/" + cssFilename) + "?_=" + moduleVersion, (int)FileOrder.Css.ModuleCss, "DnnPageHeaderProvider", name, version);
       }
     }
-
-    public static string RemoveDiacritics(this string text)
-    {
-      if (string.IsNullOrEmpty(text))
-      {
-        return text;
-      }
-
-      string normalizedString = text.Normalize(NormalizationForm.FormD);
-      var stringBuilder = new StringBuilder();
-
-      foreach (char c in normalizedString)
-      {
-        var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
-
-        if (unicodeCategory != UnicodeCategory.NonSpacingMark)
-        {
-          stringBuilder.Append(c);
-        }
-      }
-
-      return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
-    }
-    #endregion
 
   }
 }

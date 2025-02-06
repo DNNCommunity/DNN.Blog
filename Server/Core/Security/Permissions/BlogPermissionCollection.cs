@@ -26,7 +26,7 @@ using System.Xml.Schema;
 using System.Xml.Serialization;
 using DotNetNuke.Entities.Users;
 
-namespace DotNetNuke.Modules.Blog.Security.Permissions
+namespace DotNetNuke.Modules.Blog.Core.Security.Permissions
 {
   [Serializable()]
   public class BlogPermissionCollection : List<BlogPermissionInfo>, IXmlSerializable
@@ -86,7 +86,7 @@ namespace DotNetNuke.Modules.Blog.Security.Permissions
     public bool CurrentUserHasPermission(string PermissionKey)
     {
       var u = Framework.ServiceLocator<IUserController, UserController>.Instance.GetCurrentUserInfo();
-      if (u is not null)
+      if (u != null)
       {
         foreach (BlogPermissionInfo epi in this)
         {

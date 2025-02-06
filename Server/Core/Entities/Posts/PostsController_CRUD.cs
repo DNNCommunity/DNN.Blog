@@ -20,52 +20,52 @@
 // 
 
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Modules.Blog.Common;
-using DotNetNuke.Modules.Blog.Data;
+using DotNetNuke.Modules.Blog.Core.Common;
+using DotNetNuke.Modules.Blog.Core.Data;
 
-namespace DotNetNuke.Modules.Blog.Entities.Posts
+namespace DotNetNuke.Modules.Blog.Core.Entities.Posts
 {
 
-  public partial class PostsController
-  {
-
-    public static PostInfo GetPost(int contentItemId, int moduleId, string locale)
+    public partial class PostsController
     {
 
-      return CBO.FillObject<PostInfo>(DataProvider.Instance().GetPost(contentItemId, moduleId, locale));
+        public static PostInfo GetPost(int contentItemId, int moduleId, string locale)
+        {
+
+            return CBO.FillObject<PostInfo>(DataProvider.Instance().GetPost(contentItemId, moduleId, locale));
+
+        }
+
+        public static PostInfo AddPost(PostInfo objPost, int createdByUser)
+        {
+
+            objPost.ContentItemId = DataProvider.Instance().AddPost(objPost.AllowComments, objPost.BlogID, objPost.Content, objPost.Copyright, objPost.DisplayCopyright, objPost.Image, objPost.Locale, objPost.Published, objPost.PublishedOnDate, objPost.Summary, objPost.Terms.ToTermIDString(), objPost.Title, objPost.ViewCount, createdByUser);
+
+            // localization
+            foreach (string l in objPost.TitleLocalizations.Locales)
+                DataProvider.Instance().SetPostLocalization(objPost.ContentItemId, l, objPost.TitleLocalizations[l], objPost.SummaryLocalizations[l], objPost.ContentLocalizations[l], createdByUser);
+
+            return objPost;
+
+        }
+
+        public static void UpdatePost(PostInfo objPost, int updatedByUser)
+        {
+
+            DataProvider.Instance().UpdatePost(objPost.AllowComments, objPost.BlogID, objPost.Content, objPost.ContentItemId, objPost.Copyright, objPost.DisplayCopyright, objPost.Image, objPost.Locale, objPost.Published, objPost.PublishedOnDate, objPost.Summary, objPost.Terms.ToTermIDString(), objPost.Title, objPost.ViewCount, updatedByUser);
+
+            // localization
+            foreach (string l in objPost.TitleLocalizations.Locales)
+                DataProvider.Instance().SetPostLocalization(objPost.ContentItemId, l, objPost.TitleLocalizations[l], objPost.SummaryLocalizations[l], objPost.ContentLocalizations[l], updatedByUser);
+
+        }
+
+        public static void DeletePost(int contentItemId)
+        {
+
+            DataProvider.Instance().DeletePost(contentItemId);
+
+        }
 
     }
-
-    public static int AddPost(ref PostInfo objPost, int createdByUser)
-    {
-
-      objPost.ContentItemId = DataProvider.Instance().AddPost(objPost.AllowComments, objPost.BlogID, objPost.Content, objPost.Copyright, objPost.DisplayCopyright, objPost.Image, objPost.Locale, objPost.Published, objPost.PublishedOnDate, objPost.Summary, objPost.Terms.ToTermIDString(), objPost.Title, objPost.ViewCount, createdByUser);
-
-      // localization
-      foreach (string l in objPost.TitleLocalizations.Locales)
-        DataProvider.Instance().SetPostLocalization(objPost.ContentItemId, l, objPost.TitleLocalizations[l], objPost.SummaryLocalizations[l], objPost.ContentLocalizations[l], createdByUser);
-
-      return objPost.ContentItemId;
-
-    }
-
-    public static void UpdatePost(PostInfo objPost, int updatedByUser)
-    {
-
-      DataProvider.Instance().UpdatePost(objPost.AllowComments, objPost.BlogID, objPost.Content, objPost.ContentItemId, objPost.Copyright, objPost.DisplayCopyright, objPost.Image, objPost.Locale, objPost.Published, objPost.PublishedOnDate, objPost.Summary, objPost.Terms.ToTermIDString(), objPost.Title, objPost.ViewCount, updatedByUser);
-
-      // localization
-      foreach (string l in objPost.TitleLocalizations.Locales)
-        DataProvider.Instance().SetPostLocalization(objPost.ContentItemId, l, objPost.TitleLocalizations[l], objPost.SummaryLocalizations[l], objPost.ContentLocalizations[l], updatedByUser);
-
-    }
-
-    public static void DeletePost(int contentItemId)
-    {
-
-      DataProvider.Instance().DeletePost(contentItemId);
-
-    }
-
-  }
 }

@@ -22,115 +22,116 @@ Option Explicit On
 Imports System.Net
 Imports System.Net.Http
 Imports System.Web.Http
-Imports DotNetNuke.Web.Api
+Imports DotNetNuke.Modules.Blog.Core.Entities.Blogs
+Imports DotNetNuke.Modules.Blog.Core.Entities.Comments
+Imports DotNetNuke.Modules.Blog.Core.Entities.Posts
+Imports DotNetNuke.Modules.Blog.Core.Integration
+Imports DotNetNuke.Modules.Blog.Core.Services
 Imports DotNetNuke.Services.Social.Notifications
-Imports DotNetNuke.Modules.Blog.Entities.Blogs
-Imports DotNetNuke.Modules.Blog.Entities.Posts
-Imports DotNetNuke.Modules.Blog.Entities.Comments
-Imports DotNetNuke.Modules.Blog.Services
+Imports DotNetNuke.Web.Api
 
 Namespace Integration.Services
 
- Public Class NotificationServiceController
-  Inherits DnnApiController
+  Public Class NotificationServiceController
+    Inherits DnnApiController
 
-  Public Class NotificationDTO
-   Public Property NotificationId As Integer
-  End Class
+    Public Class NotificationDTO
+      Public Property NotificationId As Integer
+    End Class
 
 #Region " Private Members "
 
-  Private Property BlogModuleId As Integer = -1
-  Private Property BlogId As Integer = -1
-  Private Property Blog As BlogInfo = Nothing
-  Private Property ContentItemId As Integer = -1
-  Private Property Post As PostInfo = Nothing
-  Private Property CommentId As Integer = -1
-  Private Property Comment As CommentInfo = Nothing
+    Private Property BlogModuleId As Integer = -1
+    Private Property BlogId As Integer = -1
+    Private Property Blog As BlogInfo = Nothing
+    Private Property ContentItemId As Integer = -1
+    Private Property Post As PostInfo = Nothing
+    Private Property CommentId As Integer = -1
+    Private Property Comment As CommentInfo = Nothing
 
 #End Region
 
 #Region " Service Methods "
-  <HttpPost()>
-  <BlogAuthorizeAttribute(DotNetNuke.Modules.Blog.Services.SecurityAccessLevel.ApprovePost)>
-  <ValidateAntiForgeryToken()>
-  Public Function ApprovePost(postData As NotificationDTO) As HttpResponseMessage
-   Dim notify As Notification = NotificationsController.Instance.GetNotification(postData.NotificationId)
-   ParsePublishKey(notify.Context)
-   If Blog Is Nothing Or Post Is Nothing Then
-    Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
-   End If
-   Post.Published = True
-   PostsController.UpdatePost(Post, UserInfo.UserID)
-   NotificationsController.Instance().DeleteNotification(postData.NotificationId)
-   Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = "success"})
-  End Function
+    <HttpPost()>
+    <BlogAuthorizeAttribute(SecurityAccessLevel.ApprovePost)>
+    <ValidateAntiForgeryToken()>
+    Public Function ApprovePost(postData As NotificationDTO) As HttpResponseMessage
+      Dim notify As Notification = NotificationsController.Instance.GetNotification(postData.NotificationId)
+      ParsePublishKey(notify.Context)
+      If Blog Is Nothing Or Post Is Nothing Then
+        Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
+      End If
+      Post.Published = True
+      PostsController.UpdatePost(Post, UserInfo.UserID)
+      NotificationsController.Instance().DeleteNotification(postData.NotificationId)
+      Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = "success"})
+    End Function
 
-  <HttpPost()>
-  <BlogAuthorizeAttribute(DotNetNuke.Modules.Blog.Services.SecurityAccessLevel.EditPost)>
-  <ValidateAntiForgeryToken()>
-  Public Function DeletePost(postData As NotificationDTO) As HttpResponseMessage
-   Dim notify As Notification = NotificationsController.Instance.GetNotification(postData.NotificationId)
-   ParsePublishKey(notify.Context)
-   If Blog Is Nothing Or Post Is Nothing Then
-    Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
-   End If
-   PostsController.DeletePost(ContentItemId)
-   NotificationsController.Instance().DeleteNotification(postData.NotificationId)
-   Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = "success"})
-  End Function
+    <HttpPost()>
+    <BlogAuthorizeAttribute(SecurityAccessLevel.EditPost)>
+    <ValidateAntiForgeryToken()>
+    Public Function DeletePost(postData As NotificationDTO) As HttpResponseMessage
+      Dim notify As Notification = NotificationsController.Instance.GetNotification(postData.NotificationId)
+      ParsePublishKey(notify.Context)
+      If Blog Is Nothing Or Post Is Nothing Then
+        Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
+      End If
+      PostsController.DeletePost(ContentItemId)
+      NotificationsController.Instance().DeleteNotification(postData.NotificationId)
+      Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = "success"})
+    End Function
 
-  <HttpPost()>
-  <BlogAuthorizeAttribute(DotNetNuke.Modules.Blog.Services.SecurityAccessLevel.ApproveComment)>
-  <ValidateAntiForgeryToken()>
-  Public Function ApproveComment(postData As NotificationDTO) As HttpResponseMessage
-   Dim notify As Notification = NotificationsController.Instance.GetNotification(postData.NotificationId)
-   ParseCommentKey(notify.Context)
-   If Blog Is Nothing Or Post Is Nothing Or Comment Is Nothing Then
-    Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
-   End If
-   CommentsController.ApproveComment(BlogModuleId, BlogId, Comment)
-   NotificationsController.Instance().DeleteNotification(postData.NotificationId)
-   Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = "success"})
-  End Function
+    <HttpPost()>
+    <BlogAuthorizeAttribute(SecurityAccessLevel.ApproveComment)>
+    <ValidateAntiForgeryToken()>
+    Public Function ApproveComment(postData As NotificationDTO) As HttpResponseMessage
+      Dim notify As Notification = NotificationsController.Instance.GetNotification(postData.NotificationId)
+      ParseCommentKey(notify.Context)
+      If Blog Is Nothing Or Post Is Nothing Or Comment Is Nothing Then
+        Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
+      End If
+      CommentsController.ApproveComment(BlogModuleId, BlogId, Comment)
+      NotificationsController.Instance().DeleteNotification(postData.NotificationId)
+      Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = "success"})
+    End Function
 
-  <HttpPost()>
-  <BlogAuthorizeAttribute(DotNetNuke.Modules.Blog.Services.SecurityAccessLevel.ApproveComment)>
-  <ValidateAntiForgeryToken()>
-  Public Function DeleteComment(postData As NotificationDTO) As HttpResponseMessage
-   Dim notify As Notification = NotificationsController.Instance.GetNotification(postData.NotificationId)
-   ParseCommentKey(notify.Context)
-   If Blog Is Nothing Or Post Is Nothing Or Comment Is Nothing Then
-    Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
-   End If
-   CommentsController.DeleteComment(BlogModuleId, BlogId, Comment)
-   NotificationsController.Instance().DeleteNotification(postData.NotificationId)
-   Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = "success"})
-  End Function
+    <HttpPost()>
+    <BlogAuthorizeAttribute(SecurityAccessLevel.ApproveComment)>
+    <ValidateAntiForgeryToken()>
+    Public Function DeleteComment(postData As NotificationDTO) As HttpResponseMessage
+      Dim notify As Notification = NotificationsController.Instance.GetNotification(postData.NotificationId)
+      ParseCommentKey(notify.Context)
+      If Blog Is Nothing Or Post Is Nothing Or Comment Is Nothing Then
+        Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
+      End If
+      CommentsController.DeleteComment(BlogModuleId, BlogId, Comment)
+      NotificationsController.Instance().DeleteNotification(postData.NotificationId)
+      Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = "success"})
+    End Function
 #End Region
 
 #Region " Private Methods "
-  Private Sub ParsePublishKey(key As String)
-   Dim nKey As New NotificationKey(key)
-   BlogModuleId = nKey.ModuleId
-   BlogId = nKey.BlogId
-   ContentItemId = nKey.ContentItemId
-   Blog = BlogsController.GetBlog(BlogId, UserInfo.UserID, Threading.Thread.CurrentThread.CurrentCulture.Name)
-   Post = PostsController.GetPost(ContentItemId, BlogModuleId, Threading.Thread.CurrentThread.CurrentCulture.Name)
-  End Sub
+    Private Sub ParsePublishKey(key As String)
+      Dim nKey As New NotificationKey(key)
+      BlogModuleId = nKey.ModuleId
+      BlogId = nKey.BlogId
+      ContentItemId = nKey.ContentItemId
+      Blog = BlogsController.GetBlog(BlogId, UserInfo.UserID, Threading.Thread.CurrentThread.CurrentCulture.Name)
+      Post = PostsController.GetPost(ContentItemId, BlogModuleId, Threading.Thread.CurrentThread.CurrentCulture.Name)
+    End Sub
 
-  Private Sub ParseCommentKey(key As String)
-   Dim nKey As New NotificationKey(key)
-   BlogModuleId = nKey.ModuleId
-   BlogId = nKey.BlogId
-   ContentItemId = nKey.ContentItemId
-   CommentId = nKey.CommentId
-   Blog = BlogsController.GetBlog(BlogId, UserInfo.UserID, Threading.Thread.CurrentThread.CurrentCulture.Name)
-   Post = PostsController.GetPost(ContentItemId, BlogModuleId, Threading.Thread.CurrentThread.CurrentCulture.Name)
-   Comment = CommentsController.GetComment(CommentId, UserInfo.UserID)
-  End Sub
+    Private Sub ParseCommentKey(key As String)
+      Dim nKey As New NotificationKey(key)
+      BlogModuleId = nKey.ModuleId
+      BlogId = nKey.BlogId
+      ContentItemId = nKey.ContentItemId
+      CommentId = nKey.CommentId
+      Blog = BlogsController.GetBlog(BlogId, UserInfo.UserID, Threading.Thread.CurrentThread.CurrentCulture.Name)
+      Post = PostsController.GetPost(ContentItemId, BlogModuleId, Threading.Thread.CurrentThread.CurrentCulture.Name)
+      Comment = CommentsController.GetComment(CommentId, UserInfo.UserID)
+    End Sub
 #End Region
 
- End Class
+  End Class
 
 End Namespace

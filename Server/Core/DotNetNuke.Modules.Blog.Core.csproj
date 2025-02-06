@@ -24,7 +24,12 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="CookComputing.XmlRPCv2" Version="2.5.0" />
+    <PackageReference Include="DotNetNuke.Abstractions" Version="9.13.0" />
     <PackageReference Include="DotNetNuke.Core" Version="9.13.0" />
+    <PackageReference Include="DotNetNuke.Instrumentation" Version="9.13.0" />
+    <PackageReference Include="DotNetNuke.Web" Version="9.13.0" />
+    <PackageReference Include="DotNetNuke.Web.Client" Version="9.13.0" />
   </ItemGroup>
 </Project>
 

@@ -19,7 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 // 
 
-namespace DotNetNuke.Modules.Blog.Rss
+namespace DotNetNuke.Modules.Blog.Core.Rss
 {
 
   /// <summary>

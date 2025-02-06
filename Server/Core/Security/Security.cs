@@ -19,24 +19,12 @@
 // DEALINGS IN THE SOFTWARE.
 // 
 
-namespace DotNetNuke.Modules.Blog.Security
+namespace DotNetNuke.Modules.Blog.Core.Security
 {
-  public class Security
-  {
-
-    public enum BlogPermissionTypes
+    public class Security
     {
-      EDIT = 0,
-      ADD = 1,
-      APPROVE = 2,
-      ADDCOMMENT = 3,
-      APPROVECOMMENT = 4,
-      VIEWCOMMENT = 5,
-      AUTOAPPROVECOMMENT = 6
+        public const int glbRoleNothing = -4;
+        public const int glbUserNothing = -10;
+        public const string BloggerPermission = "BLOGGER";
     }
-
-    public const int glbRoleNothing = -4;
-    public const int glbUserNothing = -10;
-
-  }
 }

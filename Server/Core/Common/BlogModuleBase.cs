@@ -1,26 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using DotNetNuke.Entities.Modules;
+﻿using DotNetNuke.Entities.Modules;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
-using static DotNetNuke.Modules.Blog.Common.Globals;
-using DotNetNuke.Modules.Blog.Entities.Terms;
-using DotNetNuke.Modules.Blog.Templating;
+using DotNetNuke.Modules.Blog.Core.Entities.Terms;
+using DotNetNuke.Modules.Blog.Core.Templating;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
-using Microsoft.VisualBasic;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace DotNetNuke.Modules.Blog.Common
+namespace DotNetNuke.Modules.Blog.Core.Common
 {
 
   public class BlogModuleBase : PortalModuleBase
   {
-
-    #region  Private Members 
-    #endregion
-
-    #region  Properties 
     private BlogContextInfo _blogContext;
     public BlogContextInfo BlogContext
     {
@@ -120,9 +113,7 @@ namespace DotNetNuke.Modules.Blog.Common
     {
       Load += Page_Load;
     }
-    #endregion
 
-    #region  Event Handlers 
     private void Page_Load(object sender, EventArgs e)
     {
 
@@ -144,9 +135,7 @@ namespace DotNetNuke.Modules.Blog.Common
       }
 
     }
-    #endregion
 
-    #region  Public Methods 
     public void AddBlogService()
     {
 
@@ -159,11 +148,11 @@ namespace DotNetNuke.Modules.Blog.Common
         AddJavascriptFile("dotnetnuke.blog.js", 70);
 
         // Load initialization snippet
-        string scriptBlock = ReadFile(DotNetNuke.Common.Globals.ApplicationMapPath + @"\DesktopModules\Blog\js\dotnetnuke.blog.pagescript.js");
+        string scriptBlock = Globals.ReadFile(DotNetNuke.Common.Globals.ApplicationMapPath + @"\DesktopModules\Blog\js\dotnetnuke.blog.pagescript.js");
         var tr = new BlogTokenReplace(BlogContext.BlogModuleId);
         tr.AddResources("~/DesktopModules/Blog/App_LocalResources/SharedResources.resx");
         scriptBlock = tr.ReplaceTokens(scriptBlock);
-        scriptBlock = "<script type=\"text/javascript\">" + Constants.vbCrLf + "//<![CDATA[" + Constants.vbCrLf + scriptBlock + Constants.vbCrLf + "//]]>" + Constants.vbCrLf + "</script>";
+        scriptBlock = "<script type=\"text/javascript\">" + Environment.NewLine + "//<![CDATA[" + Environment.NewLine + scriptBlock + Environment.NewLine + "//]]>" + Environment.NewLine + "</script>";
         Page.ClientScript.RegisterClientScriptBlock(GetType(), "BlogServiceScript", scriptBlock);
 
         Context.Items["BlogServiceAdded"] = true;
@@ -200,7 +189,6 @@ namespace DotNetNuke.Modules.Blog.Common
     {
       return ClientAPI.GetSafeJSString(Localization.GetString(resourceKey, resourceFile));
     }
-    #endregion
 
   }
 

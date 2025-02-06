@@ -21,7 +21,7 @@
 
 using System.Runtime.Serialization;
 
-namespace DotNetNuke.Modules.Blog.Security.Permissions
+namespace DotNetNuke.Modules.Blog.Core.Security.Permissions
 {
   [Serializable()]
   public partial class PermissionInfo

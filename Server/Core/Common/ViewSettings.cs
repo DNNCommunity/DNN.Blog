@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DotNetNuke.Services.Tokens;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 // 
@@ -22,11 +23,8 @@ using System.Collections.Generic;
 // 
 
 using System.Xml;
-using DotNetNuke.Services.Tokens;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
 
-namespace DotNetNuke.Modules.Blog.Common
+namespace DotNetNuke.Modules.Blog.Core.Common
 {
   [Serializable()]
   public class ViewSettings : IPropertyAccess
@@ -67,9 +65,9 @@ namespace DotNetNuke.Modules.Blog.Common
           _categoryList = new List<int>();
           foreach (string c in Categories.Split(','))
           {
-            if (Information.IsNumeric(c))
+            if (int.TryParse(c, out int categoryId))
             {
-              _categoryList.Add(int.Parse(c));
+              _categoryList.Add(categoryId);
             }
           }
         }
@@ -88,45 +86,21 @@ namespace DotNetNuke.Modules.Blog.Common
 
       _tabModuleId = tabModuleId;
       _allSettings = new DotNetNuke.Entities.Modules.ModuleController().GetTabModule(tabModuleId).TabModuleSettings;
-      string argVariable = Template;
-      Extensions.ReadValue(ref _allSettings, "Template", ref argVariable);
-      Template = argVariable;
-      int argVariable1 = BlogModuleId;
-      Extensions.ReadValue(ref _allSettings, "BlogModuleId", ref argVariable1);
-      BlogModuleId = argVariable1;
-      bool argVariable2 = ShowAllLocales;
-      Extensions.ReadValue(ref _allSettings, "ShowAllLocales", ref argVariable2);
-      ShowAllLocales = argVariable2;
-      bool argVariable3 = ModifyPageDetails;
-      Extensions.ReadValue(ref _allSettings, "ModifyPageDetails", ref argVariable3);
-      ModifyPageDetails = argVariable3;
-      bool argVariable4 = AddCanonicalTag;
-      Extensions.ReadValue(ref _allSettings, "AddCanonicalTag", ref argVariable4);
-      AddCanonicalTag = argVariable4;
-      bool argVariable5 = ShowManagementPanel;
-      Extensions.ReadValue(ref _allSettings, "ShowManagementPanel", ref argVariable5);
-      ShowManagementPanel = argVariable5;
-      bool argVariable6 = ShowManagementPanelViewMode;
-      Extensions.ReadValue(ref _allSettings, "ShowManagementPanelViewMode", ref argVariable6);
-      ShowManagementPanelViewMode = argVariable6;
-      bool argVariable7 = HideUnpublishedBlogsViewMode;
-      Extensions.ReadValue(ref _allSettings, "HideUnpublishedBlogsViewMode", ref argVariable7);
-      HideUnpublishedBlogsViewMode = argVariable7;
-      bool argVariable8 = HideUnpublishedBlogsEditMode;
-      Extensions.ReadValue(ref _allSettings, "HideUnpublishedBlogsEditMode", ref argVariable8);
-      HideUnpublishedBlogsEditMode = argVariable8;
-      bool argVariable9 = AllowComments;
-      Extensions.ReadValue(ref _allSettings, "AllowComments", ref argVariable9);
-      AllowComments = argVariable9;
-      int argVariable10 = BlogId;
-      Extensions.ReadValue(ref _allSettings, "BlogId", ref argVariable10);
-      BlogId = argVariable10;
-      string argVariable11 = Categories;
-      Extensions.ReadValue(ref _allSettings, "Categories", ref argVariable11);
-      Categories = argVariable11;
-      int argVariable12 = AuthorId;
-      Extensions.ReadValue(ref _allSettings, "AuthorId", ref argVariable12);
-      AuthorId = argVariable12;
+
+      this.Template = _allSettings.ReadValue("Template", Template);
+      this.BlogModuleId = _allSettings.ReadValue("BlogModuleId", BlogModuleId);
+      this.ShowAllLocales = _allSettings.ReadValue("ShowAllLocales", ShowAllLocales);
+      this.ModifyPageDetails = _allSettings.ReadValue("ModifyPageDetails", ModifyPageDetails);
+      this.AddCanonicalTag = _allSettings.ReadValue("AddCanonicalTag", AddCanonicalTag);
+      this.ShowManagementPanel = _allSettings.ReadValue("ShowManagementPanel", ShowManagementPanel);
+      this.ShowManagementPanelViewMode = _allSettings.ReadValue("ShowManagementPanelViewMode", ShowManagementPanelViewMode);
+      this.HideUnpublishedBlogsViewMode = _allSettings.ReadValue("HideUnpublishedBlogsViewMode", HideUnpublishedBlogsViewMode);
+      this.HideUnpublishedBlogsEditMode = _allSettings.ReadValue("HideUnpublishedBlogsEditMode", HideUnpublishedBlogsEditMode);
+      this.AllowComments = _allSettings.ReadValue("AllowComments", AllowComments);
+      this.BlogId = _allSettings.ReadValue("BlogId", BlogId);
+      this.Categories = _allSettings.ReadValue("Categories", Categories);
+      this.AuthorId = _allSettings.ReadValue("AuthorId", AuthorId);
+
       if (BlogModuleId > -1 & tabModuleId > -1) // security check
       {
         var parentModule = new DotNetNuke.Entities.Modules.ModuleController().GetModule(BlogModuleId);
@@ -222,7 +196,7 @@ namespace DotNetNuke.Modules.Blog.Common
       {
         if (key.StartsWith("t_"))
         {
-          SetTemplateSetting(Strings.Mid(key, 3), Conversions.ToString(_allSettings[key]));
+          SetTemplateSetting(key.Substring(2), Convert.ToString(_allSettings[key]));
         }
       }
     }
@@ -270,7 +244,7 @@ namespace DotNetNuke.Modules.Blog.Common
               return PropertyAccess.FormatString(TemplateSettings[strPropertyName], strFormat);
             }
             if (strPropertyName.StartsWith("t_"))
-              strPropertyName = Strings.Mid(strPropertyName, 3);
+              strPropertyName = strPropertyName.Substring(3);
             if (TemplateSettings.ContainsKey(strPropertyName))
             {
               return PropertyAccess.FormatString(TemplateSettings[strPropertyName], strFormat);
@@ -330,42 +304,20 @@ namespace DotNetNuke.Modules.Blog.Common
     {
       if (xml is null)
         return;
-      string argVariable = Template;
-      Extensions.ReadValue(ref xml, "Template", ref argVariable);
-      Template = argVariable;
-      int argVariable1 = BlogModuleId;
-      Extensions.ReadValue(ref xml, "BlogModuleId", ref argVariable1);
-      BlogModuleId = argVariable1;
-      bool argVariable2 = ShowAllLocales;
-      Extensions.ReadValue(ref xml, "ShowAllLocales", ref argVariable2);
-      ShowAllLocales = argVariable2;
-      bool argVariable3 = ModifyPageDetails;
-      Extensions.ReadValue(ref xml, "ModifyPageDetails", ref argVariable3);
-      ModifyPageDetails = argVariable3;
-      bool argVariable4 = AddCanonicalTag;
-      Extensions.ReadValue(ref xml, "AddCanonicalTag", ref argVariable4);
-      AddCanonicalTag = argVariable4;
-      bool argVariable5 = ShowManagementPanel;
-      Extensions.ReadValue(ref xml, "ShowManagementPanel", ref argVariable5);
-      ShowManagementPanel = argVariable5;
-      bool argVariable6 = ShowManagementPanelViewMode;
-      Extensions.ReadValue(ref xml, "ShowManagementPanelViewMode", ref argVariable6);
-      ShowManagementPanelViewMode = argVariable6;
-      bool argVariable7 = HideUnpublishedBlogsViewMode;
-      Extensions.ReadValue(ref xml, "HideUnpublishedBlogsViewMode", ref argVariable7);
-      HideUnpublishedBlogsViewMode = argVariable7;
-      bool argVariable8 = HideUnpublishedBlogsEditMode;
-      Extensions.ReadValue(ref xml, "HideUnpublishedBlogsEditMode", ref argVariable8);
-      HideUnpublishedBlogsEditMode = argVariable8;
-      bool argVariable9 = AllowComments;
-      Extensions.ReadValue(ref xml, "AllowComments", ref argVariable9);
-      AllowComments = argVariable9;
-      int argVariable10 = BlogId;
-      Extensions.ReadValue(ref xml, "BlogId", ref argVariable10);
-      BlogId = argVariable10;
-      int argVariable11 = AuthorId;
-      Extensions.ReadValue(ref xml, "AuthorId", ref argVariable11);
-      AuthorId = argVariable11;
+
+      this.Template = xml.ReadValue("Template", Template);
+      this.BlogModuleId = xml.ReadValue("BlogModuleId", BlogModuleId);
+      this.ShowAllLocales = xml.ReadValue("ShowAllLocales", ShowAllLocales);
+      this.ModifyPageDetails = xml.ReadValue("ModifyPageDetails", ModifyPageDetails);
+      this.AddCanonicalTag = xml.ReadValue("AddCanonicalTag", AddCanonicalTag);
+      this.ShowManagementPanel = xml.ReadValue("ShowManagementPanel", ShowManagementPanel);
+      this.ShowManagementPanelViewMode = xml.ReadValue("ShowManagementPanelViewMode", ShowManagementPanelViewMode);
+      this.HideUnpublishedBlogsViewMode = xml.ReadValue("HideUnpublishedBlogsViewMode", HideUnpublishedBlogsViewMode);
+      this.HideUnpublishedBlogsEditMode = xml.ReadValue("HideUnpublishedBlogsEditMode", HideUnpublishedBlogsEditMode);
+      this.AllowComments = xml.ReadValue("AllowComments", AllowComments);
+      this.BlogId = xml.ReadValue("BlogId", BlogId);
+      this.AuthorId = xml.ReadValue("AuthorId", AuthorId);
+
       _categoryList = null;
     }
     #endregion

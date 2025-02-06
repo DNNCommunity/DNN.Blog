@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
 // 
 // DNN Connect - http://dnn-connect.org
 // Copyright (c) 2015
@@ -24,7 +22,7 @@ using Microsoft.VisualBasic.CompilerServices;
 // DEALINGS IN THE SOFTWARE.
 // 
 
-namespace DotNetNuke.Modules.Blog.Templating
+namespace DotNetNuke.Modules.Blog.Core.Templating
 {
   public class Template
   {
@@ -56,7 +54,7 @@ namespace DotNetNuke.Modules.Blog.Templating
       FileName = Filename;
       this.Replacer = Replacer;
       this.Replacer.AddResources(ViewRelPath + "App_LocalResources/" + Filename);
-      if (item is not null)
+      if (item != null)
         this.Replacer.AddPropertySource("item", item);
     }
 
@@ -68,7 +66,7 @@ namespace DotNetNuke.Modules.Blog.Templating
       this.Replacer = Replacer;
       this.Replacer.AddCustomParameters(Arguments);
       this.Replacer.AddResources(ViewRelPath + "App_LocalResources/" + Filename);
-      if (item is not null)
+      if (item != null)
         this.Replacer.AddPropertySource("item", item);
     }
     #endregion
@@ -89,7 +87,7 @@ namespace DotNetNuke.Modules.Blog.Templating
         Contents = Regex.Replace(Contents, @"(?si)\[if\|(?<template>[^|\]]+)\](?<left>.*?)\[(?<comparison>\W{1,2})\](?<right>.*?)\[/if\](?<content>.*)\[endif\|\1\](?-is)", ReplaceIfThens);
         // Simple repeating template e.g. [subtemplate|Flight.html|flights|pagesize=6]
         Contents = Regex.Replace(Contents, @"(?i)\[subtemplate\|([^|\]]+)\|([^|\]]+)\|?([^|\]]+)?\](?-i)", ReplaceSubtemplates);
-        if (Replacer is not null)
+        if (Replacer != null)
         {
           return Replacer.ReplaceTokens(Contents);
         }
@@ -118,7 +116,7 @@ namespace DotNetNuke.Modules.Blog.Templating
         return "";
       shouldRender = shouldRender.ToLower();
       string compareValue = "";
-      if (m.Groups[4] is not null && !string.IsNullOrEmpty(m.Groups[4].Value))
+      if (m.Groups[4] != null && !string.IsNullOrEmpty(m.Groups[4].Value))
       {
         compareValue = m.Groups[4].Value.ToLower();
         if ((shouldRender ?? "") != (compareValue ?? ""))
@@ -151,26 +149,27 @@ namespace DotNetNuke.Modules.Blog.Templating
       string @file = m.Groups[1].Value.ToLower();
       string datasource = m.Groups[2].Value.ToLower();
       string[] properties = Array.Empty<string>();
-      if (m.Groups[3] is not null && !string.IsNullOrEmpty(m.Groups[3].Value))
+      if (m.Groups[3] != null && !string.IsNullOrEmpty(m.Groups[3].Value))
       {
         properties = m.Groups[3].Value.Split(',');
       }
-      var @params = new Dictionary<string, string>();
+      var parameters = new Dictionary<string, string>();
       foreach (string p in properties)
       {
         if (p.IndexOf('=') > -1)
         {
-          @params.Add(Strings.Left(p, p.IndexOf('=')).ToLower(), Strings.Mid(p, p.IndexOf('=') + 2));
+          var parts = p.Split('=');
+          parameters.Add(parts[0].ToLower(), parts[1]);
         }
         else
         {
-          @params.Add(p.ToLower(), "");
+          parameters.Add(p.ToLower(), "");
         }
       }
 
       var dataSrc = new List<GenericTokenReplace>();
       var args = new List<string[]>();
-      GetData?.Invoke(datasource, @params, ref dataSrc, ref args, Replacer.PrimaryObject);
+      GetData?.Invoke(datasource, parameters, ref dataSrc, ref args, Replacer.PrimaryObject);
 
       var res = new StringBuilder();
       int totalItems = dataSrc.Count;
@@ -242,52 +241,52 @@ namespace DotNetNuke.Modules.Blog.Templating
             }
           case "<":
             {
-              if (Information.IsNumeric(leftside) & Information.IsNumeric(rightside))
+              if (float.TryParse(leftside, out float res1) & float.TryParse(rightside, out float res2))
               {
-                result = float.Parse(leftside) < float.Parse(rightside);
+                result = res1 < res2;
               }
               else
               {
-                result = Operators.CompareString(leftside, rightside, false) < 0;
+                result = string.Compare(leftside, rightside, false) < 0;
               }
 
               break;
             }
           case "<=":
             {
-              if (Information.IsNumeric(leftside) & Information.IsNumeric(rightside))
+              if (float.TryParse(leftside, out float res1) & float.TryParse(rightside, out float res2))
               {
-                result = float.Parse(leftside) <= float.Parse(rightside);
+                result = res1 <= res2;
               }
               else
               {
-                result = Operators.CompareString(leftside, rightside, false) <= 0;
+                result = string.Compare(leftside, rightside, false) <= 0;
               }
 
               break;
             }
           case ">=":
             {
-              if (Information.IsNumeric(leftside) & Information.IsNumeric(rightside))
+              if (float.TryParse(leftside, out float res1) & float.TryParse(rightside, out float res2))
               {
-                result = float.Parse(leftside) >= float.Parse(rightside);
+                result = res1 >= res2;
               }
               else
               {
-                result = Operators.CompareString(leftside, rightside, false) >= 0;
+                result = string.Compare(leftside, rightside, false) >= 0;
               }
 
               break;
             }
           case ">":
             {
-              if (Information.IsNumeric(leftside) & Information.IsNumeric(rightside))
+              if (float.TryParse(leftside, out float res1) & float.TryParse(rightside, out float res2))
               {
-                result = float.Parse(leftside) > float.Parse(rightside);
+                result = res1 > res2;
               }
               else
               {
-                result = Operators.CompareString(leftside, rightside, false) > 0;
+                result = string.Compare(leftside, rightside, false) > 0;
               }
 
               break;
@@ -295,9 +294,9 @@ namespace DotNetNuke.Modules.Blog.Templating
           case "!=":
           case "<>":
             {
-              if (Information.IsNumeric(leftside) & Information.IsNumeric(rightside))
+              if (float.TryParse(leftside, out float res1) & float.TryParse(rightside, out float res2))
               {
-                result = float.Parse(leftside) != float.Parse(rightside);
+                result = res1 != res2;
               }
               else
               {
@@ -315,7 +314,7 @@ namespace DotNetNuke.Modules.Blog.Templating
       }
       else
       {
-        result = Conversions.ToBoolean(leftside);
+        result = Convert.ToBoolean(leftside);
       }
 
       if (result)

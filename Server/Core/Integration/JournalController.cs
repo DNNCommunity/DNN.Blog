@@ -17,192 +17,190 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 // 
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Modules.Blog.Core.Common;
+using DotNetNuke.Modules.Blog.Core.Entities.Blogs;
+using DotNetNuke.Modules.Blog.Core.Entities.Posts;
+using DotNetNuke.Services.Journal;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Web;
-using DotNetNuke.Entities.Modules;
-using static DotNetNuke.Modules.Blog.Common.Globals;
-using DotNetNuke.Modules.Blog.Entities.Blogs;
-using DotNetNuke.Modules.Blog.Entities.Posts;
-using static DotNetNuke.Modules.Blog.Integration.Integration;
-using DotNetNuke.Services.Journal;
 
-namespace DotNetNuke.Modules.Blog.Integration
+namespace DotNetNuke.Modules.Blog.Core.Integration
 {
 
-  public class JournalController
-  {
-
-    #region  Public Methods 
-    /// <summary>
-    /// Informs the core journal that the user has posted a blog Post.
-    /// </summary>
-    /// <param name="objPost"></param>
-    /// <param name="portalId"></param>
-    /// <param name="tabId"></param>
-    /// <param name="journalUserId"></param>
-    /// <param name="url"></param>
-    /// <remarks></remarks>
-    public static void AddBlogPostToJournal(PostInfo objPost, int portalId, int tabId, int journalUserId, string url)
+    public class JournalController
     {
-      if (journalUserId == -1)
-        return;
-      string objectKey = ContentTypeName + "_" + ContentTypeName + "_" + string.Format("{0}:{1}", objPost.BlogID, objPost.ContentItemId);
-      var ji = Framework.ServiceLocator<IJournalController, DotNetNuke.Services.Journal.JournalController>.Instance.GetJournalItemByKey(portalId, objectKey);
 
-      if (ji is not null)
-      {
-        Framework.ServiceLocator<IJournalController, DotNetNuke.Services.Journal.JournalController>.Instance.DeleteJournalItemByKey(portalId, objectKey);
-      }
+        #region  Public Methods 
+        /// <summary>
+        /// Informs the core journal that the user has posted a blog Post.
+        /// </summary>
+        /// <param name="objPost"></param>
+        /// <param name="portalId"></param>
+        /// <param name="tabId"></param>
+        /// <param name="journalUserId"></param>
+        /// <param name="url"></param>
+        /// <remarks></remarks>
+        public static void AddBlogPostToJournal(PostInfo objPost, int portalId, int tabId, int journalUserId, string url)
+        {
+            if (journalUserId == -1)
+                return;
+            string objectKey = Integration.ContentTypeName + "_" + Integration.ContentTypeName + "_" + string.Format("{0}:{1}", objPost.BlogID, objPost.ContentItemId);
+            var ji = Framework.ServiceLocator<IJournalController, DotNetNuke.Services.Journal.JournalController>.Instance.GetJournalItemByKey(portalId, objectKey);
 
-      ji = new JournalItem();
+            if (ji != null)
+            {
+                Framework.ServiceLocator<IJournalController, DotNetNuke.Services.Journal.JournalController>.Instance.DeleteJournalItemByKey(portalId, objectKey);
+            }
 
-      ji.PortalId = portalId;
-      ji.ProfileId = journalUserId;
-      ji.UserId = journalUserId;
-      ji.ContentItemId = objPost.ContentItemId;
-      ji.Title = objPost.Title;
-      ji.ItemData = new ItemData();
-      ji.ItemData.Url = url;
-      ji.Summary = HttpUtility.HtmlDecode(objPost.Summary);
-      ji.Body = null;
-      ji.JournalTypeId = GetBlogJournalTypeID(portalId);
-      ji.ObjectKey = objectKey;
-      ji.SecuritySet = "E,";
+            ji = new JournalItem();
 
-      var moduleInfo = Framework.ServiceLocator<IModuleController, ModuleController>.Instance.GetModule(objPost.ModuleID, tabId, false);
-      Framework.ServiceLocator<IJournalController, DotNetNuke.Services.Journal.JournalController>.Instance.SaveJournalItem(ji, moduleInfo);
+            ji.PortalId = portalId;
+            ji.ProfileId = journalUserId;
+            ji.UserId = journalUserId;
+            ji.ContentItemId = objPost.ContentItemId;
+            ji.Title = objPost.Title;
+            ji.ItemData = new ItemData();
+            ji.ItemData.Url = url;
+            ji.Summary = HttpUtility.HtmlDecode(objPost.Summary);
+            ji.Body = null;
+            ji.JournalTypeId = GetBlogJournalTypeID(portalId);
+            ji.ObjectKey = objectKey;
+            ji.SecuritySet = "E,";
+
+            var moduleInfo = Framework.ServiceLocator<IModuleController, ModuleController>.Instance.GetModule(objPost.ModuleID, tabId, false);
+            Framework.ServiceLocator<IJournalController, DotNetNuke.Services.Journal.JournalController>.Instance.SaveJournalItem(ji, moduleInfo);
+        }
+
+        /// <summary>
+        /// Deletes a journal item associated with the specified blog Post.
+        /// </summary>
+        /// <param name="blogId"></param>
+        /// <param name="PostId"></param>
+        /// <param name="portalId"></param>
+        /// <remarks></remarks>
+        public static void RemoveBlogPostFromJournal(int blogId, int PostId, int portalId)
+        {
+            string objectKey = Integration.ContentTypeName + "_" + Integration.ContentTypeName + "_" + string.Format("{0}:{1}", blogId, PostId);
+            Framework.ServiceLocator<IJournalController, DotNetNuke.Services.Journal.JournalController>.Instance.DeleteJournalItemByKey(portalId, objectKey);
+        }
+
+        /// <summary>
+        /// Informs the core journal that the user has commented on a blog Post.
+        /// </summary>
+        /// <param name="objPost"></param>
+        /// <param name="objComment"></param>
+        /// <param name="portalId"></param>
+        /// <param name="tabId"></param>
+        /// <param name="journalUserId"></param>
+        /// <param name="url"></param>
+        public static void AddOrUpdateCommentInJournal(BlogInfo objBlog, PostInfo objPost, Entities.Comments.CommentInfo objComment, int portalId, int tabId, int journalUserId, string url)
+        {
+            if (journalUserId == -1)
+                return;
+            string objectKey = Integration.ContentTypeName + "_" + Integration.JournalCommentTypeName + "_" + string.Format("{0}:{1}", objPost.ContentItemId.ToString(), objComment.CommentID.ToString());
+            var ji = Framework.ServiceLocator<IJournalController, DotNetNuke.Services.Journal.JournalController>.Instance.GetJournalItemByKey(portalId, objectKey);
+            if (ji != null)
+            {
+                Framework.ServiceLocator<IJournalController, DotNetNuke.Services.Journal.JournalController>.Instance.DeleteJournalItemByKey(portalId, objectKey);
+            }
+
+            ji = new JournalItem();
+
+            ji.PortalId = portalId;
+            ji.ProfileId = journalUserId;
+            ji.UserId = journalUserId;
+            ji.ContentItemId = objPost.ContentItemId;
+            ji.Title = objPost.Title;
+            ji.ItemData = new ItemData();
+            ji.ItemData.Url = url;
+            ji.Summary = HttpUtility.HtmlDecode(objComment.Comment);
+            ji.Body = null;
+            ji.JournalTypeId = GetCommentJournalTypeID(portalId);
+            ji.ObjectKey = objectKey;
+            ji.SecuritySet = "E,";
+
+            var moduleInfo = Framework.ServiceLocator<IModuleController, ModuleController>.Instance.GetModule(objPost.ModuleID, tabId, false);
+            Framework.ServiceLocator<IJournalController, DotNetNuke.Services.Journal.JournalController>.Instance.SaveJournalItem(ji, moduleInfo);
+
+            if (objBlog.OwnerUserId != journalUserId)
+            {
+                string title = DotNetNuke.Services.Localization.Localization.GetString("CommentAddedNotify", Globals.SharedResourceFileName);
+                string summary = "<a target='_blank' href='" + url + "'>" + objPost.Title + "</a>";
+                NotificationController.CommentAdded(objComment, objPost, objBlog, portalId, summary, title);
+            }
+
+        }
+
+        /// <summary>
+        /// Deletes a journal item associated with the specific comment.
+        /// </summary>
+        /// <param name="PostId"></param>
+        /// <param name="commentId"></param>
+        /// <param name="portalId"></param>
+        public static void RemoveCommentFromJournal(int PostId, int commentId, int portalId)
+        {
+            string objectKey = Integration.ContentTypeName + "_" + Integration.JournalCommentTypeName + "_" + string.Format("{0}:{1}", PostId, commentId);
+            Framework.ServiceLocator<IJournalController, DotNetNuke.Services.Journal.JournalController>.Instance.DeleteJournalItemByKey(portalId, objectKey);
+        }
+        #endregion
+
+        #region  Private Methods 
+        /// <summary>
+        /// Returns a journal type associated with blog Posts (using one of the core built in journal types)
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <returns></returns>
+        /// <remarks></remarks>
+        private static int GetBlogJournalTypeID(int portalId)
+        {
+            IEnumerable<JournalTypeInfo> colJournalTypes;
+            colJournalTypes = (from t in Framework.ServiceLocator<IJournalController, DotNetNuke.Services.Journal.JournalController>.Instance.GetJournalTypes(portalId)
+                               where t.JournalType == Integration.JournalBlogTypeName
+                               select t);
+            int journalTypeId;
+
+            if (colJournalTypes.Count() > 0)
+            {
+                var journalType = colJournalTypes.Single();
+                journalTypeId = journalType.JournalTypeId;
+            }
+            else
+            {
+                journalTypeId = 7;
+            }
+
+            return journalTypeId;
+        }
+
+        /// <summary>
+        /// Returns a journal type associated with commenting (using one of the core built in journal types)
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <returns></returns>
+        private static int GetCommentJournalTypeID(int portalId)
+        {
+            IEnumerable<JournalTypeInfo> colJournalTypes;
+            colJournalTypes = (from t in Framework.ServiceLocator<IJournalController, DotNetNuke.Services.Journal.JournalController>.Instance.GetJournalTypes(portalId)
+                               where t.JournalType == Integration.JournalCommentTypeName
+                               select t);
+            int journalTypeId;
+
+            if (colJournalTypes.Count() > 0)
+            {
+                var journalType = colJournalTypes.Single();
+                journalTypeId = journalType.JournalTypeId;
+            }
+            else
+            {
+                journalTypeId = 18;
+            }
+
+            return journalTypeId;
+        }
+        #endregion
+
     }
-
-    /// <summary>
-    /// Deletes a journal item associated with the specified blog Post.
-    /// </summary>
-    /// <param name="blogId"></param>
-    /// <param name="PostId"></param>
-    /// <param name="portalId"></param>
-    /// <remarks></remarks>
-    public static void RemoveBlogPostFromJournal(int blogId, int PostId, int portalId)
-    {
-      string objectKey = ContentTypeName + "_" + ContentTypeName + "_" + string.Format("{0}:{1}", blogId, PostId);
-      Framework.ServiceLocator<IJournalController, DotNetNuke.Services.Journal.JournalController>.Instance.DeleteJournalItemByKey(portalId, objectKey);
-    }
-
-    /// <summary>
-    /// Informs the core journal that the user has commented on a blog Post.
-    /// </summary>
-    /// <param name="objPost"></param>
-    /// <param name="objComment"></param>
-    /// <param name="portalId"></param>
-    /// <param name="tabId"></param>
-    /// <param name="journalUserId"></param>
-    /// <param name="url"></param>
-    public static void AddOrUpdateCommentInJournal(BlogInfo objBlog, PostInfo objPost, Entities.Comments.CommentInfo objComment, int portalId, int tabId, int journalUserId, string url)
-    {
-      if (journalUserId == -1)
-        return;
-      string objectKey = ContentTypeName + "_" + JournalCommentTypeName + "_" + string.Format("{0}:{1}", objPost.ContentItemId.ToString(), objComment.CommentID.ToString());
-      var ji = Framework.ServiceLocator<IJournalController, DotNetNuke.Services.Journal.JournalController>.Instance.GetJournalItemByKey(portalId, objectKey);
-      if (ji is not null)
-      {
-        Framework.ServiceLocator<IJournalController, DotNetNuke.Services.Journal.JournalController>.Instance.DeleteJournalItemByKey(portalId, objectKey);
-      }
-
-      ji = new JournalItem();
-
-      ji.PortalId = portalId;
-      ji.ProfileId = journalUserId;
-      ji.UserId = journalUserId;
-      ji.ContentItemId = objPost.ContentItemId;
-      ji.Title = objPost.Title;
-      ji.ItemData = new ItemData();
-      ji.ItemData.Url = url;
-      ji.Summary = HttpUtility.HtmlDecode(objComment.Comment);
-      ji.Body = null;
-      ji.JournalTypeId = GetCommentJournalTypeID(portalId);
-      ji.ObjectKey = objectKey;
-      ji.SecuritySet = "E,";
-
-      var moduleInfo = Framework.ServiceLocator<IModuleController, ModuleController>.Instance.GetModule(objPost.ModuleID, tabId, false);
-      Framework.ServiceLocator<IJournalController, DotNetNuke.Services.Journal.JournalController>.Instance.SaveJournalItem(ji, moduleInfo);
-
-      if (objBlog.OwnerUserId != journalUserId)
-      {
-        string title = DotNetNuke.Services.Localization.Localization.GetString("CommentAddedNotify", SharedResourceFileName);
-        string summary = "<a target='_blank' href='" + url + "'>" + objPost.Title + "</a>";
-        NotificationController.CommentAdded(objComment, objPost, objBlog, portalId, summary, title);
-      }
-
-    }
-
-    /// <summary>
-    /// Deletes a journal item associated with the specific comment.
-    /// </summary>
-    /// <param name="PostId"></param>
-    /// <param name="commentId"></param>
-    /// <param name="portalId"></param>
-    public static void RemoveCommentFromJournal(int PostId, int commentId, int portalId)
-    {
-      string objectKey = ContentTypeName + "_" + JournalCommentTypeName + "_" + string.Format("{0}:{1}", PostId, commentId);
-      Framework.ServiceLocator<IJournalController, DotNetNuke.Services.Journal.JournalController>.Instance.DeleteJournalItemByKey(portalId, objectKey);
-    }
-    #endregion
-
-    #region  Private Methods 
-    /// <summary>
-    /// Returns a journal type associated with blog Posts (using one of the core built in journal types)
-    /// </summary>
-    /// <param name="portalId"></param>
-    /// <returns></returns>
-    /// <remarks></remarks>
-    private static int GetBlogJournalTypeID(int portalId)
-    {
-      IEnumerable<JournalTypeInfo> colJournalTypes;
-      colJournalTypes = (from t in Framework.ServiceLocator<IJournalController, DotNetNuke.Services.Journal.JournalController>.Instance.GetJournalTypes(portalId)
-                         where t.JournalType == JournalBlogTypeName
-                         select t);
-      int journalTypeId;
-
-      if (colJournalTypes.Count() > 0)
-      {
-        var journalType = colJournalTypes.Single();
-        journalTypeId = journalType.JournalTypeId;
-      }
-      else
-      {
-        journalTypeId = 7;
-      }
-
-      return journalTypeId;
-    }
-
-    /// <summary>
-    /// Returns a journal type associated with commenting (using one of the core built in journal types)
-    /// </summary>
-    /// <param name="portalId"></param>
-    /// <returns></returns>
-    private static int GetCommentJournalTypeID(int portalId)
-    {
-      IEnumerable<JournalTypeInfo> colJournalTypes;
-      colJournalTypes = (from t in Framework.ServiceLocator<IJournalController, DotNetNuke.Services.Journal.JournalController>.Instance.GetJournalTypes(portalId)
-                         where t.JournalType == JournalCommentTypeName
-                         select t);
-      int journalTypeId;
-
-      if (colJournalTypes.Count() > 0)
-      {
-        var journalType = colJournalTypes.Single();
-        journalTypeId = journalType.JournalTypeId;
-      }
-      else
-      {
-        journalTypeId = 18;
-      }
-
-      return journalTypeId;
-    }
-    #endregion
-
-  }
 
 }

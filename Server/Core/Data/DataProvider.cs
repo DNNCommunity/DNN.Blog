@@ -20,7 +20,7 @@
 // 
 
 
-namespace DotNetNuke.Modules.Blog.Data
+namespace DotNetNuke.Modules.Blog.Core.Data
 {
 
   public abstract partial class DataProvider

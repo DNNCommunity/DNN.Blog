@@ -21,7 +21,7 @@
 
 using DotNetNuke.Services.Tokens;
 
-namespace DotNetNuke.Modules.Blog.Templating
+namespace DotNetNuke.Modules.Blog.Core.Templating
 {
   public abstract class GenericTokenReplace : TokenReplace
   {

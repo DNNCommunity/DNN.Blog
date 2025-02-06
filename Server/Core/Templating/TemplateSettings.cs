@@ -22,7 +22,7 @@ using System.Collections.Generic;
 
 using System.Xml.Serialization;
 
-namespace DotNetNuke.Modules.Blog.Templating
+namespace DotNetNuke.Modules.Blog.Core.Templating
 {
 
   [Serializable()]

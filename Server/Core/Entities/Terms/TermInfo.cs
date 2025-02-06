@@ -1,4 +1,9 @@
-﻿using System;
+﻿using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Content.Taxonomy;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Modules.Blog.Core.Common;
+using DotNetNuke.Services.Tokens;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -24,16 +29,8 @@ using System.Xml;
 // 
 
 using static DotNetNuke.Common.Globals;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Content.Taxonomy;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Modules.Blog.Common;
-using static DotNetNuke.Modules.Blog.Common.Globals;
-using DotNetNuke.Services.Tokens;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
 
-namespace DotNetNuke.Modules.Blog.Entities.Terms
+namespace DotNetNuke.Modules.Blog.Core.Entities.Terms
 {
   [Serializable()]
   public class TermInfo : Term, IHydratable, IPropertyAccess
@@ -66,7 +63,7 @@ namespace DotNetNuke.Modules.Blog.Entities.Terms
     {
       get
       {
-        return Conversions.ToString(Interaction.IIf(string.IsNullOrEmpty(AltName), Name, AltName));
+        return string.IsNullOrEmpty(AltName) ? Name : AltName;
       }
     }
 
@@ -74,16 +71,16 @@ namespace DotNetNuke.Modules.Blog.Entities.Terms
     {
       get
       {
-        return Conversions.ToString(Interaction.IIf(string.IsNullOrEmpty(AltDescription), Description, AltDescription));
+        return string.IsNullOrEmpty(AltDescription) ? Description : AltDescription;
       }
     }
 
     /// <summary>
-  /// ML text type to handle the name of the term
-  /// </summary>
-  /// <value></value>
-  /// <returns></returns>
-  /// <remarks></remarks>
+    /// ML text type to handle the name of the term
+    /// </summary>
+    /// <value></value>
+    /// <returns></returns>
+    /// <remarks></remarks>
     public LocalizedText NameLocalizations
     {
       get
@@ -109,11 +106,11 @@ namespace DotNetNuke.Modules.Blog.Entities.Terms
     private LocalizedText _nameLocalizations;
 
     /// <summary>
-  /// ML text type to handle the description of the term
-  /// </summary>
-  /// <value></value>
-  /// <returns></returns>
-  /// <remarks></remarks>
+    /// ML text type to handle the description of the term
+    /// </summary>
+    /// <value></value>
+    /// <returns></returns>
+    /// <remarks></remarks>
     public LocalizedText DescriptionLocalizations
     {
       get
@@ -287,18 +284,10 @@ namespace DotNetNuke.Modules.Blog.Entities.Terms
     {
       if (xml is null)
         return;
-      string argVariable = Name;
-      Extensions.ReadValue(ref xml, "Name", ref argVariable);
-      Name = argVariable;
-      var argVariable1 = NameLocalizations;
-      Extensions.ReadValue(ref xml, "NameLocalizations", ref argVariable1);
-      NameLocalizations = argVariable1;
-      string argVariable2 = Description;
-      Extensions.ReadValue(ref xml, "Description", ref argVariable2);
-      Description = argVariable2;
-      var argVariable3 = DescriptionLocalizations;
-      Extensions.ReadValue(ref xml, "DescriptionLocalizations", ref argVariable3);
-      DescriptionLocalizations = argVariable3;
+      Name = xml.ReadValue("Name", Name);
+      NameLocalizations = xml.ReadValue("NameLocalizations", NameLocalizations);
+      Description = xml.ReadValue("Description", Description);
+      DescriptionLocalizations = xml.ReadValue("DescriptionLocalizations", DescriptionLocalizations);
       foreach (XmlNode xTerm in xml.SelectNodes("Term"))
       {
         var t = new TermInfo();
@@ -314,8 +303,10 @@ namespace DotNetNuke.Modules.Blog.Entities.Terms
       writer.WriteElementString("NameLocalizations", NameLocalizations.ToString());
       writer.WriteElementString("Description", Description);
       writer.WriteElementString("DescriptionLocalizations", DescriptionLocalizations.ToString());
-      foreach (TermInfo t in vocabulary.Where(x => (bool)(x.ParentTermId is not null ? TermId is var arg4 && x.ParentTermId is { } arg5 ? arg5 == arg4 : null : (bool?)false)))
+      foreach (TermInfo t in vocabulary.Where(x => x.ParentTermId.HasValue && x.ParentTermId.Value == TermId))
+      {
         t.WriteXml(writer, vocabulary);
+      }
       writer.WriteEndElement(); // Term
     }
     #endregion
@@ -341,7 +332,7 @@ namespace DotNetNuke.Modules.Blog.Entities.Terms
         _permaLink = ApplicationURL(tab.TabID) + "&Term=" + TermId.ToString();
         if (DotNetNuke.Entities.Host.Host.UseFriendlyUrls)
         {
-          _permaLink = FriendlyUrl(tab, _permaLink, GetSafePageName(LocalizedName));
+          _permaLink = FriendlyUrl(tab, _permaLink, Globals.GetSafePageName(LocalizedName));
         }
         else
         {

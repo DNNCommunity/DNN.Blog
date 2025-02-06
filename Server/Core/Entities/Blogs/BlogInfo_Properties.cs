@@ -20,11 +20,9 @@
 // 
 
 using System.Runtime.Serialization;
-using DotNetNuke.Modules.Blog.Common;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
+using DotNetNuke.Modules.Blog.Core.Common;
 
-namespace DotNetNuke.Modules.Blog.Entities.Blogs
+namespace DotNetNuke.Modules.Blog.Core.Entities.Blogs
 {
   public partial class BlogInfo
   {
@@ -126,7 +124,7 @@ namespace DotNetNuke.Modules.Blog.Entities.Blogs
     {
       get
       {
-        return Conversions.ToString(Interaction.IIf(string.IsNullOrEmpty(AltTitle), Title, AltTitle));
+        return string.IsNullOrEmpty(AltTitle) ? Title : AltTitle;
       }
     }
 
@@ -134,16 +132,16 @@ namespace DotNetNuke.Modules.Blog.Entities.Blogs
     {
       get
       {
-        return Conversions.ToString(Interaction.IIf(string.IsNullOrEmpty(AltDescription), Description, AltDescription));
+        return string.IsNullOrEmpty(AltDescription) ? Description : AltDescription;
       }
     }
 
     /// <summary>
-  /// ML text type to handle the title of the blog
-  /// </summary>
-  /// <value></value>
-  /// <returns></returns>
-  /// <remarks></remarks>
+    /// ML text type to handle the title of the blog
+    /// </summary>
+    /// <value></value>
+    /// <returns></returns>
+    /// <remarks></remarks>
     public LocalizedText TitleLocalizations
     {
       get
@@ -169,11 +167,11 @@ namespace DotNetNuke.Modules.Blog.Entities.Blogs
     private LocalizedText _titleLocalizations;
 
     /// <summary>
-  /// ML text type to handle the description of the blog
-  /// </summary>
-  /// <value></value>
-  /// <returns></returns>
-  /// <remarks></remarks>
+    /// ML text type to handle the description of the blog
+    /// </summary>
+    /// <value></value>
+    /// <returns></returns>
+    /// <remarks></remarks>
     public LocalizedText DescriptionLocalizations
     {
       get

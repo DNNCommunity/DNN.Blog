@@ -21,9 +21,7 @@ using System.Collections.Generic;
 // DEALINGS IN THE SOFTWARE.
 // 
 
-using static DotNetNuke.Modules.Blog.Security.Security;
-
-namespace DotNetNuke.Modules.Blog.Security.Permissions
+namespace DotNetNuke.Modules.Blog.Core.Security.Permissions
 {
 
   [Serializable()]

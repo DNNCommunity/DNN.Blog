@@ -21,9 +21,9 @@
 
 
 
-using DotNetNuke.Modules.Blog.Data;
+using DotNetNuke.Modules.Blog.Core.Data;
 
-namespace DotNetNuke.Modules.Blog.Entities.Blogs
+namespace DotNetNuke.Modules.Blog.Core.Entities.Blogs
 {
 
   public partial class BlogsController

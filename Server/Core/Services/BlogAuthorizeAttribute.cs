@@ -23,15 +23,15 @@ using System.Threading;
 using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Modules.Blog.Common;
-using DotNetNuke.Modules.Blog.Entities.Blogs;
-
-using DotNetNuke.Modules.Blog.Security;
+using DotNetNuke.Modules.Blog.Core.Common;
+using DotNetNuke.Modules.Blog.Core.Entities.Blogs;
+using DotNetNuke.Modules.Blog.Core.Integration;
+using DotNetNuke.Modules.Blog.Core.Security;
 using DotNetNuke.Services.Social.Notifications;
 
 using DotNetNuke.Web.Api;
 
-namespace DotNetNuke.Modules.Blog.Services
+namespace DotNetNuke.Modules.Blog.Core.Services
 {
 
   #region  Security Access Levels 
@@ -81,12 +81,9 @@ namespace DotNetNuke.Modules.Blog.Services
       if (AccessLevel == SecurityAccessLevel.Anonymous)
         return true; // save time by not going through the code below
 
-      int argVariable = BlogId;
-      Extensions.ReadValue(ref HttpContext.Current.Request.Params, "blogId", ref argVariable);
-      BlogId = argVariable;
-      int argVariable1 = NotificationId;
-      Extensions.ReadValue(ref HttpContext.Current.Request.Params, "NotificationId", ref argVariable1);
-      NotificationId = argVariable1;
+      BlogId = HttpContext.Current.Request.Params.ReadValue("BlogId", BlogId);
+      NotificationId = HttpContext.Current.Request.Params.ReadValue("NotificationId", NotificationId);
+
       int moduleId = context.ActionContext.Request.FindModuleId();
       int tabId = context.ActionContext.Request.FindTabId();
       if (!HttpContextSource.Current.Request.IsAuthenticated)
@@ -103,7 +100,7 @@ namespace DotNetNuke.Modules.Blog.Services
       if (NotificationId > -1)
       {
         var notify = Framework.ServiceLocator<INotificationsController, NotificationsController>.Instance.GetNotification(NotificationId);
-        var nKey = new Integration.NotificationKey(notify.Context);
+        var nKey = new NotificationKey(notify.Context);
         BlogId = nKey.BlogId;
         moduleId = nKey.ModuleId;
       }

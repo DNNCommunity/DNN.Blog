@@ -1,4 +1,9 @@
-﻿using System;
+﻿using DotNetNuke.Entities.Modules;
+using DotNetNuke.Modules.Blog.Core.Common;
+using DotNetNuke.Modules.Blog.Core.Entities.Blogs;
+using DotNetNuke.Modules.Blog.Core.Entities.Posts;
+using DotNetNuke.Modules.Blog.Core.Entities.Terms;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Text;
@@ -25,15 +30,8 @@ using System.Web;
 // 
 
 using System.Xml;
-using static DotNetNuke.Common.Globals;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Modules.Blog.Common;
-using static DotNetNuke.Modules.Blog.Common.Globals;
-using DotNetNuke.Modules.Blog.Entities.Blogs;
-using DotNetNuke.Modules.Blog.Entities.Posts;
-using DotNetNuke.Modules.Blog.Entities.Terms;
 
-namespace DotNetNuke.Modules.Blog.Rss
+namespace DotNetNuke.Modules.Blog.Core.Rss
 {
   public class BlogRssFeed
   {
@@ -104,56 +102,33 @@ namespace DotNetNuke.Modules.Blog.Rss
       {
         port = ":" + HttpContext.Current.Request.Url.Port.ToString();
       }
-      ImageHandlerUrl = string.Format("{0}://{1}{2}{3}", HttpContext.Current.Request.Url.Scheme, HttpContext.Current.Request.Url.Host, port, VirtualPathUtility.ToAbsolute(glbImageHandlerPath));
+      ImageHandlerUrl = string.Format("{0}://{1}{2}{3}", HttpContext.Current.Request.Url.Scheme, HttpContext.Current.Request.Url.Host, port, VirtualPathUtility.ToAbsolute(Globals.glbImageHandlerPath));
 
       // Read Request Values
-      int argVariable = BlogId;
-      Extensions.ReadValue(ref reqParams, "blog", ref argVariable);
-      BlogId = argVariable;
-      int argVariable1 = BlogId;
-      Extensions.ReadValue(ref reqParams, "blogid", ref argVariable1);
-      BlogId = argVariable1;
-      int argVariable2 = TermId;
-      Extensions.ReadValue(ref reqParams, "term", ref argVariable2);
-      TermId = argVariable2;
-      int argVariable3 = TermId;
-      Extensions.ReadValue(ref reqParams, "termid", ref argVariable3);
-      TermId = argVariable3;
+      this.BlogId = reqParams.ReadValue("blog", this.BlogId);
+      this.TermId = reqParams.ReadValue("term", this.TermId);
+      this.TermId = reqParams.ReadValue("termid", this.TermId);
       if (Settings.RssMaxNrItems > 0)
       {
-        int argVariable4 = RecordsToSend;
-        Extensions.ReadValue(ref reqParams, "recs", ref argVariable4);
-        RecordsToSend = argVariable4;
+        this.RecordsToSend = reqParams.ReadValue("recs", this.RecordsToSend);
         if (RecordsToSend > Settings.RssMaxNrItems)
           RecordsToSend = Settings.RssMaxNrItems;
       }
       if (Settings.RssImageSizeAllowOverride)
       {
-        int argVariable5 = ImageWidth;
-        Extensions.ReadValue(ref reqParams, "w", ref argVariable5);
-        ImageWidth = argVariable5;
-        int argVariable6 = ImageHeight;
-        Extensions.ReadValue(ref reqParams, "h", ref argVariable6);
-        ImageHeight = argVariable6;
+        this.ImageWidth = reqParams.ReadValue("w", this.ImageWidth);
+        this.ImageHeight = reqParams.ReadValue("h", this.ImageHeight);
       }
       if (Settings.RssAllowContentInFeed)
       {
-        bool argVariable7 = IncludeContents;
-        Extensions.ReadValue(ref reqParams, "body", ref argVariable7);
-        IncludeContents = argVariable7;
+        this.IncludeContents = reqParams.ReadValue("body", this.IncludeContents);
       }
-      string argVariable8 = Search;
-      Extensions.ReadValue(ref reqParams, "search", ref argVariable8);
-      Search = argVariable8;
-      bool argVariable9 = SearchTitle;
-      Extensions.ReadValue(ref reqParams, "t", ref argVariable9);
-      SearchTitle = argVariable9;
-      bool argVariable10 = SearchContents;
-      Extensions.ReadValue(ref reqParams, "c", ref argVariable10);
-      SearchContents = argVariable10;
-      string argVariable11 = Language;
-      Extensions.ReadValue(ref reqParams, "language", ref argVariable11);
-      Language = argVariable11;
+
+      this.Search = reqParams.ReadValue("search", this.Search);
+      this.SearchTitle = reqParams.ReadValue("t", this.SearchTitle);
+      this.SearchContents = reqParams.ReadValue("c", this.SearchContents);
+      this.Language = reqParams.ReadValue("language", this.Language);
+
       if (!string.IsNullOrEmpty(Language))
         Locale = Language;
 
@@ -167,7 +142,7 @@ namespace DotNetNuke.Modules.Blog.Rss
       if (Blog is null)
       {
         var m = new ModuleController().GetModule(moduleId);
-        if (m is not null)
+        if (m != null)
         {
           Title = m.ModuleTitle;
         }
@@ -181,7 +156,7 @@ namespace DotNetNuke.Modules.Blog.Rss
         FeedEmail = Blog.Email;
         Copyright = Regex.Replace(Blog.Copyright, @"(?i)\[year\](?-i)", DateTime.Now.ToString("yyyy"));
       }
-      if (Term is not null)
+      if (Term != null)
       {
         Title += " - " + Term.LocalizedName;
       }
@@ -190,10 +165,10 @@ namespace DotNetNuke.Modules.Blog.Rss
         Title = "DNN Blog Search " + Title;
         Description += string.Format(" - Searching '{0}'", Search);
       }
-      Link = ApplicationURL();
-      if (Blog is not null)
+      Link = DotNetNuke.Common.Globals.ApplicationURL();
+      if (Blog != null)
         Link += string.Format("&blog={0}", BlogId);
-      if (Term is not null)
+      if (Term != null)
         Link += string.Format("&term={0}", TermId);
       if (RecordsToSend != Settings.RssDefaultNrItems)
         Link += string.Format("&recs={0}", RecordsToSend);
@@ -214,11 +189,11 @@ namespace DotNetNuke.Modules.Blog.Rss
       URL = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority;
       if (DotNetNuke.Entities.Host.Host.UseFriendlyUrls)
       {
-        Link = FriendlyUrl(PortalSettings.ActiveTab, Link, GetSafePageName(Title));
+        Link = DotNetNuke.Common.Globals.FriendlyUrl(PortalSettings.ActiveTab, Link, Globals.GetSafePageName(Title));
       }
       else
       {
-        Link = URL + ResolveUrl(Link);
+        Link = URL + DotNetNuke.Common.Globals.ResolveUrl(Link);
       }
 
       // Check Cache
@@ -240,7 +215,7 @@ namespace DotNetNuke.Modules.Blog.Rss
         // Load Posts
         if (IsSearchFeed)
         {
-          if (Term is not null)
+          if (Term != null)
           {
             Dictionary<int, PostInfo> localSearchPostsByTerm() { int argtotalRecords = TotalRecords; var ret = PostsController.SearchPostsByTerm(moduleId, BlogId, Locale, TermId, Search, SearchTitle, SearchContents, 1, Language, DateTime.Now.ToUniversalTime(), -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", ref argtotalRecords, -1, false); TotalRecords = argtotalRecords; return ret; }
 
@@ -253,7 +228,7 @@ namespace DotNetNuke.Modules.Blog.Rss
             Posts = localSearchPosts().Values;
           }
         }
-        else if (Term is not null)
+        else if (Term != null)
         {
           Dictionary<int, PostInfo> localGetPostsByTerm() { int argtotalRecords2 = TotalRecords; var ret = PostsController.GetPostsByTerm(moduleId, BlogId, Locale, TermId, 1, Language, DateTime.Now.ToUniversalTime(), -1, 0, RecordsToSend, "PUBLISHEDONDATE DESC", ref argtotalRecords2, -1, false); TotalRecords = argtotalRecords2; return ret; }
 
@@ -345,13 +320,13 @@ namespace DotNetNuke.Modules.Blog.Rss
         output.WriteElementString("managingEditor", FeedEmail);
       output.WriteElementString("pubDate", DateTime.Now.ToString("r"));
       output.WriteElementString("lastBuildDate", DateTime.Now.ToString("r"));
-      if (Term is not null)
+      if (Term != null)
       {
         output.WriteElementString("category", Term.LocalizedName);
       }
       output.WriteElementString("generator", "DotNetNuke Blog RSS Generator Version " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
       output.WriteElementString("ttl", Settings.RssTtl.ToString());
-      if (Blog is not null && Blog.IncludeImagesInFeed & !string.IsNullOrEmpty(Blog.Image))
+      if (Blog != null && Blog.IncludeImagesInFeed & !string.IsNullOrEmpty(Blog.Image))
       {
         output.WriteStartElement("image");
         output.WriteElementString("url", ImageHandlerUrl + string.Format("?TabId={0}&ModuleId={1}&Blog={2}&w={4}&h={5}&c=1&key={3}", PortalSettings.ActiveTab.TabID, Settings.ModuleId, BlogId, Blog.Image, ImageWidth, ImageHeight));

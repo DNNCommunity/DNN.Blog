@@ -22,7 +22,7 @@ using System.IO;
 
 using System.Net;
 
-namespace DotNetNuke.Modules.Blog.Common
+namespace DotNetNuke.Modules.Blog.Core.Common
 {
   public class WebPage
   {
@@ -39,7 +39,7 @@ namespace DotNetNuke.Modules.Blog.Common
     #endregion
 
     #region  Constructors 
-    internal WebPage(Uri filePath)
+    public WebPage(Uri filePath)
     {
       if (filePath is null)
       {
