@@ -20,10 +20,10 @@
 
 Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Services.Localization
-Imports DotNetNuke.Modules.Blog.Common.Globals
-Imports DotNetNuke.Modules.Blog.BlogML.Xml
-Imports DotNetNuke.Modules.Blog.Entities.Posts
+Imports DotNetNuke.Modules.Blog.Core.Common
+Imports DotNetNuke.Modules.Blog.Core.BlogML.Xml
 Imports System.IO.Compression
+Imports DotNetNuke.Modules.Blog.Core.Entities.Posts
 
 Public Class BlogImport
   Inherits BlogModuleBase
@@ -135,12 +135,12 @@ Public Class BlogImport
               .Locale = post.Locale
             End With
             If newPost.Title <> "" And newPost.Content <> "" Then
-              newPost.ContentItemId = PostsController.AddPost(newPost, UserId)
+              newPost = Core.Entities.Posts.PostsController.AddPost(newPost, UserId)
               strReport.AppendFormat("Added {0}" & vbCrLf, post.Title)
               ' import resources
               If post.Attachments.Count > 0 Then
-                Dim postDir As String = GetPostDirectoryMapPath(newPost)
-                Dim postPath As String = GetPostDirectoryPath(newPost)
+                Dim postDir As String = Core.Common.Globals.GetPostDirectoryMapPath(newPost)
+                Dim postPath As String = Core.Common.Globals.GetPostDirectoryPath(newPost)
                 IO.Directory.CreateDirectory(postDir)
                 For Each att As BlogMLAttachment In post.Attachments
                   If att.Embedded And att.Data IsNot Nothing Then
@@ -154,7 +154,7 @@ Public Class BlogImport
                   End If
                 Next
               End If
-              PostsController.UpdatePost(newPost, UserId)
+              Core.Entities.Posts.PostsController.UpdatePost(newPost, UserId)
             End If
           Next
           txtReport.Text = strReport.ToString

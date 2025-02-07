@@ -31,21 +31,21 @@ Partial Public Class Blog
  '''</remarks>
  Protected WithEvents ctlManagement As Global.DotNetNuke.Modules.Blog.Controls.ManagementPanel
 
- '''<summary>
- '''vtContents control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents vtContents As Global.DotNetNuke.Modules.Blog.Templating.ViewTemplate
+  '''<summary>
+  '''vtContents control.
+  '''</summary>
+  '''<remarks>
+  '''Auto-generated field.
+  '''To modify move field declaration from designer file to code-behind file.
+  '''</remarks>
+  Protected WithEvents vtContents As Global.DotNetNuke.Modules.Blog.Core.Templating.ViewTemplate
 
- '''<summary>
- '''ctlComments control.
- '''</summary>
- '''<remarks>
- '''Auto-generated field.
- '''To modify move field declaration from designer file to code-behind file.
- '''</remarks>
- Protected WithEvents ctlComments As Global.DotNetNuke.Modules.Blog.Controls.Comments
+  '''<summary>
+  '''ctlComments control.
+  '''</summary>
+  '''<remarks>
+  '''Auto-generated field.
+  '''To modify move field declaration from designer file to code-behind file.
+  '''</remarks>
+  Protected WithEvents ctlComments As Global.DotNetNuke.Modules.Blog.Controls.Comments
 End Class

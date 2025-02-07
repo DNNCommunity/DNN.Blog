@@ -18,9 +18,8 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports DotNetNuke.Modules.Blog.Entities.Blogs
 Imports System.Linq
-Imports DotNetNuke.Modules.Blog.Entities.Posts
+Imports DotNetNuke.Modules.Blog.Core.Common
 
 Public Class Manage
   Inherits BlogModuleBase
@@ -60,11 +59,11 @@ Public Class Manage
     MyBase.DataBind()
 
     If BlogContext.Security.IsEditor Then
-      dlBlogs.DataSource = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, BlogContext.Locale).Values
+      dlBlogs.DataSource = Core.Entities.Blogs.BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, BlogContext.Locale).Values
     Else
-      dlBlogs.DataSource = BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, BlogContext.Locale).Values.Where(Function(b)
-                                                                                                                          Return b.OwnerUserId = UserId
-                                                                                                                        End Function)
+      dlBlogs.DataSource = Core.Entities.Blogs.BlogsController.GetBlogsByModule(Settings.ModuleId, UserId, BlogContext.Locale).Values.Where(Function(b)
+                                                                                                                                              Return b.OwnerUserId = UserId
+                                                                                                                                            End Function)
     End If
     dlBlogs.DataBind()
 
@@ -75,7 +74,7 @@ Public Class Manage
   End Sub
 
   Public Sub GetPosts()
-    grdPosts.DataSource = PostsController.GetPosts(Settings.ModuleId, -1, BlogContext.Locale, -1, "", Nothing, -1, True, grdPosts.PageIndex, grdPosts.PageSize, SortOrder, _totalPosts, UserId, BlogContext.Security.UserIsAdmin).Values
+    grdPosts.DataSource = Core.Entities.Posts.PostsController.GetPosts(Settings.ModuleId, -1, BlogContext.Locale, -1, "", Nothing, -1, True, grdPosts.PageIndex, grdPosts.PageSize, SortOrder, _totalPosts, UserId, BlogContext.Security.UserIsAdmin).Values
     grdPosts.VirtualItemCount = _totalPosts
     grdPosts.DataBind()
   End Sub

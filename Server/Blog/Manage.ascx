@@ -44,22 +44,22 @@
       <ItemTemplate>
        <a href="<%# EditUrl("Post", Eval("ContentItemId"), "PostEdit") %>"
           title="Edit"
-          style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Blog.CanEdit OR BlogContext.Security.CanEditThisPost(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo)), "inline", "none") %>"><i class="fa fa-pencil-square-o icon16"></i></a>
+          style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Core.Entities.Posts.PostInfo).Blog.CanEdit OR BlogContext.Security.CanEditThisPost(CType(Container.DataItem, DotNetNuke.Modules.Blog.Core.Entities.Posts.PostInfo)), "inline", "none") %>"><i class="fa fa-pencil-square-o icon16"></i></a>
        <a href="#" 
           onclick="if (confirm('<%= LocalizeJSString("DeletePost") %>')) {blogService.deletePost(<%# Eval("BlogID") %>, <%# Eval("ContentItemID") %>, function() {$('#cmdDeletePost<%# Eval("ContentItemID") %>').parent().parent().hide()})};return false;"
           id="cmdDeletePost<%# Eval("ContentItemID") %>"
           title="Delete"
-          style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Blog.CanEdit OR BlogContext.Security.CanEditThisPost(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo)), "inline", "none") %>"><i class="fa fa-times icon16"></i></a>
+          style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Core.Entities.Posts.PostInfo).Blog.CanEdit OR BlogContext.Security.CanEditThisPost(CType(Container.DataItem, DotNetNuke.Modules.Blog.Core.Entities.Posts.PostInfo)), "inline", "none") %>"><i class="fa fa-times icon16"></i></a>
        <a href="#" 
           onclick="if (confirm('<%= LocalizeJSString("ApprovePost") %>')) {blogService.approvePost(<%# Eval("BlogID") %>, <%# Eval("ContentItemID") %>, function() {$('#cmdApprovePost<%# Eval("ContentItemID") %>').hide();$('#approveTick<%# Eval("ContentItemID") %>').removeClass('fa fa-times icon16').addClass('fa fa-check icon16') })};return false;" 
           id="cmdApprovePost<%# Eval("ContentItemID") %>"
           title="Approve"
-          style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Blog.CanApprove AND NOT CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Published, "inline", "none") %>"><i class="fa fa-check icon16"></i></a>
+          style="display:<%# IIF(CType(Container.DataItem, DotNetNuke.Modules.Blog.Core.Entities.Posts.PostInfo).Blog.CanApprove AND NOT CType(Container.DataItem, DotNetNuke.Modules.Blog.Core.Entities.Posts.PostInfo).Published, "inline", "none") %>"><i class="fa fa-check icon16"></i></a>
       </ItemTemplate>
      </asp:TemplateField>
      <asp:TemplateField headertext="Date" SortExpression="PublishedOnDate">
       <ItemTemplate>
-       <%# DotNetNuke.Modules.Blog.Common.Globals.UtcToLocalTime(Eval("PublishedOnDate"), UserController.Instance.GetCurrentUserInfo().Profile.PreferredTimeZone)%>
+       <%# DotNetNuke.Modules.Blog.Core.Common.Globals.UtcToLocalTime(Eval("PublishedOnDate"), UserController.Instance.GetCurrentUserInfo().Profile.PreferredTimeZone)%>
       </ItemTemplate>
      </asp:TemplateField>
      <asp:BoundField datafield="Title" headertext="Title" SortExpression="Title" />
@@ -71,7 +71,7 @@
      </asp:TemplateField>
      <asp:TemplateField HeaderText="Blog">
       <ItemTemplate>
-       <asp:Label ID="Label1" Runat="server" Text='<%# CType(Container.DataItem, DotNetNuke.Modules.Blog.Entities.Posts.PostInfo).Blog.Title %>' />
+       <asp:Label ID="Label1" Runat="server" Text='<%# CType(Container.DataItem, DotNetNuke.Modules.Blog.Core.Entities.Posts.PostInfo).Blog.Title %>' />
       </ItemTemplate>
      </asp:TemplateField>
     </Columns>

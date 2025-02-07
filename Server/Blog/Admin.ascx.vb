@@ -18,173 +18,175 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports DotNetNuke.Modules.Blog.Common.Globals
+Imports DotNetNuke.Modules.Blog.Core.Common
+Imports DotNetNuke.Modules.Blog.Core.Data
+Imports DotNetNuke.Modules.Blog.Core.Entities.Terms
 
 Public Class Admin
- Inherits BlogModuleBase
+  Inherits BlogModuleBase
 
- Private _totalPosts As Integer = -1
+  Private _totalPosts As Integer = -1
 
- Private Sub Page_Init(sender As Object, e As EventArgs) Handles Me.Init
-  AddJavascriptFile("jquery.dynatree.min.js", "jquery.dynatree", "1.2.4", 60)
-  AddCssFile("dynatree.css", "dynatree", "1.2.4")
- End Sub
+  Private Sub Page_Init(sender As Object, e As EventArgs) Handles Me.Init
+    AddJavascriptFile("jquery.dynatree.min.js", "jquery.dynatree", "1.2.4", 60)
+    AddCssFile("dynatree.css", "dynatree", "1.2.4")
+  End Sub
 
- Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+  Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 
-  If Not BlogContext.Security.IsEditor Then
-   Throw New Exception("You do not have access to this resource. Please check your login status.")
-  End If
+    If Not BlogContext.Security.IsEditor Then
+      Throw New Exception("You do not have access to this resource. Please check your login status.")
+    End If
 
-  If Not IsPostBack Then
-   DataBind()
-  End If
+    If Not IsPostBack Then
+      DataBind()
+    End If
 
-  UI.Utilities.ClientAPI.AddButtonConfirm(cmdEditTagsML, LocalizeString("LeavePage.Confirm"))
-  UI.Utilities.ClientAPI.AddButtonConfirm(cmdEditCategoriesML, LocalizeString("LeavePage.Confirm"))
+    UI.Utilities.ClientAPI.AddButtonConfirm(cmdEditTagsML, LocalizeString("LeavePage.Confirm"))
+    UI.Utilities.ClientAPI.AddButtonConfirm(cmdEditCategoriesML, LocalizeString("LeavePage.Confirm"))
 
- End Sub
+  End Sub
 
- Private Sub cmdEditTagsML_Click(sender As Object, e As EventArgs) Handles cmdEditTagsML.Click
-  SaveChanges()
-  Response.Redirect(EditUrl("TermsEditML"), False)
- End Sub
+  Private Sub cmdEditTagsML_Click(sender As Object, e As EventArgs) Handles cmdEditTagsML.Click
+    SaveChanges()
+    Response.Redirect(EditUrl("TermsEditML"), False)
+  End Sub
 
- Private Sub cmdEditCategoriesML_Click(sender As Object, e As EventArgs) Handles cmdEditCategoriesML.Click
-  SaveChanges()
-  If Settings.VocabularyId > -1 Then
-   Response.Redirect(EditUrl("VocabularyId", Settings.VocabularyId.ToString, "TermsEditML"), False)
-  End If
- End Sub
+  Private Sub cmdEditCategoriesML_Click(sender As Object, e As EventArgs) Handles cmdEditCategoriesML.Click
+    SaveChanges()
+    If Settings.VocabularyId > -1 Then
+      Response.Redirect(EditUrl("VocabularyId", Settings.VocabularyId.ToString, "TermsEditML"), False)
+    End If
+  End Sub
 
- Private Sub cmdCreateVocabulary_Click(sender As Object, e As EventArgs) Handles cmdCreateVocabulary.Click
-  Settings.VocabularyId = Integration.Integration.CreateNewVocabulary(PortalId).VocabularyId
-  Settings.UpdateSettings()
-  DataBind()
- End Sub
+  Private Sub cmdCreateVocabulary_Click(sender As Object, e As EventArgs) Handles cmdCreateVocabulary.Click
+    Settings.VocabularyId = Core.Integration.Integration.CreateNewVocabulary(PortalId).VocabularyId
+    Settings.UpdateSettings()
+    DataBind()
+  End Sub
 
- Private Sub ddVocabularyId_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddVocabularyId.SelectedIndexChanged
-  Settings.VocabularyId = ddVocabularyId.SelectedValue.ToInt
-  Settings.UpdateSettings()
-  DataBind()
- End Sub
+  Private Sub ddVocabularyId_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddVocabularyId.SelectedIndexChanged
+    Settings.VocabularyId = ddVocabularyId.SelectedValue.ToInt
+    Settings.UpdateSettings()
+    DataBind()
+  End Sub
 
- Private Sub cmdCancel_Click(sender As Object, e As EventArgs) Handles cmdCancel.Click
-  Response.Redirect(DotNetNuke.Common.NavigateURL(TabId), False)
- End Sub
+  Private Sub cmdCancel_Click(sender As Object, e As EventArgs) Handles cmdCancel.Click
+    Response.Redirect(DotNetNuke.Common.NavigateURL(TabId), False)
+  End Sub
 
- Private Sub cmdUpdateSettings_Click(sender As Object, e As EventArgs) Handles cmdUpdate.Click
-  SaveChanges()
-  Response.Redirect(DotNetNuke.Common.NavigateURL(TabId), False)
- End Sub
+  Private Sub cmdUpdateSettings_Click(sender As Object, e As EventArgs) Handles cmdUpdate.Click
+    SaveChanges()
+    Response.Redirect(DotNetNuke.Common.NavigateURL(TabId), False)
+  End Sub
 
- Private Sub SaveChanges()
-  Settings.AllowAttachments = chkAllowAttachments.Checked
-  Settings.SummaryModel = CType(ddSummaryModel.SelectedValue.ToInt, SummaryType)
-  Settings.AllowMultipleCategories = chkAllowMultipleCategories.Checked
-  Settings.AllowWLW = chkAllowWLW.Checked
-  Settings.WLWRecentPostsMax = txtWLWRecentPostsMax.Text.ToInt
-  Settings.VocabularyId = ddVocabularyId.SelectedValue.ToInt
-  Settings.ModifyPageDetails = chkModifyPageDetails.Checked
-  Settings.AutoGenerateMissingSummary = chkAutoGenerateMissingSummary.Checked
-  Settings.AutoGeneratedSummaryLength = Integer.Parse(txtAutoGeneratedSummaryLength.Text.Trim)
-  Settings.FacebookAppId = txtFacebookAppId.Text.Trim
-  Settings.FacebookProfileIdProperty = Integer.Parse(ddFacebookProfileIdProperty.SelectedValue)
-  Settings.RssAllowContentInFeed = chkRssAllowContentInFeed.Checked
-  Settings.RssDefaultCopyright = txtRssDefaultCopyright.Text
-  Settings.RssDefaultNrItems = Integer.Parse(txtRssDefaultNrItems.Text)
-  Settings.RssEmail = txtEmail.Text
-  Settings.RssImageHeight = Integer.Parse(txtRssImageHeight.Text)
-  Settings.RssImageWidth = Integer.Parse(txtRssImageWidth.Text)
-  Settings.RssImageSizeAllowOverride = chkRssImageSizeAllowOverride.Checked
-  Settings.RssMaxNrItems = Integer.Parse(txtRssMaxNrItems.Text)
-  Settings.RssTtl = Integer.Parse(txtRssTtl.Text)
-  Settings.IncrementViewCount = Integer.Parse(txtIncrementViewCount.Text)
+  Private Sub SaveChanges()
+    Settings.AllowAttachments = chkAllowAttachments.Checked
+    Settings.SummaryModel = CType(ddSummaryModel.SelectedValue.ToInt, SummaryType)
+    Settings.AllowMultipleCategories = chkAllowMultipleCategories.Checked
+    Settings.AllowWLW = chkAllowWLW.Checked
+    Settings.WLWRecentPostsMax = txtWLWRecentPostsMax.Text.ToInt
+    Settings.VocabularyId = ddVocabularyId.SelectedValue.ToInt
+    Settings.ModifyPageDetails = chkModifyPageDetails.Checked
+    Settings.AutoGenerateMissingSummary = chkAutoGenerateMissingSummary.Checked
+    Settings.AutoGeneratedSummaryLength = Integer.Parse(txtAutoGeneratedSummaryLength.Text.Trim)
+    Settings.FacebookAppId = txtFacebookAppId.Text.Trim
+    Settings.FacebookProfileIdProperty = Integer.Parse(ddFacebookProfileIdProperty.SelectedValue)
+    Settings.RssAllowContentInFeed = chkRssAllowContentInFeed.Checked
+    Settings.RssDefaultCopyright = txtRssDefaultCopyright.Text
+    Settings.RssDefaultNrItems = Integer.Parse(txtRssDefaultNrItems.Text)
+    Settings.RssEmail = txtEmail.Text
+    Settings.RssImageHeight = Integer.Parse(txtRssImageHeight.Text)
+    Settings.RssImageWidth = Integer.Parse(txtRssImageWidth.Text)
+    Settings.RssImageSizeAllowOverride = chkRssImageSizeAllowOverride.Checked
+    Settings.RssMaxNrItems = Integer.Parse(txtRssMaxNrItems.Text)
+    Settings.RssTtl = Integer.Parse(txtRssTtl.Text)
+    Settings.IncrementViewCount = Integer.Parse(txtIncrementViewCount.Text)
 
-  Settings.UpdateSettings()
-  If treeState.Value <> Entities.Terms.TermsController.GetCategoryTreeAsJson(Categories) Then
-   Dim categoryTree As List(Of DynatreeItem) = Newtonsoft.Json.JsonConvert.DeserializeObject(Of List(Of DynatreeItem))(treeState.Value)
-   Dim ReturnedIds As New List(Of Integer)
-   Dim i As Integer = 1
-   For Each rootNode As DynatreeItem In categoryTree
-    AddOrUpdateCategory(-1, i, rootNode, ReturnedIds)
-    i += 1
-   Next
-   Dim deleteCategories As New List(Of Entities.Terms.TermInfo)
-   For Each t As Entities.Terms.TermInfo In Categories.Values
-    If Not ReturnedIds.Contains(t.TermId) Then deleteCategories.Add(t)
-   Next
-   For Each categoryToDelete As Entities.Terms.TermInfo In deleteCategories
-    DotNetNuke.Entities.Content.Common.Util.GetTermController().DeleteTerm(categoryToDelete)
-   Next
-   Categories = Entities.Terms.TermsController.GetTermsByVocabulary(ModuleId, Settings.VocabularyId, BlogContext.Locale, True) ' clear the cache
-  End If
- End Sub
+    Settings.UpdateSettings()
+    If treeState.Value <> TermsController.GetCategoryTreeAsJson(Categories) Then
+      Dim categoryTree As List(Of DynatreeItem) = Newtonsoft.Json.JsonConvert.DeserializeObject(Of List(Of DynatreeItem))(treeState.Value)
+      Dim ReturnedIds As New List(Of Integer)
+      Dim i As Integer = 1
+      For Each rootNode As DynatreeItem In categoryTree
+        AddOrUpdateCategory(-1, i, rootNode, ReturnedIds)
+        i += 1
+      Next
+      Dim deleteCategories As New List(Of TermInfo)
+      For Each t As TermInfo In Categories.Values
+        If Not ReturnedIds.Contains(t.TermId) Then deleteCategories.Add(t)
+      Next
+      For Each categoryToDelete As TermInfo In deleteCategories
+        DotNetNuke.Entities.Content.Common.Util.GetTermController().DeleteTerm(categoryToDelete)
+      Next
+      Categories = TermsController.GetTermsByVocabulary(ModuleId, Settings.VocabularyId, BlogContext.Locale, True) ' clear the cache
+    End If
+  End Sub
 
- Private Sub AddOrUpdateCategory(parentId As Integer, viewOrder As Integer, category As DynatreeItem, ByRef returnedIds As List(Of Integer))
-  If String.IsNullOrEmpty(category.title) Then Exit Sub
-  Dim termId As Integer = -1
-  If IsNumeric(category.key) Then termId = Integer.Parse(category.key)
-  termId = Data.DataProvider.Instance.SetTerm(termId, Settings.VocabularyId, parentId, viewOrder, category.title, "", UserId)
-  returnedIds.Add(termId)
-  Dim i As Integer = 1
-  For Each subCategory As DynatreeItem In category.children
-   AddOrUpdateCategory(termId, i, subCategory, returnedIds)
-   i += 1
-  Next
- End Sub
+  Private Sub AddOrUpdateCategory(parentId As Integer, viewOrder As Integer, category As DynatreeItem, ByRef returnedIds As List(Of Integer))
+    If String.IsNullOrEmpty(category.title) Then Exit Sub
+    Dim termId As Integer = -1
+    If IsNumeric(category.key) Then termId = Integer.Parse(category.key)
+    termId = DataProvider.Instance.SetTerm(termId, Settings.VocabularyId, parentId, viewOrder, category.title, "", UserId)
+    returnedIds.Add(termId)
+    Dim i As Integer = 1
+    For Each subCategory As DynatreeItem In category.children
+      AddOrUpdateCategory(termId, i, subCategory, returnedIds)
+      i += 1
+    Next
+  End Sub
 
- Public Overrides Sub DataBind()
-  MyBase.DataBind()
+  Public Overrides Sub DataBind()
+    MyBase.DataBind()
 
-  chkAllowAttachments.Checked = Settings.AllowAttachments
-  Try
-   ddSummaryModel.Items.FindByValue(CInt(Settings.SummaryModel).ToString).Selected = True
-  Catch ex As Exception
-  End Try
-  cmdEditTagsML.Enabled = BlogContext.IsMultiLingualSite
-  cmdEditCategoriesML.Enabled = BlogContext.IsMultiLingualSite And Settings.VocabularyId > -1
-  chkAllowMultipleCategories.Checked = Settings.AllowMultipleCategories
-  chkAllowWLW.Checked = Settings.AllowWLW
-  chkModifyPageDetails.Checked = Settings.ModifyPageDetails
-  chkAutoGenerateMissingSummary.Checked = Settings.AutoGenerateMissingSummary
-  txtAutoGeneratedSummaryLength.Text = Settings.AutoGeneratedSummaryLength.ToString
-  txtFacebookAppId.Text = Settings.FacebookAppId
-  ddFacebookProfileIdProperty.DataSource = DotNetNuke.Entities.Profile.ProfileController.GetPropertyDefinitionsByPortal(PortalId, True, False)
-  ddFacebookProfileIdProperty.DataBind()
-  ddFacebookProfileIdProperty.Items.Insert(0, New ListItem(LocalizeString("NoneSpecified"), "-1"))
-  Try
-   ddFacebookProfileIdProperty.Items.FindByValue(Settings.FacebookProfileIdProperty.ToString).Selected = True
-  Catch ex As Exception
-  End Try
-  chkRssAllowContentInFeed.Checked = Settings.RssAllowContentInFeed
-  txtRssDefaultCopyright.Text = Settings.RssDefaultCopyright
-  txtRssDefaultNrItems.Text = Settings.RssDefaultNrItems.ToString
-  txtEmail.Text = Settings.RssEmail
-  txtRssImageHeight.Text = Settings.RssImageHeight.ToString
-  txtRssImageWidth.Text = Settings.RssImageWidth.ToString
-  chkRssImageSizeAllowOverride.Checked = Settings.RssImageSizeAllowOverride
-  txtRssMaxNrItems.Text = Settings.RssMaxNrItems.ToString
-  txtRssTtl.Text = Settings.RssTtl.ToString
-  txtIncrementViewCount.Text = Settings.IncrementViewCount.ToString
+    chkAllowAttachments.Checked = Settings.AllowAttachments
+    Try
+      ddSummaryModel.Items.FindByValue(CInt(Settings.SummaryModel).ToString).Selected = True
+    Catch ex As Exception
+    End Try
+    cmdEditTagsML.Enabled = BlogContext.IsMultiLingualSite
+    cmdEditCategoriesML.Enabled = BlogContext.IsMultiLingualSite And Settings.VocabularyId > -1
+    chkAllowMultipleCategories.Checked = Settings.AllowMultipleCategories
+    chkAllowWLW.Checked = Settings.AllowWLW
+    chkModifyPageDetails.Checked = Settings.ModifyPageDetails
+    chkAutoGenerateMissingSummary.Checked = Settings.AutoGenerateMissingSummary
+    txtAutoGeneratedSummaryLength.Text = Settings.AutoGeneratedSummaryLength.ToString
+    txtFacebookAppId.Text = Settings.FacebookAppId
+    ddFacebookProfileIdProperty.DataSource = DotNetNuke.Entities.Profile.ProfileController.GetPropertyDefinitionsByPortal(PortalId, True, False)
+    ddFacebookProfileIdProperty.DataBind()
+    ddFacebookProfileIdProperty.Items.Insert(0, New ListItem(LocalizeString("NoneSpecified"), "-1"))
+    Try
+      ddFacebookProfileIdProperty.Items.FindByValue(Settings.FacebookProfileIdProperty.ToString).Selected = True
+    Catch ex As Exception
+    End Try
+    chkRssAllowContentInFeed.Checked = Settings.RssAllowContentInFeed
+    txtRssDefaultCopyright.Text = Settings.RssDefaultCopyright
+    txtRssDefaultNrItems.Text = Settings.RssDefaultNrItems.ToString
+    txtEmail.Text = Settings.RssEmail
+    txtRssImageHeight.Text = Settings.RssImageHeight.ToString
+    txtRssImageWidth.Text = Settings.RssImageWidth.ToString
+    chkRssImageSizeAllowOverride.Checked = Settings.RssImageSizeAllowOverride
+    txtRssMaxNrItems.Text = Settings.RssMaxNrItems.ToString
+    txtRssTtl.Text = Settings.RssTtl.ToString
+    txtIncrementViewCount.Text = Settings.IncrementViewCount.ToString
 
-  txtWLWRecentPostsMax.Text = Settings.WLWRecentPostsMax.ToString
-  ddVocabularyId.Items.Clear()
-  ddVocabularyId.DataSource = GetPortalVocabularies(PortalId)
-  ddVocabularyId.DataBind()
-  ddVocabularyId.Items.Insert(0, New ListItem(LocalizeString("NoneSpecified"), "-1"))
-  Try
-   ddVocabularyId.Items.FindByValue(Settings.VocabularyId.ToString).Selected = True
-  Catch ex As Exception
-  End Try
+    txtWLWRecentPostsMax.Text = Settings.WLWRecentPostsMax.ToString
+    ddVocabularyId.Items.Clear()
+    ddVocabularyId.DataSource = Globals.GetPortalVocabularies(PortalId)
+    ddVocabularyId.DataBind()
+    ddVocabularyId.Items.Insert(0, New ListItem(LocalizeString("NoneSpecified"), "-1"))
+    Try
+      ddVocabularyId.Items.FindByValue(Settings.VocabularyId.ToString).Selected = True
+    Catch ex As Exception
+    End Try
 
-  treeState.Value = Entities.Terms.TermsController.GetCategoryTreeAsJson(Categories)
+    treeState.Value = TermsController.GetCategoryTreeAsJson(Categories)
 
-  If Not DotNetNuke.Services.Localization.LocaleController.Instance.GetLocales(PortalId).Count > 1 Then
-   cmdEditTagsML.Visible = False
-   cmdEditCategoriesML.Visible = False
-  End If
+    If Not DotNetNuke.Services.Localization.LocaleController.Instance.GetLocales(PortalId).Count > 1 Then
+      cmdEditTagsML.Visible = False
+      cmdEditCategoriesML.Visible = False
+    End If
 
- End Sub
+  End Sub
 
 End Class
