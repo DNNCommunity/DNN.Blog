@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="Blog.ascx.vb" Inherits="DotNetNuke.Modules.Blog.Blog" %>
-<%@ Register TagPrefix="blog" Assembly="DotNetNuke.Modules.Blog" Namespace="DotNetNuke.Modules.Blog.Templating" %>
+<%@ Register TagPrefix="blog" Assembly="DotNetNuke.Modules.Blog.Core" Namespace="DotNetNuke.Modules.Blog.Core.Templating" %>
 <%@ Register TagPrefix="blog" TagName="comments" Src="controls/Comments.ascx" %>
 <%@ Register TagPrefix="blog" TagName="management" Src="controls/ManagementPanel.ascx" %>
 

@@ -1,5 +1,5 @@
 <%@ Control Language="vb" AutoEventWireup="false" CodeBehind="Comments.ascx.vb" Inherits="DotNetNuke.Modules.Blog.Controls.Comments" %>
-<%@ Register TagPrefix="blog" Assembly="DotNetNuke.Modules.Blog" Namespace="DotNetNuke.Modules.Blog.Templating" %>
+<%@ Register TagPrefix="blog" Assembly="DotNetNuke.Modules.Blog.Core" Namespace="DotNetNuke.Modules.Blog.Core.Templating" %>
 
 <div id="blog_allcomments<%=ModuleId %>">
 <blog:ViewTemplate runat="server" id="vtContents" />

@@ -1,0 +1,137 @@
+'
+' DotNetNuke® - http://www.dotnetnuke.com
+' Copyright (c) 2002-2011
+' by DotNetNuke Corporation
+'
+' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
+' documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
+' the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+' to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+'
+' The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+' of the Software.
+'
+' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+' TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+' THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+' DEALINGS IN THE SOFTWARE.
+'
+Option Strict On
+Option Explicit On
+Imports System.Net
+Imports System.Net.Http
+Imports System.Web.Http
+Imports DotNetNuke.Modules.Blog.Core.Entities.Blogs
+Imports DotNetNuke.Modules.Blog.Core.Entities.Comments
+Imports DotNetNuke.Modules.Blog.Core.Entities.Posts
+Imports DotNetNuke.Modules.Blog.Core.Integration
+Imports DotNetNuke.Modules.Blog.Core.Services
+Imports DotNetNuke.Services.Social.Notifications
+Imports DotNetNuke.Web.Api
+
+Namespace Api
+
+  Public Class NotificationServiceController
+    Inherits DnnApiController
+
+    Public Class NotificationDTO
+      Public Property NotificationId As Integer
+    End Class
+
+#Region " Private Members "
+
+    Private Property BlogModuleId As Integer = -1
+    Private Property BlogId As Integer = -1
+    Private Property Blog As BlogInfo = Nothing
+    Private Property ContentItemId As Integer = -1
+    Private Property Post As PostInfo = Nothing
+    Private Property CommentId As Integer = -1
+    Private Property Comment As CommentInfo = Nothing
+
+#End Region
+
+#Region " Service Methods "
+    <HttpPost()>
+    <BlogAuthorizeAttribute(SecurityAccessLevel.ApprovePost)>
+    <ValidateAntiForgeryToken()>
+    Public Function ApprovePost(postData As NotificationDTO) As HttpResponseMessage
+      Dim notify As Notification = NotificationsController.Instance.GetNotification(postData.NotificationId)
+      ParsePublishKey(notify.Context)
+      If Blog Is Nothing Or Post Is Nothing Then
+        Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
+      End If
+      Post.Published = True
+      Core.Entities.Posts.PostsController.UpdatePost(Post, UserInfo.UserID)
+      NotificationsController.Instance().DeleteNotification(postData.NotificationId)
+      Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = "success"})
+    End Function
+
+    <HttpPost()>
+    <BlogAuthorizeAttribute(SecurityAccessLevel.EditPost)>
+    <ValidateAntiForgeryToken()>
+    Public Function DeletePost(postData As NotificationDTO) As HttpResponseMessage
+      Dim notify As Notification = NotificationsController.Instance.GetNotification(postData.NotificationId)
+      ParsePublishKey(notify.Context)
+      If Blog Is Nothing Or Post Is Nothing Then
+        Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
+      End If
+      Core.Entities.Posts.PostsController.DeletePost(ContentItemId)
+      NotificationsController.Instance().DeleteNotification(postData.NotificationId)
+      Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = "success"})
+    End Function
+
+    <HttpPost()>
+    <BlogAuthorizeAttribute(SecurityAccessLevel.ApproveComment)>
+    <ValidateAntiForgeryToken()>
+    Public Function ApproveComment(postData As NotificationDTO) As HttpResponseMessage
+      Dim notify As Notification = NotificationsController.Instance.GetNotification(postData.NotificationId)
+      ParseCommentKey(notify.Context)
+      If Blog Is Nothing Or Post Is Nothing Or Comment Is Nothing Then
+        Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
+      End If
+      Core.Entities.Comments.CommentsController.ApproveComment(BlogModuleId, BlogId, Comment)
+      NotificationsController.Instance().DeleteNotification(postData.NotificationId)
+      Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = "success"})
+    End Function
+
+    <HttpPost()>
+    <BlogAuthorizeAttribute(SecurityAccessLevel.ApproveComment)>
+    <ValidateAntiForgeryToken()>
+    Public Function DeleteComment(postData As NotificationDTO) As HttpResponseMessage
+      Dim notify As Notification = NotificationsController.Instance.GetNotification(postData.NotificationId)
+      ParseCommentKey(notify.Context)
+      If Blog Is Nothing Or Post Is Nothing Or Comment Is Nothing Then
+        Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
+      End If
+      Core.Entities.Comments.CommentsController.DeleteComment(BlogModuleId, BlogId, Comment)
+      NotificationsController.Instance().DeleteNotification(postData.NotificationId)
+      Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = "success"})
+    End Function
+#End Region
+
+#Region " Private Methods "
+    Private Sub ParsePublishKey(key As String)
+      Dim nKey As New NotificationKey(key)
+      BlogModuleId = nKey.ModuleId
+      BlogId = nKey.BlogId
+      ContentItemId = nKey.ContentItemId
+      Blog = Core.Entities.Blogs.BlogsController.GetBlog(BlogId, UserInfo.UserID, Threading.Thread.CurrentThread.CurrentCulture.Name)
+      Post = Core.Entities.Posts.PostsController.GetPost(ContentItemId, BlogModuleId, Threading.Thread.CurrentThread.CurrentCulture.Name)
+    End Sub
+
+    Private Sub ParseCommentKey(key As String)
+      Dim nKey As New NotificationKey(key)
+      BlogModuleId = nKey.ModuleId
+      BlogId = nKey.BlogId
+      ContentItemId = nKey.ContentItemId
+      CommentId = nKey.CommentId
+      Blog = Core.Entities.Blogs.BlogsController.GetBlog(BlogId, UserInfo.UserID, Threading.Thread.CurrentThread.CurrentCulture.Name)
+      Post = Core.Entities.Posts.PostsController.GetPost(ContentItemId, BlogModuleId, Threading.Thread.CurrentThread.CurrentCulture.Name)
+      Comment = Core.Entities.Comments.CommentsController.GetComment(CommentId, UserInfo.UserID)
+    End Sub
+#End Region
+
+  End Class
+
+End Namespace

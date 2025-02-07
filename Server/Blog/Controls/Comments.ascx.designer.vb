@@ -12,15 +12,15 @@ Option Explicit On
 
 Namespace Controls
 
- Partial Public Class Comments
+  Partial Public Class Comments
 
-  '''<summary>
-  '''vtContents control.
-  '''</summary>
-  '''<remarks>
-  '''Auto-generated field.
-  '''To modify move field declaration from designer file to code-behind file.
-  '''</remarks>
-  Protected WithEvents vtContents As Global.DotNetNuke.Modules.Blog.Templating.ViewTemplate
- End Class
+    '''<summary>
+    '''vtContents control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents vtContents As Global.DotNetNuke.Modules.Blog.Core.Templating.ViewTemplate
+  End Class
 End Namespace

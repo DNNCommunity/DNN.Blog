@@ -296,128 +296,15 @@
     <Compile Include="BlogPost.ashx.vb">
       <DependentUpon>BlogPost.ashx</DependentUpon>
     </Compile>
-    <Compile Include="Components\Entities\LegacyUrls\LegacyUrlInfo_Interfaces.vb" />
-    <Compile Include="Components\Entities\LegacyUrls\LegacyUrlInfo_Properties.vb" />
-    <Compile Include="Components\Entities\LegacyUrls\LegacyUrlsController_CRUD.vb" />
-    <Compile Include="Components\Integration\BlogModuleController_Portable.vb" />
-    <Compile Include="Components\Integration\BlogModuleController_Upgradeable.vb" />
-    <Compile Include="Components\Common\DynatreeItem.vb" />
-    <Compile Include="Components\Common\LocalizedText.vb" />
-    <Compile Include="Components\Common\ModuleUrls.vb" />
-    <Compile Include="Components\Common\PostBodyAndSummary.vb" />
-    <Compile Include="Components\Common\WebPage.vb" />
-    <Compile Include="Components\Entities\Blogs\BlogCalendarInfo.vb" />
-    <Compile Include="Components\Entities\Blogs\BlogsController_Service.vb" />
-    <Compile Include="Components\Entities\Comments\CommentsController_Service.vb" />
-    <Compile Include="Components\Entities\Posts\PostAuthor.vb" />
-    <Compile Include="Components\Entities\Posts\PostsController_Service.vb" />
-    <Compile Include="Components\Entities\Terms\TermsController_Service.vb" />
-    <Compile Include="Components\Entities\Terms\TermsController.vb" />
-    <Compile Include="Components\Integration\BlogModuleController_Searchable.vb" />
-    <Compile Include="Components\Integration\Integration.vb" />
-    <Compile Include="Components\Integration\SiteMapProvider.vb" />
-    <Compile Include="Components\Rss\BlogRssFeed.vb" />
-    <Compile Include="Components\Security\Security.vb" />
-    <Compile Include="Components\Services\RSSController.vb" />
-    <Compile Include="Components\Services\ModulesController.vb" />
-    <Compile Include="Components\Services\TrackAndPingBackController.vb" />
-    <Compile Include="Components\Services\WLW\Blogger\IBlogger.vb" />
-    <Compile Include="Components\BlogML\BlogMLBlogExtendedProperties.vb" />
-    <Compile Include="Components\BlogML\BlogMLResource.vb" />
-    <Compile Include="Components\BlogML\BlogMLWriterBase.vb" />
-    <Compile Include="Components\BlogML\Enumerators\BlogPostTypes.vb" />
-    <Compile Include="Components\BlogML\Enumerators\CommentModerationTypes.vb" />
-    <Compile Include="Components\BlogML\Enumerators\ContentTypes.vb" />
-    <Compile Include="Components\BlogML\Enumerators\SendTrackbackTypes.vb" />
-    <Compile Include="Components\BlogML\Pair.vb" />
-    <Compile Include="Components\BlogML\Xml\BlogMLAttachment.vb" />
-    <Compile Include="Components\BlogML\Xml\BlogMLAuthor.vb" />
-    <Compile Include="Components\BlogML\Xml\BlogMLAuthorReference.vb" />
-    <Compile Include="Components\BlogML\Xml\BlogMLBlog.vb" />
-    <Compile Include="Components\BlogML\Xml\BlogMLCategory.vb" />
-    <Compile Include="Components\BlogML\Xml\BlogMLCategoryReference.vb" />
-    <Compile Include="Components\BlogML\Xml\BlogMLComment.vb" />
-    <Compile Include="Components\BlogML\Xml\BlogMLContent.vb" />
-    <Compile Include="Components\BlogML\Xml\BlogMLMeta.vb" />
-    <Compile Include="Components\BlogML\Xml\BlogMLNode.vb" />
-    <Compile Include="Components\BlogML\Xml\BlogMLPost.vb" />
-    <Compile Include="Components\BlogML\Xml\BlogMLSerializer.vb" />
-    <Compile Include="Components\BlogML\Xml\BlogMLTrackback.vb" />
-    <Compile Include="Components\Common\BlogModuleBase.vb">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Components\Services\WLW\BlogPostException.vb" />
-    <Compile Include="Components\Common\BlogContextInfo.vb" />
-    <Compile Include="Components\Common\Image.vb" />
-    <Compile Include="Components\Common\ViewSettings.vb" />
+    <Compile Include="Components\Api\BlogRouteMapper.vb" />
+    <Compile Include="Components\Api\BlogsController.vb" />
+    <Compile Include="Components\Api\CommentsController.vb" />
+    <Compile Include="Components\Api\NotificationServiceController.vb" />
+    <Compile Include="Components\Api\PostsController.vb" />
+    <Compile Include="Components\Api\TermsController.vb" />
     <Compile Include="Components\Common\Extensions.vb" />
     <Compile Include="Components\Common\Globals.vb" />
-    <Compile Include="Components\Entities\Comments\CommentInfo_Interfaces.vb" />
-    <Compile Include="Components\Entities\Comments\CommentInfo_Properties.vb" />
-    <Compile Include="Components\Entities\Comments\CommentsController_CRUD.vb" />
-    <Compile Include="Components\Entities\Comments\CommentsController_FK.vb" />
-    <Compile Include="Components\Entities\Comments\CommentsController.vb" />
-    <Compile Include="Components\Integration\NotificationKey.vb" />
-    <Compile Include="Components\Security\ContextSecurity.vb" />
-    <Compile Include="Components\Common\ModuleSettings.vb" />
-    <Compile Include="Components\Data\DataProvider_CMD.vb" />
-    <Compile Include="Components\Data\DataProvider_CRUD.vb" />
-    <Compile Include="Components\Data\DataProvider_FK.vb" />
-    <Compile Include="Components\Data\SqlDataProvider_CMD.vb" />
-    <Compile Include="Components\Data\SqlDataProvider_CRUD.vb" />
-    <Compile Include="Components\Data\SqlDataProvider_FK.vb" />
-    <Compile Include="Components\Entities\Blogs\BlogsController.vb" />
-    <Compile Include="Components\Entities\Posts\PostsController.vb" />
-    <Compile Include="Components\Entities\Blogs\BlogInfo.vb" />
-    <Compile Include="Components\Entities\Blogs\BlogInfo_Interfaces.vb" />
-    <Compile Include="Components\Entities\Blogs\BlogInfo_Properties.vb" />
-    <Compile Include="Components\Entities\Blogs\BlogsController_CRUD.vb" />
-    <Compile Include="Components\Entities\Blogs\BlogsController_FK.vb" />
-    <Compile Include="Components\Entities\Comments\CommentInfo.vb" />
-    <Compile Include="Components\Entities\Posts\PostsController_CRUD.vb" />
-    <Compile Include="Components\Entities\Posts\PostInfo_Interfaces.vb" />
-    <Compile Include="Components\Entities\Posts\PostInfo_Properties.vb" />
-    <Compile Include="Components\Entities\Posts\PostInfo.vb" />
-    <Compile Include="Components\Entities\Terms\TermInfo.vb" />
-    <Compile Include="Components\Integration\JournalController.vb" />
-    <Compile Include="Components\Integration\NotificationController.vb" />
-    <Compile Include="Components\Security\BlogUser.vb" />
-    <Compile Include="Components\Security\Controls\BlogPermissionsGrid.vb" />
-    <Compile Include="Components\Security\Controls\PermissionsGrid.vb" />
-    <Compile Include="Components\Security\Permissions\BlogPermissionCollection.vb" />
-    <Compile Include="Components\Security\Permissions\BlogPermissionInfo_Interfaces.vb" />
-    <Compile Include="Components\Security\Permissions\BlogPermissionInfo_Properties.vb" />
-    <Compile Include="Components\Security\Permissions\BlogPermissionsController_CRUD.vb" />
-    <Compile Include="Components\Security\Permissions\BlogPermissionsController.vb" />
-    <Compile Include="Components\Security\Permissions\BlogPermissionInfo.vb" />
-    <Compile Include="Components\Security\Permissions\PermissionCollection.vb" />
-    <Compile Include="Components\Security\Permissions\PermissionInfo_Properties.vb" />
-    <Compile Include="Components\Security\Permissions\PermissionsController.vb" />
-    <Compile Include="Components\Services\WLW\MetaWeblog\IMetaWeblog.vb" />
-    <Compile Include="Components\Services\WLW\MoveableType\IMoveableType.vb" />
-    <Compile Include="Components\Rss\StringWriterWithEncoding.vb" />
-    <Compile Include="Components\Services\BlogAuthorizeAttribute.vb" />
-    <Compile Include="Components\Services\BlogRouteMapper.vb" />
-    <Compile Include="Components\Integration\Services\NotificationServiceController.vb" />
-    <Compile Include="Components\Templating\BaseCustomTokenReplace.vb" />
-    <Compile Include="Components\Templating\BaseTokenReplace.vb" />
-    <Compile Include="Components\Templating\BlogTokenReplace.vb" />
-    <Compile Include="Components\Templating\CustomParameters.vb" />
-    <Compile Include="Components\Templating\GenericTokenReplace.vb" />
-    <Compile Include="Components\Templating\LazyLoadingUser.vb" />
-    <Compile Include="Components\Templating\Resources.vb" />
-    <Compile Include="Components\Templating\Template.vb" />
-    <Compile Include="Components\Templating\TemplateController.vb" />
-    <Compile Include="Components\Templating\TemplateManager.vb" />
-    <Compile Include="Components\Templating\TemplateRepeaterItem.vb" />
-    <Compile Include="Components\Templating\TemplateSetting.vb" />
-    <Compile Include="Components\Templating\TemplateSettings.vb" />
-    <Compile Include="Components\Templating\TemplateSettingValue.vb" />
-    <Compile Include="Components\Templating\TokenReplace.vb" />
-    <Compile Include="Components\Templating\ViewTemplate.vb">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Components\Services\WLW\WordPress\IWordPress.vb" />
+    <Compile Include="Components\Common\PostBodyAndSummary.vb" />
     <Compile Include="Controls\CategorySelect.vb" />
     <Compile Include="Controls\Comments.ascx.designer.vb">
       <DependentUpon>Comments.ascx</DependentUpon>
@@ -426,7 +313,6 @@
       <DependentUpon>Comments.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Components\Integration\FileController.vb" />
     <Compile Include="BlogEdit.ascx.designer.vb">
       <DependentUpon>BlogEdit.ascx</DependentUpon>
     </Compile>
@@ -481,8 +367,6 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
-    <Compile Include="Components\Data\DataProvider.vb" />
-    <Compile Include="Components\Data\SqlDataProvider.vb" />
     <Compile Include="Controls\ViewSettings.ascx.designer.vb">
       <DependentUpon>ViewSettings.ascx</DependentUpon>
     </Compile>
