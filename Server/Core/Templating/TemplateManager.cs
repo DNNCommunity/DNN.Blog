@@ -33,22 +33,22 @@ namespace DotNetNuke.Modules.Blog.Core.Templating
     {
       if (template.StartsWith("[G]"))
       {
-        TemplatePath = DotNetNuke.Common.Globals.ResolveUrl(Globals.glbTemplatesPath) + template.Substring(4) + "/";
-        TemplateRelPath = Globals.glbTemplatesPath + template.Substring(4) + "/";
-        TemplateMapPath = HttpContext.Current.Server.MapPath(DotNetNuke.Common.Globals.ResolveUrl(Globals.glbTemplatesPath)) + template.Substring(4) + @"\";
+        TemplatePath = DotNetNuke.Common.Globals.ResolveUrl(Globals.glbTemplatesPath) + template.Substring(3) + "/";
+        TemplateRelPath = Globals.glbTemplatesPath + template.Substring(3) + "/";
+        TemplateMapPath = HttpContext.Current.Server.MapPath(DotNetNuke.Common.Globals.ResolveUrl(Globals.glbTemplatesPath)) + template.Substring(3) + @"\";
       }
       else if (template.StartsWith("[S]"))
       {
-        TemplatePath = portalsettings.ActiveTab.SkinPath + "Templates/Blog/" + template.Substring(4) + "/";
+        TemplatePath = portalsettings.ActiveTab.SkinPath + "Templates/Blog/" + template.Substring(3) + "/";
         TemplateRelPath = "~" + TemplatePath.Substring(DotNetNuke.Common.Globals.ApplicationPath.Length);
         TemplateMapPath = HttpContext.Current.Server.MapPath(TemplatePath);
       }
       else
       {
-        TemplatePath = portalsettings.HomeDirectory.TrimEnd('/') + "/Blog/Templates/" + template.Substring(4) + "/";
+        TemplatePath = portalsettings.HomeDirectory.TrimEnd('/') + "/Blog/Templates/" + template.Substring(3) + "/";
         var pi = new PortalController().GetPortal(portalsettings.PortalId);
-        TemplateRelPath = "~/" + pi.HomeDirectory.TrimEnd('/') + "/Blog/Templates/" + template.Substring(4) + "/";
-        TemplateMapPath = portalsettings.HomeDirectoryMapPath.TrimEnd('\\') + @"\Blog\Templates\" + template.Substring(4) + @"\";
+        TemplateRelPath = "~/" + pi.HomeDirectory.TrimEnd('/') + "/Blog/Templates/" + template.Substring(3) + "/";
+        TemplateMapPath = portalsettings.HomeDirectoryMapPath.TrimEnd('\\') + @"\Blog\Templates\" + template.Substring(3) + @"\";
       }
     }
 

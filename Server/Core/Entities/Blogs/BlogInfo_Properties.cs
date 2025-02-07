@@ -35,7 +35,8 @@ namespace DotNetNuke.Modules.Blog.Core.Entities.Blogs
     {
       try
       {
-        Locale = DotNetNuke.Entities.Portals.PortalSettings.Current.DefaultLanguage;
+        if (DotNetNuke.Entities.Portals.PortalSettings.Current != null)
+          Locale = DotNetNuke.Entities.Portals.PortalSettings.Current.DefaultLanguage;
       }
       catch (Exception ex)
       {
