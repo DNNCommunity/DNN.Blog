@@ -69,7 +69,7 @@ Namespace Controls
       MainControlId = ClientID & "_CategorySelect"
       If Page.IsPostBack Then
         ' read return values
-        Page.Request.Params.ReadValue(Storage.ClientID, catList)
+        catList = Page.Request.Params.ReadValue(Storage.ClientID, catList)
         catList = catList.Trim(","c)
         SelectedCategories = New List(Of TermInfo)
         If Not String.IsNullOrEmpty(catList) Then

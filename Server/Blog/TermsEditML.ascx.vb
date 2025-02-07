@@ -34,7 +34,7 @@ Public Class TermsEditML
   Private Sub Page_Init1(sender As Object, e As EventArgs) Handles Me.Init
     AddJavascriptFile("jquery.handsontable.js", "jquery.handsontable", "0.8.17", 60)
     AddCssFile("jquery.handsontable.css", "jquery.handsontable", "0.8.17")
-    Request.Params.ReadValue("VocabularyId", VocabularyId)
+    VocabularyId = Request.Params.ReadValue("VocabularyId", VocabularyId)
     If VocabularyId <> Settings.VocabularyId AndAlso VocabularyId <> 1 Then ' prevent users from editing another vocabulary
       VocabularyId = 1
     End If

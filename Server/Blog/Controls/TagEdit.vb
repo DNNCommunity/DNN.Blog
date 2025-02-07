@@ -53,7 +53,7 @@ Namespace Controls
         Terms = New List(Of TermInfo)
         Dim vocab As Dictionary(Of String, TermInfo) = Core.Entities.Terms.TermsController.GetTermsByVocabulary(ModuleConfiguration.ModuleID, VocabularyId, Threading.Thread.CurrentThread.CurrentCulture.Name)
         Dim tagList As String = ""
-        Page.Request.Params.ReadValue(ClientID, tagList)
+        tagList = Page.Request.Params.ReadValue(ClientID, tagList)
         If Not String.IsNullOrEmpty(tagList) Then
           For Each t As String In tagList.Split(","c)
             If vocab.ContainsKey(t) Then

@@ -14,11 +14,7 @@ Namespace Api
     Public Const ServicePath As String = "~/DesktopModules/Blog/API/"
 
     Public Sub RegisterRoutes(mapRouteManager As IMapRoute) Implements IServiceRouteMapper.RegisterRoutes
-      mapRouteManager.MapHttpRoute("Blog", "Blogs", "Blogs/{action}", New With {.Controller = "Blogs"}, New String() {"DotNetNuke.Modules.Blog.Api"})
-      mapRouteManager.MapHttpRoute("Blog", "Comments", "Comments/{action}", New With {.Controller = "Comments"}, New String() {"DotNetNuke.Modules.Blog.Api"})
-      mapRouteManager.MapHttpRoute("Blog", "Posts", "Posts/{action}", New With {.Controller = "Posts"}, New String() {"DotNetNuke.Modules.Blog.Api"})
-      mapRouteManager.MapHttpRoute("Blog", "Terms", "Terms/{action}", New With {.Controller = "Terms"}, New String() {"DotNetNuke.Modules.Blog.Api"})
-      mapRouteManager.MapHttpRoute("Blog", "Other", "{controller}/{action}", New String() {"DotNetNuke.Modules.Blog.Services", "DotNetNuke.Modules.Blog.Api"})
+      mapRouteManager.MapHttpRoute("Blog", "BlogApiControllers", "{controller}/{action}", New String() {"DotNetNuke.Modules.Blog.Api"})
     End Sub
 
     Public Shared Function GetRoute(controller As ServiceControllers, method As String) As String

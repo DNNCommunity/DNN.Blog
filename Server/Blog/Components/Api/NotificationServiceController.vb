@@ -30,7 +30,7 @@ Imports DotNetNuke.Modules.Blog.Core.Services
 Imports DotNetNuke.Services.Social.Notifications
 Imports DotNetNuke.Web.Api
 
-Namespace Integration.Services
+Namespace Api
 
   Public Class NotificationServiceController
     Inherits DnnApiController
@@ -62,7 +62,7 @@ Namespace Integration.Services
         Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
       End If
       Post.Published = True
-      PostsController.UpdatePost(Post, UserInfo.UserID)
+      Core.Entities.Posts.PostsController.UpdatePost(Post, UserInfo.UserID)
       NotificationsController.Instance().DeleteNotification(postData.NotificationId)
       Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = "success"})
     End Function
@@ -76,7 +76,7 @@ Namespace Integration.Services
       If Blog Is Nothing Or Post Is Nothing Then
         Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
       End If
-      PostsController.DeletePost(ContentItemId)
+      Core.Entities.Posts.PostsController.DeletePost(ContentItemId)
       NotificationsController.Instance().DeleteNotification(postData.NotificationId)
       Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = "success"})
     End Function
@@ -90,7 +90,7 @@ Namespace Integration.Services
       If Blog Is Nothing Or Post Is Nothing Or Comment Is Nothing Then
         Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
       End If
-      CommentsController.ApproveComment(BlogModuleId, BlogId, Comment)
+      Core.Entities.Comments.CommentsController.ApproveComment(BlogModuleId, BlogId, Comment)
       NotificationsController.Instance().DeleteNotification(postData.NotificationId)
       Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = "success"})
     End Function
@@ -104,7 +104,7 @@ Namespace Integration.Services
       If Blog Is Nothing Or Post Is Nothing Or Comment Is Nothing Then
         Return Request.CreateResponse(HttpStatusCode.BadRequest, New With {.Result = "error"})
       End If
-      CommentsController.DeleteComment(BlogModuleId, BlogId, Comment)
+      Core.Entities.Comments.CommentsController.DeleteComment(BlogModuleId, BlogId, Comment)
       NotificationsController.Instance().DeleteNotification(postData.NotificationId)
       Return Request.CreateResponse(HttpStatusCode.OK, New With {.Result = "success"})
     End Function
@@ -116,8 +116,8 @@ Namespace Integration.Services
       BlogModuleId = nKey.ModuleId
       BlogId = nKey.BlogId
       ContentItemId = nKey.ContentItemId
-      Blog = BlogsController.GetBlog(BlogId, UserInfo.UserID, Threading.Thread.CurrentThread.CurrentCulture.Name)
-      Post = PostsController.GetPost(ContentItemId, BlogModuleId, Threading.Thread.CurrentThread.CurrentCulture.Name)
+      Blog = Core.Entities.Blogs.BlogsController.GetBlog(BlogId, UserInfo.UserID, Threading.Thread.CurrentThread.CurrentCulture.Name)
+      Post = Core.Entities.Posts.PostsController.GetPost(ContentItemId, BlogModuleId, Threading.Thread.CurrentThread.CurrentCulture.Name)
     End Sub
 
     Private Sub ParseCommentKey(key As String)
@@ -126,9 +126,9 @@ Namespace Integration.Services
       BlogId = nKey.BlogId
       ContentItemId = nKey.ContentItemId
       CommentId = nKey.CommentId
-      Blog = BlogsController.GetBlog(BlogId, UserInfo.UserID, Threading.Thread.CurrentThread.CurrentCulture.Name)
-      Post = PostsController.GetPost(ContentItemId, BlogModuleId, Threading.Thread.CurrentThread.CurrentCulture.Name)
-      Comment = CommentsController.GetComment(CommentId, UserInfo.UserID)
+      Blog = Core.Entities.Blogs.BlogsController.GetBlog(BlogId, UserInfo.UserID, Threading.Thread.CurrentThread.CurrentCulture.Name)
+      Post = Core.Entities.Posts.PostsController.GetPost(ContentItemId, BlogModuleId, Threading.Thread.CurrentThread.CurrentCulture.Name)
+      Comment = Core.Entities.Comments.CommentsController.GetComment(CommentId, UserInfo.UserID)
     End Sub
 #End Region
 

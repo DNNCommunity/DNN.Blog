@@ -562,9 +562,9 @@ Public Class BlogPost
   Private Sub InitializeMethodCall(username As String, password As String, requestedBlogId As String, requestedPostId As String)
     Try
       ' Set up the context
-      Context.Request.Params.ReadValue("TabId", TabId)
-      Context.Request.Params.ReadValue("ModuleId", ModuleId)
-      Context.Request.Params.ReadValue("Blog", BlogId)
+      TabId = Context.Request.Params.ReadValue("TabId", TabId)
+      ModuleId = Context.Request.Params.ReadValue("ModuleId", ModuleId)
+      BlogId = Context.Request.Params.ReadValue("Blog", BlogId)
       GetPortalSettings()
       Settings = ModuleSettings.GetModuleSettings(ModuleId)
       If Not Settings.AllowWLW Then

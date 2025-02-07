@@ -53,8 +53,8 @@ Public Class Blog
 
   Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 
-    ViewSettings.TemplateSettings.ReadValue("pagesize", _pageSize)
-    Request.Params.ReadValue("Page", _reqPage)
+    _pageSize = ViewSettings.TemplateSettings.ReadValue("pagesize", _pageSize)
+    _reqPage = Request.Params.ReadValue("Page", _reqPage)
 
     If Context.Items("BlogPageInitialized") Is Nothing Then
 
@@ -257,7 +257,7 @@ Public Class Blog
       Case "blogs"
 
         Dim blogList As IEnumerable(Of BlogInfo) = BlogsController.GetBlogsByModule(BlogContext.BlogModuleId, UserId, BlogContext.Locale).Values.Where(Function(b) b.Published = True).OrderBy(Function(b) b.Title)
-        Parameters.ReadValue("pagesize", _pageSize)
+        _pageSize = Parameters.ReadValue("pagesize", _pageSize)
         If _pageSize > 0 Then
           _usePaging = True
           Dim startRec As Integer = ((_reqPage - 1) * _pageSize) + 1
@@ -283,7 +283,7 @@ Public Class Blog
 
       Case "posts"
 
-        Parameters.ReadValue("pagesize", _pageSize)
+        _pageSize = Parameters.ReadValue("pagesize", _pageSize)
         EnsurePostList(_pageSize)
         For Each e As PostInfo In PostList
           If BlogContext.ParentModule IsNot Nothing Then
@@ -294,10 +294,10 @@ Public Class Blog
 
       Case "postspager"
 
-        Parameters.ReadValue("pagesize", _pageSize)
+        _pageSize = Parameters.ReadValue("pagesize", _pageSize)
         EnsurePostList(_pageSize)
         Dim pagerType As String = "allpages"
-        Parameters.ReadValue("pagertype", pagerType)
+        pagerType = Parameters.ReadValue("pagertype", pagerType)
         Dim remdr As Integer = 0
         Dim nrPages As Integer = Math.DivRem(_totalRecords, _pageSize, remdr)
         If remdr > 0 Then
@@ -451,7 +451,7 @@ Public Class Blog
           Next
           _usePaging = False
         Else
-          Parameters.ReadValue("pagesize", _pageSize)
+          _pageSize = Parameters.ReadValue("pagesize", _pageSize)
           If _pageSize < 1 Then _pageSize = 10 ' we will not list "all Posts"
           For Each c As CommentInfo In CommentsController.GetCommentsByModule(BlogContext.BlogModuleId, UserId, _reqPage - 1, _pageSize, "CREATEDONDATE DESC", _totalRecords).Values
             Replacers.Add(New BlogTokenReplace(Me.ModuleConfiguration, Me.BlogContext, Me.Settings, Me.ViewSettings, BlogContext.Post, c))
@@ -460,9 +460,9 @@ Public Class Blog
 
       Case "allcomments"
 
-        Parameters.ReadValue("pagesize", _pageSize)
+        _pageSize = Parameters.ReadValue("pagesize", _pageSize)
         Dim loadPosts As Boolean = False
-        Parameters.ReadValue("loadposts", loadPosts)
+        loadPosts = Parameters.ReadValue("loadposts", loadPosts)
         If _pageSize < 1 Then _pageSize = 10 ' we will not list "all Posts"
         For Each c As CommentInfo In CommentsController.GetCommentsByModule(BlogContext.BlogModuleId, UserId, _reqPage - 1, _pageSize, "CREATEDONDATE DESC", _totalRecords).Values
           If loadPosts Then
@@ -486,7 +486,7 @@ Public Class Blog
         Dim blogToShow As Integer = BlogContext.BlogId
         If DataSource.ToLower = "allauthors" Then blogToShow = -1
         Dim sort As String = ""
-        Parameters.ReadValue("sort", sort)
+        sort = Parameters.ReadValue("sort", sort)
         Select Case sort.ToLower
           Case "username"
             For Each u As PostAuthor In PostsController.GetAuthors(BlogContext.BlogModuleId, blogToShow).OrderBy(Function(t) t.Username)

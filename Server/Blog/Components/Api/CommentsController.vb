@@ -173,8 +173,8 @@ Namespace Api
     Public Function ListComments() As HttpResponseMessage
       Dim BlogId As Integer = -1
       Dim PostId As Integer = -1
-      HttpContext.Current.Request.Params.ReadValue("blogId", BlogId)
-      HttpContext.Current.Request.Params.ReadValue("postId", PostId)
+      BlogId = HttpContext.Current.Request.Params.ReadValue("blogId", BlogId)
+      PostId = HttpContext.Current.Request.Params.ReadValue("postId", PostId)
       Blog = Core.Entities.Blogs.BlogsController.GetBlog(BlogId, UserInfo.UserID, Threading.Thread.CurrentThread.CurrentCulture.Name)
       Post = Core.Entities.Posts.PostsController.GetPost(PostId, ActiveModule.ModuleID, "")
       If Blog Is Nothing Or Post Is Nothing Then
@@ -204,8 +204,8 @@ Namespace Api
 
       Dim BlogId As Integer = -1
       Dim PostId As Integer = -1
-      HttpContext.Current.Request.Params.ReadValue("blogId", BlogId)
-      HttpContext.Current.Request.Params.ReadValue("postId", PostId)
+      BlogId = HttpContext.Current.Request.Params.ReadValue("blogId", BlogId)
+      PostId = HttpContext.Current.Request.Params.ReadValue("postId", PostId)
       Blog = Core.Entities.Blogs.BlogsController.GetBlog(BlogId, UserInfo.UserID, Threading.Thread.CurrentThread.CurrentCulture.Name)
       If Not Blog.EnablePingBackReceive Then
         Return Request.CreateResponse(HttpStatusCode.NotFound, New With {.Result = "This blog does not accept pingbacks"})
@@ -263,8 +263,8 @@ Namespace Api
 
       Dim BlogId As Integer = -1
       Dim PostId As Integer = -1
-      HttpContext.Current.Request.Params.ReadValue("blogId", BlogId)
-      HttpContext.Current.Request.Params.ReadValue("postId", PostId)
+      BlogId = HttpContext.Current.Request.Params.ReadValue("blogId", BlogId)
+      PostId = HttpContext.Current.Request.Params.ReadValue("postId", PostId)
       Blog = Core.Entities.Blogs.BlogsController.GetBlog(BlogId, UserInfo.UserID, Threading.Thread.CurrentThread.CurrentCulture.Name)
       If Not Blog.EnableTrackBackReceive Then
         Return Request.CreateResponse(HttpStatusCode.NotFound, New With {.Result = "This blog does not accept trackbacks"})
