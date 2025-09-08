@@ -2,7 +2,7 @@
   <PropertyGroup>
     <AssemblyName>DotNetNuke.Modules.Blog.Core</AssemblyName>
     <TargetFramework>net472</TargetFramework>
-    <OutputPath>bin</OutputPath>
+    <OutputPath>..\..\bin\</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <Authors>Peter Donker</Authors>
@@ -32,4 +32,3 @@
     <PackageReference Include="DotNetNuke.Web.Client" Version="9.13.0" />
   </ItemGroup>
 </Project>
-
