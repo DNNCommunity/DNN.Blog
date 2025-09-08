@@ -41,11 +41,11 @@ namespace DotNetNuke.Modules.Blog.Core.Common
         {
           if (ViewSettings.BlogModuleId == -1)
           {
-            _settings = ModuleSettings.GetModuleSettings(ModuleConfiguration.ModuleID);
+            _settings = ModuleSettings.GetSettings(ModuleConfiguration);
           }
           else
           {
-            _settings = ModuleSettings.GetModuleSettings(ViewSettings.BlogModuleId);
+            _settings = ModuleSettings.GetSettings(ViewSettings.BlogModuleId);
           }
         }
         return _settings;

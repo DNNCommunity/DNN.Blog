@@ -84,7 +84,7 @@ Namespace Api
 #Region " Private Methods "
     Private Sub SetContext(data As BlogDTO)
       Blog = Core.Entities.Blogs.BlogsController.GetBlog(data.BlogId, UserInfo.UserID, Threading.Thread.CurrentThread.CurrentCulture.Name)
-      Settings = ModuleSettings.GetModuleSettings(ActiveModule.ModuleID)
+      Settings = ModuleSettings.GetSettings(ActiveModule)
     End Sub
 
     Private Sub AddCategories(ByRef TargetBlogML As BlogMLBlog)

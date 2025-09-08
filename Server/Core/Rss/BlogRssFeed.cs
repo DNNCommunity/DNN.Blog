@@ -92,7 +92,7 @@ namespace DotNetNuke.Modules.Blog.Core.Rss
     {
 
       // Initialize Settings
-      Settings = ModuleSettings.GetModuleSettings(moduleId);
+      Settings = ModuleSettings.GetSettings(moduleId);
       PortalSettings = DotNetNuke.Entities.Portals.PortalSettings.Current;
       RecordsToSend = Settings.RssDefaultNrItems;
       ImageWidth = Settings.RssImageWidth;
