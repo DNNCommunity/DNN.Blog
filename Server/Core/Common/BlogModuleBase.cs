@@ -144,7 +144,10 @@ namespace DotNetNuke.Modules.Blog.Core.Common
 
         JavaScript.RequestRegistration(CommonJs.DnnPlugins);
         ServiceLocator<IServicesFramework, ServicesFramework>.Instance.RequestAjaxScriptSupport();
-        ServiceLocator<IServicesFramework, ServicesFramework>.Instance.RequestAjaxAntiForgerySupport();
+        if (UserInfo.UserID > -1)
+        {
+          ServiceLocator<IServicesFramework, ServicesFramework>.Instance.RequestAjaxAntiForgerySupport();
+        }
         AddJavascriptFile("dotnetnuke.blog.js", 70);
 
         // Load initialization snippet
