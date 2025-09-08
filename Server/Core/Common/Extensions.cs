@@ -42,7 +42,7 @@ namespace DotNetNuke.Modules.Blog.Core.Common
       {
         try
         {
-          return (int)valueTable[valueName];
+          return int.Parse((string)valueTable[valueName]);
         }
         catch (Exception ex)
         {
@@ -57,7 +57,7 @@ namespace DotNetNuke.Modules.Blog.Core.Common
       {
         try
         {
-          return (long)valueTable[valueName];
+          return long.Parse((string)valueTable[valueName]);
         }
         catch (Exception ex)
         {
@@ -87,7 +87,7 @@ namespace DotNetNuke.Modules.Blog.Core.Common
       {
         try
         {
-          return (bool)valueTable[valueName];
+          return bool.Parse(((string)valueTable[valueName]).ToLowerInvariant());
         }
         catch (Exception ex)
         {
@@ -102,7 +102,7 @@ namespace DotNetNuke.Modules.Blog.Core.Common
       {
         try
         {
-          return (DateTime)valueTable[valueName];
+          return DateTime.Parse((string)valueTable[valueName]);
         }
         catch (Exception ex)
         {
@@ -117,7 +117,7 @@ namespace DotNetNuke.Modules.Blog.Core.Common
       {
         try
         {
-          return (SummaryType)(int)valueTable[valueName];
+          return (SummaryType)int.Parse((string)valueTable[valueName]);
         }
         catch (Exception ex)
         {

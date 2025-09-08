@@ -9,6 +9,7 @@ Namespace Api
       Comments
       Posts
       Terms
+      Rss
     End Enum
 
     Public Const ServicePath As String = "~/DesktopModules/Blog/API/"
@@ -25,6 +26,8 @@ Namespace Api
           Return GetRoute("Comments", method)
         Case ServiceControllers.Posts
           Return GetRoute("Posts", method)
+        Case ServiceControllers.Rss
+          Return GetRoute("Rss", method)
         Case Else
           Return GetRoute("Terms", method)
       End Select

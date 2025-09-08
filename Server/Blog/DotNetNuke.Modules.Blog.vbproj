@@ -301,6 +301,7 @@
     <Compile Include="Components\Api\CommentsController.vb" />
     <Compile Include="Components\Api\NotificationServiceController.vb" />
     <Compile Include="Components\Api\PostsController.vb" />
+    <Compile Include="Components\Api\RssController.vb" />
     <Compile Include="Components\Api\TermsController.vb" />
     <Compile Include="Components\Common\Extensions.vb" />
     <Compile Include="Components\Common\Globals.vb" />

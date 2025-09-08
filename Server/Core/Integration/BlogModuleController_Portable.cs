@@ -134,7 +134,7 @@ namespace DotNetNuke.Modules.Blog.Core.Integration
                         vs.Serialize(xml);
                         if (vs.BlogModuleId == -1)
                         {
-                            var ms = ModuleSettings.GetModuleSettings(ModuleID);
+                            var ms = ModuleSettings.GetSettings(ModuleID);
                             ms.Serialize(xml);
                             if (ms.VocabularyId > -1)
                             {
@@ -171,7 +171,7 @@ namespace DotNetNuke.Modules.Blog.Core.Integration
                     vs.UpdateSettings();
                     if (vs.BlogModuleId == -1)
                     {
-                        var settings = ModuleSettings.GetModuleSettings(ModuleID);
+                        var settings = ModuleSettings.GetSettings(ModuleID);
                         settings.FromXml(xContent.SelectSingleNode("Settings"));
                         var vocabulary = TermsController.FromXml(xContent.SelectSingleNode("Categories"));
                         var categories = new Dictionary<string, TermInfo>();
@@ -181,7 +181,7 @@ namespace DotNetNuke.Modules.Blog.Core.Integration
                             TermsController.AddVocabulary(settings.VocabularyId, vocabulary);
                             categories = TermsController.GetTermsByVocabulary(ModuleID, settings.VocabularyId, "", true);
                         }
-                        settings.UpdateSettings();
+                        settings.SaveSettings();
                         vocabulary = TermsController.FromXml(xContent.SelectSingleNode("Tags"));
                         if (vocabulary.Count > 0)
                         {

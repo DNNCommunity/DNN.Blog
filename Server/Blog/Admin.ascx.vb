@@ -61,13 +61,13 @@ Public Class Admin
 
   Private Sub cmdCreateVocabulary_Click(sender As Object, e As EventArgs) Handles cmdCreateVocabulary.Click
     Settings.VocabularyId = Core.Integration.Integration.CreateNewVocabulary(PortalId).VocabularyId
-    Settings.UpdateSettings()
+    Settings.SaveSettings()
     DataBind()
   End Sub
 
   Private Sub ddVocabularyId_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddVocabularyId.SelectedIndexChanged
     Settings.VocabularyId = ddVocabularyId.SelectedValue.ToInt
-    Settings.UpdateSettings()
+    Settings.SaveSettings()
     DataBind()
   End Sub
 
@@ -103,7 +103,7 @@ Public Class Admin
     Settings.RssTtl = Integer.Parse(txtRssTtl.Text)
     Settings.IncrementViewCount = Integer.Parse(txtIncrementViewCount.Text)
 
-    Settings.UpdateSettings()
+    Settings.SaveSettings()
     If treeState.Value <> TermsController.GetCategoryTreeAsJson(Categories) Then
       Dim categoryTree As List(Of DynatreeItem) = Newtonsoft.Json.JsonConvert.DeserializeObject(Of List(Of DynatreeItem))(treeState.Value)
       Dim ReturnedIds As New List(Of Integer)

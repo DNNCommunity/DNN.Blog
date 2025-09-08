@@ -44,6 +44,9 @@ namespace DotNetNuke.Modules.Blog.Core.BlogML.Xml
     [XmlElement("excerpt")]
     public BlogMLContent Excerpt { get; set; } = new BlogMLContent();
 
+    [XmlElement("is-published")]
+    public bool IsPublished { get; set; }
+
     [XmlArray("authors")]
     [XmlArrayItem("author", typeof(BlogMLAuthorReference))]
     public AuthorReferenceCollection Authors { get; set; } = new AuthorReferenceCollection();

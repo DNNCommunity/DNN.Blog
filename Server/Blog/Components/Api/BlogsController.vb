@@ -48,7 +48,7 @@ Namespace Api
 
 #Region " Service Methods "
     <HttpPost()>
-    <BlogAuthorizeAttribute(SecurityAccessLevel.Owner Or SecurityAccessLevel.Admin)>
+    <BlogAuthorize(SecurityAccessLevel.Owner Or SecurityAccessLevel.Admin)>
     <ValidateAntiForgeryToken()>
     <ActionName("Export")>
     Public Function ExportBlog(postData As BlogDTO) As HttpResponseMessage
@@ -61,8 +61,10 @@ Namespace Api
       Dim newBlogML As New BlogMLBlog
       newBlogML.Title = Blog.Title
       newBlogML.SubTitle = Blog.Description
-      newBlogML.Authors.Add(New BlogMLAuthor With {.Title = Blog.DisplayName})
       newBlogML.DateCreated = Blog.CreatedOnDate
+      For Each author As PostAuthor In Core.Entities.Posts.PostsController.GetAuthors(Settings.ModuleId, Blog.BlogID)
+        newBlogML.Authors.Add(New BlogMLAuthor With {.Title = author.DisplayName, .ID = author.UserID.ToString, .Email = author.Email})
+      Next
       AddCategories(newBlogML)
       AddPosts(newBlogML)
       Dim blogMLFile As String = Date.Now.ToString("yyyy-MM-dd") & "-" & Guid.NewGuid.ToString("D")
@@ -82,7 +84,7 @@ Namespace Api
 #Region " Private Methods "
     Private Sub SetContext(data As BlogDTO)
       Blog = Core.Entities.Blogs.BlogsController.GetBlog(data.BlogId, UserInfo.UserID, Threading.Thread.CurrentThread.CurrentCulture.Name)
-      Settings = ModuleSettings.GetModuleSettings(ActiveModule.ModuleID)
+      Settings = ModuleSettings.GetSettings(ActiveModule)
     End Sub
 
     Private Sub AddCategories(ByRef TargetBlogML As BlogMLBlog)
@@ -122,7 +124,7 @@ Namespace Api
       For Each t As TermInfo In post.PostCategories
         newPostML.Categories.Add(New BlogMLCategoryReference With {.Ref = t.TermId.ToString})
       Next
-      newPostML.Authors.Add(post.DisplayName)
+      newPostML.Authors.Add(post.CreatedByUserID.ToString())
       newPostML.PostType = BlogML.BlogPostTypes.Normal
       newPostML.DateCreated = post.PublishedOnDate
       If Not String.IsNullOrEmpty(post.Summary) Then
@@ -142,6 +144,7 @@ Namespace Api
       newPostML.DisplayCopyright = post.DisplayCopyright
       newPostML.Copyright = post.Copyright
       newPostML.Locale = post.Locale
+      newPostML.IsPublished = post.Published
 
       ' pack files
       Dim postDir As String = Globals.GetPostDirectoryMapPath(post.BlogID, post.ContentItemId)

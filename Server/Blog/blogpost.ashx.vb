@@ -261,7 +261,7 @@ Public Class BlogPost
       If styleDetectionPost Then
         Dim blogUrl As String = newBlogPost.PermaLink(PortalSettings)
         Settings.StyleDetectionUrl = blogUrl
-        Settings.UpdateSettings()
+        Settings.SaveSettings()
       End If
 
       Return newBlogPost.ContentItemId.ToString
@@ -566,7 +566,7 @@ Public Class BlogPost
       ModuleId = Context.Request.Params.ReadValue("ModuleId", ModuleId)
       BlogId = Context.Request.Params.ReadValue("Blog", BlogId)
       GetPortalSettings()
-      Settings = ModuleSettings.GetModuleSettings(ModuleId)
+      Settings = ModuleSettings.GetSettings(ModuleId)
       If Not Settings.AllowWLW Then
         Throw New XmlRpcFaultException(0, GetString("Access Denied", "Access to the blog through this API has been denied. Please contact the Portal Administrator."))
       Else

@@ -41,11 +41,11 @@ namespace DotNetNuke.Modules.Blog.Core.Common
         {
           if (ViewSettings.BlogModuleId == -1)
           {
-            _settings = ModuleSettings.GetModuleSettings(ModuleConfiguration.ModuleID);
+            _settings = ModuleSettings.GetSettings(ModuleConfiguration);
           }
           else
           {
-            _settings = ModuleSettings.GetModuleSettings(ViewSettings.BlogModuleId);
+            _settings = ModuleSettings.GetSettings(ViewSettings.BlogModuleId);
           }
         }
         return _settings;
@@ -144,7 +144,10 @@ namespace DotNetNuke.Modules.Blog.Core.Common
 
         JavaScript.RequestRegistration(CommonJs.DnnPlugins);
         ServiceLocator<IServicesFramework, ServicesFramework>.Instance.RequestAjaxScriptSupport();
-        ServiceLocator<IServicesFramework, ServicesFramework>.Instance.RequestAjaxAntiForgerySupport();
+        if (UserInfo.UserID > -1)
+        {
+          ServiceLocator<IServicesFramework, ServicesFramework>.Instance.RequestAjaxAntiForgerySupport();
+        }
         AddJavascriptFile("dotnetnuke.blog.js", 70);
 
         // Load initialization snippet

@@ -63,7 +63,7 @@ Public Class Blog
         ' we have a style detection post in storage and it's being requested
         Dim url As String = Settings.StyleDetectionUrl
         Settings.StyleDetectionUrl = ""
-        Settings.UpdateSettings()
+        Settings.SaveSettings()
         Response.Redirect(url, False)
       End If
 

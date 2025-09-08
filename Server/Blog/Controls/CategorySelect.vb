@@ -63,7 +63,7 @@ Namespace Controls
 
     Private Sub CategorySelect_Load(sender As Object, e As EventArgs) Handles Me.Load
 
-      Dim modVersion As String = ModuleSettings.GetModuleSettings(ModuleConfiguration.ModuleID).Version
+      Dim modVersion As String = ModuleSettings.GetSettings(ModuleConfiguration).Version
       Page.AddJavascriptFile(modVersion, "jquery.dynatree.min.js", "jquery.dynatree", "1.2.4", 60)
       Page.AddCssFile(modVersion, "dynatree.css", "dynatree", "1.2.4")
       MainControlId = ClientID & "_CategorySelect"

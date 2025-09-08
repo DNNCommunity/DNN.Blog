@@ -62,7 +62,7 @@ Namespace Api
     Private Property Settings() As ModuleSettings
       Get
         If _Settings Is Nothing Then
-          _Settings = ModuleSettings.GetModuleSettings(ActiveModule.ModuleID)
+          _Settings = ModuleSettings.GetSettings(ActiveModule)
         End If
         Return _Settings
       End Get

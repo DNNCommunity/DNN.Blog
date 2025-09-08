@@ -53,7 +53,7 @@ Namespace Controls
           Else
             BlogModuleId = ModuleId
           End If
-          ctlCategories.VocabularyId = Core.Common.ModuleSettings.GetModuleSettings(BlogModuleId).VocabularyId
+          ctlCategories.VocabularyId = Core.Common.ModuleSettings.GetSettings(BlogModuleId).VocabularyId
         End If
       Catch ex As Exception
       End Try
@@ -64,7 +64,7 @@ Namespace Controls
 
     Private Sub ddBlogModuleId_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddBlogModuleId.SelectedIndexChanged
       BlogModuleId = CInt(ddBlogModuleId.SelectedValue)
-      ctlCategories.VocabularyId = Core.Common.ModuleSettings.GetModuleSettings(BlogModuleId).VocabularyId
+      ctlCategories.VocabularyId = Core.Common.ModuleSettings.GetSettings(BlogModuleId).VocabularyId
       LoadDropdowns()
     End Sub
 #End Region
@@ -96,7 +96,7 @@ Namespace Controls
             ddTemplate.Items.Add(New ListItem(d.Name & " [System]", "[G]" & d.Name))
           End If
         Next
-        For Each d As IO.DirectoryInfo In (New IO.DirectoryInfo(Core.Common.ModuleSettings.GetModuleSettings(BlogModuleId).PortalTemplatesMapPath)).GetDirectories
+        For Each d As IO.DirectoryInfo In (New IO.DirectoryInfo(Core.Common.ModuleSettings.GetSettings(BlogModuleId).PortalTemplatesMapPath)).GetDirectories
           ddTemplate.Items.Add(New ListItem(d.Name & " [Local]", "[P]" & d.Name))
         Next
         Dim skinTemplatePath As String = Server.MapPath(DotNetNuke.UI.Skins.Skin.GetSkin(CType(Page, Framework.PageBase)).SkinPath) & "Templates\Blog\"
