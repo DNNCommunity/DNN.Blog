@@ -423,49 +423,57 @@ namespace DotNetNuke.Modules.Blog.Core.Security.Controls
         /// -----------------------------------------------------------------------------
         protected override void LoadViewState(object savedState)
         {
-
-            if (savedState != null)
+            if (savedState == null)
             {
-                // Load State from the array of objects that was saved with SaveViewState.
-
-                object[] myState = (object[])savedState;
-
-                // Load Base Controls ViewState
-                if (myState[0] != null)
-                {
-                    base.LoadViewState(myState[0]);
-                }
-
-                // Load BlogID
-                if (myState[1] != null)
-                {
-                    BlogID = Convert.ToInt32(myState[1]);
-                }
-
-                if (myState[2] != null)
-                {
-                    CurrentUserId = Convert.ToInt32(myState[2]);
-                }
-
-                // Load BlogPermissions
-                if (myState[3] != null)
-                {
-                    var arrPermissions = new ArrayList();
-                    string state = Convert.ToString(myState[3]);
-                    if (!string.IsNullOrEmpty(state))
-                    {
-                        // First Break the String into individual Keys
-                        string[] permissionKeys = state.Split("##".ToCharArray());
-                        foreach (string key in permissionKeys)
-                        {
-                            string[] Settings = key.Split('|');
-                            ParsePermissionKeys(Settings, arrPermissions);
-                        }
-                    }
-                    _BlogPermissions = new BlogPermissionCollection(arrPermissions);
-                }
+                return;
             }
 
+            var myState = savedState as object[];
+            if (myState == null || myState.Length < 4)
+            {
+                return;
+            }
+
+            // Do not restore the generated DataGrid child-control viewstate.
+            // The role/user rows are rebuilt from the current DNN role and
+            // permission data and may not have the same positional structure
+            // as the previous request. Restoring their state by index causes
+            // ASP.NET's "control tree must match" exception.
+
+            if (myState[1] != null)
+            {
+                _BlogID = Convert.ToInt32(myState[1]);
+            }
+
+            if (myState[2] != null)
+            {
+                _currentUserId = Convert.ToInt32(myState[2]);
+            }
+
+            if (myState[3] != null)
+            {
+                var arrPermissions = new ArrayList();
+                string state = Convert.ToString(myState[3]);
+
+                if (!string.IsNullOrEmpty(state))
+                {
+                    string[] permissionKeys = state.Split(
+                        new[] { "##" },
+                        StringSplitOptions.RemoveEmptyEntries);
+
+                    foreach (string key in permissionKeys)
+                    {
+                        string[] settings = key.Split('|');
+
+                        if (settings.Length >= 7)
+                        {
+                            ParsePermissionKeys(settings, arrPermissions);
+                        }
+                    }
+                }
+
+                _BlogPermissions = new BlogPermissionCollection(arrPermissions);
+            }
         }
 
         /// -----------------------------------------------------------------------------
@@ -483,7 +491,10 @@ namespace DotNetNuke.Modules.Blog.Core.Security.Controls
 
             var allStates = new object[4];
 
-            allStates[0] = base.SaveViewState();
+            // Do not persist the generated child-grid viewstate. The grid is
+            // rebuilt from roles and permissions on every request, and its
+            // child ordering can change after a permission edit.
+            allStates[0] = null;
             allStates[1] = BlogID;
             allStates[2] = CurrentUserId;
 
