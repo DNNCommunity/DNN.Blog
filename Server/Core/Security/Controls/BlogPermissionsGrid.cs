@@ -434,11 +434,8 @@ namespace DotNetNuke.Modules.Blog.Core.Security.Controls
                 return;
             }
 
-            // Do not restore the generated DataGrid child-control viewstate.
-            // The role/user rows are rebuilt from the current DNN role and
-            // permission data and may not have the same positional structure
-            // as the previous request. Restoring their state by index causes
-            // ASP.NET's "control tree must match" exception.
+            // Do not restore dynamically generated child-control ViewState.
+            // The permissions grid is rebuilt on each request.
 
             if (myState[1] != null)
             {
@@ -491,9 +488,7 @@ namespace DotNetNuke.Modules.Blog.Core.Security.Controls
 
             var allStates = new object[4];
 
-            // Do not persist the generated child-grid viewstate. The grid is
-            // rebuilt from roles and permissions on every request, and its
-            // child ordering can change after a permission edit.
+            // Do not persist dynamically generated child-control ViewState.
             allStates[0] = null;
             allStates[1] = BlogID;
             allStates[2] = CurrentUserId;
