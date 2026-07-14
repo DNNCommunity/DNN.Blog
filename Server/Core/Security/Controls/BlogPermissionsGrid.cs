@@ -435,7 +435,7 @@ namespace DotNetNuke.Modules.Blog.Core.Security.Controls
             }
 
             // Do not restore dynamically generated child-control ViewState.
-            // The permissions grid is rebuilt on each request.
+            // The permissions grid is rebuilt on each request from the persisted permission data.
 
             if (myState[1] != null)
             {
@@ -488,7 +488,7 @@ namespace DotNetNuke.Modules.Blog.Core.Security.Controls
 
             var allStates = new object[4];
 
-            // Do not persist dynamically generated child-control ViewState.
+            // Persist only the permission data, not the generated child-control ViewState.
             allStates[0] = null;
             allStates[1] = BlogID;
             allStates[2] = CurrentUserId;
