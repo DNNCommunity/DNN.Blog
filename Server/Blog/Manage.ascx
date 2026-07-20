@@ -87,46 +87,104 @@
 
 <script type="text/javascript">
 (function ($, Sys) {
- $('#tabs').dnnTabs();
- var selectedBlog;
- var $dialogexport = $('<div class="dnnDialog"></div>')
-		.html('<p><%=LocalizeJSString("Export.Help") %></p><p><a id="blogMLDownloadLink" style=""><%=LocalizeJSString("Download") %></a></p>')
-		.dialog({
-		 autoOpen: false,
-		 resizable: false,
-		 dialogClass: 'dnnFormPopup dnnClear',
-		 title: '<%=LocalizeJSString("Export") %>',
-		 height: 250,
-		 width: 500,
-		 open: function (e) {
-		  $('#blogMLDownloadLink').hide();
-		  $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeJSString("Export") %>")').addClass('dnnPrimaryAction');
-		  $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeJSString("Cancel") %>")').addClass('dnnSecondaryAction');
-		 },
-		 buttons: [
-    {
-     text: '<%=LocalizeJSString("Cancel") %>',
-     click: function () {
-      $(this).dialog("close");
-     }
-    },
-    {
-     text: '<%=LocalizeJSString("Export") %>',
-     click: function () {
-      $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeJSString("Export") %>")').attr("disabled", "disabled");
-      blogService.exportBlog(selectedBlog, function (returnValue) {
-       $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeJSString("Export") %>")').removeAttr("disabled");
-       $('#blogMLDownloadLink').attr('href', returnValue.Result);
-       $('#blogMLDownloadLink').show();
-      });
-     }
-    }
-    ]
-		});
- $('.exportlink').click(function () {
-  selectedBlog = $(this).parent().attr('data-blogid');
-  $dialogexport.dialog('open');
-  return false;
- });
-} (jQuery, window.Sys));
+    $('#tabs').dnnTabs();
+
+    var selectedBlog;
+
+    var $dialogexport = $('<div class="dnnDialog"></div>')
+        .html(
+            '<p><%=LocalizeJSString("Export.Help") %></p>' +
+            '<p><a id="blogMLDownloadLink" style="">' +
+            '<%=LocalizeJSString("Download") %>' +
+            '</a></p>'
+        )
+        .dialog({
+            autoOpen: false,
+            resizable: false,
+
+            /*
+             * Retain the original option for older DNN/jQuery UI versions.
+             * The open event below also applies these classes directly to
+             * the generated dialog wrapper for DNN 10 compatibility.
+             */
+            dialogClass: 'dnnFormPopup dnnClear dnnBlogExportPopup',
+
+            title: '<%=LocalizeJSString("Export") %>',
+            height: 250,
+            width: 500,
+
+            open: function () {
+                var $dialogWidget = $(this).dialog('widget');
+                var $buttonPane = $dialogWidget.find('.ui-dialog-buttonpane');
+
+                /*
+                 * DNN 10 does not reliably apply dialogClass to the generated
+                 * outer wrapper. Adding the classes here restores the normal
+                 * DNN popup appearance.
+                 */
+                $dialogWidget.addClass(
+                    'dnnFormPopup dnnClear dnnBlogExportPopup'
+                );
+
+                $('#blogMLDownloadLink').hide();
+
+                $buttonPane
+                    .find(
+                        'button:contains("<%=LocalizeJSString("Export") %>")'
+                    )
+                    .addClass('dnnPrimaryAction');
+
+                $buttonPane
+                    .find(
+                        'button:contains("<%=LocalizeJSString("Cancel") %>")'
+                    )
+                    .addClass('dnnSecondaryAction');
+            },
+
+            buttons: [
+                {
+                    text: '<%=LocalizeJSString("Cancel") %>',
+
+                    click: function () {
+                        $(this).dialog('close');
+                    }
+                },
+                {
+                    text: '<%=LocalizeJSString("Export") %>',
+
+                    click: function () {
+                        var $dialogWidget = $(this).dialog('widget');
+
+                        var $exportButton = $dialogWidget
+                            .find('.ui-dialog-buttonpane')
+                            .find(
+                                'button:contains("<%=LocalizeJSString("Export") %>")'
+                            );
+
+                        $exportButton.attr('disabled', 'disabled');
+
+                        blogService.exportBlog(
+                            selectedBlog,
+
+                            function (returnValue) {
+                                $exportButton.removeAttr('disabled');
+
+                                $('#blogMLDownloadLink')
+                                    .attr('href', returnValue.Result)
+                                    .show();
+                            }
+                        );
+                    }
+                }
+            ]
+        });
+
+    $('.exportlink').click(function () {
+        selectedBlog = $(this).parent().attr('data-blogid');
+        $dialogexport.dialog('open');
+
+        return false;
+    });
+
+}(jQuery, window.Sys));
 </script>
