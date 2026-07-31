@@ -139,9 +139,17 @@
 		 title: '<%=LocalizeJSString("BlogChoose") %>',
 		 width: 500,
 		 open: function (e) {
-		  $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeJSString("cmdBlog") %>")').addClass('dnnPrimaryAction');
-		  $('.ui-dialog-buttonpane').find('button:contains("<%=LocalizeJSString("Cancel") %>")').addClass('dnnSecondaryAction');
-    $('#<%:ClientID%>ddBlog').width("100%");
+		  var $dialogWidget = $(this).dialog('widget');
+
+		  $dialogWidget.addClass('dnnFormPopup dnnClear dnnBlogChoosePopup');
+
+		  var $buttonPane = $dialogWidget.find('.ui-dialog-buttonpane');
+		  $buttonPane.find('button:contains("<%=LocalizeJSString("cmdBlog") %>")').addClass('dnnPrimaryAction');
+		  $buttonPane.find('button:contains("<%=LocalizeJSString("Cancel") %>")').addClass('dnnSecondaryAction');
+    $('#<%:ClientID%>ddBlog').css({
+     width: '100%',
+     boxSizing: 'border-box'
+    });
 		 },
 		 buttons: [
     {
