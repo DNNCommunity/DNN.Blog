@@ -213,6 +213,7 @@ namespace DotNetNuke.Modules.Blog.Core.Common
         {
           switch (valueTable[valueName].ToLowerInvariant())
           {
+            case "1":
             case "on":
             case "yes":
               {
