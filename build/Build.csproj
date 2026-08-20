@@ -5,10 +5,10 @@
     <RunWorkingDirectory>$(MSBuildProjectDirectory)</RunWorkingDirectory>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Cake.FileHelpers" Version="5.0.0" />
-    <PackageReference Include="Cake.Frosting" Version="2.0.0" />
-    <PackageReference Include="Cake.Npm" Version="1.0.0" />
+    <PackageReference Include="Cake.FileHelpers" Version="7.0.0" />
+    <PackageReference Include="Cake.Frosting" Version="6.1.0" />
+    <PackageReference Include="Cake.Npm" Version="5.1.0" />
     <PackageReference Include="Dnn.CakeUtils" Version="2.1.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     </ItemGroup>
 </Project>
