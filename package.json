@@ -1,52 +1,74 @@
 {
-  "name": "dnn-blog",
-  "version": "6.7.4",
-  "description": "The DotNetNuke Blog module is an easy to use content publishing module that is tightly integrated with the core DotNetNuke framework. It can be used in single or multi-author environments and also permits content authoring using off-site tools such as Windows Live Writer.",
+  "name": "blog",
+  "version": "7.0.0",
+  "description": "Blog module",
   "dnn": {
     "projectFolders": [
       "Server/Blog"
     ],
     "owner": {
       "name": "Peter Donker",
-      "organization": "DNN Connect",
-      "url": "http://dnn-connect.org",
-      "email": "info@dnn-connect.org"
+      "organization": "Dnn",
+      "url": "dnn.com",
+      "email": "peter@bring2mind.net"
     },
     "pathsAndFiles": {
-      "solutionFile": "./DotNetNuke.Blog.sln",
+      "solutionFile": "./Dnn.Blog.sln",
       "pathToAssemblies": "./bin",
+      "devSiteUrl": "",
+      "devSitePath": "",
       "excludeFilter": [
-        "**/bin/**/*",
-        "**/obj/**/*",
-        "**/node_modules/**/*",
-        "**/*.??-??.resx"
+        "bin/",
+        "obj/",
+        "node_modules"
       ],
-      "licenseFile": "./License.txt",
-      "releaseNotesFile": "./ReleaseNotes.md",
+      "licenseFile": "./License.md",
+      "releaseNotesFile": "",
       "releaseFiles": [
-        "**/*.resx",
-        "**/*.as?x",
-        "**/*.js",
-        "**/*.css",
+        "App_LocalResources/*.resx",
+        "**/*.ascx",
+        "**/*.cshtml",
+        "**/*.vbhtml",
+        "js/*.js",
+        "css/*.css",
+        "*.css",
         "**/*.html",
         "**/*.png",
+        "**/*.jpg",
+        "**/*.jpeg",
         "**/*.gif",
-        "**/*.txt",
-        "fonts/*.*",
-        "images/*.*",
-        "Templates/*.xsd",
-        "Templates/**/*.xml"
+        "**/*.eot",
+        "**/*.svg",
+        "**/*.ttf",
+        "**/*.woff",
+        "**/*.woff2",
+        "*.txt"
       ],
-      "zipName": "Blog"
+      "zipName": "Dnn.Blog"
     }
   },
   "scripts": {
+    "build": "rsbuild build --config Client/rsbuild.config.ts",
+    "watch": "rsbuild build --config Client/rsbuild.config.ts --watch",
     "watch-server": "node watch.js"
   },
+  "author": "Peter Donker",
   "devDependencies": {
-    "chokidar": "^3.2.1",
-    "deepmerge": "^4.0.0",
-    "flatpickr": "^4.6.13",
-    "fs-extra": "^8.1.0"
+    "@rsbuild/core": "^1.5.3",
+    "@rsbuild/plugin-react": "^1.4.0",
+    "@rsbuild/plugin-sass": "^1.4.0",
+    "@types/jquery": "^4.0.1",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "chokidar": "^6.0.0",
+    "deepmerge": "^4.3.1",
+    "fs-extra": "^11.4.1",
+    "jquery": "^4.0.0",
+    "sass": "^1.106.0",
+    "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
   }
 }

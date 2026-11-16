@@ -1,0 +1,17 @@
+@inherits BlogWebPage
+@using DotNetNuke.Modules.Blog.Common
+@{
+  BlogModuleContext.AddModuleScript();
+}
+
+<h1>Hello Blog Module</h1>
+
+<div class="DotNetNukeBlog Blog"
+     data-locale="@System.Threading.Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName"
+     data-moduleid="@Dnn.ActiveModule.ModuleID"
+     data-tabid="@Dnn.ActiveModule.TabID"
+     data-portalid="@Dnn.PortalSettings.PortalId"
+     data-resources="@SerializedResources()"
+     data-security="@(Newtonsoft.Json.JsonConvert.SerializeObject(BlogModuleContext.Security))"
+     >
+</div>

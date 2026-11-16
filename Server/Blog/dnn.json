@@ -5,7 +5,7 @@
   "description": "The DotNetNuke Blog module is an easy to use content publishing module that is tightly integrated with the core DotNetNuke framework. It can be used in single or multi-author environments and also permits content authoring using off-site tools such as Windows Live Writer.",
   "iconFile": "~/DesktopModules/Blog/Images/dnnBlog_32.png",
   "packageName": "DotNetNuke.Blog",
-  "folder": "Blog",
+  "folder": "MVC/DotNetNuke/Blog",
   "module": {
     "azureCompatible": "true",
     "moduleName": "Blog",
@@ -15,79 +15,39 @@
     "moduleDefinitions": [
       {
         "definitionName": "DNNBlog.Blog",
-        "friendlyName": "Blog",
-        "defaultCacheTime": -1,
+        "friendlyName": "DotNetNuke Blog",
+        "defaultCacheTime": 0,
         "moduleControls": [
           {
-            "controlSrc": "DesktopModules/Blog/Blog.ascx",
-            "supportsPartialRendering": "false",
+            "controlSrc": "DotNetNuke.Modules.Blog.Controllers/Home/Index.mvc",
+            "supportsPartialRendering": "False",
             "controlTitle": "Blog",
             "controlType": "View",
             "viewOrder": 0
           },
           {
-            "controlKey": "BlogEdit",
-            "controlSrc": "DesktopModules/Blog/BlogEdit.ascx",
-            "supportsPartialRendering": "false",
-            "controlTitle": "Edit Blog",
-            "controlType": "View",
-            "viewOrder": 1
-          },
-          {
-            "controlKey": "PostEdit",
-            "controlSrc": "DesktopModules/Blog/PostEdit.ascx",
-            "supportsPartialRendering": "false",
-            "controlTitle": "Edit Post",
-            "controlType": "View",
-            "viewOrder": 2
-          },
-          {
             "controlKey": "Admin",
-            "controlSrc": "DesktopModules/Blog/Admin.ascx",
-            "supportsPartialRendering": "false",
+            "controlSrc": "DotNetNuke.Modules.Blog.Controllers/Admin/Index.mvc",
+            "supportsPartialRendering": "False",
             "controlTitle": "Blog Module Administration",
-            "controlType": "Edit",
-            "viewOrder": 3
+            "controlType": "View",
+            "viewOrder": 0
           },
           {
             "controlKey": "Manage",
-            "controlSrc": "DesktopModules/Blog/Manage.ascx",
-            "supportsPartialRendering": "false",
+            "controlSrc": "DotNetNuke.Modules.Blog.Controllers/Manage/Index.mvc",
+            "supportsPartialRendering": "False",
             "controlTitle": "Manage Content",
             "controlType": "View",
-            "viewOrder": 4
-          },
-          {
-            "controlKey": "BlogImport",
-            "controlSrc": "DesktopModules/Blog/BlogImport.ascx",
-            "supportsPartialRendering": "false",
-            "controlTitle": "Blog Import",
-            "controlType": "View",
-            "viewOrder": 5
-          },
-          {
-            "controlKey": "TermsEditML",
-            "controlSrc": "DesktopModules/Blog/TermsEditML.ascx",
-            "supportsPartialRendering": "false",
-            "controlTitle": "Edit Terms",
-            "controlType": "View",
-            "viewOrder": 6
+            "viewOrder": 0
           },
           {
             "controlKey": "Settings",
-            "controlSrc": "DesktopModules/Blog/Controls/ViewSettings.ascx",
-            "supportsPartialRendering": "false",
-            "controlTitle": "Blog Module Instance Settings",
+            "controlSrc": "DotNetNuke.Modules.Blog.Controllers/Settings/Settings.mvc",
+            "supportsPartialRendering": "False",
+            "controlTitle": "Blog Settings",
             "controlType": "Edit",
-            "viewOrder": 7
-          },
-          {
-            "controlKey": "TemplateSettings",
-            "controlSrc": "DesktopModules/Blog/Controls/TemplateSettings.ascx",
-            "supportsPartialRendering": "false",
-            "controlTitle": "Blog Module Instance Template Settings",
-            "controlType": "Edit",
-            "viewOrder": 8
+            "viewOrder": 0
           }
         ],
         "permissions": [

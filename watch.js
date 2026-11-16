@@ -4,8 +4,7 @@ const chokidar = require("chokidar"),
   deepmerge = require("deepmerge");
 
 var pkg = require("./package.json"),
-  pkgModule = require("./Server/Blog/dnn.json");
-
+  pkgBlog = require("./Server/Blog/dnn.json");
 if (fs.existsSync("./local.json")) {
   var local = require("./local.json");
   pkg = deepmerge(pkg, local);
@@ -22,7 +21,10 @@ function copy(start, srcRelativePath, destDir) {
   log("Copying: " + srcRelativePath);
   return fs
     .ensureDir(path.dirname(fullDestPath))
-    .then(() => fs.copy(srcRelativePath, fullDestPath));
+    .then(() => fs.copy(srcRelativePath, fullDestPath))
+    .catch((err) => {
+      console.error(err);
+    });
 }
 
 var ignore = [
@@ -36,7 +38,9 @@ var ignore = [
   "**/.*"
 ];
 
-const allDlls = pkgModule.pathsAndFiles.assemblies.map(dll => "bin/" + dll);
+const allDlls = pkgBlog.pathsAndFiles.assemblies
+  // .concat(pkgBlog.pathsAndFiles.assemblies)
+  .map(dll => "bin/" + dll);
 
 const watcher = (src, dest) =>
   chokidar
@@ -46,10 +50,13 @@ const watcher = (src, dest) =>
     })
     .on("add", path => copy(src, path, dest))
     .on("change", path => copy(src, path, dest));
+// Todo: delete events?
 
-const ModuleWatcher = watcher(
+// Initialize watchers.
+const BlogWatcher = watcher(
   "Server/Blog",
-  pkg.dnn.pathsAndFiles.devSitePath + "\\DesktopModules\\Blog"
+  pkg.dnn.pathsAndFiles.devSitePath +
+    "\\DesktopModules\\MVC\\DotNetNuke\\Blog"
 );
 
 const DllWatcher = chokidar

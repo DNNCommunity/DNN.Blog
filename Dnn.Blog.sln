@@ -1,0 +1,34 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 18
+VisualStudioVersion = 18.11.12315.225 stable
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Build", "build\Build.csproj", "{22A9DE4E-9CFD-4ABA-8C82-87D1C22F2FD9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Modules.Blog.Core", "Server\Core\DotNetNuke.Modules.Blog.Core.csproj", "{18CBD81C-C31C-465D-8865-70957DF4711C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Modules.Blog", "Server\Blog\DotNetNuke.Modules.Blog.csproj", "{BEFB0C0F-8BF8-0181-E884-75C40E216B7F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{22A9DE4E-9CFD-4ABA-8C82-87D1C22F2FD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22A9DE4E-9CFD-4ABA-8C82-87D1C22F2FD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18CBD81C-C31C-465D-8865-70957DF4711C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18CBD81C-C31C-465D-8865-70957DF4711C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18CBD81C-C31C-465D-8865-70957DF4711C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18CBD81C-C31C-465D-8865-70957DF4711C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEFB0C0F-8BF8-0181-E884-75C40E216B7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEFB0C0F-8BF8-0181-E884-75C40E216B7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEFB0C0F-8BF8-0181-E884-75C40E216B7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEFB0C0F-8BF8-0181-E884-75C40E216B7F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A4DC134D-8514-4096-8B8B-8AB593421020}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,16 @@
+{
+  "Template": ".\\.templates\\Main.cshtml",
+  "OutputDirectory": ".\\.out",
+  "OrgName": "DotNetNuke",
+  "ModuleName": "Blog",
+  "RootNameSpace": "DotNetNuke.Modules.Blog",
+  "SiteConfig": "",
+  "ConnectionString": "Data Source=.\\SQLEXPRESS;Initial Catalog=www_dotnetnuke_local;uid=test;pwd=test;TrustServerCertificate=True",
+  "ObjectQualifier": "",
+  "DatabaseOwner": "dbo",
+  "ModuleObjectQualifier": "Blog_",
+  "IncludeSqlScripts": true,
+  "EnumValues": null,
+  "FullDbPattern": ""
+}
+

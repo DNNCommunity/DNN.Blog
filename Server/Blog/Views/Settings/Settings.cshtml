@@ -1,0 +1,18 @@
+@inherits DotNetNuke.Web.Mvc.Framework.DnnWebViewPage<DotNetNuke.Modules.Blog.Common.ModuleSettings>
+@using System.Web.Mvc
+@using System.Web.Mvc.Html
+@using DotNetNuke.Web.Mvc.Helpers
+@{ 
+    var viewDir = new System.IO.DirectoryInfo(Server.MapPath("~/DesktopModules/MVC/DotNetNuke/Blog/Views/Home"));
+    var list = viewDir.GetFiles("*.cshtml").Select(f => new SelectListItem() { Text = f.Name, Value= System.IO.Path.GetFileNameWithoutExtension(f.Name)});
+} 
+
+<h2 id="dnnSitePanel-BasicSettings" class="dnnFormSectionHead">@Dnn.LocalizeString("BasicSettings")</h2>
+<fieldset>
+    <div class="dnnFormItem">
+        <div class="dnnLabel" style="position: relative;">
+            @Html.LabelFor(m => Model.View, Dnn.LocalizeString("View"), new { @class = "col-md-2 control-label" })
+        </div>
+        @Html.DropDownListFor(m => Model.View, list)
+    </div>
+</fieldset>
