@@ -1,5 +1,6 @@
 import * as React from "react";
-import { HtmlEditor } from "../../HtmlEditor/Editor/HtmlEditor";
+import { BlogRichEditor } from "../../RichEditor/react/BlogRichEditor";
+import type { EditorMode } from "../../RichEditor/core/types";
 import { IAppModule } from "../Models/IAppModule";
 import { IPostLocaleOption } from "../Models/IPostEditBootstrap";
 
@@ -19,6 +20,7 @@ export interface LocaleHtmlFieldProps {
   useFullLocalization: boolean;
   otherLocales: IPostLocaleOption[];
   useRichText: boolean;
+  editorMode?: EditorMode;
   rows?: number;
   translationsLabel: string;
 }
@@ -42,14 +44,21 @@ export default function LocaleHtmlField(
     useFullLocalization,
     otherLocales,
     useRichText,
+    editorMode: editorModeProp,
     rows = 12,
     translationsLabel,
   } = props;
+  const editorMode: EditorMode = editorModeProp ?? "html";
   const [open, setOpen] = React.useState(false);
   const [textareaEl, setTextareaEl] =
     React.useState<HTMLTextAreaElement | null>(null);
   const inputId = `blog-locale-${fieldName}`;
   const showLoc = useFullLocalization && otherLocales.length > 0;
+
+  const uploadFn = React.useMemo(
+    () => module.service.createUpload?.(blogId, postId),
+    [module.service, blogId, postId]
+  );
 
   return (
     <div className="blog-locale-field blog-locale-field--html" data-blog-locale-field>
@@ -96,17 +105,20 @@ export default function LocaleHtmlField(
                 rows={rows}
                 className="blog-admin__input blog-admin__textarea blog-admin__textarea--html"
                 data-blog-html-editor="true"
+                data-editor-mode={editorMode}
                 aria-hidden="true"
                 tabIndex={-1}
               />
               {textareaEl ? (
-                <HtmlEditor
-                  module={module}
+                <BlogRichEditor
+                  moduleId={module.moduleId}
                   blogId={blogId}
                   postId={postId}
+                  mode={editorMode}
                   value={value}
                   onChange={onChange}
                   textarea={textareaEl}
+                  uploadFn={uploadFn}
                 />
               ) : null}
             </>

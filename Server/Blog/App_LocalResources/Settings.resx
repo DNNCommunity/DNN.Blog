@@ -5,7 +5,7 @@
     
     Version 2.0
     
-    The primary goals of this format is to allow a simple XML format 
+    The primary goals of this format are to allow a simple XML format 
     that is mostly human readable. The generation and parsing of the 
     various data types are done through the TypeConverter classes 
     associated with the data types.
@@ -125,5 +125,92 @@
   </data>
   <data name="View.Text" xml:space="preserve">
     <value>View</value>
+  </data>
+  <data name="lblTemplate.Help" xml:space="preserve">
+    <value>Select template to render for this module</value>
+  </data>
+  <data name="lblTemplate.Text" xml:space="preserve">
+    <value>Template</value>
+  </data>
+  <data name="lblBlogModuleId.Help" xml:space="preserve">
+    <value>Select the blogs to show in this module from the list of blog modules on this site. If not selected then this module will manage its own blogs.</value>
+  </data>
+  <data name="lblBlogModuleId.Text" xml:space="preserve">
+    <value>Parent Blog Module</value>
+  </data>
+  <data name="NoParent.Text" xml:space="preserve">
+    <value>&lt; This module has its own content &gt;</value>
+  </data>
+  <data name="lblShowAllLocales.Help" xml:space="preserve">
+    <value>If selected then posts in all languages will be shown regardless of the user's selection</value>
+  </data>
+  <data name="lblShowAllLocales.Text" xml:space="preserve">
+    <value>Show All Languages</value>
+  </data>
+  <data name="All.Text" xml:space="preserve">
+    <value>&lt; All &gt;</value>
+  </data>
+  <data name="lblAuthorId.Help" xml:space="preserve">
+    <value>If you select an author from this dropdown only posts from this author will be shown</value>
+  </data>
+  <data name="lblAuthorId.Text" xml:space="preserve">
+    <value>Author To Show</value>
+  </data>
+  <data name="lblBlogId.Help" xml:space="preserve">
+    <value>If you select one blog from this dropdown you will limit what is shown to this blog</value>
+  </data>
+  <data name="lblBlogId.Text" xml:space="preserve">
+    <value>Blog To Show</value>
+  </data>
+  <data name="lblCategories.Help" xml:space="preserve">
+    <value>If you select one or more categories, only posts in (*any*) of those categories will be shown. If none are selected, all posts will be shown.</value>
+  </data>
+  <data name="lblCategories.Text" xml:space="preserve">
+    <value>Categories To Show</value>
+  </data>
+  <data name="lblModifyPageDetails.Help" xml:space="preserve">
+    <value>If checked the module will attempt to adjust the page title based on the blog's context, such as blog title, post title, etc.</value>
+  </data>
+  <data name="lblModifyPageDetails.Text" xml:space="preserve">
+    <value>Modify Page Details</value>
+  </data>
+  <data name="lblShowManagementPanel.Help" xml:space="preserve">
+    <value>If checked the management panel will be displayed for this module</value>
+  </data>
+  <data name="lblShowManagementPanel.Text" xml:space="preserve">
+    <value>Show Management Panel</value>
+  </data>
+  <data name="chkShowManagementPanel.Text" xml:space="preserve">
+    <value>In Shared Modules</value>
+  </data>
+  <data name="chkShowManagementPanelViewMode.Text" xml:space="preserve">
+    <value>In View Mode</value>
+  </data>
+  <data name="chkHideUnpublishedBlogsEditMode.Text" xml:space="preserve">
+    <value>In Edit Mode</value>
+  </data>
+  <data name="chkHideUnpublishedBlogsViewMode.Text" xml:space="preserve">
+    <value>In View Mode</value>
+  </data>
+  <data name="lblHideUnpublishedBlogs.Help" xml:space="preserve">
+    <value>If checked, any unpublished blogs will be hidden when the user is in view and/or edit mode.</value>
+  </data>
+  <data name="lblHideUnpublishedBlogs.Text" xml:space="preserve">
+    <value>Hide Unpublished Posts</value>
+  </data>
+  <data name="lblAllowComments.Help" xml:space="preserve">
+    <value>Allow users to post comments on this instance of the blog module</value>
+  </data>
+  <data name="lblAllowComments.Text" xml:space="preserve">
+    <value>Allow Comments</value>
+  </data>
+  <data name="lblAddCanonicalTag.Help" xml:space="preserve">
+    <value>When checked, a canonical tag will be added to the page to help improve SEO for this website.</value>
+  </data>
+  <data name="lblAddCanonicalTag.Text" xml:space="preserve">
+    <value>Add Canonical Tag</value>
+  </data>
+  <data name="Update.Text" xml:space="preserve">
+    <value>Update</value>
   </data>
 </root>

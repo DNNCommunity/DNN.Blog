@@ -48,6 +48,9 @@ namespace DotNetNuke.Modules.Blog.Models
         public bool SummaryIsHtml { get; set; }
         public bool ShowSummaryPrecedingWarning { get; set; }
 
+        /// <summary>html or markdown — from the blog's ContentFormat.</summary>
+        public string EditorMode { get; set; } = "html";
+
         public List<PostLocaleOption> LocaleDropdownOptions { get; set; } = new List<PostLocaleOption>();
         public string ValidationMessage { get; set; } = "";
         public string CancelUrl { get; set; } = "";

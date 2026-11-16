@@ -112,6 +112,31 @@ namespace DotNetNuke.Modules.Blog.Common
 
         public CoreSecurity Security => BlogContext.Security;
 
+        /// <summary>
+        /// Builds the public RSS feed URL for the current blog context.
+        /// Uses the DNN Web API route root (DesktopModules/DotNetNuke/Blog/API), not ModuleFolderPath.
+        /// </summary>
+        public string BuildRssUrl()
+        {
+            var ctx = BlogContext;
+            var url = VirtualPathUtility.ToAbsolute("~/DesktopModules/DotNetNuke/Blog/API/RSS/Get");
+            url += string.Format("?tabid={0}&moduleid={1}", TabId, ModuleId);
+            if (ctx.Blog != null)
+                url += string.Format("&blog={0}", ctx.BlogId);
+            if (ctx.Term != null)
+                url += string.Format("&term={0}", ctx.TermId);
+            if (!string.IsNullOrEmpty(ctx.SearchString))
+            {
+                url += string.Format("&search={0}&t={1}&c={2}",
+                    HttpUtility.UrlEncode(ctx.SearchString),
+                    ctx.SearchTitle ? "1" : "0",
+                    ctx.SearchContents ? "1" : "0");
+            }
+            if (!string.IsNullOrEmpty(ctx.ShowLocale))
+                url += string.Format("&language={0}", HttpUtility.UrlEncode(ctx.ShowLocale));
+            return url;
+        }
+
         public void RequirePermissionLevel(bool level)
         {
             if (!level)
@@ -176,7 +201,13 @@ namespace DotNetNuke.Modules.Blog.Common
         }
         public void AddModuleCss()
         {
-            ClientResourceManager.RegisterStyleSheet(Page, ModulePath + "/module.css", 9);
+            // Bust browser/CRM cache when module.css changes (host cdv alone is not enough).
+            string cssPath = ModulePath + "/module.css";
+            string physical = HttpContext.Current.Server.MapPath(cssPath);
+            string bust = System.IO.File.Exists(physical)
+                ? System.IO.File.GetLastWriteTimeUtc(physical).Ticks.ToString()
+                : "0";
+            ClientResourceManager.RegisterStyleSheet(Page, cssPath + "?_=" + bust, 9, "", "BlogModuleCss", bust);
         }
         #endregion
 

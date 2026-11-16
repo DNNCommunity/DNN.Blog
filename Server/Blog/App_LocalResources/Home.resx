@@ -154,4 +154,88 @@
   <data name="Cancel.Text" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="RSS.Text" xml:space="preserve">
+    <value>RSS</value>
+  </data>
+  <data name="Search.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="SearchIn.Text" xml:space="preserve">
+    <value>Search In: </value>
+  </data>
+  <data name="SearchAll.Text" xml:space="preserve">
+    <value>In all content</value>
+  </data>
+  <data name="Title.Text" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="Contents.Text" xml:space="preserve">
+    <value>Contents</value>
+  </data>
+  <data name="Unpublished.Text" xml:space="preserve">
+    <value>Also Unpublished</value>
+  </data>
+  <data name="Total.Text" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="Comments.Text" xml:space="preserve">
+    <value>Comment(s)</value>
+  </data>
+  <data name="Comment.Text" xml:space="preserve">
+    <value>Comment</value>
+  </data>
+  <data name="Reply.Text" xml:space="preserve">
+    <value>Reply</value>
+  </data>
+  <data name="Like.Text" xml:space="preserve">
+    <value>Like</value>
+  </data>
+  <data name="Dislike.Text" xml:space="preserve">
+    <value>Dislike</value>
+  </data>
+  <data name="Report.Text" xml:space="preserve">
+    <value>Report</value>
+  </data>
+  <data name="LikeComment.Text" xml:space="preserve">
+    <value>Like Comment</value>
+  </data>
+  <data name="DislikeComment.Text" xml:space="preserve">
+    <value>Dislike Comment</value>
+  </data>
+  <data name="ReportComment.Text" xml:space="preserve">
+    <value>Report Comment</value>
+  </data>
+  <data name="ReportComment.Confirm" xml:space="preserve">
+    <value>Do you wish to report this comment as inappropriate?</value>
+  </data>
+  <data name="Approve.Text" xml:space="preserve">
+    <value>Approve</value>
+  </data>
+  <data name="DeleteComment.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="DeleteComment.Confirm" xml:space="preserve">
+    <value>Delete the comment? This cannot be undone.</value>
+  </data>
+  <data name="Submit.Text" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="Name.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Email.Text" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Website.Text" xml:space="preserve">
+    <value>Website</value>
+  </data>
+  <data name="CommentNotApproved.Text" xml:space="preserve">
+    <value>Your comment was submitted and is awaiting approval.</value>
+  </data>
+  <data name="NoComments.Text" xml:space="preserve">
+    <value>No comments yet.</value>
+  </data>
+  <data name="CommentRequired.Text" xml:space="preserve">
+    <value>Please enter a comment.</value>
+  </data>
 </root>

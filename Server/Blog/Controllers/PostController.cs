@@ -24,7 +24,7 @@ namespace DotNetNuke.Modules.Blog.Controllers
     public class PostController : BlogMvcController
     {
         [HttpGet]
-        public ActionResult Edit(int? Blog, int? Post)
+        public ActionResult Edit(int? Blog, int? Post, string returnUrl = null)
         {
             BlogModuleContext.EnsureInitialized();
             BlogModuleContext.AddModuleCss();
@@ -55,6 +55,11 @@ namespace DotNetNuke.Modules.Blog.Controllers
             var model = post == null
                 ? NewPostModel(blog, ctx)
                 : MapFromPost(blog, post, ctx);
+
+            // Prefer the explicit action parameter (DNN can strip or mangle query keys).
+            if (!string.IsNullOrWhiteSpace(returnUrl))
+                model.ReturnUrl = returnUrl;
+            ApplyReturnUrls(model);
 
             ApplyPublishSecurity(model, blog, security);
             return View(model);
@@ -224,9 +229,43 @@ namespace DotNetNuke.Modules.Blog.Controllers
             return safeUrl != null ? (ActionResult)Redirect(safeUrl) : RedirectToAction("Index", "Manage");
         }
 
+        private string ModuleHomeUrl()
+        {
+            return DotNetNuke.Common.Globals.NavigateURL(PortalSettings.ActiveTab.TabID);
+        }
+
         private string SafeReturnUrl(string returnUrl)
         {
-            return !string.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl) ? returnUrl : null;
+            if (string.IsNullOrWhiteSpace(returnUrl))
+                return null;
+
+            // Prefer an app-relative path so cancel links stay local.
+            if (Uri.TryCreate(returnUrl, UriKind.Absolute, out var absolute))
+            {
+                var host = Request?.Url?.Host;
+                if (!string.IsNullOrEmpty(host)
+                    && string.Equals(absolute.Host, host, StringComparison.OrdinalIgnoreCase))
+                {
+                    returnUrl = absolute.PathAndQuery;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            return Url.IsLocalUrl(returnUrl) ? returnUrl : null;
+        }
+
+        private void ApplyReturnUrls(PostEditViewModel model)
+        {
+            model.ReturnUrl = SafeReturnUrl(string.IsNullOrEmpty(model.ReturnUrl) ? Request["returnUrl"] : model.ReturnUrl) ?? "";
+            if (model.ReturnUrl.Length > 0)
+                model.CancelUrl = model.ReturnUrl;
+            else if (model.IsNew)
+                model.CancelUrl = ModuleHomeUrl();
+            else
+                model.CancelUrl = Url.Action("Index", "Manage");
         }
 
         private ActionResult Redisplay(PostEditViewModel model, BlogInfo blog, BlogContextInfo ctx)
@@ -364,11 +403,13 @@ namespace DotNetNuke.Modules.Blog.Controllers
             model.SummaryIsHtml = settings.SummaryModel == SummaryType.HtmlIndependent
                 || settings.SummaryModel == SummaryType.HtmlPrecedesPost;
             model.ShowSummaryPrecedingWarning = settings.SummaryModel == SummaryType.HtmlPrecedesPost;
+            model.EditorMode = blog.ContentFormat == (byte)BlogContentFormat.Markdown
+                ? "markdown"
+                : "html";
             model.UseFullLocalization = blog.FullLocalization && ctx.IsMultiLingualSite;
             model.ShowLocale = ctx.IsMultiLingualSite && !blog.FullLocalization;
             model.DefaultLocale = string.IsNullOrEmpty(blog.Locale) ? PortalSettings.DefaultLanguage : blog.Locale;
-            model.ReturnUrl = SafeReturnUrl(string.IsNullOrEmpty(model.ReturnUrl) ? Request["returnUrl"] : model.ReturnUrl) ?? "";
-            model.CancelUrl = model.ReturnUrl.Length > 0 ? model.ReturnUrl : Url.Action("Index", "Manage");
+            ApplyReturnUrls(model);
 
             var portalLocales = LocaleController.Instance.GetLocales(PortalSettings.PortalId).Values
                 .OrderBy(l => l.NativeName)

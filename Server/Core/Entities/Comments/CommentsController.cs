@@ -116,24 +116,24 @@ namespace DotNetNuke.Modules.Blog.Core.Entities.Comments
 
     }
 
+    /// <summary>
+    /// Toggles karma for the user. Returns 1 when added, 0 when removed, -1 on error.
+    /// Like (0) and dislike (1) are mutually exclusive.
+    /// </summary>
     public static int CommentKarma(ModuleInfo callingModule, CommentInfo comment, DotNetNuke.Entities.Users.UserInfo user, int karma)
     {
 
       if (user.UserID < 0)
         return -1;
       int ret = DataProvider.Instance().AddCommentKarma(comment.CommentID, user.UserID, karma);
-      if (ret > -1)
+      if (ret == 1 && karma == 2) // newly reported as inappropriate
       {
-        if (karma == 2) // reporting comment as inappropriate
-        {
-          string title = string.Format(GetString("CommentReportedNotify", Globals.SharedResourceFileName), user.DisplayName);
-          var post = PostsController.GetPost(comment.ContentItemId, callingModule.ModuleID, "");
-          string summary = string.Format(GetString("CommentReportedNotify.Body", Globals.SharedResourceFileName), user.DisplayName, comment.DisplayName, comment.Comment, post.PermaLink(PortalSettings.Current), post.Title);
-          NotificationController.ReportComment(comment, post.Blog, post, callingModule.PortalID, summary, title);
-        }
-        return ret;
+        string title = string.Format(GetString("CommentReportedNotify", Globals.SharedResourceFileName), user.DisplayName);
+        var post = PostsController.GetPost(comment.ContentItemId, callingModule.ModuleID, "");
+        string summary = string.Format(GetString("CommentReportedNotify.Body", Globals.SharedResourceFileName), user.DisplayName, comment.DisplayName, comment.Comment, post.PermaLink(PortalSettings.Current), post.Title);
+        NotificationController.ReportComment(comment, post.Blog, post, callingModule.PortalID, summary, title);
       }
-      return 0;
+      return ret;
 
     }
 

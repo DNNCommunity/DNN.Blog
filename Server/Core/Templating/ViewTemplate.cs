@@ -1,5 +1,4 @@
-﻿using DotNetNuke.Web.Client.ClientResourceManagement;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
@@ -107,68 +106,9 @@ namespace DotNetNuke.Modules.Blog.Core.Templating
     #region  Event Handlers 
     private void Page_PreRender(object sender, EventArgs e)
     {
-
-      // hook in css files
-      if (System.IO.File.Exists(TemplateMapPath + "template.css"))
-      {
-        ClientResourceManager.RegisterStyleSheet(Page, TemplatePath + "template.css");
-      }
-      if (System.IO.Directory.Exists(TemplateMapPath + "css"))
-      {
-        foreach (System.IO.FileInfo f in new System.IO.DirectoryInfo(TemplateMapPath + "css").GetFiles("*.css"))
-          ClientResourceManager.RegisterStyleSheet(Page, TemplatePath + "css/" + f.Name);
-      }
-      if (System.IO.Directory.Exists(ViewMapPath + "css"))
-      {
-        foreach (System.IO.FileInfo f in new System.IO.DirectoryInfo(ViewMapPath + "css").GetFiles("*.css"))
-          ClientResourceManager.RegisterStyleSheet(Page, ViewPath + "css/" + f.Name);
-      }
-      // hook in js files
-      if (System.IO.File.Exists(TemplateMapPath + "template.js"))
-      {
-        ClientResourceManager.RegisterScript(Page, TemplatePath + "template.js");
-      }
-      if (System.IO.Directory.Exists(TemplateMapPath + "js"))
-      {
-        foreach (System.IO.FileInfo f in new System.IO.DirectoryInfo(TemplateMapPath + "js").GetFiles("*.js"))
-          ClientResourceManager.RegisterScript(Page, TemplatePath + "js/" + f.Name);
-      }
-      if (System.IO.Directory.Exists(ViewMapPath + "js"))
-      {
-        foreach (System.IO.FileInfo f in new System.IO.DirectoryInfo(ViewMapPath + "js").GetFiles("*.js"))
-          ClientResourceManager.RegisterScript(Page, ViewPath + "js/" + f.Name);
-      }
-      // localized js files?
-      string locale = System.Threading.Thread.CurrentThread.CurrentCulture.Name.ToLower();
-      if (System.IO.Directory.Exists(ViewMapPath + @"js\" + locale))
-      {
-        foreach (System.IO.FileInfo f in new System.IO.DirectoryInfo(ViewMapPath + @"js\" + locale).GetFiles("*.js"))
-          ClientResourceManager.RegisterScript(Page, ViewPath + "js/" + locale + "/" + f.Name);
-      }
-      else // check generic culture
-      {
-        locale = System.Threading.Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.ToLower();
-        if (System.IO.Directory.Exists(ViewMapPath + @"js\" + locale))
-        {
-          foreach (System.IO.FileInfo f in new System.IO.DirectoryInfo(ViewMapPath + @"js\" + locale).GetFiles("*.js"))
-            ClientResourceManager.RegisterScript(Page, ViewPath + "js/" + locale + "/" + f.Name);
-        }
-      }
-      // add js blocks
-      if (System.IO.Directory.Exists(ViewMapPath + "jsblocks"))
-      {
-        foreach (System.IO.FileInfo f in new System.IO.DirectoryInfo(ViewMapPath + "jsblocks").GetFiles("*.js"))
-        {
-          var t = new Template(ViewMapPath + @"jsblocks\", ViewPath, f.Name, DefaultReplacer, null);
-          string s = t.ReplaceContents();
-          if (!s.StartsWith("<"))
-          {
-            s = string.Format("<script type=\"text/javascript\">{0}//<![CDATA[{0}{1}//]]>{0}</script>", Environment.NewLine, s);
-          }
-          Page.ClientScript.RegisterClientScriptBlock(typeof(string), f.Name, s);
-        }
-      }
-
+      string path = string.IsNullOrEmpty(ViewPath) ? TemplatePath : ViewPath;
+      string mapPath = string.IsNullOrEmpty(ViewMapPath) ? TemplateMapPath : ViewMapPath;
+      TemplateManager.RegisterClientAssets(Page, path, mapPath, DefaultReplacer);
     }
     #endregion
 

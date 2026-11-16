@@ -1,7 +1,9 @@
 @use "variables";
 @use "legacy";
+@use "management-panel";
 @use "admin";
 @use "manage";
+@use "comments";
 
 // Font Awesome ships next to module.css under Server/Blog/css/
 @import url("css/font-awesome.min.css");

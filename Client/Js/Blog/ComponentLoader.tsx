@@ -23,6 +23,9 @@ export class ComponentLoader {
             module={module}
             editUrl={el.dataString("edit-url", "")}
             blogs={blogs}
+            deleteConfirm={el.dataString("delete-confirm", "Delete this post?")}
+            deleteLabel={el.dataString("delete-label", "Delete")}
+            cancelLabel={el.dataString("cancel-label", "Cancel")}
           />
         );
         return;

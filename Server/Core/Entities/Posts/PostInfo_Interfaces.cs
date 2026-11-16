@@ -78,6 +78,7 @@ namespace DotNetNuke.Modules.Blog.Core.Entities.Posts
       AltContent = Convert.ToString(Null.SetNull(dr["AltContent"], AltContent));
       NrComments = Convert.ToInt32(Null.SetNull(dr["NrComments"], NrComments));
       PublishedOnDate = DateTime.SpecifyKind(PublishedOnDate, DateTimeKind.Utc);
+      ContentFormat = Convert.ToByte(Null.SetNull(dr["ContentFormat"], ContentFormat));
     }
     /// -----------------------------------------------------------------------------
     /// <summary>
@@ -131,7 +132,7 @@ namespace DotNetNuke.Modules.Blog.Core.Entities.Posts
             {
               return Globals.RemoveHtmlTags(Summary);
             }
-            return Media.ImageRenderer.Render(Summary.OutputHtml(strFormat));
+            return Media.ImageRenderer.Render(Summary.OutputHtml(ContentFormat, strFormat));
           }
         case "image":
           {
@@ -232,11 +233,11 @@ namespace DotNetNuke.Modules.Blog.Core.Entities.Posts
             {
               return Globals.RemoveHtmlTags(LocalizedSummary);
             }
-            return Media.ImageRenderer.Render(LocalizedSummary.OutputHtml(strFormat));
+            return Media.ImageRenderer.Render(LocalizedSummary.OutputHtml(ContentFormat, strFormat));
           }
         case "localizedcontent":
           {
-            return Media.ImageRenderer.Render(LocalizedContent.OutputHtml(strFormat));
+            return Media.ImageRenderer.Render(LocalizedContent.OutputHtml(ContentFormat, strFormat));
           }
         case "contentitemid":
           {
@@ -261,7 +262,7 @@ namespace DotNetNuke.Modules.Blog.Core.Entities.Posts
         case "content":
         case "contents":
           {
-            return Media.ImageRenderer.Render(Content.OutputHtml(strFormat));
+            return Media.ImageRenderer.Render(Content.OutputHtml(ContentFormat, strFormat));
           }
         case "hasimage":
           {

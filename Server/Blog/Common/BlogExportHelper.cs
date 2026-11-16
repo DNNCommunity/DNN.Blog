@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System;
 using System.IO;
 using System.IO.Compression;
 using System.Text.RegularExpressions;
@@ -106,11 +105,27 @@ namespace DotNetNuke.Modules.Blog.Common
 
         private static BlogMLPost ConvertPost(PostInfo post, ModuleSettings settings, int userId)
         {
+            var imageService = new DotNetNuke.Modules.Blog.Core.Media.ImageService();
+            var exported = new Dictionary<string, byte[]>(StringComparer.OrdinalIgnoreCase);
+
+            // Export placeholders to filename src + attachment bytes before BlogML HtmlEncode.
+            string contentHtml = imageService.ExportEmbeddedImages(
+                HttpUtility.HtmlDecode(post.Content ?? ""), exported);
+
+            string excerptHtml = null;
+            bool hasExcerpt = !string.IsNullOrEmpty(post.Summary);
+            if (hasExcerpt)
+            {
+                excerptHtml = settings.SummaryModel == SummaryType.PlainTextIndependent
+                    ? post.Summary
+                    : imageService.ExportEmbeddedImages(HttpUtility.HtmlDecode(post.Summary), exported);
+            }
+
             var postMl = new BlogMLPost
             {
                 Approved = post.Published,
                 Title = post.Title,
-                Content = BlogMLContent.Create(HttpUtility.HtmlDecode(post.Content ?? ""), ContentTypes.Html),
+                Content = BlogMLContent.Create(contentHtml, ContentTypes.Html),
                 PostType = BlogPostTypes.Normal,
                 DateCreated = post.PublishedOnDate,
                 ID = post.ContentItemId.ToString(),
@@ -120,7 +135,8 @@ namespace DotNetNuke.Modules.Blog.Common
                 DisplayCopyright = post.DisplayCopyright,
                 Copyright = post.Copyright,
                 Locale = post.Locale,
-                IsPublished = post.Published
+                IsPublished = post.Published,
+                HasExcerpt = hasExcerpt
             };
 
             if (post.PostCategories != null)
@@ -131,23 +147,13 @@ namespace DotNetNuke.Modules.Blog.Common
 
             postMl.Authors.Add(post.CreatedByUserID.ToString());
 
-            if (!string.IsNullOrEmpty(post.Summary))
+            if (hasExcerpt)
             {
                 postMl.Excerpt = settings.SummaryModel == SummaryType.PlainTextIndependent
-                    ? BlogMLContent.Create(post.Summary, ContentTypes.Text)
-                    : BlogMLContent.Create(HttpUtility.HtmlDecode(post.Summary), ContentTypes.Html);
-                postMl.HasExcerpt = true;
-            }
-            else
-            {
-                postMl.HasExcerpt = false;
+                    ? BlogMLContent.Create(excerptHtml, ContentTypes.Text)
+                    : BlogMLContent.Create(excerptHtml, ContentTypes.Html);
             }
 
-            var imageService = new DotNetNuke.Modules.Blog.Core.Media.ImageService();
-            var exported = new Dictionary<string, byte[]>(StringComparer.OrdinalIgnoreCase);
-            postMl.Content.Text = imageService.ExportEmbeddedImages(postMl.Content.Text, exported);
-            if (postMl.HasExcerpt)
-                postMl.Excerpt.Text = imageService.ExportEmbeddedImages(postMl.Excerpt.Text, exported);
             foreach (var kv in exported)
                 postMl.Attachments.Add(new BlogMLAttachment { Embedded = true, Path = kv.Key, Data = kv.Value });
 

@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import ConfirmDialog from "../../Common/ConfirmDialog";
 import { IAppModule } from "../Models/IAppModule";
 import {
   IManageBlogOption,
@@ -15,6 +16,9 @@ export interface PostsManageTableProps {
   module: IAppModule;
   editUrl: string;
   blogs: IManageBlogOption[];
+  deleteConfirm?: string;
+  deleteLabel?: string;
+  cancelLabel?: string;
 }
 
 const PAGE_SIZE = 10;
@@ -23,6 +27,10 @@ export default function PostsManageTable(
   props: PostsManageTableProps
 ): React.ReactElement {
   const { module, editUrl, blogs } = props;
+  const deleteConfirm =
+    props.deleteConfirm || "Delete this post?";
+  const deleteLabel = props.deleteLabel || "Delete";
+  const cancelLabel = props.cancelLabel || "Cancel";
   const [items, setItems] = useState<IManagePost[]>([]);
   const [page, setPage] = useState(0);
   const [total, setTotal] = useState(0);
@@ -35,6 +43,7 @@ export default function PostsManageTable(
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [pendingDelete, setPendingDelete] = useState<IManagePost | null>(null);
   const debounceRef = useRef<number | null>(null);
   const requestId = useRef(0);
 
@@ -98,7 +107,13 @@ export default function PostsManageTable(
   };
 
   const handleDelete = (post: IManagePost) => {
-    if (!window.confirm("Delete this post?")) return;
+    setPendingDelete(post);
+  };
+
+  const confirmDelete = () => {
+    const post = pendingDelete;
+    if (!post) return;
+    setPendingDelete(null);
     setBusy(true);
     module.service.deletePost(
       post.BlogId,
@@ -168,6 +183,16 @@ export default function PostsManageTable(
         onSort={handleSort}
         onDelete={handleDelete}
         onApprove={handleApprove}
+      />
+      <ConfirmDialog
+        open={!!pendingDelete}
+        title={deleteLabel}
+        message={deleteConfirm}
+        confirmLabel={deleteLabel}
+        cancelLabel={cancelLabel}
+        busy={busy}
+        onCancel={() => setPendingDelete(null)}
+        onConfirm={confirmDelete}
       />
       <PostsPager
         page={page}

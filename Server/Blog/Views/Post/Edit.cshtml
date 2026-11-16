@@ -97,8 +97,13 @@
     categories = Model.Categories,
     summaryIsHtml = Model.SummaryIsHtml,
     showSummaryPrecedingWarning = Model.ShowSummaryPrecedingWarning,
+    editorMode = string.IsNullOrWhiteSpace(Model.EditorMode) ? "html" : Model.EditorMode,
     validationMessage = Model.ValidationMessage,
-    cancelUrl = string.IsNullOrEmpty(Model.CancelUrl) ? Url.Action("Index", "Manage") : Model.CancelUrl,
+    returnUrl = Model.ReturnUrl ?? "",
+    // New posts always return to the launcher/home — never fall back to Manage.
+    cancelUrl = Model.IsNew
+      ? (!string.IsNullOrEmpty(Model.ReturnUrl) ? Model.ReturnUrl : DotNetNuke.Common.Globals.NavigateURL())
+      : (!string.IsNullOrEmpty(Model.CancelUrl) ? Model.CancelUrl : Url.Action("Index", "Manage")),
     editUrl = Url.Action("Edit", "Post", new { returnUrl = Model.ReturnUrl }),
     deleteUrl = Url.Action("Delete", "Post", new { returnUrl = Model.ReturnUrl }),
     antiforgeryToken = "",
@@ -130,7 +135,7 @@
       now = L("Now", "Now"),
       timezoneNote = L("PublishTimeZoneNote", "The publish date is based on your profile timezone of: "),
       summaryPrecedingWarning = L("lblSummaryPrecedingWarning", "Note that the summary precedes the article body."),
-      deleteConfirm = "Delete this post?",
+      deleteConfirm = L("DeletePost", "Delete this post?"),
       translations = "Translations"
     }
   };

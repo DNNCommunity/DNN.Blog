@@ -77,7 +77,8 @@
     "assemblies": [
       "DotNetNuke.Modules.Blog.dll",
       "DotNetNuke.Modules.Blog.Core.dll",
-      "CookComputing.XmlRpcV2.dll"
+      "CookComputing.XmlRpcV2.dll",
+      "Markdig.dll"
     ],
     "excludeFilter": ["Blog/bin/", "Blog/obj/"],
     "zipName": "Blog"

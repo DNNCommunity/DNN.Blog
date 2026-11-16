@@ -1,13 +1,15 @@
 import ModuleAppConfig from "./Css/Module/rsbuild.config";
 import BlogAppConfig from "./Js/Blog/rsbuild.config";
-import HtmlEditorAppConfig from "./Js/HtmlEditor/rsbuild.config";
+import RichEditorAppConfig from "./Js/RichEditor/rsbuild.config";
 import PostEditAppConfig from "./Js/PostEdit/rsbuild.config";
+import CommentsAppConfig from "./Js/Comments/rsbuild.config";
 
 export default {
   environments: {
     ModuleAppConfig,
     BlogAppConfig,
-    HtmlEditorAppConfig,
+    RichEditorAppConfig,
     PostEditAppConfig,
+    CommentsAppConfig,
   },
 };

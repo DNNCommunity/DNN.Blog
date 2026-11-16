@@ -75,7 +75,9 @@ export interface IPostEditBootstrap {
   categories: IPostCategoryNode[];
   summaryIsHtml: boolean;
   showSummaryPrecedingWarning: boolean;
+  editorMode: "html" | "markdown";
   validationMessage: string;
+  returnUrl: string;
   cancelUrl: string;
   editUrl: string;
   deleteUrl: string;

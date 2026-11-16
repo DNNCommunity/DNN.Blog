@@ -118,28 +118,40 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Analysis.Help" xml:space="preserve">
-    <value>Here are the results of what the file import tool could find.</value>
+    <value>Review what was found in the BlogML file before creating posts.</value>
   </data>
   <data name="Analysis.Text" xml:space="preserve">
-    <value>First Analysis of File</value>
+    <value>File analysis</value>
+  </data>
+  <data name="Analyze.Text" xml:space="preserve">
+    <value>Upload and analyze</value>
+  </data>
+  <data name="BackToManage.Text" xml:space="preserve">
+    <value>Back to Manage</value>
   </data>
   <data name="Cancel.Text" xml:space="preserve">
-    <value>Return</value>
+    <value>Cancel</value>
+  </data>
+  <data name="ConfirmImport.Text" xml:space="preserve">
+    <value>Confirm import</value>
   </data>
   <data name="ControlTitle_blogimport.Text" xml:space="preserve">
-    <value>New Extension Wizard</value>
+    <value>Import BlogML</value>
   </data>
   <data name="lblFileIn.Help" xml:space="preserve">
-    <value>Seect a valid BlogML to import to this blog</value>
+    <value>Choose a BlogML .xml file, or a .zip export that contains one.</value>
   </data>
   <data name="lblFileIn.Text" xml:space="preserve">
-    <value>Select BlogML File</value>
+    <value>BlogML file</value>
   </data>
   <data name="lblTarget.Help" xml:space="preserve">
-    <value>This is the blog this content will be imported into</value>
+    <value>Posts will be imported into this blog.</value>
   </data>
   <data name="lblTarget.Text" xml:space="preserve">
-    <value>Target Blog</value>
+    <value>Target blog</value>
+  </data>
+  <data name="OriginalTitle.Text" xml:space="preserve">
+    <value>Original title</value>
   </data>
   <data name="Report.Help" xml:space="preserve">
     <value>This is a report of what has been done.</value>
@@ -147,28 +159,19 @@
   <data name="Report.Text" xml:space="preserve">
     <value>Report</value>
   </data>
+  <data name="TotalAttachments.Text" xml:space="preserve">
+    <value>Embedded files</value>
+  </data>
+  <data name="TotalCategories.Text" xml:space="preserve">
+    <value>Categories</value>
+  </data>
+  <data name="TotalPosts.Text" xml:space="preserve">
+    <value>Posts</value>
+  </data>
   <data name="Upload.Help" xml:space="preserve">
-    <value>The Blog module supports importing content through the BlogML standard. Most blogging engines support the im- and export of BlogML files.</value>
+    <value>Import posts from a BlogML export. Embedded images and featured images are restored when present in the file.</value>
   </data>
   <data name="Upload.Text" xml:space="preserve">
-    <value>Upload BlogML File</value>
-  </data>
-  <data name="lblImportCategories.Help" xml:space="preserve">
-    <value>If selected any categories not already in the Blog module will be created. This feature is unavailable if no module category list is selected or you are not allowed to create categories.</value>
-  </data>
-  <data name="lblImportCategories.Text" xml:space="preserve">
-    <value>Import Missing Categories</value>
-  </data>
-  <data name="lblImportComments.Help" xml:space="preserve">
-    <value>If selected the module tries to import the comments of the various blogposts that are in the BlogML file.</value>
-  </data>
-  <data name="lblImportComments.Text" xml:space="preserve">
-    <value>Import Comments</value>
-  </data>
-  <data name="lblImportMissingCategoriesAsKeywords.Help" xml:space="preserve">
-    <value>If selected missing categories will be imported in the tags list and attached that way to the posts. This permits you to preserve the categorization of the posts even if you are not allowed to add categories.</value>
-  </data>
-  <data name="lblImportMissingCategoriesAsKeywords.Text" xml:space="preserve">
-    <value>Import Missing Categories as Keywords</value>
+    <value>Upload BlogML file</value>
   </data>
 </root>

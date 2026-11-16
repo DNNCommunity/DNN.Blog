@@ -111,6 +111,8 @@ namespace DotNetNuke.Modules.Blog.Core.Entities.Blogs
     public int NrViews { get; set; } = -1;
     [DataMember()]
     public DateTime FirstPublishDate { get; set; } = DateTime.MinValue;
+    [DataMember()]
+    public byte ContentFormat { get; set; } = 0;
     #endregion
 
     #region  ML Properties 

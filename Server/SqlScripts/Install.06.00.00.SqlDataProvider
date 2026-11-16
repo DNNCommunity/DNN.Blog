@@ -692,19 +692,29 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_AddCommentKarma
- @CommentId INT, 
+ @CommentId INT,
  @UserId INT,
  @Karma INT
 AS
 DECLARE @Res INT
-SET @Res = -1;
-IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}Blog_CommentKarmas WHERE CommentId=@CommentId AND UserId=@UserId AND Karma=@Karma)
+IF EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}Blog_CommentKarmas WHERE CommentId=@CommentId AND UserId=@UserId AND Karma=@Karma)
 BEGIN
+ DELETE FROM {databaseOwner}{objectQualifier}Blog_CommentKarmas
+ WHERE CommentId=@CommentId AND UserId=@UserId AND Karma=@Karma
+ SET @Res = 0 -- removed
+END
+ELSE
+BEGIN
+ IF @Karma IN (0, 1)
+ BEGIN
+  DELETE FROM {databaseOwner}{objectQualifier}Blog_CommentKarmas
+  WHERE CommentId=@CommentId AND UserId=@UserId AND Karma IN (0, 1)
+ END
  INSERT INTO {databaseOwner}{objectQualifier}Blog_CommentKarmas
   (CommentId, UserId, Karma, Datime)
  VALUES
-  (@CommentId, @UserId, @Karma, GETDATE());
- SET @Res = @CommentId;
+  (@CommentId, @UserId, @Karma, GETDATE())
+ SET @Res = 1 -- added
 END
 SELECT @Res
 GO

@@ -37,7 +37,7 @@
     <value>Autoriser toutes les langues</value>
   </data>
   <data name="lblAllowAttachments.Help" xml:space="preserve">
-    <value>Si les bloggers autorisés peuvent joindre des pièces à leurs posts dans Windows Live Writer.Sinon, le chargement de pièces jointes est interdit.</value>
+    <value>Si les bloggers autorisés peuvent joindre des pièces à leurs posts dans Open Live Writer. Sinon, le chargement de pièces jointes est interdit.</value>
   </data>
   <data name="lblAllowAttachments.Text" xml:space="preserve">
     <value>Autoriser les pièces jointes</value>
@@ -49,10 +49,13 @@
     <value>Multi-catégories</value>
   </data>
   <data name="lblAllowWLW.Help" xml:space="preserve">
-    <value>Si les utilisateurs autorisée peuvent utiliser Windows Live Writer pour poster.</value>
+    <value>Si sélectionné, les blogueurs peuvent se connecter et publier avec Open Live Writer. Seuls les blogs configurés en HTML (pas Markdown) peuvent utiliser cette connexion.</value>
   </data>
   <data name="lblAllowWLW.Text" xml:space="preserve">
-    <value>Autoriser Windows Live Writer</value>
+    <value>Autoriser Open Live Writer</value>
+  </data>
+  <data name="OLWHtmlOnly.Help" xml:space="preserve">
+    <value>Les connexions Open Live Writer ne sont disponibles que pour les blogs configurés en HTML (pas Markdown).</value>
   </data>
   <data name="lblEmail.Help" xml:space="preserve">
     <value>Cette adresse de mail sera utilisée dans le flux RSS comme celle du responsable de publication</value>
@@ -67,10 +70,10 @@
     <value>Dictonnaire des catégories</value>
   </data>
   <data name="lblWLWRecentPostsMax.Help" xml:space="preserve">
-    <value>Nombre de posts (récents) qui peuvent être téléchargés par Windows Live Writer pour rédiger.</value>
+    <value>Nombre de posts (récents) qui peuvent être téléchargés par Open Live Writer pour rédiger.</value>
   </data>
   <data name="lblWLWRecentPostsMax.Text" xml:space="preserve">
-    <value>WLW Nbr de posts récents</value>
+    <value>OLW Nbr de posts récents</value>
   </data>
   <data name="NoneSpecified.Text" xml:space="preserve">
     <value>&lt; Rien de spécifié&gt;</value>
@@ -206,6 +209,12 @@
   </data>
   <data name="lblAutoGenerateMissingSummary.Text" xml:space="preserve">
     <value>Auto-générer un résumé s'il n'y en a pas.</value>
+  </data>
+  <data name="lblEditorMode.Text" xml:space="preserve">
+    <value>Mode éditeur</value>
+  </data>
+  <data name="lblEditorMode.Help" xml:space="preserve">
+    <value>Éditeur par défaut pour les nouveaux blogs de ce module. Chaque blog peut être verrouillé en HTML ou Markdown à la création.</value>
   </data>
   <!---->
 </root>

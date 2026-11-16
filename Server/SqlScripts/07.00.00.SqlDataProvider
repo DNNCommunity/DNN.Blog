@@ -26,3 +26,116 @@ BEGIN
  CREATE NONCLUSTERED INDEX IX_{objectQualifier}Blog_Images_State ON {databaseOwner}{objectQualifier}Blog_Images (State, CreatedOn)
 END
 GO
+
+/*** Editor file attachments (non-image uploads) ***/
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Files') AND type in (N'U'))
+BEGIN
+ CREATE TABLE {databaseOwner}{objectQualifier}Blog_Files(
+  FileId uniqueidentifier NOT NULL,
+  PortalId int NOT NULL,
+  BlogId int NOT NULL,
+  PostId int NULL,
+  State int NOT NULL,
+  OriginalFileName nvarchar(260) NOT NULL,
+  StoredFileName nvarchar(100) NOT NULL,
+  ContentType nvarchar(100) NOT NULL,
+  Bytes bigint NOT NULL,
+  Hash nvarchar(64) NOT NULL,
+  CreatedByUserId int NOT NULL,
+  CreatedOn datetime NOT NULL,
+  CONSTRAINT PK_{objectQualifier}Blog_Files PRIMARY KEY CLUSTERED (FileId)
+ )
+
+ CREATE NONCLUSTERED INDEX IX_{objectQualifier}Blog_Files_Post ON {databaseOwner}{objectQualifier}Blog_Files (BlogId, PostId)
+ CREATE NONCLUSTERED INDEX IX_{objectQualifier}Blog_Files_State ON {databaseOwner}{objectQualifier}Blog_Files (State, CreatedOn)
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM SYS.COLUMNS WHERE NAME = N'ContentFormat' AND OBJECT_ID = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Blogs'))
+BEGIN
+ ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs
+ ADD ContentFormat TINYINT NULL
+END
+GO
+
+IF EXISTS (SELECT * FROM SYS.COLUMNS WHERE NAME = N'ContentFormat' AND OBJECT_ID = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Blogs') AND is_nullable = 1)
+BEGIN
+ UPDATE {databaseOwner}{objectQualifier}Blog_Blogs
+ SET ContentFormat=0
+ WHERE ContentFormat IS NULL
+END
+GO
+
+IF EXISTS (SELECT * FROM SYS.COLUMNS WHERE NAME = N'ContentFormat' AND OBJECT_ID = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Blogs') AND is_nullable = 1)
+BEGIN
+ ALTER TABLE {databaseOwner}{objectQualifier}Blog_Blogs
+ ALTER COLUMN ContentFormat TINYINT NOT NULL
+END
+GO
+
+/*** Recreate TVFs whose column lists were frozen before ContentFormat existed ***/
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_BlogList') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+ DROP FUNCTION {databaseOwner}{objectQualifier}Blog_BlogList
+GO
+
+CREATE FUNCTION {databaseOwner}{objectQualifier}Blog_BlogList
+ (@Locale NVARCHAR(10))
+RETURNS TABLE
+AS
+RETURN
+(SELECT
+  b.*,
+  bl.Locale AS AltLocale, bl.Title AS AltTitle, bl.[Description] AS AltDescription
+ FROM {databaseOwner}{objectQualifier}vw_Blog_Blogs AS b
+  LEFT OUTER JOIN {databaseOwner}{objectQualifier}Blog_BlogLocalization AS bl ON b.BlogID = bl.BlogID AND bl.Locale=@Locale)
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_PostList') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+ DROP FUNCTION {databaseOwner}{objectQualifier}Blog_PostList
+GO
+
+CREATE FUNCTION {databaseOwner}{objectQualifier}Blog_PostList
+ (@Locale NVARCHAR(10))
+RETURNS TABLE
+AS
+RETURN
+(SELECT
+  p.*,
+  pl.Locale AS AltLocale, pl.Title AS AltTitle, pl.Summary AS AltSummary, lci.Content AS AltContent
+ FROM {databaseOwner}{objectQualifier}vw_Blog_Posts AS p
+  LEFT OUTER JOIN {databaseOwner}{objectQualifier}Blog_PostLocalization AS pl ON p.ContentItemID = pl.ContentItemId AND pl.Locale=@Locale
+  LEFT OUTER JOIN {databaseOwner}{objectQualifier}ContentItems lci ON pl.LocalizedContentItemId=lci.ContentItemID)
+GO
+
+/*** Comment karma: toggle add/remove; like and dislike are mutually exclusive ***/
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_AddCommentKarma') AND type in (N'P', N'PC'))
+ DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_AddCommentKarma
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_AddCommentKarma
+ @CommentId INT,
+ @UserId INT,
+ @Karma INT
+AS
+DECLARE @Res INT
+IF EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}Blog_CommentKarmas WHERE CommentId=@CommentId AND UserId=@UserId AND Karma=@Karma)
+BEGIN
+ DELETE FROM {databaseOwner}{objectQualifier}Blog_CommentKarmas
+ WHERE CommentId=@CommentId AND UserId=@UserId AND Karma=@Karma
+ SET @Res = 0 -- removed
+END
+ELSE
+BEGIN
+ IF @Karma IN (0, 1)
+ BEGIN
+  DELETE FROM {databaseOwner}{objectQualifier}Blog_CommentKarmas
+  WHERE CommentId=@CommentId AND UserId=@UserId AND Karma IN (0, 1)
+ END
+ INSERT INTO {databaseOwner}{objectQualifier}Blog_CommentKarmas
+  (CommentId, UserId, Karma, Datime)
+ VALUES
+  (@CommentId, @UserId, @Karma, GETDATE())
+ SET @Res = 1 -- added
+END
+SELECT @Res
+GO

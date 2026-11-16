@@ -51,6 +51,17 @@ namespace DotNetNuke.Modules.Blog.Services
                 : _pageSize;
         }
 
+        public void RegisterClientAssets(System.Web.UI.Page page)
+        {
+            if (page == null)
+            {
+                return;
+            }
+            var tmgr = new TemplateManager(PortalSettings.Current, _viewSettings.Template);
+            var defaultReplacer = new BlogTokenReplace(_module, _blogContext, _settings, _viewSettings);
+            tmgr.RegisterClientAssets(page, defaultReplacer);
+        }
+
         public string Render(string startTemplate = "Template.html")
         {
             var tmgr = new TemplateManager(PortalSettings.Current, _viewSettings.Template);

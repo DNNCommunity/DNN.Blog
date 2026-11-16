@@ -1,132 +1,593 @@
-﻿.ModBlogC .bbs-comments .comment .author .profile,.ModBlogC .bbs-comments .totals{font-size:.9em;color:#aaa}.ModBlogC .bbs-article .content .metadata>div:not(:last-child),.ModBlogC .bbs-listarticle{border-bottom:1px solid #eee}.ModBlogC .bbs-comments{margin-top:30px;padding-top:10px;border-top:1px solid #eee}.ModBlogC .bbs-comments .comment{padding:10px 0}.ModBlogC .bbs-comments .comment .author{padding:6px 0}.ModBlogC .bbs-comments .comment .author>div{display:inline}.ModBlogC .bbs-comments .comment .author .pic img{width:32px;height:32px;border-radius:6px}.ModBlogC .bbs-comments .comment .author .pic{padding-right:10px}.ModBlogC .bbs-comments .comment .content{font-size:1.1em}.ModBlogC .bbs-comments .comment .actions{padding:10px 0;color:#aaa;font-size:.9em}.ModBlogC .bbs-comments .comment .subcomments{padding-left:30px}.ModBlogC .bbs-article .content{height:auto;overflow:hidden}@media only screen and (min-width:600px){.ModBlogC .bbs-article .content .metadata{float:left;width:240px}.ModBlogC .bbs-article .content .body{width:auto;overflow:hidden}}@media only screen and (max-width:599px){.ModBlogC .bbs-article .content .metadata{display:block}}.ModBlogC .bbs-article .content .metadata{line-height:21px}.ModBlogC .bbs-article .content .metadata>div{padding-bottom:20px;margin:0 20px 20px 0}.ModBlogC .bbs-article .content .metadata>div h5{color:#aaa;text-transform:uppercase;font-weight:700}.ModBlogC .bbs-article .content .metadata .sharrre{padding-top:6px}.ModBlogC .bbs-article .content .metadata .sharrre a{padding-right:14px}.ModBlogC .bbs-article .content .metadata .sharrre a i{font-size:1.2em}.ModBlogC .bbs-article .content .metadata .tags a{display:block}.ModBlogC .bbs-article .content .body{padding-top:20px}.ModBlogC .bbs-listarticle{overflow:hidden;padding:20px 0}.ModBlogC .bbs-listarticle h2 a,.ModBlogC .bbs-listarticle h2 a:hover,.ModBlogC .bbs-listarticle h2 a:visited{text-decoration:none}.ModBlogC .bbs-listarticle figure{float:left;margin:8px 40px 0 0;width:264px}.ModBlogC .bbs-listarticle .content{overflow:hidden}.ModBlogC .bbs-listarticle .content .summary,.ModBlogC .bbs-listarticle .content .summary p{font-size:1.1em;line-height:1.5;margin-bottom:12px}.ModBlogC .bbs-listarticle .content .metadata{line-height:18px;margin-left:-8px}.ModBlogC .bbs-listarticle .content .metadata div{display:inline;padding:0 8px;font-size:.9em;color:#aaa}.ModBlogC .bbs-listarticle .content .metadata div:not(:last-child){border-right:1px solid #aaa}.ModBlogC .bbs-listarticle .content .metadata div:empty{display:none}.ModBlogC .bbs-pager{text-align:center}.ModBlogC .bbs-pager .bbs-pagination{width:90%;max-width:768px;margin:2em auto 4em;text-align:center}.ModBlogC .bbs-pager .bbs-pagination li{display:none;margin:0 .2em}.ModBlogC .bbs-pager .bbs-pagination li.button{display:inline-block}.ModBlogC .bbs-pager .bbs-pagination a,.ModBlogC .bbs-pager .bbs-pagination span{display:inline-block;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;padding:.6em .8em;font-size:1.6rem}.ModBlogC .bbs-pager .bbs-pagination a{border:1px solid #e6e6e6;border-radius:.25em}.ModBlogC .bbs-pager .bbs-pagination .no-touch a:hover{background-color:#f2f2f2}.ModBlogC .bbs-pager .bbs-pagination a:active{-webkit-transform:scale(.9);-moz-transform:scale(.9);-ms-transform:scale(.9);-o-transform:scale(.9);transform:scale(.9)}.ModBlogC .bbs-pager .bbs-pagination a.disabled{color:rgba(46,64,87,.4);pointer-events:none}.ModBlogC .bbs-pager .bbs-pagination a.disabled::after,.ModBlogC .bbs-pager .bbs-pagination a.disabled::before{opacity:.4}.ModBlogC .bbs-pager .bbs-pagination .button:first-of-type a::before{content:'\00ab  '}.ModBlogC .bbs-pager .bbs-pagination .button:last-of-type a::after{content:' \00bb'}.ModBlogC .bbs-pager .bbs-pagination .current{background-color:#777;border-color:#777;color:#fff;pointer-events:none}@media only screen and (min-width:768px){.ModBlogC .bbs-pager .bbs-pagination li{display:inline-block}}@media only screen and (min-width:1170px){.ModBlogC .bbs-pager .bbs-pagination{margin:4em auto 8em}}.ModBlogC .supertitle{text-transform:uppercase}.ModBlogC .supertitle span{font-weight:700}.ModBlogC .supertitle:empty{display:none}.ModBlogC .comma:not(:first-child):before{content:", "}.ModBlogC .commands{padding-top:20px}
+/* _default blog template - modern editorial layout */
 
-/* ==========================================================
-   DNN 10 Maintenance Improvements
-
-   2026
-   - Blog List mobile layout
-   - Blog Article banner spacing
-   - Mobile pager
-   ========================================================== */
-
-/* Blog List: prevent the Chrome narrow-text-column layout */
-@media (max-width: 600px) {
-    .ModBlogC .bbs-listarticle figure {
-        float: none !important;
-        width: auto !important;
-        max-width: 100% !important;
-        margin: 8px 12px 12px 0 !important;
-    }
-
-    .ModBlogC .bbs-listarticle figure img {
-        display: block;
-        max-width: 100%;
-        height: auto;
-    }
-
-    .ModBlogC .bbs-listarticle,
-    .ModBlogC .bbs-listarticle .content {
-        overflow: visible !important;
-    }
+.ModBlogC {
+  --bbs-text: #1c2430;
+  --bbs-muted: #5b6573;
+  --bbs-border: #e4e7ec;
+  --bbs-surface: #f6f7f9;
+  --bbs-accent: #1f4e79;
+  --bbs-accent-hover: #163a5c;
+  --bbs-danger-bg: #fdecea;
+  --bbs-danger-text: #8a1f11;
+  --bbs-radius: 4px;
+  --bbs-space-1: 0.25rem;
+  --bbs-space-2: 0.5rem;
+  --bbs-space-3: 0.75rem;
+  --bbs-space-4: 1rem;
+  --bbs-space-5: 1.5rem;
+  --bbs-space-6: 2rem;
+  --bbs-space-7: 2.75rem;
+  --bbs-font: "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --bbs-font-display: Georgia, "Times New Roman", Times, serif;
+  --bbs-measure: 46rem;
+  color: var(--bbs-text);
+  font-family: var(--bbs-font);
+  line-height: 1.55;
 }
 
-/* Blog List: preserve the original desktop/tablet layout */
-@media (min-width: 601px) {
-    .ModBlogC .bbs-listarticle {
-        display: block !important;
-    }
-
-    .ModBlogC .bbs-listarticle figure {
-        float: left !important;
-        margin: 8px 40px 0 0 !important;
-        width: 264px !important;
-    }
-
-    .ModBlogC .bbs-listarticle .content {
-        overflow: hidden !important;
-        min-width: 0;
-    }
+.ModBlogC .blog-main-content {
+  max-width: 72rem;
+  margin: 0 auto;
 }
 
-/* Blog List: clear the floated image safely */
-.ModBlogC .bbs-listarticle::after {
-    content: "";
-    display: table;
-    clear: both;
+.ModBlogC a {
+  color: var(--bbs-accent);
 }
 
-/* Blog Article: keep the optional banner inside the mobile viewport */
-@media (max-width: 599px) {
-    .ModBlogC .bbs-article > figure {
-        width: auto;
-        max-width: calc(100% - 12px);
-        margin-right: 12px;
-    }
-
-    .ModBlogC .bbs-article > figure img {
-        display: block;
-        width: 100%;
-        max-width: 100%;
-        height: auto;
-    }
+.ModBlogC a:hover,
+.ModBlogC a:focus {
+  color: var(--bbs-accent-hover);
 }
 
-/* Blog List: show and wrap page numbers on mobile */
-@media (max-width: 767.98px) {
-    .ModBlogC .bbs-pager .bbs-pagination li {
-        display: inline-block !important;
-    }
+/* ---------- Context banners ---------- */
 
-    .ModBlogC .bbs-pager .bbs-pagination {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 0.4em;
-        width: 100%;
-        margin: 2em auto 5em;
-    }
-}
-/* Logged-in mobile view: keep Blog and author banners below module controls */
-@media (max-width: 767.98px) {
-    .ModBlogC .selectbanner,
-    .ModBlogC .blog-main-content {
-        clear: both;
-        width: 100%;
-    }
-
-    .ModBlogC .selectbanner {
-        display: block;
-        box-sizing: border-box;
-        margin: 16px 0 14px;
-        padding-top: 50px;
-        overflow-wrap: anywhere;
-    }
-
-    .ModBlogC .commands {
-        clear: both;
-        float: none;
-        width: 100%;
-        margin-bottom: 18px;
-    }
-}
-/* Mobile: reduce the gap between the selected Blog and Author banners */
-@media (max-width: 767.98px) {
-    .ModBlogC .blog-selectbanner + .selectbanner {
-        margin-top: 2px !important;
-        padding-top: 0 !important;
-    }
+.ModBlogC .selectbanner {
+  position: relative;
+  margin: 0 0 var(--bbs-space-5);
+  padding: var(--bbs-space-4) var(--bbs-space-5);
+  background: var(--bbs-surface);
+  border: 1px solid var(--bbs-border);
+  border-radius: var(--bbs-radius);
+  color: var(--bbs-muted);
+  font-size: 0.9375rem;
 }
 
-/* Mobile: give the selected Blog title extra clearance below admin controls */
-@media (max-width: 767.98px) {
-    .ModBlogC .blog-selectbanner {
-        clear: both !important;
-        display: block !important;
-        width: 100%;
-        box-sizing: border-box;
-        margin-top: 28px;
-        margin-bottom: 0px;
-        padding-top: 18px;
-        position: relative;
-    }
+.ModBlogC .selectbanner .removeselection {
+  float: right;
+  margin-left: var(--bbs-space-3);
+}
+
+.ModBlogC .selectbanner .removeselection a {
+  color: var(--bbs-muted);
+  text-decoration: none;
+}
+
+.ModBlogC .selectbanner .removeselection a:hover {
+  color: var(--bbs-text);
+}
+
+/* ---------- Shared ---------- */
+
+.ModBlogC .supertitle {
+  margin: 0 0 var(--bbs-space-2);
+  color: var(--bbs-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.ModBlogC .supertitle span {
+  font-weight: 600;
+}
+
+.ModBlogC .supertitle:empty {
+  display: none;
+}
+
+.ModBlogC .comma:not(:first-child)::before {
+  content: ", ";
+}
+
+.ModBlogC .unpublished,
+.ModBlogC .bbs-unpublished .unpublished {
+  display: inline-block;
+  margin-top: var(--bbs-space-2);
+  padding: 0.15rem 0.5rem;
+  background: var(--bbs-danger-bg);
+  border-radius: var(--bbs-radius);
+  color: var(--bbs-danger-text);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.ModBlogC .commands {
+  padding-top: var(--bbs-space-5);
+}
+
+.ModBlogC .bbs-author-name {
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.ModBlogC .bbs-author-name:hover {
+  text-decoration: underline;
+}
+
+/* ---------- List feed ---------- */
+
+.ModBlogC .bbs-listarticle {
+  display: grid;
+  gap: var(--bbs-space-5);
+  margin: 0;
+  padding: var(--bbs-space-6) 0;
+  border-bottom: 1px solid var(--bbs-border);
+}
+
+.ModBlogC .bbs-listarticle:first-child {
+  padding-top: var(--bbs-space-2);
+}
+
+.ModBlogC .bbs-listarticle__media {
+  display: block;
+  text-decoration: none;
+}
+
+.ModBlogC .bbs-listarticle__media figure {
+  margin: 0;
+  overflow: hidden;
+  border-radius: var(--bbs-radius);
+  background: var(--bbs-surface);
+  aspect-ratio: 16 / 9;
+}
+
+.ModBlogC .bbs-listarticle__media figure:empty {
+  display: none;
+}
+
+.ModBlogC .bbs-listarticle__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.ModBlogC .bbs-listarticle__media:hover img {
+  transform: scale(1.03);
+}
+
+.ModBlogC .bbs-listarticle__body {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.ModBlogC .bbs-listarticle__title {
+  margin: 0 0 var(--bbs-space-3);
+  font-family: var(--bbs-font-display);
+  font-size: clamp(1.35rem, 2.4vw, 1.85rem);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.ModBlogC .bbs-listarticle__title a,
+.ModBlogC .bbs-listarticle__title a:visited {
+  color: var(--bbs-text);
+  text-decoration: none;
+}
+
+.ModBlogC .bbs-listarticle__title a:hover {
+  color: var(--bbs-accent);
+}
+
+.ModBlogC .bbs-listarticle__byline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--bbs-space-2);
+  margin: 0 0 var(--bbs-space-3);
+  color: var(--bbs-muted);
+  font-size: 0.875rem;
+}
+
+.ModBlogC .bbs-byline-sep {
+  display: inline-block;
+  width: 0.25rem;
+  height: 0.25rem;
+  border-radius: 50%;
+  background: var(--bbs-muted);
+  opacity: 0.55;
+}
+
+.ModBlogC .bbs-listarticle .summary,
+.ModBlogC .bbs-listarticle .summary p {
+  margin: 0;
+  color: var(--bbs-muted);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.ModBlogC .bbs-listarticle .summary p + p {
+  margin-top: var(--bbs-space-2);
+}
+
+@media only screen and (min-width: 768px) {
+  .ModBlogC .bbs-listarticle {
+    grid-template-columns: minmax(12rem, 38%) minmax(0, 1fr);
+    align-items: stretch;
+    gap: var(--bbs-space-6);
+    padding: var(--bbs-space-7) 0;
+  }
+
+  /* Text-only posts (no ListImage subtemplate) span full width */
+  .ModBlogC .bbs-listarticle > .bbs-listarticle__body:only-child {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ---------- Detail: back link ---------- */
+
+.ModBlogC .bbs-back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--bbs-space-2);
+  margin: 0 0 var(--bbs-space-5);
+  color: var(--bbs-muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.ModBlogC .bbs-back:hover {
+  color: var(--bbs-accent);
+}
+
+.ModBlogC .bbs-back .fa {
+  font-size: 0.85em;
+}
+
+/* ---------- Detail: hero ---------- */
+
+.ModBlogC .bbs-article {
+  margin: 0;
+}
+
+.ModBlogC .bbs-hero {
+  margin: 0 0 var(--bbs-space-6);
+}
+
+.ModBlogC .bbs-hero__media {
+  margin: 0 0 var(--bbs-space-5);
+  overflow: hidden;
+  border-radius: var(--bbs-radius);
+  background: var(--bbs-surface);
+  aspect-ratio: 2.5 / 1;
+}
+
+.ModBlogC .bbs-hero__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ModBlogC .bbs-hero__text {
+  max-width: 52rem;
+}
+
+.ModBlogC .bbs-hero__title {
+  margin: 0;
+  color: var(--bbs-text);
+  font-family: var(--bbs-font-display);
+  font-size: clamp(1.85rem, 4vw, 2.75rem);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+/* ---------- Detail: two-column content ---------- */
+
+.ModBlogC .bbs-article .content {
+  display: grid;
+  gap: var(--bbs-space-6);
+}
+
+.ModBlogC .bbs-article .content .metadata {
+  order: 0;
+  padding: var(--bbs-space-4) 0 0;
+  border-top: 1px solid var(--bbs-border);
+  line-height: 1.5;
+}
+
+.ModBlogC .bbs-article .content .metadata > div {
+  margin: 0 0 var(--bbs-space-5);
+}
+
+.ModBlogC .bbs-article .content .metadata > div:last-child {
+  margin-bottom: 0;
+}
+
+.ModBlogC .bbs-article .content .metadata h5 {
+  margin: 0 0 var(--bbs-space-2);
+  color: var(--bbs-muted);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ModBlogC .bbs-article .content .metadata .time {
+  color: var(--bbs-muted);
+  font-size: 0.9375rem;
+}
+
+.ModBlogC .bbs-author-bio {
+  margin-top: var(--bbs-space-2);
+  color: var(--bbs-muted);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.ModBlogC .bbs-author-bio:empty {
+  display: none;
+}
+
+.ModBlogC .bbs-article .content .metadata .tags a,
+.ModBlogC .bbs-article .content .metadata .taglink {
+  display: inline-block;
+  margin: 0 var(--bbs-space-2) var(--bbs-space-2) 0;
+  padding: 0.2rem 0.55rem;
+  border: 1px solid var(--bbs-border);
+  border-radius: var(--bbs-radius);
+  color: var(--bbs-muted);
+  font-size: 0.8125rem;
+  text-decoration: none;
+}
+
+.ModBlogC .bbs-article .content .metadata .tags a:hover,
+.ModBlogC .bbs-article .content .metadata .taglink:hover {
+  border-color: var(--bbs-accent);
+  color: var(--bbs-accent);
+}
+
+.ModBlogC .bbs-article .content .body {
+  order: 1;
+  min-width: 0;
+  max-width: var(--bbs-measure);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+}
+
+.ModBlogC .bbs-article .content .body > *:first-child {
+  margin-top: 0;
+}
+
+.ModBlogC .bbs-article .content .body > *:last-child {
+  margin-bottom: 0;
+}
+
+.ModBlogC .bbs-article .content .body h2,
+.ModBlogC .bbs-article .content .body h3,
+.ModBlogC .bbs-article .content .body h4 {
+  margin: 1.75em 0 0.6em;
+  font-family: var(--bbs-font-display);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.ModBlogC .bbs-article .content .body p,
+.ModBlogC .bbs-article .content .body ul,
+.ModBlogC .bbs-article .content .body ol {
+  margin: 0 0 1.15em;
+}
+
+.ModBlogC .bbs-article .content .body img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--bbs-radius);
+}
+
+.ModBlogC .bbs-article .content .body blockquote {
+  margin: 0 0 1.25em;
+  padding: 0.25em 0 0.25em 1.1em;
+  border-left: 3px solid var(--bbs-border);
+  color: var(--bbs-muted);
+  font-style: italic;
+}
+
+.ModBlogC .bbs-article .content .body :not(pre) > code {
+  padding: 0.15em 0.4em;
+  border: 1px solid var(--bbs-border);
+  border-radius: var(--bbs-radius);
+  background: var(--bbs-surface);
+  font-family: Consolas, "Segoe UI Mono", Menlo, Monaco, monospace;
+  font-size: 0.9em;
+}
+
+.ModBlogC .bbs-article .content .body pre {
+  margin: 0 0 1.25em;
+  padding: 0;
+  overflow: auto;
+  border: 1px solid var(--bbs-border);
+  border-radius: var(--bbs-radius);
+  background: var(--bbs-surface);
+}
+
+.ModBlogC .bbs-article .content .body pre code {
+  display: block;
+  padding: 1rem 1.1rem;
+  background: transparent;
+  border: 0;
+  font-family: Consolas, "Segoe UI Mono", Menlo, Monaco, monospace;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  overflow-x: auto;
+}
+
+.ModBlogC .bbs-article .content .body pre code.hljs {
+  padding: 1rem 1.1rem;
+  background: transparent;
+}
+
+@media only screen and (min-width: 768px) {
+  .ModBlogC .bbs-hero {
+    margin-bottom: var(--bbs-space-7);
+  }
+
+  .ModBlogC .bbs-article .content {
+    grid-template-columns: minmax(12rem, 15rem) minmax(0, 1fr);
+    gap: var(--bbs-space-7);
+    align-items: start;
+  }
+
+  .ModBlogC .bbs-article .content .metadata {
+    position: sticky;
+    top: var(--bbs-space-5);
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .ModBlogC .bbs-article .content .metadata > div:not(:last-child) {
+    padding-bottom: var(--bbs-space-5);
+    margin-bottom: var(--bbs-space-5);
+    border-bottom: 1px solid var(--bbs-border);
+  }
+
+  .ModBlogC .bbs-article .content .body {
+    padding-top: 0;
+  }
+}
+
+/* ---------- Pager ---------- */
+
+.ModBlogC .bbs-pager {
+  text-align: center;
+}
+
+.ModBlogC .bbs-pager .bbs-pagination {
+  width: 90%;
+  max-width: 768px;
+  margin: var(--bbs-space-6) auto var(--bbs-space-7);
+  padding: 0;
+  list-style: none;
+  text-align: center;
+}
+
+.ModBlogC .bbs-pager .bbs-pagination li {
+  display: none;
+  margin: 0 0.2em;
+}
+
+.ModBlogC .bbs-pager .bbs-pagination li.button {
+  display: inline-block;
+}
+
+.ModBlogC .bbs-pager .bbs-pagination a,
+.ModBlogC .bbs-pager .bbs-pagination span {
+  display: inline-block;
+  user-select: none;
+  padding: 0.5em 0.75em;
+  font-size: 0.9375rem;
+}
+
+.ModBlogC .bbs-pager .bbs-pagination a {
+  border: 1px solid var(--bbs-border);
+  border-radius: var(--bbs-radius);
+  color: var(--bbs-text);
+  text-decoration: none;
+}
+
+.ModBlogC .bbs-pager .bbs-pagination a:hover {
+  background-color: var(--bbs-surface);
+  border-color: #cfd5de;
+}
+
+.ModBlogC .bbs-pager .bbs-pagination a.disabled {
+  color: rgba(28, 36, 48, 0.35);
+  pointer-events: none;
+}
+
+.ModBlogC .bbs-pager .bbs-pagination .button:first-of-type a::before {
+  content: "\00ab  ";
+}
+
+.ModBlogC .bbs-pager .bbs-pagination .button:last-of-type a::after {
+  content: " \00bb";
+}
+
+.ModBlogC .bbs-pager .bbs-pagination .current {
+  background-color: var(--bbs-accent);
+  border-color: var(--bbs-accent);
+  color: #fff;
+  pointer-events: none;
+}
+
+@media only screen and (min-width: 768px) {
+  .ModBlogC .bbs-pager .bbs-pagination li {
+    display: inline-block;
+  }
+}
+
+@media only screen and (min-width: 1170px) {
+  .ModBlogC .bbs-pager .bbs-pagination {
+    margin: var(--bbs-space-7) auto 4em;
+  }
+}
+
+/* ---------- Comments (preserved for injected comment chrome) ---------- */
+
+.ModBlogC .bbs-comments {
+  margin-top: var(--bbs-space-7);
+  padding-top: var(--bbs-space-5);
+  border-top: 1px solid var(--bbs-border);
+}
+
+.ModBlogC .bbs-comments .totals {
+  color: var(--bbs-muted);
+  font-size: 0.9em;
+}
+
+.ModBlogC .bbs-comments .comment {
+  padding: var(--bbs-space-4) 0;
+}
+
+.ModBlogC .bbs-comments .comment .author {
+  padding: var(--bbs-space-2) 0;
+}
+
+.ModBlogC .bbs-comments .comment .author > div {
+  display: inline;
+}
+
+.ModBlogC .bbs-comments .comment .author .profile {
+  color: var(--bbs-muted);
+  font-size: 0.9em;
+}
+
+.ModBlogC .bbs-comments .comment .author .pic {
+  padding-right: var(--bbs-space-3);
+}
+
+.ModBlogC .bbs-comments .comment .author .pic img {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--bbs-radius);
+}
+
+.ModBlogC .bbs-comments .comment .content {
+  font-size: 1.05em;
+}
+
+.ModBlogC .bbs-comments .comment .actions {
+  padding: var(--bbs-space-3) 0;
+  color: var(--bbs-muted);
+  font-size: 0.9em;
+}
+
+.ModBlogC .bbs-comments .comment .subcomments {
+  padding-left: var(--bbs-space-6);
 }

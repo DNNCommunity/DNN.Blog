@@ -106,6 +106,7 @@ namespace DotNetNuke.Modules.Blog.Controllers
                 BlogId = blog.BlogID,
                 Title = blog.Title,
                 Description = blog.Description,
+                ContentFormat = blog.ContentFormat,
                 Published = blog.Published,
                 Syndicated = blog.Syndicated,
                 Copyright = blog.Copyright,
@@ -123,6 +124,8 @@ namespace DotNetNuke.Modules.Blog.Controllers
         {
             blog.Title = model.Title ?? "";
             blog.Description = model.Description ?? "";
+            if (blog.BlogID <= -1)
+                blog.ContentFormat = model.ContentFormat;
             blog.Published = model.Published;
             blog.Syndicated = model.Syndicated;
             blog.Copyright = model.Copyright ?? "";

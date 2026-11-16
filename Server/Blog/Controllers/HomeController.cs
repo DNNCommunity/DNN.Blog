@@ -59,13 +59,26 @@ namespace DotNetNuke.Modules.Blog.Controllers
                 User.UserID,
                 k => Localization.GetString(k, LocalResourceFile));
 
+            // MVC does not attach ViewTemplate to the page, so register template CSS/JS explicitly.
+            ds.RegisterClientAssets(BlogModuleContext.Page);
+
+            var showComments = viewSettings.AllowComments
+                && ctx.Security.CanViewComments
+                && ctx.Post != null;
+
             var model = new HomeViewModel
             {
                 TemplateHtml = ds.Render(),
-                ShowComments = viewSettings.AllowComments && ctx.Security.CanViewComments && ctx.Post != null,
+                ShowComments = showComments,
                 ShowManagementPanel = ShouldShowManagementPanel(viewSettings),
                 TrackBackBlurb = BuildTrackBackBlurb(ctx)
             };
+
+            if (showComments)
+            {
+                BlogModuleContext.RegisterAjaxScript();
+                BlogModuleContext.AddScript("comments.js");
+            }
 
             if (ctx.ContentItemId > -1 && !IsPostBack())
             {

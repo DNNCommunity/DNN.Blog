@@ -30,5 +30,6 @@
     <PackageReference Include="DotNetNuke.Instrumentation" Version="10.4.0" />
     <PackageReference Include="DotNetNuke.Web" Version="10.4.0" />
     <PackageReference Include="DotNetNuke.Web.Client" Version="10.4.0" />
+    <PackageReference Include="Markdig" Version="0.41.3" />
   </ItemGroup>
 </Project>

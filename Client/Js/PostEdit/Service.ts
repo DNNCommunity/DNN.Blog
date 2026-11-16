@@ -3,6 +3,16 @@ export interface MediaUploadResult {
   fileName: string;
 }
 
+function normalizeUploadResult(raw: unknown): MediaUploadResult {
+  const data = (raw ?? {}) as Record<string, unknown>;
+  const url = String(data.url ?? data.Url ?? "").trim();
+  const fileName = String(data.fileName ?? data.FileName ?? "").trim();
+  if (!url) {
+    throw new Error("Upload response missing url");
+  }
+  return { url, fileName: fileName || "file" };
+}
+
 export interface ItemDto {
   key: string;
   value: string;
@@ -118,7 +128,13 @@ export default class DataService {
       .then(async (response) => {
         const text = await response.text();
         if (!response.ok) {
-          if (fail) fail(text || response.statusText || "Request failed");
+          if (fail) {
+            const msg =
+              response.status === 403
+                ? text || "This file type is not allowed."
+                : text || response.statusText || "Request failed";
+            fail(msg);
+          }
           return;
         }
         if (!text) {
@@ -179,10 +195,28 @@ export default class DataService {
       "Upload",
       undefined,
       form,
-      success,
+      (raw: unknown) => {
+        try {
+          success(normalizeUploadResult(raw));
+        } catch (err: unknown) {
+          fail?.(err instanceof Error ? err.message : "Upload response missing url");
+        }
+      },
       fail,
       true
     );
+  }
+
+  public createUpload(
+    blogId: number,
+    postId: number
+  ): (file: File) => Promise<MediaUploadResult> {
+    return (file: File) =>
+      new Promise((resolve, reject) => {
+        this.uploadImage(blogId, postId, file, resolve, (err) =>
+          reject(new Error(err || "Upload failed"))
+        );
+      });
   }
 
   public getFileUrl(

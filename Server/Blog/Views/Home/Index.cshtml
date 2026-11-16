@@ -1,9 +1,14 @@
 @inherits BlogWebPage<DotNetNuke.Modules.Blog.Models.HomeViewModel>
+@using System.IO
 @using DotNetNuke.Modules.Blog.Common
 @{
   BlogModuleContext.EnsureInitialized();
   BlogModuleContext.AddModuleCss();
+  // Host CRM cdv does not change when only module.css is rebuilt; bust from file mtime.
+  var moduleCssPhysical = Server.MapPath("~/DesktopModules/MVC/Blog/module.css");
+  var moduleCssBust = File.Exists(moduleCssPhysical) ? File.GetLastWriteTimeUtc(moduleCssPhysical).Ticks.ToString() : "0";
 }
+<link rel="stylesheet" href="@Url.Content("~/DesktopModules/MVC/Blog/module.css")?_=@(moduleCssBust)" />
 
 @if (Model.ShowManagementPanel)
 {

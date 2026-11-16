@@ -81,8 +81,11 @@
       <div class="Blog"
            data-moduleid="@Dnn.ActiveModule.ModuleID"
            data-component="posts-manage-table"
-           data-edit-url="@Url.Action("Edit", "Post")"
-           data-blogs="@blogsJson">
+           data-edit-url="@Url.Action("Edit", "Post", new { returnUrl = Url.Action("Index", "Manage") })"
+           data-blogs="@blogsJson"
+           data-delete-confirm="@(Dnn.LocalizeString("DeletePost") ?? "Delete this post?")"
+           data-delete-label="@(Dnn.LocalizeString("Delete") ?? "Delete")"
+           data-cancel-label="@(Dnn.LocalizeString("Cancel") ?? "Cancel")">
       </div>
     </section>
   }

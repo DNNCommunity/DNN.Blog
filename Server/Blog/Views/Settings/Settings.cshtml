@@ -1,59 +1,103 @@
 @inherits BlogWebPage<DotNetNuke.Modules.Blog.Models.SettingsViewModel>
+@using System
+@using System.Web
 @using DotNetNuke.Modules.Blog.Common
+@using DotNetNuke.Modules.Blog.Core.Common
+@using DotNetNuke.Services.Localization
+@{
+  const string ResFile = Globals.ModuleFolderPath + "/App_LocalResources/Settings.resx";
+  Func<string, string, string> L = (key, fallback) =>
+  {
+    var s = Localization.GetString(key, ResFile);
+    if (string.IsNullOrWhiteSpace(s)) s = Localization.GetString(key + ".Text", ResFile);
+    if (string.IsNullOrWhiteSpace(s)) s = Dnn.LocalizeString(key);
+    if (string.IsNullOrWhiteSpace(s)) s = Dnn.LocalizeString(key + ".Text");
+    return string.IsNullOrWhiteSpace(s) ? fallback : s;
+  };
+  Func<string, string> H = key =>
+  {
+    var helpKey = key.EndsWith(".Help", StringComparison.OrdinalIgnoreCase) ? key : key + ".Help";
+    var s = Localization.GetString(helpKey, ResFile);
+    if (string.IsNullOrWhiteSpace(s)) s = Dnn.LocalizeString(helpKey);
+    return string.IsNullOrWhiteSpace(s) ? "" : s;
+  };
+  Func<string, string, string, IHtmlString> DnnLabel = (resourceKey, controlId, fallback) =>
+  {
+    var text = L(resourceKey, fallback);
+    var help = H(resourceKey);
+    var html =
+      "<div class=\"dnnLabel\">" +
+      "<label id=\"" + resourceKey + "_label\" for=\"" + controlId + "\">" +
+      "<span>" + HttpUtility.HtmlEncode(text) + ":</span>" +
+      "</label>" +
+      (string.IsNullOrEmpty(help)
+        ? ""
+        : "<a id=\"" + resourceKey + "_cmdHelp\" tabindex=\"-1\" class=\"dnnFormHelp\" aria-label=\"Help\" href=\"#\"></a>" +
+          "<div id=\"" + resourceKey + "_pnlHelp\" class=\"dnnTooltip\">" +
+          "<div class=\"dnnFormHelpContent dnnClear\">" +
+          "<span id=\"" + resourceKey + "_help\" class=\"dnnHelpText\">" + HttpUtility.HtmlEncode(help) + "</span>" +
+          "<a href=\"#\" class=\"pinHelp\" aria-label=\"Pin\"></a>" +
+          "</div>" +
+          "</div>") +
+      "</div>";
+    return new HtmlString(html);
+  };
+}
 <div class="dnnForm dnnClear">
   @using (BeginForm("Settings", "Settings", FormMethod.Post))
   {
     @MvcHtml.AntiForgeryToken()
     <fieldset>
       <div class="dnnFormItem">
-        <label>@Dnn.LocalizeString("lblBlogModuleId")</label>
+        @DnnLabel("lblBlogModuleId", "BlogModuleId", "Parent Blog Module")
         @Html.DropDownListFor(m => m.BlogModuleId, Model.BlogModules, new { @class = "dnnFormInput", onchange = "location.href='" + Url.Action("Settings", "Settings") + "?blogModuleId=' + this.value;" })
       </div>
       <div class="dnnFormItem">
-        <label>@Dnn.LocalizeString("lblBlogId")</label>
+        @DnnLabel("lblBlogId", "BlogId", "Blog To Show")
         @Html.DropDownListFor(m => m.BlogId, Model.Blogs, new { @class = "dnnFormInput" })
       </div>
       <div class="dnnFormItem">
-        <label>@Dnn.LocalizeString("lblCategories")</label>
+        @DnnLabel("lblCategories", "Categories", "Categories To Show")
         @Html.TextBoxFor(m => m.Categories, new { @class = "dnnFormInput", style = "width:100%", placeholder = "Comma-separated category term IDs" })
       </div>
       <div class="dnnFormItem">
-        <label>@Dnn.LocalizeString("lblAuthorId")</label>
+        @DnnLabel("lblAuthorId", "AuthorId", "Author To Show")
         @Html.DropDownListFor(m => m.AuthorId, Model.Authors, new { @class = "dnnFormInput" })
       </div>
       <div class="dnnFormItem">
-        <label>@Dnn.LocalizeString("lblTemplate")</label>
+        @DnnLabel("lblTemplate", "Template", "Template")
         @Html.DropDownListFor(m => m.Template, Model.Templates, new { @class = "dnnFormInput" })
       </div>
       <div class="dnnFormItem">
-        <label>@Dnn.LocalizeString("lblShowAllLocales")</label>
+        @DnnLabel("lblShowAllLocales", "ShowAllLocales", "Show All Languages")
         @Html.CheckBoxFor(m => m.ShowAllLocales)
       </div>
       <div class="dnnFormItem">
-        <label>@Dnn.LocalizeString("lblModifyPageDetails")</label>
+        @DnnLabel("lblModifyPageDetails", "ModifyPageDetails", "Modify Page Details")
         @Html.CheckBoxFor(m => m.ModifyPageDetails)
       </div>
       <div class="dnnFormItem">
-        <label>@Dnn.LocalizeString("lblAddCanonicalTag")</label>
+        @DnnLabel("lblAddCanonicalTag", "AddCanonicalTag", "Add Canonical Tag")
         @Html.CheckBoxFor(m => m.AddCanonicalTag)
       </div>
       <div class="dnnFormItem">
-        <label>@Dnn.LocalizeString("lblShowManagementPanel")</label>
+        @DnnLabel("lblShowManagementPanel", "ShowManagementPanel", "Show Management Panel")
         @Html.CheckBoxFor(m => m.ShowManagementPanel)
+        <label for="ShowManagementPanel">@L("chkShowManagementPanel", "In Shared Modules")</label>
         @Html.CheckBoxFor(m => m.ShowManagementPanelViewMode)
+        <label for="ShowManagementPanelViewMode">@L("chkShowManagementPanelViewMode", "In View Mode")</label>
       </div>
       <div class="dnnFormItem">
-        <label>@Dnn.LocalizeString("lblHideUnpublishedBlogs")</label>
+        @DnnLabel("lblHideUnpublishedBlogs", "HideUnpublishedBlogsViewMode", "Hide Unpublished Posts")
         @Html.CheckBoxFor(m => m.HideUnpublishedBlogsViewMode)
+        <label for="HideUnpublishedBlogsViewMode">@L("chkHideUnpublishedBlogsViewMode", "In View Mode")</label>
         @Html.CheckBoxFor(m => m.HideUnpublishedBlogsEditMode)
+        <label for="HideUnpublishedBlogsEditMode">@L("chkHideUnpublishedBlogsEditMode", "In Edit Mode")</label>
       </div>
       <div class="dnnFormItem">
-        <label>@Dnn.LocalizeString("lblAllowComments")</label>
+        @DnnLabel("lblAllowComments", "AllowComments", "Allow Comments")
         @Html.CheckBoxFor(m => m.AllowComments)
       </div>
     </fieldset>
-    <p>
-      <button type="submit" class="dnnPrimaryAction">@Dnn.LocalizeString("Update")</button>
-    </p>
   }
 </div>

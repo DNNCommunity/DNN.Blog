@@ -10,7 +10,6 @@ namespace DotNetNuke.Modules.Blog.Models
         public ModuleSettings Settings { get; set; }
 
         public IEnumerable<SelectListItem> Vocabularies { get; set; }
-        public IEnumerable<SelectListItem> FacebookProfileProperties { get; set; }
 
         public bool ShowMultilingualLinks { get; set; }
         public bool HasVocabulary { get; set; }

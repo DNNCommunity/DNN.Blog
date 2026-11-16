@@ -64,7 +64,7 @@ namespace DotNetNuke.Modules.Blog.Core.Data
     #endregion
 
     #region  Blog Methods 
-    public abstract int AddBlog(bool autoApprovePingBack, int moduleID, bool autoApproveTrackBack, string copyright, string description, bool enablePingBackReceive, bool enablePingBackSend, bool enableTrackBackReceive, bool enableTrackBackSend, bool fullLocalization, string image, bool includeAuthorInFeed, bool includeImagesInFeed, string locale, bool mustApproveGhostPosts, int ownerUserId, bool publishAsOwner, bool published, bool syndicated, string syndicationEmail, string title, int createdByUser);
+    public abstract int AddBlog(bool autoApprovePingBack, int moduleID, bool autoApproveTrackBack, string copyright, string description, bool enablePingBackReceive, bool enablePingBackSend, bool enableTrackBackReceive, bool enableTrackBackSend, bool fullLocalization, string image, bool includeAuthorInFeed, bool includeImagesInFeed, string locale, bool mustApproveGhostPosts, int ownerUserId, bool publishAsOwner, bool published, bool syndicated, string syndicationEmail, string title, int createdByUser, int contentFormat);
     public abstract void UpdateBlog(bool autoApprovePingBack, int moduleID, bool autoApproveTrackBack, int blogID, string copyright, string description, bool enablePingBackReceive, bool enablePingBackSend, bool enableTrackBackReceive, bool enableTrackBackSend, bool fullLocalization, string image, bool includeAuthorInFeed, bool includeImagesInFeed, string locale, bool mustApproveGhostPosts, int ownerUserId, bool publishAsOwner, bool published, bool syndicated, string syndicationEmail, string title, int updatedByUser);
     public abstract void DeleteBlog(int blogID);
     #endregion

@@ -5,6 +5,7 @@ namespace DotNetNuke.Modules.Blog.Models
         public int BlogId { get; set; } = -1;
         public string Title { get; set; } = "";
         public string Description { get; set; } = "";
+        public byte ContentFormat { get; set; } = 0;
         public bool Published { get; set; } = true;
         public bool Syndicated { get; set; }
         public string Copyright { get; set; } = "";

@@ -1,6 +1,8 @@
-﻿using DotNetNuke.Modules.Blog.Core.Entities.Terms;
+﻿using DotNetNuke.Modules.Blog.Core.Entities.Blogs;
+using DotNetNuke.Modules.Blog.Core.Entities.Terms;
 using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
+using Markdig;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -674,26 +676,35 @@ namespace DotNetNuke.Modules.Blog.Core.Common
 
     public static string OutputHtml(this string encodedHtml, string strFormat)
     {
-      switch (strFormat.ToLower() ?? "")
+      return encodedHtml.OutputHtml((byte)BlogContentFormat.Html, strFormat);
+    }
+
+    public static string OutputHtml(this string encodedHtml, byte contentFormat, string strFormat)
+    {
+      var html = HttpUtility.HtmlDecode(encodedHtml ?? "");
+      if (contentFormat == (byte)BlogContentFormat.Markdown)
+        html = Markdown.ToHtml(html);
+
+      switch ((strFormat ?? "").ToLower())
       {
-        case var @case when @case == "":
+        case "":
           {
-            return HttpUtility.HtmlDecode(encodedHtml);
+            return html;
           }
         case "js":
           {
-            return HttpUtility.HtmlDecode(encodedHtml).Replace("\"", @"\""").Replace("'", @"\'").Replace(Environment.NewLine, @"\r\n");
+            return html.Replace("\"", @"\""").Replace("'", @"\'").Replace(Environment.NewLine, @"\r\n");
           }
 
         default:
           {
             if (int.TryParse(strFormat, out int res))
             {
-              return Globals.RemoveHtmlTags(HttpUtility.HtmlDecode(encodedHtml)).SubstringWithoutException(0, res);
+              return Globals.RemoveHtmlTags(html).SubstringWithoutException(0, res);
             }
             else
             {
-              return HttpUtility.HtmlDecode(encodedHtml);
+              return html;
             }
           }
       }

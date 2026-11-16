@@ -139,7 +139,12 @@ function normalizeBootstrap(raw: any): IPostEditBootstrap {
       "ShowSummaryPrecedingWarning",
       false
     ),
+    editorMode: (() => {
+      const mode = String(pick(raw, "editorMode", "EditorMode", "html") || "html").toLowerCase();
+      return mode === "markdown" ? "markdown" : "html";
+    })(),
     validationMessage: pick(raw, "validationMessage", "ValidationMessage", ""),
+    returnUrl: pick(raw, "returnUrl", "ReturnUrl", ""),
     cancelUrl: pick(raw, "cancelUrl", "CancelUrl", ""),
     editUrl: pick(raw, "editUrl", "EditUrl", ""),
     deleteUrl: pick(raw, "deleteUrl", "DeleteUrl", ""),

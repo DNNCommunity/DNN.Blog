@@ -1,7 +1,8 @@
 using Cake.Common.Diagnostics;
 using Cake.Common.IO;
-using Cake.Common.Tools.MSBuild;
-using Cake.Common.Tools.NuGet;
+using Cake.Common.Tools.DotNet;
+using Cake.Common.Tools.DotNet.Build;
+using Cake.Common.Tools.DotNet.MSBuild;
 using Cake.Core;
 using Cake.Core.Diagnostics;
 using Cake.Core.IO;
@@ -15,136 +16,141 @@ using System.Linq;
 
 public static class Program
 {
-  public static int Main(string[] args)
-  {
-    return new CakeHost()
-        .UseContext<BuildContext>()
-        .InstallTool(new Uri("nuget:?package=NuGet.CommandLine&version=5.8.1"))
-        .Run(args);
-  }
+    public static int Main(string[] args)
+    {
+        return new CakeHost()
+            .UseContext<BuildContext>()
+            .Run(args);
+    }
 }
 
 public class BuildContext : FrostingContext
 {
-  public Solution Solution { get; set; }
+    public Solution Solution { get; set; }
 
-  public MSBuildSettings BuildSettings { get; set; }
+    public DotNetBuildSettings BuildSettings { get; set; }
 
-  public BuildContext(ICakeContext context)
-      : base(context)
-  {
-    context.Environment.WorkingDirectory = context.Environment.WorkingDirectory.FullPath + "/../";
-    this.Solution = Solution.New(".\\package.json");
-    this.BuildSettings = new MSBuildSettings()
-        .SetConfiguration("Release")
-        .UseToolVersion(MSBuildToolVersion.VS2026)
-        .WithProperty("OutDir", new System.IO.DirectoryInfo(this.Solution.dnn.pathsAndFiles.pathToAssemblies).FullName);
-  }
+    public BuildContext(ICakeContext context)
+        : base(context)
+    {
+        context.Environment.WorkingDirectory = context.Environment.WorkingDirectory.FullPath + "/../";
+        this.Solution = Solution.New(".\\package.json");
+        this.BuildSettings = new DotNetBuildSettings
+        {
+            Configuration = "Release",
+            MSBuildSettings = new DotNetMSBuildSettings()
+                .WithProperty("OutDir", new System.IO.DirectoryInfo(this.Solution.dnn.pathsAndFiles.pathToAssemblies).FullName)
+        };
+    }
 }
 
 [TaskName("AssemblyInfo")]
 public sealed class AssemblyInfoTask : FrostingTask<BuildContext>
 {
-  public override void Run(BuildContext context)
-  {
-    var ptrn = new string[] { "./**/AssemblyInfo.*" };
-    var files = context.GetFilesByPatterns(ptrn, context.Solution.dnn.pathsAndFiles.excludeFilter);
-    foreach (var file in files)
+    public override void Run(BuildContext context)
     {
-      context.Information("Updating Assembly: {0}", file);
-      context.UpdateAssemblyInfo(context.Solution, file);
+        var exclude = context.Solution.dnn.pathsAndFiles.excludeFilter
+            .Concat(new[] { "build/" })
+            .ToArray();
+        var ptrn = new string[] { "./**/AssemblyInfo.*" };
+        var files = context.GetFilesByPatterns(ptrn, exclude);
+        foreach (var file in files)
+        {
+            context.Information("Updating Assembly: {0}", file);
+            context.UpdateAssemblyInfo(context.Solution, file);
+        }
+        ptrn = new string[] { "./**/*.csproj" };
+        files = context.GetFilesByPatterns(ptrn, exclude);
+        foreach (var file in files)
+        {
+            context.Information("Updating Project File: {0}", file);
+            context.UpdateCsProjFile(context.Solution, file);
+        }
     }
-  }
 }
 
 [TaskName("Build")]
 [IsDependentOn(typeof(AssemblyInfoTask))]
 public sealed class BuildTask : FrostingTask<BuildContext>
 {
-  public override void Run(BuildContext context)
-  {
-    context.CleanDirectory(context.Solution.dnn.pathsAndFiles.pathToAssemblies);
-    context.NuGetRestore(context.Solution.dnn.pathsAndFiles.solutionFile);
-    context.MSBuild(context.Solution.dnn.pathsAndFiles.solutionFile, context.BuildSettings);
-    //context.NpmRunScript("build");
-  }
+    public override void Run(BuildContext context)
+    {
+        context.CleanDirectory(context.Solution.dnn.pathsAndFiles.pathToAssemblies);
+        context.DotNetBuild(context.Solution.dnn.pathsAndFiles.solutionFile, context.BuildSettings);
+        context.NpmRunScript("build");
+    }
 }
 
 [TaskName("Package")]
 [IsDependentOn(typeof(BuildTask))]
 public sealed class PackageTask : FrostingTask<BuildContext>
 {
-  public override void Run(BuildContext context)
-  {
-    var packageName = context.Solution.dnn.pathsAndFiles.zipName + "_" + context.Solution.version + "_Install.zip";
-    var packagePath = context.Solution.dnn.pathsAndFiles.packagesPath + "/" + packageName;
-    if (!System.IO.Directory.Exists(context.Solution.dnn.pathsAndFiles.packagesPath))
+    public override void Run(BuildContext context)
     {
-      System.IO.Directory.CreateDirectory(context.Solution.dnn.pathsAndFiles.packagesPath);
-    }
-    if (System.IO.File.Exists(packagePath))
-    {
-      System.IO.File.Delete(packagePath);
-    }
-    var addedDlls = new List<string>();
-    foreach (var pfolder in context.Solution.dnn.projectFolders)
-    {
-      var p = context.Solution.dnn.projects[pfolder];
-      context.Information("Loading " + p.name);
-      var devPath = System.IO.Path.Combine(context.Solution.dnn.pathsAndFiles.devFolder, pfolder);
-      var releaseFiles = p.pathsAndFiles.releaseFiles == null ? context.Solution.dnn.pathsAndFiles.releaseFiles : p.pathsAndFiles.releaseFiles;
-      if (releaseFiles.Length > 0)
-      {
-        var excludeFiles = p.pathsAndFiles.excludeFilter;
-        if (excludeFiles == null)
+        var packageName = context.Solution.dnn.pathsAndFiles.zipName + "_" + context.Solution.version + "_Install.zip";
+        var packagePath = context.Solution.dnn.pathsAndFiles.packagesPath + "/" + packageName;
+        if (!System.IO.Directory.Exists(context.Solution.dnn.pathsAndFiles.packagesPath))
         {
-          excludeFiles = context.Solution.dnn.pathsAndFiles.excludeFilter;
+            System.IO.Directory.CreateDirectory(context.Solution.dnn.pathsAndFiles.packagesPath);
         }
-        else
+        if (System.IO.File.Exists(packagePath))
         {
-          excludeFiles = excludeFiles.Concat(context.Solution.dnn.pathsAndFiles.excludeFilter).ToArray();
+            System.IO.File.Delete(packagePath);
         }
-        context.CreateResourcesFile(new DirectoryPath(devPath), packagePath, p.packageName, releaseFiles, excludeFiles);
-      }
-      foreach (var a in p.pathsAndFiles.assemblies)
-      {
-        if (!addedDlls.Contains(a))
+        var addedDlls = new List<string>();
+        foreach (var pfolder in context.Solution.dnn.projectFolders)
         {
-          var files = context.GetFiles(context.Solution.dnn.pathsAndFiles.pathToAssemblies + "/" + a);
-          context.AddFilesToZip(packagePath, context.Solution.dnn.pathsAndFiles.pathToAssemblies, context.Solution.dnn.pathsAndFiles.packageAssembliesFolder, files, true);
-          addedDlls.Add(a);
+            var p = context.Solution.dnn.projects[pfolder];
+            context.Information("Loading " + p.name);
+            var devPath = System.IO.Path.Combine(context.Solution.dnn.pathsAndFiles.devFolder, pfolder);
+            var releaseFiles = p.pathsAndFiles.releaseFiles == null ? context.Solution.dnn.pathsAndFiles.releaseFiles : p.pathsAndFiles.releaseFiles;
+            if (releaseFiles.Length > 0)
+            {
+                var excludeFiles = p.pathsAndFiles.excludeFilter;
+                if (excludeFiles == null)
+                {
+                    excludeFiles = context.Solution.dnn.pathsAndFiles.excludeFilter;
+                }
+                else
+                {
+                    excludeFiles = excludeFiles.Concat(context.Solution.dnn.pathsAndFiles.excludeFilter).ToArray();
+                }
+                context.CreateResourcesFile(new DirectoryPath(devPath), packagePath, p.packageName, releaseFiles, excludeFiles);
+            }
+            foreach (var a in p.pathsAndFiles.assemblies)
+            {
+                if (!addedDlls.Contains(a))
+                {
+                    var files = context.GetFiles(context.Solution.dnn.pathsAndFiles.pathToAssemblies + "/" + a);
+                    context.AddFilesToZip(packagePath, context.Solution.dnn.pathsAndFiles.pathToAssemblies, context.Solution.dnn.pathsAndFiles.packageAssembliesFolder, files, true);
+                    addedDlls.Add(a);
+                }
+            }
+            if (!string.IsNullOrEmpty(p.pathsAndFiles.pathToScripts))
+            {
+                var files = context.GetFiles(p.pathsAndFiles.pathToScripts + "/*.SqlDataProvider");
+                context.AddFilesToZip(packagePath, p.pathsAndFiles.pathToScripts, context.Solution.dnn.pathsAndFiles.packageScriptsFolder + "/" + p.packageName, files, true);
+            }
         }
-      }
-      if (!string.IsNullOrEmpty(p.pathsAndFiles.pathToScripts))
-      {
-        var files = context.GetFiles(p.pathsAndFiles.pathToScripts + "/*.SqlDataProvider");
-        context.AddFilesToZip(packagePath, p.pathsAndFiles.pathToScripts, context.Solution.dnn.pathsAndFiles.packageScriptsFolder + "/" + p.packageName, files, true);
-      }
-      if (!string.IsNullOrEmpty(p.pathsAndFiles.pathToCleanupFiles))
-      {
-        var files = context.GetFiles(p.pathsAndFiles.pathToCleanupFiles + "/*.txt");
-        context.AddFilesToZip(packagePath, p.pathsAndFiles.pathToCleanupFiles, context.Solution.dnn.pathsAndFiles.packageCleanupFolder + "/" + p.packageName, files, true);
-      }
+        if (context.Solution.dnn.pathsAndFiles.licenseFile != "")
+        {
+            var license = context.GetTextOrMdFile(System.IO.Path.GetFileNameWithoutExtension(context.Solution.dnn.pathsAndFiles.licenseFile));
+            if (license != "")
+            {
+                context.AddTextFileToZip(packagePath, license, "License.txt", true);
+            }
+        }
+        if (context.Solution.dnn.pathsAndFiles.releaseNotesFile != "")
+        {
+            var releaseNotes = context.GetTextOrMdFile(System.IO.Path.GetFileNameWithoutExtension(context.Solution.dnn.pathsAndFiles.releaseNotesFile));
+            if (releaseNotes != "")
+            {
+                context.AddTextFileToZip(packagePath, releaseNotes, "ReleaseNotes.txt", true);
+            }
+        }
+        var m = new Manifest(context.Solution);
+        context.AddXmlFileToZip(packagePath, m, context.Solution.name + ".dnn", true);
     }
-    if (context.Solution.dnn.pathsAndFiles.licenseFile != "")
-    {
-      var license = context.GetTextOrMdFile(System.IO.Path.GetFileNameWithoutExtension(context.Solution.dnn.pathsAndFiles.licenseFile));
-      if (license != "")
-      {
-        context.AddTextFileToZip(packagePath, license, "License.txt", true);
-      }
-    }
-    if (context.Solution.dnn.pathsAndFiles.releaseNotesFile != "")
-    {
-      var releaseNotes = context.GetTextOrMdFile(System.IO.Path.GetFileNameWithoutExtension(context.Solution.dnn.pathsAndFiles.releaseNotesFile));
-      if (releaseNotes != "")
-      {
-        context.AddTextFileToZip(packagePath, releaseNotes, "ReleaseNotes.txt", true);
-      }
-    }
-    var m = new Manifest(context.Solution);
-    context.AddXmlFileToZip(packagePath, m, context.Solution.name + ".dnn", true);
-  }
 }
 
 [TaskName("Default")]

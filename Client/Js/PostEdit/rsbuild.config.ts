@@ -1,7 +1,7 @@
 import path from "path";
 import commonConfig from "../../rsbuild.common.config";
 
-const htmlEditorRoot = path.resolve(__dirname, "../HtmlEditor");
+const richEditorRoot = path.resolve(__dirname, "../RichEditor");
 
 const clientAppConfig = Object.assign({}, commonConfig, {
   source: {
@@ -9,7 +9,7 @@ const clientAppConfig = Object.assign({}, commonConfig, {
       postedit: "./Client/Js/PostEdit/App.tsx",
     },
     alias: {
-      "@": htmlEditorRoot,
+      "@": richEditorRoot,
     },
   },
   output: {
@@ -34,18 +34,6 @@ const clientAppConfig = Object.assign({}, commonConfig, {
     },
   },
   tools: {
-    postcss: (opts: { postcssOptions: { plugins?: any[] } }) => {
-      const tailwind = require("tailwindcss");
-      const autoprefixer = require("autoprefixer");
-      opts.postcssOptions = opts.postcssOptions || {};
-      opts.postcssOptions.plugins = [
-        tailwind({
-          config: path.resolve(htmlEditorRoot, "tailwind.config.js"),
-        }),
-        autoprefixer(),
-      ];
-      return opts;
-    },
     rspack: {
       output: {
         asyncChunks: false,

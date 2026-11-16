@@ -1,41 +1,125 @@
 @inherits BlogWebPage<DotNetNuke.Modules.Blog.Models.ImportViewModel>
+@using System
 @using DotNetNuke.Modules.Blog.Common
 @{
+  Func<string, string, string> L = (key, fallback) =>
+  {
+    var s = Dnn.LocalizeString(key);
+    if (string.IsNullOrWhiteSpace(s)) s = Dnn.LocalizeString(key + ".Text");
+    return string.IsNullOrWhiteSpace(s) ? fallback : s;
+  };
+  Func<string, string> H = key =>
+  {
+    var helpKey = key.EndsWith(".Help", StringComparison.OrdinalIgnoreCase) ? key : key + ".Help";
+    var s = Dnn.LocalizeString(helpKey);
+    return string.IsNullOrWhiteSpace(s) ? "" : s;
+  };
   string formAction = Url.Action("Index", "Import");
+  var pageTitle = L("ControlTitle_blogimport", "Import BlogML");
+  var cancelLabel = L("Cancel", "Cancel");
+  var hintFile = H("lblFileIn");
+  var hintUpload = H("Upload");
+  var messageClass = Model.MessageIsError
+    ? "blog-admin__message blog-admin__message--error"
+    : Model.ImportComplete
+      ? "blog-admin__message blog-admin__message--info"
+      : "blog-admin__message blog-admin__message--info";
 }
-<div class="dnnForm dnnClear">
-  <h2>Import BlogML — @Model.BlogTitle</h2>
+<div class="blog-admin">
+  <header class="blog-admin__header">
+    <h1 class="blog-admin__title">@pageTitle</h1>
+    <p class="blog-admin__subtitle">@(string.IsNullOrEmpty(Model.BlogTitle) ? L("lblTarget", "Target blog") : Model.BlogTitle)</p>
+  </header>
+
   @if (!string.IsNullOrEmpty(Model.Message))
   {
-    <div class="dnnFormMessage dnnFormInfo">@Model.Message</div>
+    <div class="@messageClass">@Model.Message</div>
   }
-  @if (!string.IsNullOrEmpty(Model.Analysis))
+
+  @if (Model.ImportStep && !Model.ImportComplete)
   {
-    <pre class="dnnFormInput" style="white-space:pre-wrap">@Model.Analysis</pre>
-  }
-  <form action="@formAction" method="post" enctype="multipart/form-data">
-    @MvcHtml.AntiForgeryToken()
-    <input type="hidden" name="Blog" value="@Model.BlogId" />
-    <div class="dnnFormItem">
-      <label>BlogML file (.xml or .zip)</label>
-      <input type="file" name="uploadFile" accept=".xml,.zip" />
-    </div>
-    @if (Model.CanImportCategories)
-    {
-      <div class="dnnFormItem">
-        <label>Import categories</label>
-        <input type="checkbox" name="importCategories" value="true" />
+    <section class="blog-admin__section">
+      <h2 class="blog-admin__section-title">@L("Analysis", "File analysis")</h2>
+      @if (!string.IsNullOrEmpty(H("Analysis")))
+      {
+        <p class="blog-admin__section-help">@H("Analysis")</p>
+      }
+      <div class="blog-admin__fields">
+        <div class="blog-admin__field">
+          <span class="blog-admin__label">@L("OriginalTitle", "Original title")</span>
+          <div class="blog-admin__control">
+            <p class="blog-admin__field-hint" style="margin:0">@(string.IsNullOrEmpty(Model.OriginalTitle) ? "—" : Model.OriginalTitle)</p>
+          </div>
+        </div>
+        <div class="blog-admin__field">
+          <span class="blog-admin__label">@L("TotalPosts", "Posts")</span>
+          <div class="blog-admin__control">
+            <p class="blog-admin__field-hint" style="margin:0">@Model.PostCount</p>
+          </div>
+        </div>
+        <div class="blog-admin__field">
+          <span class="blog-admin__label">@L("TotalAttachments", "Embedded files")</span>
+          <div class="blog-admin__control">
+            <p class="blog-admin__field-hint" style="margin:0">@Model.AttachmentCount</p>
+          </div>
+        </div>
+        <div class="blog-admin__field">
+          <span class="blog-admin__label">@L("TotalCategories", "Categories")</span>
+          <div class="blog-admin__control">
+            <p class="blog-admin__field-hint" style="margin:0">@Model.CategoryCount</p>
+          </div>
+        </div>
       </div>
-    }
-    @if (Model.ImportStep)
-    {
-      <input type="hidden" name="confirmImport" value="true" />
-      <button type="submit" class="dnnPrimaryAction">Confirm import</button>
-    }
-    else
-    {
-      <button type="submit" class="dnnPrimaryAction">Upload and analyze</button>
-    }
-    <a href="@Url.Action("Index", "Manage")" class="dnnSecondaryAction">@Dnn.LocalizeString("Cancel")</a>
-  </form>
+    </section>
+  }
+
+  @if (!Model.ImportComplete)
+  {
+    <form action="@formAction" method="post" enctype="multipart/form-data">
+      @MvcHtml.AntiForgeryToken()
+      <input type="hidden" name="Blog" value="@Model.BlogId" />
+
+      @if (Model.ImportStep)
+      {
+        <input type="hidden" name="confirmImport" value="true" />
+        <div class="blog-admin__actions">
+          <button type="submit" class="blog-admin__btn blog-admin__btn--primary">@L("ConfirmImport", "Confirm import")</button>
+          <a href="@Url.Action("Index", "Manage")" class="blog-admin__btn blog-admin__btn--secondary">@cancelLabel</a>
+        </div>
+      }
+      else
+      {
+        <section class="blog-admin__section">
+          <h2 class="blog-admin__section-title">@L("Upload", "Upload BlogML file")</h2>
+          @if (!string.IsNullOrEmpty(hintUpload))
+          {
+            <p class="blog-admin__section-help">@hintUpload</p>
+          }
+          <div class="blog-admin__fields">
+            <div class="blog-admin__field">
+              <label class="blog-admin__label" for="uploadFile">@L("lblFileIn", "BlogML file")</label>
+              <div class="blog-admin__control">
+                <input class="blog-admin__input" type="file" id="uploadFile" name="uploadFile" accept=".xml,.zip" />
+                @if (!string.IsNullOrEmpty(hintFile))
+                {
+                  <p class="blog-admin__field-hint" id="hint-uploadFile">@hintFile</p>
+                }
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="blog-admin__actions">
+          <button type="submit" class="blog-admin__btn blog-admin__btn--primary">@L("Analyze", "Upload and analyze")</button>
+          <a href="@Url.Action("Index", "Manage")" class="blog-admin__btn blog-admin__btn--secondary">@cancelLabel</a>
+        </div>
+      }
+    </form>
+  }
+  else
+  {
+    <div class="blog-admin__actions">
+      <a href="@Url.Action("Index", "Manage")" class="blog-admin__btn blog-admin__btn--primary">@L("BackToManage", "Back to Manage")</a>
+    </div>
+  }
 </div>

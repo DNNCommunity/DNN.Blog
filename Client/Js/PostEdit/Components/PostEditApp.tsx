@@ -1,4 +1,5 @@
 import * as React from "react";
+import ConfirmDialog from "../../Common/ConfirmDialog";
 import { IAppModule } from "../Models/IAppModule";
 import {
   IPostEditBootstrap,
@@ -46,6 +47,7 @@ export default function PostEditApp(
   const defaultLoc = defaultLocaleOption(b.locales, b.defaultLocale);
 
   const [tab, setTab] = React.useState<TabId>("content");
+  const [deleteOpen, setDeleteOpen] = React.useState(false);
   const [title, setTitle] = React.useState(b.title || "");
   const [titles, setTitles] = React.useState<Record<string, string>>({
     ...(b.titles || {}),
@@ -107,6 +109,7 @@ export default function PostEditApp(
         <input type="hidden" name="PostId" value={b.postId} />
         <input type="hidden" name="IsNew" value={b.isNew ? "true" : "false"} />
         <input type="hidden" name="ImageKey" value={b.imageKey || ""} />
+        <input type="hidden" name="ReturnUrl" value={b.returnUrl || ""} />
 
         <div className="blog-admin__tabs">
           <div className="blog-admin__tablist" role="tablist">
@@ -185,6 +188,7 @@ export default function PostEditApp(
                       useFullLocalization={b.useFullLocalization}
                       otherLocales={b.otherLocales || []}
                       useRichText
+                      editorMode={b.editorMode}
                       rows={14}
                       translationsLabel={L.translations}
                     />
@@ -222,6 +226,7 @@ export default function PostEditApp(
                       useFullLocalization={b.useFullLocalization}
                       otherLocales={b.otherLocales || []}
                       useRichText={b.summaryIsHtml}
+                      editorMode={b.editorMode}
                       rows={8}
                       translationsLabel={L.translations}
                     />
@@ -395,12 +400,9 @@ export default function PostEditApp(
           {!b.isNew ? (
             <div className="blog-admin__actions-secondary">
               <button
-                type="submit"
-                form="blog-post-delete"
+                type="button"
                 className="blog-admin__btn blog-admin__btn--danger"
-                onClick={(e) => {
-                  if (!window.confirm(L.deleteConfirm)) e.preventDefault();
-                }}
+                onClick={() => setDeleteOpen(true)}
               >
                 {L.delete}
               </button>
@@ -429,6 +431,22 @@ export default function PostEditApp(
           <input type="hidden" name="Post" value={b.postId} />
         </form>
       ) : null}
+
+      <ConfirmDialog
+        open={deleteOpen}
+        title={L.delete}
+        message={L.deleteConfirm}
+        confirmLabel={L.delete}
+        cancelLabel={L.cancel}
+        onCancel={() => setDeleteOpen(false)}
+        onConfirm={() => {
+          setDeleteOpen(false);
+          const form = document.getElementById(
+            "blog-post-delete"
+          ) as HTMLFormElement | null;
+          form?.submit();
+        }}
+      />
     </>
   );
 }

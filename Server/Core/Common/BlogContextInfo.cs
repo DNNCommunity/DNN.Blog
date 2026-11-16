@@ -68,7 +68,9 @@ namespace DotNetNuke.Modules.Blog.Core.Common
         Author = DotNetNuke.Entities.Users.UserController.GetUserById(blogModule.PortalId, AuthorId);
       if (context.Request.UserAgent != null)
       {
-        WLWRequest = context.Request.UserAgent.IndexOf("Windows Live Writer") > -1;
+        var ua = context.Request.UserAgent;
+        WLWRequest = ua.IndexOf("Windows Live Writer", StringComparison.OrdinalIgnoreCase) > -1
+          || ua.IndexOf("Open Live Writer", StringComparison.OrdinalIgnoreCase) > -1;
       }
       Security = new ContextSecurity(BlogModuleId, blogModule.TabId, Blog, blogModule.UserInfo);
       if (EndDate < DateTime.Now.AddDays(-1))

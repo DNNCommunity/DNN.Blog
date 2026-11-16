@@ -105,6 +105,10 @@ namespace DotNetNuke.Modules.Blog.Core.Common
     [ModuleSetting]
     public bool UseFriendlyURLs { get; set; } = true;
 
+    /// <summary>Rich editor wire format: "html" or "markdown".</summary>
+    [ModuleSetting]
+    public string EditorMode { get; set; } = "html";
+
     public string PortalModulePath { get; set; } = "";
     public string PortalModuleMapPath { get; set; } = "";
     public string PortalTemplatesMapPath { get; set; } = "";

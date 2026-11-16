@@ -20,8 +20,11 @@
 
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Modules.Blog.Core.Common;
+using DotNetNuke.Web.Client.ClientResourceManagement;
 using System;
+using System.Threading;
 using System.Web;
+using System.Web.UI;
 
 namespace DotNetNuke.Modules.Blog.Core.Templating
 {
@@ -99,6 +102,81 @@ namespace DotNetNuke.Modules.Blog.Core.Templating
       }
     }
     #endregion
+
+    /// <summary>
+    /// Registers this template's CSS/JS with the page. Used by WebForms ViewTemplate PreRender
+    /// and by MVC hosts that render templates without attaching the control to the page.
+    /// </summary>
+    public void RegisterClientAssets(Page page, GenericTokenReplace defaultReplacer = null)
+    {
+      RegisterClientAssets(page, TemplatePath, TemplateMapPath, defaultReplacer);
+    }
+
+    public static void RegisterClientAssets(Page page, string templatePath, string templateMapPath, GenericTokenReplace defaultReplacer = null)
+    {
+      if (page == null || string.IsNullOrEmpty(templatePath) || string.IsNullOrEmpty(templateMapPath))
+      {
+        return;
+      }
+
+      if (System.IO.File.Exists(templateMapPath + "template.css"))
+      {
+        ClientResourceManager.RegisterStyleSheet(page, templatePath + "template.css");
+      }
+      if (System.IO.Directory.Exists(templateMapPath + "css"))
+      {
+        foreach (System.IO.FileInfo f in new System.IO.DirectoryInfo(templateMapPath + "css").GetFiles("*.css"))
+        {
+          ClientResourceManager.RegisterStyleSheet(page, templatePath + "css/" + f.Name);
+        }
+      }
+
+      if (System.IO.File.Exists(templateMapPath + "template.js"))
+      {
+        ClientResourceManager.RegisterScript(page, templatePath + "template.js");
+      }
+      if (System.IO.Directory.Exists(templateMapPath + "js"))
+      {
+        foreach (System.IO.FileInfo f in new System.IO.DirectoryInfo(templateMapPath + "js").GetFiles("*.js"))
+        {
+          ClientResourceManager.RegisterScript(page, templatePath + "js/" + f.Name);
+        }
+      }
+
+      string locale = Thread.CurrentThread.CurrentCulture.Name.ToLower();
+      if (System.IO.Directory.Exists(templateMapPath + @"js\" + locale))
+      {
+        foreach (System.IO.FileInfo f in new System.IO.DirectoryInfo(templateMapPath + @"js\" + locale).GetFiles("*.js"))
+        {
+          ClientResourceManager.RegisterScript(page, templatePath + "js/" + locale + "/" + f.Name);
+        }
+      }
+      else
+      {
+        locale = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.ToLower();
+        if (System.IO.Directory.Exists(templateMapPath + @"js\" + locale))
+        {
+          foreach (System.IO.FileInfo f in new System.IO.DirectoryInfo(templateMapPath + @"js\" + locale).GetFiles("*.js"))
+          {
+            ClientResourceManager.RegisterScript(page, templatePath + "js/" + locale + "/" + f.Name);
+          }
+        }
+      }
+
+      if (defaultReplacer != null && System.IO.Directory.Exists(templateMapPath + "jsblocks"))
+      {
+        foreach (System.IO.FileInfo f in new System.IO.DirectoryInfo(templateMapPath + "jsblocks").GetFiles("*.js"))
+        {
+          var t = new Template(templateMapPath + @"jsblocks\", templatePath, f.Name, defaultReplacer, null);
+          string s = t.ReplaceContents();
+          if (!s.StartsWith("<"))
+          {
+            s = string.Format("<script type=\"text/javascript\">{0}//<![CDATA[{0}{1}//]]>{0}</script>", Environment.NewLine, s);
+          }
+          page.ClientScript.RegisterClientScriptBlock(typeof(string), f.Name, s);
+        }
+      }
+    }
 
   }
 }

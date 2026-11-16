@@ -3,14 +3,12 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
 using DotNetNuke.Modules.Blog.Common;
 using DotNetNuke.Modules.Blog.Core.Media;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Web.Api;
-using BlogGlobals = DotNetNuke.Modules.Blog.Core.Common.Globals;
 
 namespace DotNetNuke.Modules.Blog.Api
 {
@@ -93,22 +91,63 @@ namespace DotNetNuke.Modules.Blog.Api
             if (fileStream == null || string.IsNullOrEmpty(originalName))
                 return Request.CreateResponse(HttpStatusCode.BadRequest, "file is required");
 
-            BlogImageInfo img;
-            try
+            var ext = Path.GetExtension(originalName);
+
+            if (MediaFileService.IsImageExtension(ext))
             {
-                img = new ImageService().AddImage(fileStream, originalName, PortalSettings.PortalId, blogId, postId > 0 ? (int?)postId : null, UserInfo.UserID);
-            }
-            catch (ImageRejectedException ex)
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, ex.Message);
+                try
+                {
+                    var img = new ImageService().AddImage(
+                        fileStream,
+                        originalName,
+                        PortalSettings.PortalId,
+                        blogId,
+                        postId > 0 ? (int?)postId : null,
+                        UserInfo.UserID);
+                    var url = ImageUrls.Build(img.ImageId, 0, ImageUrls.Version(img));
+                    return Request.CreateResponse(HttpStatusCode.OK, new UploadResultDto
+                    {
+                        Url = url,
+                        FileName = img.OriginalFileName ?? img.StoredFileName
+                    });
+                }
+                catch (ImageRejectedException ex)
+                {
+                    return Request.CreateResponse(HttpStatusCode.Forbidden, ex.Message);
+                }
             }
 
-            var url = ImageUrls.Build(img.ImageId, 0, ImageUrls.Version(img));
-            return Request.CreateResponse(HttpStatusCode.OK, new UploadResultDto
+            if (MediaFileService.IsAllowedFileExtension(ext))
             {
-                Url = url,
-                FileName = img.StoredFileName
-            });
+                try
+                {
+                    var file = new MediaFileService().AddFile(
+                        fileStream,
+                        originalName,
+                        PortalSettings.PortalId,
+                        blogId,
+                        postId > 0 ? (int?)postId : null,
+                        UserInfo.UserID);
+                    var url = FileUrls.Build(file.FileId, FileUrls.Version(file));
+                    return Request.CreateResponse(HttpStatusCode.OK, new UploadResultDto
+                    {
+                        Url = url,
+                        FileName = file.OriginalFileName
+                    });
+                }
+                catch (MediaRejectedException ex)
+                {
+                    return Request.CreateResponse(HttpStatusCode.Forbidden, ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error("Media file upload failed for " + originalName, ex);
+                    return Request.CreateResponse(HttpStatusCode.InternalServerError,
+                        "File upload failed: " + ex.Message);
+                }
+            }
+
+            return Request.CreateResponse(HttpStatusCode.Forbidden, "This type of file is not allowed.");
         }
     }
 }

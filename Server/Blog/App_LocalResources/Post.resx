@@ -187,6 +187,12 @@
   <data name="Cancel.Text" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="Delete.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="DeletePost.Text" xml:space="preserve">
+    <value>Delete this post? This cannot be undone.</value>
+  </data>
   <data name="lblSummaryPrecedingWarning.Text" xml:space="preserve">
     <value>Note that the summary precedes the article body! You edit them independently on this page but they are merged to form the article body when someone views the full article.</value>
   </data>

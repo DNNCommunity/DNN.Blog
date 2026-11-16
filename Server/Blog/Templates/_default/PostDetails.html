@@ -1,36 +1,37 @@
 <div class="blog-main-content">
-  <span class="removeselection"><a href="[query:referrer]" title="[resx:Back]"><i class="fa fa-arrow-up icon16"></i></a></span>
+  <a class="bbs-back" href="[query:referrer]" title="[resx:Back]">
+    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    <span>[resx:Back]</span>
+  </a>
   <article id="post-[post:contentitemid]" class="bbs-article">
-    <header>
-      <div class="supertitle">[subtemplate|Cat.html|categories]</div>
-      <h1>[Post:localizedtitle]</h1>
+    <header class="bbs-hero">
+      [subtemplate|Postbanner.html|Post:hasimage]
+      <div class="bbs-hero__text">
+        <div class="supertitle">[subtemplate|Cat.html|categories]</div>
+        <h1 class="bbs-hero__title">[Post:localizedtitle]</h1>
+      </div>
     </header>
-    [subtemplate|Postbanner.html|Post:hasimage]
     <div class="content">
-      <div class="metadata">
-        <div class="share-buttons">
-          <h5>[resx:Share]</h5>
-          <div id="sharrre" data-url="[post:link]" data-text="share"></div>
-        </div>
+      <aside class="metadata">
         <div class="author">
           <h5>[resx:WrittenBy]</h5>
-          <a href="[urls:module|true]author=[post:CreatedByUserID]">[post:DisplayName]</a>
-          [Author:Biography]
+          <a class="bbs-author-name" href="[urls:module|true]author=[post:CreatedByUserID]">[post:DisplayName]</a>
+          <div class="bbs-author-bio">[Author:Biography]</div>
+        </div>
+        <div class="time">
+          <div data-time="[post:PublishedOnDate|yyyy-MM-dd HH:mm:ss]" class="momentabs">[post:PublishedOnDate|yyyy-MM-dd]</div>
         </div>
         <div class="tags">
           <h5>[resx:Tags]</h5>
           [subtemplate|PostTag.html|categories]
           [subtemplate|PostTag.html|keywords]
         </div>
-        <div class="time">
-          <div data-time="[post:PublishedOnDate|yyyy-MM-dd HH:mm:ss]" class="momentabs">[post:PublishedOnDate|yyyy-MM-dd]</div>
-        </div>
 [if|1][Post:published][=]False[/if]
-<div>
-  <span class="unpublished bg-danger">[resx:Unpublished]</span>
-</div>
+        <div class="bbs-unpublished">
+          <span class="unpublished">[resx:Unpublished]</span>
+        </div>
 [endif|1]
-      </div>
+      </aside>
       <div class="body">
         [Post:localizedcontent]
       </div>

@@ -5,9 +5,12 @@ namespace DotNetNuke.Modules.Blog.Models
         public int BlogId { get; set; } = -1;
         public string BlogTitle { get; set; } = "";
         public string Message { get; set; } = "";
-        public string Analysis { get; set; } = "";
-        public bool CanImportCategories { get; set; }
-        public bool ImportCategories { get; set; }
+        public bool MessageIsError { get; set; }
         public bool ImportStep { get; set; }
+        public bool ImportComplete { get; set; }
+        public string OriginalTitle { get; set; } = "";
+        public int PostCount { get; set; }
+        public int CategoryCount { get; set; }
+        public int AttachmentCount { get; set; }
     }
 }

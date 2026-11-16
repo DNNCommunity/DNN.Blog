@@ -56,9 +56,11 @@ namespace DotNetNuke.Modules.Blog.Core.Entities.Posts
         public string DisplayName { get; set; } = "";
         [DataMember()]
         public int NrComments { get; set; } = 0;
-
-        #region  ML Properties 
         [DataMember()]
+        public byte ContentFormat { get; set; } = 0;
+
+    #region  ML Properties 
+    [DataMember()]
         public string AltLocale { get; set; } = "";
         [DataMember()]
         public string AltTitle { get; set; } = "";
