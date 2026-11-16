@@ -1,0 +1,41 @@
+@inherits BlogWebPage<DotNetNuke.Modules.Blog.Models.TermsEditViewModel>
+@using DotNetNuke.Modules.Blog.Common
+@using System.Linq
+@using DotNetNuke.Services.Localization
+@{
+  var locales = LocaleController.Instance.GetLocales(Dnn.PortalSettings.PortalId).Values
+    .Where(l => l.Code != Dnn.PortalSettings.DefaultLanguage).ToList();
+}
+<div class="dnnForm dnnClear">
+  <h2>Term localizations (vocabulary @Model.VocabularyId)</h2>
+  @using (BeginForm("EditML", "Terms", FormMethod.Post))
+  {
+    @MvcHtml.AntiForgeryToken()
+    <input type="hidden" name="VocabularyId" value="@Model.VocabularyId" />
+    <table class="dnnGrid">
+      <tr class="dnnGridHeader">
+        <td>ID</td>
+        <td>Default name</td>
+        @foreach (var loc in locales)
+        {
+          <td>@loc.EnglishName</td>
+        }
+      </tr>
+      @foreach (var term in Model.Terms)
+      {
+        <tr class="dnnGridItem">
+          <td>@term.TermId</td>
+          <td><input type="text" name="term_@(term.TermId)_name" value="@term.DefaultName" class="dnnFormInput" /></td>
+          @foreach (var loc in locales)
+          {
+            <td><input type="text" name="term_@(term.TermId)_loc_@loc.Code" value="@(term.Localizations.ContainsKey(loc.Code) ? term.Localizations[loc.Code] : "")" class="dnnFormInput" /></td>
+          }
+        </tr>
+      }
+    </table>
+    <p>
+      <button type="submit" class="dnnPrimaryAction">@Dnn.LocalizeString("Update")</button>
+      <a href="@Url.Action("Index", "Admin")" class="dnnSecondaryAction">@Dnn.LocalizeString("Cancel")</a>
+    </p>
+  }
+</div>

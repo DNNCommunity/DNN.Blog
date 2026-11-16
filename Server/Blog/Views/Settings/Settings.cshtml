@@ -1,18 +1,59 @@
-@inherits DotNetNuke.Web.Mvc.Framework.DnnWebViewPage<DotNetNuke.Modules.Blog.Common.ModuleSettings>
-@using System.Web.Mvc
-@using System.Web.Mvc.Html
-@using DotNetNuke.Web.Mvc.Helpers
-@{ 
-    var viewDir = new System.IO.DirectoryInfo(Server.MapPath("~/DesktopModules/MVC/DotNetNuke/Blog/Views/Home"));
-    var list = viewDir.GetFiles("*.cshtml").Select(f => new SelectListItem() { Text = f.Name, Value= System.IO.Path.GetFileNameWithoutExtension(f.Name)});
-} 
-
-<h2 id="dnnSitePanel-BasicSettings" class="dnnFormSectionHead">@Dnn.LocalizeString("BasicSettings")</h2>
-<fieldset>
-    <div class="dnnFormItem">
-        <div class="dnnLabel" style="position: relative;">
-            @Html.LabelFor(m => Model.View, Dnn.LocalizeString("View"), new { @class = "col-md-2 control-label" })
-        </div>
-        @Html.DropDownListFor(m => Model.View, list)
-    </div>
-</fieldset>
+@inherits BlogWebPage<DotNetNuke.Modules.Blog.Models.SettingsViewModel>
+@using DotNetNuke.Modules.Blog.Common
+<div class="dnnForm dnnClear">
+  @using (BeginForm("Settings", "Settings", FormMethod.Post))
+  {
+    @MvcHtml.AntiForgeryToken()
+    <fieldset>
+      <div class="dnnFormItem">
+        <label>@Dnn.LocalizeString("lblBlogModuleId")</label>
+        @Html.DropDownListFor(m => m.BlogModuleId, Model.BlogModules, new { @class = "dnnFormInput", onchange = "location.href='" + Url.Action("Settings", "Settings") + "?blogModuleId=' + this.value;" })
+      </div>
+      <div class="dnnFormItem">
+        <label>@Dnn.LocalizeString("lblBlogId")</label>
+        @Html.DropDownListFor(m => m.BlogId, Model.Blogs, new { @class = "dnnFormInput" })
+      </div>
+      <div class="dnnFormItem">
+        <label>@Dnn.LocalizeString("lblCategories")</label>
+        @Html.TextBoxFor(m => m.Categories, new { @class = "dnnFormInput", style = "width:100%", placeholder = "Comma-separated category term IDs" })
+      </div>
+      <div class="dnnFormItem">
+        <label>@Dnn.LocalizeString("lblAuthorId")</label>
+        @Html.DropDownListFor(m => m.AuthorId, Model.Authors, new { @class = "dnnFormInput" })
+      </div>
+      <div class="dnnFormItem">
+        <label>@Dnn.LocalizeString("lblTemplate")</label>
+        @Html.DropDownListFor(m => m.Template, Model.Templates, new { @class = "dnnFormInput" })
+      </div>
+      <div class="dnnFormItem">
+        <label>@Dnn.LocalizeString("lblShowAllLocales")</label>
+        @Html.CheckBoxFor(m => m.ShowAllLocales)
+      </div>
+      <div class="dnnFormItem">
+        <label>@Dnn.LocalizeString("lblModifyPageDetails")</label>
+        @Html.CheckBoxFor(m => m.ModifyPageDetails)
+      </div>
+      <div class="dnnFormItem">
+        <label>@Dnn.LocalizeString("lblAddCanonicalTag")</label>
+        @Html.CheckBoxFor(m => m.AddCanonicalTag)
+      </div>
+      <div class="dnnFormItem">
+        <label>@Dnn.LocalizeString("lblShowManagementPanel")</label>
+        @Html.CheckBoxFor(m => m.ShowManagementPanel)
+        @Html.CheckBoxFor(m => m.ShowManagementPanelViewMode)
+      </div>
+      <div class="dnnFormItem">
+        <label>@Dnn.LocalizeString("lblHideUnpublishedBlogs")</label>
+        @Html.CheckBoxFor(m => m.HideUnpublishedBlogsViewMode)
+        @Html.CheckBoxFor(m => m.HideUnpublishedBlogsEditMode)
+      </div>
+      <div class="dnnFormItem">
+        <label>@Dnn.LocalizeString("lblAllowComments")</label>
+        @Html.CheckBoxFor(m => m.AllowComments)
+      </div>
+    </fieldset>
+    <p>
+      <button type="submit" class="dnnPrimaryAction">@Dnn.LocalizeString("Update")</button>
+    </p>
+  }
+</div>

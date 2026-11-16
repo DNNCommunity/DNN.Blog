@@ -1,18 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyName>DotNetNuke.Modules.Blog.Core</AssemblyName>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <OutputPath>..\..\bin\</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <Authors>Peter Donker</Authors>
-    <Company>DotNetNuke Community</Company>
-    <Product>Blog</Product>
-    <Copyright>2025</Copyright>
+    <Company>Dnn</Company>
+    <Product>blog</Product>
+    <Copyright>Copyright 2026 by Dnn</Copyright>
     <PackageId>Blog</PackageId>
-    <AssemblyVersion>6.7.3</AssemblyVersion>
-    <FileVersion>6.7.3</FileVersion>
-    <Description>The DotNetNuke Blog module is an easy to use content publishing module that is tightly integrated with the core DotNetNuke framework. It can be used in single or multi-author environments and also permits content authoring using off-site tools such as Windows Live Writer.</Description>
+    <AssemblyVersion>7.0.0</AssemblyVersion>
+    <FileVersion>7.0.0</FileVersion>
+    <Description>Blog module</Description>
     <NeutralLanguage>en-US</NeutralLanguage>
     <ApplicationIcon />
     <OutputType>Library</OutputType>
@@ -25,10 +25,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CookComputing.XmlRPCv2" Version="2.5.0" />
-    <PackageReference Include="DotNetNuke.Abstractions" Version="9.13.0" />
-    <PackageReference Include="DotNetNuke.Core" Version="9.13.0" />
-    <PackageReference Include="DotNetNuke.Instrumentation" Version="9.13.0" />
-    <PackageReference Include="DotNetNuke.Web" Version="9.13.0" />
-    <PackageReference Include="DotNetNuke.Web.Client" Version="9.13.0" />
+    <PackageReference Include="DotNetNuke.Abstractions" Version="10.4.0" />
+    <PackageReference Include="DotNetNuke.Core" Version="10.4.0" />
+    <PackageReference Include="DotNetNuke.Instrumentation" Version="10.4.0" />
+    <PackageReference Include="DotNetNuke.Web" Version="10.4.0" />
+    <PackageReference Include="DotNetNuke.Web.Client" Version="10.4.0" />
   </ItemGroup>
 </Project>

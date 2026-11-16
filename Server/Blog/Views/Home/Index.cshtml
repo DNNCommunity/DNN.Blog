@@ -1,17 +1,25 @@
-@inherits BlogWebPage
+@inherits BlogWebPage<DotNetNuke.Modules.Blog.Models.HomeViewModel>
 @using DotNetNuke.Modules.Blog.Common
 @{
-  BlogModuleContext.AddModuleScript();
+  BlogModuleContext.EnsureInitialized();
+  BlogModuleContext.AddModuleCss();
 }
 
-<h1>Hello Blog Module</h1>
+@if (Model.ShowManagementPanel)
+{
+  @Html.Partial("~/DesktopModules/MVC/Blog/Views/Shared/_ManagementPanel.cshtml")
+}
 
-<div class="DotNetNukeBlog Blog"
-     data-locale="@System.Threading.Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName"
-     data-moduleid="@Dnn.ActiveModule.ModuleID"
-     data-tabid="@Dnn.ActiveModule.TabID"
-     data-portalid="@Dnn.PortalSettings.PortalId"
-     data-resources="@SerializedResources()"
-     data-security="@(Newtonsoft.Json.JsonConvert.SerializeObject(BlogModuleContext.Security))"
-     >
+<div class="dnnBlog">
+  @Html.Raw(Model.TemplateHtml)
 </div>
+
+@if (!string.IsNullOrEmpty(Model.TrackBackBlurb))
+{
+  @Html.Raw(Model.TrackBackBlurb)
+}
+
+@if (Model.ShowComments)
+{
+  @Html.Partial("~/DesktopModules/MVC/Blog/Views/Shared/_Comments.cshtml")
+}

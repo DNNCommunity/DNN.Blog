@@ -1,0 +1,167 @@
+@inherits BlogWebPage<DotNetNuke.Modules.Blog.Models.PostEditViewModel>
+@using System.Globalization
+@using System.Linq
+@using DotNetNuke.Modules.Blog.Common
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Serialization
+@{
+  Func<string, string, string> L = (key, fallback) =>
+  {
+    var s = Dnn.LocalizeString(key);
+    if (string.IsNullOrWhiteSpace(s)) s = Dnn.LocalizeString(key + ".Text");
+    return string.IsNullOrWhiteSpace(s) ? fallback : s;
+  };
+  var pageTitle = Model.IsNew ? "New post" : L("ControlTitle_Postedit", "Edit Post");
+  var security = BlogModuleContext.Security;
+  var securityJson = JsonConvert.SerializeObject(new
+  {
+    UserId = Dnn.User.UserID,
+    CanView = true,
+    CanEdit = security.CanEditPost || security.IsEditor || security.IsBlogger || security.CanAddPost,
+    IsAdmin = security.UserIsAdmin
+  });
+
+  string ToFlatpickrFormat()
+  {
+    var f = CultureInfo.CurrentCulture.DateTimeFormat;
+    string p = f.ShortDatePattern + " " + f.ShortTimePattern;
+    // Placeholder pass avoids double-replacing shorter tokens
+    return p
+      .Replace("dddd", "\u0001")
+      .Replace("ddd", "\u0002")
+      .Replace("dd", "\u0003")
+      .Replace("d", "\u0004")
+      .Replace("MMMM", "\u0005")
+      .Replace("MMM", "\u0006")
+      .Replace("MM", "\u0007")
+      .Replace("M", "\u0008")
+      .Replace("yyyy", "\u0009")
+      .Replace("yy", "\u000A")
+      .Replace("HH", "\u000B")
+      .Replace("H", "\u000C")
+      .Replace("hh", "\u000D")
+      .Replace("h", "\u000E")
+      .Replace("mm", "\u000F")
+      .Replace("tt", "\u0010")
+      .Replace("t", "\u0010")
+      .Replace("\u0001", "l")
+      .Replace("\u0002", "D")
+      .Replace("\u0003", "d")
+      .Replace("\u0004", "j")
+      .Replace("\u0005", "F")
+      .Replace("\u0006", "M")
+      .Replace("\u0007", "m")
+      .Replace("\u0008", "n")
+      .Replace("\u0009", "Y")
+      .Replace("\u000A", "y")
+      .Replace("\u000B", "H")
+      .Replace("\u000C", "H")
+      .Replace("\u000D", "G")
+      .Replace("\u000E", "G")
+      .Replace("\u000F", "i")
+      .Replace("\u0010", "K");
+  }
+
+  var bootstrap = new
+  {
+    blogId = Model.BlogId,
+    postId = Model.PostId,
+    blogTitle = Model.BlogTitle,
+    isNew = Model.IsNew,
+    title = Model.Title,
+    summary = Model.Summary,
+    content = Model.Content,
+    titles = Model.Titles,
+    summaries = Model.Summaries,
+    contents = Model.Contents,
+    published = Model.Published,
+    publishCanChange = Model.PublishCanChange,
+    publishNow = Model.PublishNow,
+    publishDate = Model.PublishDate,
+    timezoneDisplay = Model.TimezoneDisplay,
+    allowComments = Model.AllowComments,
+    displayCopyright = Model.DisplayCopyright,
+    copyright = Model.Copyright,
+    locale = Model.Locale,
+    showLocale = Model.ShowLocale,
+    useFullLocalization = Model.UseFullLocalization,
+    defaultLocale = Model.DefaultLocale,
+    locales = Model.Locales,
+    otherLocales = Model.OtherLocales,
+    localeDropdownOptions = Model.LocaleDropdownOptions,
+    tags = Model.Tags,
+    imageKey = Model.ImageKey,
+    imageUrl = Model.ImageUrl,
+    showCategories = Model.ShowCategories,
+    selectedCategoryIds = Model.SelectedCategoryIds,
+    categories = Model.Categories,
+    summaryIsHtml = Model.SummaryIsHtml,
+    showSummaryPrecedingWarning = Model.ShowSummaryPrecedingWarning,
+    validationMessage = Model.ValidationMessage,
+    cancelUrl = string.IsNullOrEmpty(Model.CancelUrl) ? Url.Action("Index", "Manage") : Model.CancelUrl,
+    editUrl = Url.Action("Edit", "Post", new { returnUrl = Model.ReturnUrl }),
+    deleteUrl = Url.Action("Delete", "Post", new { returnUrl = Model.ReturnUrl }),
+    antiforgeryToken = "",
+    antiforgeryFieldName = "__RequestVerificationToken",
+    dateTimeFormat = ToFlatpickrFormat(),
+    labels = new
+    {
+      pageTitle,
+      save = L("cmdSave", "Save"),
+      cancel = L("Cancel", "Cancel"),
+      delete = L("Delete", "Delete"),
+      contentTab = L("Content", "Contents"),
+      metadataTab = L("Metadata", "Summary and Metadata"),
+      publishingTab = L("Publishing", "Publishing Details"),
+      title = L("lblTitle", "Title"),
+      contents = L("Content", "Contents"),
+      summary = L("lblSummary", "Summary"),
+      language = L("lblLocale", "Language"),
+      image = L("lblImage", "Image"),
+      removeImage = L("cmdImageRemove", "Remove Image"),
+      categories = L("lblCategories", "Categories"),
+      tags = L("lblTags", "Tags"),
+      tagsPlaceholder = L("ctlTags.PlaceholderText", "Enter the tags for this post here ..."),
+      published = L("lblPublished", "Is Visible"),
+      allowComments = L("lblAllowComments", "Enable Comments"),
+      displayCopyright = L("lblDisplayCopyright", "Display Copyright"),
+      copyright = L("lblCopyright", "Copyright"),
+      publishDate = L("lblPublishDate", "Publish Date"),
+      now = L("Now", "Now"),
+      timezoneNote = L("PublishTimeZoneNote", "The publish date is based on your profile timezone of: "),
+      summaryPrecedingWarning = L("lblSummaryPrecedingWarning", "Note that the summary precedes the article body."),
+      deleteConfirm = "Delete this post?",
+      translations = "Translations"
+    }
+  };
+  var bootstrapJson = JsonConvert.SerializeObject(bootstrap, new JsonSerializerSettings
+  {
+    ContractResolver = new CamelCasePropertyNamesContractResolver(),
+    // Prevent </script> in post HTML from breaking the JSON script tag
+    StringEscapeHandling = StringEscapeHandling.EscapeHtml
+  });
+}
+<div class="blog-admin">
+  <div class="DotNetNukeBlog"
+       data-moduleid="@Dnn.ActiveModule.ModuleID"
+       data-tabid="@Dnn.ActiveModule.TabID"
+       data-locale="@Locale"
+       data-blogid="@Model.BlogId"
+       data-postid="@Model.PostId"
+       data-resources="@SerializedResources()"
+       data-security="@securityJson">
+  </div>
+
+  @* Antiforgery token for React form (read into bootstrap at mount) *@
+  @* A div, not a form: the page is already inside the WebForms <form>, and browsers discard nested <form> tags, which would orphan the token input from #blog-post-edit-af *@
+  <div id="blog-post-edit-af" hidden>
+    @MvcHtml.AntiForgeryToken()
+  </div>
+
+  <script type="application/json" id="blog-post-edit-bootstrap">@Html.Raw(bootstrapJson)</script>
+
+  <div class="Blog"
+       data-moduleid="@Dnn.ActiveModule.ModuleID"
+       data-component="post-edit">
+  </div>
+</div>

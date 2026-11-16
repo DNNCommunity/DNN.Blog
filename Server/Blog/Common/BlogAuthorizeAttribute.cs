@@ -1,7 +1,7 @@
 using DotNetNuke.Common;
-using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Modules.Blog.Core.Security;
 using DotNetNuke.Web.Api;
 
 namespace DotNetNuke.Modules.Blog.Common
@@ -37,13 +37,11 @@ namespace DotNetNuke.Modules.Blog.Common
             Logger.Trace("IsAuthorized");
             if (SecurityLevel == SecurityAccessLevel.Anonymous)
             {
-                Logger.Trace("Anonymous");
                 return true;
             }
             User = HttpContextSource.Current.Request.IsAuthenticated ? UserController.Instance.GetCurrentUserInfo() : new UserInfo();
-            Logger.Trace("UserId " + User.UserID.ToString());
-            ContextSecurity security = ContextSecurity.GetSecurity(context.ActionContext.Request.FindModuleInfo());
-            Logger.Trace(security.ToString());
+            var module = context.ActionContext.Request.FindModuleInfo();
+            var security = new ContextSecurity(module.ModuleID, module.TabID, null, User);
             switch (SecurityLevel)
             {
                 case SecurityAccessLevel.Authenticated:
@@ -51,11 +49,11 @@ namespace DotNetNuke.Modules.Blog.Common
                 case SecurityAccessLevel.Host:
                     return User.IsSuperUser;
                 case SecurityAccessLevel.Admin:
-                    return security.IsAdmin;
+                    return security.UserIsAdmin || security.IsEditor;
                 case SecurityAccessLevel.Edit:
-                    return security.CanEdit;
+                    return security.IsEditor || security.IsBlogger || security.CanAddPost || security.CanEditPost;
                 case SecurityAccessLevel.View:
-                    return security.CanView;
+                    return true;
             }
             return false;
         }

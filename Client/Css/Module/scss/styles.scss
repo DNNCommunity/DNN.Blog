@@ -1,5 +1,7 @@
-.ModDotNetNukeModuleC {
-    .foo {
-        display: none
-    }
-}
+@use "variables";
+@use "legacy";
+@use "admin";
+@use "manage";
+
+// Font Awesome ships next to module.css under Server/Blog/css/
+@import url("css/font-awesome.min.css");

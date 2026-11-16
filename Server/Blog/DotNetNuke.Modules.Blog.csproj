@@ -20,6 +20,68 @@
     <DebugType>Portable</DebugType>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Templates\authorList\**" />
+    <Compile Remove="Templates\bigCalendar\**" />
+    <Compile Remove="Templates\blogCalendarList\**" />
+    <Compile Remove="Templates\blogCalendar\**" />
+    <Compile Remove="Templates\blogList\**" />
+    <Compile Remove="Templates\categoryList\**" />
+    <Compile Remove="Templates\classicBlog\**" />
+    <Compile Remove="Templates\commentList\**" />
+    <Compile Remove="Templates\latestPosts\**" />
+    <Compile Remove="Templates\searchBox\**" />
+    <Compile Remove="Templates\tagCloud\**" />
+    <Compile Remove="Templates\tagList\**" />
+    <Compile Remove="Templates\timelineJS\**" />
+    <Compile Remove="Templates\v60\**" />
+    <Compile Remove="Templates\_default\**" />
+    <Content Remove="Templates\authorList\**" />
+    <Content Remove="Templates\bigCalendar\**" />
+    <Content Remove="Templates\blogCalendarList\**" />
+    <Content Remove="Templates\blogCalendar\**" />
+    <Content Remove="Templates\blogList\**" />
+    <Content Remove="Templates\categoryList\**" />
+    <Content Remove="Templates\classicBlog\**" />
+    <Content Remove="Templates\commentList\**" />
+    <Content Remove="Templates\latestPosts\**" />
+    <Content Remove="Templates\searchBox\**" />
+    <Content Remove="Templates\tagCloud\**" />
+    <Content Remove="Templates\tagList\**" />
+    <Content Remove="Templates\timelineJS\**" />
+    <Content Remove="Templates\v60\**" />
+    <Content Remove="Templates\_default\**" />
+    <EmbeddedResource Remove="Templates\authorList\**" />
+    <EmbeddedResource Remove="Templates\bigCalendar\**" />
+    <EmbeddedResource Remove="Templates\blogCalendarList\**" />
+    <EmbeddedResource Remove="Templates\blogCalendar\**" />
+    <EmbeddedResource Remove="Templates\blogList\**" />
+    <EmbeddedResource Remove="Templates\categoryList\**" />
+    <EmbeddedResource Remove="Templates\classicBlog\**" />
+    <EmbeddedResource Remove="Templates\commentList\**" />
+    <EmbeddedResource Remove="Templates\latestPosts\**" />
+    <EmbeddedResource Remove="Templates\searchBox\**" />
+    <EmbeddedResource Remove="Templates\tagCloud\**" />
+    <EmbeddedResource Remove="Templates\tagList\**" />
+    <EmbeddedResource Remove="Templates\timelineJS\**" />
+    <EmbeddedResource Remove="Templates\v60\**" />
+    <EmbeddedResource Remove="Templates\_default\**" />
+    <None Remove="Templates\authorList\**" />
+    <None Remove="Templates\bigCalendar\**" />
+    <None Remove="Templates\blogCalendarList\**" />
+    <None Remove="Templates\blogCalendar\**" />
+    <None Remove="Templates\blogList\**" />
+    <None Remove="Templates\categoryList\**" />
+    <None Remove="Templates\classicBlog\**" />
+    <None Remove="Templates\commentList\**" />
+    <None Remove="Templates\latestPosts\**" />
+    <None Remove="Templates\searchBox\**" />
+    <None Remove="Templates\tagCloud\**" />
+    <None Remove="Templates\tagList\**" />
+    <None Remove="Templates\timelineJS\**" />
+    <None Remove="Templates\v60\**" />
+    <None Remove="Templates\_default\**" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net472" Version="1.0.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -28,6 +90,8 @@
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Web" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="DotNetNuke.Core" Version="10.4.0" />
@@ -37,5 +101,8 @@
     <PackageReference Include="DotNetNuke.Web.Client" Version="10.4.0" />
     <PackageReference Include="DotNetNuke.Web.Mvc" Version="10.4.0" />
     <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.3.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\DotNetNuke.Modules.Blog.Core.csproj" />
   </ItemGroup>
 </Project>

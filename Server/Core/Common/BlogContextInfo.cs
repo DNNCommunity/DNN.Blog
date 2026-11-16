@@ -1,26 +1,6 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.Web;
-// 
-// DNN Connect - http://dnn-connect.org
-// Copyright (c) 2015
-// by DNN Connect
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
-// to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
-// of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-// DEALINGS IN THE SOFTWARE.
-// 
-
 using DotNetNuke.Modules.Blog.Core.Security;
 using DotNetNuke.Services.Tokens;
 
@@ -32,7 +12,7 @@ namespace DotNetNuke.Modules.Blog.Core.Common
 
     private NameValueCollection RequestParams { get; set; }
 
-    public BlogContextInfo(HttpContext context, BlogModuleBase blogModule)
+    public BlogContextInfo(HttpContext context, IBlogModuleHost blogModule)
     {
       BlogModuleId = blogModule.ModuleId;
 
@@ -145,7 +125,7 @@ namespace DotNetNuke.Modules.Blog.Core.Common
         Referrer = DotNetNuke.Common.Globals.NavigateURL(blogModule.TabId); // just catch 99% of bad referrals to edit pages
       }
 
-      UiTimeZone = blogModule.ModuleContext.PortalSettings.TimeZone;
+      UiTimeZone = blogModule.TimeZone;
       if (blogModule.UserInfo.Profile.PreferredTimeZone != null)
       {
         UiTimeZone = blogModule.UserInfo.Profile.PreferredTimeZone;
@@ -153,7 +133,7 @@ namespace DotNetNuke.Modules.Blog.Core.Common
 
     }
 
-    public static BlogContextInfo GetBlogContext(ref HttpContext context, BlogModuleBase blogModule)
+    public static BlogContextInfo GetBlogContext(ref HttpContext context, IBlogModuleHost blogModule)
     {
       BlogContextInfo res;
       if (context.Items["BlogContext" + blogModule.TabModuleId.ToString()] is null)

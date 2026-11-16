@@ -1,0 +1,121 @@
+@inherits BlogWebPage<DotNetNuke.Modules.Blog.Models.BlogEditViewModel>
+@using DotNetNuke.Modules.Blog.Common
+@{
+  var saveLabel = Dnn.LocalizeString("cmdSave");
+  if (string.IsNullOrWhiteSpace(saveLabel)) { saveLabel = Dnn.LocalizeString("cmdUpdate"); }
+  if (string.IsNullOrWhiteSpace(saveLabel)) { saveLabel = "Save"; }
+  var cancelLabel = Dnn.LocalizeString("Cancel");
+  if (string.IsNullOrWhiteSpace(cancelLabel)) { cancelLabel = "Cancel"; }
+  var deleteLabel = Dnn.LocalizeString("Delete");
+  if (string.IsNullOrWhiteSpace(deleteLabel)) { deleteLabel = "Delete"; }
+  var pageTitle = Model.IsNew ? "New blog" : "Edit blog";
+}
+<div class="blog-admin">
+  <header class="blog-admin__header">
+    <h1 class="blog-admin__title">@pageTitle</h1>
+    <p class="blog-admin__subtitle">@(Model.IsNew ? "Create a blog for this module" : "Blog options and syndication")</p>
+  </header>
+
+  <form action="@Url.Action("Edit", "Blog")" method="post">
+    @MvcHtml.AntiForgeryToken()
+    @Html.HiddenFor(m => m.BlogId)
+    @Html.HiddenFor(m => m.IsNew)
+
+    <section class="blog-admin__section">
+      <h2 class="blog-admin__section-title">General</h2>
+      <div class="blog-admin__fields">
+        <div class="blog-admin__field">
+          <label class="blog-admin__label" for="Title">Title</label>
+          <div class="blog-admin__control">
+            @Html.TextBoxFor(m => m.Title, new { @class = "blog-admin__input", id = "Title" })
+          </div>
+        </div>
+        <div class="blog-admin__field blog-admin__field--top">
+          <label class="blog-admin__label" for="Description">Description</label>
+          <div class="blog-admin__control">
+            @Html.TextAreaFor(m => m.Description, new { @class = "blog-admin__input blog-admin__textarea", id = "Description", rows = "4" })
+          </div>
+        </div>
+        <div class="blog-admin__field">
+          <label class="blog-admin__label" for="Published">Published</label>
+          <div class="blog-admin__control">
+            @Html.CheckBoxFor(m => m.Published, new { id = "Published" })
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="blog-admin__section">
+      <h2 class="blog-admin__section-title">Syndication</h2>
+      <div class="blog-admin__fields">
+        <div class="blog-admin__field">
+          <label class="blog-admin__label" for="Syndicated">Syndicated</label>
+          <div class="blog-admin__control">
+            @Html.CheckBoxFor(m => m.Syndicated, new { id = "Syndicated" })
+          </div>
+        </div>
+        <div class="blog-admin__field">
+          <label class="blog-admin__label" for="Copyright">Copyright</label>
+          <div class="blog-admin__control">
+            @Html.TextBoxFor(m => m.Copyright, new { @class = "blog-admin__input", id = "Copyright" })
+          </div>
+        </div>
+        <div class="blog-admin__field">
+          <label class="blog-admin__label" for="EnablePingBackSend">Pingback send</label>
+          <div class="blog-admin__control">
+            @Html.CheckBoxFor(m => m.EnablePingBackSend, new { id = "EnablePingBackSend" })
+          </div>
+        </div>
+        <div class="blog-admin__field">
+          <label class="blog-admin__label" for="EnablePingBackReceive">Pingback receive</label>
+          <div class="blog-admin__control">
+            @Html.CheckBoxFor(m => m.EnablePingBackReceive, new { id = "EnablePingBackReceive" })
+          </div>
+        </div>
+        <div class="blog-admin__field">
+          <label class="blog-admin__label" for="AutoApprovePingBack">Auto-approve pingback</label>
+          <div class="blog-admin__control">
+            @Html.CheckBoxFor(m => m.AutoApprovePingBack, new { id = "AutoApprovePingBack" })
+          </div>
+        </div>
+        <div class="blog-admin__field">
+          <label class="blog-admin__label" for="EnableTrackBackSend">Trackback send</label>
+          <div class="blog-admin__control">
+            @Html.CheckBoxFor(m => m.EnableTrackBackSend, new { id = "EnableTrackBackSend" })
+          </div>
+        </div>
+        <div class="blog-admin__field">
+          <label class="blog-admin__label" for="EnableTrackBackReceive">Trackback receive</label>
+          <div class="blog-admin__control">
+            @Html.CheckBoxFor(m => m.EnableTrackBackReceive, new { id = "EnableTrackBackReceive" })
+          </div>
+        </div>
+        <div class="blog-admin__field">
+          <label class="blog-admin__label" for="AutoApproveTrackBack">Auto-approve trackback</label>
+          <div class="blog-admin__control">
+            @Html.CheckBoxFor(m => m.AutoApproveTrackBack, new { id = "AutoApproveTrackBack" })
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="blog-admin__actions">
+      @if (!Model.IsNew)
+      {
+        <div class="blog-admin__actions-secondary">
+          <button type="submit" form="blog-edit-delete" class="blog-admin__btn blog-admin__btn--danger" onclick="return confirm('Delete this blog?');">@deleteLabel</button>
+        </div>
+      }
+      <button type="submit" class="blog-admin__btn blog-admin__btn--primary">@saveLabel</button>
+      <a href="@Url.Action("Index", "Manage")" class="blog-admin__btn blog-admin__btn--secondary">@cancelLabel</a>
+    </div>
+  </form>
+
+  @if (!Model.IsNew)
+  {
+    <form id="blog-edit-delete" action="@Url.Action("Delete", "Blog")" method="post" hidden>
+      @MvcHtml.AntiForgeryToken()
+      <input type="hidden" name="Blog" value="@Model.BlogId" />
+    </form>
+  }
+</div>

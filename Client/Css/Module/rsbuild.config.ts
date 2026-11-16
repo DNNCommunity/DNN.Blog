@@ -19,6 +19,15 @@ const clientAppConfig = Object.assign({}, commonConfig, {
       css: "module.css",
     },
   },
+  // Keep Font Awesome as a sibling runtime @import (Server/Blog/css/...),
+  // matching the historic module.css behavior instead of bundling it.
+  tools: {
+    cssLoader: {
+      import: {
+        filter: (url: string) => !url.includes("font-awesome"),
+      },
+    },
+  },
 });
 
 export default clientAppConfig;

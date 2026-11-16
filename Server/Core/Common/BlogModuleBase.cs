@@ -12,7 +12,7 @@ using System.Text;
 namespace DotNetNuke.Modules.Blog.Core.Common
 {
 
-  public class BlogModuleBase : PortalModuleBase
+  public class BlogModuleBase : PortalModuleBase, IBlogModuleHost
   {
     private BlogContextInfo _blogContext;
     public BlogContextInfo BlogContext
@@ -88,6 +88,14 @@ namespace DotNetNuke.Modules.Blog.Core.Common
       }
     }
 
+    public TimeZoneInfo TimeZone
+    {
+      get
+      {
+        return ModuleContext.PortalSettings.TimeZone;
+      }
+    }
+
     public new CDefault Page
     {
       get
@@ -103,7 +111,7 @@ namespace DotNetNuke.Modules.Blog.Core.Common
       {
         if (string.IsNullOrEmpty(_BlogModuleMapPath))
         {
-          _BlogModuleMapPath = Server.MapPath("~/DesktopModules/Blog") + @"\";
+          _BlogModuleMapPath = Server.MapPath(Globals.ModuleFolderPath) + @"\";
         }
         return _BlogModuleMapPath;
       }
@@ -151,9 +159,9 @@ namespace DotNetNuke.Modules.Blog.Core.Common
         AddJavascriptFile("dotnetnuke.blog.js", 70);
 
         // Load initialization snippet
-        string scriptBlock = Globals.ReadFile(DotNetNuke.Common.Globals.ApplicationMapPath + @"\DesktopModules\Blog\js\dotnetnuke.blog.pagescript.js");
+        string scriptBlock = Globals.ReadFile(DotNetNuke.Common.Globals.ApplicationMapPath + @"\DesktopModules\MVC\Blog\js\dotnetnuke.blog.pagescript.js");
         var tr = new BlogTokenReplace(BlogContext.BlogModuleId);
-        tr.AddResources("~/DesktopModules/Blog/App_LocalResources/SharedResources.resx");
+        tr.AddResources(Globals.SharedResourceFileName);
         scriptBlock = tr.ReplaceTokens(scriptBlock);
         scriptBlock = "<script type=\"text/javascript\">" + Environment.NewLine + "//<![CDATA[" + Environment.NewLine + scriptBlock + Environment.NewLine + "//]]>" + Environment.NewLine + "</script>";
         Page.ClientScript.RegisterClientScriptBlock(GetType(), "BlogServiceScript", scriptBlock);

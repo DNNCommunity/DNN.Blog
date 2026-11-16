@@ -1,0 +1,41 @@
+@inherits BlogWebPage<DotNetNuke.Modules.Blog.Models.ImportViewModel>
+@using DotNetNuke.Modules.Blog.Common
+@{
+  string formAction = Url.Action("Index", "Import");
+}
+<div class="dnnForm dnnClear">
+  <h2>Import BlogML — @Model.BlogTitle</h2>
+  @if (!string.IsNullOrEmpty(Model.Message))
+  {
+    <div class="dnnFormMessage dnnFormInfo">@Model.Message</div>
+  }
+  @if (!string.IsNullOrEmpty(Model.Analysis))
+  {
+    <pre class="dnnFormInput" style="white-space:pre-wrap">@Model.Analysis</pre>
+  }
+  <form action="@formAction" method="post" enctype="multipart/form-data">
+    @MvcHtml.AntiForgeryToken()
+    <input type="hidden" name="Blog" value="@Model.BlogId" />
+    <div class="dnnFormItem">
+      <label>BlogML file (.xml or .zip)</label>
+      <input type="file" name="uploadFile" accept=".xml,.zip" />
+    </div>
+    @if (Model.CanImportCategories)
+    {
+      <div class="dnnFormItem">
+        <label>Import categories</label>
+        <input type="checkbox" name="importCategories" value="true" />
+      </div>
+    }
+    @if (Model.ImportStep)
+    {
+      <input type="hidden" name="confirmImport" value="true" />
+      <button type="submit" class="dnnPrimaryAction">Confirm import</button>
+    }
+    else
+    {
+      <button type="submit" class="dnnPrimaryAction">Upload and analyze</button>
+    }
+    <a href="@Url.Action("Index", "Manage")" class="dnnSecondaryAction">@Dnn.LocalizeString("Cancel")</a>
+  </form>
+</div>

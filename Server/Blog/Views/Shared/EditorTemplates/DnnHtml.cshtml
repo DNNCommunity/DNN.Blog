@@ -1,0 +1,11 @@
+@* Optional DNN MVC editor template: large HTML body field. Provider chrome is not customized. *@
+@model string
+@{
+  var htmlAttributes = new Dictionary<string, object>
+  {
+    { "class", "blog-admin__input blog-admin__textarea blog-admin__textarea--html" },
+    { "rows", 14 },
+    { "data-blog-html-editor", "true" }
+  };
+}
+@Html.TextArea("", ViewData.TemplateInfo.FormattedModelValue as string ?? Model ?? "", htmlAttributes)

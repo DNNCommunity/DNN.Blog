@@ -1,0 +1,51 @@
+@inherits BlogWebPage<DotNetNuke.Modules.Blog.Models.TemplateSettingsViewModel>
+@using DotNetNuke.Modules.Blog.Common
+<div class="dnnForm dnnClear">
+  <h2>Template settings — @Model.TemplateName</h2>
+  @if (!Model.HasSettings)
+  {
+    <div class="dnnFormMessage dnnFormInfo">This template has no configurable settings.</div>
+  }
+  else
+  {
+    using (BeginForm("Settings", "Template", FormMethod.Post))
+    {
+      @MvcHtml.AntiForgeryToken()
+      <table class="dnnGrid">
+        @foreach (var row in Model.Settings)
+        {
+          <tr class="dnnGridItem">
+            <td class="SubHead" style="width:180px">
+              <label title="@row.Help">@(string.IsNullOrEmpty(row.Label) ? row.Definition.Key : row.Label)</label>
+            </td>
+            <td>
+              @{
+                var vt = (row.Definition.ValueType ?? "string").ToLower();
+              }
+              @if (vt == "dropdown")
+              {
+                <select name="ts_@row.Definition.Key" class="dnnFormInput">
+                  @foreach (var v in row.Definition.Values)
+                  {
+                    <option value="@v.Value" @(row.Value == v.Value ? "selected" : "")>@v.Value</option>
+                  }
+                </select>
+              }
+              else if (vt == "truefalse" || vt == "10")
+              {
+                <input type="checkbox" name="ts_@row.Definition.Key" value="true" @(row.Value == "true" || row.Value == "1" ? "checked" : "") />
+              }
+              else
+              {
+                <input type="text" name="ts_@row.Definition.Key" value="@row.Value" class="dnnFormInput" style="width:300px" />
+              }
+            </td>
+          </tr>
+        }
+      </table>
+      <p>
+        <button type="submit" class="dnnPrimaryAction">@Dnn.LocalizeString("Update")</button>
+      </p>
+    }
+  }
+</div>

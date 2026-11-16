@@ -1,0 +1,28 @@
+/*** Post images: one row per uploaded image. Files live under Portals/{id}/Blog/Files/{BlogId}/{PostId}/ ***/
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Images') AND type in (N'U'))
+BEGIN
+ CREATE TABLE {databaseOwner}{objectQualifier}Blog_Images(
+  ImageId uniqueidentifier NOT NULL,
+  PortalId int NOT NULL,
+  BlogId int NOT NULL,
+  PostId int NULL,
+  State int NOT NULL,
+  OriginalFileName nvarchar(260) NOT NULL,
+  StoredFileName nvarchar(100) NOT NULL,
+  ContentType nvarchar(50) NOT NULL,
+  Width int NOT NULL,
+  Height int NOT NULL,
+  Bytes bigint NOT NULL,
+  Alt nvarchar(500) NULL,
+  Title nvarchar(500) NULL,
+  Caption nvarchar(1000) NULL,
+  Hash nvarchar(64) NOT NULL,
+  CreatedByUserId int NOT NULL,
+  CreatedOn datetime NOT NULL,
+  CONSTRAINT PK_{objectQualifier}Blog_Images PRIMARY KEY CLUSTERED (ImageId)
+ )
+
+ CREATE NONCLUSTERED INDEX IX_{objectQualifier}Blog_Images_Post ON {databaseOwner}{objectQualifier}Blog_Images (BlogId, PostId)
+ CREATE NONCLUSTERED INDEX IX_{objectQualifier}Blog_Images_State ON {databaseOwner}{objectQualifier}Blog_Images (State, CreatedOn)
+END
+GO

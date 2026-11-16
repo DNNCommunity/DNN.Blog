@@ -266,14 +266,14 @@ namespace DotNetNuke.Modules.Blog.Core.Integration
         var objAction = new NotificationTypeAction();
         objAction.NameResourceKey = "ApprovePost";
         objAction.DescriptionResourceKey = "ApprovePost_Desc";
-        objAction.APICall = "DesktopModules/Blog/API/NotificationService/ApprovePost";
+        objAction.APICall = "DesktopModules/MVC/Blog/API/NotificationService/ApprovePost";
         objAction.Order = 1;
         actions.Add(objAction);
 
         objAction = new NotificationTypeAction();
         objAction.NameResourceKey = "DeletePost";
         objAction.DescriptionResourceKey = "DeletePost_Desc";
-        objAction.APICall = "DesktopModules/Blog/API/NotificationService/DeletePost";
+        objAction.APICall = "DesktopModules/MVC/Blog/API/NotificationService/DeletePost";
         objAction.ConfirmResourceKey = "DeleteItem";
         objAction.Order = 3;
         actions.Add(objAction);
@@ -294,14 +294,14 @@ namespace DotNetNuke.Modules.Blog.Core.Integration
         var objAction = new NotificationTypeAction();
         objAction.NameResourceKey = "ApproveComment";
         objAction.DescriptionResourceKey = "ApproveComment_Desc";
-        objAction.APICall = "DesktopModules/Blog/API/NotificationService/ApproveComment";
+        objAction.APICall = "DesktopModules/MVC/Blog/API/NotificationService/ApproveComment";
         objAction.Order = 1;
         actions.Add(objAction);
 
         objAction = new NotificationTypeAction();
         objAction.NameResourceKey = "DeleteComment";
         objAction.DescriptionResourceKey = "DeleteComment_Desc";
-        objAction.APICall = "DesktopModules/Blog/API/NotificationService/DeleteComment";
+        objAction.APICall = "DesktopModules/MVC/Blog/API/NotificationService/DeleteComment";
         objAction.ConfirmResourceKey = "DeleteItem";
         objAction.Order = 3;
         actions.Add(objAction);
@@ -322,7 +322,7 @@ namespace DotNetNuke.Modules.Blog.Core.Integration
         var objAction = new NotificationTypeAction();
         objAction.NameResourceKey = "DeleteComment";
         objAction.DescriptionResourceKey = "DeleteComment_Desc";
-        objAction.APICall = "DesktopModules/Blog/API/Comments/Delete";
+        objAction.APICall = "DesktopModules/MVC/Blog/API/Comments/Delete";
         objAction.ConfirmResourceKey = "DeleteItem";
         objAction.Order = 1;
         actions.Add(objAction);

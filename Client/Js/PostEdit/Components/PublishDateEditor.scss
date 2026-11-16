@@ -1,0 +1,25 @@
+.blog-publish-date {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.blog-publish-date__now {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  font-weight: normal;
+  cursor: pointer;
+}
+
+.blog-publish-date__input {
+  max-width: 16rem;
+}
+
+.blog-publish-date__note {
+  margin: 0;
+  font-size: 0.9rem;
+  opacity: 0.85;
+}

@@ -56,7 +56,7 @@ const watcher = (src, dest) =>
 const BlogWatcher = watcher(
   "Server/Blog",
   pkg.dnn.pathsAndFiles.devSitePath +
-    "\\DesktopModules\\MVC\\DotNetNuke\\Blog"
+    "\\DesktopModules\\MVC\\Blog"
 );
 
 const DllWatcher = chokidar

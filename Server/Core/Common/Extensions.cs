@@ -836,11 +836,11 @@ namespace DotNetNuke.Modules.Blog.Core.Common
     {
       if (DotNetNuke.Entities.Host.Host.CrmEnableCompositeFiles)
       {
-        ClientResourceManager.RegisterScript(page, DotNetNuke.Common.Globals.ResolveUrl("~/DesktopModules/Blog/js/" + jsFilename), priority);
+        ClientResourceManager.RegisterScript(page, DotNetNuke.Common.Globals.ResolveUrl("~/DesktopModules/MVC/Blog/js/" + jsFilename), priority);
       }
       else
       {
-        ClientResourceManager.RegisterScript(page, DotNetNuke.Common.Globals.ResolveUrl("~/DesktopModules/Blog/js/" + jsFilename) + "?_=" + moduleVersion, priority);
+        ClientResourceManager.RegisterScript(page, DotNetNuke.Common.Globals.ResolveUrl("~/DesktopModules/MVC/Blog/js/" + jsFilename) + "?_=" + moduleVersion, priority);
       }
     }
 
@@ -848,11 +848,11 @@ namespace DotNetNuke.Modules.Blog.Core.Common
     {
       if (DotNetNuke.Entities.Host.Host.CrmEnableCompositeFiles)
       {
-        ClientResourceManager.RegisterScript(page, DotNetNuke.Common.Globals.ResolveUrl("~/DesktopModules/Blog/js/" + jsFilename), priority, "DnnBodyProvider", name, version);
+        ClientResourceManager.RegisterScript(page, DotNetNuke.Common.Globals.ResolveUrl("~/DesktopModules/MVC/Blog/js/" + jsFilename), priority, "DnnBodyProvider", name, version);
       }
       else
       {
-        ClientResourceManager.RegisterScript(page, DotNetNuke.Common.Globals.ResolveUrl("~/DesktopModules/Blog/js/" + jsFilename) + "?_=" + moduleVersion, priority, "DnnBodyProvider", name, version);
+        ClientResourceManager.RegisterScript(page, DotNetNuke.Common.Globals.ResolveUrl("~/DesktopModules/MVC/Blog/js/" + jsFilename) + "?_=" + moduleVersion, priority, "DnnBodyProvider", name, version);
       }
     }
 
@@ -860,11 +860,11 @@ namespace DotNetNuke.Modules.Blog.Core.Common
     {
       if (DotNetNuke.Entities.Host.Host.CrmEnableCompositeFiles)
       {
-        ClientResourceManager.RegisterStyleSheet(page, DotNetNuke.Common.Globals.ResolveUrl("~/DesktopModules/Blog/css/" + cssFilename), FileOrder.Css.ModuleCss);
+        ClientResourceManager.RegisterStyleSheet(page, DotNetNuke.Common.Globals.ResolveUrl("~/DesktopModules/MVC/Blog/css/" + cssFilename), FileOrder.Css.ModuleCss);
       }
       else
       {
-        ClientResourceManager.RegisterStyleSheet(page, DotNetNuke.Common.Globals.ResolveUrl("~/DesktopModules/Blog/css/" + cssFilename) + "?_=" + moduleVersion, FileOrder.Css.ModuleCss);
+        ClientResourceManager.RegisterStyleSheet(page, DotNetNuke.Common.Globals.ResolveUrl("~/DesktopModules/MVC/Blog/css/" + cssFilename) + "?_=" + moduleVersion, FileOrder.Css.ModuleCss);
       }
     }
 
@@ -872,11 +872,11 @@ namespace DotNetNuke.Modules.Blog.Core.Common
     {
       if (DotNetNuke.Entities.Host.Host.CrmEnableCompositeFiles)
       {
-        ClientResourceManager.RegisterStyleSheet(page, DotNetNuke.Common.Globals.ResolveUrl("~/DesktopModules/Blog/css/" + cssFilename), (int)FileOrder.Css.ModuleCss, "DnnPageHeaderProvider", name, version);
+        ClientResourceManager.RegisterStyleSheet(page, DotNetNuke.Common.Globals.ResolveUrl("~/DesktopModules/MVC/Blog/css/" + cssFilename), (int)FileOrder.Css.ModuleCss, "DnnPageHeaderProvider", name, version);
       }
       else
       {
-        ClientResourceManager.RegisterStyleSheet(page, DotNetNuke.Common.Globals.ResolveUrl("~/DesktopModules/Blog/css/" + cssFilename) + "?_=" + moduleVersion, (int)FileOrder.Css.ModuleCss, "DnnPageHeaderProvider", name, version);
+        ClientResourceManager.RegisterStyleSheet(page, DotNetNuke.Common.Globals.ResolveUrl("~/DesktopModules/MVC/Blog/css/" + cssFilename) + "?_=" + moduleVersion, (int)FileOrder.Css.ModuleCss, "DnnPageHeaderProvider", name, version);
       }
     }
 

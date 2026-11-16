@@ -3,9 +3,9 @@
   "name": "DotNetNuke.Blog",
   "friendlyName": "Blog",
   "description": "The DotNetNuke Blog module is an easy to use content publishing module that is tightly integrated with the core DotNetNuke framework. It can be used in single or multi-author environments and also permits content authoring using off-site tools such as Windows Live Writer.",
-  "iconFile": "~/DesktopModules/Blog/Images/dnnBlog_32.png",
+  "iconFile": "~/DesktopModules/MVC/Blog/Images/dnnBlog_32.png",
   "packageName": "DotNetNuke.Blog",
-  "folder": "MVC/DotNetNuke/Blog",
+  "folder": "MVC/Blog",
   "module": {
     "azureCompatible": "true",
     "moduleName": "Blog",

@@ -31,12 +31,13 @@ namespace DotNetNuke.Modules.Blog.Core.Common
     public class Globals
     {
 
-        public const string SharedResourceFileName = "~/DesktopModules/Blog/App_LocalResources/SharedResources.resx";
+        public const string ModuleFolderPath = "~/DesktopModules/MVC/Blog";
+        public const string SharedResourceFileName = ModuleFolderPath + "/App_LocalResources/SharedResources.resx";
         public const string glbAppName = "Blog";
-        public const string glbImageHandlerPath = "~/DesktopModules/Blog/BlogImage.ashx";
+        public const string glbImageHandlerPath = ModuleFolderPath + "/BlogImage.ashx";
         public const string glbPermittedFileExtensions = ".jpg,.png,.gif,.bmp,";
-        public const string glbTemplatesPath = "~/DesktopModules/Blog/Templates/";
-        public const string glbServicesPath = "~/DesktopModules/Blog/API/";
+        public const string glbTemplatesPath = ModuleFolderPath + "/Templates/";
+        public const string glbServicesPath = ModuleFolderPath + "/API/";
 
         public static DateTime UtcToLocalTime(DateTime utcTime, TimeZoneInfo TimeZone)
         {
@@ -110,7 +111,7 @@ namespace DotNetNuke.Modules.Blog.Core.Common
 
         public static string ManifestFilePath(int tabId, int moduleId)
         {
-            return string.Format("~/DesktopModules/Blog/API/Modules/Manifest?TabId={0}&ModuleId={1}", tabId, moduleId);
+            return string.Format(ModuleFolderPath + "/API/Modules/Manifest?TabId={0}&ModuleId={1}", tabId, moduleId);
         }
 
         public static string GetAString(object Value)

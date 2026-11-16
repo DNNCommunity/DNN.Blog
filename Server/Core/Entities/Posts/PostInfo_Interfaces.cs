@@ -1,4 +1,4 @@
-﻿using DotNetNuke.Common.Utilities;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Modules.Blog.Core.Common;
 using DotNetNuke.Services.Tokens;
@@ -131,7 +131,7 @@ namespace DotNetNuke.Modules.Blog.Core.Entities.Posts
             {
               return Globals.RemoveHtmlTags(Summary);
             }
-            return Summary.OutputHtml(strFormat);
+            return Media.ImageRenderer.Render(Summary.OutputHtml(strFormat));
           }
         case "image":
           {
@@ -232,11 +232,11 @@ namespace DotNetNuke.Modules.Blog.Core.Entities.Posts
             {
               return Globals.RemoveHtmlTags(LocalizedSummary);
             }
-            return LocalizedSummary.OutputHtml(strFormat);
+            return Media.ImageRenderer.Render(LocalizedSummary.OutputHtml(strFormat));
           }
         case "localizedcontent":
           {
-            return LocalizedContent.OutputHtml(strFormat);
+            return Media.ImageRenderer.Render(LocalizedContent.OutputHtml(strFormat));
           }
         case "contentitemid":
           {
@@ -261,7 +261,7 @@ namespace DotNetNuke.Modules.Blog.Core.Entities.Posts
         case "content":
         case "contents":
           {
-            return Content.OutputHtml(strFormat);
+            return Media.ImageRenderer.Render(Content.OutputHtml(strFormat));
           }
         case "hasimage":
           {

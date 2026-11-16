@@ -1,0 +1,93 @@
+@inherits BlogWebPage<DotNetNuke.Modules.Blog.Models.ManageViewModel>
+@using DotNetNuke.Modules.Blog.Common
+@using System.Linq
+@{
+  var security = BlogModuleContext.Security;
+  var securityJson = Newtonsoft.Json.JsonConvert.SerializeObject(new
+  {
+    UserId = Dnn.User.UserID,
+    CanView = true,
+    CanEdit = security.CanEditPost || security.IsEditor || security.IsBlogger,
+    IsAdmin = security.UserIsAdmin
+  });
+  var blogsJson = Newtonsoft.Json.JsonConvert.SerializeObject(
+    Model.Blogs.Select(b => new { BlogId = b.BlogID, Title = b.Title }));
+}
+<div class="blog-manage">
+  <header class="blog-manage__header">
+    <h1 class="blog-manage__title">Manage</h1>
+    <p class="blog-manage__subtitle">Blogs and posts for this module</p>
+  </header>
+
+  @if (Model.ShowBlogsSection)
+  {
+    <section class="blog-manage__section">
+      <h2 class="blog-manage__section-title">@Dnn.LocalizeString("Blogs")</h2>
+      <div class="blog-manage__table-wrap">
+        <table class="blog-manage__table">
+          <thead>
+            <tr>
+              <th colspan="3"></th>
+              <th>@Dnn.LocalizeString("Blog")</th>
+              <th>@Dnn.LocalizeString("Owner")</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach (var blog in Model.Blogs)
+            {
+              <tr>
+                <td class="blog-manage__actions-cell">
+                  <a class="blog-manage__icon-btn" href="@Url.Action("Edit", "Blog", new { Blog = blog.BlogID })" title="Edit">
+                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                  </a>
+                </td>
+                <td class="blog-manage__actions-cell">
+                  <a class="blog-manage__icon-btn" href="@Url.Action("Index", "Import", new { Blog = blog.BlogID })" title="Import">
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                  </a>
+                </td>
+                <td class="blog-manage__actions-cell">
+                  <a class="blog-manage__icon-btn" href="@Url.Action("Export", "Blog", new { Blog = blog.BlogID })" title="@Dnn.LocalizeString("Export")">
+                    <i class="fa fa-upload" aria-hidden="true"></i>
+                  </a>
+                </td>
+                <td>@blog.Title</td>
+                <td>@blog.DisplayName</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      @if (Model.CanAddBlog)
+      {
+        <div class="blog-manage__section-actions">
+          <a href="@Url.Action("Edit", "Blog")" class="blog-manage__btn blog-manage__btn--secondary">@Dnn.LocalizeString("cmdAdd")</a>
+        </div>
+      }
+    </section>
+  }
+
+  @if (Model.ShowPostsSection)
+  {
+    <section class="blog-manage__section">
+      <h2 class="blog-manage__section-title">@Dnn.LocalizeString("Posts")</h2>
+      <div class="DotNetNukeBlog"
+           data-moduleid="@Dnn.ActiveModule.ModuleID"
+           data-tabid="@Dnn.ActiveModule.TabID"
+           data-locale="@Locale"
+           data-resources="@SerializedResources()"
+           data-security="@securityJson">
+      </div>
+      <div class="Blog"
+           data-moduleid="@Dnn.ActiveModule.ModuleID"
+           data-component="posts-manage-table"
+           data-edit-url="@Url.Action("Edit", "Post")"
+           data-blogs="@blogsJson">
+      </div>
+    </section>
+  }
+
+  <div class="blog-manage__footer">
+    <a href="@DotNetNuke.Common.Globals.NavigateURL()" class="blog-manage__btn blog-manage__btn--primary">@Dnn.LocalizeString("cmdReturn")</a>
+  </div>
+</div>
