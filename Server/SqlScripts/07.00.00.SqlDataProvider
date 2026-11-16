@@ -139,3 +139,13 @@ BEGIN
 END
 SELECT @Res
 GO
+
+DELETE
+FROM {databaseOwner}{objectQualifier}ModuleControls
+FROM {databaseOwner}{objectQualifier}ModuleControls mc
+INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions md ON md.ModuleDefID=mc.ModuleDefID
+WHERE md.DefinitionName='DNNBlog.Blog'
+AND NOT mc.ControlSrc LIKE '%.mvc'
+GO
+
+

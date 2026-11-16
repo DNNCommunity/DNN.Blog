@@ -1,0 +1,14 @@
+[if|1][comment:approved][=]False[/if]
+<span id="cmdApproveComment[comment:CommentID]"> &middot;
+<a href="#" 
+   class="blog_comment_actionbtn"
+   onclick="blogService.approveComment([blog:blogid], [comment:CommentID], function() {$('#cmdApproveComment[comment:CommentID]').hide()});return false;">[resx:Approve]</a>
+</span>
+[endif|1]
+<span> &middot;
+<a href="#" 
+   class="blog_comment_actionbtn"
+   title="[resx:DeleteComment]"
+   onclick="if (confirm('[resx:DeleteComment.Confirm|jssafe]')) {blogService.deleteComment([blog:blogid], [comment:CommentID], function() 
+    {$('#commentDiv[comment:CommentID]').hide()})};return false;">[resx:DeleteComment]</a>
+</span>

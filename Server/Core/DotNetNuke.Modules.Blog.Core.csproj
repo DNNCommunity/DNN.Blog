@@ -6,13 +6,13 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <Authors>Peter Donker</Authors>
-    <Company>Dnn</Company>
-    <Product>blog</Product>
-    <Copyright>Copyright 2026 by Dnn</Copyright>
+    <Company>DNN Connect</Company>
+    <Product>dnn-blog</Product>
+    <Copyright>Copyright 2026 by DNN Connect</Copyright>
     <PackageId>Blog</PackageId>
     <AssemblyVersion>7.0.0</AssemblyVersion>
     <FileVersion>7.0.0</FileVersion>
-    <Description>Blog module</Description>
+    <Description>The DotNetNuke Blog module is an easy to use content publishing module that is tightly integrated with the core DotNetNuke framework. It can be used in single or multi-author environments and also permits content authoring using off-site tools such as Windows Live Writer.</Description>
     <NeutralLanguage>en-US</NeutralLanguage>
     <ApplicationIcon />
     <OutputType>Library</OutputType>

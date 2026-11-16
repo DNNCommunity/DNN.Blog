@@ -492,6 +492,14 @@ export function createToolbar(
     }
   });
 
+  // Push optional trailing controls (e.g. locale switcher) to the top-right.
+  const spacer = document.createElement("div");
+  spacer.className = "bre__spacer";
+  bar.appendChild(spacer);
+  const toolbarEnd = document.createElement("div");
+  toolbarEnd.className = "bre__toolbar-end";
+  bar.appendChild(toolbarEnd);
+
   const refresh = () => {
     bar.querySelectorAll(".bre__btn").forEach((el) => {
       const b = el as HTMLButtonElement & { _isActive?: () => boolean };

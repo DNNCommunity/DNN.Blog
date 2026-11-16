@@ -27,15 +27,18 @@ function copy(start, srcRelativePath, destDir) {
     });
 }
 
+// Chokidar 4+ no longer treats ignored strings as globs (exact paths only).
+// Use RegExp matchers instead; paths are normalized to forward slashes on Windows.
 var ignore = [
-  /obj/,
-  /bin/,
-  "**/*.{vb,cs,suo,user}",
-  "**/dnn.json",
-  "**/*.??proj",
-  "**/web*.config",
-  "**/packages.config",
-  "**/.*"
+  /\/obj\//,
+  /\/bin\//,
+  /\.(vb|cs|suo|user)$/i,
+  /\/dnn\.json$/,
+  /\.[^./]{2}proj$/,
+  /\/web[^/]*\.config$/i,
+  /\/packages\.config$/,
+  /(^|\/)\./,
+  /\/launchSettings\.json$/,
 ];
 
 const allDlls = pkgBlog.pathsAndFiles.assemblies

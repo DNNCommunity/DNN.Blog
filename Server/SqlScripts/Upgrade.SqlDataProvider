@@ -861,7 +861,6 @@ SELECT
     WHERE (ur.EffectiveDate <= GETDATE() OR ur.EffectiveDate IS NULL) AND (ur.ExpiryDate >= GETDATE() OR ur.ExpiryDate IS NULL)
     and ur.UserID=@UserID) r  ON r.RoleID=bp.RoleId
  WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4) OR bp.RoleId=-1) AND bp.BlogId=b.BlogID AND bp.PermissionId=2) AS CanApprove
-
 FROM {databaseOwner}{objectQualifier}Blog_BlogList(@Locale) b
  WHERE b.BlogID=@BlogId
 END
@@ -957,7 +956,6 @@ SELECT
     WHERE (ur.EffectiveDate <= GETDATE() OR ur.EffectiveDate IS NULL) AND (ur.ExpiryDate >= GETDATE() OR ur.ExpiryDate IS NULL)
     and ur.UserID=@UserID) r  ON r.RoleID=bp.RoleId
  WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4) OR bp.RoleId=-1) AND bp.BlogId=b.BlogID AND bp.PermissionId=2) AS CanApprove
-
 FROM {databaseOwner}{objectQualifier}Blog_BlogList(@Locale) b
 WHERE b.ModuleID=@ModuleId
 END
@@ -996,7 +994,6 @@ SELECT
     WHERE (ur.EffectiveDate <= GETDATE() OR ur.EffectiveDate IS NULL) AND (ur.ExpiryDate >= GETDATE() OR ur.ExpiryDate IS NULL)
     and ur.UserID=@UserID) r  ON r.RoleID=bp.RoleId
  WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4) OR bp.RoleId=-1) AND bp.BlogId=b.BlogID AND bp.PermissionId=2) AS CanApprove
-
 FROM {databaseOwner}{objectQualifier}Blog_BlogList(@Locale) b
  INNER JOIN {databaseOwner}{objectQualifier}Modules m ON b.ModuleID=m.ModuleID
 WHERE m.PortalID=@PortalId

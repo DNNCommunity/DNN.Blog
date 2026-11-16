@@ -208,28 +208,49 @@ export default function PostEditApp(
                 <div className="blog-admin__field blog-admin__field--top blog-admin__field--full">
                   <label className="blog-admin__label">{L.summary}</label>
                   <div className="blog-admin__control">
-                    <LocaleHtmlField
-                      module={module}
-                      blogId={b.blogId}
-                      postId={b.postId}
-                      fieldName="Summary"
-                      valuesPrefix="Summaries"
-                      value={summary}
-                      onChange={setSummary}
-                      values={summaries}
-                      onValuesChange={(code, v) =>
-                        setSummaries((prev) => ({ ...prev, [code]: v }))
-                      }
-                      defaultLocale={b.defaultLocale}
-                      defaultFlagUrl={defaultLoc.FlagUrl}
-                      defaultLocaleName={defaultLoc.Name}
-                      useFullLocalization={b.useFullLocalization}
-                      otherLocales={b.otherLocales || []}
-                      useRichText={b.summaryIsHtml}
-                      editorMode={b.editorMode}
-                      rows={8}
-                      translationsLabel={L.translations}
-                    />
+                    {b.summaryIsHtml ? (
+                      <LocaleHtmlField
+                        module={module}
+                        blogId={b.blogId}
+                        postId={b.postId}
+                        fieldName="Summary"
+                        valuesPrefix="Summaries"
+                        value={summary}
+                        onChange={setSummary}
+                        values={summaries}
+                        onValuesChange={(code, v) =>
+                          setSummaries((prev) => ({ ...prev, [code]: v }))
+                        }
+                        defaultLocale={b.defaultLocale}
+                        defaultFlagUrl={defaultLoc.FlagUrl}
+                        defaultLocaleName={defaultLoc.Name}
+                        useFullLocalization={b.useFullLocalization}
+                        otherLocales={b.otherLocales || []}
+                        useRichText
+                        editorMode={b.editorMode}
+                        rows={8}
+                        translationsLabel={L.translations}
+                      />
+                    ) : (
+                      <LocaleTextField
+                        fieldName="Summary"
+                        valuesPrefix="Summaries"
+                        value={summary}
+                        onChange={setSummary}
+                        values={summaries}
+                        onValuesChange={(code, v) =>
+                          setSummaries((prev) => ({ ...prev, [code]: v }))
+                        }
+                        defaultLocale={b.defaultLocale}
+                        defaultFlagUrl={defaultLoc.FlagUrl}
+                        defaultLocaleName={defaultLoc.Name}
+                        useFullLocalization={b.useFullLocalization}
+                        otherLocales={b.otherLocales || []}
+                        translationsLabel={L.translations}
+                        multiline
+                        rows={8}
+                      />
+                    )}
                   </div>
                 </div>
 

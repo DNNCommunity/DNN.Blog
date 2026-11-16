@@ -1,49 +1,43 @@
 {
-  "name": "blog",
+  "name": "dnn-blog",
   "version": "7.0.0",
-  "description": "Blog module",
+  "description": "The DotNetNuke Blog module is an easy to use content publishing module that is tightly integrated with the core DotNetNuke framework. It can be used in single or multi-author environments and also permits content authoring using off-site tools such as Windows Live Writer.",
   "dnn": {
     "projectFolders": [
       "Server/Blog"
     ],
     "owner": {
       "name": "Peter Donker",
-      "organization": "Dnn",
-      "url": "dnn.com",
-      "email": "peter@bring2mind.net"
+      "organization": "DNN Connect",
+      "url": "http://dnn-connect.org",
+      "email": "info@dnn-connect.org"
     },
     "pathsAndFiles": {
       "solutionFile": "./Dnn.Blog.sln",
       "pathToAssemblies": "./bin",
-      "devSiteUrl": "",
-      "devSitePath": "",
       "excludeFilter": [
         "bin/",
         "obj/",
-        "node_modules"
+        "node_modules",
+        "**/launchSettings.json"
       ],
       "licenseFile": "./License.md",
-      "releaseNotesFile": "",
+      "releaseNotesFile": "./ReleaseNotes.md",
       "releaseFiles": [
-        "App_LocalResources/*.resx",
-        "**/*.ascx",
-        "**/*.ashx",
+        "**/*.resx",
+        "**/*.as?x",
         "**/*.cshtml",
         "**/*.vbhtml",
-        "js/*.js",
-        "css/*.css",
-        "*.css",
+        "**/*.js",
+        "**/*.css",
         "**/*.html",
         "**/*.png",
-        "**/*.jpg",
-        "**/*.jpeg",
         "**/*.gif",
-        "**/*.eot",
-        "**/*.svg",
-        "**/*.ttf",
-        "**/*.woff",
-        "**/*.woff2",
-        "*.txt"
+        "**/*.txt",
+        "fonts/*.*",
+        "images/*.*",
+        "Templates/*.xsd",
+        "Templates/**/*.xml"
       ],
       "zipName": "Dnn.Blog"
     }

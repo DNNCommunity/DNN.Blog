@@ -16,6 +16,9 @@ namespace DotNetNuke.Modules.Blog.Models
         public int BlogModuleId { get; set; } = -1;
         public int BlogId { get; set; } = -1;
         public string Categories { get; set; } = "";
+        public List<int> SelectedCategoryIds { get; set; } = new List<int>();
+        public List<PostCategoryNode> CategoryTree { get; set; } = new List<PostCategoryNode>();
+        public bool ShowCategories { get; set; }
         public int AuthorId { get; set; } = -1;
         public string Template { get; set; } = "[G]_default";
 

@@ -6,13 +6,13 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <Authors>Peter Donker</Authors>
-    <Company>Dnn</Company>
-    <Product>blog</Product>
-    <Copyright>Copyright 2026 by Dnn</Copyright>
+    <Company>DNN Connect</Company>
+    <Product>dnn-blog</Product>
+    <Copyright>Copyright 2026 by DNN Connect</Copyright>
     <PackageId>DotNetNuke.Modules.Blog</PackageId>
     <AssemblyVersion>7.0.0</AssemblyVersion>
     <FileVersion>7.0.0</FileVersion>
-    <Description>Blog module</Description>
+    <Description>The DotNetNuke Blog module is an easy to use content publishing module that is tightly integrated with the core DotNetNuke framework. It can be used in single or multi-author environments and also permits content authoring using off-site tools such as Windows Live Writer.</Description>
     <NeutralLanguage>en-US</NeutralLanguage>
     <ApplicationIcon />
     <OutputType>Library</OutputType>
@@ -34,6 +34,7 @@
     <Compile Remove="Templates\tagList\**" />
     <Compile Remove="Templates\timelineJS\**" />
     <Compile Remove="Templates\v60\**" />
+    <Compile Remove="Templates\v67\**" />
     <Compile Remove="Templates\_default\**" />
     <Content Remove="Templates\authorList\**" />
     <Content Remove="Templates\bigCalendar\**" />
@@ -49,6 +50,7 @@
     <Content Remove="Templates\tagList\**" />
     <Content Remove="Templates\timelineJS\**" />
     <Content Remove="Templates\v60\**" />
+    <Content Remove="Templates\v67\**" />
     <Content Remove="Templates\_default\**" />
     <EmbeddedResource Remove="Templates\authorList\**" />
     <EmbeddedResource Remove="Templates\bigCalendar\**" />
@@ -64,6 +66,7 @@
     <EmbeddedResource Remove="Templates\tagList\**" />
     <EmbeddedResource Remove="Templates\timelineJS\**" />
     <EmbeddedResource Remove="Templates\v60\**" />
+    <EmbeddedResource Remove="Templates\v67\**" />
     <EmbeddedResource Remove="Templates\_default\**" />
     <None Remove="Templates\authorList\**" />
     <None Remove="Templates\bigCalendar\**" />
@@ -79,9 +82,11 @@
     <None Remove="Templates\tagList\**" />
     <None Remove="Templates\timelineJS\**" />
     <None Remove="Templates\v60\**" />
+    <None Remove="Templates\v67\**" />
     <None Remove="Templates\_default\**" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.0" />
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net472" Version="1.0.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

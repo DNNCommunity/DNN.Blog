@@ -8,7 +8,7 @@
    [comment:comment]
   </div>
   <div class="blog_comment_actions">
-   <abbr title="[comment:CreatedOnDateUTC|u]" class="blog_commenttimeago"></abbr>
+   <time datetime="[comment:CreatedOnDateUTC|u]" title="[comment:CreatedOnDateUTC|u]">[comment:CreatedOnDate]</time>
    [subtemplate|CommentKarmaBar.html|security:loggedin|True]
    [subtemplate|CommentApproveBar.html|security:canapprovecomment|True]
    [if|1][security:canaddcomment][=]True[/if]

@@ -1,5 +1,6 @@
 @inherits BlogWebPage<DotNetNuke.Modules.Blog.Models.ManageViewModel>
 @using DotNetNuke.Modules.Blog.Common
+@using DotNetNuke.Modules.Blog.Models
 @using System.Linq
 @{
   var security = BlogModuleContext.Security;
@@ -12,6 +13,37 @@
   });
   var blogsJson = Newtonsoft.Json.JsonConvert.SerializeObject(
     Model.Blogs.Select(b => new { BlogId = b.BlogID, Title = b.Title }));
+
+  Func<string, string> ToLocalPath = url =>
+  {
+    if (string.IsNullOrWhiteSpace(url))
+    {
+      return url ?? "";
+    }
+    System.Uri absolute;
+    if (System.Uri.TryCreate(url, System.UriKind.Absolute, out absolute))
+    {
+      return absolute.PathAndQuery;
+    }
+    return url;
+  };
+
+  // Use "section" — DNN reserves "tab" for page (TabId) routing.
+  // Keep section in the query string so return URLs survive DNN friendly-URL rewriting.
+  string manageBaseUrl = Url.Action("Index", "Manage") ?? "";
+  string postsSectionUrl = manageBaseUrl + (manageBaseUrl.IndexOf('?') >= 0 ? "&" : "?") + "section=" + ManageViewModel.SectionPosts;
+  string blogsSectionUrl = manageBaseUrl + (manageBaseUrl.IndexOf('?') >= 0 ? "&" : "?") + "section=" + ManageViewModel.SectionBlogs;
+  string apiTokensSectionUrl = manageBaseUrl + (manageBaseUrl.IndexOf('?') >= 0 ? "&" : "?") + "section=" + ManageViewModel.SectionApiTokens;
+  string postsReturnUrl = ToLocalPath(postsSectionUrl);
+
+  int visibleSections =
+    (Model.ShowPostsSection ? 1 : 0) +
+    (Model.ShowBlogsSection ? 1 : 0) +
+    (Model.ShowApiTokensSection ? 1 : 0);
+  bool showTabs = visibleSections > 1;
+  bool postsActive = Model.ActiveSection == ManageViewModel.SectionPosts;
+  bool blogsActive = Model.ActiveSection == ManageViewModel.SectionBlogs;
+  bool apiTokensActive = Model.ActiveSection == ManageViewModel.SectionApiTokens;
 }
 <div class="blog-manage">
   <header class="blog-manage__header">
@@ -19,10 +51,73 @@
     <p class="blog-manage__subtitle">Blogs and posts for this module</p>
   </header>
 
-  @if (Model.ShowBlogsSection)
+  @if (showTabs)
   {
-    <section class="blog-manage__section">
-      <h2 class="blog-manage__section-title">@Dnn.LocalizeString("Blogs")</h2>
+    <nav class="blog-manage__tablist" role="tablist" aria-label="Manage sections">
+      @if (Model.ShowPostsSection)
+      {
+        <a role="tab"
+           class="blog-manage__tab@(postsActive ? " is-active" : "")"
+           href="@postsSectionUrl"
+           aria-selected="@(postsActive ? "true" : "false")"
+           id="manage-tab-posts">@Dnn.LocalizeString("Posts")</a>
+      }
+      @if (Model.ShowBlogsSection)
+      {
+        <a role="tab"
+           class="blog-manage__tab@(blogsActive ? " is-active" : "")"
+           href="@blogsSectionUrl"
+           aria-selected="@(blogsActive ? "true" : "false")"
+           id="manage-tab-blogs">@Dnn.LocalizeString("Blogs")</a>
+      }
+      @if (Model.ShowApiTokensSection)
+      {
+        <a role="tab"
+           class="blog-manage__tab@(apiTokensActive ? " is-active" : "")"
+           href="@apiTokensSectionUrl"
+           aria-selected="@(apiTokensActive ? "true" : "false")"
+           id="manage-tab-apitokens">@Dnn.LocalizeString("ApiTokens")</a>
+      }
+    </nav>
+  }
+
+  @if (Model.ShowPostsSection && postsActive)
+  {
+    <section class="blog-manage__section"
+             role="tabpanel"
+             aria-labelledby="@(showTabs ? "manage-tab-posts" : null)">
+      @if (!showTabs)
+      {
+        <h2 class="blog-manage__section-title">@Dnn.LocalizeString("Posts")</h2>
+      }
+      <div class="DotNetNukeBlog"
+           data-moduleid="@Dnn.ActiveModule.ModuleID"
+           data-tabid="@Dnn.ActiveModule.TabID"
+           data-locale="@Locale"
+           data-resources="@SerializedResources()"
+           data-security="@securityJson">
+      </div>
+      <div class="Blog"
+           data-moduleid="@Dnn.ActiveModule.ModuleID"
+           data-component="posts-manage-table"
+           data-edit-url="@Url.Action("Edit", "Post", new { returnUrl = postsReturnUrl })"
+           data-blogs="@blogsJson"
+           data-delete-confirm="@(Dnn.LocalizeString("DeletePost") ?? "Delete this post?")"
+           data-delete-label="@(Dnn.LocalizeString("Delete") ?? "Delete")"
+           data-cancel-label="@(Dnn.LocalizeString("Cancel") ?? "Cancel")">
+      </div>
+    </section>
+  }
+
+  @if (Model.ShowBlogsSection && blogsActive)
+  {
+    <section class="blog-manage__section"
+             role="tabpanel"
+             aria-labelledby="@(showTabs ? "manage-tab-blogs" : null)">
+      @if (!showTabs)
+      {
+        <h2 class="blog-manage__section-title">@Dnn.LocalizeString("Blogs")</h2>
+      }
       <div class="blog-manage__table-wrap">
         <table class="blog-manage__table">
           <thead>
@@ -67,10 +162,15 @@
     </section>
   }
 
-  @if (Model.ShowPostsSection)
+  @if (Model.ShowApiTokensSection && apiTokensActive)
   {
-    <section class="blog-manage__section">
-      <h2 class="blog-manage__section-title">@Dnn.LocalizeString("Posts")</h2>
+    <section class="blog-manage__section"
+             role="tabpanel"
+             aria-labelledby="@(showTabs ? "manage-tab-apitokens" : null)">
+      @if (!showTabs)
+      {
+        <h2 class="blog-manage__section-title">@Dnn.LocalizeString("ApiTokens")</h2>
+      }
       <div class="DotNetNukeBlog"
            data-moduleid="@Dnn.ActiveModule.ModuleID"
            data-tabid="@Dnn.ActiveModule.TabID"
@@ -78,14 +178,30 @@
            data-resources="@SerializedResources()"
            data-security="@securityJson">
       </div>
-      <div class="Blog"
+      <div class="BlogApiTokens"
            data-moduleid="@Dnn.ActiveModule.ModuleID"
-           data-component="posts-manage-table"
-           data-edit-url="@Url.Action("Edit", "Post", new { returnUrl = Url.Action("Index", "Manage") })"
-           data-blogs="@blogsJson"
-           data-delete-confirm="@(Dnn.LocalizeString("DeletePost") ?? "Delete this post?")"
-           data-delete-label="@(Dnn.LocalizeString("Delete") ?? "Delete")"
-           data-cancel-label="@(Dnn.LocalizeString("Cancel") ?? "Cancel")">
+           data-component="api-tokens-manager"
+           data-add-label="@(Dnn.LocalizeString("AddToken") ?? "Add Token")"
+           data-name-label="@(Dnn.LocalizeString("TokenName") ?? "Token name")"
+           data-create-title="@(Dnn.LocalizeString("CreateTokenTitle") ?? "Create API Token")"
+           data-create-label="@(Dnn.LocalizeString("CreateToken") ?? "Create")"
+           data-cancel-label="@(Dnn.LocalizeString("Cancel") ?? "Cancel")"
+           data-token-created-title="@(Dnn.LocalizeString("TokenCreatedTitle") ?? "Your API Token")"
+           data-token-created-warning="@(Dnn.LocalizeString("TokenCreatedWarning") ?? "Copy this token now. It cannot be shown again.")"
+           data-close-label="@(Dnn.LocalizeString("Close") ?? "Close")"
+           data-copy-label="@(Dnn.LocalizeString("CopyToken") ?? "Copy")"
+           data-revoke-label="@(Dnn.LocalizeString("Revoke") ?? "Revoke")"
+           data-revoke-confirm="@(Dnn.LocalizeString("RevokeTokenConfirm") ?? "Revoke this API token? It will stop working immediately.")"
+           data-name-header="@(Dnn.LocalizeString("TokenNameHeader") ?? "Name")"
+           data-created-header="@(Dnn.LocalizeString("CreatedHeader") ?? "Created")"
+           data-expires-header="@(Dnn.LocalizeString("ExpiresHeader") ?? "Expires")"
+           data-last-used-header="@(Dnn.LocalizeString("LastUsedHeader") ?? "Last Used")"
+           data-status-header="@(Dnn.LocalizeString("StatusHeader") ?? "Status")"
+           data-actions-header="@(Dnn.LocalizeString("ActionsHeader") ?? "Actions")"
+           data-status-active="@(Dnn.LocalizeString("StatusActive") ?? "Active")"
+           data-status-revoked="@(Dnn.LocalizeString("StatusRevoked") ?? "Revoked")"
+           data-status-expired="@(Dnn.LocalizeString("StatusExpired") ?? "Expired")"
+           data-empty-label="@(Dnn.LocalizeString("NoApiTokens") ?? "No API tokens yet.")">
       </div>
     </section>
   }

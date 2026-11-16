@@ -92,7 +92,7 @@ function normalizeBootstrap(raw: any): IPostEditBootstrap {
     contents: pick(raw, "contents", "Contents", {}),
     published: !!pick(raw, "published", "Published", true),
     publishCanChange: pick<boolean>(raw, "publishCanChange", "PublishCanChange", true) !== false,
-    publishNow: !!pick(raw, "publishNow", "PublishNow", true),
+    publishNow: !!pick(raw, "publishNow", "PublishNow", false),
     publishDate: pick(raw, "publishDate", "PublishDate", ""),
     timezoneDisplay: pick(raw, "timezoneDisplay", "TimezoneDisplay", ""),
     allowComments: !!pick(raw, "allowComments", "AllowComments", true),

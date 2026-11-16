@@ -150,8 +150,6 @@ namespace DotNetNuke.Modules.Blog.Common
             if (Page == null || HttpContext.Current.Items["BlogModuleBaseInitialized"] != null)
                 return;
 
-            JavaScript.RequestRegistration(CommonJs.jQuery);
-            JavaScript.RequestRegistration(CommonJs.jQueryUI);
             var script = new StringBuilder();
             script.AppendLine("<script type=\"text/javascript\">");
             script.AppendLine("//<![CDATA[");

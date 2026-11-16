@@ -115,7 +115,7 @@ namespace DotNetNuke.Modules.Blog.Core.Security
                 return true;
             if (post is null)
                 return false;
-            if (post.Blog.MustApproveGhostPosts && !CanApprovePost)
+            if (post.Blog != null && post.Blog.MustApproveGhostPosts && !CanApprovePost)
             {
                 if (post.CreatedByUserID == _userId & !post.Published)
                     return true;

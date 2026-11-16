@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Share.Text" xml:space="preserve">
+    <value>Share</value>
+  </data>
+  <data name="WrittenBy.Text" xml:space="preserve">
+    <value>Written By</value>
+  </data>
+  <data name="Tags.Text" xml:space="preserve">
+    <value>Tags</value>
+  </data>
+  <data name="Allposts.Text" xml:space="preserve">
+    <value>All Posts</value>
+  </data>
+  <data name="Back.Text" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="By.Text" xml:space="preserve">
+    <value>by</value>
+  </data>
+  <data name="Comment.Text" xml:space="preserve">
+    <value>Comment</value>
+  </data>
+  <data name="Comments.Text" xml:space="preserve">
+    <value>Comment(s)</value>
+  </data>
+  <data name="Contents.Text" xml:space="preserve">
+    <value>Contents</value>
+  </data>
+  <data name="DeleteComment.Confirm" xml:space="preserve">
+    <value>Delete the comment? This cannot be undone.</value>
+  </data>
+  <data name="DeleteComment.Text" xml:space="preserve">
+    <value>delete</value>
+  </data>
+  <data name="DislikeComment.Text" xml:space="preserve">
+    <value>Dislike Comment</value>
+  </data>
+  <data name="In.Text" xml:space="preserve">
+    <value>In</value>
+  </data>
+  <data name="LikeComment.Text" xml:space="preserve">
+    <value>Like Comment</value>
+  </data>
+  <data name="pagesize.Help" xml:space="preserve">
+    <value>Specify the number of posts to show per page. -1 = do not page.</value>
+  </data>
+  <data name="pagesize.Text" xml:space="preserve">
+    <value>Page Size</value>
+  </data>
+  <data name="Posts.Text" xml:space="preserve">
+    <value>post(s)</value>
+  </data>
+  <data name="Reply.Text" xml:space="preserve">
+    <value>reply</value>
+  </data>
+  <data name="ReportComment.Confirm" xml:space="preserve">
+    <value>Do you wish to report this comment as inappropriate?</value>
+  </data>
+  <data name="ReportComment.Text" xml:space="preserve">
+    <value>Report Comment</value>
+  </data>
+  <data name="Search.Text" xml:space="preserve">
+    <value>Searching for</value>
+  </data>
+  <data name="Title.Text" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="Total.Text" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="ReadMore.Text" xml:space="preserve">
+    <value>Read more ...</value>
+  </data>
+  <data name="Approve.Text" xml:space="preserve">
+    <value>approve</value>
+  </data>
+  <data name="Delete.Text" xml:space="preserve">
+    <value>delete</value>
+  </data>
+  <data name="Dislike.Text" xml:space="preserve">
+    <value>dislike</value>
+  </data>
+  <data name="Like.Text" xml:space="preserve">
+    <value>like</value>
+  </data>
+  <data name="Report.Text" xml:space="preserve">
+    <value>report</value>
+  </data>
+  <data name="Unpublished.Text" xml:space="preserve">
+    <value>Unpublished</value>
+  </data>
+</root>

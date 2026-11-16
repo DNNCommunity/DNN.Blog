@@ -179,6 +179,11 @@ export function createMarkdownEngine(host: EngineHost): EditorEngine {
     syncPanels();
   });
 
+  // Trailing slot for optional controls (e.g. locale switcher) at top-right.
+  const toolbarEnd = document.createElement("div");
+  toolbarEnd.className = "bre__toolbar-end";
+  toolbar.appendChild(toolbarEnd);
+
   const body = document.createElement("div");
   body.className = "bre__body";
   const editorMount = document.createElement("div");

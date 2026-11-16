@@ -5,29 +5,40 @@ using DotNetNuke.Modules.Blog.Core.Common;
 using DotNetNuke.Modules.Blog.Core.Integration;
 using DotNetNuke.Modules.Blog.Models;
 using DotNetNuke.Services.Localization;
-using DnnHandleErrorAttribute = DotNetNuke.Web.Mvc.Framework.ActionFilters.DnnHandleErrorAttribute;
+using DotNetNuke.Web.Mvc.Framework.ActionFilters;
+using Microsoft.Extensions.Logging;
 
 namespace DotNetNuke.Modules.Blog.Controllers
 {
-    [DnnHandleErrorAttribute]
+    [DnnHandleError]
     public class AdminController : BlogMvcController
     {
+        private readonly ILogger<AdminController> _logger;
+
+        public AdminController(ILogger<AdminController> logger) : base()
+        {
+            _logger = logger;
+        }
+
         [HttpGet]
         public ActionResult Index()
         {
+            _logger.LogDebug("Admin Index GET by user {UserId}, module {ModuleId}", User.UserID, ModuleContext.ModuleId);
             BlogModuleContext.EnsureInitialized();
             BlogModuleContext.RequirePermissionLevel(BlogModuleContext.Security.IsEditor);
             BlogModuleContext.RegisterAjaxScript();
             BlogModuleContext.AddModuleCss();
             BlogModuleContext.AddScript("blog.js");
+            _logger.LogInformation("Admin settings page rendered for module {ModuleId}", ModuleContext.ModuleId);
             return View(BuildViewModel());
         }
 
         [HttpPost]
         [ValidateInput(false)]
-        [ValidateAntiForgeryToken]
+        [Web.Api.ValidateAntiForgeryToken]
         public ActionResult Index(ModuleSettings settings)
         {
+            _logger.LogDebug("Admin Index POST by user {UserId}, module {ModuleId}", User.UserID, ModuleContext.ModuleId);
             BlogModuleContext.RequirePermissionLevel(BlogModuleContext.Security.IsEditor);
 
             var current = BlogModuleContext.Settings;
@@ -54,17 +65,21 @@ namespace DotNetNuke.Modules.Blog.Controllers
             current.EditorMode = editorMode == "markdown" ? "markdown" : "html";
             current.SaveSettings();
 
+            _logger.LogInformation("Admin settings saved for module {ModuleId}: vocabulary {VocabularyId}, editorMode {EditorMode}",
+                ModuleContext.ModuleId, current.VocabularyId, current.EditorMode);
             return Redirect(Url.Action("Index", "Admin"));
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [Web.Api.ValidateAntiForgeryToken]
         public ActionResult CreateVocabulary()
         {
+            _logger.LogDebug("CreateVocabulary requested by user {UserId}, module {ModuleId}", User.UserID, ModuleContext.ModuleId);
             BlogModuleContext.RequirePermissionLevel(BlogModuleContext.Security.IsEditor);
             var settings = BlogModuleContext.Settings;
             settings.VocabularyId = Integration.CreateNewVocabulary(PortalSettings.PortalId).VocabularyId;
             settings.SaveSettings();
+            _logger.LogInformation("Created vocabulary {VocabularyId} for module {ModuleId}", settings.VocabularyId, ModuleContext.ModuleId);
             return Redirect(Url.Action("Index", "Admin"));
         }
 

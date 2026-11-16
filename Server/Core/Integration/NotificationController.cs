@@ -77,8 +77,10 @@ namespace DotNetNuke.Modules.Blog.Core.Integration
     {
       var notificationType = GetNotificationType(Integration.NotificationPublishingTypeName);
       var notificationKey = new NotificationKey(Integration.ContentTypeName, moduleId, blogId, PostId, -1);
-      var objNotify = Framework.ServiceLocator<INotificationsController, NotificationsController>.Instance.GetNotificationByContext(notificationType.NotificationTypeId, notificationKey.ToString()).SingleOrDefault();
-      if (objNotify != null)
+      var notifications = Framework.ServiceLocator<INotificationsController, NotificationsController>.Instance
+          .GetNotificationByContext(notificationType.NotificationTypeId, notificationKey.ToString());
+      // Create + update can leave multiple pending notifications for the same post.
+      foreach (var objNotify in notifications)
       {
         Framework.ServiceLocator<INotificationsController, NotificationsController>.Instance.DeleteAllNotificationRecipients(objNotify.NotificationID);
       }

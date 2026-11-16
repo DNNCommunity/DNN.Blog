@@ -17,6 +17,7 @@
   var saveLabel = L("cmdSave", "Save");
   var cancelLabel = L("Cancel", "Cancel");
   var deleteLabel = L("Delete", "Delete");
+  var addLabel = L("Add", "Add");
   var pageTitle = Model.IsNew ? "New blog" : L("ControlTitle_blogedit", "Edit Blog");
   var contentFormatDisabled = Model.IsNew ? null : "disabled";
   var contentFormatHtml = Model.ContentFormat == 0 ? "selected" : null;
@@ -24,11 +25,26 @@
   var hintTitle = H("lblTitle");
   var hintDescription = H("lblDescription");
   var hintContentFormat = H("lblContentFormat");
+  var hintLocale = H("lblLocale");
+  var hintFullLocalization = H("lblFullLocalization");
+  var hintImage = H("lblImage");
   var hintPublished = H("lblPublic");
   var hintSyndicated = H("lblSyndicate");
+  var hintSyndicationEmail = H("lblSyndicationEmail");
   var hintCopyright = H("lblCopyright");
+  var hintIncludeImages = H("lblIncludeImagesInFeed");
+  var hintIncludeAuthor = H("lblIncludeAuthorInFeed");
   var hintPingbacks = H("lblPingbacks");
   var hintTrackbacks = H("lblTrackbacks");
+  var hintMustApprove = H("lblMustApproveGhostPosts");
+  var hintPublishAsOwner = H("lblPublishAsOwner");
+  var hintPermissions = H("lblPermissions");
+  var sendLabel = L("Send", "Send");
+  var receiveLabel = L("Receive", "Receive");
+  var autoApproveLabel = L("AutoApprove", "Auto Approve");
+  var removeImageLabel = L("cmdImageRemove", "Remove Image");
+  var manageUrl = Url.Action("Index", "Manage") ?? "";
+  var manageBlogsUrl = manageUrl + (manageUrl.IndexOf('?') >= 0 ? "&" : "?") + "section=blogs";
 }
 <div class="blog-admin">
   <header class="blog-admin__header">
@@ -36,10 +52,12 @@
     <p class="blog-admin__subtitle">@(Model.IsNew ? "Create a blog for this module" : "Blog options and syndication")</p>
   </header>
 
-  <form action="@Url.Action("Edit", "Blog")" method="post">
+  <form action="@Url.Action("Edit", "Blog")" method="post" id="blog-edit-form" enctype="multipart/form-data">
     @MvcHtml.AntiForgeryToken()
     @Html.HiddenFor(m => m.BlogId)
     @Html.HiddenFor(m => m.IsNew)
+    @Html.HiddenFor(m => m.ImageKey)
+    <input type="hidden" name="permissionAction" id="permissionAction" value="" />
 
     <section class="blog-admin__section">
       <h2 class="blog-admin__section-title">@L("General", "General")</h2>
@@ -77,14 +95,69 @@
             }
           </div>
         </div>
-        <div class="blog-admin__field">
+        @if (Model.ShowLocaleFields)
+        {
+          <div class="blog-admin__field">
+            <label class="blog-admin__label" for="Locale">@L("lblLocale", "Language")</label>
+            <div class="blog-admin__control">
+              <select id="Locale" name="Locale" class="blog-admin__input" aria-describedby="@(string.IsNullOrEmpty(hintLocale) ? null : "hint-Locale")">
+                @foreach (var loc in Model.LocaleOptions)
+                {
+                  <option value="@loc.Code" @(string.Equals(Model.Locale, loc.Code, StringComparison.OrdinalIgnoreCase) ? "selected" : null)>@loc.Name</option>
+                }
+              </select>
+              @if (!string.IsNullOrEmpty(hintLocale))
+              {
+                <p class="blog-admin__field-hint" id="hint-Locale">@hintLocale</p>
+              }
+            </div>
+          </div>
+          <div class="blog-admin__field blog-admin__field--check">
+            <label class="blog-admin__label" for="FullLocalization">@L("lblFullLocalization", "Full Localization")</label>
+            <div class="blog-admin__control">
+              <div class="blog-admin__check-row">
+                @Html.CheckBoxFor(m => m.FullLocalization, new { id = "FullLocalization", aria_describedby = string.IsNullOrEmpty(hintFullLocalization) ? null : "hint-FullLocalization" })
+                @if (!string.IsNullOrEmpty(hintFullLocalization))
+                {
+                  <span class="blog-admin__field-hint blog-admin__field-hint--beside" id="hint-FullLocalization">@hintFullLocalization</span>
+                }
+              </div>
+            </div>
+          </div>
+        }
+        <div class="blog-admin__field blog-admin__field--top">
+          <label class="blog-admin__label" for="ImageFile">@L("lblImage", "Image")</label>
+          <div class="blog-admin__control">
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+              <div class="blog-admin__image-preview">
+                <img src="@Model.ImageUrl" alt="" width="100" height="100" />
+              </div>
+            }
+            <input type="file" id="ImageFile" name="ImageFile" class="blog-admin__input" accept=".jpg,.jpeg,.png,.gif,.bmp" aria-describedby="@(string.IsNullOrEmpty(hintImage) ? null : "hint-Image")" />
+            @if (!string.IsNullOrEmpty(Model.ImageKey))
+            {
+              <div class="blog-admin__check-row" style="margin-top:0.5rem">
+                <input type="checkbox" id="RemoveImage" name="RemoveImage" value="true" />
+                <label for="RemoveImage">@removeImageLabel</label>
+              </div>
+            }
+            @if (!string.IsNullOrEmpty(hintImage))
+            {
+              <p class="blog-admin__field-hint" id="hint-Image">@hintImage</p>
+            }
+          </div>
+        </div>
+        <div class="blog-admin__field blog-admin__field--check">
           <label class="blog-admin__label" for="Published">@L("lblPublic", "Published")</label>
           <div class="blog-admin__control">
-            @Html.CheckBoxFor(m => m.Published, new { id = "Published", aria_describedby = string.IsNullOrEmpty(hintPublished) ? null : "hint-Published" })
-            @if (!string.IsNullOrEmpty(hintPublished))
-            {
-              <p class="blog-admin__field-hint" id="hint-Published">@hintPublished</p>
-            }
+            <div class="blog-admin__check-row">
+              @Html.CheckBoxFor(m => m.Published, new { id = "Published", aria_describedby = string.IsNullOrEmpty(hintPublished) ? null : "hint-Published" })
+              @if (!string.IsNullOrEmpty(hintPublished))
+              {
+                <span class="blog-admin__field-hint blog-admin__field-hint--beside" id="hint-Published">@hintPublished</span>
+              }
+            </div>
           </div>
         </div>
       </div>
@@ -93,13 +166,25 @@
     <section class="blog-admin__section">
       <h2 class="blog-admin__section-title">Syndication</h2>
       <div class="blog-admin__fields">
-        <div class="blog-admin__field">
+        <div class="blog-admin__field blog-admin__field--check">
           <label class="blog-admin__label" for="Syndicated">@L("lblSyndicate", "Syndicated")</label>
           <div class="blog-admin__control">
-            @Html.CheckBoxFor(m => m.Syndicated, new { id = "Syndicated", aria_describedby = string.IsNullOrEmpty(hintSyndicated) ? null : "hint-Syndicated" })
-            @if (!string.IsNullOrEmpty(hintSyndicated))
+            <div class="blog-admin__check-row">
+              @Html.CheckBoxFor(m => m.Syndicated, new { id = "Syndicated", aria_describedby = string.IsNullOrEmpty(hintSyndicated) ? null : "hint-Syndicated" })
+              @if (!string.IsNullOrEmpty(hintSyndicated))
+              {
+                <span class="blog-admin__field-hint blog-admin__field-hint--beside" id="hint-Syndicated">@hintSyndicated</span>
+              }
+            </div>
+          </div>
+        </div>
+        <div class="blog-admin__field">
+          <label class="blog-admin__label" for="SyndicationEmail">@L("lblSyndicationEmail", "Syndication Email")</label>
+          <div class="blog-admin__control">
+            @Html.TextBoxFor(m => m.SyndicationEmail, new { @class = "blog-admin__input", id = "SyndicationEmail", type = "email", aria_describedby = string.IsNullOrEmpty(hintSyndicationEmail) ? null : "hint-SyndicationEmail" })
+            @if (!string.IsNullOrEmpty(hintSyndicationEmail))
             {
-              <p class="blog-admin__field-hint" id="hint-Syndicated">@hintSyndicated</p>
+              <p class="blog-admin__field-hint" id="hint-SyndicationEmail">@hintSyndicationEmail</p>
             }
           </div>
         </div>
@@ -113,56 +198,229 @@
             }
           </div>
         </div>
+        <div class="blog-admin__field blog-admin__field--check">
+          <label class="blog-admin__label" for="IncludeImagesInFeed">@L("lblIncludeImagesInFeed", "Include Images In Feed")</label>
+          <div class="blog-admin__control">
+            <div class="blog-admin__check-row">
+              @Html.CheckBoxFor(m => m.IncludeImagesInFeed, new { id = "IncludeImagesInFeed", aria_describedby = string.IsNullOrEmpty(hintIncludeImages) ? null : "hint-IncludeImagesInFeed" })
+              @if (!string.IsNullOrEmpty(hintIncludeImages))
+              {
+                <span class="blog-admin__field-hint blog-admin__field-hint--beside" id="hint-IncludeImagesInFeed">@hintIncludeImages</span>
+              }
+            </div>
+          </div>
+        </div>
+        <div class="blog-admin__field blog-admin__field--check">
+          <label class="blog-admin__label" for="IncludeAuthorInFeed">@L("lblIncludeAuthorInFeed", "Include Author in Rss Feed")</label>
+          <div class="blog-admin__control">
+            <div class="blog-admin__check-row">
+              @Html.CheckBoxFor(m => m.IncludeAuthorInFeed, new { id = "IncludeAuthorInFeed", aria_describedby = string.IsNullOrEmpty(hintIncludeAuthor) ? null : "hint-IncludeAuthorInFeed" })
+              @if (!string.IsNullOrEmpty(hintIncludeAuthor))
+              {
+                <span class="blog-admin__field-hint blog-admin__field-hint--beside" id="hint-IncludeAuthorInFeed">@hintIncludeAuthor</span>
+              }
+            </div>
+          </div>
+        </div>
+        <div class="blog-admin__field">
+          <span class="blog-admin__label blog-admin__label--plain">@L("lblPingbacks", "Pingbacks")</span>
+          <div class="blog-admin__control">
+            <div class="blog-admin__inline-checks" aria-describedby="@(string.IsNullOrEmpty(hintPingbacks) ? null : "hint-Pingbacks")">
+              <label class="blog-admin__inline-check">
+                @Html.CheckBoxFor(m => m.EnablePingBackSend, new { id = "EnablePingBackSend" })
+                <span>@sendLabel</span>
+              </label>
+              <label class="blog-admin__inline-check">
+                @Html.CheckBoxFor(m => m.EnablePingBackReceive, new { id = "EnablePingBackReceive" })
+                <span>@receiveLabel</span>
+              </label>
+              <label class="blog-admin__inline-check">
+                @Html.CheckBoxFor(m => m.AutoApprovePingBack, new { id = "AutoApprovePingBack" })
+                <span>@autoApproveLabel</span>
+              </label>
+            </div>
+            @if (!string.IsNullOrEmpty(hintPingbacks))
+            {
+              <p class="blog-admin__field-hint" id="hint-Pingbacks">@hintPingbacks</p>
+            }
+          </div>
+        </div>
+        <div class="blog-admin__field">
+          <span class="blog-admin__label blog-admin__label--plain">@L("lblTrackbacks", "Trackbacks")</span>
+          <div class="blog-admin__control">
+            <div class="blog-admin__inline-checks" aria-describedby="@(string.IsNullOrEmpty(hintTrackbacks) ? null : "hint-Trackbacks")">
+              <label class="blog-admin__inline-check">
+                @Html.CheckBoxFor(m => m.EnableTrackBackSend, new { id = "EnableTrackBackSend" })
+                <span>@sendLabel</span>
+              </label>
+              <label class="blog-admin__inline-check">
+                @Html.CheckBoxFor(m => m.EnableTrackBackReceive, new { id = "EnableTrackBackReceive" })
+                <span>@receiveLabel</span>
+              </label>
+              <label class="blog-admin__inline-check">
+                @Html.CheckBoxFor(m => m.AutoApproveTrackBack, new { id = "AutoApproveTrackBack" })
+                <span>@autoApproveLabel</span>
+              </label>
+            </div>
+            @if (!string.IsNullOrEmpty(hintTrackbacks))
+            {
+              <p class="blog-admin__field-hint" id="hint-Trackbacks">@hintTrackbacks</p>
+            }
+          </div>
+        </div>
       </div>
+    </section>
 
-      <h3 class="blog-admin__section-title" style="margin-top:1.25rem">@L("lblPingbacks", "Pingbacks")</h3>
-      @if (!string.IsNullOrEmpty(hintPingbacks))
-      {
-        <p class="blog-admin__section-help">@hintPingbacks</p>
-      }
+    <section class="blog-admin__section">
+      <h2 class="blog-admin__section-title">@L("lblGhostOptions", "Permissions")</h2>
       <div class="blog-admin__fields">
-        <div class="blog-admin__field">
-          <label class="blog-admin__label" for="EnablePingBackSend">@L("Send", "Pingback send")</label>
+        <div class="blog-admin__field blog-admin__field--check">
+          <label class="blog-admin__label" for="MustApproveGhostPosts">@L("lblMustApproveGhostPosts", "Must Approve Ghostwritten Posts")</label>
           <div class="blog-admin__control">
-            @Html.CheckBoxFor(m => m.EnablePingBackSend, new { id = "EnablePingBackSend" })
+            <div class="blog-admin__check-row">
+              @Html.CheckBoxFor(m => m.MustApproveGhostPosts, new { id = "MustApproveGhostPosts", aria_describedby = string.IsNullOrEmpty(hintMustApprove) ? null : "hint-MustApproveGhostPosts" })
+              @if (!string.IsNullOrEmpty(hintMustApprove))
+              {
+                <span class="blog-admin__field-hint blog-admin__field-hint--beside" id="hint-MustApproveGhostPosts">@hintMustApprove</span>
+              }
+            </div>
           </div>
         </div>
-        <div class="blog-admin__field">
-          <label class="blog-admin__label" for="EnablePingBackReceive">@L("Receive", "Pingback receive")</label>
+        <div class="blog-admin__field blog-admin__field--check">
+          <label class="blog-admin__label" for="PublishAsOwner">@L("lblPublishAsOwner", "Publish As Owner")</label>
           <div class="blog-admin__control">
-            @Html.CheckBoxFor(m => m.EnablePingBackReceive, new { id = "EnablePingBackReceive" })
+            <div class="blog-admin__check-row">
+              @Html.CheckBoxFor(m => m.PublishAsOwner, new { id = "PublishAsOwner", aria_describedby = string.IsNullOrEmpty(hintPublishAsOwner) ? null : "hint-PublishAsOwner" })
+              @if (!string.IsNullOrEmpty(hintPublishAsOwner))
+              {
+                <span class="blog-admin__field-hint blog-admin__field-hint--beside" id="hint-PublishAsOwner">@hintPublishAsOwner</span>
+              }
+            </div>
           </div>
         </div>
-        <div class="blog-admin__field">
-          <label class="blog-admin__label" for="AutoApprovePingBack">@L("AutoApprove", "Auto-approve pingback")</label>
+        <div class="blog-admin__field blog-admin__field--top">
+          <span class="blog-admin__label">@L("lblPermissions", "Permissions")</span>
           <div class="blog-admin__control">
-            @Html.CheckBoxFor(m => m.AutoApprovePingBack, new { id = "AutoApprovePingBack" })
-          </div>
-        </div>
-      </div>
+            @if (!string.IsNullOrEmpty(hintPermissions))
+            {
+              <p class="blog-admin__field-hint" id="hint-Permissions" style="margin-top:0;margin-bottom:0.75rem">@hintPermissions</p>
+            }
 
-      <h3 class="blog-admin__section-title" style="margin-top:1.25rem">@L("lblTrackbacks", "Trackbacks")</h3>
-      @if (!string.IsNullOrEmpty(hintTrackbacks))
-      {
-        <p class="blog-admin__section-help">@hintTrackbacks</p>
-      }
-      <div class="blog-admin__fields">
-        <div class="blog-admin__field">
-          <label class="blog-admin__label" for="EnableTrackBackSend">@L("Send", "Trackback send")</label>
-          <div class="blog-admin__control">
-            @Html.CheckBoxFor(m => m.EnableTrackBackSend, new { id = "EnableTrackBackSend" })
-          </div>
-        </div>
-        <div class="blog-admin__field">
-          <label class="blog-admin__label" for="EnableTrackBackReceive">@L("Receive", "Trackback receive")</label>
-          <div class="blog-admin__control">
-            @Html.CheckBoxFor(m => m.EnableTrackBackReceive, new { id = "EnableTrackBackReceive" })
-          </div>
-        </div>
-        <div class="blog-admin__field">
-          <label class="blog-admin__label" for="AutoApproveTrackBack">@L("AutoApprove", "Auto-approve trackback")</label>
-          <div class="blog-admin__control">
-            @Html.CheckBoxFor(m => m.AutoApproveTrackBack, new { id = "AutoApproveTrackBack" })
+            @if (Model.PermissionColumns != null)
+            {
+              for (var c = 0; c < Model.PermissionColumns.Count; c++)
+              {
+                @Html.HiddenFor(m => m.PermissionColumns[c].PermissionId)
+                @Html.HiddenFor(m => m.PermissionColumns[c].PermissionKey)
+                @Html.HiddenFor(m => m.PermissionColumns[c].Header)
+              }
+            }
+
+            <div class="blog-admin__perm-grid-wrap">
+              <table class="blog-admin__perm-grid">
+                <colgroup>
+                  <col class="blog-admin__perm-col-name" />
+                  @if (Model.PermissionColumns != null)
+                  {
+                    foreach (var col in Model.PermissionColumns)
+                    {
+                      <col class="blog-admin__perm-col-check" />
+                    }
+                  }
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th scope="col" class="blog-admin__perm-name">Role / User</th>
+                    @if (Model.PermissionColumns != null)
+                    {
+                      foreach (var col in Model.PermissionColumns)
+                      {
+                        <th scope="col" class="blog-admin__perm-check">@col.Header</th>
+                      }
+                    }
+                  </tr>
+                </thead>
+                <tbody>
+                  @if (Model.RolePermissions != null)
+                  {
+                    for (var r = 0; r < Model.RolePermissions.Count; r++)
+                    {
+                      <tr>
+                        <th scope="row" class="blog-admin__perm-name">
+                          @Model.RolePermissions[r].RoleName
+                          @Html.HiddenFor(m => m.RolePermissions[r].RoleId)
+                          @Html.HiddenFor(m => m.RolePermissions[r].RoleName)
+                        </th>
+                        @if (Model.RolePermissions[r].Cells != null)
+                        {
+                          for (var c = 0; c < Model.RolePermissions[r].Cells.Count; c++)
+                          {
+                            var cell = Model.RolePermissions[r].Cells[c];
+                            <td class="blog-admin__perm-check">
+                              @Html.HiddenFor(m => m.RolePermissions[r].Cells[c].PermissionId)
+                              @Html.HiddenFor(m => m.RolePermissions[r].Cells[c].PermissionKey)
+                              @Html.HiddenFor(m => m.RolePermissions[r].Cells[c].Enabled)
+                              @if (cell.Enabled)
+                              {
+                                @Html.CheckBoxFor(m => m.RolePermissions[r].Cells[c].AllowAccess)
+                              }
+                              else
+                              {
+                                <input type="hidden" name="RolePermissions[@r].Cells[@c].AllowAccess" value="false" />
+                                <input type="checkbox" disabled="disabled" />
+                              }
+                            </td>
+                          }
+                        }
+                      </tr>
+                    }
+                  }
+                  @if (Model.UserPermissions != null)
+                  {
+                    for (var u = 0; u < Model.UserPermissions.Count; u++)
+                    {
+                      <tr class="blog-admin__perm-user-row">
+                        <th scope="row" class="blog-admin__perm-name">
+                          @(string.IsNullOrEmpty(Model.UserPermissions[u].DisplayName) ? Model.UserPermissions[u].Username : Model.UserPermissions[u].DisplayName)
+                          @Html.HiddenFor(m => m.UserPermissions[u].UserId)
+                          @Html.HiddenFor(m => m.UserPermissions[u].DisplayName)
+                          @Html.HiddenFor(m => m.UserPermissions[u].Username)
+                        </th>
+                        @if (Model.UserPermissions[u].Cells != null)
+                        {
+                          for (var c = 0; c < Model.UserPermissions[u].Cells.Count; c++)
+                          {
+                            <td class="blog-admin__perm-check">
+                              @Html.HiddenFor(m => m.UserPermissions[u].Cells[c].PermissionId)
+                              @Html.HiddenFor(m => m.UserPermissions[u].Cells[c].PermissionKey)
+                              @Html.HiddenFor(m => m.UserPermissions[u].Cells[c].Enabled)
+                              @Html.CheckBoxFor(m => m.UserPermissions[u].Cells[c].AllowAccess)
+                            </td>
+                          }
+                        }
+                      </tr>
+                    }
+                  }
+                  <tr class="blog-admin__perm-add-row">
+                    <td class="blog-admin__perm-add-cell">
+                      <div class="blog-admin__perm-add-user">
+                        <label class="blog-admin__sr-only" for="AddPermissionUsername">User</label>
+                        @Html.TextBoxFor(m => m.AddPermissionUsername, new { @class = "blog-admin__input blog-admin__perm-add-input", id = "AddPermissionUsername", autocomplete = "off", placeholder = "username" })
+                      </div>
+                    </td>
+                    <td class="blog-admin__perm-add-cell" colspan="@(Model.PermissionColumns != null ? Model.PermissionColumns.Count : 0)">
+                      <div class="blog-admin__perm-add-user">
+                        <button type="submit" class="blog-admin__btn blog-admin__btn--secondary" id="blog-perm-add-user">Add User</button>
+                      </div>
+                      @if (!string.IsNullOrEmpty(Model.PermissionAddError))
+                      {
+                        <p class="blog-admin__field-hint blog-admin__perm-add-error">@Model.PermissionAddError</p>
+                      }
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -176,7 +434,7 @@
         </div>
       }
       <button type="submit" class="blog-admin__btn blog-admin__btn--primary">@saveLabel</button>
-      <a href="@Url.Action("Index", "Manage")" class="blog-admin__btn blog-admin__btn--secondary">@cancelLabel</a>
+      <a href="@manageBlogsUrl" class="blog-admin__btn blog-admin__btn--secondary">@cancelLabel</a>
     </div>
   </form>
 
@@ -203,35 +461,59 @@
         </div>
       </div>
     </div>
-    <script type="text/javascript">
-    (function () {
-      var id = 'blog-delete-confirm';
-      var root = document.getElementById(id);
-      if (!root) return;
-      function open() {
-        root.removeAttribute('hidden');
-        root.classList.add('is-open');
-      }
-      function close() {
-        root.classList.remove('is-open');
-        root.setAttribute('hidden', 'hidden');
-      }
-      document.querySelectorAll('[data-blog-delete-open="' + id + '"]').forEach(function (el) {
-        el.addEventListener('click', function (e) {
-          e.preventDefault();
-          open();
-        });
-      });
-      root.querySelectorAll('[data-blog-delete-close="' + id + '"]').forEach(function (el) {
-        el.addEventListener('click', function (e) {
-          e.preventDefault();
-          close();
-        });
-      });
-      document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && root.classList.contains('is-open')) close();
-      });
-    })();
-    </script>
   }
+  <script type="text/javascript">
+  (function () {
+    // Nested forms are dropped by the browser; ensure the DNN Form accepts file uploads.
+    var dnnForm = document.getElementById('Form');
+    if (dnnForm) {
+      dnnForm.setAttribute('enctype', 'multipart/form-data');
+    }
+
+    var addBtn = document.getElementById('blog-perm-add-user');
+    var actionField = document.getElementById('permissionAction');
+    if (addBtn && actionField) {
+      addBtn.addEventListener('click', function () {
+        actionField.value = 'addUser';
+      });
+    }
+    var form = document.getElementById('blog-edit-form');
+    if (form && actionField) {
+      form.addEventListener('submit', function (e) {
+        if (e.submitter && e.submitter.id === 'blog-perm-add-user') {
+          actionField.value = 'addUser';
+        } else if (actionField.value !== 'addUser') {
+          actionField.value = '';
+        }
+      });
+    }
+
+    var id = 'blog-delete-confirm';
+    var root = document.getElementById(id);
+    if (!root) return;
+    function open() {
+      root.removeAttribute('hidden');
+      root.classList.add('is-open');
+    }
+    function close() {
+      root.classList.remove('is-open');
+      root.setAttribute('hidden', 'hidden');
+    }
+    document.querySelectorAll('[data-blog-delete-open="' + id + '"]').forEach(function (el) {
+      el.addEventListener('click', function (e) {
+        e.preventDefault();
+        open();
+      });
+    });
+    root.querySelectorAll('[data-blog-delete-close="' + id + '"]').forEach(function (el) {
+      el.addEventListener('click', function (e) {
+        e.preventDefault();
+        close();
+      });
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && root.classList.contains('is-open')) close();
+    });
+  })();
+  </script>
 </div>

@@ -1,0 +1,12 @@
+[subtemplate|blogbanner.html|query:blogselected] 
+[subtemplate|termbanner.html|query:termselected] 
+[subtemplate|authorbanner.html|query:authorselected]
+[subtemplate|searchbanner.html|query:issearch]
+<div class="blog-main-content">
+    [subtemplate|Post.html|Posts]
+    <div class="bbs-pager">
+        <ul class="bbs-pagination no-space">
+        [subtemplate|Page.html|PostsPager|pagertype=somepages]
+        </ul>
+    </div>
+</div>

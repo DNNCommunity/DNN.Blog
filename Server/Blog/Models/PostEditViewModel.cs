@@ -21,7 +21,7 @@ namespace DotNetNuke.Modules.Blog.Models
 
         public bool Published { get; set; } = true;
         public bool PublishCanChange { get; set; } = true;
-        public bool PublishNow { get; set; } = true;
+        public bool PublishNow { get; set; }
         public string PublishDate { get; set; } = "";
         public string TimezoneDisplay { get; set; } = "";
 

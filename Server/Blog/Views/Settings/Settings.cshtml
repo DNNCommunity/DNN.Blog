@@ -6,6 +6,12 @@
 @using DotNetNuke.Services.Localization
 @{
   const string ResFile = Globals.ModuleFolderPath + "/App_LocalResources/Settings.resx";
+  // DNN CRM may serve a stale module.css via host cdv; bust by file ticks for Settings.
+  var moduleCssPath = Globals.ModuleFolderPath + "/module.css";
+  var moduleCssPhysical = Server.MapPath(moduleCssPath);
+  var moduleCssBust = System.IO.File.Exists(moduleCssPhysical)
+    ? System.IO.File.GetLastWriteTimeUtc(moduleCssPhysical).Ticks.ToString()
+    : "0";
   Func<string, string, string> L = (key, fallback) =>
   {
     var s = Localization.GetString(key, ResFile);
@@ -43,6 +49,7 @@
     return new HtmlString(html);
   };
 }
+<link rel="stylesheet" href="@Url.Content(moduleCssPath)?_=@(moduleCssBust)" />
 <div class="dnnForm dnnClear">
   @using (BeginForm("Settings", "Settings", FormMethod.Post))
   {
@@ -58,7 +65,16 @@
       </div>
       <div class="dnnFormItem">
         @DnnLabel("lblCategories", "Categories", "Categories To Show")
-        @Html.TextBoxFor(m => m.Categories, new { @class = "dnnFormInput", style = "width:100%", placeholder = "Comma-separated category term IDs" })
+        <div class="blog-settings-cat">
+          @if (Model.ShowCategories)
+          {
+            @Html.Partial("~/DesktopModules/MVC/Blog/Views/Shared/_CategoryPicker.cshtml", Model.CategoryTree)
+          }
+          else
+          {
+            <p class="blog-cat-picker__empty">No category vocabulary is configured for the selected blog module.</p>
+          }
+        </div>
       </div>
       <div class="dnnFormItem">
         @DnnLabel("lblAuthorId", "AuthorId", "Author To Show")

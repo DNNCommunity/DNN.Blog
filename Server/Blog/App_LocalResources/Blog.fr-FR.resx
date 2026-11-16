@@ -67,6 +67,9 @@
   <data name="lblIncludeImagesInFeed.Text" xml:space="preserve">
     <value>Inclure des images dans le flux</value>
   </data>
+  <data name="lblGhostOptions.Text" xml:space="preserve">
+    <value>Permissions</value>
+  </data>
   <data name="lblMustApproveGhostPosts.Help" xml:space="preserve">
     <value>Les posts écrits par un autre que le propriétaire du blog devront être approuvés par un modérateur autorisé.</value>
   </data>

@@ -15,37 +15,21 @@
     "moduleDefinitions": [
       {
         "definitionName": "DNNBlog.Blog",
-        "friendlyName": "DotNetNuke Blog",
-        "defaultCacheTime": 0,
+        "friendlyName": "Blog",
+        "defaultCacheTime": -1,
         "moduleControls": [
           {
             "controlSrc": "DotNetNuke.Modules.Blog.Controllers/Home/Index.mvc",
-            "supportsPartialRendering": "False",
+            "supportsPartialRendering": "false",
             "controlTitle": "Blog",
-            "controlType": "View",
-            "viewOrder": 0
-          },
-          {
-            "controlKey": "Admin",
-            "controlSrc": "DotNetNuke.Modules.Blog.Controllers/Admin/Index.mvc",
-            "supportsPartialRendering": "False",
-            "controlTitle": "Blog Module Administration",
-            "controlType": "View",
-            "viewOrder": 0
-          },
-          {
-            "controlKey": "Manage",
-            "controlSrc": "DotNetNuke.Modules.Blog.Controllers/Manage/Index.mvc",
-            "supportsPartialRendering": "False",
-            "controlTitle": "Manage Content",
             "controlType": "View",
             "viewOrder": 0
           },
           {
             "controlKey": "Settings",
             "controlSrc": "DotNetNuke.Modules.Blog.Controllers/Settings/Settings.mvc",
-            "supportsPartialRendering": "False",
-            "controlTitle": "Blog Settings",
+            "supportsPartialRendering": "false",
+            "controlTitle": "Blog Module Instance Settings",
             "controlType": "Edit",
             "viewOrder": 0
           }

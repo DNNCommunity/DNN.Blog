@@ -1,5 +1,10 @@
 export type EditorMode = "html" | "markdown";
 
+export interface EditorLocaleOption {
+  code: string;
+  name: string;
+}
+
 export interface UploadResult {
   url: string;
   fileName: string;

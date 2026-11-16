@@ -316,6 +316,10 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwn
 DROP TABLE {databaseOwner}{objectQualifier}Blog_Posts
 GO
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_PostSplitLog') AND type in (N'U'))
+DROP TABLE {databaseOwner}{objectQualifier}Blog_PostSplitLog
+GO
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_TermLocalization') AND type in (N'U'))
 DROP TABLE {databaseOwner}{objectQualifier}Blog_TermLocalization
 GO

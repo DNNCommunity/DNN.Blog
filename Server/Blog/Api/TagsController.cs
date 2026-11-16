@@ -11,13 +11,20 @@ using DotNetNuke.Modules.Blog.Core.Data;
 using DotNetNuke.Modules.Blog.Core.Entities.Terms;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.Api;
+using Microsoft.Extensions.Logging;
 using CoreTerms = DotNetNuke.Modules.Blog.Core.Entities.Terms.TermsController;
 
 namespace DotNetNuke.Modules.Blog.Api
 {
     public class TagsController : BlogApiController
     {
+        private readonly ILogger<TagsController> _logger;
         private const int TagsVocabularyId = 1;
+
+        public TagsController(ILogger<TagsController> logger) : base()
+        {
+            _logger = logger;
+        }
 
         public class TagLocaleDto
         {
@@ -67,8 +74,13 @@ namespace DotNetNuke.Modules.Blog.Api
         public HttpResponseMessage Search(string term = null)
         {
             string searchString = (term ?? "").Trim();
+            _logger.LogDebug("Tag search requested: term length {Length}, user {UserId}", searchString.Length, UserInfo.UserID);
+
             if (searchString.Length < 1)
+            {
+                _logger.LogDebug("Tag search skipped: empty term");
                 return Request.CreateResponse(HttpStatusCode.OK, new string[0]);
+            }
 
             var locale = BlogModuleContext.BlogContext?.Locale
                 ?? System.Threading.Thread.CurrentThread.CurrentCulture.Name;
@@ -87,6 +99,7 @@ namespace DotNetNuke.Modules.Blog.Api
                 .Take(25)
                 .ToList();
 
+            _logger.LogInformation("Tag search for '{Search}' returned {Count} matches (locale {Locale})", searchString, matches.Count, locale);
             return Request.CreateResponse(HttpStatusCode.OK, matches);
         }
 
@@ -94,6 +107,8 @@ namespace DotNetNuke.Modules.Blog.Api
         [BlogAuthorize(SecurityAccessLevel.Admin)]
         public HttpResponseMessage List(int page = 0, int pageSize = 25, string search = null)
         {
+            _logger.LogDebug("Tag list requested: page {Page}, pageSize {PageSize}, search {HasSearch}", page, pageSize, !string.IsNullOrWhiteSpace(search));
+
             if (page < 0) page = 0;
             if (pageSize < 1) pageSize = 25;
             if (pageSize > 100) pageSize = 100;
@@ -118,6 +133,7 @@ namespace DotNetNuke.Modules.Blog.Api
             int total = list.Count;
             var pageItems = list.Skip(page * pageSize).Take(pageSize).Select(t => ToItem(t, localeCodes)).ToList();
 
+            _logger.LogInformation("Tag list returned {ItemCount}/{Total} tags (page {Page})", pageItems.Count, total, page);
             return Request.CreateResponse(HttpStatusCode.OK, new TagListDto
             {
                 Items = pageItems,
@@ -134,16 +150,27 @@ namespace DotNetNuke.Modules.Blog.Api
         [ValidateAntiForgeryToken]
         public HttpResponseMessage Add(TagAddDto data)
         {
+            _logger.LogDebug("Add tag requested by user {UserId}", UserInfo.UserID);
+
             if (data == null)
+            {
+                _logger.LogWarning("Add tag failed: null payload");
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new { Result = "error", Message = "Invalid request." });
+            }
 
             string name = (data.Name ?? "").Trim();
             if (string.IsNullOrEmpty(name))
+            {
+                _logger.LogWarning("Add tag failed: empty name");
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new { Result = "error", Message = "Tag name is required." });
+            }
 
             var terms = GetAllTags();
             if (IsDuplicateDefaultName(terms, name, -1))
+            {
+                _logger.LogWarning("Add tag failed: duplicate name '{Name}'", name);
                 return Request.CreateResponse(HttpStatusCode.Conflict, new { Result = "duplicate", Message = "A tag with this name already exists." });
+            }
 
             int termId = Util.GetTermController().AddTerm(new Term(TagsVocabularyId) { Name = name });
             ClearCache();
@@ -153,6 +180,7 @@ namespace DotNetNuke.Modules.Blog.Api
             if (!created.TryGetValue(termId, out term))
                 term = new TermInfo(name) { TermId = termId };
 
+            _logger.LogInformation("Added tag {TermId} '{Name}' by user {UserId}", termId, name, UserInfo.UserID);
             return Request.CreateResponse(HttpStatusCode.OK, new
             {
                 Result = "success",
@@ -165,12 +193,21 @@ namespace DotNetNuke.Modules.Blog.Api
         [ValidateAntiForgeryToken]
         public HttpResponseMessage UpdateCell(TagUpdateCellDto data)
         {
+            _logger.LogDebug("UpdateCell tag requested: termId {TermId}, locale '{Locale}', user {UserId}",
+                data?.TermId, data?.Locale, UserInfo.UserID);
+
             if (data == null || data.TermId < 1)
+            {
+                _logger.LogWarning("UpdateCell failed: invalid payload");
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new { Result = "error", Message = "Invalid request." });
+            }
 
             var terms = GetAllTags();
             if (!terms.TryGetValue(data.TermId, out TermInfo term))
+            {
+                _logger.LogWarning("UpdateCell failed: tag {TermId} not found", data.TermId);
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new { Result = "error", Message = "Tag not found." });
+            }
 
             string locale = (data.Locale ?? "").Trim();
             string value = data.Value ?? "";
@@ -179,16 +216,27 @@ namespace DotNetNuke.Modules.Blog.Api
             {
                 string name = value.Trim();
                 if (string.IsNullOrEmpty(name))
+                {
+                    _logger.LogWarning("UpdateCell failed: empty default name for term {TermId}", data.TermId);
                     return Request.CreateResponse(HttpStatusCode.BadRequest, new { Result = "error", Message = "Tag name is required." });
+                }
 
                 if (IsDuplicateDefaultName(terms, name, data.TermId))
+                {
+                    _logger.LogWarning("UpdateCell failed: duplicate default name '{Name}' for term {TermId}", name, data.TermId);
                     return Request.CreateResponse(HttpStatusCode.Conflict, new { Result = "duplicate", Message = "A tag with this name already exists." });
+                }
 
                 if (!string.Equals(term.Name, name, StringComparison.Ordinal))
                 {
                     term.Name = name;
                     Util.GetTermController().UpdateTerm(term);
                     ClearCache();
+                    _logger.LogInformation("Updated tag {TermId} default name to '{Name}'", data.TermId, name);
+                }
+                else
+                {
+                    _logger.LogDebug("UpdateCell skipped: default name unchanged for term {TermId}", data.TermId);
                 }
 
                 return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", TermId = data.TermId, Locale = "", Value = name });
@@ -196,11 +244,15 @@ namespace DotNetNuke.Modules.Blog.Api
 
             string locValue = value.Trim();
             if (!string.IsNullOrEmpty(locValue) && IsDuplicateLocalization(terms, locale, locValue, data.TermId))
+            {
+                _logger.LogWarning("UpdateCell failed: duplicate localization '{Locale}'='{Value}' for term {TermId}", locale, locValue, data.TermId);
                 return Request.CreateResponse(HttpStatusCode.Conflict, new { Result = "duplicate", Message = "Another tag already uses this translation." });
+            }
 
             DataProvider.Instance().SetTermLocalization(data.TermId, locale, locValue, "");
             ClearCache();
 
+            _logger.LogInformation("Updated tag {TermId} localization '{Locale}' to '{Value}'", data.TermId, locale, locValue);
             return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", TermId = data.TermId, Locale = locale, Value = locValue });
         }
 
@@ -209,15 +261,24 @@ namespace DotNetNuke.Modules.Blog.Api
         [ValidateAntiForgeryToken]
         public HttpResponseMessage Delete(TagDeleteDto data)
         {
+            _logger.LogDebug("Delete tag requested: termId {TermId}, user {UserId}", data?.TermId, UserInfo.UserID);
+
             if (data == null || data.TermId < 1)
+            {
+                _logger.LogWarning("Delete tag failed: invalid payload");
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new { Result = "error", Message = "Invalid request." });
+            }
 
             var terms = GetAllTags();
             if (!terms.TryGetValue(data.TermId, out TermInfo term))
+            {
+                _logger.LogWarning("Delete tag failed: tag {TermId} not found", data.TermId);
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new { Result = "error", Message = "Tag not found." });
+            }
 
             Util.GetTermController().DeleteTerm(term);
             ClearCache();
+            _logger.LogInformation("Deleted tag {TermId} '{Name}' by user {UserId}", data.TermId, term.Name, UserInfo.UserID);
             return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
         }
 
@@ -228,6 +289,7 @@ namespace DotNetNuke.Modules.Blog.Api
 
         private void ClearCache()
         {
+            _logger.LogDebug("Clearing tags vocabulary cache for module {ModuleId}", BlogModuleContext.Settings.ModuleId);
             CoreTerms.GetTermsByVocabulary(BlogModuleContext.Settings.ModuleId, TagsVocabularyId, "", true);
             CoreTerms.GetTermsByVocabulary(BlogModuleContext.Settings.ModuleId, TagsVocabularyId);
         }

@@ -217,6 +217,20 @@
 
 .bre__spacer {
   flex: 1;
+  min-width: 8px;
+}
+
+.bre__toolbar-end {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.bre__locale-select {
+  min-width: 8.5rem;
+  max-width: 14rem;
 }
 
 .bre__body {

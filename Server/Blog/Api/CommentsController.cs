@@ -15,6 +15,7 @@ using DotNetNuke.Modules.Blog.Core.Entities.Comments;
 using DotNetNuke.Modules.Blog.Core.Entities.Posts;
 using DotNetNuke.Modules.Blog.Core.Security;
 using DotNetNuke.Web.Api;
+using Microsoft.Extensions.Logging;
 using BlogGlobals = DotNetNuke.Modules.Blog.Core.Common.Globals;
 using CoreComments = DotNetNuke.Modules.Blog.Core.Entities.Comments.CommentsController;
 using CoreBlogs = DotNetNuke.Modules.Blog.Core.Entities.Blogs.BlogsController;
@@ -24,6 +25,13 @@ namespace DotNetNuke.Modules.Blog.Api
 {
     public class CommentsController : BlogApiController
     {
+        private readonly ILogger<CommentsController> _logger;
+
+        public CommentsController(ILogger<CommentsController> logger) : base()
+        {
+            _logger = logger;
+        }
+
         public class CommentActionDto
         {
             public int BlogId { get; set; }
@@ -79,21 +87,31 @@ namespace DotNetNuke.Modules.Blog.Api
         [BlogAuthorize(SecurityAccessLevel.View)]
         public HttpResponseMessage List(int blogId, int postId)
         {
+            _logger.LogDebug("Comment list requested: blogId {BlogId}, postId {PostId}, user {UserId}", blogId, postId, UserInfo.UserID);
+
             var blog = CoreBlogs.GetBlog(blogId, UserInfo.UserID, BlogModuleContext.BlogContext.Locale);
             var post = CorePosts.GetPost(postId, ActiveModule.ModuleID, "");
             if (blog == null || post == null)
+            {
+                _logger.LogWarning("Comment list failed: blog {BlogId} or post {PostId} not found", blogId, postId);
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new CommentListDto { Result = "error" });
+            }
 
             var security = CreateSecurity(blog);
             if (!security.CanViewComments)
+            {
+                _logger.LogInformation("Comment list empty: user {UserId} cannot view comments on blog {BlogId}", UserInfo.UserID, blogId);
                 return Request.CreateResponse(HttpStatusCode.OK, new CommentListDto { Result = "success", Total = 0 });
+            }
 
             var all = CoreComments.GetCommentsByContentItem(post.ContentItemId, security.CanApproveComment, UserInfo.UserID);
             var tree = BuildTree(all);
+            var total = CountApprovedOrVisible(all, security.CanApproveComment);
+            _logger.LogInformation("Comment list returned {Total} comments for post {PostId}", total, postId);
             return Request.CreateResponse(HttpStatusCode.OK, new CommentListDto
             {
                 Result = "success",
-                Total = CountApprovedOrVisible(all, security.CanApproveComment),
+                Total = total,
                 Comments = tree
             });
         }
@@ -103,17 +121,30 @@ namespace DotNetNuke.Modules.Blog.Api
         [ValidateAntiForgeryToken]
         public HttpResponseMessage Add(CommentAddDto postData)
         {
+            _logger.LogDebug("Add comment requested: blogId {BlogId}, postId {PostId}, parentId {ParentId}, user {UserId}",
+                postData?.BlogId, postData?.PostId, postData?.ParentId, UserInfo.UserID);
+
             if (postData == null)
+            {
+                _logger.LogWarning("Add comment failed: null payload");
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new CommentAddResultDto { Result = "error" });
+            }
 
             var blog = CoreBlogs.GetBlog(postData.BlogId, UserInfo.UserID, BlogModuleContext.BlogContext.Locale);
             var post = CorePosts.GetPost(postData.PostId, ActiveModule.ModuleID, "");
             if (blog == null || post == null)
+            {
+                _logger.LogWarning("Add comment failed: blog {BlogId} or post {PostId} not found", postData.BlogId, postData.PostId);
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new CommentAddResultDto { Result = "error" });
+            }
 
             var security = CreateSecurity(blog);
             if (!security.CanAddComment || !post.AllowComments)
+            {
+                _logger.LogWarning("Add comment denied: user {UserId}, canAdd={CanAdd}, allowComments={AllowComments}",
+                    UserInfo.UserID, security.CanAddComment, post.AllowComments);
                 return AccessViolation("You are not allowed to add comments");
+            }
 
             var parentId = postData.ParentId > 0 ? postData.ParentId : -1;
             var author = UserInfo.UserID > -1
@@ -149,6 +180,7 @@ namespace DotNetNuke.Modules.Blog.Api
 
             if (!objComment.Approved)
             {
+                _logger.LogInformation("Added comment {CommentId} on post {PostId} awaiting approval", objComment.CommentID, postData.PostId);
                 return Request.CreateResponse(HttpStatusCode.OK, new CommentAddResultDto
                 {
                     Result = "successnotapproved",
@@ -156,6 +188,7 @@ namespace DotNetNuke.Modules.Blog.Api
                 });
             }
 
+            _logger.LogInformation("Added approved comment {CommentId} on post {PostId}", objComment.CommentID, postData.PostId);
             return Request.CreateResponse(HttpStatusCode.OK, new CommentAddResultDto
             {
                 Result = "success",
@@ -168,28 +201,48 @@ namespace DotNetNuke.Modules.Blog.Api
         [ValidateAntiForgeryToken]
         public HttpResponseMessage Karma(CommentActionDto postData)
         {
+            _logger.LogDebug("Karma requested: commentId {CommentId}, karma {Karma}, user {UserId}",
+                postData?.CommentId, postData?.Karma, UserInfo.UserID);
+
             if (postData == null)
+            {
+                _logger.LogWarning("Karma failed: null payload");
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new { Result = "error" });
+            }
             if (UserInfo.UserID < 0)
+            {
+                _logger.LogWarning("Karma failed: anonymous user");
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new { Result = "error" });
+            }
 
             var blog = CoreBlogs.GetBlog(postData.BlogId, UserInfo.UserID, BlogModuleContext.BlogContext.Locale);
             var comment = CoreComments.GetComment(postData.CommentId, UserInfo.UserID);
             if (blog == null || comment == null)
+            {
+                _logger.LogWarning("Karma failed: blog {BlogId} or comment {CommentId} not found", postData.BlogId, postData.CommentId);
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new { Result = "error" });
+            }
 
             var security = CreateSecurity(blog);
             if (!security.CanAddComment)
+            {
+                _logger.LogWarning("Karma denied: user {UserId} cannot karma on blog {BlogId}", UserInfo.UserID, postData.BlogId);
                 return AccessViolation("You are not allowed to karma comments");
+            }
 
             var ret = CoreComments.CommentKarma(ActiveModule, comment, UserInfo, postData.Karma);
             if (ret < 0)
+            {
+                _logger.LogWarning("Karma failed for comment {CommentId}: result {Result}", postData.CommentId, ret);
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new { Result = "error" });
+            }
 
             var refreshed = CoreComments.GetComment(postData.CommentId, UserInfo.UserID);
+            var result = ret == 1 ? "added" : "removed";
+            _logger.LogInformation("Karma {Result} for comment {CommentId} by user {UserId}", result, postData.CommentId, UserInfo.UserID);
             return Request.CreateResponse(HttpStatusCode.OK, new
             {
-                Result = ret == 1 ? "added" : "removed",
+                Result = result,
                 Comment = refreshed != null ? MapComment(refreshed) : null
             });
         }
@@ -199,19 +252,32 @@ namespace DotNetNuke.Modules.Blog.Api
         [ValidateAntiForgeryToken]
         public HttpResponseMessage Approve(CommentActionDto postData)
         {
+            _logger.LogDebug("Approve comment requested: commentId {CommentId}, blogId {BlogId}, user {UserId}",
+                postData?.CommentId, postData?.BlogId, UserInfo.UserID);
+
             if (postData == null)
+            {
+                _logger.LogWarning("Approve comment failed: null payload");
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new { Result = "error" });
+            }
 
             var blog = CoreBlogs.GetBlog(postData.BlogId, UserInfo.UserID, BlogModuleContext.BlogContext.Locale);
             var comment = CoreComments.GetComment(postData.CommentId, UserInfo.UserID);
             if (blog == null || comment == null)
+            {
+                _logger.LogWarning("Approve comment failed: blog {BlogId} or comment {CommentId} not found", postData.BlogId, postData.CommentId);
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new { Result = "error" });
+            }
 
             var security = CreateSecurity(blog);
             if (!security.CanApproveComment)
+            {
+                _logger.LogWarning("Approve comment denied: user {UserId}", UserInfo.UserID);
                 return AccessViolation("You are not allowed to approve comments");
+            }
 
             CoreComments.ApproveComment(ActiveModule.ModuleID, blog.BlogID, comment);
+            _logger.LogInformation("Approved comment {CommentId} on blog {BlogId} by user {UserId}", postData.CommentId, blog.BlogID, UserInfo.UserID);
             return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
         }
 
@@ -220,19 +286,32 @@ namespace DotNetNuke.Modules.Blog.Api
         [ValidateAntiForgeryToken]
         public HttpResponseMessage Delete(CommentActionDto postData)
         {
+            _logger.LogDebug("Delete comment requested: commentId {CommentId}, blogId {BlogId}, user {UserId}",
+                postData?.CommentId, postData?.BlogId, UserInfo.UserID);
+
             if (postData == null)
+            {
+                _logger.LogWarning("Delete comment failed: null payload");
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new { Result = "error" });
+            }
 
             var blog = CoreBlogs.GetBlog(postData.BlogId, UserInfo.UserID, BlogModuleContext.BlogContext.Locale);
             var comment = CoreComments.GetComment(postData.CommentId, UserInfo.UserID);
             if (blog == null || comment == null)
+            {
+                _logger.LogWarning("Delete comment failed: blog {BlogId} or comment {CommentId} not found", postData.BlogId, postData.CommentId);
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new { Result = "error" });
+            }
 
             var security = CreateSecurity(blog);
             if (!security.CanApproveComment)
+            {
+                _logger.LogWarning("Delete comment denied: user {UserId}", UserInfo.UserID);
                 return AccessViolation("You are not allowed to delete comments");
+            }
 
             CoreComments.DeleteComment(ActiveModule.ModuleID, blog.BlogID, comment);
+            _logger.LogInformation("Deleted comment {CommentId} from blog {BlogId} by user {UserId}", postData.CommentId, blog.BlogID, UserInfo.UserID);
             return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
         }
 
@@ -244,47 +323,66 @@ namespace DotNetNuke.Modules.Blog.Api
             int postId = -1;
             blogId = HttpContext.Current.Request.Params.ReadValue("blogId", blogId);
             postId = HttpContext.Current.Request.Params.ReadValue("postId", postId);
+            _logger.LogDebug("Pingback received: blogId {BlogId}, postId {PostId}", blogId, postId);
 
             var blog = CoreBlogs.GetBlog(blogId, UserInfo.UserID, System.Threading.Thread.CurrentThread.CurrentCulture.Name);
             if (blog == null || !blog.EnablePingBackReceive)
+            {
+                _logger.LogWarning("Pingback rejected: blog {BlogId} missing or pingbacks disabled", blogId);
                 return Request.CreateResponse(HttpStatusCode.NotFound, new { Result = "This blog does not accept pingbacks" });
+            }
 
             var post = CorePosts.GetPost(postId, ActiveModule.ModuleID, "");
             if (post == null)
+            {
+                _logger.LogWarning("Pingback rejected: post {PostId} not found", postId);
                 return PingBackError(32, "The specified target URI does not exist.");
+            }
 
             XmlDocument doc;
             try
             {
                 doc = RetrieveXmlDocument(HttpContext.Current);
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogWarning(ex, "Pingback parse failed for blog {BlogId}, post {PostId}", blogId, postId);
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new { Result = "Cannot parse the request" });
             }
 
             var list = doc.SelectNodes("methodCall/params/param/value/string")
                         ?? doc.SelectNodes("methodCall/params/param/value");
             if (list == null || list.Count < 2)
+            {
+                _logger.LogWarning("Pingback parse failed: insufficient params for post {PostId}", postId);
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new { Result = "Cannot parse the request" });
+            }
 
             var sourceUrl = BlogGlobals.SafeString(list[0].InnerText.Trim());
             var targetUrl = BlogGlobals.SafeString(list[1].InnerText.Trim());
+            _logger.LogDebug("Pingback source {SourceUrl} -> target {TargetUrl}", sourceUrl, targetUrl);
+
             var sourceHasLink = false;
             var title = sourceUrl;
             try
             {
                 CheckSourcePage(sourceUrl, targetUrl, ref sourceHasLink, ref title);
             }
-            catch
+            catch (Exception ex)
             {
-                // ignore remote fetch failures
+                _logger.LogDebug(ex, "Pingback source page check failed for {SourceUrl}", sourceUrl);
             }
 
             if (!IsFirstPingBack(post, sourceUrl))
+            {
+                _logger.LogInformation("Pingback duplicate ignored for source {SourceUrl} on post {PostId}", sourceUrl, postId);
                 return PingBackError(48, "The pingback has already been registered.");
+            }
             if (!sourceHasLink)
+            {
+                _logger.LogWarning("Pingback rejected: source {SourceUrl} does not link to target", sourceUrl);
                 return PingBackError(17, "The source URI does not contain a link to the target URI, and so cannot be used as a source.");
+            }
 
             var objComment = new CommentInfo
             {
@@ -298,6 +396,8 @@ namespace DotNetNuke.Modules.Blog.Api
             objComment.Comment = HttpUtility.HtmlEncode(comment);
             objComment.Approved = blog.AutoApprovePingBack;
             CoreComments.AddComment(blog, post, ref objComment);
+            _logger.LogInformation("Pingback comment {CommentId} added for post {PostId} from {SourceUrl} (approved={Approved})",
+                objComment.CommentID, postId, sourceUrl, objComment.Approved);
             return PingBackSuccess();
         }
 
@@ -309,14 +409,21 @@ namespace DotNetNuke.Modules.Blog.Api
             int postId = -1;
             blogId = HttpContext.Current.Request.Params.ReadValue("blogId", blogId);
             postId = HttpContext.Current.Request.Params.ReadValue("postId", postId);
+            _logger.LogDebug("Trackback received: blogId {BlogId}, postId {PostId}", blogId, postId);
 
             var blog = CoreBlogs.GetBlog(blogId, UserInfo.UserID, System.Threading.Thread.CurrentThread.CurrentCulture.Name);
             if (blog == null || !blog.EnableTrackBackReceive)
+            {
+                _logger.LogWarning("Trackback rejected: blog {BlogId} missing or trackbacks disabled", blogId);
                 return Request.CreateResponse(HttpStatusCode.NotFound, new { Result = "This blog does not accept trackbacks" });
+            }
 
             var post = CorePosts.GetPost(postId, ActiveModule.ModuleID, "");
             if (post == null)
+            {
+                _logger.LogWarning("Trackback rejected: post {PostId} not found", postId);
                 return TrackBackResponse("The source page does not link");
+            }
 
             var title = BlogGlobals.SafeString(HttpContext.Current.Request.Params["title"]);
             var blogName = BlogGlobals.SafeString(HttpContext.Current.Request.Params["blog_name"]);
@@ -328,20 +435,28 @@ namespace DotNetNuke.Modules.Blog.Api
                     DotNetNuke.Security.PortalSecurity.FilterFlag.NoSQL & DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting);
             }
 
+            _logger.LogDebug("Trackback source {SourceUrl}, blogName {BlogName}", sourceUrl, blogName);
+
             var sourceHasLink = false;
             try
             {
                 CheckSourcePage(sourceUrl, post.PermaLink(PortalSettings), ref sourceHasLink, ref title);
             }
-            catch
+            catch (Exception ex)
             {
-                // ignore remote fetch failures
+                _logger.LogDebug(ex, "Trackback source page check failed for {SourceUrl}", sourceUrl);
             }
 
             if (!IsFirstPingBack(post, sourceUrl))
+            {
+                _logger.LogInformation("Trackback duplicate ignored for source {SourceUrl} on post {PostId}", sourceUrl, postId);
                 return TrackBackResponse("Trackback already registered");
+            }
             if (!sourceHasLink)
+            {
+                _logger.LogWarning("Trackback rejected: source {SourceUrl} does not link to post {PostId}", sourceUrl, postId);
                 return TrackBackResponse("The source page does not link");
+            }
 
             var objComment = new CommentInfo
             {
@@ -355,6 +470,8 @@ namespace DotNetNuke.Modules.Blog.Api
             objComment.Comment = HttpUtility.HtmlEncode(comment);
             objComment.Approved = blog.AutoApproveTrackBack;
             CoreComments.AddComment(blog, post, ref objComment);
+            _logger.LogInformation("Trackback comment {CommentId} added for post {PostId} from {SourceUrl} (approved={Approved})",
+                objComment.CommentID, postId, sourceUrl, objComment.Approved);
             return TrackBackResponse();
         }
 

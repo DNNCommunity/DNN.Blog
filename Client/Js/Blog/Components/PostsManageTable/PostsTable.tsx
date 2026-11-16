@@ -54,8 +54,15 @@ function SortHeader(props: {
 }
 
 function buildEditHref(editUrl: string, blogId: number, postId: number): string {
-  const sep = editUrl.indexOf("?") >= 0 ? "&" : "?";
-  return `${editUrl}${sep}Blog=${blogId}&Post=${postId}`;
+  try {
+    const url = new URL(editUrl, window.location.origin);
+    url.searchParams.set("Blog", String(blogId));
+    url.searchParams.set("Post", String(postId));
+    return `${url.pathname}${url.search}${url.hash}`;
+  } catch {
+    const sep = editUrl.indexOf("?") >= 0 ? "&" : "?";
+    return `${editUrl}${sep}Blog=${blogId}&Post=${postId}`;
+  }
 }
 
 export default function PostsTable(props: PostsTableProps): React.ReactElement {

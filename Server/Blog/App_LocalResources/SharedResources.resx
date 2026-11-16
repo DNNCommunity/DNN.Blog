@@ -241,4 +241,7 @@
   <data name="AUTOAPPROVECOMMENT.Permission" xml:space="preserve">
     <value>Auto Approve Comment</value>
   </data>
+  <data name="BlogApi.Text" xml:space="preserve">
+    <value>Blog API</value>
+  </data>
 </root>

@@ -71,6 +71,8 @@ export default function PublishDateEditor(
   return (
     <div className="blog-admin__control blog-publish-date">
       <label className="blog-publish-date__now">
+        {/* Hidden false so unchecked posts as false (MVC checkbox binding). */}
+        <input type="hidden" name="PublishNow" value="false" />
         <input
           type="checkbox"
           id="PublishNow"

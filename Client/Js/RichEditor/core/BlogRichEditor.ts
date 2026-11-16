@@ -1,4 +1,9 @@
-import type { EditorEngine, EditorMode, UploadFn } from "./types";
+import type {
+  EditorEngine,
+  EditorLocaleOption,
+  EditorMode,
+  UploadFn,
+} from "./types";
 import { createDnnUploadFn } from "./upload";
 import { createHtmlEngine } from "../html/editor";
 import { createMarkdownEngine } from "../markdown/editor";
@@ -19,6 +24,10 @@ export class BlogRichEditorElement extends HTMLElement {
   #uploadFn: UploadFn | null = null;
   #syncing = false;
   #submitHandler: (() => void) | null = null;
+  #localeOptions: EditorLocaleOption[] = [];
+  #selectedLocale = "";
+  #localeLabel = "Language";
+  #onLocaleChange: ((code: string) => void) | null = null;
 
   constructor() {
     super();
@@ -104,6 +113,23 @@ export class BlogRichEditorElement extends HTMLElement {
   /** Optional external upload function (overrides DNN default). */
   setUploadFn(fn: UploadFn | null): void {
     this.#uploadFn = fn;
+  }
+
+  /**
+   * Renders a locale &lt;select&gt; in the toolbar's top-right end slot.
+   * Pass an empty options list to clear it.
+   */
+  setLocaleSwitcher(
+    options: EditorLocaleOption[],
+    selected: string,
+    onChange: ((code: string) => void) | null,
+    label?: string
+  ): void {
+    this.#localeOptions = options || [];
+    this.#selectedLocale = selected || "";
+    this.#onLocaleChange = onChange;
+    if (label) this.#localeLabel = label;
+    this.#renderLocaleSwitcher();
   }
 
   bindTextarea(textarea: HTMLTextAreaElement | null): void {
@@ -255,6 +281,37 @@ export class BlogRichEditorElement extends HTMLElement {
         : createHtmlEngine(host);
 
     this.flushToTextarea();
+    this.#renderLocaleSwitcher();
+  }
+
+  #renderLocaleSwitcher(): void {
+    const end = this.#mount?.querySelector(
+      ".bre__toolbar-end"
+    ) as HTMLElement | null;
+    if (!end) return;
+    end.replaceChildren();
+    if (!this.#localeOptions.length) return;
+
+    const select = document.createElement("select");
+    select.className = "bre__select bre__locale-select";
+    select.title = this.#localeLabel;
+    select.setAttribute("aria-label", this.#localeLabel);
+    for (const opt of this.#localeOptions) {
+      const option = document.createElement("option");
+      option.value = opt.code;
+      option.textContent = opt.name;
+      if (
+        opt.code.toLowerCase() === (this.#selectedLocale || "").toLowerCase()
+      ) {
+        option.selected = true;
+      }
+      select.appendChild(option);
+    }
+    select.addEventListener("change", () => {
+      this.#selectedLocale = select.value;
+      this.#onLocaleChange?.(select.value);
+    });
+    end.appendChild(select);
   }
 }
 

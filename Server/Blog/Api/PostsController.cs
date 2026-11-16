@@ -7,12 +7,20 @@ using System.Web.Http;
 using DotNetNuke.Modules.Blog.Common;
 using DotNetNuke.Modules.Blog.Core.Entities.Posts;
 using DotNetNuke.Web.Api;
+using Microsoft.Extensions.Logging;
 using CorePosts = DotNetNuke.Modules.Blog.Core.Entities.Posts.PostsController;
 
 namespace DotNetNuke.Modules.Blog.Api
 {
     public class PostsController : BlogApiController
     {
+        private readonly ILogger<PostsController> _logger;
+
+        public PostsController(ILogger<PostsController> logger) : base()
+        {
+            _logger = logger;
+        }
+
         private static readonly HashSet<string> AllowedOrderColumns = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
             "PUBLISHEDONDATE",
@@ -50,12 +58,18 @@ namespace DotNetNuke.Modules.Blog.Api
         [BlogAuthorize(SecurityAccessLevel.Edit)]
         public HttpResponseMessage List(int page = 0, int pageSize = 25, string orderBy = null, string search = null, int blogId = -1)
         {
+            _logger.LogDebug("Post list requested: page {Page}, pageSize {PageSize}, blogId {BlogId}, orderBy {OrderBy}, hasSearch {HasSearch}, user {UserId}",
+                page, pageSize, blogId, orderBy, !string.IsNullOrWhiteSpace(search), UserInfo.UserID);
+
             if (page < 0) page = 0;
             if (pageSize < 1) pageSize = 25;
             if (pageSize > 100) pageSize = 100;
             if (blogId < 1) blogId = -1;
 
             var sanitizedOrderBy = SanitizeOrderBy(orderBy);
+            if (!string.Equals(orderBy?.Trim(), sanitizedOrderBy, StringComparison.OrdinalIgnoreCase))
+                _logger.LogDebug("Sanitized orderBy from '{Original}' to '{Sanitized}'", orderBy, sanitizedOrderBy);
+
             var security = BlogModuleContext.Security;
             var settings = BlogModuleContext.Settings;
             var locale = BlogModuleContext.BlogContext.Locale;
@@ -70,6 +84,7 @@ namespace DotNetNuke.Modules.Blog.Api
             }
             else
             {
+                _logger.LogDebug("Searching posts with query length {Length}", search.Trim().Length);
                 posts = CorePosts.SearchPosts(
                     settings.ModuleId, blogId, locale, search.Trim(), true, false, -1, "", default(DateTime), -1,
                     page, pageSize, sanitizedOrderBy, ref total, UserInfo.UserID, security.UserIsAdmin).Values;
@@ -92,6 +107,8 @@ namespace DotNetNuke.Modules.Blog.Api
                 };
             }).ToList();
 
+            _logger.LogInformation("Post list returned {ItemCount}/{Total} posts for module {ModuleId} (page {Page})",
+                items.Count, total, settings.ModuleId, page);
             return Request.CreateResponse(HttpStatusCode.OK, new ManagePostListDto
             {
                 Items = items,
@@ -106,17 +123,35 @@ namespace DotNetNuke.Modules.Blog.Api
         [ValidateAntiForgeryToken]
         public HttpResponseMessage Approve(PostActionDto postData)
         {
+            _logger.LogDebug("Approve post requested: blogId {BlogId}, postId {PostId}, user {UserId}",
+                postData?.BlogId, postData?.PostId, UserInfo.UserID);
+
             if (postData == null)
+            {
+                _logger.LogWarning("Approve post failed: null payload");
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new { Result = "error" });
+            }
 
-            var post = CorePosts.GetPost(postData.PostId, BlogModuleContext.Settings.ModuleId, BlogModuleContext.BlogContext.Locale);
-            if (post == null || post.BlogID != postData.BlogId)
+            var result = new PostWriteService().Approve(
+                BlogModuleContext.Settings.ModuleId,
+                postData.BlogId,
+                postData.PostId,
+                BlogModuleContext.BlogContext.Locale,
+                UserInfo,
+                BlogModuleContext.Security);
+
+            if (result.NotFound)
+            {
+                _logger.LogWarning("Approve post failed: post {PostId} not found or blog mismatch {BlogId}", postData.PostId, postData.BlogId);
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new { Result = "error" });
-
-            if (post.Blog == null || !post.Blog.CanApprove)
+            }
+            if (result.AccessDenied)
+            {
+                _logger.LogWarning("Approve post denied: user {UserId} cannot approve post {PostId}", UserInfo.UserID, postData.PostId);
                 return AccessViolation("You are not allowed to approve this post");
+            }
 
-            CorePosts.PublishPost(post, true, UserInfo.UserID);
+            _logger.LogInformation("Approved/published post {PostId} on blog {BlogId} by user {UserId}", postData.PostId, postData.BlogId, UserInfo.UserID);
             return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
         }
 
@@ -125,18 +160,36 @@ namespace DotNetNuke.Modules.Blog.Api
         [ValidateAntiForgeryToken]
         public HttpResponseMessage Delete(PostActionDto postData)
         {
+            _logger.LogDebug("Delete post requested: blogId {BlogId}, postId {PostId}, user {UserId}",
+                postData?.BlogId, postData?.PostId, UserInfo.UserID);
+
             if (postData == null)
+            {
+                _logger.LogWarning("Delete post failed: null payload");
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new { Result = "error" });
+            }
 
-            var security = BlogModuleContext.Security;
-            var post = CorePosts.GetPost(postData.PostId, BlogModuleContext.Settings.ModuleId, BlogModuleContext.BlogContext.Locale);
-            if (post == null || post.BlogID != postData.BlogId)
+            var result = new PostWriteService().Delete(
+                BlogModuleContext.Settings.ModuleId,
+                postData.BlogId,
+                postData.PostId,
+                BlogModuleContext.BlogContext.Locale,
+                UserInfo,
+                BlogModuleContext.Security,
+                cleanupImages: true);
+
+            if (result.NotFound)
+            {
+                _logger.LogWarning("Delete post failed: post {PostId} not found or blog mismatch {BlogId}", postData.PostId, postData.BlogId);
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new { Result = "error" });
-
-            if (!(post.Blog?.CanEdit == true || security.CanEditThisPost(post)))
+            }
+            if (result.AccessDenied)
+            {
+                _logger.LogWarning("Delete post denied: user {UserId} cannot delete post {PostId}", UserInfo.UserID, postData.PostId);
                 return AccessViolation("You are not allowed to delete this post");
+            }
 
-            CorePosts.DeletePost(post);
+            _logger.LogInformation("Deleted post {PostId} from blog {BlogId} by user {UserId}", postData.PostId, postData.BlogId, UserInfo.UserID);
             return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
         }
 

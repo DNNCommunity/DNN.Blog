@@ -1,0 +1,21 @@
+[if|1][custom:pagetype][=]number[/if]
+<li>
+ <a href="[urls:all|true]Page=[custom:page]" class="[custom:pageiscurrent|current;]">
+ [custom:pagename]
+ </a>
+</li>
+[endif|1]
+[if|2][custom:pagetype][=]firstpage[/if]
+<li class="button">
+ <a href="[urls:all|true]Page=[custom:page]">
+ [custom:pagename]
+ </a>
+</li>
+[endif|2]
+[if|3][custom:pagetype][=]lastpage[/if]
+<li class="button">
+ <a href="[urls:all|true]Page=[custom:page]">
+ [custom:pagename]
+ </a>
+</li>
+[endif|3]

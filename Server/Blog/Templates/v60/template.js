@@ -1,7 +1,6 @@
 (function ($, Sys) {
  $(document).ready(function () {
   $('a[href$=".gif"], a[href$=".jpg"], a[href$=".png"], a[href$=".bmp"]').colorbox();
-  $("abbr.blog_commenttimeago").timeago();
   $('#cmdComment').click(function () {
    $dialogComment.dialog('open');
    return false;

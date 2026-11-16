@@ -38,13 +38,9 @@ function CategoryNode(props: {
             type="button"
             className="blog-cat-picker__twist"
             aria-expanded={expanded}
+            aria-label="Toggle"
             onClick={() => onToggleExpand(node.TermId)}
-          >
-            <i
-              className={`fa fa-caret-${expanded ? "down" : "right"}`}
-              aria-hidden="true"
-            />
-          </button>
+          />
         ) : (
           <span className="blog-cat-picker__twist-spacer" />
         )}

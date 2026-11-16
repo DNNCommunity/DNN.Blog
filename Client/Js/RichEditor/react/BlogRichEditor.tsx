@@ -3,7 +3,7 @@ import {
   BlogRichEditorElement,
   defineBlogRichEditor,
 } from "../core/BlogRichEditor";
-import type { EditorMode, UploadFn } from "../core/types";
+import type { EditorLocaleOption, EditorMode, UploadFn } from "../core/types";
 
 export interface BlogRichEditorProps {
   mode?: EditorMode;
@@ -18,6 +18,11 @@ export interface BlogRichEditorProps {
   disabled?: boolean;
   placeholder?: string;
   className?: string;
+  /** Locales for the toolbar-end switcher (default first). Empty/omit to hide. */
+  locales?: EditorLocaleOption[];
+  locale?: string;
+  onLocaleChange?: (code: string) => void;
+  localeLabel?: string;
 }
 
 const HOST_STYLE_ID = "blog-rich-editor-host-style";
@@ -52,6 +57,8 @@ export function BlogRichEditor(props: BlogRichEditorProps): React.ReactElement {
   const ref = useRef<BlogRichEditorElement | null>(null);
   const onChangeRef = useRef(props.onChange);
   onChangeRef.current = props.onChange;
+  const onLocaleChangeRef = useRef(props.onLocaleChange);
+  onLocaleChangeRef.current = props.onLocaleChange;
   const lastEmittedRef = useRef<string | null>(null);
   const mode: EditorMode = props.mode === "markdown" ? "markdown" : "html";
 
@@ -117,6 +124,19 @@ export function BlogRichEditor(props: BlogRichEditorProps): React.ReactElement {
     lastEmittedRef.current = next;
     el.setValue(next);
   }, [props.value, mode]);
+
+  // Locale switcher lives in the editor toolbar end slot.
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const locales = props.locales || [];
+    el.setLocaleSwitcher(
+      locales,
+      props.locale || locales[0]?.code || "",
+      (code) => onLocaleChangeRef.current?.(code),
+      props.localeLabel
+    );
+  }, [props.locales, props.locale, props.localeLabel, mode]);
 
   return (
     <blog-rich-editor
