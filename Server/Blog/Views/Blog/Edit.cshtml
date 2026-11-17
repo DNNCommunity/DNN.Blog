@@ -343,19 +343,33 @@
                 <tbody>
                   @if (Model.RolePermissions != null)
                   {
+                    var prevWasSystem = (bool?)null;
+                    var roleStripe = 0;
                     for (var r = 0; r < Model.RolePermissions.Count; r++)
                     {
-                      <tr>
+                      var roleRow = Model.RolePermissions[r];
+                      var isSystem = roleRow.IsSystemRole;
+                      var isSegmentStart = prevWasSystem == true && !isSystem;
+                      if (isSegmentStart)
+                      {
+                        roleStripe = 0;
+                      }
+                      var roleClasses = "blog-admin__perm-role-row"
+                        + (isSystem ? " blog-admin__perm-role-row--system" : " blog-admin__perm-role-row--custom")
+                        + (isSegmentStart ? " blog-admin__perm-segment-start" : "")
+                        + (roleStripe % 2 == 1 ? " blog-admin__perm-row--alt" : "");
+                      <tr class="@roleClasses">
                         <th scope="row" class="blog-admin__perm-name">
-                          @Model.RolePermissions[r].RoleName
+                          @roleRow.RoleName
                           @Html.HiddenFor(m => m.RolePermissions[r].RoleId)
                           @Html.HiddenFor(m => m.RolePermissions[r].RoleName)
+                          @Html.HiddenFor(m => m.RolePermissions[r].IsSystemRole)
                         </th>
-                        @if (Model.RolePermissions[r].Cells != null)
+                        @if (roleRow.Cells != null)
                         {
-                          for (var c = 0; c < Model.RolePermissions[r].Cells.Count; c++)
+                          for (var c = 0; c < roleRow.Cells.Count; c++)
                           {
-                            var cell = Model.RolePermissions[r].Cells[c];
+                            var cell = roleRow.Cells[c];
                             <td class="blog-admin__perm-check">
                               @Html.HiddenFor(m => m.RolePermissions[r].Cells[c].PermissionId)
                               @Html.HiddenFor(m => m.RolePermissions[r].Cells[c].PermissionKey)
@@ -373,13 +387,18 @@
                           }
                         }
                       </tr>
+                      prevWasSystem = isSystem;
+                      roleStripe++;
                     }
                   }
                   @if (Model.UserPermissions != null)
                   {
                     for (var u = 0; u < Model.UserPermissions.Count; u++)
                     {
-                      <tr class="blog-admin__perm-user-row">
+                      var userClasses = "blog-admin__perm-user-row"
+                        + (u == 0 ? " blog-admin__perm-segment-start" : "")
+                        + (u % 2 == 1 ? " blog-admin__perm-row--alt" : "");
+                      <tr class="@userClasses">
                         <th scope="row" class="blog-admin__perm-name">
                           @(string.IsNullOrEmpty(Model.UserPermissions[u].DisplayName) ? Model.UserPermissions[u].Username : Model.UserPermissions[u].DisplayName)
                           @Html.HiddenFor(m => m.UserPermissions[u].UserId)

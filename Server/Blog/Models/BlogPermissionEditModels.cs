@@ -21,6 +21,7 @@ namespace DotNetNuke.Modules.Blog.Models
     {
         public int RoleId { get; set; }
         public string RoleName { get; set; } = "";
+        public bool IsSystemRole { get; set; }
         public List<BlogPermissionCellModel> Cells { get; set; } = new List<BlogPermissionCellModel>();
     }
 

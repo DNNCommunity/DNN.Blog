@@ -195,20 +195,52 @@ namespace DotNetNuke.Modules.Blog.Common
                 RoleName = DotNetNuke.Common.Globals.glbRoleAllUsersName
             });
 
-            roles = roles.OrderBy(r => (r.RoleName ?? "").ToLowerInvariant()).ToList();
+            var registeredUsersRoleId = portalSettings.RegisteredRoleId;
+
+            // All Users, then Registered Users, then other system roles (A–Z), then other roles (A–Z).
+            roles = roles
+                .OrderBy(r => RoleSortGroup(r, registeredUsersRoleId))
+                .ThenBy(r => (r.RoleName ?? "").ToLowerInvariant())
+                .ToList();
 
             return roles.Select(role => new BlogPermissionRoleRowModel
             {
                 RoleId = role.RoleID,
                 RoleName = role.RoleName,
-                Cells = columns.Select(col => new BlogPermissionCellModel
+                IsSystemRole = IsSystemRole(role, registeredUsersRoleId),
+                Cells = columns.Select(col =>
                 {
-                    PermissionId = col.PermissionId,
-                    PermissionKey = col.PermissionKey,
-                    AllowAccess = HasRolePermission(existing, col.PermissionId, role.RoleID),
-                    Enabled = IsRoleCellEnabled(role.RoleID, col.PermissionId)
+                    var enabled = IsRoleCellEnabled(role.RoleID, col.PermissionId);
+                    return new BlogPermissionCellModel
+                    {
+                        PermissionId = col.PermissionId,
+                        PermissionKey = col.PermissionKey,
+                        AllowAccess = enabled && HasRolePermission(existing, col.PermissionId, role.RoleID),
+                        Enabled = enabled
+                    };
                 }).ToList()
             }).ToList();
+        }
+
+        private static int RoleSortGroup(RoleInfo role, int registeredUsersRoleId)
+        {
+            if (role == null)
+                return 3;
+            if (role.RoleID == -1)
+                return 0;
+            if (role.RoleID == registeredUsersRoleId)
+                return 1;
+            if (IsSystemRole(role, registeredUsersRoleId))
+                return 2;
+            return 3;
+        }
+
+        private static bool IsSystemRole(RoleInfo role, int registeredUsersRoleId = -1)
+        {
+            return role != null
+                && (role.RoleID == -1
+                    || role.RoleID == registeredUsersRoleId
+                    || role.IsSystemRole);
         }
 
         private static List<BlogPermissionUserRowModel> BuildUserRows(
@@ -245,9 +277,13 @@ namespace DotNetNuke.Modules.Blog.Common
             if (roleId != -1)
                 return true;
 
+            // All Users: only view/comment-view style permissions; no authoring or moderation.
             return permissionId != (int)BlogPermissionTypes.ADD
                 && permissionId != (int)BlogPermissionTypes.EDIT
-                && permissionId != (int)BlogPermissionTypes.APPROVE;
+                && permissionId != (int)BlogPermissionTypes.APPROVE
+                && permissionId != (int)BlogPermissionTypes.ADDCOMMENT
+                && permissionId != (int)BlogPermissionTypes.APPROVECOMMENT
+                && permissionId != (int)BlogPermissionTypes.AUTOAPPROVECOMMENT;
         }
 
         private static bool HasRolePermission(BlogPermissionCollection existing, int permissionId, int roleId)
