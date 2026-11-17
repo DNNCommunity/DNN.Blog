@@ -1,7 +1,6 @@
 .cursor
 .out
 .vs
-_*
 **/bin
 **/obj
 **/node_modules

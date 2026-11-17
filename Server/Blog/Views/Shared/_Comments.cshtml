@@ -1,0 +1,92 @@
+@inherits BlogWebPage
+@using DotNetNuke.Modules.Blog.Common
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Serialization
+@{
+  var ctx = BlogModuleContext.BlogContext;
+  var security = BlogModuleContext.Security;
+  var post = ctx.Post;
+  if (post == null || !security.CanViewComments)
+  {
+    return;
+  }
+
+  string L(string key, string fallback)
+  {
+    var s = Dnn.LocalizeString(key);
+    if (string.IsNullOrWhiteSpace(s)) s = Dnn.LocalizeString(key + ".Text");
+    return string.IsNullOrWhiteSpace(s) ? fallback : s;
+  }
+
+  var securityJson = JsonConvert.SerializeObject(new
+  {
+    UserId = Dnn.User.UserID,
+    CanView = true,
+    CanEdit = security.CanEditPost || security.IsEditor || security.IsBlogger,
+    IsAdmin = security.UserIsAdmin,
+    CanViewComments = security.CanViewComments,
+    CanAddComment = security.CanAddComment,
+    CanApproveComment = security.CanApproveComment,
+    LoggedIn = security.LoggedIn
+  });
+
+  var bootstrap = new
+  {
+    blogId = ctx.BlogId,
+    postId = ctx.ContentItemId,
+    nrComments = post.NrComments,
+    loggedIn = security.LoggedIn,
+    canAddComment = security.CanAddComment && post.AllowComments,
+    canApproveComment = security.CanApproveComment,
+    allowComments = post.AllowComments,
+    labels = new
+    {
+      total = L("Total", "Total"),
+      comments = L("Comments", "Comment(s)"),
+      comment = L("Comment", "Comment"),
+      reply = L("Reply", "Reply"),
+      like = L("Like", "Like"),
+      dislike = L("Dislike", "Dislike"),
+      report = L("Report", "Report"),
+      likeTitle = L("LikeComment", "Like Comment"),
+      dislikeTitle = L("DislikeComment", "Dislike Comment"),
+      reportTitle = L("ReportComment", "Report Comment"),
+      reportConfirm = L("ReportComment.Confirm", "Do you wish to report this comment as inappropriate?"),
+      approve = L("Approve", "Approve"),
+      deleteComment = L("DeleteComment", "Delete"),
+      deleteConfirm = L("DeleteComment.Confirm", "Delete the comment? This cannot be undone."),
+      submit = L("Submit", "Submit"),
+      cancel = L("Cancel", "Cancel"),
+      name = L("Name", "Name"),
+      email = L("Email", "Email"),
+      website = L("Website", "Website"),
+      notApproved = L("CommentNotApproved", "Your comment was submitted and is awaiting approval."),
+      empty = L("NoComments", "No comments yet."),
+      required = L("CommentRequired", "Please enter a comment.")
+    }
+  };
+
+  var bootstrapJson = JsonConvert.SerializeObject(bootstrap, new JsonSerializerSettings
+  {
+    ContractResolver = new CamelCasePropertyNamesContractResolver(),
+    StringEscapeHandling = StringEscapeHandling.EscapeHtml
+  });
+}
+<div class="DotNetNukeBlog"
+     data-moduleid="@Dnn.ActiveModule.ModuleID"
+     data-tabid="@Dnn.ActiveModule.TabID"
+     data-locale="@Locale"
+     data-resources="@SerializedResources()"
+     data-security="@securityJson">
+</div>
+
+<div id="blog-comments-af" hidden>
+  @MvcHtml.AntiForgeryToken()
+</div>
+
+<script type="application/json" id="blog-comments-bootstrap">@Html.Raw(bootstrapJson)</script>
+
+<div class="Blog"
+     data-moduleid="@Dnn.ActiveModule.ModuleID"
+     data-component="comments">
+</div>

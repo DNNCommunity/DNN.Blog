@@ -1,0 +1,48 @@
+@model IEnumerable<DotNetNuke.Modules.Blog.Models.PostCategoryNode>
+@using System.Linq
+@{
+  var nodes = Model ?? Enumerable.Empty<DotNetNuke.Modules.Blog.Models.PostCategoryNode>();
+}
+<div class="blog-cat-picker" data-blog-cat-picker>
+  @if (!nodes.Any())
+  {
+    <p class="blog-cat-picker__empty">No categories</p>
+  }
+  else
+  {
+    <ul class="blog-cat-picker__list blog-cat-picker__list--root">
+      @foreach (var node in nodes)
+      {
+        @Html.Partial("~/DesktopModules/MVC/Blog/Views/Shared/_CategoryPickerNode.cshtml", node)
+      }
+    </ul>
+  }
+</div>
+<script type="text/javascript">
+(function () {
+  var root = document.currentScript && document.currentScript.previousElementSibling;
+  if (!root || !root.getAttribute || root.getAttribute('data-blog-cat-picker') === null) {
+    root = document.querySelector('[data-blog-cat-picker]');
+  }
+  if (!root || root.getAttribute('data-blog-cat-ready')) return;
+  root.setAttribute('data-blog-cat-ready', '1');
+  root.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-blog-cat-twist]');
+    if (!btn || !root.contains(btn)) return;
+    e.preventDefault();
+    var item = btn.closest('.blog-cat-picker__item');
+    if (!item) return;
+    var children = null;
+    for (var i = 0; i < item.children.length; i++) {
+      if (item.children[i].hasAttribute && item.children[i].hasAttribute('data-blog-cat-children')) {
+        children = item.children[i];
+        break;
+      }
+    }
+    if (!children) return;
+    var open = btn.getAttribute('aria-expanded') !== 'false';
+    btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+    children.hidden = open;
+  });
+})();
+</script>

@@ -1,0 +1,37 @@
+// Design tokens for the Blog module. Applied on .ModBlogC so DNN skins
+// cannot redefine them at :root and bleed into unrelated page chrome.
+
+.ModBlogC {
+  --blog-space-1: 0.25rem;
+  --blog-space-2: 0.5rem;
+  --blog-space-3: 0.75rem;
+  --blog-space-4: 1rem;
+  --blog-space-5: 1.5rem;
+  --blog-space-6: 2rem;
+
+  --blog-radius: 6px;
+  --blog-font: "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --blog-font-size: 0.9375rem;
+  --blog-font-size-sm: 0.8125rem;
+  --blog-font-size-lg: 1.25rem;
+  --blog-font-size-xl: 1.5rem;
+  --blog-line-height: 1.45;
+
+  --blog-admin-surface: #ffffff;
+  --blog-admin-surface-muted: #f7f8fa;
+  --blog-admin-border: #e2e5ea;
+  --blog-admin-border-strong: #c5cad3;
+  --blog-admin-text: #1f2933;
+  --blog-admin-muted: #6b7280;
+  --blog-admin-accent: #2563eb;
+  --blog-admin-accent-hover: #1d4ed8;
+  --blog-admin-accent-text: #ffffff;
+  --blog-admin-warning-bg: #fff8e6;
+  --blog-admin-warning-border: #f0d78c;
+  --blog-admin-warning-text: #7a5b00;
+  --blog-admin-info-bg: #eef5ff;
+  --blog-admin-info-border: #b6d0f7;
+  --blog-admin-info-text: #1e3a5f;
+  --blog-admin-focus: 0 0 0 3px rgba(37, 99, 235, 0.28);
+  --blog-admin-label-width: 14rem;
+}

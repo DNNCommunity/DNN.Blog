@@ -1,0 +1,256 @@
+@inherits BlogWebPage
+@using System.Web
+@using DotNetNuke.Modules.Blog.Common
+@{
+  var ctx = BlogModuleContext.BlogContext;
+  var security = ctx.Security;
+  string manageUrl = Url.Action("Index", "Manage");
+  string adminUrl = Url.Action("Index", "Admin");
+  string homeUrl = DotNetNuke.Common.Globals.NavigateURL();
+  // Prefer a stable module-tab URL so Cancel returns to the launcher (home / blog / post), not Manage.
+  // Use PathAndQuery when NavigateURL is absolute so Url.IsLocalUrl accepts it on Post/Edit.
+  Func<string, string> toLocalPath = url =>
+  {
+    if (string.IsNullOrWhiteSpace(url)) return url;
+    Uri absolute;
+    if (Uri.TryCreate(url, UriKind.Absolute, out absolute))
+      return absolute.PathAndQuery;
+    return url;
+  };
+  string returnUrl = toLocalPath(homeUrl);
+  if (ctx.ContentItemId > -1)
+  {
+    returnUrl = toLocalPath(DotNetNuke.Common.Globals.NavigateURL(Dnn.ActiveModule.TabID, "", "Post=" + ctx.ContentItemId));
+  }
+  else if (ctx.BlogId > -1)
+  {
+    returnUrl = toLocalPath(DotNetNuke.Common.Globals.NavigateURL(Dnn.ActiveModule.TabID, "", "Blog=" + ctx.BlogId));
+  }
+  string editPostUrl = ctx.ContentItemId > -1
+    ? Url.Action("Edit", "Post", new { Blog = ctx.BlogId, Post = ctx.ContentItemId, returnUrl = returnUrl })
+    : null;
+  var newPostBlogs = security.CanAddPost
+    ? BlogNavigationHelper.GetBlogsForNewPost(
+        BlogModuleContext.Settings.ModuleId,
+        BlogModuleContext.UserInfo.UserID,
+        ctx.Locale,
+        security,
+        ctx.ContentItemId)
+    : new System.Collections.Generic.List<DotNetNuke.Modules.Blog.Core.Entities.Blogs.BlogInfo>();
+  int nrBlogs = newPostBlogs.Count;
+  string postEditBaseUrl = Url.Action("Edit", "Post", new { returnUrl = returnUrl });
+  string singleBlogUrl = nrBlogs == 1
+    ? Url.Action("Edit", "Post", new { Blog = newPostBlogs[0].BlogID, returnUrl = returnUrl })
+    : null;
+  Func<string, string, string> L = (key, fallback) =>
+  {
+    var s = Dnn.LocalizeString(key);
+    return string.IsNullOrWhiteSpace(s) ? fallback : s;
+  };
+  string lblManage = L("cmdManageBlogs", "Manage");
+  string lblAdmin = L("cmdAdmin", "Admin");
+  string lblEditPost = L("cmdEditPost", "Edit Post");
+  string lblNewPost = L("cmdBlog", "New Post!");
+  string lblHome = L("Home", "Home");
+  string lblRss = L("RSS", "RSS");
+  string lblSearch = L("Search", "Search");
+  string lblSearchIn = L("SearchIn", "Search In: ");
+  string lblSearchAll = L("SearchAll", "In all content");
+  string lblTitle = L("Title", "Title");
+  string lblContents = L("Contents", "Contents");
+  string lblUnpublished = L("Unpublished", "Also Unpublished");
+  string lblBlogChoose = L("BlogChoose", "Choose blog to post to");
+  string lblCancel = L("Cancel", "Cancel");
+  string dialogId = "blog-choose-" + Dnn.ActiveModule.ModuleID;
+  string searchDialogId = "blog-search-" + Dnn.ActiveModule.ModuleID;
+  string rssUrl = BlogModuleContext.BuildRssUrl();
+  string searchAllBaseUrl = ctx.ModuleUrls.GetUrl(false, false, false, false, true);
+  string searchScopedBaseUrl = ctx.ModuleUrls.GetUrl(true, false, true, true, true);
+  bool canAddPost = security.CanAddPost;
+}
+<div class="blog_manage_buttons">
+  @if (security.IsEditor || security.IsBlogger || security.CanDoSomethingWithPosts)
+  {
+    <a href="@manageUrl" class="blog-toolbar__btn"><i class="fa fa-folder-open" aria-hidden="true"></i><span>@lblManage</span></a>
+  }
+  @if (security.IsEditor)
+  {
+    <a href="@adminUrl" class="blog-toolbar__btn"><i class="fa fa-cog" aria-hidden="true"></i><span>@lblAdmin</span></a>
+  }
+  @if (ctx.ContentItemId > -1 && security.CanEditThisPost(ctx.Post) && editPostUrl != null)
+  {
+    <a href="@editPostUrl" class="blog-toolbar__btn"><i class="fa fa-pencil" aria-hidden="true"></i><span>@lblEditPost</span></a>
+  }
+  @if (security.CanAddPost && nrBlogs > 0)
+  {
+    if (nrBlogs == 1)
+    {
+      <a href="@singleBlogUrl" class="blog-toolbar__btn"><i class="fa fa-plus" aria-hidden="true"></i><span>@lblNewPost</span></a>
+    }
+    else
+    {
+      <a href="#" class="blog-toolbar__btn" data-blog-choose-open="@dialogId"><i class="fa fa-plus" aria-hidden="true"></i><span>@lblNewPost</span></a>
+    }
+  }
+  <a href="@homeUrl" class="blog-toolbar__btn" title="@lblHome"><i class="fa fa-home" aria-hidden="true"></i><span>@lblHome</span></a>
+  <a href="@rssUrl" class="blog-toolbar__btn" title="@lblRss" target="_blank" rel="noopener noreferrer"><i class="fa fa-rss" aria-hidden="true"></i><span>@lblRss</span></a>
+  <a href="#" class="blog-toolbar__btn" title="@lblSearch" data-blog-search-open="@searchDialogId"><i class="fa fa-search" aria-hidden="true"></i><span>@lblSearch</span></a>
+</div>
+@if (security.CanAddPost && nrBlogs > 1)
+{
+<div class="blog-dialog" id="@dialogId" hidden>
+  <div class="blog-dialog__backdrop" data-blog-choose-close="@dialogId"></div>
+  <div class="blog-dialog__panel blog-admin" role="dialog" aria-modal="true" aria-labelledby="@(dialogId)-title">
+    <header class="blog-dialog__header">
+      <h2 class="blog-dialog__title" id="@(dialogId)-title">@lblBlogChoose</h2>
+      <button type="button" class="blog-dialog__close" data-blog-choose-close="@dialogId" aria-label="@lblCancel">&times;</button>
+    </header>
+    <div class="blog-dialog__body">
+      <label class="blog-dialog__label" for="@(dialogId)-select">@lblBlogChoose</label>
+      <select id="@(dialogId)-select" class="blog-admin__input blog-dialog__select">
+        @foreach (var blog in newPostBlogs)
+        {
+          <option value="@blog.BlogID">@blog.LocalizedTitle</option>
+        }
+      </select>
+    </div>
+    <div class="blog-dialog__actions">
+      <button type="button" class="blog-admin__btn blog-admin__btn--secondary" data-blog-choose-close="@dialogId">@lblCancel</button>
+      <button type="button" class="blog-admin__btn blog-admin__btn--primary" data-blog-choose-go="@dialogId" data-edit-base="@postEditBaseUrl">@lblNewPost</button>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+(function () {
+  var id = '@dialogId';
+  var root = document.getElementById(id);
+  if (!root) return;
+  var select = document.getElementById(id + '-select');
+  function open() {
+    root.removeAttribute('hidden');
+    root.classList.add('is-open');
+    if (select) select.focus();
+  }
+  function close() {
+    root.classList.remove('is-open');
+    root.setAttribute('hidden', 'hidden');
+  }
+  document.querySelectorAll('[data-blog-choose-open="' + id + '"]').forEach(function (el) {
+    el.addEventListener('click', function (e) {
+      e.preventDefault();
+      open();
+    });
+  });
+  root.querySelectorAll('[data-blog-choose-close="' + id + '"]').forEach(function (el) {
+    el.addEventListener('click', function (e) {
+      e.preventDefault();
+      close();
+    });
+  });
+  var go = root.querySelector('[data-blog-choose-go="' + id + '"]');
+  if (go) {
+    go.addEventListener('click', function () {
+      var base = go.getAttribute('data-edit-base') || '';
+      var blogId = select ? select.value : '';
+      var sep = base.indexOf('?') === -1 ? '?' : '&';
+      window.location.href = base + sep + 'Blog=' + encodeURIComponent(blogId);
+    });
+  }
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && root.classList.contains('is-open')) close();
+  });
+})();
+</script>
+}
+<div class="blog-dialog" id="@searchDialogId" hidden>
+  <div class="blog-dialog__backdrop" data-blog-search-close="@searchDialogId"></div>
+  <div class="blog-dialog__panel blog-admin" role="dialog" aria-modal="true" aria-labelledby="@(searchDialogId)-title">
+    <header class="blog-dialog__header">
+      <h2 class="blog-dialog__title" id="@(searchDialogId)-title">@lblSearch</h2>
+      <button type="button" class="blog-dialog__close" data-blog-search-close="@searchDialogId" aria-label="@lblCancel">&times;</button>
+    </header>
+    <div class="blog-dialog__body">
+      <label class="blog-dialog__label" for="@(searchDialogId)-input">@lblSearch</label>
+      <input type="text" id="@(searchDialogId)-input" class="blog-admin__input blog-toolbar__search-input" />
+      <div class="blog-toolbar__search-scopes">
+        <span>@lblSearchIn</span>
+        <label class="blog-toolbar__search-scope"><input type="checkbox" id="@(searchDialogId)-all" checked="checked" /> @lblSearchAll</label>
+        <label class="blog-toolbar__search-scope"><input type="checkbox" id="@(searchDialogId)-title" checked="checked" /> @lblTitle</label>
+        <label class="blog-toolbar__search-scope"><input type="checkbox" id="@(searchDialogId)-contents" /> @lblContents</label>
+        @if (canAddPost)
+        {
+          <label class="blog-toolbar__search-scope"><input type="checkbox" id="@(searchDialogId)-unpublished" /> @lblUnpublished</label>
+        }
+      </div>
+    </div>
+    <div class="blog-dialog__actions">
+      <button type="button" class="blog-admin__btn blog-admin__btn--secondary" data-blog-search-close="@searchDialogId">@lblCancel</button>
+      <button type="button" class="blog-admin__btn blog-admin__btn--primary" data-blog-search-go="@searchDialogId">@lblSearch</button>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+(function () {
+  var id = '@searchDialogId';
+  var root = document.getElementById(id);
+  if (!root) return;
+  var input = document.getElementById(id + '-input');
+  var scopeAll = document.getElementById(id + '-all');
+  var scopeTitle = document.getElementById(id + '-title');
+  var scopeContents = document.getElementById(id + '-contents');
+  var scopeUnpublished = document.getElementById(id + '-unpublished');
+  var searchAllBase = '@Html.Raw(HttpUtility.JavaScriptStringEncode(searchAllBaseUrl))';
+  var searchScopedBase = '@Html.Raw(HttpUtility.JavaScriptStringEncode(searchScopedBaseUrl))';
+  function open() {
+    root.removeAttribute('hidden');
+    root.classList.add('is-open');
+    if (input) {
+      input.focus();
+      input.select();
+    }
+  }
+  function close() {
+    root.classList.remove('is-open');
+    root.setAttribute('hidden', 'hidden');
+  }
+  function go() {
+    var url = (scopeAll && scopeAll.checked) ? searchAllBase : searchScopedBase;
+    url += 'search=' + encodeURIComponent(input ? input.value : '');
+    if (scopeTitle && scopeTitle.checked) url += '&t=1';
+    if (scopeContents && scopeContents.checked) url += '&c=1';
+    if (scopeUnpublished && scopeUnpublished.checked) url += '&u=1';
+    window.location.href = url;
+  }
+  document.querySelectorAll('[data-blog-search-open="' + id + '"]').forEach(function (el) {
+    el.addEventListener('click', function (e) {
+      e.preventDefault();
+      open();
+    });
+  });
+  root.querySelectorAll('[data-blog-search-close="' + id + '"]').forEach(function (el) {
+    el.addEventListener('click', function (e) {
+      e.preventDefault();
+      close();
+    });
+  });
+  var goBtn = root.querySelector('[data-blog-search-go="' + id + '"]');
+  if (goBtn) {
+    goBtn.addEventListener('click', function () {
+      close();
+      go();
+    });
+  }
+  if (input) {
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        close();
+        go();
+      }
+    });
+  }
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && root.classList.contains('is-open')) close();
+  });
+})();
+</script>

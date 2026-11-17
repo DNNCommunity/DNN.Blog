@@ -1,0 +1,159 @@
+// Module settings render outside .ModBlogC and under DNN default.css,
+// which hides native checkboxes (opacity:0) and floats form controls.
+
+.blog-settings-cat {
+  float: left;
+  width: 45%;
+  max-width: 28rem;
+  margin: 0 0 1rem;
+  clear: none;
+}
+
+.blog-cat-picker {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 28rem;
+  border: 1px solid #c8c8c8;
+  border-radius: 2px;
+  background: #fff;
+  padding: 0.35rem 0.5rem;
+  max-height: 16rem;
+  overflow: auto;
+}
+
+.blog-cat-picker__list {
+  list-style: none !important;
+  margin: 0;
+  padding: 0 0 0 1rem;
+}
+
+.blog-cat-picker__list--root {
+  padding-left: 0;
+}
+
+.blog-cat-picker__item {
+  list-style: none !important;
+  margin: 0;
+  padding: 0;
+}
+
+.blog-cat-picker__row {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  min-height: 1.6rem;
+}
+
+.blog-cat-picker__twist {
+  box-sizing: border-box !important;
+  flex: 0 0 1rem !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 1rem !important;
+  min-width: 1rem !important;
+  height: 1rem !important;
+  min-height: 1rem !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  color: #6b7280 !important;
+  cursor: pointer;
+  line-height: 1 !important;
+  font-size: 0 !important;
+  vertical-align: middle;
+
+  &::before,
+  &::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  // CSS caret (right when collapsed, down when expanded)
+  &::before {
+    content: "" !important;
+    display: block !important;
+    width: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+    border-style: solid !important;
+    border-width: 0.22rem 0 0.22rem 0.34rem !important;
+    border-color: transparent transparent transparent currentColor !important;
+    background: none !important;
+    box-shadow: none !important;
+    transform: rotate(0deg);
+    transform-origin: 40% 50%;
+    transition: transform 0.12s ease;
+  }
+
+  &[aria-expanded="true"]::before {
+    transform: rotate(90deg);
+  }
+
+  &:hover,
+  &:focus,
+  &:active {
+    color: #1f2933 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #2563eb47;
+    outline-offset: 1px;
+  }
+}
+
+.blog-cat-picker__twist-spacer {
+  flex: 0 0 1rem;
+  width: 1rem;
+  height: 1rem;
+}
+
+.blog-cat-picker__label {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0 !important;
+  float: none !important;
+  width: auto !important;
+  cursor: pointer;
+  font-weight: normal;
+}
+
+.blog-cat-picker__name {
+  line-height: 1.3;
+}
+
+.blog-cat-picker__empty {
+  margin: 0.25rem 0;
+  opacity: 0.7;
+  font-size: 0.9rem;
+}
+
+// Defeat DNN default checkbox chrome so the tree is usable in Settings.
+.blog-cat-picker input[type="checkbox"] {
+  appearance: auto !important;
+  -webkit-appearance: checkbox !important;
+  opacity: 1 !important;
+  position: static !important;
+  width: 1rem !important;
+  height: 1rem !important;
+  min-width: 1rem !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  float: none !important;
+  display: inline-block !important;
+  visibility: visible !important;
+  clip: auto !important;
+  clip-path: none !important;
+}

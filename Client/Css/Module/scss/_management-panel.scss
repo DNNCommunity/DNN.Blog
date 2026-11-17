@@ -1,0 +1,84 @@
+// Management toolbar — scoped under .ModBlogC so DNN skin action classes
+// (dnnPrimaryAction / dnnSecondaryAction) do not control these controls.
+// Class prefix blog-toolbar__ avoids colliding with Manage page .blog-manage__btn
+// (which uses a transparent base background).
+
+.ModBlogC {
+  .blog_manage_buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+    gap: var(--blog-space-2);
+    margin: var(--blog-space-2) var(--blog-space-4) var(--blog-space-3);
+    min-height: 0;
+    box-sizing: border-box;
+  }
+
+  .blog-toolbar__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    margin: 0;
+    padding: 0.28rem 0.65rem;
+    border: 1px solid transparent;
+    border-radius: var(--blog-radius);
+    // Prefer DNN theme primary when present; fall back to module accent.
+    // Do not lead with --bs-primary: empty custom properties skip fallbacks and break the background.
+    background: var(--dnn-color-primary, var(--blog-admin-accent));
+    color: #fff !important;
+    font-family: var(--blog-font);
+    font-size: var(--blog-font-size-sm);
+    font-weight: 600;
+    line-height: 1.2;
+    text-decoration: none !important;
+    white-space: nowrap;
+    cursor: pointer;
+    box-shadow: none;
+    transition: background-color 0.15s ease, border-color 0.15s ease, filter 0.15s ease;
+
+    &:hover,
+    &:focus {
+      filter: brightness(0.92);
+      border-color: transparent;
+      color: #fff !important;
+      text-decoration: none !important;
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--blog-admin-focus);
+      filter: none;
+    }
+
+    .fa {
+      font-size: 0.875rem;
+      line-height: 1;
+      color: inherit;
+    }
+  }
+
+  .blog-toolbar__search-scopes {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--blog-space-2) var(--blog-space-3);
+    margin-top: var(--blog-space-3);
+    font-size: var(--blog-font-size-sm);
+    color: var(--blog-admin-text);
+  }
+
+  .blog-toolbar__search-scope {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin: 0;
+    font-weight: 400;
+    cursor: pointer;
+  }
+
+  .blog-toolbar__search-input {
+    width: 100%;
+  }
+}

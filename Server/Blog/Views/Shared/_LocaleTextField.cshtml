@@ -1,0 +1,102 @@
+@using System.Collections.Generic
+@using System.Linq
+@using DotNetNuke.Modules.Blog.Models
+@{
+  string fieldName = (string)ViewData["FieldName"];
+  string valuesPrefix = (string)ViewData["ValuesPrefix"] ?? fieldName + "s";
+  string defaultValue = (string)ViewData["DefaultValue"] ?? "";
+  string defaultLocale = (string)ViewData["DefaultLocale"] ?? "";
+  string defaultFlagUrl = (string)ViewData["DefaultFlagUrl"] ?? "";
+  string defaultLocaleName = (string)ViewData["DefaultLocaleName"] ?? defaultLocale;
+  bool useFullLocalization = ViewData["UseFullLocalization"] as bool? == true;
+  bool required = ViewData["Required"] as bool? == true;
+  bool multiline = ViewData["Multiline"] as bool? == true;
+  int rows = ViewData["Rows"] as int? ?? 8;
+  var otherLocales = ViewData["OtherLocales"] as IEnumerable<PostLocaleOption> ?? Enumerable.Empty<PostLocaleOption>();
+  var values = ViewData["Values"] as IDictionary<string, string> ?? new Dictionary<string, string>();
+  string inputId = "blog-locale-" + fieldName.Replace("[", "_").Replace("]", "_");
+  bool showLoc = useFullLocalization && otherLocales.Any();
+}
+<div class="blog-locale-field@(multiline ? " blog-locale-field--multiline" : "")" data-blog-locale-field>
+  <div class="blog-locale-field__default">
+    <div class="blog-locale-field__control">
+      @if (multiline)
+      {
+        <textarea id="@inputId"
+                  name="@fieldName"
+                  rows="@rows"
+                  class="blog-admin__input blog-admin__textarea"
+                  @(required ? "required=\"required\"" : null)>@defaultValue</textarea>
+      }
+      else
+      {
+        <input type="text"
+               id="@inputId"
+               name="@fieldName"
+               value="@defaultValue"
+               class="blog-admin__input"
+               @(required ? "required=\"required\"" : null) />
+      }
+    </div>
+    @if (showLoc)
+    {
+      <div class="blog-locale-field__meta">
+        @if (!string.IsNullOrEmpty(defaultFlagUrl))
+        {
+          <img class="blog-locale-field__flag" src="@defaultFlagUrl" alt="@defaultLocaleName" title="@defaultLocaleName" />
+        }
+        else
+        {
+          <span class="blog-locale-field__locale-code" title="@defaultLocaleName">@defaultLocale</span>
+        }
+        <button type="button"
+                class="blog-locale-field__toggle"
+                data-blog-locale-toggle
+                aria-expanded="false"
+                aria-controls="@(inputId)-translations"
+                title="Translations">
+          <i class="fa fa-chevron-down" aria-hidden="true"></i>
+          <span class="sr-only">Translations</span>
+        </button>
+      </div>
+    }
+  </div>
+  @if (showLoc)
+  {
+    <div class="blog-locale-field__translations" id="@(inputId)-translations" hidden>
+      @foreach (var loc in otherLocales)
+      {
+        var val = values.ContainsKey(loc.Code) ? values[loc.Code] : "";
+        <div class="blog-locale-field__row">
+          <div class="blog-locale-field__control">
+            @if (multiline)
+            {
+              <textarea name="@(valuesPrefix)[@loc.Code]"
+                        rows="@rows"
+                        class="blog-admin__input blog-admin__textarea"
+                        aria-label="@loc.Name">@val</textarea>
+            }
+            else
+            {
+              <input type="text"
+                     name="@(valuesPrefix)[@loc.Code]"
+                     value="@val"
+                     class="blog-admin__input"
+                     aria-label="@loc.Name" />
+            }
+          </div>
+          <div class="blog-locale-field__row-meta">
+            @if (!string.IsNullOrEmpty(loc.FlagUrl))
+            {
+              <img class="blog-locale-field__flag" src="@loc.FlagUrl" alt="@loc.Name" title="@loc.Name" />
+            }
+            else
+            {
+              <span class="blog-locale-field__locale-code" title="@loc.Name">@loc.Code</span>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

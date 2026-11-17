@@ -1,0 +1,17 @@
+@using DotNetNuke.Modules.Blog.Models
+@model IEnumerable<PostCategoryNode>
+@if (Model != null)
+{
+  <div class="blog-cat-tree">
+    @foreach (var node in Model)
+    {
+      <label class="blog-cat-tree__label" style="padding-left:@(node.Depth * 1.25)rem">
+        <input type="checkbox"
+               name="SelectedCategoryIds"
+               value="@node.TermId"
+               @(node.Selected ? "checked=\"checked\"" : null) />
+        <span>@node.Name</span>
+      </label>
+    }
+  </div>
+}

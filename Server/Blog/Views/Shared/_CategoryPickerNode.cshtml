@@ -1,0 +1,36 @@
+@model DotNetNuke.Modules.Blog.Models.PostCategoryNode
+@{
+  var hasChildren = Model.Children != null && Model.Children.Count > 0;
+}
+<li class="blog-cat-picker__item" data-term-id="@Model.TermId">
+  <div class="blog-cat-picker__row">
+    @if (hasChildren)
+    {
+      <button type="button"
+              class="blog-cat-picker__twist"
+              aria-expanded="true"
+              aria-label="Toggle"
+              data-blog-cat-twist></button>
+    }
+    else
+    {
+      <span class="blog-cat-picker__twist-spacer"></span>
+    }
+    <label class="blog-cat-picker__label">
+      <input type="checkbox"
+             name="SelectedCategoryIds"
+             value="@Model.TermId"
+             @(Model.Selected ? "checked=\"checked\"" : null) />
+      <span class="blog-cat-picker__name">@Model.Name</span>
+    </label>
+  </div>
+  @if (hasChildren)
+  {
+    <ul class="blog-cat-picker__list" data-blog-cat-children>
+      @foreach (var child in Model.Children)
+      {
+        @Html.Partial("~/DesktopModules/MVC/Blog/Views/Shared/_CategoryPickerNode.cshtml", child)
+      }
+    </ul>
+  }
+</li>
