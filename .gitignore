@@ -15,6 +15,8 @@ tools/*
 Server/**/*.map
 Server/Blog/module.css
 Server/Blog/js/blog.*
+Server/Blog/js/htmleditor.*
+Server/Blog/js/postedit.*
 **/settings.json
 **/local.json
 **/*.db
