@@ -1,3 +1,4 @@
+using DotNetNuke.Framework;
 using DotNetNuke.Modules.Blog.Common;
 using DotNetNuke.Modules.Blog.Core.Common;
 using DotNetNuke.Modules.Blog.Models;
@@ -26,6 +27,10 @@ namespace DotNetNuke.Modules.Blog.Controllers
       _logger.LogDebug("Settings GET: blogModuleId {BlogModuleId}, tabModuleId {TabModuleId}, user {UserId}",
           blogModuleId, ModuleContext.TabModuleId, User.UserID);
       BlogModuleContext.AddModuleCss();
+      // Token is posted with DNN Module Settings #Form (no nested MVC form).
+      ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+      if (BlogModuleContext.Page != null)
+        BlogModuleContext.RegisterAjaxAntiForgery();
       var model = BuildViewModel(blogModuleId);
       _logger.LogInformation("Settings page rendered for tabModule {TabModuleId}, blogModuleId {BlogModuleId}",
           ModuleContext.TabModuleId, model.BlogModuleId);
@@ -34,7 +39,7 @@ namespace DotNetNuke.Modules.Blog.Controllers
 
     [HttpPost]
     [ValidateInput(false)]
-    [Web.Api.ValidateAntiForgeryToken]
+    [DotNetNuke.Web.Mvc.Framework.ActionFilters.ValidateAntiForgeryToken]
     public ActionResult Settings(SettingsViewModel model)
     {
       _logger.LogDebug("Settings POST: tabModuleId {TabModuleId}, blogModuleId {BlogModuleId}, user {UserId}",
@@ -58,7 +63,8 @@ namespace DotNetNuke.Modules.Blog.Controllers
 
       _logger.LogInformation("View settings saved for tabModule {TabModuleId}: blogModuleId {BlogModuleId}, blogId {BlogId}, template {Template}",
           ModuleContext.TabModuleId, vs.BlogModuleId, vs.BlogId, vs.Template);
-      return RedirectToDefaultRoute();
+      // MvcSettingsControl.UpdateSettings only needs side effects; avoid redirecting the host page.
+      return View(BuildViewModel(model.BlogModuleId));
     }
 
     private SettingsViewModel BuildViewModel(int? blogModuleIdOverride)

@@ -50,70 +50,86 @@
   };
 }
 <link rel="stylesheet" href="@Url.Content(moduleCssPath)?_=@(moduleCssBust)" />
-<div class="dnnForm dnnClear">
-  @using (BeginForm("Settings", "Settings", FormMethod.Post))
-  {
-    @MvcHtml.AntiForgeryToken()
-    <fieldset>
-      <div class="dnnFormItem">
-        @DnnLabel("lblBlogModuleId", "BlogModuleId", "Parent Blog Module")
-        @Html.DropDownListFor(m => m.BlogModuleId, Model.BlogModules, new { @class = "dnnFormInput", onchange = "location.href='" + Url.Action("Settings", "Settings") + "?blogModuleId=' + this.value;" })
+@* No BeginForm: DNN Module Settings already wraps this control in #Form.
+   A nested form posts outside that host and removes the containing settings control. *@
+<div class="dnnForm dnnClear blog-module-settings" data-blog-module-settings>
+  <fieldset>
+    <div class="dnnFormItem">
+      @DnnLabel("lblBlogModuleId", "BlogModuleId", "Parent Blog Module")
+      @Html.DropDownListFor(m => m.BlogModuleId, Model.BlogModules, new { @class = "dnnFormInput", id = "BlogModuleId" })
+    </div>
+    <div class="dnnFormItem">
+      @DnnLabel("lblBlogId", "BlogId", "Blog To Show")
+      @Html.DropDownListFor(m => m.BlogId, Model.Blogs, new { @class = "dnnFormInput" })
+    </div>
+    <div class="dnnFormItem">
+      @DnnLabel("lblCategories", "Categories", "Categories To Show")
+      <div class="blog-settings-cat">
+        @if (Model.ShowCategories)
+        {
+          @Html.Partial("~/DesktopModules/MVC/Blog/Views/Shared/_CategoryPicker.cshtml", Model.CategoryTree)
+        }
+        else
+        {
+          <p class="blog-cat-picker__empty">No category vocabulary is configured for the selected blog module.</p>
+        }
       </div>
-      <div class="dnnFormItem">
-        @DnnLabel("lblBlogId", "BlogId", "Blog To Show")
-        @Html.DropDownListFor(m => m.BlogId, Model.Blogs, new { @class = "dnnFormInput" })
-      </div>
-      <div class="dnnFormItem">
-        @DnnLabel("lblCategories", "Categories", "Categories To Show")
-        <div class="blog-settings-cat">
-          @if (Model.ShowCategories)
-          {
-            @Html.Partial("~/DesktopModules/MVC/Blog/Views/Shared/_CategoryPicker.cshtml", Model.CategoryTree)
-          }
-          else
-          {
-            <p class="blog-cat-picker__empty">No category vocabulary is configured for the selected blog module.</p>
-          }
-        </div>
-      </div>
-      <div class="dnnFormItem">
-        @DnnLabel("lblAuthorId", "AuthorId", "Author To Show")
-        @Html.DropDownListFor(m => m.AuthorId, Model.Authors, new { @class = "dnnFormInput" })
-      </div>
-      <div class="dnnFormItem">
-        @DnnLabel("lblTemplate", "Template", "Template")
-        @Html.DropDownListFor(m => m.Template, Model.Templates, new { @class = "dnnFormInput" })
-      </div>
-      <div class="dnnFormItem">
-        @DnnLabel("lblShowAllLocales", "ShowAllLocales", "Show All Languages")
-        @Html.CheckBoxFor(m => m.ShowAllLocales)
-      </div>
-      <div class="dnnFormItem">
-        @DnnLabel("lblModifyPageDetails", "ModifyPageDetails", "Modify Page Details")
-        @Html.CheckBoxFor(m => m.ModifyPageDetails)
-      </div>
-      <div class="dnnFormItem">
-        @DnnLabel("lblAddCanonicalTag", "AddCanonicalTag", "Add Canonical Tag")
-        @Html.CheckBoxFor(m => m.AddCanonicalTag)
-      </div>
-      <div class="dnnFormItem">
-        @DnnLabel("lblShowManagementPanel", "ShowManagementPanel", "Show Management Panel")
-        @Html.CheckBoxFor(m => m.ShowManagementPanel)
-        <label for="ShowManagementPanel">@L("chkShowManagementPanel", "In Shared Modules")</label>
-        @Html.CheckBoxFor(m => m.ShowManagementPanelViewMode)
-        <label for="ShowManagementPanelViewMode">@L("chkShowManagementPanelViewMode", "In View Mode")</label>
-      </div>
-      <div class="dnnFormItem">
-        @DnnLabel("lblHideUnpublishedBlogs", "HideUnpublishedBlogsViewMode", "Hide Unpublished Posts")
-        @Html.CheckBoxFor(m => m.HideUnpublishedBlogsViewMode)
-        <label for="HideUnpublishedBlogsViewMode">@L("chkHideUnpublishedBlogsViewMode", "In View Mode")</label>
-        @Html.CheckBoxFor(m => m.HideUnpublishedBlogsEditMode)
-        <label for="HideUnpublishedBlogsEditMode">@L("chkHideUnpublishedBlogsEditMode", "In Edit Mode")</label>
-      </div>
-      <div class="dnnFormItem">
-        @DnnLabel("lblAllowComments", "AllowComments", "Allow Comments")
-        @Html.CheckBoxFor(m => m.AllowComments)
-      </div>
-    </fieldset>
-  }
+    </div>
+    <div class="dnnFormItem">
+      @DnnLabel("lblAuthorId", "AuthorId", "Author To Show")
+      @Html.DropDownListFor(m => m.AuthorId, Model.Authors, new { @class = "dnnFormInput" })
+    </div>
+    <div class="dnnFormItem">
+      @DnnLabel("lblTemplate", "Template", "Template")
+      @Html.DropDownListFor(m => m.Template, Model.Templates, new { @class = "dnnFormInput" })
+    </div>
+    <div class="dnnFormItem">
+      @DnnLabel("lblShowAllLocales", "ShowAllLocales", "Show All Languages")
+      @Html.CheckBoxFor(m => m.ShowAllLocales)
+    </div>
+    <div class="dnnFormItem">
+      @DnnLabel("lblModifyPageDetails", "ModifyPageDetails", "Modify Page Details")
+      @Html.CheckBoxFor(m => m.ModifyPageDetails)
+    </div>
+    <div class="dnnFormItem">
+      @DnnLabel("lblAddCanonicalTag", "AddCanonicalTag", "Add Canonical Tag")
+      @Html.CheckBoxFor(m => m.AddCanonicalTag)
+    </div>
+    <div class="dnnFormItem">
+      @DnnLabel("lblShowManagementPanel", "ShowManagementPanel", "Show Management Panel")
+      @Html.CheckBoxFor(m => m.ShowManagementPanel)
+      <label for="ShowManagementPanel">@L("chkShowManagementPanel", "In Shared Modules")</label>
+      @Html.CheckBoxFor(m => m.ShowManagementPanelViewMode)
+      <label for="ShowManagementPanelViewMode">@L("chkShowManagementPanelViewMode", "In View Mode")</label>
+    </div>
+    <div class="dnnFormItem">
+      @DnnLabel("lblHideUnpublishedBlogs", "HideUnpublishedBlogsViewMode", "Hide Unpublished Posts")
+      @Html.CheckBoxFor(m => m.HideUnpublishedBlogsViewMode)
+      <label for="HideUnpublishedBlogsViewMode">@L("chkHideUnpublishedBlogsViewMode", "In View Mode")</label>
+      @Html.CheckBoxFor(m => m.HideUnpublishedBlogsEditMode)
+      <label for="HideUnpublishedBlogsEditMode">@L("chkHideUnpublishedBlogsEditMode", "In Edit Mode")</label>
+    </div>
+    <div class="dnnFormItem">
+      @DnnLabel("lblAllowComments", "AllowComments", "Allow Comments")
+      @Html.CheckBoxFor(m => m.AllowComments)
+    </div>
+  </fieldset>
 </div>
+<script type="text/javascript">
+(function () {
+  // Stay on Module Settings host; only refresh dependent lists via query string.
+  var root = document.currentScript && document.currentScript.previousElementSibling;
+  if (!root || !root.getAttribute || root.getAttribute('data-blog-module-settings') === null) {
+    root = document.querySelector('[data-blog-module-settings]');
+  }
+  if (!root || root.getAttribute('data-blog-settings-ready')) return;
+  root.setAttribute('data-blog-settings-ready', '1');
+  var ddl = root.querySelector('#BlogModuleId');
+  if (!ddl) return;
+  ddl.addEventListener('change', function () {
+    var url = new URL(window.location.href);
+    url.searchParams.set('blogModuleId', this.value);
+    window.location.href = url.toString();
+  });
+})();
+</script>
