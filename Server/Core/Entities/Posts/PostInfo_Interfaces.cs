@@ -275,7 +275,9 @@ namespace DotNetNuke.Modules.Blog.Core.Entities.Posts
           }
         case "parenturl":
           {
-            return PermaLink(ParentTabID);
+            return ParentTabID > 0
+              ? PermaLink(ParentTabID)
+              : PermaLink(DotNetNuke.Entities.Portals.PortalSettings.Current);
           }
         case "currentmode":
           {

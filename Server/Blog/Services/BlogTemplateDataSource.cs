@@ -91,8 +91,7 @@ namespace DotNetNuke.Modules.Blog.Services
                     EnsurePostList(_pageSize);
                     foreach (var e in _postList)
                     {
-                        if (_blogContext.ParentModule != null)
-                            e.ParentTabID = _blogContext.ParentModule.TabID;
+                        e.ParentTabID = ResolveParentTabId();
                         Replacers.Add(new BlogTokenReplace(_module, _blogContext, _settings, _viewSettings, e));
                     }
                     break;
@@ -120,8 +119,7 @@ namespace DotNetNuke.Modules.Blog.Services
                 case "allcategories":
                     foreach (var t in TermsController.GetTermsByVocabulary(_blogContext.BlogModuleId, _settings.VocabularyId, _blogContext.Locale).Values)
                     {
-                        if (_blogContext.ParentModule != null)
-                            t.ParentTabID = _blogContext.ParentModule.TabID;
+                        t.ParentTabID = ResolveParentTabId();
                         Replacers.Add(new BlogTokenReplace(_module, _blogContext, _settings, _viewSettings, null, t));
                     }
                     break;
@@ -129,8 +127,7 @@ namespace DotNetNuke.Modules.Blog.Services
                     foreach (var t in TermsController.GetTermsByModule(_blogContext.BlogModuleId, _blogContext.Locale)
                                  .Where(x => _viewSettings.CategoryList.Contains(x.TermId)))
                     {
-                        if (_blogContext.ParentModule != null)
-                            t.ParentTabID = _blogContext.ParentModule.TabID;
+                        t.ParentTabID = ResolveParentTabId();
                         Replacers.Add(new BlogTokenReplace(_module, _blogContext, _settings, _viewSettings, null, t));
                     }
                     break;
@@ -144,8 +141,7 @@ namespace DotNetNuke.Modules.Blog.Services
                 case "blogcalendar":
                     foreach (var bci in BlogsController.GetBlogCalendar(_blogContext.BlogModuleId, _blogContext.BlogId, _blogContext.ShowLocale))
                     {
-                        if (_blogContext.ParentModule != null)
-                            bci.ParentTabID = _blogContext.ParentModule.TabID;
+                        bci.ParentTabID = ResolveParentTabId();
                         Replacers.Add(new BlogTokenReplace(_module, _blogContext, _settings, _viewSettings, bci));
                     }
                     break;
@@ -170,8 +166,7 @@ namespace DotNetNuke.Modules.Blog.Services
                 {
                     if (i >= startRec && i <= endRec)
                     {
-                        if (_blogContext.ParentModule != null)
-                            b.ParentTabID = _blogContext.ParentModule.TabID;
+                        b.ParentTabID = ResolveParentTabId();
                         Replacers.Add(new BlogTokenReplace(_module, _blogContext, _settings, _viewSettings, b));
                     }
                     i++;
@@ -181,8 +176,7 @@ namespace DotNetNuke.Modules.Blog.Services
             {
                 foreach (var b in blogList)
                 {
-                    if (_blogContext.ParentModule != null)
-                        b.ParentTabID = _blogContext.ParentModule.TabID;
+                    b.ParentTabID = ResolveParentTabId();
                     Replacers.Add(new BlogTokenReplace(_module, _blogContext, _settings, _viewSettings, b));
                 }
             }
@@ -248,8 +242,7 @@ namespace DotNetNuke.Modules.Blog.Services
 
             foreach (var t in tags)
             {
-                if (_blogContext.ParentModule != null)
-                    t.ParentTabID = _blogContext.ParentModule.TabID;
+                t.ParentTabID = ResolveParentTabId();
                 Replacers.Add(new BlogTokenReplace(_module, _blogContext, _settings, _viewSettings, all ? null : _blogContext.Post, t));
             }
         }
@@ -313,10 +306,18 @@ namespace DotNetNuke.Modules.Blog.Services
             }
             foreach (var u in authors)
             {
-                if (_blogContext.ParentModule != null)
-                    u.ParentTabID = _blogContext.ParentModule.TabID;
+                u.ParentTabID = ResolveParentTabId();
                 Replacers.Add(new BlogTokenReplace(_module, _blogContext, _settings, _viewSettings, new LazyLoadingUser(u)));
             }
+        }
+
+        /// <summary>
+        /// Tab that post/term/author parenturl tokens should target.
+        /// Widget instances use the configured parent blog module's tab; otherwise the current module's tab.
+        /// </summary>
+        private int ResolveParentTabId()
+        {
+            return _blogContext.ParentModule != null ? _blogContext.ParentModule.TabID : _module.TabID;
         }
 
         private void EnsurePostList(int pageSize)

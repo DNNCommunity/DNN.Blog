@@ -52,7 +52,7 @@ namespace DotNetNuke.Modules.Blog.Core.Entities.Posts
       var oTabController = new DotNetNuke.Entities.Tabs.TabController();
       var oParentTab = oTabController.GetTab(strParentTabID, DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, false);
       _permaLink = string.Empty;
-      return PermaLink(oParentTab);
+      return PermaLink(oParentTab ?? DotNetNuke.Entities.Portals.PortalSettings.Current.ActiveTab);
     }
 
     public string PermaLink()
@@ -68,6 +68,10 @@ namespace DotNetNuke.Modules.Blog.Core.Entities.Posts
     private string _permaLink = "";
     public string PermaLink(DotNetNuke.Entities.Tabs.TabInfo tab)
     {
+      if (tab is null)
+      {
+        tab = DotNetNuke.Entities.Portals.PortalSettings.Current.ActiveTab;
+      }
       if (string.IsNullOrEmpty(_permaLink))
       {
         _permaLink = ApplicationURL(tab.TabID);
