@@ -14,7 +14,9 @@ tools/*
 **/*.user
 Server/**/*.map
 Server/Blog/module.css
+Server/Blog/js/apitokens.*
 Server/Blog/js/blog.*
+Server/Blog/js/comments.*
 Server/Blog/js/htmleditor.*
 Server/Blog/js/postedit.*
 **/settings.json
