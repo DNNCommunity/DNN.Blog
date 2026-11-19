@@ -29,7 +29,9 @@ namespace DotNetNuke.Modules.Blog.Core.Data
 
     public abstract void AddPostView(int contentItemId);
     public abstract void ApproveComment(int commentId);
+    public abstract void UnapproveComment(int commentId);
     public abstract int AddCommentKarma(int commentId, int userId, int karma);
+    public abstract IDataReader GetManageComments(int moduleId, int userID, int blogId, string authorSearch, string search, string statusFilter, int pageIndex, int pageSize, string orderBy, bool userIsAdmin);
     public abstract void DeleteBlogPermissions(int blogId);
     public abstract IDataReader GetAuthors(int moduleId, int blogID);
     public abstract IDataReader GetBlog(int blogId, int userId, string locale);

@@ -40,11 +40,13 @@ namespace DotNetNuke.Modules.Blog.Controllers
 
       bool showBlogs = security.IsBlogger;
       bool showPosts = security.CanAddPost || security.CanEditPost;
+      bool showComments = showPosts;
       var tokenSettings = ApiTokenSettings.GetSettings(_apiTokenSettingsRepository, PortalSettings.PortalId);
       bool showApiTokens = tokenSettings.ApiTokensEnabled && tokenSettings.AllowApiTokens;
-      string activeSection = NormalizeSection(section, showPosts, showBlogs, showApiTokens);
+      string activeSection = NormalizeSection(section, showPosts, showComments, showBlogs, showApiTokens);
 
-      if (showPosts && activeSection == ManageViewModel.SectionPosts)
+      if ((showPosts && activeSection == ManageViewModel.SectionPosts) ||
+          (showComments && activeSection == ManageViewModel.SectionComments))
         BlogModuleContext.AddScript("blog.js");
       if (showApiTokens && activeSection == ManageViewModel.SectionApiTokens)
         BlogModuleContext.AddScript("apitokens.js");
@@ -55,6 +57,7 @@ namespace DotNetNuke.Modules.Blog.Controllers
         Blogs = blogList,
         ShowBlogsSection = showBlogs,
         ShowPostsSection = showPosts,
+        ShowCommentsSection = showComments,
         ShowApiTokensSection = showApiTokens,
         CanAddBlog = security.IsBlogger,
         ActiveSection = activeSection
@@ -118,14 +121,20 @@ namespace DotNetNuke.Modules.Blog.Controllers
       return Redirect(baseUrl + sep + "section=" + ManageViewModel.SectionPosts);
     }
 
-    private static string NormalizeSection(string section, bool showPosts, bool showBlogs, bool showApiTokens)
+    private static string NormalizeSection(string section, bool showPosts, bool showComments, bool showBlogs, bool showApiTokens)
     {
+      if (string.Equals(section, ManageViewModel.SectionComments, System.StringComparison.OrdinalIgnoreCase) && showComments)
+        return ManageViewModel.SectionComments;
       if (string.Equals(section, ManageViewModel.SectionApiTokens, System.StringComparison.OrdinalIgnoreCase) && showApiTokens)
         return ManageViewModel.SectionApiTokens;
       if (string.Equals(section, ManageViewModel.SectionBlogs, System.StringComparison.OrdinalIgnoreCase) && showBlogs)
         return ManageViewModel.SectionBlogs;
+      if (string.Equals(section, ManageViewModel.SectionPosts, System.StringComparison.OrdinalIgnoreCase) && showPosts)
+        return ManageViewModel.SectionPosts;
       if (showPosts)
         return ManageViewModel.SectionPosts;
+      if (showComments)
+        return ManageViewModel.SectionComments;
       if (showBlogs)
         return ManageViewModel.SectionBlogs;
       if (showApiTokens)

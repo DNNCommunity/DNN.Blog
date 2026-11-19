@@ -10,13 +10,17 @@ export interface CommentModerationProps {
   labels: ICommentsLabels;
   service: DataService;
   onApproved: (comment: IComment) => void;
-  onDeleted: (commentId: number) => void;
+  onDeleted: (comment: IComment) => void;
 }
 
 export default function CommentModeration(props: CommentModerationProps) {
   const { blogId, comment, labels, service, onApproved, onDeleted } = props;
   const [busy, setBusy] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
+
+  if (comment.deleted) {
+    return null;
+  }
 
   const approve = () => {
     if (busy) return;
@@ -49,7 +53,13 @@ export default function CommentModeration(props: CommentModerationProps) {
         setBusy(false);
         setConfirmOpen(false);
         if (res.result === "success") {
-          onDeleted(comment.commentId);
+          onDeleted(
+            res.comment || {
+              ...comment,
+              deleted: true,
+              commentHtml: "*** content deleted ***",
+            }
+          );
         }
       },
       () => {

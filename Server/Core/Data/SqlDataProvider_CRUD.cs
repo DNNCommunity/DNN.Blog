@@ -176,9 +176,9 @@ namespace DotNetNuke.Modules.Blog.Core.Data
       SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "UpdateComment", approved, GetNull(author), comment, commentID, contentItemId, GetNull(email), GetNull(parentId), GetNull(website), updatedByUser);
     }
 
-    public override void DeleteComment(int commentID)
+    public override void DeleteComment(int commentID, int updatedByUser)
     {
-      SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "DeleteComment", commentID);
+      SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "DeleteComment", commentID, updatedByUser);
     }
 
     #endregion

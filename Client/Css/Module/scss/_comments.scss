@@ -130,6 +130,15 @@
     margin-bottom: 8px;
   }
 
+  .blog-comment--deleted {
+    opacity: 0.7;
+  }
+
+  .blog-comment--deleted .blog-comment__body {
+    font-style: italic;
+    color: var(--blog-admin-muted, #6b7280);
+  }
+
   .blog-comment__author {
     display: flex;
     align-items: center;

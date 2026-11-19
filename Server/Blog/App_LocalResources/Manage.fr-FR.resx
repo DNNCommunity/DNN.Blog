@@ -72,6 +72,57 @@
   <data name="Posts.Text">
     <value>Posts</value>
   </data>
+  <data name="Comments.Text">
+    <value>Commentaires</value>
+  </data>
+  <data name="DeleteCommentConfirm.Text">
+    <value>Supprimer ce commentaire ? Son contenu sera remplacé par un texte de substitution.</value>
+  </data>
+  <data name="BulkDeleteCommentsConfirm.Text">
+    <value>Supprimer les commentaires sélectionnés ? Leur contenu sera remplacé par un texte de substitution.</value>
+  </data>
+  <data name="FlagComment.Text">
+    <value>Signaler</value>
+  </data>
+  <data name="FlagCommentConfirm.Text">
+    <value>Signaler ce commentaire ? Il sera masqué du public.</value>
+  </data>
+  <data name="DeleteSelected.Text">
+    <value>Supprimer la sélection</value>
+  </data>
+  <data name="SearchComments.Text">
+    <value>Rechercher des commentaires</value>
+  </data>
+  <data name="FilterByAuthor.Text">
+    <value>Filtrer par auteur</value>
+  </data>
+  <data name="AllBlogs.Text">
+    <value>Tous les blogs</value>
+  </data>
+  <data name="AllStatuses.Text">
+    <value>Tous les statuts</value>
+  </data>
+  <data name="ShowMore.Text">
+    <value>Afficher plus</value>
+  </data>
+  <data name="ShowLess.Text">
+    <value>Afficher moins</value>
+  </data>
+  <data name="NoCommentsFound.Text">
+    <value>Aucun commentaire trouvé.</value>
+  </data>
+  <data name="Approved.Text">
+    <value>Approuvé</value>
+  </data>
+  <data name="Pending.Text">
+    <value>En attente</value>
+  </data>
+  <data name="Deleted.Text">
+    <value>Supprimé</value>
+  </data>
+  <data name="CommentDeletedPlaceholder.Text">
+    <value>*** contenu supprimé ***</value>
+  </data>
   <data name="Blog.Text">
     <value>Blog</value>
   </data>

@@ -72,6 +72,7 @@ function normalizeComment(raw: any): IComment {
       pick(raw, "createdOnDateUtc", "CreatedOnDateUtc", "")
     ),
     approved: !!pick(raw, "approved", "Approved", false),
+    deleted: !!pick(raw, "deleted", "Deleted", false),
     likes: pick(raw, "likes", "Likes", 0),
     dislikes: pick(raw, "dislikes", "Dislikes", 0),
     reports: pick(raw, "reports", "Reports", 0),

@@ -64,6 +64,26 @@ namespace DotNetNuke.Modules.Blog.Core.Entities.Comments
 
     }
 
+    public static Dictionary<int, CommentInfo> GetManageComments(int moduleId, int userID, int blogId, string authorSearch, string search, string statusFilter, int pageIndex, int pageSize, string orderBy, bool userIsAdmin, ref int totalRecords)
+    {
+      if (pageIndex < 0)
+        pageIndex = 0;
+      if (pageSize < 1)
+        pageSize = 10;
+
+      var res = new Dictionary<int, CommentInfo>();
+      using (var ir = DataProvider.Instance().GetManageComments(moduleId, userID, blogId, authorSearch ?? "", search ?? "", statusFilter ?? "", pageIndex, pageSize, orderBy, userIsAdmin))
+      {
+        res = CBO.FillDictionary<int, CommentInfo>("CommentId", ir, false);
+        ir.NextResult();
+        var argdr = ir;
+        totalRecords = DotNetNuke.Common.Globals.GetTotalRecords(ref argdr);
+      }
+      return res;
+    }
+
+    public const string DeletedCommentPlaceholder = "*** content deleted ***";
+
     public static int AddComment(BlogInfo blog, PostInfo Post, ref CommentInfo comment)
     {
 
@@ -104,16 +124,25 @@ namespace DotNetNuke.Modules.Blog.Core.Entities.Comments
     {
 
       DataProvider.Instance().ApproveComment(comment.CommentID);
+      comment.Approved = true;
       NotificationController.RemoveCommentPendingNotification(moduleId, blogId, comment.ContentItemId, comment.CommentID);
 
     }
 
+    public static void UnapproveComment(int moduleId, int blogId, CommentInfo comment)
+    {
+      DataProvider.Instance().UnapproveComment(comment.CommentID);
+      comment.Approved = false;
+      NotificationController.RemoveCommentPendingNotification(moduleId, blogId, comment.ContentItemId, comment.CommentID);
+    }
+
     public static void DeleteComment(int moduleId, int blogId, CommentInfo comment)
     {
-
-      DataProvider.Instance().DeleteComment(comment.CommentID);
+      int userId = PortalSettings.Current?.UserId ?? -1;
+      DataProvider.Instance().DeleteComment(comment.CommentID, userId);
+      comment.Deleted = true;
+      comment.Comment = DeletedCommentPlaceholder;
       NotificationController.RemoveCommentPendingNotification(moduleId, blogId, comment.ContentItemId, comment.CommentID);
-
     }
 
     /// <summary>

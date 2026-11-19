@@ -76,7 +76,9 @@ export default function CommentItem(props: CommentItemProps) {
   };
 
   const className =
-    "blog-comment" + (comment.approved ? "" : " blog-comment--pending");
+    "blog-comment" +
+    (comment.approved ? "" : " blog-comment--pending") +
+    (comment.deleted ? " blog-comment--deleted" : "");
 
   return (
     <article className={className} id={"comment-" + comment.commentId}>
@@ -113,14 +115,16 @@ export default function CommentItem(props: CommentItemProps) {
           {formatRelativeTime(comment.createdOnDateUtc, locale)}
         </time>
         <div className="blog-comment__actions">
-          <CommentKarma
-            blogId={blogId}
-            comment={comment}
-            labels={labels}
-            service={service}
-            canKarma={loggedIn}
-            onChange={onUpdate}
-          />
+          {!comment.deleted && (
+            <CommentKarma
+              blogId={blogId}
+              comment={comment}
+              labels={labels}
+              service={service}
+              canKarma={loggedIn}
+              onChange={onUpdate}
+            />
+          )}
           {canApproveComment && (
             <CommentModeration
               blogId={blogId}
@@ -128,10 +132,10 @@ export default function CommentItem(props: CommentItemProps) {
               labels={labels}
               service={service}
               onApproved={onUpdate}
-              onDeleted={onDelete}
+              onDeleted={onUpdate}
             />
           )}
-          {canAddComment && (
+          {canAddComment && !comment.deleted && (
             <button
               type="button"
               className="blog-comment__action"

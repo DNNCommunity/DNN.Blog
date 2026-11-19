@@ -32,16 +32,19 @@
   // Keep section in the query string so return URLs survive DNN friendly-URL rewriting.
   string manageBaseUrl = Url.Action("Index", "Manage") ?? "";
   string postsSectionUrl = manageBaseUrl + (manageBaseUrl.IndexOf('?') >= 0 ? "&" : "?") + "section=" + ManageViewModel.SectionPosts;
+  string commentsSectionUrl = manageBaseUrl + (manageBaseUrl.IndexOf('?') >= 0 ? "&" : "?") + "section=" + ManageViewModel.SectionComments;
   string blogsSectionUrl = manageBaseUrl + (manageBaseUrl.IndexOf('?') >= 0 ? "&" : "?") + "section=" + ManageViewModel.SectionBlogs;
   string apiTokensSectionUrl = manageBaseUrl + (manageBaseUrl.IndexOf('?') >= 0 ? "&" : "?") + "section=" + ManageViewModel.SectionApiTokens;
   string postsReturnUrl = ToLocalPath(postsSectionUrl);
 
   int visibleSections =
     (Model.ShowPostsSection ? 1 : 0) +
+    (Model.ShowCommentsSection ? 1 : 0) +
     (Model.ShowBlogsSection ? 1 : 0) +
     (Model.ShowApiTokensSection ? 1 : 0);
   bool showTabs = visibleSections > 1;
   bool postsActive = Model.ActiveSection == ManageViewModel.SectionPosts;
+  bool commentsActive = Model.ActiveSection == ManageViewModel.SectionComments;
   bool blogsActive = Model.ActiveSection == ManageViewModel.SectionBlogs;
   bool apiTokensActive = Model.ActiveSection == ManageViewModel.SectionApiTokens;
 }
@@ -61,6 +64,14 @@
            href="@postsSectionUrl"
            aria-selected="@(postsActive ? "true" : "false")"
            id="manage-tab-posts">@Dnn.LocalizeString("Posts")</a>
+      }
+      @if (Model.ShowCommentsSection)
+      {
+        <a role="tab"
+           class="blog-manage__tab@(commentsActive ? " is-active" : "")"
+           href="@commentsSectionUrl"
+           aria-selected="@(commentsActive ? "true" : "false")"
+           id="manage-tab-comments">@(Dnn.LocalizeString("Comments") ?? "Comments")</a>
       }
       @if (Model.ShowBlogsSection)
       {
@@ -105,6 +116,47 @@
            data-delete-confirm="@(Dnn.LocalizeString("DeletePost") ?? "Delete this post?")"
            data-delete-label="@(Dnn.LocalizeString("Delete") ?? "Delete")"
            data-cancel-label="@(Dnn.LocalizeString("Cancel") ?? "Cancel")">
+      </div>
+    </section>
+  }
+
+  @if (Model.ShowCommentsSection && commentsActive)
+  {
+    <section class="blog-manage__section"
+             role="tabpanel"
+             aria-labelledby="@(showTabs ? "manage-tab-comments" : null)">
+      @if (!showTabs)
+      {
+        <h2 class="blog-manage__section-title">@(Dnn.LocalizeString("Comments") ?? "Comments")</h2>
+      }
+      <div class="DotNetNukeBlog"
+           data-moduleid="@Dnn.ActiveModule.ModuleID"
+           data-tabid="@Dnn.ActiveModule.TabID"
+           data-locale="@Locale"
+           data-resources="@SerializedResources()"
+           data-security="@securityJson">
+      </div>
+      <div class="Blog"
+           data-moduleid="@Dnn.ActiveModule.ModuleID"
+           data-component="comments-manage-table"
+           data-blogs="@blogsJson"
+           data-delete-confirm="@(Dnn.LocalizeString("DeleteCommentConfirm") ?? "Delete this comment? Its content will be replaced with a placeholder.")"
+           data-bulk-delete-confirm="@(Dnn.LocalizeString("BulkDeleteCommentsConfirm") ?? "Delete the selected comments? Their content will be replaced with a placeholder.")"
+           data-delete-label="@(Dnn.LocalizeString("Delete") ?? "Delete")"
+           data-flag-label="@(Dnn.LocalizeString("FlagComment") ?? "Flag")"
+           data-flag-confirm="@(Dnn.LocalizeString("FlagCommentConfirm") ?? "Flag this comment? It will be hidden from public view.")"
+           data-bulk-delete-label="@(Dnn.LocalizeString("DeleteSelected") ?? "Delete selected")"
+           data-cancel-label="@(Dnn.LocalizeString("Cancel") ?? "Cancel")"
+           data-search-placeholder="@(Dnn.LocalizeString("SearchComments") ?? "Search comments")"
+           data-author-placeholder="@(Dnn.LocalizeString("FilterByAuthor") ?? "Filter by author")"
+           data-all-blogs-label="@(Dnn.LocalizeString("AllBlogs") ?? "All blogs")"
+           data-all-statuses-label="@(Dnn.LocalizeString("AllStatuses") ?? "All statuses")"
+           data-show-more-label="@(Dnn.LocalizeString("ShowMore") ?? "Show more")"
+           data-show-less-label="@(Dnn.LocalizeString("ShowLess") ?? "Show less")"
+           data-empty-label="@(Dnn.LocalizeString("NoCommentsFound") ?? "No comments found.")"
+           data-approved-label="@(Dnn.LocalizeString("Approved") ?? "Approved")"
+           data-pending-label="@(Dnn.LocalizeString("Pending") ?? "Pending")"
+           data-deleted-label="@(Dnn.LocalizeString("Deleted") ?? "Deleted")">
       </div>
     </section>
   }

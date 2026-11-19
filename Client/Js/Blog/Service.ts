@@ -1,4 +1,9 @@
 import { ICategoryTree } from "./Models/ICategory";
+import {
+  IManageCommentList,
+  IManageCommentQuery,
+  normalizeManageComment,
+} from "./Models/IManageComment";
 import { IManagePostList, IManagePostQuery } from "./Models/IManagePost";
 import { ITagItem, ITagList, ITagListQuery } from "./Models/ITag";
 
@@ -194,6 +199,94 @@ export default class DataService {
       "Delete",
       undefined,
       { BlogId: blogId, PostId: postId },
+      success,
+      fail
+    );
+  }
+
+  public getManageComments(
+    query: IManageCommentQuery,
+    success: (data: IManageCommentList) => void,
+    fail?: (error: string) => void
+  ): void {
+    const params: any = {
+      page: query.page,
+      pageSize: query.pageSize,
+      orderBy: query.orderBy,
+    };
+    if (query.search) params.search = query.search;
+    if (query.blogId != null && query.blogId > 0) params.blogId = query.blogId;
+    if (query.authorSearch) params.authorSearch = query.authorSearch;
+    if (query.status) params.status = query.status;
+    this.ajaxCall(
+      "GET",
+      this.baseServicepath,
+      "Comments",
+      "ManageList",
+      undefined,
+      params,
+      (data: any) => {
+        const rawItems = (data && (data.Items || data.items)) || [];
+        success({
+          Items: rawItems.map(normalizeManageComment),
+          Page: (data && (data.Page != null ? data.Page : data.page)) || 0,
+          PageSize:
+            (data && (data.PageSize || data.pageSize)) || query.pageSize,
+          Total: (data && (data.Total != null ? data.Total : data.total)) || 0,
+        });
+      },
+      fail
+    );
+  }
+
+  public deleteManageComment(
+    blogId: number,
+    commentId: number,
+    success: Function,
+    fail?: (error: string) => void
+  ): void {
+    this.ajaxCall(
+      "POST",
+      this.baseServicepath,
+      "Comments",
+      "Delete",
+      undefined,
+      { BlogId: blogId, CommentId: commentId },
+      success,
+      fail
+    );
+  }
+
+  public unapproveComment(
+    blogId: number,
+    commentId: number,
+    success: Function,
+    fail?: (error: string) => void
+  ): void {
+    this.ajaxCall(
+      "POST",
+      this.baseServicepath,
+      "Comments",
+      "Unapprove",
+      undefined,
+      { BlogId: blogId, CommentId: commentId },
+      success,
+      fail
+    );
+  }
+
+  public bulkDeleteComments(
+    commentIds: number[],
+    success: Function,
+    fail?: (error: string) => void
+  ): void {
+    this.ajaxCall(
+      "POST",
+      this.baseServicepath,
+      "Comments",
+      "BulkDelete",
+      undefined,
+      { CommentIds: commentIds },
       success,
       fail
     );

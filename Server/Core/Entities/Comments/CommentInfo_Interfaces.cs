@@ -59,6 +59,7 @@ namespace DotNetNuke.Modules.Blog.Core.Entities.Comments
       ParentId = Convert.ToInt32(Null.SetNull(dr["ParentId"], ParentId));
       Comment = Convert.ToString(Null.SetNull(dr["Comment"], Comment));
       Approved = Convert.ToBoolean(Null.SetNull(dr["Approved"], Approved));
+      Deleted = HasColumn(dr, "Deleted") && Convert.ToBoolean(Null.SetNull(dr["Deleted"], Deleted));
       Author = Convert.ToString(Null.SetNull(dr["Author"], Author));
       Website = Convert.ToString(Null.SetNull(dr["Website"], Website));
       Email = Convert.ToString(Null.SetNull(dr["Email"], Email));
@@ -74,6 +75,24 @@ namespace DotNetNuke.Modules.Blog.Core.Entities.Comments
       Liked = Convert.ToInt32(Null.SetNull(dr["Liked"], Likes));
       Disliked = Convert.ToInt32(Null.SetNull(dr["Disliked"], Dislikes));
       Reported = Convert.ToInt32(Null.SetNull(dr["Reported"], Reports));
+      if (HasColumn(dr, "BlogID"))
+        BlogID = Convert.ToInt32(Null.SetNull(dr["BlogID"], BlogID));
+      if (HasColumn(dr, "BlogTitle"))
+        BlogTitle = Convert.ToString(Null.SetNull(dr["BlogTitle"], BlogTitle));
+      if (HasColumn(dr, "PostTitle"))
+        PostTitle = Convert.ToString(Null.SetNull(dr["PostTitle"], PostTitle));
+      if (HasColumn(dr, "PostCreatedByUserID"))
+        PostCreatedByUserID = Convert.ToInt32(Null.SetNull(dr["PostCreatedByUserID"], PostCreatedByUserID));
+    }
+
+    private static bool HasColumn(IDataReader dr, string columnName)
+    {
+      for (int i = 0; i < dr.FieldCount; i++)
+      {
+        if (string.Equals(dr.GetName(i), columnName, StringComparison.OrdinalIgnoreCase))
+          return true;
+      }
+      return false;
     }
     /// -----------------------------------------------------------------------------
     /// <summary>

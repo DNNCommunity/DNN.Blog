@@ -43,6 +43,16 @@ namespace DotNetNuke.Modules.Blog.Core.Data
       SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "ApproveComment", commentId);
     }
 
+    public override void UnapproveComment(int commentId)
+    {
+      SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "UnapproveComment", commentId);
+    }
+
+    public override IDataReader GetManageComments(int moduleId, int userID, int blogId, string authorSearch, string search, string statusFilter, int pageIndex, int pageSize, string orderBy, bool userIsAdmin)
+    {
+      return SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "GetManageComments", moduleId, userID, blogId, authorSearch ?? "", search ?? "", statusFilter ?? "", pageIndex, pageSize, orderBy ?? "CREATEDONDATE DESC", userIsAdmin);
+    }
+
     public override void DeleteBlogPermissions(int blogId)
     {
       SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "DeleteBlogPermissions", blogId);

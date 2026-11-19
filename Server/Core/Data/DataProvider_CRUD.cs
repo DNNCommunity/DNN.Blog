@@ -72,7 +72,7 @@ namespace DotNetNuke.Modules.Blog.Core.Data
     #region  Comment Methods 
     public abstract int AddComment(bool approved, string author, string comment, int contentItemId, string email, int parentId, string website, int createdByUser);
     public abstract void UpdateComment(bool approved, string author, string comment, int commentID, int contentItemId, string email, int parentId, string website, int updatedByUser);
-    public abstract void DeleteComment(int commentID);
+    public abstract void DeleteComment(int commentID, int updatedByUser);
     #endregion
 
     #region  LegacyUrl Methods 

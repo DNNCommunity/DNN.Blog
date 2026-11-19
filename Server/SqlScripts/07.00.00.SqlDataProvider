@@ -173,6 +173,13 @@ END
 SELECT @Res
 GO
 
+/*** Soft-delete flag for comments ***/
+IF NOT EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Comments') AND name = N'Deleted')
+BEGIN
+ ALTER TABLE {databaseOwner}{objectQualifier}Blog_Comments ADD [Deleted] bit NOT NULL CONSTRAINT DF_{objectQualifier}Blog_Comments_Deleted DEFAULT (0)
+END
+GO
+
 DELETE
 FROM {databaseOwner}{objectQualifier}ModuleControls
 FROM {databaseOwner}{objectQualifier}ModuleControls mc

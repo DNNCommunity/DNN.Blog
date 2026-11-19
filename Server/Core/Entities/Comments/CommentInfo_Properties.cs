@@ -48,6 +48,8 @@ namespace DotNetNuke.Modules.Blog.Core.Entities.Comments
         [DataMember()]
         public bool Approved { get; set; } = false;
         [DataMember()]
+        public bool Deleted { get; set; } = false;
+        [DataMember()]
         public string Author { get; set; } = "";
         [DataMember()]
         public string Website { get; set; } = "";
@@ -77,6 +79,18 @@ namespace DotNetNuke.Modules.Blog.Core.Entities.Comments
         public int Disliked { get; set; } = 0;
         [DataMember()]
         public int Reported { get; set; } = 0;
+        /// <summary>Populated by manage-list queries only.</summary>
+        [DataMember()]
+        public int BlogID { get; set; } = Null.NullInteger;
+        /// <summary>Populated by manage-list queries only.</summary>
+        [DataMember()]
+        public string BlogTitle { get; set; } = "";
+        /// <summary>Populated by manage-list queries only.</summary>
+        [DataMember()]
+        public string PostTitle { get; set; } = "";
+        /// <summary>Populated by manage-list queries only.</summary>
+        [DataMember()]
+        public int PostCreatedByUserID { get; set; } = -1;
         #endregion
 
     }

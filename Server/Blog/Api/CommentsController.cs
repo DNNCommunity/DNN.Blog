@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Http;
 using System.Xml;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Modules.Blog.Common;
 using DotNetNuke.Modules.Blog.Core.Common;
 using DotNetNuke.Modules.Blog.Core.Entities.Blogs;
@@ -39,6 +40,11 @@ namespace DotNetNuke.Modules.Blog.Api
             public int Karma { get; set; }
         }
 
+        public class CommentBulkDeleteDto
+        {
+            public List<int> CommentIds { get; set; } = new List<int>();
+        }
+
         public class CommentAddDto
         {
             public int BlogId { get; set; }
@@ -61,6 +67,7 @@ namespace DotNetNuke.Modules.Blog.Api
             public string CommentHtml { get; set; }
             public DateTime CreatedOnDateUtc { get; set; }
             public bool Approved { get; set; }
+            public bool Deleted { get; set; }
             public int Likes { get; set; }
             public int Dislikes { get; set; }
             public int Reports { get; set; }
@@ -81,6 +88,38 @@ namespace DotNetNuke.Modules.Blog.Api
         {
             public string Result { get; set; }
             public CommentDto Comment { get; set; }
+        }
+
+        public class ManageCommentDto
+        {
+            public int CommentId { get; set; }
+            public int BlogId { get; set; }
+            public string BlogTitle { get; set; }
+            public int PostId { get; set; }
+            public string PostTitle { get; set; }
+            public string AuthorDisplayName { get; set; }
+            public int AuthorUserId { get; set; }
+            public string CommentHtml { get; set; }
+            public DateTime CreatedOnDateUtc { get; set; }
+            public bool Approved { get; set; }
+            public bool Deleted { get; set; }
+            public int Reports { get; set; }
+            public bool CanDelete { get; set; }
+            public bool CanFlag { get; set; }
+        }
+
+        public class ManageCommentListDto
+        {
+            public List<ManageCommentDto> Items { get; set; } = new List<ManageCommentDto>();
+            public int Page { get; set; }
+            public int PageSize { get; set; }
+            public int Total { get; set; }
+        }
+
+        public class AuthorSearchResultDto
+        {
+            public int UserId { get; set; }
+            public string DisplayName { get; set; }
         }
 
         [HttpGet]
@@ -104,9 +143,10 @@ namespace DotNetNuke.Modules.Blog.Api
                 return Request.CreateResponse(HttpStatusCode.OK, new CommentListDto { Result = "success", Total = 0 });
             }
 
-            var all = CoreComments.GetCommentsByContentItem(post.ContentItemId, security.CanApproveComment, UserInfo.UserID);
+            var canModerate = CanModerateComment(security, post);
+            var all = CoreComments.GetCommentsByContentItem(post.ContentItemId, canModerate, UserInfo.UserID);
             var tree = BuildTree(all);
-            var total = CountApprovedOrVisible(all, security.CanApproveComment);
+            var total = CountApprovedOrVisible(all, canModerate);
             _logger.LogInformation("Comment list returned {Total} comments for post {PostId}", total, postId);
             return Request.CreateResponse(HttpStatusCode.OK, new CommentListDto
             {
@@ -247,8 +287,105 @@ namespace DotNetNuke.Modules.Blog.Api
             });
         }
 
+        [HttpGet]
+        [BlogAuthorize(SecurityAccessLevel.Edit)]
+        public HttpResponseMessage ManageList(int page = 0, int pageSize = 10, string orderBy = null, string search = null, int blogId = -1, string authorSearch = null, string status = null)
+        {
+            var authorTerm = (authorSearch ?? "").Trim();
+            var statusFilter = NormalizeManageStatusFilter(status);
+            _logger.LogDebug("Manage comment list: page {Page}, pageSize {PageSize}, blogId {BlogId}, authorSearch {AuthorSearch}, status {Status}, user {UserId}",
+                page, pageSize, blogId, authorTerm, statusFilter, UserInfo.UserID);
+
+            if (page < 0) page = 0;
+            if (pageSize < 1) pageSize = 10;
+            if (pageSize > 100) pageSize = 100;
+            if (blogId < 1) blogId = -1;
+            if (authorTerm.Length > 500) authorTerm = authorTerm.Substring(0, 500);
+
+            var sanitizedOrderBy = SanitizeManageOrderBy(orderBy);
+            var security = BlogModuleContext.Security;
+            int total = 0;
+            var comments = CoreComments.GetManageComments(
+                ActiveModule.ModuleID,
+                UserInfo.UserID,
+                blogId,
+                authorTerm,
+                (search ?? "").Trim(),
+                statusFilter,
+                page,
+                pageSize,
+                sanitizedOrderBy,
+                security.UserIsAdmin,
+                ref total);
+
+            var items = comments.Values.Select(c =>
+            {
+                var canModerate = CanModerateManageRow(security, c);
+                return new ManageCommentDto
+                {
+                    CommentId = c.CommentID,
+                    BlogId = c.BlogID,
+                    BlogTitle = c.BlogTitle ?? "",
+                    PostId = c.ContentItemId,
+                    PostTitle = c.PostTitle ?? "",
+                    AuthorDisplayName = !string.IsNullOrWhiteSpace(c.DisplayName)
+                        ? c.DisplayName
+                        : (!string.IsNullOrWhiteSpace(c.Author) ? c.Author : "Anonymous"),
+                    AuthorUserId = c.CreatedByUserID,
+                    CommentHtml = c.Comment ?? "",
+                    CreatedOnDateUtc = ToUtcOrNow(c.CreatedOnDate),
+                    Approved = c.Approved,
+                    Deleted = c.Deleted,
+                    Reports = c.Reports,
+                    CanDelete = canModerate && !c.Deleted,
+                    CanFlag = canModerate && c.Approved && !c.Deleted
+                };
+            }).ToList();
+
+            return Request.CreateResponse(HttpStatusCode.OK, new ManageCommentListDto
+            {
+                Items = items,
+                Page = page,
+                PageSize = pageSize,
+                Total = total
+            });
+        }
+
+        [HttpGet]
+        [BlogAuthorize(SecurityAccessLevel.Edit)]
+        public HttpResponseMessage SearchAuthors(string q = "")
+        {
+            var term = (q ?? "").Trim();
+            if (term.Length < 2)
+                return Request.CreateResponse(HttpStatusCode.OK, new List<AuthorSearchResultDto>());
+
+            int total = 0;
+            var users = UserController.GetUsersByDisplayName(
+                PortalSettings.PortalId,
+                term + "%",
+                0,
+                15,
+                ref total,
+                false,
+                false);
+
+            var results = (users ?? new System.Collections.ArrayList())
+                .OfType<UserInfo>()
+                .Where(u => u != null && u.UserID > 0)
+                .Select(u => new AuthorSearchResultDto
+                {
+                    UserId = u.UserID,
+                    DisplayName = u.DisplayName ?? u.Username ?? ""
+                })
+                .OrderBy(u => u.DisplayName, StringComparer.OrdinalIgnoreCase)
+                .Take(15)
+                .ToList();
+
+            return Request.CreateResponse(HttpStatusCode.OK, results);
+        }
+
         [HttpPost]
-        [BlogAuthorize(SecurityAccessLevel.ApproveComment)]
+        [BlogAuthorize(SecurityAccessLevel.Edit)]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage Approve(CommentActionDto postData)
         {
@@ -269,8 +406,9 @@ namespace DotNetNuke.Modules.Blog.Api
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new { Result = "error" });
             }
 
+            var post = CorePosts.GetPost(comment.ContentItemId, ActiveModule.ModuleID, "");
             var security = CreateSecurity(blog);
-            if (!security.CanApproveComment)
+            if (post == null || !CanModerateComment(security, post))
             {
                 _logger.LogWarning("Approve comment denied: user {UserId}", UserInfo.UserID);
                 return AccessViolation("You are not allowed to approve comments");
@@ -282,7 +420,36 @@ namespace DotNetNuke.Modules.Blog.Api
         }
 
         [HttpPost]
-        [BlogAuthorize(SecurityAccessLevel.ApproveComment)]
+        [BlogAuthorize(SecurityAccessLevel.Edit)]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage Unapprove(CommentActionDto postData)
+        {
+            _logger.LogDebug("Unapprove comment requested: commentId {CommentId}, blogId {BlogId}, user {UserId}",
+                postData?.CommentId, postData?.BlogId, UserInfo.UserID);
+
+            if (postData == null)
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new { Result = "error" });
+
+            var blog = CoreBlogs.GetBlog(postData.BlogId, UserInfo.UserID, BlogModuleContext.BlogContext.Locale);
+            var comment = CoreComments.GetComment(postData.CommentId, UserInfo.UserID);
+            if (blog == null || comment == null)
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new { Result = "error" });
+
+            var post = CorePosts.GetPost(comment.ContentItemId, ActiveModule.ModuleID, "");
+            var security = CreateSecurity(blog);
+            if (post == null || !CanModerateComment(security, post))
+                return AccessViolation("You are not allowed to flag comments");
+
+            if (comment.Deleted)
+                return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+
+            CoreComments.UnapproveComment(ActiveModule.ModuleID, blog.BlogID, comment);
+            _logger.LogInformation("Unapproved comment {CommentId} on blog {BlogId} by user {UserId}", postData.CommentId, blog.BlogID, UserInfo.UserID);
+            return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+        }
+
+        [HttpPost]
+        [BlogAuthorize(SecurityAccessLevel.Edit)]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage Delete(CommentActionDto postData)
         {
@@ -303,16 +470,61 @@ namespace DotNetNuke.Modules.Blog.Api
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new { Result = "error" });
             }
 
+            var post = CorePosts.GetPost(comment.ContentItemId, ActiveModule.ModuleID, "");
             var security = CreateSecurity(blog);
-            if (!security.CanApproveComment)
+            if (post == null || !CanModerateComment(security, post))
             {
                 _logger.LogWarning("Delete comment denied: user {UserId}", UserInfo.UserID);
                 return AccessViolation("You are not allowed to delete comments");
             }
 
-            CoreComments.DeleteComment(ActiveModule.ModuleID, blog.BlogID, comment);
-            _logger.LogInformation("Deleted comment {CommentId} from blog {BlogId} by user {UserId}", postData.CommentId, blog.BlogID, UserInfo.UserID);
-            return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+            if (!comment.Deleted)
+            {
+                CoreComments.DeleteComment(ActiveModule.ModuleID, blog.BlogID, comment);
+                _logger.LogInformation("Soft-deleted comment {CommentId} from blog {BlogId} by user {UserId}", postData.CommentId, blog.BlogID, UserInfo.UserID);
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK, new
+            {
+                Result = "success",
+                Comment = MapComment(comment)
+            });
+        }
+
+        [HttpPost]
+        [BlogAuthorize(SecurityAccessLevel.Edit)]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage BulkDelete(CommentBulkDeleteDto postData)
+        {
+            if (postData?.CommentIds == null || postData.CommentIds.Count == 0)
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new { Result = "error" });
+
+            var moduleSecurity = BlogModuleContext.Security;
+            int deleted = 0;
+            foreach (var commentId in postData.CommentIds.Distinct())
+            {
+                var comment = CoreComments.GetComment(commentId, UserInfo.UserID);
+                if (comment == null || comment.Deleted)
+                    continue;
+
+                var post = CorePosts.GetPost(comment.ContentItemId, ActiveModule.ModuleID, "");
+                if (post == null)
+                    continue;
+
+                var blog = CoreBlogs.GetBlog(post.BlogID, UserInfo.UserID, BlogModuleContext.BlogContext.Locale);
+                if (blog == null)
+                    continue;
+
+                var security = CreateSecurity(blog);
+                if (!CanModerateComment(security, post) && !moduleSecurity.UserIsAdmin)
+                    continue;
+
+                CoreComments.DeleteComment(ActiveModule.ModuleID, blog.BlogID, comment);
+                deleted++;
+            }
+
+            _logger.LogInformation("Bulk soft-deleted {Count} comments by user {UserId}", deleted, UserInfo.UserID);
+            return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", Deleted = deleted });
         }
 
         [HttpPost]
@@ -480,6 +692,64 @@ namespace DotNetNuke.Modules.Blog.Api
             return new ContextSecurity(ActiveModule.ModuleID, ActiveModule.TabID, blog, UserInfo);
         }
 
+        private bool CanModerateComment(ContextSecurity security, PostInfo post)
+        {
+            return security.CanApproveComment
+                || security.UserIsAdmin
+                || (post != null && post.CreatedByUserID == UserInfo.UserID);
+        }
+
+        private bool CanModerateManageRow(ContextSecurity moduleSecurity, CommentInfo comment)
+        {
+            if (moduleSecurity.UserIsAdmin)
+                return true;
+            if (comment.PostCreatedByUserID == UserInfo.UserID)
+                return true;
+            if (comment.BlogID < 1)
+                return false;
+            var blog = CoreBlogs.GetBlog(comment.BlogID, UserInfo.UserID, BlogModuleContext.BlogContext.Locale);
+            if (blog == null)
+                return false;
+            return CreateSecurity(blog).CanApproveComment;
+        }
+
+        private static string NormalizeManageStatusFilter(string status)
+        {
+            var value = (status ?? "").Trim().ToLowerInvariant();
+            switch (value)
+            {
+                case "approved":
+                case "pending":
+                case "deleted":
+                    return value;
+                default:
+                    return "";
+            }
+        }
+
+        private static string SanitizeManageOrderBy(string orderBy)
+        {
+            var value = (orderBy ?? "").Trim().ToUpperInvariant();
+            switch (value)
+            {
+                case "CREATEDONDATE":
+                case "CREATEDONDATE ASC":
+                case "CREATEDONDATE DESC":
+                case "AUTHOR":
+                case "AUTHOR ASC":
+                case "AUTHOR DESC":
+                case "APPROVED":
+                case "APPROVED ASC":
+                case "APPROVED DESC":
+                case "COMMENTID":
+                case "COMMENTID ASC":
+                case "COMMENTID DESC":
+                    return value;
+                default:
+                    return "CREATEDONDATE DESC";
+            }
+        }
+
         private static int CountApprovedOrVisible(IEnumerable<CommentInfo> all, bool canApprove)
         {
             return all.Count(c => canApprove || c.Approved);
@@ -530,6 +800,7 @@ namespace DotNetNuke.Modules.Blog.Api
                 CommentHtml = c.Comment ?? "",
                 CreatedOnDateUtc = ToUtcOrNow(c.CreatedOnDate),
                 Approved = c.Approved,
+                Deleted = c.Deleted,
                 Likes = c.Likes,
                 Dislikes = c.Dislikes,
                 Reports = c.Reports,

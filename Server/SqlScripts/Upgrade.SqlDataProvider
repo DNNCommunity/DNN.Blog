@@ -31,6 +31,10 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwn
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_ApproveComment
 GO
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_UnapproveComment') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_UnapproveComment
+GO
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_DeleteBlog') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_DeleteBlog
 GO
@@ -41,6 +45,10 @@ GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_DeleteComment') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_DeleteComment
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetManageComments') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetManageComments
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_DeletePost') AND type in (N'P', N'PC'))
@@ -758,6 +766,18 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_UnapproveComment
+ @CommentId INT
+AS
+UPDATE {databaseOwner}{objectQualifier}Blog_Comments
+SET Approved=0
+WHERE CommentID=@CommentId
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_DeleteBlog
  @BlogID INT
 AS
@@ -784,11 +804,17 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_DeleteComment
- @CommentID INT
+ @CommentID INT,
+ @UpdatedByUser INT
 AS
-DELETE FROM {databaseOwner}{objectQualifier}Blog_Comments
+UPDATE {databaseOwner}{objectQualifier}Blog_Comments SET
+ [Deleted] = 1,
+ [Comment] = N'*** content deleted ***',
+ [LastModifiedByUserID] = @UpdatedByUser,
+ [LastModifiedOnDate] = GETDATE()
 WHERE
  [CommentID] = @CommentID
+ AND [Deleted] = 0
 GO
 
 SET ANSI_NULLS ON
@@ -1171,6 +1197,139 @@ SELECT COUNT (*) AS TotalRecords
 FROM {databaseOwner}{objectQualifier}vw_Blog_Comments c
  INNER JOIN {databaseOwner}{objectQualifier}ContentItems ci ON ci.ContentItemID=c.ContentItemId
 WHERE ci.ModuleID=@ModuleId;
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetManageComments
+ @ModuleId INT,
+ @UserID INT,
+ @BlogId INT = -1,
+ @AuthorSearch NVARCHAR(500) = N'',
+ @Search NVARCHAR(500) = N'',
+ @StatusFilter NVARCHAR(20) = N'',
+ @PageIndex INT = 0,
+ @PageSize INT = 10,
+ @OrderBy VARCHAR(100) = N'CREATEDONDATE DESC',
+ @UserIsAdmin BIT = 0
+AS
+DECLARE
+ @PageLowerBound INT,
+ @PageUpperBound INT,
+ @RowsToReturn INT
+EXEC {databaseOwner}{objectQualifier}CalculatePagingInformation @PageIndex, @PageSize, @RowsToReturn output, @PageLowerBound output, @PageUpperBound output;
+
+DECLARE @Blogs TABLE (
+ [BlogID] INT,
+ [CanApproveComment] INT,
+ [Owner] INT,
+ [Title] NVARCHAR(255));
+INSERT INTO @Blogs
+SELECT
+ b.BlogId,
+(SELECT COUNT(*)
+ FROM {databaseOwner}{objectQualifier}Blog_BlogPermissions bp
+ LEFT JOIN (SELECT ur.UserID, ur.RoleID
+    FROM {databaseOwner}{objectQualifier}UserRoles ur
+    WHERE (ur.EffectiveDate <= GETDATE() OR ur.EffectiveDate IS NULL) AND (ur.ExpiryDate >= GETDATE() OR ur.ExpiryDate IS NULL)
+    and ur.UserID=@UserID) r  ON r.RoleID=bp.RoleId
+ WHERE (bp.UserID=@UserId OR (bp.UserID=-10 AND r.RoleID<>-4) OR bp.RoleId=-1) AND bp.BlogId=b.BlogID AND bp.PermissionId = 4) AS [CanApproveComment],
+ b.OwnerUserId,
+ b.Title
+FROM {databaseOwner}{objectQualifier}Blog_Blogs b
+WHERE b.ModuleID=@ModuleId
+ AND (@BlogId = -1 OR b.BlogID = @BlogId);
+
+;WITH Filtered AS (
+SELECT
+ c.*,
+ b.BlogID,
+ b.Title AS BlogTitle,
+ p.Title AS PostTitle,
+ ci.CreatedByUserID AS PostCreatedByUserID,
+ (SELECT COUNT(ck1.Datime) FROM {databaseOwner}{objectQualifier}Blog_CommentKarmas ck1
+  WHERE ck1.UserId=@UserID AND ck1.CommentId=c.CommentID AND ck1.Karma=0) AS Liked,
+ (SELECT COUNT(ck2.Datime) FROM {databaseOwner}{objectQualifier}Blog_CommentKarmas ck2
+  WHERE ck2.UserId=@UserID AND ck2.CommentId=c.CommentID AND ck2.Karma=1) AS Disliked,
+ (SELECT COUNT(ck3.Datime) FROM {databaseOwner}{objectQualifier}Blog_CommentKarmas ck3
+  WHERE ck3.UserId=@UserID AND ck3.CommentId=c.CommentID AND ck3.Karma=2) AS Reported
+FROM {databaseOwner}{objectQualifier}vw_Blog_Comments c
+ INNER JOIN {databaseOwner}{objectQualifier}ContentItems ci ON ci.ContentItemID=c.ContentItemId
+ INNER JOIN {databaseOwner}{objectQualifier}Blog_Posts p ON p.ContentItemId=c.ContentItemId
+ INNER JOIN @Blogs b ON b.BlogID = p.BlogID
+WHERE ci.ModuleID=@ModuleId
+ AND (
+  @UserIsAdmin = 1
+  OR ci.CreatedByUserID = @UserID
+  OR b.CanApproveComment > 0
+  OR b.[Owner] = @UserID
+ )
+ AND (
+  @AuthorSearch = N''
+  OR c.DisplayName LIKE N'%' + @AuthorSearch + N'%'
+  OR c.Author LIKE N'%' + @AuthorSearch + N'%'
+  OR c.Username LIKE N'%' + @AuthorSearch + N'%'
+ )
+ AND (@Search = N'' OR c.Comment LIKE N'%' + @Search + N'%')
+ AND (
+  @StatusFilter = N''
+  OR (@StatusFilter = N'deleted' AND c.Deleted = 1)
+  OR (@StatusFilter = N'approved' AND c.Deleted = 0 AND c.Approved = 1)
+  OR (@StatusFilter = N'pending' AND c.Deleted = 0 AND c.Approved = 0)
+ )
+)
+SELECT *
+FROM (
+ SELECT
+  f.*,
+  ROW_NUMBER() OVER
+  (ORDER BY
+   CASE @OrderBy WHEN 'CREATEDONDATE DESC' THEN f.[CreatedOnDate] END DESC,
+   CASE @OrderBy WHEN 'CREATEDONDATE' THEN f.[CreatedOnDate] END ASC,
+   CASE @OrderBy WHEN 'CREATEDONDATE ASC' THEN f.[CreatedOnDate] END ASC,
+   CASE @OrderBy WHEN 'AUTHOR DESC' THEN f.[DisplayName] END DESC,
+   CASE @OrderBy WHEN 'AUTHOR' THEN f.[DisplayName] END ASC,
+   CASE @OrderBy WHEN 'AUTHOR ASC' THEN f.[DisplayName] END ASC,
+   CASE @OrderBy WHEN 'APPROVED DESC' THEN f.[Approved] END DESC,
+   CASE @OrderBy WHEN 'APPROVED' THEN f.[Approved] END ASC,
+   CASE @OrderBy WHEN 'APPROVED ASC' THEN f.[Approved] END ASC,
+   CASE @OrderBy WHEN 'COMMENTID DESC' THEN f.[CommentID] END DESC,
+   CASE @OrderBy WHEN 'COMMENTID' THEN f.[CommentID] END ASC,
+   CASE @OrderBy WHEN 'COMMENTID ASC' THEN f.[CommentID] END ASC,
+   f.[CreatedOnDate] DESC
+  ) AS RowNum
+ FROM Filtered f
+) AS Tbl
+WHERE RowNum > @PageLowerBound AND RowNum < @PageUpperBound
+ORDER BY RowNum;
+
+SELECT COUNT(*) AS TotalRecords
+FROM {databaseOwner}{objectQualifier}vw_Blog_Comments c
+ INNER JOIN {databaseOwner}{objectQualifier}ContentItems ci ON ci.ContentItemID=c.ContentItemId
+ INNER JOIN {databaseOwner}{objectQualifier}Blog_Posts p ON p.ContentItemId=c.ContentItemId
+ INNER JOIN @Blogs b ON b.BlogID = p.BlogID
+WHERE ci.ModuleID=@ModuleId
+ AND (
+  @UserIsAdmin = 1
+  OR ci.CreatedByUserID = @UserID
+  OR b.CanApproveComment > 0
+  OR b.[Owner] = @UserID
+ )
+ AND (
+  @AuthorSearch = N''
+  OR c.DisplayName LIKE N'%' + @AuthorSearch + N'%'
+  OR c.Author LIKE N'%' + @AuthorSearch + N'%'
+  OR c.Username LIKE N'%' + @AuthorSearch + N'%'
+ )
+ AND (@Search = N'' OR c.Comment LIKE N'%' + @Search + N'%')
+ AND (
+  @StatusFilter = N''
+  OR (@StatusFilter = N'deleted' AND c.Deleted = 1)
+  OR (@StatusFilter = N'approved' AND c.Deleted = 0 AND c.Approved = 1)
+  OR (@StatusFilter = N'pending' AND c.Deleted = 0 AND c.Approved = 0)
+ );
 GO
 
 SET ANSI_NULLS ON

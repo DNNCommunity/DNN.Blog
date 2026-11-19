@@ -136,7 +136,7 @@
     <value>Contents</value>
   </data>
   <data name="DeleteComment.Confirm" xml:space="preserve">
-    <value>Delete the comment? This cannot be undone.</value>
+    <value>Delete this comment? Its content will be replaced with a placeholder.</value>
   </data>
   <data name="DeleteComment.Text" xml:space="preserve">
     <value>delete</value>

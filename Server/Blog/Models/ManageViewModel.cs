@@ -7,6 +7,7 @@ namespace DotNetNuke.Modules.Blog.Models
     public class ManageViewModel
     {
         public const string SectionPosts = "posts";
+        public const string SectionComments = "comments";
         public const string SectionBlogs = "blogs";
         public const string SectionApiTokens = "apitokens";
 
@@ -15,9 +16,10 @@ namespace DotNetNuke.Modules.Blog.Models
 
         public bool ShowBlogsSection { get; set; }
         public bool ShowPostsSection { get; set; }
+        public bool ShowCommentsSection { get; set; }
         public bool ShowApiTokensSection { get; set; }
         public bool CanAddBlog { get; set; }
-        /// <summary>Active manage section: "posts" (default), "blogs", or "apitokens". Query param is "section" (not "tab" — reserved by DNN).</summary>
+        /// <summary>Active manage section. Query param is "section" (not "tab" — reserved by DNN).</summary>
         public string ActiveSection { get; set; } = SectionPosts;
         public int PageIndex { get; set; }
         public int TotalPosts { get; set; }

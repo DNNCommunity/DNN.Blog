@@ -177,6 +177,57 @@
   <data name="Posts.Text" xml:space="preserve">
     <value>Posts</value>
   </data>
+  <data name="Comments.Text" xml:space="preserve">
+    <value>Comments</value>
+  </data>
+  <data name="DeleteCommentConfirm.Text" xml:space="preserve">
+    <value>Delete this comment? Its content will be replaced with a placeholder.</value>
+  </data>
+  <data name="BulkDeleteCommentsConfirm.Text" xml:space="preserve">
+    <value>Delete the selected comments? Their content will be replaced with a placeholder.</value>
+  </data>
+  <data name="FlagComment.Text" xml:space="preserve">
+    <value>Flag</value>
+  </data>
+  <data name="FlagCommentConfirm.Text" xml:space="preserve">
+    <value>Flag this comment? It will be hidden from public view.</value>
+  </data>
+  <data name="DeleteSelected.Text" xml:space="preserve">
+    <value>Delete selected</value>
+  </data>
+  <data name="SearchComments.Text" xml:space="preserve">
+    <value>Search comments</value>
+  </data>
+  <data name="FilterByAuthor.Text" xml:space="preserve">
+    <value>Filter by author</value>
+  </data>
+  <data name="AllBlogs.Text" xml:space="preserve">
+    <value>All blogs</value>
+  </data>
+  <data name="AllStatuses.Text" xml:space="preserve">
+    <value>All statuses</value>
+  </data>
+  <data name="ShowMore.Text" xml:space="preserve">
+    <value>Show more</value>
+  </data>
+  <data name="ShowLess.Text" xml:space="preserve">
+    <value>Show less</value>
+  </data>
+  <data name="NoCommentsFound.Text" xml:space="preserve">
+    <value>No comments found.</value>
+  </data>
+  <data name="Approved.Text" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="Pending.Text" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="Deleted.Text" xml:space="preserve">
+    <value>Deleted</value>
+  </data>
+  <data name="CommentDeletedPlaceholder.Text" xml:space="preserve">
+    <value>*** content deleted ***</value>
+  </data>
   <data name="Blog.Text" xml:space="preserve">
     <value>Blog</value>
   </data>

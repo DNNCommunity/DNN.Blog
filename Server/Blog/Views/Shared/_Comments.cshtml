@@ -18,6 +18,8 @@
     return string.IsNullOrWhiteSpace(s) ? fallback : s;
   }
 
+  bool canModerateComments = security.CanApproveComment || security.UserIsAdmin || post.CreatedByUserID == Dnn.User.UserID;
+
   var securityJson = JsonConvert.SerializeObject(new
   {
     UserId = Dnn.User.UserID,
@@ -26,7 +28,7 @@
     IsAdmin = security.UserIsAdmin,
     CanViewComments = security.CanViewComments,
     CanAddComment = security.CanAddComment,
-    CanApproveComment = security.CanApproveComment,
+    CanApproveComment = canModerateComments,
     LoggedIn = security.LoggedIn
   });
 
@@ -37,7 +39,7 @@
     nrComments = post.NrComments,
     loggedIn = security.LoggedIn,
     canAddComment = security.CanAddComment && post.AllowComments,
-    canApproveComment = security.CanApproveComment,
+    canApproveComment = canModerateComments,
     allowComments = post.AllowComments,
     labels = new
     {
@@ -54,7 +56,7 @@
       reportConfirm = L("ReportComment.Confirm", "Do you wish to report this comment as inappropriate?"),
       approve = L("Approve", "Approve"),
       deleteComment = L("DeleteComment", "Delete"),
-      deleteConfirm = L("DeleteComment.Confirm", "Delete the comment? This cannot be undone."),
+      deleteConfirm = L("DeleteComment.Confirm", "Delete this comment? Its content will be replaced with a placeholder."),
       submit = L("Submit", "Submit"),
       cancel = L("Cancel", "Cancel"),
       name = L("Name", "Name"),

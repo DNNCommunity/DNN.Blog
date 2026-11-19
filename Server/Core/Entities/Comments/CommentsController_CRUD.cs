@@ -44,10 +44,10 @@ namespace DotNetNuke.Modules.Blog.Core.Entities.Comments
 
     }
 
-    public static void DeleteComment(int commentID)
+    public static void DeleteComment(int commentID, int updatedByUser)
     {
 
-      DataProvider.Instance().DeleteComment(commentID);
+      DataProvider.Instance().DeleteComment(commentID, updatedByUser);
 
     }
 
