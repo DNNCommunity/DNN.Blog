@@ -320,9 +320,10 @@ namespace DotNetNuke.Modules.Blog.Controllers
         BlogId = blog.BlogID,
         PostId = post.ContentItemId,
         BlogTitle = blog.LocalizedTitle,
+        // Legacy posts may store HtmlEncoded body/summary; decode so the editor gets real markup.
         Title = HttpUtility.HtmlDecode(post.Title ?? ""),
-        Summary = post.Summary ?? "",
-        Content = post.Content ?? "",
+        Summary = HttpUtility.HtmlDecode(post.Summary ?? ""),
+        Content = HttpUtility.HtmlDecode(post.Content ?? ""),
         Published = post.Published,
         PublishNow = false,
         PublishDate = BlogGlobals.UtcToLocalTime(post.PublishedOnDate, ctx.UiTimeZone).ToString("g"),
@@ -353,9 +354,10 @@ namespace DotNetNuke.Modules.Blog.Controllers
       {
         if (loc.Code == model.DefaultLocale)
           continue;
-        model.Titles[loc.Code] = post.TitleLocalizations[loc.Code] ?? "";
-        model.Summaries[loc.Code] = post.SummaryLocalizations[loc.Code] ?? "";
-        model.Contents[loc.Code] = ImagePlaceholders.ToEditor(post.ContentLocalizations[loc.Code] ?? "", EditorImageUrl);
+        model.Titles[loc.Code] = HttpUtility.HtmlDecode(post.TitleLocalizations[loc.Code] ?? "");
+        model.Summaries[loc.Code] = HttpUtility.HtmlDecode(post.SummaryLocalizations[loc.Code] ?? "");
+        model.Contents[loc.Code] = ImagePlaceholders.ToEditor(
+            HttpUtility.HtmlDecode(post.ContentLocalizations[loc.Code] ?? ""), EditorImageUrl);
         model.Summaries[loc.Code] = ImagePlaceholders.ToEditor(model.Summaries[loc.Code], EditorImageUrl);
       }
 

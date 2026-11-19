@@ -295,20 +295,21 @@ namespace DotNetNuke.Modules.Blog.BlogApi
       var summaries = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
       var contents = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
+      // Legacy posts may store HtmlEncoded fields; decode for editors/API consumers.
       if (post.TitleLocalizations != null)
       {
         foreach (var kv in post.TitleLocalizations.GetDictionary())
-          titles[kv.Key] = kv.Value ?? "";
+          titles[kv.Key] = HttpUtility.HtmlDecode(kv.Value ?? "");
       }
       if (post.SummaryLocalizations != null)
       {
         foreach (var kv in post.SummaryLocalizations.GetDictionary())
-          summaries[kv.Key] = kv.Value ?? "";
+          summaries[kv.Key] = HttpUtility.HtmlDecode(kv.Value ?? "");
       }
       if (post.ContentLocalizations != null)
       {
         foreach (var kv in post.ContentLocalizations.GetDictionary())
-          contents[kv.Key] = kv.Value ?? "";
+          contents[kv.Key] = HttpUtility.HtmlDecode(kv.Value ?? "");
       }
 
       return new PostResponseDto
@@ -317,8 +318,8 @@ namespace DotNetNuke.Modules.Blog.BlogApi
         PostId = post.ContentItemId,
         ModuleId = moduleId,
         Title = HttpUtility.HtmlDecode(post.Title ?? ""),
-        Summary = post.Summary ?? "",
-        Content = post.Content ?? "",
+        Summary = HttpUtility.HtmlDecode(post.Summary ?? ""),
+        Content = HttpUtility.HtmlDecode(post.Content ?? ""),
         Titles = titles,
         Summaries = summaries,
         Contents = contents,
