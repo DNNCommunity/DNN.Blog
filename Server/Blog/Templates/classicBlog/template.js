@@ -26,7 +26,9 @@
     });
    }
   });
-  $('a[href$=".gif"], a[href$=".jpg"], a[href$=".png"], a[href$=".bmp"]').fancybox();
+  $('a[href$=".gif"], a[href$=".jpg"], a[href$=".jpeg"], a[href$=".png"], a[href$=".bmp"], a[href*="/Image/Get?"]').fancybox({
+   type: 'image'
+  });
   SyntaxHighlighter.autoloader.apply(null, shpath(
   'applescript            @shBrushAppleScript.js',
   'actionscript3 as3      @shBrushAS3.js',

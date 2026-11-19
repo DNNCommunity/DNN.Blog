@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using DotNetNuke.Common;
 
 namespace DotNetNuke.Modules.Blog.Core.Media
@@ -28,6 +29,19 @@ namespace DotNetNuke.Modules.Blog.Core.Media
   /// <summary>Expands stored placeholders into the final img markup (no picture element yet).</summary>
   public static class ImageRenderer
   {
+    /// <summary>
+    /// Pre-7 editors wrapped images in &lt;a href="guid.jpg"&gt; for Colorbox. After migration the
+    /// &lt;img&gt; uses /Image/Get but the relative href remains and the lightbox 404s. Rewrite those
+    /// anchors to the full-size image endpoint.
+    /// </summary>
+    private static readonly Regex LegacyLightboxAnchorRx = new Regex(
+      @"<a\b(?<before>[^>]*?\bhref\s*=\s*)(?<q>[""'])(?<href>[^""']+)\k<q>(?<after>[^>]*)>(?<inner>.*?)</a>",
+      RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline);
+
+    private static readonly Regex ImageFileHrefRx = new Regex(
+      @"\.(?:gif|jpe?g|png|bmp|webp)(?:\?.*)?$",
+      RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
     public static string Render(string html, ImageService service = null)
     {
       if (string.IsNullOrEmpty(html) || html.IndexOf(ImagePlaceholders.PlaceholderAttribute, StringComparison.OrdinalIgnoreCase) < 0)
@@ -40,12 +54,13 @@ namespace DotNetNuke.Modules.Blog.Core.Media
 
     public static string Render(string html, IDictionary<Guid, BlogImageInfo> map)
     {
-      return ImagePlaceholders.Render(html, (id, index, tag) =>
+      var rendered = ImagePlaceholders.Render(html, (id, index, tag) =>
       {
         BlogImageInfo img;
         if (!map.TryGetValue(id, out img)) return ""; // image gone; do not emit a broken tag
         return RenderTag(img, index, tag);
       });
+      return RewriteLegacyLightboxAnchors(rendered, map);
     }
 
     public static string RenderTag(BlogImageInfo img, int index, HtmlImgTag tag)
@@ -78,6 +93,39 @@ namespace DotNetNuke.Modules.Blog.Core.Media
       if (style.IndexOf("height", StringComparison.OrdinalIgnoreCase) < 0)
         tag.Set("style", (style.Length > 0 && !style.TrimEnd().EndsWith(";") ? style + ";" : style) + "max-width:100%;height:auto");
       return tag.ToString();
+    }
+
+    /// <summary>
+    /// Points leftover lightbox anchors at the full-size Image API URL so Colorbox can load them.
+    /// </summary>
+    internal static string RewriteLegacyLightboxAnchors(string html, IDictionary<Guid, BlogImageInfo> map = null)
+    {
+      if (string.IsNullOrEmpty(html) || html.IndexOf("<a", StringComparison.OrdinalIgnoreCase) < 0)
+        return html;
+
+      return LegacyLightboxAnchorRx.Replace(html, m =>
+      {
+        var href = WebUtility.HtmlDecode(m.Groups["href"].Value);
+        if (!ImageFileHrefRx.IsMatch(href)) return m.Value;
+
+        var isBareFile = href.IndexOf('/') < 0 && href.IndexOf('\\') < 0
+          && href.IndexOf("://", StringComparison.Ordinal) < 0;
+        var isBlogFiles = href.IndexOf("Blog/Files/", StringComparison.OrdinalIgnoreCase) >= 0;
+        if (!isBareFile && !isBlogFiles) return m.Value;
+
+        var id = ImagePlaceholders.GetGuidFromUrl(m.Groups["inner"].Value);
+        if (!id.HasValue) return m.Value;
+
+        string version = null;
+        BlogImageInfo img;
+        if (map != null && map.TryGetValue(id.Value, out img))
+          version = ImageUrls.Version(img);
+
+        var q = m.Groups["q"].Value;
+        var full = ImageUrls.Build(id.Value, 0, version);
+        return "<a" + m.Groups["before"].Value + q + full + q + m.Groups["after"].Value + ">"
+          + m.Groups["inner"].Value + "</a>";
+      });
     }
   }
 }

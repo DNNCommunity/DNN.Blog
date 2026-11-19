@@ -1,6 +1,8 @@
 (function ($, Sys) {
  $(document).ready(function () {
-  $('a[href$=".gif"], a[href$=".jpg"], a[href$=".png"], a[href$=".bmp"]').colorbox();
+  $('a[href$=".gif"], a[href$=".jpg"], a[href$=".jpeg"], a[href$=".png"], a[href$=".bmp"], a[href*="/Image/Get?"]').colorbox({
+   photo: true
+  });
   $('#cmdComment').click(function () {
    $dialogComment.dialog('open');
    return false;

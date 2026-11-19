@@ -133,7 +133,10 @@ namespace DotNetNuke.Modules.Blog.Core.Templating
 
       if (System.IO.File.Exists(templateMapPath + "template.js"))
       {
-        ClientResourceManager.RegisterScript(page, templatePath + "template.js");
+        // File-mtime version so template.js edits are picked up without bumping host cdv.
+        var templateJsPath = templateMapPath + "template.js";
+        var bust = System.IO.File.GetLastWriteTimeUtc(templateJsPath).Ticks.ToString();
+        ClientResourceManager.RegisterScript(page, templatePath + "template.js", 70, "", "BlogTemplateJs", bust);
       }
       if (System.IO.Directory.Exists(templateMapPath + "js"))
       {

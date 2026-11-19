@@ -1,6 +1,8 @@
 (function ($, Sys) {
  $(document).ready(function () {
-  $('a[href$=".gif"], a[href$=".jpg"], a[href$=".png"], a[href$=".bmp"]').colorbox();
+  $('a[href$=".gif"], a[href$=".jpg"], a[href$=".jpeg"], a[href$=".png"], a[href$=".bmp"], a[href*="/Image/Get?"]').colorbox({
+   photo: true
+  });
   $(".moment").each(function(i, el) {
     var e = $(el);
     e.html(moment(e.attr('data-time')).fromNow());
