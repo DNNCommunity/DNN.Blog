@@ -217,6 +217,15 @@
   <data name="DeleteComment.Confirm" xml:space="preserve">
     <value>Delete this comment? Its content will be replaced with a placeholder.</value>
   </data>
+  <data name="Edit.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Save.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Edited.Text" xml:space="preserve">
+    <value>(edited)</value>
+  </data>
   <data name="Submit.Text" xml:space="preserve">
     <value>Submit</value>
   </data>

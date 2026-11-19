@@ -56,6 +56,13 @@ namespace DotNetNuke.Modules.Blog.Api
             public string Email { get; set; }
         }
 
+        public class CommentUpdateDto
+        {
+            public int BlogId { get; set; }
+            public int CommentId { get; set; }
+            public string Comment { get; set; }
+        }
+
         public class CommentDto
         {
             public int CommentId { get; set; }
@@ -68,6 +75,8 @@ namespace DotNetNuke.Modules.Blog.Api
             public DateTime CreatedOnDateUtc { get; set; }
             public bool Approved { get; set; }
             public bool Deleted { get; set; }
+            public bool IsEdited { get; set; }
+            public bool CanEdit { get; set; }
             public int Likes { get; set; }
             public int Dislikes { get; set; }
             public int Reports { get; set; }
@@ -90,7 +99,7 @@ namespace DotNetNuke.Modules.Blog.Api
             public CommentDto Comment { get; set; }
         }
 
-        public class ManageCommentDto
+            public class ManageCommentDto
         {
             public int CommentId { get; set; }
             public int BlogId { get; set; }
@@ -106,6 +115,7 @@ namespace DotNetNuke.Modules.Blog.Api
             public int Reports { get; set; }
             public bool CanDelete { get; set; }
             public bool CanFlag { get; set; }
+            public bool CanEdit { get; set; }
         }
 
         public class ManageCommentListDto
@@ -145,7 +155,7 @@ namespace DotNetNuke.Modules.Blog.Api
 
             var canModerate = CanModerateComment(security, post);
             var all = CoreComments.GetCommentsByContentItem(post.ContentItemId, canModerate, UserInfo.UserID);
-            var tree = BuildTree(all);
+            var tree = BuildTree(all, security);
             var total = CountApprovedOrVisible(all, canModerate);
             _logger.LogInformation("Comment list returned {Total} comments for post {PostId}", total, postId);
             return Request.CreateResponse(HttpStatusCode.OK, new CommentListDto
@@ -224,7 +234,7 @@ namespace DotNetNuke.Modules.Blog.Api
                 return Request.CreateResponse(HttpStatusCode.OK, new CommentAddResultDto
                 {
                     Result = "successnotapproved",
-                    Comment = MapComment(saved)
+                    Comment = MapComment(saved, security)
                 });
             }
 
@@ -232,7 +242,56 @@ namespace DotNetNuke.Modules.Blog.Api
             return Request.CreateResponse(HttpStatusCode.OK, new CommentAddResultDto
             {
                 Result = "success",
-                Comment = MapComment(saved)
+                Comment = MapComment(saved, security)
+            });
+        }
+
+        [HttpPost]
+        [BlogAuthorize(SecurityAccessLevel.Authenticated)]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage Update(CommentUpdateDto postData)
+        {
+            _logger.LogDebug("Update comment requested: commentId {CommentId}, blogId {BlogId}, user {UserId}",
+                postData?.CommentId, postData?.BlogId, UserInfo.UserID);
+
+            if (postData == null)
+            {
+                _logger.LogWarning("Update comment failed: null payload");
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new CommentAddResultDto { Result = "error" });
+            }
+
+            var blog = CoreBlogs.GetBlog(postData.BlogId, UserInfo.UserID, BlogModuleContext.BlogContext.Locale);
+            var comment = CoreComments.GetComment(postData.CommentId, UserInfo.UserID);
+            if (blog == null || comment == null)
+            {
+                _logger.LogWarning("Update comment failed: blog {BlogId} or comment {CommentId} not found", postData.BlogId, postData.CommentId);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new CommentAddResultDto { Result = "error" });
+            }
+
+            var post = CorePosts.GetPost(comment.ContentItemId, ActiveModule.ModuleID, "");
+            var security = CreateSecurity(blog);
+            if (post == null || !CanEditComment(security, comment))
+            {
+                _logger.LogWarning("Update comment denied: user {UserId}, comment {CommentId}", UserInfo.UserID, postData.CommentId);
+                return AccessViolation("You are not allowed to edit this comment");
+            }
+
+            var sanitized = BlogGlobals.SafeStringSimpleHtml(postData.Comment ?? "").Replace("\r\n", "<br />").Replace("\n", "<br />");
+            if (string.IsNullOrWhiteSpace(sanitized.Replace("<br />", "").Replace("<br/>", "").Trim()))
+            {
+                _logger.LogWarning("Update comment failed: empty body for comment {CommentId}", postData.CommentId);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new CommentAddResultDto { Result = "error" });
+            }
+
+            comment.Comment = HttpUtility.HtmlEncode(sanitized);
+            CoreComments.UpdateComment(blog, post, comment);
+
+            var saved = CoreComments.GetComment(comment.CommentID, UserInfo.UserID) ?? comment;
+            _logger.LogInformation("Updated comment {CommentId} on blog {BlogId} by user {UserId}", comment.CommentID, blog.BlogID, UserInfo.UserID);
+            return Request.CreateResponse(HttpStatusCode.OK, new CommentAddResultDto
+            {
+                Result = "success",
+                Comment = MapComment(saved, security)
             });
         }
 
@@ -283,7 +342,7 @@ namespace DotNetNuke.Modules.Blog.Api
             return Request.CreateResponse(HttpStatusCode.OK, new
             {
                 Result = result,
-                Comment = refreshed != null ? MapComment(refreshed) : null
+                Comment = refreshed != null ? MapComment(refreshed, security) : null
             });
         }
 
@@ -321,6 +380,13 @@ namespace DotNetNuke.Modules.Blog.Api
             var items = comments.Values.Select(c =>
             {
                 var canModerate = CanModerateManageRow(security, c);
+                var rowSecurity = security;
+                if (c.BlogID > 0)
+                {
+                    var blog = CoreBlogs.GetBlog(c.BlogID, UserInfo.UserID, BlogModuleContext.BlogContext.Locale);
+                    if (blog != null)
+                        rowSecurity = CreateSecurity(blog);
+                }
                 return new ManageCommentDto
                 {
                     CommentId = c.CommentID,
@@ -338,7 +404,8 @@ namespace DotNetNuke.Modules.Blog.Api
                     Deleted = c.Deleted,
                     Reports = c.Reports,
                     CanDelete = canModerate && !c.Deleted,
-                    CanFlag = canModerate && c.Approved && !c.Deleted
+                    CanFlag = canModerate && c.Approved && !c.Deleted,
+                    CanEdit = CanEditComment(rowSecurity, c)
                 };
             }).ToList();
 
@@ -487,7 +554,7 @@ namespace DotNetNuke.Modules.Blog.Api
             return Request.CreateResponse(HttpStatusCode.OK, new
             {
                 Result = "success",
-                Comment = MapComment(comment)
+                Comment = MapComment(comment, security)
             });
         }
 
@@ -699,6 +766,15 @@ namespace DotNetNuke.Modules.Blog.Api
                 || (post != null && post.CreatedByUserID == UserInfo.UserID);
         }
 
+        private bool CanEditComment(ContextSecurity security, CommentInfo comment)
+        {
+            if (comment == null || comment.Deleted || UserInfo.UserID < 0)
+                return false;
+            if (security.IsEditor || security.UserIsAdmin)
+                return true;
+            return comment.CreatedByUserID > 0 && comment.CreatedByUserID == UserInfo.UserID;
+        }
+
         private bool CanModerateManageRow(ContextSecurity moduleSecurity, CommentInfo comment)
         {
             if (moduleSecurity.UserIsAdmin)
@@ -755,7 +831,7 @@ namespace DotNetNuke.Modules.Blog.Api
             return all.Count(c => canApprove || c.Approved);
         }
 
-        private static List<CommentDto> BuildTree(List<CommentInfo> all)
+        private List<CommentDto> BuildTree(List<CommentInfo> all, ContextSecurity security)
         {
             var lookup = all.ToLookup(c => c.ParentId > 0 ? c.ParentId : -1);
             List<CommentDto> MapChildren(int parentId)
@@ -764,7 +840,7 @@ namespace DotNetNuke.Modules.Blog.Api
                     .OrderBy(c => c.CreatedOnDate)
                     .Select(c =>
                     {
-                        var dto = MapComment(c);
+                        var dto = MapComment(c, security);
                         dto.Replies = MapChildren(c.CommentID);
                         return dto;
                     })
@@ -780,7 +856,7 @@ namespace DotNetNuke.Modules.Blog.Api
             return value.Kind == DateTimeKind.Utc ? value : value.ToUniversalTime();
         }
 
-        private static CommentDto MapComment(CommentInfo c)
+        private CommentDto MapComment(CommentInfo c, ContextSecurity security)
         {
             var userId = c.CreatedByUserID;
             var displayName = !string.IsNullOrWhiteSpace(c.DisplayName)
@@ -801,6 +877,8 @@ namespace DotNetNuke.Modules.Blog.Api
                 CreatedOnDateUtc = ToUtcOrNow(c.CreatedOnDate),
                 Approved = c.Approved,
                 Deleted = c.Deleted,
+                IsEdited = !c.Deleted && c.LastModifiedOnDate > c.CreatedOnDate,
+                CanEdit = CanEditComment(security, c),
                 Likes = c.Likes,
                 Dislikes = c.Dislikes,
                 Reports = c.Reports,

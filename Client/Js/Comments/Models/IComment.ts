@@ -9,6 +9,8 @@ export interface IComment {
   createdOnDateUtc: string;
   approved: boolean;
   deleted: boolean;
+  isEdited: boolean;
+  canEdit: boolean;
   likes: number;
   dislikes: number;
   reports: number;

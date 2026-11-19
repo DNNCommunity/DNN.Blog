@@ -15,6 +15,9 @@ export interface ICommentsLabels {
   approve: string;
   deleteComment: string;
   deleteConfirm: string;
+  edit: string;
+  save: string;
+  edited: string;
   submit: string;
   cancel: string;
   name: string;

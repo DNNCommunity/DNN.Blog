@@ -186,6 +186,13 @@
     color: inherit;
   }
 
+  .blog-comment__edited {
+    color: inherit;
+    opacity: 0.75;
+    font-style: italic;
+    font-size: 0.95em;
+  }
+
   .blog-comment__actions {
     display: inline-flex;
     flex-wrap: wrap;

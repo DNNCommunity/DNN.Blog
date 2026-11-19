@@ -1362,6 +1362,10 @@
     box-shadow: 0 16px 40px rgba(15, 23, 42, 0.18);
   }
 
+  .blog-dialog__panel--wide.blog-admin {
+    max-width: 36rem;
+  }
+
   .blog-dialog__header {
     display: flex;
     align-items: flex-start;

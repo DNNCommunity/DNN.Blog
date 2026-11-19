@@ -22,6 +22,17 @@ export interface CommentItemProps {
   onReplyAdded: (parentId: number, comment: IComment) => void;
 }
 
+function htmlToPlainText(html: string): string {
+  if (!html) return "";
+  // Stored comments are HtmlEncoded (so <br /> is &lt;br /&gt;); decode first, then unwrap breaks.
+  const textarea = document.createElement("textarea");
+  textarea.innerHTML = html;
+  return textarea.value
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<\/p>/gi, "\n")
+    .replace(/<p[^>]*>/gi, "");
+}
+
 export default function CommentItem(props: CommentItemProps) {
   const {
     blogId,
@@ -38,6 +49,7 @@ export default function CommentItem(props: CommentItemProps) {
     onReplyAdded,
   } = props;
   const [replying, setReplying] = useState(false);
+  const [editing, setEditing] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [notice, setNotice] = useState("");
 
@@ -75,6 +87,32 @@ export default function CommentItem(props: CommentItemProps) {
     );
   };
 
+  const submitEdit = (payload: {
+    comment: string;
+    author: string;
+    email: string;
+    website: string;
+  }) => {
+    setSubmitting(true);
+    setNotice("");
+    service.updateComment(
+      blogId,
+      comment.commentId,
+      payload.comment,
+      (res) => {
+        setSubmitting(false);
+        if (res.result === "success" && res.comment) {
+          onUpdate({
+            ...res.comment,
+            replies: comment.replies,
+          });
+          setEditing(false);
+        }
+      },
+      () => setSubmitting(false)
+    );
+  };
+
   const className =
     "blog-comment" +
     (comment.approved ? "" : " blog-comment--pending") +
@@ -102,10 +140,23 @@ export default function CommentItem(props: CommentItemProps) {
           )}
         </span>
       </header>
-      <div
-        className="blog-comment__body"
-        dangerouslySetInnerHTML={{ __html: comment.commentHtml }}
-      />
+      {editing ? (
+        <CommentCompose
+          labels={labels}
+          loggedIn={loggedIn}
+          submitting={submitting}
+          submitLabel={labels.save}
+          initialComment={htmlToPlainText(comment.commentHtml)}
+          hideAuthorFields
+          onSubmit={submitEdit}
+          onCancel={() => setEditing(false)}
+        />
+      ) : (
+        <div
+          className="blog-comment__body"
+          dangerouslySetInnerHTML={{ __html: comment.commentHtml }}
+        />
+      )}
       <div className="blog-comment__meta">
         <time
           className="blog-comment__time"
@@ -114,37 +165,57 @@ export default function CommentItem(props: CommentItemProps) {
         >
           {formatRelativeTime(comment.createdOnDateUtc, locale)}
         </time>
-        <div className="blog-comment__actions">
-          {!comment.deleted && (
-            <CommentKarma
-              blogId={blogId}
-              comment={comment}
-              labels={labels}
-              service={service}
-              canKarma={loggedIn}
-              onChange={onUpdate}
-            />
-          )}
-          {canApproveComment && (
-            <CommentModeration
-              blogId={blogId}
-              comment={comment}
-              labels={labels}
-              service={service}
-              onApproved={onUpdate}
-              onDeleted={onUpdate}
-            />
-          )}
-          {canAddComment && !comment.deleted && (
-            <button
-              type="button"
-              className="blog-comment__action"
-              onClick={() => setReplying((v) => !v)}
-            >
-              {labels.reply}
-            </button>
-          )}
-        </div>
+        {comment.isEdited && !comment.deleted && (
+          <span className="blog-comment__edited">{labels.edited}</span>
+        )}
+        {!editing && (
+          <div className="blog-comment__actions">
+            {!comment.deleted && (
+              <CommentKarma
+                blogId={blogId}
+                comment={comment}
+                labels={labels}
+                service={service}
+                canKarma={loggedIn}
+                onChange={onUpdate}
+              />
+            )}
+            {canApproveComment && (
+              <CommentModeration
+                blogId={blogId}
+                comment={comment}
+                labels={labels}
+                service={service}
+                onApproved={onUpdate}
+                onDeleted={onUpdate}
+              />
+            )}
+            {comment.canEdit && !comment.deleted && (
+              <button
+                type="button"
+                className="blog-comment__action"
+                onClick={() => {
+                  setReplying(false);
+                  setEditing(true);
+                }}
+              >
+                {labels.edit}
+              </button>
+            )}
+            {canAddComment && !comment.deleted && (
+              <button
+                type="button"
+                className="blog-comment__action"
+                onClick={() => {
+                  setEditing(false);
+                  setReplying((v) => !v);
+                }}
+              >
+                {labels.reply}
+              </button>
+            )}
+          </div>
+        )}
       </div>
       {notice && <p className="blog-comments__notice">{notice}</p>}
       {replying && (

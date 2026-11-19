@@ -73,6 +73,8 @@ function normalizeComment(raw: any): IComment {
     ),
     approved: !!pick(raw, "approved", "Approved", false),
     deleted: !!pick(raw, "deleted", "Deleted", false),
+    isEdited: !!pick(raw, "isEdited", "IsEdited", false),
+    canEdit: !!pick(raw, "canEdit", "CanEdit", false),
     likes: pick(raw, "likes", "Likes", 0),
     dislikes: pick(raw, "dislikes", "Dislikes", 0),
     reports: pick(raw, "reports", "Reports", 0),
@@ -109,6 +111,9 @@ function normalizeLabels(raw: any): ICommentsLabels {
       "DeleteConfirm",
       "Delete the comment? This cannot be undone."
     ),
+    edit: pick(raw, "edit", "Edit", "Edit"),
+    save: pick(raw, "save", "Save", "Save"),
+    edited: pick(raw, "edited", "Edited", "(edited)"),
     submit: pick(raw, "submit", "Submit", "Submit"),
     cancel: pick(raw, "cancel", "Cancel", "Cancel"),
     name: pick(raw, "name", "Name", "Name"),

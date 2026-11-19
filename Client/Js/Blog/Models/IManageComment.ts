@@ -13,6 +13,7 @@ export interface IManageComment {
   Reports: number;
   CanDelete: boolean;
   CanFlag: boolean;
+  CanEdit: boolean;
 }
 
 export interface IManageCommentList {
@@ -59,5 +60,6 @@ export function normalizeManageComment(raw: any): IManageComment {
     Reports: pick(raw, "reports", "Reports", 0),
     CanDelete: !!pick(raw, "canDelete", "CanDelete", false),
     CanFlag: !!pick(raw, "canFlag", "CanFlag", false),
+    CanEdit: !!pick(raw, "canEdit", "CanEdit", false),
   };
 }

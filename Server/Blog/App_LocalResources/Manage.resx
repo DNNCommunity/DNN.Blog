@@ -129,6 +129,12 @@
   <data name="Edit.Text" xml:space="preserve">
     <value>Edit</value>
   </data>
+  <data name="Save.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Comment.Text" xml:space="preserve">
+    <value>Comment</value>
+  </data>
   <data name="ServerError.Text" xml:space="preserve">
     <value>An error occurred while processing the request. Please try again later.</value>
   </data>

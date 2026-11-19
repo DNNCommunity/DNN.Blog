@@ -257,6 +257,25 @@ export default class DataService {
     );
   }
 
+  public updateManageComment(
+    blogId: number,
+    commentId: number,
+    comment: string,
+    success: Function,
+    fail?: (error: string) => void
+  ): void {
+    this.ajaxCall(
+      "POST",
+      this.baseServicepath,
+      "Comments",
+      "Update",
+      undefined,
+      { BlogId: blogId, CommentId: commentId, Comment: comment },
+      success,
+      fail
+    );
+  }
+
   public unapproveComment(
     blogId: number,
     commentId: number,

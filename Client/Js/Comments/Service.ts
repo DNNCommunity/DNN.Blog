@@ -55,6 +55,8 @@ function normalizeComment(raw: any): import("./Models/IComment").IComment {
     createdOnDateUtc: pick(raw, "createdOnDateUtc", "CreatedOnDateUtc", ""),
     approved: !!pick(raw, "approved", "Approved", false),
     deleted: !!pick(raw, "deleted", "Deleted", false),
+    isEdited: !!pick(raw, "isEdited", "IsEdited", false),
+    canEdit: !!pick(raw, "canEdit", "CanEdit", false),
     likes: pick(raw, "likes", "Likes", 0),
     dislikes: pick(raw, "dislikes", "Dislikes", 0),
     reports: pick(raw, "reports", "Reports", 0),
@@ -237,6 +239,29 @@ export default class DataService {
       "Comments",
       "Delete",
       { blogId, commentId },
+      (raw) => {
+        const commentRaw = pick<any>(raw, "comment", "Comment", null);
+        success({
+          result: pick(raw, "result", "Result", ""),
+          comment: commentRaw ? normalizeComment(commentRaw) : undefined,
+        });
+      },
+      fail
+    );
+  }
+
+  public updateComment(
+    blogId: number,
+    commentId: number,
+    comment: string,
+    success: (data: IActionResult) => void,
+    fail?: (error: string) => void
+  ): void {
+    this.ajaxCall(
+      "POST",
+      "Comments",
+      "Update",
+      { blogId, commentId, comment },
       (raw) => {
         const commentRaw = pick<any>(raw, "comment", "Comment", null);
         success({

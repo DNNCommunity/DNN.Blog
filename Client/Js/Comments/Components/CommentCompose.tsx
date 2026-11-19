@@ -6,6 +6,8 @@ export interface CommentComposeProps {
   loggedIn: boolean;
   submitting?: boolean;
   submitLabel?: string;
+  initialComment?: string;
+  hideAuthorFields?: boolean;
   onSubmit: (payload: {
     comment: string;
     author: string;
@@ -16,8 +18,17 @@ export interface CommentComposeProps {
 }
 
 export default function CommentCompose(props: CommentComposeProps) {
-  const { labels, loggedIn, submitting, submitLabel, onSubmit, onCancel } = props;
-  const [comment, setComment] = useState("");
+  const {
+    labels,
+    loggedIn,
+    submitting,
+    submitLabel,
+    initialComment = "",
+    hideAuthorFields = false,
+    onSubmit,
+    onCancel,
+  } = props;
+  const [comment, setComment] = useState(initialComment);
   const [author, setAuthor] = useState("");
   const [email, setEmail] = useState("");
   const [website, setWebsite] = useState("");
@@ -30,7 +41,7 @@ export default function CommentCompose(props: CommentComposeProps) {
       setError(labels.required);
       return;
     }
-    if (!loggedIn && !author.trim()) {
+    if (!loggedIn && !hideAuthorFields && !author.trim()) {
       setError(labels.required);
       return;
     }
@@ -41,12 +52,14 @@ export default function CommentCompose(props: CommentComposeProps) {
       email: email.trim(),
       website: website.trim(),
     });
-    setComment("");
+    if (!initialComment) {
+      setComment("");
+    }
   };
 
   return (
     <form className="blog-comments__compose" onSubmit={handleSubmit}>
-      {!loggedIn && (
+      {!loggedIn && !hideAuthorFields && (
         <div className="blog-comments__compose-fields">
           <label className="blog-comments__field">
             <span className="blog-comments__field-label">{labels.name}</span>

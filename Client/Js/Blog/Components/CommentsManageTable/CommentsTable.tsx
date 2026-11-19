@@ -32,6 +32,7 @@ export interface CommentsTableProps {
   pendingLabel: string;
   deletedLabel: string;
   flagLabel: string;
+  editLabel: string;
   deleteLabel: string;
   bulkDeleteLabel: string;
   onSearchChange: (value: string) => void;
@@ -44,6 +45,7 @@ export interface CommentsTableProps {
   onToggleSelectAll: () => void;
   onDelete: (comment: IManageComment) => void;
   onFlag: (comment: IManageComment) => void;
+  onEdit: (comment: IManageComment) => void;
 }
 
 function formatDate(value: string): string {
@@ -172,6 +174,7 @@ export default function CommentsTable(
     pendingLabel,
     deletedLabel,
     flagLabel,
+    editLabel,
     deleteLabel,
     bulkDeleteLabel,
     onSearchChange,
@@ -184,6 +187,7 @@ export default function CommentsTable(
     onToggleSelectAll,
     onDelete,
     onFlag,
+    onEdit,
   } = props;
 
   const selectable = items.filter((c) => c.CanDelete && !c.Deleted);
@@ -341,6 +345,17 @@ export default function CommentsTable(
                   })}
                 </td>
                 <td className="blog-manage__actions-cell">
+                  {comment.CanEdit && (
+                    <button
+                      type="button"
+                      className="blog-manage__icon-btn"
+                      title={editLabel}
+                      disabled={busy}
+                      onClick={() => onEdit(comment)}
+                    >
+                      <i className="fa fa-pencil" aria-hidden="true" />
+                    </button>
+                  )}
                   {comment.CanFlag && (
                     <button
                       type="button"

@@ -48,6 +48,9 @@ export class ComponentLoader {
               "Delete the selected comments? Their content will be replaced with a placeholder."
             )}
             deleteLabel={el.dataString("delete-label", "Delete")}
+            editLabel={el.dataString("edit-label", "Edit")}
+            saveLabel={el.dataString("save-label", "Save")}
+            commentLabel={el.dataString("comment-label", "Comment")}
             flagLabel={el.dataString("flag-label", "Flag")}
             flagConfirm={el.dataString(
               "flag-confirm",

@@ -12,6 +12,7 @@ import {
 } from "../Models/IManageComment";
 import PostsPager from "./PostsManageTable/PostsPager";
 import CommentsTable from "./CommentsManageTable/CommentsTable";
+import EditCommentDialog from "./CommentsManageTable/EditCommentDialog";
 
 export interface CommentsManageTableProps {
   module: IAppModule;
@@ -19,6 +20,9 @@ export interface CommentsManageTableProps {
   deleteConfirm?: string;
   bulkDeleteConfirm?: string;
   deleteLabel?: string;
+  editLabel?: string;
+  saveLabel?: string;
+  commentLabel?: string;
   flagLabel?: string;
   flagConfirm?: string;
   bulkDeleteLabel?: string;
@@ -48,6 +52,9 @@ export default function CommentsManageTable(
     props.bulkDeleteConfirm ||
     "Delete the selected comments? Their content will be replaced with a placeholder.";
   const deleteLabel = props.deleteLabel || "Delete";
+  const editLabel = props.editLabel || "Edit";
+  const saveLabel = props.saveLabel || "Save";
+  const commentLabel = props.commentLabel || "Comment";
   const flagLabel = props.flagLabel || "Flag";
   const flagConfirm =
     props.flagConfirm ||
@@ -85,6 +92,7 @@ export default function CommentsManageTable(
   const [pendingDelete, setPendingDelete] = useState<IManageComment | null>(
     null
   );
+  const [pendingEdit, setPendingEdit] = useState<IManageComment | null>(null);
   const [pendingFlag, setPendingFlag] = useState<IManageComment | null>(null);
   const [pendingBulk, setPendingBulk] = useState(false);
   const searchDebounceRef = useRef<number | null>(null);
@@ -219,6 +227,26 @@ export default function CommentsManageTable(
     );
   };
 
+  const saveEdit = (text: string) => {
+    const comment = pendingEdit;
+    if (!comment) return;
+    setBusy(true);
+    module.service.updateManageComment(
+      comment.BlogId,
+      comment.CommentId,
+      text,
+      () => {
+        setBusy(false);
+        setPendingEdit(null);
+        load();
+      },
+      (err: string) => {
+        setBusy(false);
+        window.alert(err || "Save failed.");
+      }
+    );
+  };
+
   const confirmFlag = () => {
     const comment = pendingFlag;
     if (!comment) return;
@@ -286,6 +314,7 @@ export default function CommentsManageTable(
         pendingLabel={pendingLabel}
         deletedLabel={deletedLabel}
         flagLabel={flagLabel}
+        editLabel={editLabel}
         deleteLabel={deleteLabel}
         bulkDeleteLabel={bulkDeleteLabel}
         onSearchChange={setSearchInput}
@@ -298,6 +327,18 @@ export default function CommentsManageTable(
         onToggleSelectAll={toggleSelectAll}
         onDelete={setPendingDelete}
         onFlag={setPendingFlag}
+        onEdit={setPendingEdit}
+      />
+      <EditCommentDialog
+        open={!!pendingEdit}
+        title={editLabel}
+        commentLabel={commentLabel}
+        saveLabel={saveLabel}
+        cancelLabel={cancelLabel}
+        initialHtml={pendingEdit?.CommentHtml || ""}
+        busy={busy}
+        onCancel={() => setPendingEdit(null)}
+        onSave={saveEdit}
       />
       <ConfirmDialog
         open={!!pendingDelete}
