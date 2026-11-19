@@ -31,10 +31,6 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwn
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_ApproveComment
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_UnapproveComment') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_UnapproveComment
-GO
-
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_DeleteBlog') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_DeleteBlog
 GO
@@ -45,10 +41,6 @@ GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_DeleteComment') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_DeleteComment
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetManageComments') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetManageComments
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_DeletePost') AND type in (N'P', N'PC'))
@@ -97,6 +89,10 @@ GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetCommentsByModuleId') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetCommentsByModuleId
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetManageComments') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_GetManageComments
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_GetPost') AND type in (N'P', N'PC'))
@@ -185,6 +181,10 @@ GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_SetTermLocalization') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_SetTermLocalization
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_UnapproveComment') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}Blog_UnapproveComment
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_UpdateBlog') AND type in (N'P', N'PC'))
@@ -378,23 +378,16 @@ GO
 
 SET ANSI_NULLS ON
 GO
-SET QUOTED_IDENTIFIER ON
-GO
+SET QUOTED_IDENTIFIER OFF
 CREATE VIEW {databaseOwner}{objectQualifier}vw_Blog_Comments
 AS
 SELECT
  c.*,
  ISNULL(u.Username, '') AS Username,
  ISNULL(u.DisplayName, c.Author) AS DisplayName,
- (SELECT COUNT(ck1.UserId) AS Expr1
-   FROM {databaseOwner}{objectQualifier}Blog_CommentKarmas ck1
-   WHERE (ck1.CommentID = c.CommentID) AND (ck1.Karma = 0)) AS Likes,
- (SELECT COUNT(ck2.UserId) AS Expr1
-   FROM {databaseOwner}{objectQualifier}Blog_CommentKarmas AS ck2
-   WHERE (ck2.CommentID = c.CommentID) AND (ck2.Karma = 1)) AS Dislikes,
- (SELECT COUNT(ck3.UserId) AS Expr1
-   FROM {databaseOwner}{objectQualifier}Blog_CommentKarmas AS ck3
-   WHERE (ck3.CommentID = c.CommentID) AND (ck3.Karma = 2)) AS Reports
+ (SELECT COUNT(ck1.UserId) AS Expr1 FROM {databaseOwner}{objectQualifier}Blog_CommentKarmas ck1 WHERE (ck1.CommentID = c.CommentID) AND (ck1.Karma = 0)) AS Likes,
+ (SELECT COUNT(ck2.UserId) AS Expr1 FROM {databaseOwner}{objectQualifier}Blog_CommentKarmas AS ck2 WHERE (ck2.CommentID = c.CommentID) AND (ck2.Karma = 1)) AS Dislikes,
+ (SELECT COUNT(ck3.UserId) AS Expr1 FROM {databaseOwner}{objectQualifier}Blog_CommentKarmas AS ck3 WHERE (ck3.CommentID = c.CommentID) AND (ck3.Karma = 2)) AS Reports
 FROM {databaseOwner}{objectQualifier}Blog_Comments AS c
  LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u ON c.CreatedByUserID = u.UserID
 GO
@@ -766,18 +759,6 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_UnapproveComment
- @CommentId INT
-AS
-UPDATE {databaseOwner}{objectQualifier}Blog_Comments
-SET Approved=0
-WHERE CommentID=@CommentId
-GO
-
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_DeleteBlog
  @BlogID INT
 AS
@@ -801,8 +782,7 @@ GO
 
 SET ANSI_NULLS ON
 GO
-SET QUOTED_IDENTIFIER ON
-GO
+SET QUOTED_IDENTIFIER OFF
 CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_DeleteComment
  @CommentID INT,
  @UpdatedByUser INT
@@ -812,9 +792,7 @@ UPDATE {databaseOwner}{objectQualifier}Blog_Comments SET
  [Comment] = N'*** content deleted ***',
  [LastModifiedByUserID] = @UpdatedByUser,
  [LastModifiedOnDate] = GETDATE()
-WHERE
- [CommentID] = @CommentID
- AND [Deleted] = 0
+WHERE [CommentID] = @CommentID AND [Deleted] = 0
 GO
 
 SET ANSI_NULLS ON
@@ -1201,8 +1179,7 @@ GO
 
 SET ANSI_NULLS ON
 GO
-SET QUOTED_IDENTIFIER ON
-GO
+SET QUOTED_IDENTIFIER OFF
 CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetManageComments
  @ModuleId INT,
  @UserID INT,
@@ -1220,7 +1197,6 @@ DECLARE
  @PageUpperBound INT,
  @RowsToReturn INT
 EXEC {databaseOwner}{objectQualifier}CalculatePagingInformation @PageIndex, @PageSize, @RowsToReturn output, @PageLowerBound output, @PageUpperBound output;
-
 DECLARE @Blogs TABLE (
  [BlogID] INT,
  [CanApproveComment] INT,
@@ -1241,7 +1217,6 @@ SELECT
 FROM {databaseOwner}{objectQualifier}Blog_Blogs b
 WHERE b.ModuleID=@ModuleId
  AND (@BlogId = -1 OR b.BlogID = @BlogId);
-
 ;WITH Filtered AS (
 SELECT
  c.*,
@@ -1304,7 +1279,6 @@ FROM (
 ) AS Tbl
 WHERE RowNum > @PageLowerBound AND RowNum < @PageUpperBound
 ORDER BY RowNum;
-
 SELECT COUNT(*) AS TotalRecords
 FROM {databaseOwner}{objectQualifier}vw_Blog_Comments c
  INNER JOIN {databaseOwner}{objectQualifier}ContentItems ci ON ci.ContentItemID=c.ContentItemId
@@ -2554,6 +2528,17 @@ ELSE BEGIN
    (TermID, [Locale], [Name], [Description])
    VALUES (@TermID, @Locale, @Name, @Description)
 END
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER OFF
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_UnapproveComment
+ @CommentId INT
+AS
+UPDATE {databaseOwner}{objectQualifier}Blog_Comments
+SET Approved=0
+WHERE CommentID=@CommentId
 GO
 
 SET ANSI_NULLS ON
