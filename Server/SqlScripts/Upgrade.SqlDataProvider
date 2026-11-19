@@ -378,7 +378,8 @@ GO
 
 SET ANSI_NULLS ON
 GO
-SET QUOTED_IDENTIFIER OFF
+SET QUOTED_IDENTIFIER ON
+GO
 CREATE VIEW {databaseOwner}{objectQualifier}vw_Blog_Comments
 AS
 SELECT
@@ -782,7 +783,8 @@ GO
 
 SET ANSI_NULLS ON
 GO
-SET QUOTED_IDENTIFIER OFF
+SET QUOTED_IDENTIFIER ON
+GO
 CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_DeleteComment
  @CommentID INT,
  @UpdatedByUser INT
@@ -1179,7 +1181,8 @@ GO
 
 SET ANSI_NULLS ON
 GO
-SET QUOTED_IDENTIFIER OFF
+SET QUOTED_IDENTIFIER ON
+GO
 CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_GetManageComments
  @ModuleId INT,
  @UserID INT,
@@ -2532,7 +2535,8 @@ GO
 
 SET ANSI_NULLS ON
 GO
-SET QUOTED_IDENTIFIER OFF
+SET QUOTED_IDENTIFIER ON
+GO
 CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_UnapproveComment
  @CommentId INT
 AS

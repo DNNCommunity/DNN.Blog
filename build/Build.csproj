@@ -5,10 +5,10 @@
     <RunWorkingDirectory>$(MSBuildProjectDirectory)</RunWorkingDirectory>
     <AssemblyVersion>7.0.0</AssemblyVersion>
     <FileVersion>7.0.0</FileVersion>
-    <Product>blog</Product>
-    <Description>Blog module</Description>
-    <Company>Dnn</Company>
-    <Copyright>Copyright 2026 by Dnn</Copyright>
+    <Product>dnn-blog</Product>
+    <Description>The DotNetNuke Blog module is an easy to use content publishing module that is tightly integrated with the core DotNetNuke framework. It can be used in single or multi-author environments and also permits content authoring using off-site tools such as Windows Live Writer.</Description>
+    <Company>DNN Connect</Company>
+    <Copyright>Copyright 2026 by DNN Connect</Copyright>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Cake.FileHelpers" Version="7.0.0" />
