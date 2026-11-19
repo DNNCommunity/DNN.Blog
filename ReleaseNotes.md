@@ -8,4 +8,5 @@
 * Redesign of default template (old template now as "v67")
 * Comments no longer part of the template
 * Addition of BlogApi using DNN's Api Tokens
-
+* Comments management on manage screen
+* Ability to edit comments
