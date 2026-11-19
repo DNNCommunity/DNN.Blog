@@ -65,7 +65,7 @@ namespace DotNetNuke.Modules.Blog.Core.Data
 
     #region  Blog Methods 
     public abstract int AddBlog(bool autoApprovePingBack, int moduleID, bool autoApproveTrackBack, string copyright, string description, bool enablePingBackReceive, bool enablePingBackSend, bool enableTrackBackReceive, bool enableTrackBackSend, bool fullLocalization, string image, bool includeAuthorInFeed, bool includeImagesInFeed, string locale, bool mustApproveGhostPosts, int ownerUserId, bool publishAsOwner, bool published, bool syndicated, string syndicationEmail, string title, int createdByUser, int contentFormat);
-    public abstract void UpdateBlog(bool autoApprovePingBack, int moduleID, bool autoApproveTrackBack, int blogID, string copyright, string description, bool enablePingBackReceive, bool enablePingBackSend, bool enableTrackBackReceive, bool enableTrackBackSend, bool fullLocalization, string image, bool includeAuthorInFeed, bool includeImagesInFeed, string locale, bool mustApproveGhostPosts, int ownerUserId, bool publishAsOwner, bool published, bool syndicated, string syndicationEmail, string title, int updatedByUser);
+    public abstract void UpdateBlog(bool autoApprovePingBack, int moduleID, bool autoApproveTrackBack, int blogID, string copyright, string description, bool enablePingBackReceive, bool enablePingBackSend, bool enableTrackBackReceive, bool enableTrackBackSend, bool fullLocalization, string image, bool includeAuthorInFeed, bool includeImagesInFeed, string locale, bool mustApproveGhostPosts, int ownerUserId, bool publishAsOwner, bool published, bool syndicated, string syndicationEmail, string title, int updatedByUser, int contentFormat);
     public abstract void DeleteBlog(int blogID);
     #endregion
 
@@ -81,7 +81,7 @@ namespace DotNetNuke.Modules.Blog.Core.Data
 
     #region  Post Methods 
     public abstract IDataReader GetPost(int contentItemId, int moduleId, string locale);
-    public abstract int AddPost(bool allowComments, int blogID, string content, string copyright, bool displayCopyright, string image, string locale, bool published, DateTime publishedOnDate, string summary, string termIds, string title, int viewCount, int createdByUser);
+    public abstract int AddPost(bool allowComments, int blogID, string content, string copyright, bool displayCopyright, string image, string locale, bool published, DateTime publishedOnDate, string summary, string termIds, string title, int viewCount, int createdByUser, int contentFormat);
     public abstract void UpdatePost(bool allowComments, int blogID, string content, int contentItemId, string copyright, bool displayCopyright, string image, string locale, bool published, DateTime publishedOnDate, string summary, string termIds, string title, int viewCount, int updatedByUser);
     public abstract void DeletePost(int contentItemId);
     #endregion

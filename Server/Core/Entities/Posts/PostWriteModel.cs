@@ -28,5 +28,8 @@ namespace DotNetNuke.Modules.Blog.Core.Entities.Posts
     /// <summary>Optional featured image file (MVC upload). BlogApi typically leaves this null.</summary>
     public Stream FeaturedImageStream { get; set; }
     public string FeaturedImageFileName { get; set; }
+
+    /// <summary>HTML (0) or Markdown (1). Applied only when creating a post.</summary>
+    public byte? ContentFormat { get; set; }
   }
 }

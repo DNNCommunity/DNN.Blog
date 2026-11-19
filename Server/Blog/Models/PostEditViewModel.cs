@@ -48,7 +48,10 @@ namespace DotNetNuke.Modules.Blog.Models
         public bool SummaryIsHtml { get; set; }
         public bool ShowSummaryPrecedingWarning { get; set; }
 
-        /// <summary>html or markdown — from the blog's ContentFormat.</summary>
+        /// <summary>0 = HTML, 1 = Markdown. Locked after the post is created.</summary>
+        public byte ContentFormat { get; set; } = 0;
+
+        /// <summary>html or markdown — derived from ContentFormat.</summary>
         public string EditorMode { get; set; } = "html";
 
         public List<PostLocaleOption> LocaleDropdownOptions { get; set; } = new List<PostLocaleOption>();

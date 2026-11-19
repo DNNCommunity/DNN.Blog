@@ -413,10 +413,8 @@ SELECT
  u.Username,
  u.Email,
  u.DisplayName,
- (SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}Blog_Comments c WHERE c.ContentItemId=p.ContentItemId AND c.Approved=1) NrComments,
- b.ContentFormat
+ (SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}Blog_Comments c WHERE c.ContentItemId=p.ContentItemId AND c.Approved=1) NrComments
 FROM {databaseOwner}{objectQualifier}Blog_Posts p
- INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs b ON b.BlogID=p.BlogID
  LEFT OUTER JOIN {databaseOwner}{objectQualifier}ContentItems ci ON p.ContentItemId = ci.ContentItemID
  INNER JOIN {databaseOwner}{objectQualifier}Users AS u ON ci.CreatedByUserID = u.UserID
 GO
@@ -693,7 +691,8 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_AddPost
  @TermIds NVARCHAR(1000),
  @Title NVARCHAR (255),
  @ViewCount INT,
- @CreatedByUser INT
+ @CreatedByUser INT,
+ @ContentFormat TINYINT
 AS
 DECLARE @ContentTypeID INT
 SET @ContentTypeID = (SELECT TOP 1 ContentTypeID FROM {databaseOwner}{objectQualifier}ContentTypes WHERE ContentType='DNN_{objectQualifier}Blog_Post')
@@ -716,9 +715,10 @@ INSERT INTO {databaseOwner}{objectQualifier}Blog_Posts (
  [PublishedOnDate],
  [Summary],
  [Title],
- [ViewCount]
+ [ViewCount],
+ [ContentFormat]
 )
- VALUES (  @AllowComments, @BlogID, @ContentItemID, @Copyright, @DisplayCopyright, @Image, @Locale, @Published, @PublishedOnDate, @Summary, @Title, @ViewCount);
+ VALUES (  @AllowComments, @BlogID, @ContentItemID, @Copyright, @DisplayCopyright, @Image, @Locale, @Published, @PublishedOnDate, @Summary, @Title, @ViewCount, @ContentFormat);
 IF @TermIds<>''
 BEGIN
  DECLARE @ids TABLE (s NVARCHAR(512))
@@ -2424,7 +2424,8 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}Blog_UpdateBlog
  @Syndicated BIT,
  @SyndicationEmail NVARCHAR (255),
  @Title NVARCHAR (255),
- @UpdatedByUser INT
+ @UpdatedByUser INT,
+ @ContentFormat TINYINT
 AS
 UPDATE {databaseOwner}{objectQualifier}Blog_Blogs SET
  [AutoApprovePingBack] = @AutoApprovePingBack,
@@ -2449,7 +2450,8 @@ UPDATE {databaseOwner}{objectQualifier}Blog_Blogs SET
  [Published] = @Published,
  [Syndicated] = @Syndicated,
  [SyndicationEmail] = @SyndicationEmail,
- [Title] = @Title
+ [Title] = @Title,
+ [ContentFormat] = @ContentFormat
 WHERE
  [BlogID] = @BlogID
 GO

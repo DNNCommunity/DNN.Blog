@@ -19,12 +19,11 @@
   var deleteLabel = L("Delete", "Delete");
   var addLabel = L("Add", "Add");
   var pageTitle = Model.IsNew ? "New blog" : L("ControlTitle_blogedit", "Edit Blog");
-  var contentFormatDisabled = Model.IsNew ? null : "disabled";
-  var contentFormatHtml = Model.ContentFormat == 0 ? "selected" : null;
-  var contentFormatMarkdown = Model.ContentFormat == 1 ? "selected" : null;
+  var contentFormatHtml = Model.DefaultContentFormat == 0 ? "selected" : null;
+  var contentFormatMarkdown = Model.DefaultContentFormat == 1 ? "selected" : null;
   var hintTitle = H("lblTitle");
   var hintDescription = H("lblDescription");
-  var hintContentFormat = H("lblContentFormat");
+  var hintContentFormat = H("lblDefaultContentFormat");
   var hintLocale = H("lblLocale");
   var hintFullLocalization = H("lblFullLocalization");
   var hintImage = H("lblImage");
@@ -83,15 +82,15 @@
           </div>
         </div>
         <div class="blog-admin__field">
-          <label class="blog-admin__label" for="ContentFormat">@L("lblContentFormat", "Content format")</label>
+          <label class="blog-admin__label" for="DefaultContentFormat">@L("lblDefaultContentFormat", "Default content format")</label>
           <div class="blog-admin__control">
-            <select id="ContentFormat" name="ContentFormat" class="blog-admin__input" @contentFormatDisabled aria-describedby="@(string.IsNullOrEmpty(hintContentFormat) ? null : "hint-ContentFormat")">
+            <select id="DefaultContentFormat" name="DefaultContentFormat" class="blog-admin__input" aria-describedby="@(string.IsNullOrEmpty(hintContentFormat) ? null : "hint-DefaultContentFormat")">
               <option value="0" @contentFormatHtml>HTML</option>
               <option value="1" @contentFormatMarkdown>Markdown</option>
             </select>
             @if (!string.IsNullOrEmpty(hintContentFormat))
             {
-              <p class="blog-admin__field-hint" id="hint-ContentFormat">@hintContentFormat</p>
+              <p class="blog-admin__field-hint" id="hint-DefaultContentFormat">@hintContentFormat</p>
             }
           </div>
         </div>

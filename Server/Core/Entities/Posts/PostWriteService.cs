@@ -69,6 +69,7 @@ namespace DotNetNuke.Modules.Blog.Core.Entities.Posts
         if (!security.CanAddPost && !blog.CanAdd)
           return new PostWriteResult { AccessDenied = true };
         post = new PostInfo { BlogID = model.BlogId, Blog = blog, Published = true };
+        post.AssignContentFormat(ResolveContentFormat(model.ContentFormat, blog.DefaultContentFormat));
       }
 
       if (string.IsNullOrWhiteSpace(model.Title))
@@ -347,6 +348,17 @@ namespace DotNetNuke.Modules.Blog.Core.Entities.Posts
     {
       if (string.IsNullOrEmpty(html)) return "";
       return Regex.Replace(html, "<[^>]+>", "").Trim();
+    }
+
+    private static byte ResolveContentFormat(byte? requested, byte blogDefault)
+    {
+      if (requested.HasValue
+          && (requested.Value == (byte)BlogContentFormat.Html
+              || requested.Value == (byte)BlogContentFormat.Markdown))
+        return requested.Value;
+      if (blogDefault == (byte)BlogContentFormat.Markdown)
+        return (byte)BlogContentFormat.Markdown;
+      return (byte)BlogContentFormat.Html;
     }
   }
 }

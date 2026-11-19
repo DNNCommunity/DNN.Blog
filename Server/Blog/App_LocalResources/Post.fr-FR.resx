@@ -115,4 +115,19 @@
   <data name="Now.Text">
     <value>Maintenant</value>
   </data>
+  <data name="lblContentFormat.Text" xml:space="preserve">
+    <value>Format de contenu</value>
+  </data>
+  <data name="lblContentFormat.Help" xml:space="preserve">
+    <value>Choisissez HTML ou Markdown pour ce post. Le format ne peut plus être modifié après l'enregistrement.</value>
+  </data>
+  <data name="ContentFormatSwitch.Title" xml:space="preserve">
+    <value>Changer de format de contenu ?</value>
+  </data>
+  <data name="ContentFormatSwitch.Confirm" xml:space="preserve">
+    <value>Changer le format de contenu effacera le contenu actuel. Cette action est irréversible.</value>
+  </data>
+  <data name="ContentFormatSwitch.Ok" xml:space="preserve">
+    <value>Changer et effacer</value>
+  </data>
 </root>

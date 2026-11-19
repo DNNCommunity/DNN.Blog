@@ -1,4 +1,5 @@
 ﻿using DotNetNuke.Modules.Blog.Core.Common;
+using DotNetNuke.Modules.Blog.Core.Entities.Blogs;
 using System;
 // 
 // DNN Connect - http://dnn-connect.org
@@ -57,7 +58,15 @@ namespace DotNetNuke.Modules.Blog.Core.Entities.Posts
         [DataMember()]
         public int NrComments { get; set; } = 0;
         [DataMember()]
-        public byte ContentFormat { get; set; } = 0;
+        public byte ContentFormat { get; private set; } = 0;
+
+        /// <summary>Sets content format when creating a post. Ignored by update paths.</summary>
+        public void AssignContentFormat(byte contentFormat)
+        {
+            ContentFormat = contentFormat == (byte)BlogContentFormat.Markdown
+                ? (byte)BlogContentFormat.Markdown
+                : (byte)BlogContentFormat.Html;
+        }
 
     #region  ML Properties 
     [DataMember()]

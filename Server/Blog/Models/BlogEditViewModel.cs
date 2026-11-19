@@ -7,7 +7,7 @@ namespace DotNetNuke.Modules.Blog.Models
         public int BlogId { get; set; } = -1;
         public string Title { get; set; } = "";
         public string Description { get; set; } = "";
-        public byte ContentFormat { get; set; } = 0;
+        public byte DefaultContentFormat { get; set; } = 0;
         public string Locale { get; set; } = "";
         public bool FullLocalization { get; set; }
         public bool ShowLocaleFields { get; set; }

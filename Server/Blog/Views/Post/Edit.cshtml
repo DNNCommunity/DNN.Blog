@@ -97,6 +97,7 @@
     categories = Model.Categories,
     summaryIsHtml = Model.SummaryIsHtml,
     showSummaryPrecedingWarning = Model.ShowSummaryPrecedingWarning,
+    contentFormat = Model.ContentFormat,
     editorMode = string.IsNullOrWhiteSpace(Model.EditorMode) ? "html" : Model.EditorMode,
     validationMessage = Model.ValidationMessage,
     returnUrl = Model.ReturnUrl ?? "",
@@ -136,7 +137,14 @@
       timezoneNote = L("PublishTimeZoneNote", "The publish date is based on your profile timezone of: "),
       summaryPrecedingWarning = L("lblSummaryPrecedingWarning", "Note that the summary precedes the article body."),
       deleteConfirm = L("DeletePost", "Delete this post?"),
-      translations = "Translations"
+      translations = "Translations",
+      contentFormat = L("lblContentFormat", "Content format"),
+      contentFormatHelp = L("lblContentFormat.Help", "Choose HTML or Markdown. Switching format clears the post content."),
+      contentFormatHtml = "HTML",
+      contentFormatMarkdown = "Markdown",
+      contentFormatSwitchTitle = L("ContentFormatSwitch.Title", "Switch content format?"),
+      contentFormatSwitchMessage = L("ContentFormatSwitch.Confirm", "Changing the content format will erase the current contents. This cannot be undone."),
+      contentFormatSwitchConfirm = L("ContentFormatSwitch.Ok", "Switch and clear")
     }
   };
   var bootstrapJson = JsonConvert.SerializeObject(bootstrap, new JsonSerializerSettings

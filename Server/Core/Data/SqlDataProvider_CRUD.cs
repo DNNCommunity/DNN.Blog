@@ -152,9 +152,9 @@ namespace DotNetNuke.Modules.Blog.Core.Data
       return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "AddBlog", autoApprovePingBack, moduleID, autoApproveTrackBack, GetNull(copyright), GetNull(description), enablePingBackReceive, enablePingBackSend, enableTrackBackReceive, enableTrackBackSend, fullLocalization, GetNull(image), includeAuthorInFeed, includeImagesInFeed, locale, mustApproveGhostPosts, ownerUserId, publishAsOwner, published, syndicated, GetNull(syndicationEmail), title, createdByUser, contentFormat));
     }
 
-    public override void UpdateBlog(bool autoApprovePingBack, int moduleID, bool autoApproveTrackBack, int blogID, string copyright, string description, bool enablePingBackReceive, bool enablePingBackSend, bool enableTrackBackReceive, bool enableTrackBackSend, bool fullLocalization, string image, bool includeAuthorInFeed, bool includeImagesInFeed, string locale, bool mustApproveGhostPosts, int ownerUserId, bool publishAsOwner, bool published, bool syndicated, string syndicationEmail, string title, int updatedByUser)
+    public override void UpdateBlog(bool autoApprovePingBack, int moduleID, bool autoApproveTrackBack, int blogID, string copyright, string description, bool enablePingBackReceive, bool enablePingBackSend, bool enableTrackBackReceive, bool enableTrackBackSend, bool fullLocalization, string image, bool includeAuthorInFeed, bool includeImagesInFeed, string locale, bool mustApproveGhostPosts, int ownerUserId, bool publishAsOwner, bool published, bool syndicated, string syndicationEmail, string title, int updatedByUser, int contentFormat)
     {
-      SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "UpdateBlog", autoApprovePingBack, moduleID, autoApproveTrackBack, blogID, GetNull(copyright), GetNull(description), enablePingBackReceive, enablePingBackSend, enableTrackBackReceive, enableTrackBackSend, fullLocalization, GetNull(image), includeAuthorInFeed, includeImagesInFeed, locale, mustApproveGhostPosts, ownerUserId, publishAsOwner, published, syndicated, GetNull(syndicationEmail), title, updatedByUser);
+      SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "UpdateBlog", autoApprovePingBack, moduleID, autoApproveTrackBack, blogID, GetNull(copyright), GetNull(description), enablePingBackReceive, enablePingBackSend, enableTrackBackReceive, enableTrackBackSend, fullLocalization, GetNull(image), includeAuthorInFeed, includeImagesInFeed, locale, mustApproveGhostPosts, ownerUserId, publishAsOwner, published, syndicated, GetNull(syndicationEmail), title, updatedByUser, contentFormat);
     }
 
     public override void DeleteBlog(int blogID)
@@ -197,9 +197,9 @@ namespace DotNetNuke.Modules.Blog.Core.Data
       return SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "GetPost", contentItemId, moduleId, locale);
     }
 
-    public override int AddPost(bool allowComments, int blogID, string content, string copyright, bool displayCopyright, string image, string locale, bool published, DateTime publishedOnDate, string summary, string termIds, string title, int viewCount, int createdByUser)
+    public override int AddPost(bool allowComments, int blogID, string content, string copyright, bool displayCopyright, string image, string locale, bool published, DateTime publishedOnDate, string summary, string termIds, string title, int viewCount, int createdByUser, int contentFormat)
     {
-      return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "AddPost", allowComments, blogID, content, copyright, displayCopyright, image, GetNull(locale), published, publishedOnDate, summary, termIds, title, viewCount, createdByUser));
+      return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "AddPost", allowComments, blogID, content, copyright, displayCopyright, image, GetNull(locale), published, publishedOnDate, summary, termIds, title, viewCount, createdByUser, contentFormat));
     }
 
     public override void UpdatePost(bool allowComments, int blogID, string content, int contentItemId, string copyright, bool displayCopyright, string image, string locale, bool published, DateTime publishedOnDate, string summary, string termIds, string title, int viewCount, int updatedByUser)

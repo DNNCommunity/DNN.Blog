@@ -207,7 +207,7 @@ namespace DotNetNuke.Modules.Blog.Controllers
         BlogId = blog.BlogID,
         Title = blog.Title,
         Description = blog.Description,
-        ContentFormat = blog.ContentFormat,
+        DefaultContentFormat = blog.DefaultContentFormat,
         Locale = string.IsNullOrEmpty(blog.Locale) ? PortalSettings.DefaultLanguage : blog.Locale,
         FullLocalization = blog.FullLocalization,
         ImageKey = blog.Image ?? "",
@@ -261,8 +261,9 @@ namespace DotNetNuke.Modules.Blog.Controllers
     {
       blog.Title = model.Title ?? "";
       blog.Description = model.Description ?? "";
-      if (blog.BlogID <= -1)
-        blog.ContentFormat = model.ContentFormat;
+      blog.DefaultContentFormat = model.DefaultContentFormat == (byte)BlogContentFormat.Markdown
+          ? (byte)BlogContentFormat.Markdown
+          : (byte)BlogContentFormat.Html;
 
       if (BlogModuleContext.BlogContext.IsMultiLingualSite)
       {

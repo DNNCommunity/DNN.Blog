@@ -208,7 +208,8 @@ namespace DotNetNuke.Modules.Blog.Controllers
         Tags = model.Tags,
         SelectedCategoryIds = model.SelectedCategoryIds,
         ImageKey = model.ImageKey,
-        RemoveImage = model.RemoveImage
+        RemoveImage = model.RemoveImage,
+        ContentFormat = model.ContentFormat
       };
       if (imageFile != null && imageFile.ContentLength > 0)
       {
@@ -302,7 +303,10 @@ namespace DotNetNuke.Modules.Blog.Controllers
         PublishNow = true,
         PublishDate = DateTime.Now.ToString("g"),
         AllowComments = true,
-        IsNew = true
+        IsNew = true,
+        ContentFormat = blog.DefaultContentFormat == (byte)BlogContentFormat.Markdown
+            ? (byte)BlogContentFormat.Markdown
+            : (byte)BlogContentFormat.Html
       };
       EnrichViewModel(model, blog, ctx);
       return model;
@@ -329,7 +333,10 @@ namespace DotNetNuke.Modules.Blog.Controllers
         ImageKey = post.Image ?? "",
         Tags = string.Join(", ", tags),
         SelectedCategoryIds = post.PostCategories?.Select(c => c.TermId).ToList() ?? new List<int>(),
-        IsNew = false
+        IsNew = false,
+        ContentFormat = post.ContentFormat == (byte)BlogContentFormat.Markdown
+            ? (byte)BlogContentFormat.Markdown
+            : (byte)BlogContentFormat.Html
       };
 
       if (!string.IsNullOrEmpty(post.Image))
@@ -402,7 +409,14 @@ namespace DotNetNuke.Modules.Blog.Controllers
       model.SummaryIsHtml = settings.SummaryModel == SummaryType.HtmlIndependent
           || settings.SummaryModel == SummaryType.HtmlPrecedesPost;
       model.ShowSummaryPrecedingWarning = settings.SummaryModel == SummaryType.HtmlPrecedesPost;
-      model.EditorMode = blog.ContentFormat == (byte)BlogContentFormat.Markdown
+      if (model.ContentFormat != (byte)BlogContentFormat.Html
+          && model.ContentFormat != (byte)BlogContentFormat.Markdown)
+      {
+        model.ContentFormat = blog.DefaultContentFormat == (byte)BlogContentFormat.Markdown
+            ? (byte)BlogContentFormat.Markdown
+            : (byte)BlogContentFormat.Html;
+      }
+      model.EditorMode = model.ContentFormat == (byte)BlogContentFormat.Markdown
           ? "markdown"
           : "html";
       model.UseFullLocalization = blog.FullLocalization && ctx.IsMultiLingualSite;

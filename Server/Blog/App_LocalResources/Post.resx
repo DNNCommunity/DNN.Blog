@@ -226,4 +226,19 @@
   <data name="Now.Text" xml:space="preserve">
     <value>Now</value>
   </data>
+  <data name="lblContentFormat.Text" xml:space="preserve">
+    <value>Content format</value>
+  </data>
+  <data name="lblContentFormat.Help" xml:space="preserve">
+    <value>Choose HTML or Markdown for this post. The format cannot be changed after the post is saved.</value>
+  </data>
+  <data name="ContentFormatSwitch.Title" xml:space="preserve">
+    <value>Switch content format?</value>
+  </data>
+  <data name="ContentFormatSwitch.Confirm" xml:space="preserve">
+    <value>Changing the content format will erase the current contents. This cannot be undone.</value>
+  </data>
+  <data name="ContentFormatSwitch.Ok" xml:space="preserve">
+    <value>Switch and clear</value>
+  </data>
 </root>

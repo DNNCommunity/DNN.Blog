@@ -199,6 +199,7 @@ namespace DotNetNuke.Modules.Blog.Core.Integration
                             foreach (PostInfo p in blog.ImportedPosts)
                             {
                                 p.BlogID = blog.BlogID;
+                                p.AssignContentFormat(blog.DefaultContentFormat);
                                 foreach (string tagName in p.ImportedTags)
                                 {
                                     if (tags.ContainsKey(tagName))

@@ -161,6 +161,7 @@ namespace DotNetNuke.Modules.Blog.Controllers
             Copyright = p.Copyright ?? "",
             Locale = p.Locale ?? ""
           };
+          newPost.AssignContentFormat(blog.DefaultContentFormat);
 
           newPost = PostsController.AddPost(newPost, User.UserID);
           imageService.SyncPostImages(blog.BlogID, newPost.ContentItemId, User.UserID, true, newPost.Content, newPost.Summary);

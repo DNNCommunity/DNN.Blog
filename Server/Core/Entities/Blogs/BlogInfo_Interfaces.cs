@@ -93,7 +93,7 @@ namespace DotNetNuke.Modules.Blog.Core.Entities.Blogs
       CanEdit = Convert.ToBoolean(Null.SetNull(dr["CanEdit"], CanEdit));
       CanAdd = Convert.ToBoolean(Null.SetNull(dr["CanAdd"], CanAdd));
       CanApprove = Convert.ToBoolean(Null.SetNull(dr["CanApprove"], CanApprove));
-      ContentFormat = Convert.ToByte(Null.SetNull(dr["ContentFormat"], ContentFormat));
+      DefaultContentFormat = Convert.ToByte(Null.SetNull(dr["ContentFormat"], DefaultContentFormat));
 
     }
     /// -----------------------------------------------------------------------------
@@ -352,8 +352,9 @@ namespace DotNetNuke.Modules.Blog.Core.Entities.Blogs
             return PermaLink(ParentTabID);
           }
         case "contentformat":
+        case "defaultcontentformat":
           {
-            return ContentFormat.ToString(OutputFormat, formatProvider);
+            return DefaultContentFormat.ToString(OutputFormat, formatProvider);
           }
 
         default:
@@ -454,7 +455,7 @@ namespace DotNetNuke.Modules.Blog.Core.Entities.Blogs
       AutoApproveTrackBack = xml.ReadValue("AutoApproveTrackBack", AutoApproveTrackBack);
       Username = xml.ReadValue("Username", Username);
       Email = xml.ReadValue("Email", Email);
-      ContentFormat = (byte)xml.ReadValue("ContentFormat", ContentFormat);
+      DefaultContentFormat = (byte)xml.ReadValue("ContentFormat", DefaultContentFormat);
 
       ImportedPosts = new List<Posts.PostInfo>();
       foreach (XmlNode xPost in xml.SelectNodes("Posts/Post"))
@@ -507,7 +508,7 @@ namespace DotNetNuke.Modules.Blog.Core.Entities.Blogs
       writer.WriteElementString("AutoApproveTrackBack", AutoApproveTrackBack.ToString());
       writer.WriteElementString("Username", Username);
       writer.WriteElementString("Email", Email);
-      writer.WriteElementString("ContentFormat", ContentFormat.ToString());
+      writer.WriteElementString("ContentFormat", DefaultContentFormat.ToString());
       writer.WriteStartElement("Posts");
       int page = 0;
       int totalRecords = 1;

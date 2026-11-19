@@ -39,6 +39,13 @@ export interface IPostEditLabels {
   summaryPrecedingWarning: string;
   deleteConfirm: string;
   translations: string;
+  contentFormat: string;
+  contentFormatHelp: string;
+  contentFormatHtml: string;
+  contentFormatMarkdown: string;
+  contentFormatSwitchTitle: string;
+  contentFormatSwitchMessage: string;
+  contentFormatSwitchConfirm: string;
 }
 
 export interface IPostEditBootstrap {
@@ -75,6 +82,7 @@ export interface IPostEditBootstrap {
   categories: IPostCategoryNode[];
   summaryIsHtml: boolean;
   showSummaryPrecedingWarning: boolean;
+  contentFormat: number;
   editorMode: "html" | "markdown";
   validationMessage: string;
   returnUrl: string;

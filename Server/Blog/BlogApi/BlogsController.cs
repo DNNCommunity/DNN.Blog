@@ -49,7 +49,7 @@ namespace DotNetNuke.Modules.Blog.BlogApi
       public int ModuleId { get; set; }
       public string Title { get; set; }
       public BlogPermissionsDto Permissions { get; set; }
-      public byte ContentFormat { get; set; }
+      public byte DefaultContentFormat { get; set; }
       public byte SummaryFormat { get; set; }
       public string Language { get; set; }
       public bool FullyLocalizable { get; set; }
@@ -98,7 +98,7 @@ namespace DotNetNuke.Modules.Blog.BlogApi
             CanApprove = blog.CanApprove,
             IsOwner = blog.IsOwner
           },
-          ContentFormat = blog.ContentFormat,
+          DefaultContentFormat = blog.DefaultContentFormat,
           SummaryFormat = settings != null ? (byte)settings.SummaryModel : (byte)0,
           Language = blog.Locale ?? "",
           FullyLocalizable = blog.FullLocalization

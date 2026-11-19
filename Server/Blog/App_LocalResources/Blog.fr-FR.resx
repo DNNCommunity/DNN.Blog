@@ -139,11 +139,11 @@
   <data name="DeleteBlog.Confirm" xml:space="preserve">
     <value>Supprimer ce blog ? Cette action est irréversible.</value>
   </data>
-  <data name="lblContentFormat.Text" xml:space="preserve">
-    <value>Format de contenu</value>
+  <data name="lblDefaultContentFormat.Text" xml:space="preserve">
+    <value>Format de contenu par défaut</value>
   </data>
-  <data name="lblContentFormat.Help" xml:space="preserve">
-    <value>Choisissez HTML ou Markdown pour les posts de ce blog. Ce choix ne peut plus être modifié après la création du blog.</value>
+  <data name="lblDefaultContentFormat.Help" xml:space="preserve">
+    <value>Format HTML ou Markdown par défaut pour les nouveaux posts de ce blog. Les posts existants conservent leur propre format.</value>
   </data>
   <!---->
 </root>

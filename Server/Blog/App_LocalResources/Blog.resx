@@ -258,10 +258,10 @@
   <data name="DeleteBlog.Confirm" xml:space="preserve">
     <value>Delete this blog? This cannot be undone.</value>
   </data>
-  <data name="lblContentFormat.Text" xml:space="preserve">
-    <value>Content format</value>
+  <data name="lblDefaultContentFormat.Text" xml:space="preserve">
+    <value>Default content format</value>
   </data>
-  <data name="lblContentFormat.Help" xml:space="preserve">
-    <value>Choose HTML or Markdown for posts in this blog. This cannot be changed after the blog is created.</value>
+  <data name="lblDefaultContentFormat.Help" xml:space="preserve">
+    <value>Default HTML or Markdown format for new posts in this blog. Existing posts keep their own format.</value>
   </data>
 </root>

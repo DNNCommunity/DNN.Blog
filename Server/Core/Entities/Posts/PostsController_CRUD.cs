@@ -39,7 +39,7 @@ namespace DotNetNuke.Modules.Blog.Core.Entities.Posts
         public static PostInfo AddPost(PostInfo objPost, int createdByUser)
         {
 
-            objPost.ContentItemId = DataProvider.Instance().AddPost(objPost.AllowComments, objPost.BlogID, objPost.Content, objPost.Copyright, objPost.DisplayCopyright, objPost.Image, objPost.Locale, objPost.Published, objPost.PublishedOnDate, objPost.Summary, objPost.Terms.ToTermIDString(), objPost.Title, objPost.ViewCount, createdByUser);
+            objPost.ContentItemId = DataProvider.Instance().AddPost(objPost.AllowComments, objPost.BlogID, objPost.Content, objPost.Copyright, objPost.DisplayCopyright, objPost.Image, objPost.Locale, objPost.Published, objPost.PublishedOnDate, objPost.Summary, objPost.Terms.ToTermIDString(), objPost.Title, objPost.ViewCount, createdByUser, objPost.ContentFormat);
 
             // localization
             foreach (string l in objPost.TitleLocalizations.Locales)

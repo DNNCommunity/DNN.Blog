@@ -73,6 +73,39 @@ BEGIN
 END
 GO
 
+/*** Per-post content format (HTML/Markdown); backfill from blog default ***/
+IF NOT EXISTS (SELECT * FROM SYS.COLUMNS WHERE NAME = N'ContentFormat' AND OBJECT_ID = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Posts'))
+BEGIN
+ ALTER TABLE {databaseOwner}{objectQualifier}Blog_Posts
+ ADD ContentFormat TINYINT NULL
+END
+GO
+
+IF EXISTS (SELECT * FROM SYS.COLUMNS WHERE NAME = N'ContentFormat' AND OBJECT_ID = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Posts') AND is_nullable = 1)
+BEGIN
+ UPDATE p
+ SET ContentFormat = ISNULL(b.ContentFormat, 0)
+ FROM {databaseOwner}{objectQualifier}Blog_Posts p
+ INNER JOIN {databaseOwner}{objectQualifier}Blog_Blogs b ON b.BlogID = p.BlogID
+ WHERE p.ContentFormat IS NULL
+END
+GO
+
+IF EXISTS (SELECT * FROM SYS.COLUMNS WHERE NAME = N'ContentFormat' AND OBJECT_ID = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Posts') AND is_nullable = 1)
+BEGIN
+ UPDATE {databaseOwner}{objectQualifier}Blog_Posts
+ SET ContentFormat = 0
+ WHERE ContentFormat IS NULL
+END
+GO
+
+IF EXISTS (SELECT * FROM SYS.COLUMNS WHERE NAME = N'ContentFormat' AND OBJECT_ID = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_Posts') AND is_nullable = 1)
+BEGIN
+ ALTER TABLE {databaseOwner}{objectQualifier}Blog_Posts
+ ALTER COLUMN ContentFormat TINYINT NOT NULL
+END
+GO
+
 /*** Recreate TVFs whose column lists were frozen before ContentFormat existed ***/
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Blog_BlogList') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
  DROP FUNCTION {databaseOwner}{objectQualifier}Blog_BlogList

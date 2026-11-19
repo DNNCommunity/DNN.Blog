@@ -97,6 +97,8 @@ namespace DotNetNuke.Modules.Blog.BlogApi
       public List<int> SelectedCategoryIds { get; set; } = new List<int>();
       public string ImageKey { get; set; } = "";
       public bool RemoveImage { get; set; }
+      /// <summary>Optional on create (0 = HTML, 1 = Markdown). Ignored on update.</summary>
+      public byte? ContentFormat { get; set; }
     }
 
     public class PostResponseDto
@@ -119,6 +121,7 @@ namespace DotNetNuke.Modules.Blog.BlogApi
       public string Tags { get; set; }
       public List<int> SelectedCategoryIds { get; set; }
       public string ImageKey { get; set; }
+      public byte ContentFormat { get; set; }
     }
 
     [HttpPost]
@@ -265,7 +268,8 @@ namespace DotNetNuke.Modules.Blog.BlogApi
         Tags = data.Tags,
         SelectedCategoryIds = data.SelectedCategoryIds ?? new List<int>(),
         ImageKey = data.ImageKey,
-        RemoveImage = data.RemoveImage
+        RemoveImage = data.RemoveImage,
+        ContentFormat = data.ContentFormat
       };
     }
 
@@ -328,7 +332,8 @@ namespace DotNetNuke.Modules.Blog.BlogApi
         Locale = post.Locale ?? "",
         Tags = string.Join(", ", tags),
         SelectedCategoryIds = post.PostCategories?.Select(c => c.TermId).ToList() ?? new List<int>(),
-        ImageKey = post.Image ?? ""
+        ImageKey = post.Image ?? "",
+        ContentFormat = post.ContentFormat
       };
     }
   }

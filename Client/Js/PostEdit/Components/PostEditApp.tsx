@@ -48,6 +48,16 @@ export default function PostEditApp(
 
   const [tab, setTab] = React.useState<TabId>("content");
   const [deleteOpen, setDeleteOpen] = React.useState(false);
+  const [formatSwitchOpen, setFormatSwitchOpen] = React.useState(false);
+  const [pendingContentFormat, setPendingContentFormat] = React.useState<
+    number | null
+  >(null);
+  const initialFormat = b.contentFormat === 1 ? 1 : 0;
+  const [contentFormat, setContentFormat] = React.useState(initialFormat);
+  const [editorMode, setEditorMode] = React.useState<"html" | "markdown">(
+    initialFormat === 1 ? "markdown" : "html"
+  );
+  const [editorKey, setEditorKey] = React.useState(0);
   const [title, setTitle] = React.useState(b.title || "");
   const [titles, setTitles] = React.useState<Record<string, string>>({
     ...(b.titles || {}),
@@ -74,6 +84,44 @@ export default function PostEditApp(
   const [copyright, setCopyright] = React.useState(b.copyright || "");
   const [publishNow, setPublishNow] = React.useState(!!b.publishNow);
   const [publishDate, setPublishDate] = React.useState(b.publishDate || "");
+
+  const clearContentFields = React.useCallback(() => {
+    setContent("");
+    setContents((prev) => {
+      const next: Record<string, string> = {};
+      Object.keys(prev).forEach((k) => {
+        next[k] = "";
+      });
+      return next;
+    });
+    setSummary("");
+    setSummaries((prev) => {
+      const next: Record<string, string> = {};
+      Object.keys(prev).forEach((k) => {
+        next[k] = "";
+      });
+      return next;
+    });
+  }, []);
+
+  const applyContentFormat = React.useCallback(
+    (format: number) => {
+      const next = format === 1 ? 1 : 0;
+      setContentFormat(next);
+      setEditorMode(next === 1 ? "markdown" : "html");
+      clearContentFields();
+      setEditorKey((k) => k + 1);
+    },
+    [clearContentFields]
+  );
+
+  const onContentFormatChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    if (!b.isNew) return;
+    const next = Number(e.target.value) === 1 ? 1 : 0;
+    if (next === contentFormat) return;
+    setPendingContentFormat(next);
+    setFormatSwitchOpen(true);
+  };
 
   const tabs: { id: TabId; label: string }[] = [
     { id: "content", label: L.contentTab },
@@ -110,6 +158,7 @@ export default function PostEditApp(
         <input type="hidden" name="IsNew" value={b.isNew ? "true" : "false"} />
         <input type="hidden" name="ImageKey" value={b.imageKey || ""} />
         <input type="hidden" name="ReturnUrl" value={b.returnUrl || ""} />
+        <input type="hidden" name="ContentFormat" value={contentFormat} />
 
         <div className="blog-admin__tabs">
           <div className="blog-admin__tablist" role="tablist">
@@ -134,6 +183,33 @@ export default function PostEditApp(
           >
             <section className="blog-admin__section">
               <div className="blog-admin__fields">
+                <div className="blog-admin__field blog-admin__field--full">
+                  <label
+                    className="blog-admin__label"
+                    htmlFor="blog-post-content-format"
+                  >
+                    {L.contentFormat}
+                  </label>
+                  <div className="blog-admin__control">
+                    <select
+                      id="blog-post-content-format"
+                      className="blog-admin__input"
+                      value={contentFormat}
+                      disabled={!b.isNew}
+                      onChange={onContentFormatChange}
+                      aria-describedby="hint-ContentFormat"
+                    >
+                      <option value={0}>{L.contentFormatHtml}</option>
+                      <option value={1}>{L.contentFormatMarkdown}</option>
+                    </select>
+                    {L.contentFormatHelp ? (
+                      <p className="blog-admin__field-hint" id="hint-ContentFormat">
+                        {L.contentFormatHelp}
+                      </p>
+                    ) : null}
+                  </div>
+                </div>
+
                 <div className="blog-admin__field blog-admin__field--top blog-admin__field--full">
                   <label className="blog-admin__label" htmlFor="blog-locale-Title">
                     {L.title}
@@ -171,6 +247,7 @@ export default function PostEditApp(
                   <label className="blog-admin__label">{L.contents}</label>
                   <div className="blog-admin__control">
                     <LocaleHtmlField
+                      key={`content-${editorKey}`}
                       module={module}
                       blogId={b.blogId}
                       postId={b.postId}
@@ -188,7 +265,7 @@ export default function PostEditApp(
                       useFullLocalization={b.useFullLocalization}
                       otherLocales={b.otherLocales || []}
                       useRichText
-                      editorMode={b.editorMode}
+                      editorMode={editorMode}
                       rows={14}
                       translationsLabel={L.translations}
                     />
@@ -210,6 +287,7 @@ export default function PostEditApp(
                   <div className="blog-admin__control">
                     {b.summaryIsHtml ? (
                       <LocaleHtmlField
+                        key={`summary-${editorKey}`}
                         module={module}
                         blogId={b.blogId}
                         postId={b.postId}
@@ -227,7 +305,7 @@ export default function PostEditApp(
                         useFullLocalization={b.useFullLocalization}
                         otherLocales={b.otherLocales || []}
                         useRichText
-                        editorMode={b.editorMode}
+                        editorMode={editorMode}
                         rows={8}
                         translationsLabel={L.translations}
                       />
@@ -466,6 +544,25 @@ export default function PostEditApp(
             "blog-post-delete"
           ) as HTMLFormElement | null;
           form?.submit();
+        }}
+      />
+
+      <ConfirmDialog
+        open={formatSwitchOpen}
+        title={L.contentFormatSwitchTitle}
+        message={L.contentFormatSwitchMessage}
+        confirmLabel={L.contentFormatSwitchConfirm}
+        cancelLabel={L.cancel}
+        onCancel={() => {
+          setFormatSwitchOpen(false);
+          setPendingContentFormat(null);
+        }}
+        onConfirm={() => {
+          if (pendingContentFormat !== null) {
+            applyContentFormat(pendingContentFormat);
+          }
+          setFormatSwitchOpen(false);
+          setPendingContentFormat(null);
         }}
       />
     </>

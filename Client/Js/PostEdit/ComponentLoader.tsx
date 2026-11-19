@@ -139,6 +139,10 @@ function normalizeBootstrap(raw: any): IPostEditBootstrap {
       "ShowSummaryPrecedingWarning",
       false
     ),
+    contentFormat: (() => {
+      const fmt = Number(pick(raw, "contentFormat", "ContentFormat", 0));
+      return fmt === 1 ? 1 : 0;
+    })(),
     editorMode: (() => {
       const mode = String(pick(raw, "editorMode", "EditorMode", "html") || "html").toLowerCase();
       return mode === "markdown" ? "markdown" : "html";
@@ -203,6 +207,38 @@ function normalizeBootstrap(raw: any): IPostEditBootstrap {
       ),
       deleteConfirm: pick(labelsRaw, "deleteConfirm", "DeleteConfirm", "Delete this post?"),
       translations: pick(labelsRaw, "translations", "Translations", "Translations"),
+      contentFormat: pick(labelsRaw, "contentFormat", "ContentFormat", "Content format"),
+      contentFormatHelp: pick(
+        labelsRaw,
+        "contentFormatHelp",
+        "ContentFormatHelp",
+        "Choose HTML or Markdown. Switching format clears the post content."
+      ),
+      contentFormatHtml: pick(labelsRaw, "contentFormatHtml", "ContentFormatHtml", "HTML"),
+      contentFormatMarkdown: pick(
+        labelsRaw,
+        "contentFormatMarkdown",
+        "ContentFormatMarkdown",
+        "Markdown"
+      ),
+      contentFormatSwitchTitle: pick(
+        labelsRaw,
+        "contentFormatSwitchTitle",
+        "ContentFormatSwitchTitle",
+        "Switch content format?"
+      ),
+      contentFormatSwitchMessage: pick(
+        labelsRaw,
+        "contentFormatSwitchMessage",
+        "ContentFormatSwitchMessage",
+        "Changing the content format will erase the current contents. This cannot be undone."
+      ),
+      contentFormatSwitchConfirm: pick(
+        labelsRaw,
+        "contentFormatSwitchConfirm",
+        "ContentFormatSwitchConfirm",
+        "Switch and clear"
+      ),
     },
   };
 }

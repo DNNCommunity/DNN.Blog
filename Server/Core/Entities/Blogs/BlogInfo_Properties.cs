@@ -112,7 +112,7 @@ namespace DotNetNuke.Modules.Blog.Core.Entities.Blogs
     [DataMember()]
     public DateTime FirstPublishDate { get; set; } = DateTime.MinValue;
     [DataMember()]
-    public byte ContentFormat { get; set; } = 0;
+    public byte DefaultContentFormat { get; set; } = 0;
     #endregion
 
     #region  ML Properties 
