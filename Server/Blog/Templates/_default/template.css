@@ -261,6 +261,7 @@
 }
 
 .ModBlogC .bbs-hero__media {
+  position: relative;
   margin: 0 0 var(--bbs-space-5);
   overflow: hidden;
   border-radius: var(--bbs-radius);
@@ -268,11 +269,46 @@
   aspect-ratio: 2.5 / 1;
 }
 
+.ModBlogC .bbs-hero__media picture {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
 .ModBlogC .bbs-hero__media img {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* Parallax: image lags behind as the banner exits the viewport (same approach as nu.nl) */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .ModBlogC .bbs-hero__media--parallax {
+      overflow: clip;
+    }
+
+    .ModBlogC .bbs-hero__media--parallax img {
+      animation-name: bbs-hero-parallax;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: view();
+      animation-range: exit;
+    }
+  }
+}
+
+@keyframes bbs-hero-parallax {
+  0% {
+    translate: 0;
+  }
+
+  100% {
+    translate: 0 50%;
+  }
 }
 
 .ModBlogC .bbs-hero__text {
